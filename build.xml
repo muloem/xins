@@ -1055,20 +1055,25 @@ ${sf.file}</fail>
 	depends="package,do-upload-package"
 	description="Creates and uploads package to the web server" />
 
-	<target name="installer" depends="-init">
+	<target name="installer" depends="-init-release">
 		<get src="http://xins.sourceforge.net/VERSION"
 		     dest="../VERSION" />
-		<loadfile srcfile="../VERSION" property="exe.version" />
+		<loadfile srcfile="../VERSION" property="exe.version">
+			<filterchain>
+				<striplinebreaks/>
+			</filterchain>
+		</loadfile>
 		<delete file="../VERSION" />
-		<get src="http://prdownloads.sourceforge.net/xins/xins-${exe.version}.tgz?download"
-		     dest="../${name}-${exe.version}.tgz" />
-		<gunzip src="../${name}-${exe.version}.tgz" />
+		<get src="http://heanet.dl.sourceforge.net/sourceforge/${name}/${name}-${exe.version}.tgz"
+		     dest="../${name}-${exe.version}.tgz"
+				 usetimestamp="true" />
+		<gunzip src="../${name}-${exe.version}.tgz" dest="../${name}-${exe.version}.tar" />
 		<untar src="../${name}-${exe.version}.tar" dest=".." />
 		<delete file="../${name}-${exe.version}.tar" />
 		<replace file="src/tools/installer/${name}.iss"
 		         token="%%VERSION%%"
 						 value="${exe.version}" />
-		<exec command="C:\Util\InnoSetup\compil32.exe">
+		<exec executable="C:\Util\InnoSetup\compil32.exe">
 			<arg value="/cc" />
 			<arg path="src/tools/installer/${name}.iss" />
 		</exec>
