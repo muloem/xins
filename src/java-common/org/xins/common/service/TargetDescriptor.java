@@ -77,11 +77,6 @@ public final class TargetDescriptor extends Descriptor {
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
-
-   /**
     * The pattern for a URL, as a character string.
     */
    private static final String PATTERN_STRING = "[a-z][a-z\\d]*(:[a-z\\d]+)?:\\/\\/[a-z\\d-]+(\\.[a-z\\d-]+)*(:[1-9][\\d]*)?(\\/([a-z\\d%_~.-]*))*";
@@ -296,7 +291,7 @@ public final class TargetDescriptor extends Descriptor {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
-      if (! PATTERN_MATCHER.matches(url, PATTERN)) {
+      if (! _patternMatcher.matches(url, PATTERN)) {
          throw new MalformedURLException(url);
       }
 
@@ -368,6 +363,11 @@ public final class TargetDescriptor extends Descriptor {
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
    private final int _crc;
+
+   /**
+    * Pattern matcher.
+    */
+   private final Perl5Matcher _patternMatcher = new Perl5Matcher();
 
 
    //-------------------------------------------------------------------------

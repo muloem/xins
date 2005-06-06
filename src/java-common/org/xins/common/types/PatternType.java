@@ -41,11 +41,6 @@ public abstract class PatternType extends Type {
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
-   /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -118,10 +113,11 @@ public abstract class PatternType extends Type {
 
    protected final boolean isValidValueImpl(String value) {
       try {
-         return PATTERN_MATCHER.matches(value, _pattern);
+         Perl5Matcher patternMatcher = new Perl5Matcher();
+         return patternMatcher.matches(value, _pattern);
       } catch (Throwable exception) {
          final String THIS_METHOD    = "isValidValueImpl(java.lang.String)";
-         final String SUBJECT_CLASS  = PATTERN_MATCHER.getClass().getName();
+         final String SUBJECT_CLASS  = new Perl5Matcher().getClass().getName();
          final String SUBJECT_METHOD = "matches(java.lang.String," + _pattern.getClass().getName() + ')';
          final String DETAIL         = "Assuming the value \""
                                      + value

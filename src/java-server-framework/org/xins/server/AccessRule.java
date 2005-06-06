@@ -54,16 +54,6 @@ import org.xins.common.text.SimplePatternParser;
 public final class AccessRule implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -211,6 +201,11 @@ public final class AccessRule implements AccessRuleContainer {
    private final Perl5Pattern _functionNamePattern;
 
    /**
+    * Pattern matcher.
+    */
+   private final Perl5Matcher _paternMatcher = new Perl5Matcher();
+
+   /**
     * String representation of this object. Cannot be <code>null</code>.
     */
    private final String _asString;
@@ -299,7 +294,7 @@ public final class AccessRule implements AccessRuleContainer {
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      if (!_ipFilter.match(ip) || !PATTERN_MATCHER.matches(functionName, _functionNamePattern)) {
+      if (!_ipFilter.match(ip) || !_paternMatcher.matches(functionName, _functionNamePattern)) {
          return null;
       } else {
          return _allow;

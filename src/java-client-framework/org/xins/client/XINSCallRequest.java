@@ -66,11 +66,6 @@ public final class XINSCallRequest extends CallRequest {
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
-
-   /**
     * The pattern for a parameter name, as a character string.
     */
    public static final String PARAMETER_NAME_PATTERN_STRING = "[a-zA-Z][a-zA-Z0-9_]*";
@@ -330,6 +325,11 @@ public final class XINSCallRequest extends CallRequest {
     */
    private final ProtectedPropertyReader _httpParams;
 
+   /**
+    * Pattern matcher.
+    */
+   private final Perl5Matcher _patternMatcher = new Perl5Matcher();
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -526,7 +526,7 @@ public final class XINSCallRequest extends CallRequest {
       MandatoryArgumentChecker.check("name", name);
 
       // Name cannot violate the pattern
-      if (! PATTERN_MATCHER.matches(name, PARAMETER_NAME_PATTERN)) {
+      if (! _patternMatcher.matches(name, PARAMETER_NAME_PATTERN)) {
          // XXX: Consider using a different kind of exception for this
          //      specific case. For backwards compatibility, this exception
          //      class must be converted to an IllegalArgumentException in

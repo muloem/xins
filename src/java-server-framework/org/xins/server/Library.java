@@ -39,11 +39,6 @@ public final class Library extends Object {
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
-    * Pattern matcher.
-    */
-   private static final Perl5Matcher PATTERN_MATCHER = new Perl5Matcher();
-
-   /**
     * Regular expression that production release versions of XINS match, and
     * non-production release version do not.
     */
@@ -114,7 +109,8 @@ public final class Library extends Object {
     */
    static final boolean isProductionRelease(String version)
    throws NullPointerException {
-      return PATTERN_MATCHER.matches(version, PRODUCTION_RELEASE_PATTERN);
+      Perl5Matcher patternMatcher = new Perl5Matcher();
+      return patternMatcher.matches(version, PRODUCTION_RELEASE_PATTERN);
    }
 
    /**
