@@ -29,8 +29,22 @@
 	<xsl:template match="api">
 	
 		<xsl:variable name="apiname" select="@name" />
+		<xsl:variable name="location">
+			<xsl:choose>
+				<xsl:when test="document($project_file)/project/api[@name=$apiname]/environments">
+					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $apiname, '/environments.xml')" />
+					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>http://localhost:8080/</xsl:text>
+					<xsl:value-of select="$apiname" />
+					<xsl:text>/</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		
 		<definitions name="{$apiname}"
+			targetNamespace="{$location}"
 			xmlns="http://schemas.xmlsoap.org/wsdl/"
 			xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -64,23 +78,12 @@
 					<xsl:value-of select="description" />
 				</document>
 				<soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-				<xsl:apply-templates select="function" mode="bindings" />
+				<xsl:apply-templates select="function" mode="bindings">
+					<xsl:with-param name="location" select="$location" />
+				</xsl:apply-templates>
 			</binding>
 			
 			<!-- Write the services -->
-			<xsl:variable name="location">
-				<xsl:choose>
-					<xsl:when test="document($project_file)/project/api[@name=$apiname]/environments">
-						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $apiname, '/environments.xml')" />
-						<xsl:value-of select="document($env_file)/environments/environment[0]/@url" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>http://localhost:8080/</xsl:text>
-						<xsl:value-of select="$apiname" />
-						<xsl:text>/</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
 			<service name="{$apiname}Service">
 				<port name="{$apiname}Port" binding="{$apiname}SOAPBinding">
 					<soapbind:address location="{$location}" />
@@ -179,6 +182,8 @@
 	
 	<xsl:template match="function" mode="bindings">
 	
+		<xsl:param name="location" />
+		
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		
@@ -186,6 +191,7 @@
 			<documentation>
 				<xsl:value-of select="document($function_file)/function/description" />
 			</documentation>
+			<soapbind:operation soapAction="{$location}{$functionname}" />
 			<input>
 				<soapbind:body use="literal"/>
 			</input>
