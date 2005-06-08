@@ -19,7 +19,6 @@
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
-	<xsl:param name="classname"    />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
@@ -64,8 +63,8 @@ package ]]></xsl:text>
 		<xsl:text><![CDATA[
  */
 public class ]]></xsl:text>
-		<xsl:value-of select="$classname" />
-		<xsl:text> extends </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>Impl extends </xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[ {
 
@@ -83,16 +82,16 @@ public class ]]></xsl:text>
 
    /**
     * Constructs a new <code>]]></xsl:text>
-		<xsl:value-of select="$classname" />
-		<xsl:text><![CDATA[</code> instance.
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[Impl</code> instance.
     *
     * @param api
     *    the API to which this function belongs, guaranteed to be not
     *    <code>null</code>.
     */
    public ]]></xsl:text>
-		<xsl:value-of select="$classname" />
-		<xsl:text>(APIImpl api) {
+		<xsl:value-of select="@name" />
+		<xsl:text>Impl(APIImpl api) {
       super(api);
    }
 
@@ -105,13 +104,12 @@ public class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------
 
-   public final Result call(Request request) throws Throwable {
-      SuccessfulResult result = new SuccessfulResult();
-      // TO</xsl:text>
-		<!-- Split this text up so it does not match when searched for -->
-		<xsl:text>DO
-      return result;
-   }
+   public final Result call(Request request) throws Throwable {</xsl:text>
+		<xsl:call-template name="callcontent" />
+		<xsl:text>
+   }</xsl:text>
+		<xsl:call-template name="aftercall" />
+		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
@@ -144,4 +142,16 @@ public class ]]></xsl:text>
 		</xsl:if>
 	</xsl:template>
 
+	<!-- Write the content of the call method -->
+	<xsl:template name="callcontent">
+		<xsl:text>
+      SuccessfulResult result = new SuccessfulResult();
+      // TO</xsl:text>
+		<!-- Split this text up so it does not match when searched for -->
+		<xsl:text>DO
+      return result;</xsl:text>
+	</xsl:template>
+	
+	<!-- Write the text that should be generated after the call method -->
+	<xsl:template name="aftercall" />
 </xsl:stylesheet>

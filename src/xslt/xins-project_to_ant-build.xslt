@@ -104,13 +104,21 @@ The following targets are specific for a single API, replace <api> with the name
 - clean-<api>         Cleans everything for the API.
 - rebuild-<api>       Regenerates everything for the API.
 - all-<api>           Generates everything for the API.
+- wsdl-<api>          Generates the WSDL for the API.
+- stub-<api>          Generates the stub for the API.
 
 APIs in this project are:
 ]]></echo>
-				<echo><xsl:for-each select="api">
+				<echo>
+					<xsl:for-each select="api">
+						<xsl:variable name="api" select="@name" />
 						<xsl:text>"</xsl:text>
-							<xsl:value-of select="@name" />
+							<xsl:value-of select="$api" />
 						<xsl:text>" </xsl:text>
+						<xsl:for-each select="impl/@name">
+							<xsl:variable name="impl" select="." />
+							<xsl:value-of select="concat('&quot;', $api, '-', $impl, '&quot; ')" />
+						</xsl:for-each>
 					</xsl:for-each>
 				</echo>
 			</target>
@@ -118,13 +126,18 @@ APIs in this project are:
 			<target name="ask" description="Asks for the command and API to execute.">
 				<input addproperty="command"
 				       message="Command "
-				       validargs="war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server" />
+				       validargs="run,war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server,wsdl" />
 				<input addproperty="api"
 				       message="API ">
 					<xsl:attribute name="validargs">
 						<xsl:for-each select="api">
 							<xsl:if test="position() &gt; 1">,</xsl:if>
-							<xsl:value-of select="@name" />
+							<xsl:variable name="api" select="@name" />
+							<xsl:value-of select="$api" />
+							<xsl:for-each select="impl/@name">
+								<xsl:variable name="impl" select="." />
+								<xsl:value-of select="concat(',', $api, '-', $impl)" />
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:attribute>
 				</input>
@@ -267,6 +280,9 @@ APIs in this project are:
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>classes-api-</xsl:text>
 						<xsl:value-of select="../@name" />
+						<xsl:if test="@name">
+							<xsl:value-of select="concat('-', @name)" />
+						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="api">
 						<!-- If old API -->
@@ -318,6 +334,9 @@ APIs in this project are:
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>war-</xsl:text>
 						<xsl:value-of select="../@name" />
+						<xsl:if test="@name">
+							<xsl:value-of select="concat('-', @name)" />
+						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="api">
 						<!-- If old API -->
@@ -715,7 +734,6 @@ APIs in this project are:
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 						<param name="package"      expression="{$package}"      />
-						<param name="classname"    expression="{$classname}"    />
 					</style>
 				</target>
 			</xsl:for-each>
@@ -1065,6 +1083,28 @@ APIs in this project are:
 				overwrite="true" />
 			</target>
 
+			<target name="stub-{$api}{$implName2}">
+				<xsl:variable name="javaImplDir"    select="concat($javaImplDir, '/', $packageAsDir)" />
+				<xmlvalidate warn="false">
+					<xmlcatalog refid="all-dtds" />
+					<fileset dir="{$api_specsdir}" includes="*.fnc" />
+				</xmlvalidate>
+				<style basedir="{$api_specsdir}" 
+				includes="*.fnc" 
+				destdir="{$javaImplDir}"
+				extension="Impl.java"
+				style="{$xins_home}/src/xslt/java-server-framework/function_to_stub.xslt">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+					<param name="package"      expression="{$package}"      />
+				</style>
+			</target>
+			
 			<target name="server-{$api}{$implName2}"
 							depends="specdocs-{$api}, javadoc-api-{$api}{$implName2}, war-{$api}{$implName2}"
 							description="Generates the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}{$implName2}' API.">
