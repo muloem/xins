@@ -46,7 +46,7 @@ import org.xins.common.service.TargetDescriptor;
 /**
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</code> function.
+		<xsl:text><![CDATA[</code> tests.
  *
  * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
  */
@@ -99,7 +99,7 @@ public class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    /**
-    * The XINServiceCaller for this API.
+    * The XINServiceCaller of the API.
     */
    private XINSServiceCaller _caller;
 
