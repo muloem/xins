@@ -1111,6 +1111,121 @@ APIs in this project are:
 			</target>
 		</xsl:for-each>
 
+		<xsl:if test="test">
+			<target name="test-{$api}" description="Generates (if needed) and run the tests for the {$api} API.">
+				<xsl:attribute name="depends">
+					<xsl:text>-prepare-classes,</xsl:text>
+					<xsl:if test="$apiHasTypes">
+						<xsl:text>-classes-types-</xsl:text>
+						<xsl:value-of select="$api" />
+						<xsl:text>,</xsl:text>
+					</xsl:if>
+					<xsl:text>jar-</xsl:text>
+					<xsl:value-of select="$api" />
+				</xsl:attribute>
+				<xsl:variable name="package">
+					<xsl:call-template name="package_for_server_api">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="api" select="$api" />
+					</xsl:call-template>
+				</xsl:variable>
+				
+				<available property="test.generated" file="apis/{$api}/test" type="dir" />
+				<antcall target="generatetest-{$api}" />
+				<mkdir dir="build/classes-tests/{$api}" />
+				<javac
+				destdir="build/classes-tests/{$api}"
+				debug="true"
+				deprecation="${{build.deprecation}}"
+				source="1.3"
+				target="1.3">
+					<src path="apis/{$api}/test" />
+					<classpath>
+						<pathelement path="{$logdoc.jar}" />
+						<pathelement path="{$xins-common.jar}" />
+						<pathelement path="{$xins-server.jar}" />
+						<pathelement path="{$xins-client.jar}" />
+						<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+						<pathelement path="build/capis/{$api}-capi.jar" />
+					</classpath>
+				</javac>
+				<mkdir dir="build/testresults/xml" />
+				<property name="test.environment" value="" />
+				<junit fork="true" printsummary="true" failureproperty="tests.failed">
+					<sysproperty key="user.dir" value="{$project_home}"/>
+					<jvmarg value="-Dtest.environment=${{test.environment}}" />
+					<formatter type="xml" />
+					<test name="{$package}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
+					<classpath>
+						<pathelement path="{$logdoc.jar}" />
+						<pathelement path="{$xins-common.jar}" />
+						<pathelement path="{$xins-server.jar}" />
+						<pathelement path="{$xins-client.jar}" />
+						<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+						<pathelement path="build/capis/{$api}-capi.jar" />
+						<pathelement path="build/classes-tests/{$api}" />
+					</classpath>
+				</junit>
+				<mkdir dir="build/testresults/html" />
+				<style
+				in="build/testresults/xml/testresults-{$api}.xml"
+				out="build/testresults/html/testresults-{$api}.html"
+				style="{$xins_home}/src/xslt/tests/index.xslt" />
+				<copy
+				file="{$xins_home}/src/css/tests/stylesheet.css"
+				todir="build/testresults/html" />
+			</target>
+
+			<target name="generatetest-{$api}" unless="test.generated">
+				<xsl:variable name="package">
+					<xsl:call-template name="package_for_server_api">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="api" select="$api" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
+				<xsl:variable name="javaTestDir">
+					<xsl:value-of select="concat('apis/', $api, '/test/', $packageAsDir)" />
+				</xsl:variable>
+				
+				<xmlvalidate warn="false">
+					<xmlcatalog refid="all-dtds" />
+					<fileset dir="{$api_specsdir}" includes="api.xml" />
+				</xmlvalidate>
+				<style
+				in="{$api_file}"
+				out="{$javaTestDir}/APITests.java"
+				style="{$xins_home}/src/xslt/tests/api_to_test.xslt">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+					<param name="package"      expression="{$package}"      />
+				</style>
+				<xmlvalidate warn="false">
+					<xmlcatalog refid="all-dtds" />
+					<fileset dir="{$api_specsdir}" includes="*.fnc" />
+				</xmlvalidate>
+				<style basedir="{$api_specsdir}"
+				includes="*.fnc"
+				destdir="{$javaTestDir}"
+				extension="Tests.java"
+				style="{$xins_home}/src/xslt/tests/function_to_test.xslt">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+					<param name="package"      expression="{$package}"      />
+				</style>
+			</target>
+		</xsl:if>
+		
 		<target name="-stubs-capi-{$api}" depends="-prepare-classes" >
 			<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 			<xmlvalidate file="{$api_file}" warn="false">

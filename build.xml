@@ -927,6 +927,7 @@ ${sf.file}</fail>
 			<include name="src/css/javadoc/*"              />
 			<include name="src/css/logdoc/*"               />
 			<include name="src/css/specdocs/*"             />
+			<include name="src/css/tests/*"                />
 			<include name="src/dtd/**/*"                   />
 			<include name="src/java-client-framework/**/*" />
 			<include name="src/java-common/**/*"           />
@@ -943,6 +944,7 @@ ${sf.file}</fail>
 			<include name="lib/commons-logging.LICENSE"    />
 			<include name="lib/jakarta-oro.LICENSE"        />
 			<include name="lib/log4j.LICENSE"              />
+			<include name="lib/junit.LICENSE"              />
 			<include name="docs/*.html"                    />
 			<include name="docs/*.css"                     />
 			<include name="docs/protocol/*.html"           />
@@ -962,7 +964,7 @@ ${sf.file}</fail>
 			<include name="COPYRIGHT"                      />
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
-			<exclude name="src/xslt/tests/*"               />
+			<exclude name="src/xslt/tests/perftests.xslt"  />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
@@ -999,6 +1001,7 @@ ${sf.file}</fail>
 				<include name="lib/log4j.jar"                  />
 				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />
+				<include name="lib/junit.jar"                  />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build/lf"

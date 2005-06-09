@@ -29,8 +29,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 * Generated specification documentation:
   - Added support for multiple implementation for the runtime properties.
 
+* Generation of tests:
+  - Added generation of the test cases from the examples.
+
 * Generated build file:
   - Added support for multiple implementation.
+  - Added the test-<api> target.
 
 * Build- and release-process:
   - Added wsdl-<api> targets that generated the WSDL file for the given API.
