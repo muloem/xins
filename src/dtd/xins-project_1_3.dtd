@@ -25,7 +25,7 @@
 <!ATTLIST patterntest
           href       CDATA #REQUIRED
 >
-<!ELEMENT api (impl*, environments?)>
+<!ELEMENT api (impl*, environments?, test)>
 <!ATTLIST api
           name       NMTOKEN #REQUIRED
 >
@@ -34,3 +34,4 @@
           name       NMTOKEN #IMPLIED
 >
 <!ELEMENT environments EMPTY>
+<!ELEMENT test EMPTY>

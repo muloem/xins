@@ -35,6 +35,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 * Generated build file:
   - Added support for multiple implementation.
   - Added the test-<api> target.
+  - Reduced generated file size by putting XINS classpath in a reference.
 
 * Build- and release-process:
   - Added wsdl-<api> targets that generated the WSDL file for the given API.

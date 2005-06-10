@@ -29,10 +29,6 @@
 	<xsl:variable name="xmlenc_version"    select="'0.47'"                                          />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
-	<xsl:variable name="logdoc.jar"        select="concat($xins_home,    '/build/logdoc.jar')"      />
-	<xsl:variable name="xins-common.jar"   select="concat($xins_home,    '/build/xins-common.jar')" />
-	<xsl:variable name="xins-server.jar"   select="concat($xins_home,    '/build/xins-server.jar')" />
-	<xsl:variable name="xins-client.jar"   select="concat($xins_home,    '/build/xins-client.jar')" />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
@@ -272,6 +268,13 @@ APIs in this project are:
 				<property file="{$project_home}/build.properties" />
 				<!-- If not set by the user set it to true. -->
 				<property name="build.deprecation" value="true" />
+				<path id="xins.classpath">
+					<pathelement path="{$xins_home}/build/logdoc.jar" />
+					<pathelement path="{$xins_home}/build/xins-common.jar" />
+					<pathelement path="{$xins_home}/build/xins-server.jar" />
+					<pathelement path="{$xins_home}/build/xins-client.jar" />
+					<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+				</path>
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">
@@ -623,8 +626,8 @@ APIs in this project are:
 				source="1.3"
 				target="1.3">
 					<classpath>
-						<pathelement path="{$logdoc.jar}" />
-						<pathelement path="{$xins-common.jar}" />
+						<pathelement path="{$xins_home}/build/logdoc.jar" />
+						<pathelement path="{$xins_home}/build/xins-common.jar" />
 					</classpath>
 				</javac>
 			</target>
@@ -767,7 +770,7 @@ APIs in this project are:
 				<mkdir dir="{$javaDestDir}" />
 				<dependset>
 					<xsl:choose>
-						<xsl:when test="impl">
+						<xsl:when test="local-name() = 'impl'">
 							<srcfilelist   dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
 						</xsl:when>
 						<xsl:otherwise>
@@ -797,7 +800,7 @@ APIs in this project are:
 				</style>
 				<xsl:variable name="impl_file">
 					<xsl:choose>
-						<xsl:when test="impl">
+						<xsl:when test="local-name() = 'impl'">
 							<xsl:value-of select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 						</xsl:when>
 						<xsl:otherwise>
@@ -888,7 +891,7 @@ APIs in this project are:
 					</style>
 					<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 				</xsl:if>
-				<xsl:if test="impl">
+				<xsl:if test="local-name() = 'impl'">
 					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, $implName2, '/impl')" />
 					<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
 					<xmlvalidate file="{$impl_file}" warn="false">
@@ -933,13 +936,9 @@ APIs in this project are:
 						<xsl:if test="$apiHasTypes">
 							<pathelement path="{$typeClassesDir}" />
 						</xsl:if>
-						<pathelement path="{$logdoc.jar}" />
-						<pathelement path="{$xins-common.jar}" />
-						<pathelement path="{$xins-server.jar}" />
-						<pathelement path="{$xins-client.jar}" />
-						<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+						<path refid="xins.classpath" />
 						<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-						<xsl:if test="impl">
+						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						</xsl:if>
@@ -987,7 +986,7 @@ APIs in this project are:
 					<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
 					<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
-					<xsl:if test="impl">
+					<xsl:if test="local-name() = 'impl'">
 						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 					</xsl:if>
@@ -1011,8 +1010,7 @@ APIs in this project are:
 					<arg path="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" />
 					<arg value="${{servlet.port}}" />
 					<classpath>
-						<fileset dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-client.jar xins-server.jar" />
-						<fileset dir="{$xins_home}/lib" includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar" />
+						<path refid="xins.classpath" />
 						<path location="build/classes-api/{$api}{$implName2}" />
 						<xsl:if test="$apiHasTypes">
 							<path location="build/classes-types/{$api}" />
@@ -1054,24 +1052,10 @@ APIs in this project are:
 					href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
-					<link
-					href="http://xins.sourceforge.net/ant-1.6.2-docs/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/ant/" />
 					<classpath>
-						<pathelement location="{$xins_home}/build/logdoc.jar"       />
-						<pathelement location="{$xins_home}/build/xins-client.jar"   />
-						<pathelement location="{$xins_home}/build/xins-common.jar"   />
-						<pathelement location="{$xins_home}/build/xins-server.jar"   />
-						<pathelement location="{$xins_home}/lib/log4j.jar"           />
-						<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
-						<pathelement location="{$xins_home}/lib/commons-codec.jar" />
-						<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />
-						<pathelement location="{$xins_home}/lib/commons-logging.jar" />
-						<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
-						<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
+						<path refid="xins.classpath" />
 						<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-						<xsl:if test="impl">
+						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						</xsl:if>
@@ -1141,11 +1125,7 @@ APIs in this project are:
 				target="1.3">
 					<src path="apis/{$api}/test" />
 					<classpath>
-						<pathelement path="{$logdoc.jar}" />
-						<pathelement path="{$xins-common.jar}" />
-						<pathelement path="{$xins-server.jar}" />
-						<pathelement path="{$xins-client.jar}" />
-						<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
 					</classpath>
 				</javac>
@@ -1157,11 +1137,7 @@ APIs in this project are:
 					<formatter type="xml" />
 					<test name="{$package}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
-						<pathelement path="{$logdoc.jar}" />
-						<pathelement path="{$xins-common.jar}" />
-						<pathelement path="{$xins-server.jar}" />
-						<pathelement path="{$xins-client.jar}" />
-						<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
+						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
 						<pathelement path="build/classes-tests/{$api}" />
 					</classpath>
@@ -1337,13 +1313,10 @@ APIs in this project are:
 			source="1.3"
 			target="1.3">
 				<classpath>
-					<pathelement path="{$logdoc.jar}"      />
-					<pathelement path="{$xins-common.jar}" />
-					<pathelement path="{$xins-client.jar}" />
+					<path refid="xins.classpath" />
 					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$typeClassesDir}"  />
 					</xsl:if>
-					<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
 				</classpath>
 			</javac>
 			<xsl:if test="$apiHasTypes">
@@ -1364,6 +1337,7 @@ APIs in this project are:
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
+				<xsl:text>-prepare-classes,</xsl:text>
 				<xsl:if test="$apiHasTypes">
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
@@ -1403,21 +1377,8 @@ APIs in this project are:
 				href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
 				offline="true"
 				packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
-				<link
-				href="http://xins.sourceforge.net/ant-1.6.2-docs/"
-				offline="true"
-				packagelistloc="{$xins_home}/src/package-lists/ant/" />
 				<classpath>
-					<pathelement location="{$xins_home}/build/logdoc.jar"       />
-					<pathelement location="{$xins_home}/build/xins-common.jar"   />
-					<pathelement location="{$xins_home}/build/xins-client.jar"   />
-					<pathelement location="{$xins_home}/lib/log4j.jar"           />
-					<pathelement location="{$xins_home}/lib/jakarta-oro.jar" />
-					<pathelement location="{$xins_home}/lib/commons-codec.jar" />
-					<pathelement location="{$xins_home}/lib/commons-httpclient.jar" />
-					<pathelement location="{$xins_home}/lib/commons-logging.jar" />
-					<pathelement location="{$xins_home}/lib/xmlenc.jar"          />
-					<fileset dir="${{ant.home}}/lib" includes="**/*.jar" />
+					<path refid="xins.classpath" />
 				</classpath>
 			</javadoc>
 			<copy
