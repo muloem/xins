@@ -47,7 +47,8 @@
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1">
-						<xsl:text> &amp;&amp; </xsl:text>
+						<xsl:text> &amp;&amp;
+            </xsl:text>
 					</xsl:if>
 					<xsl:text>String.valueOf(request.get</xsl:text>
 					<xsl:value-of select="$hungarianName" />
