@@ -281,7 +281,7 @@ extends HttpServlet {
 
    /**
     * Initializes this servlet using the specified configuration (wrapper
-    * method). This method delegates to {@link Engine}.
+    * method).
     *
     * @param config
     *    the {@link ServletConfig} object which contains build properties for
