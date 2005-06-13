@@ -691,6 +691,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		
+		<!-- Note that boolean, data and timestamp values should be translated. -->
 		<xsl:choose>
 			<xsl:when test="string-length($paramtype) = 0 or $paramtype = '_text'">string</xsl:when>
 			<xsl:when test="$paramtype = '_boolean'">boolean</xsl:when>
@@ -702,9 +703,8 @@
 			<xsl:when test="$paramtype = '_float64'">double</xsl:when>
 			<xsl:when test="$paramtype = '_base64'">base64Binary</xsl:when>
 			<xsl:when test="$paramtype = '_url'">anyURI</xsl:when>
-			<!-- the SOAP type for date and time is yyyy-mm-ddThh:mm:ss -->
-			<xsl:when test="$paramtype = '_date'">string</xsl:when>
-			<xsl:when test="$paramtype = '_timestamp'">string</xsl:when>
+			<xsl:when test="$paramtype = '_date'">date</xsl:when>
+			<xsl:when test="$paramtype = '_timestamp'">dateTime</xsl:when>
 			<xsl:when test="$paramtype = '_properties'">string</xsl:when>
 			<xsl:when test="$paramtype = '_descriptor'">string</xsl:when>
 			<xsl:otherwise>
