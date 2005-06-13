@@ -892,7 +892,7 @@ APIs in this project are:
 					<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 				</xsl:if>
 				<xsl:if test="local-name() = 'impl'">
-					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, $implName2, '/impl')" />
+					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
 					<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
 					<xmlvalidate file="{$impl_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
