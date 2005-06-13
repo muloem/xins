@@ -36,6 +36,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.client.DataElement;
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
@@ -128,7 +129,9 @@ public class ]]></xsl:text>
 	<xsl:template match="example" mode="method">
 		<xsl:text>
 
-   public void testExample</xsl:text>
+   public void test</xsl:text>
+		<xsl:value-of select="/function/@name" />
+		<xsl:text>Example</xsl:text>
 		<xsl:value-of select="position()" />
 		<xsl:text>() throws Exception {
       XINSCallRequest request = new XINSCallRequest("</xsl:text>
@@ -152,26 +155,100 @@ public class ]]></xsl:text>
 				<xsl:text>\" was expected but did not occur.");
       } catch(UnsuccessfulXINSCallException uxcex) {
          assertEquals("Incorrect error code received.", "</xsl:text>
-			<xsl:value-of select="@resultcode" />
-			<xsl:text>", uxcex.getErrorCode());
+				<xsl:value-of select="@resultcode" />
+				<xsl:text>", uxcex.getErrorCode());</xsl:text>
+				<xsl:apply-templates select="output-example">
+					<xsl:with-param name="resultVariable" select="'uxcex'" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="output-data-example/element-example">
+					<xsl:with-param name="parent" select="'uxcex.getDataElement()'" />
+				</xsl:apply-templates>
+			<xsl:text>
       }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
       XINSCallResult result = _caller.call(request);</xsl:text>
-				<xsl:for-each select="output-example">
-					<xsl:text>
-      assertEquals("The returned parameter \"</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>\" is incorrect.", "</xsl:text>
-					<xsl:value-of select="." />
-					<xsl:text>", result.getParameter("</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>"));</xsl:text>
-				</xsl:for-each>
+				<xsl:apply-templates select="output-example">
+					<xsl:with-param name="resultVariable" select="'result'" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="output-data-example/element-example">
+					<xsl:with-param name="parent" select="'result.getDataElement()'" />
+				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>	
    }</xsl:text>
+	</xsl:template>
+	
+	<!-- Check the result -->
+	<xsl:template match="output-example">
+		<xsl:param name="resultVariable" />
+		
+		<xsl:text>
+      assertEquals("The returned parameter \"</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>\" is incorrect.", "</xsl:text>
+		<xsl:value-of select="." />
+		<xsl:text>", </xsl:text>
+		<xsl:value-of select="$resultVariable" />
+		<xsl:text>.getParameter("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>"));</xsl:text>
+	</xsl:template>
+	
+	<!-- Check the returned data section -->
+	<xsl:template match="element-example">
+		<xsl:param name="parent" />
+		<xsl:param name="useParentInVariable" />
+
+		<xsl:variable name="elementVariable">
+			<xsl:choose>
+				<xsl:when test="$useParentInVariable = 'true'">
+					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:text>
+      DataElement </xsl:text>
+		<xsl:value-of select="$elementVariable" />
+		<xsl:text> = (DataElement) </xsl:text>
+		<xsl:value-of select="$parent" />
+		<xsl:text>.getChildElements().get(</xsl:text>
+		<xsl:value-of select="position() - 1" />
+		<xsl:text>);
+      assertEquals("Incorrect element.", "</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>" , </xsl:text>
+		<xsl:value-of select="$elementVariable" />
+		<xsl:text>.getLocalName());</xsl:text>
+		<xsl:for-each select="attribute-example">
+			<xsl:text>
+      assertEquals("The returned attribute \"</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>\" is incorrect.", "</xsl:text>
+			<xsl:value-of select="." />
+			<xsl:text>", </xsl:text>
+			<xsl:value-of select="$elementVariable" />
+			<xsl:text>.getAttribute("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>"));</xsl:text>
+		</xsl:for-each>
+		<xsl:if test="pcdata-example">
+			<xsl:text>
+      assertEquals("Incorrect PCDATA value.", "</xsl:text>
+			<xsl:value-of select="pcdata-example/text()" />
+			<xsl:text>", </xsl:text>
+			<xsl:value-of select="$elementVariable" />
+			<xsl:text>.getText());</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates select="element-example">
+			<xsl:with-param name="parent" select="$elementVariable" />
+			<xsl:with-param name="useParentInVariable" select="'true'" />
+		</xsl:apply-templates>
 	</xsl:template>
 </xsl:stylesheet>
