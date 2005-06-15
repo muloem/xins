@@ -62,14 +62,36 @@ implements DefaultResultCodes {
    private static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
 
    /**
-    * The runtime (initialization) property that contains the ACL descriptor.
+    * The runtime (initialization) property that defines the ACL (access
+    * control list) rules.
     */
    private static final String ACL_PROPERTY = "org.xins.server.acl";
 
    /**
-    * The name of the build property that contains the version of the API.
+    * The name of the build property that specifies the version of the API.
     */
    private static final String API_VERSION_PROPERTY = "org.xins.api.version";
+
+   /**
+    * The name of the build property that specifies the hostname of the
+    * machine the package was built on.
+    */
+   private static final String BUILD_HOST_PROPERTY =
+      "org.xins.api.build.host";
+
+   /**
+    * The name of the build property that specifies the time the package was
+    * built.
+    */
+   private static final String BUILD_TIME_PROPERTY =
+      "org.xins.api.build.time";
+
+   /**
+    * The name of the build property that specifies which version of XINS was
+    * used to build the package.
+    */
+   private static final String BUILD_XINS_VERSION_PROPERTY =
+      "org.xins.api.build.version";
 
 
    //-------------------------------------------------------------------------
@@ -313,10 +335,10 @@ implements DefaultResultCodes {
       _buildSettings = buildSettings;
 
       // Get build-time properties
-      _buildHost    = _buildSettings.get("org.xins.api.build.host");
-      _buildTime    = _buildSettings.get("org.xins.api.build.time");
-      _buildVersion = _buildSettings.get("org.xins.api.build.version");
-      _apiVersion   = _buildSettings.get(API_VERSION_PROPERTY);
+      _apiVersion   = _buildSettings.get(API_VERSION_PROPERTY       );
+      _buildHost    = _buildSettings.get(BUILD_HOST_PROPERTY        );
+      _buildTime    = _buildSettings.get(BUILD_TIME_PROPERTY        );
+      _buildVersion = _buildSettings.get(BUILD_XINS_VERSION_PROPERTY);
 
       Log.log_3212(_buildHost, _buildTime, _buildVersion, _name, _apiVersion);
 
