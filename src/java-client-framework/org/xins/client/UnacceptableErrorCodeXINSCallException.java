@@ -43,7 +43,7 @@ extends UnacceptableResultXINSCallException {
     *
     * @throws IllegalArgumentException
     *    if <code>result == null
-    *          || result.{@link XINSCallResult#getErrorCode()} == null</code>.
+    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
     */
    private static final String getDetail(XINSCallResultData result)
    throws IllegalArgumentException {
