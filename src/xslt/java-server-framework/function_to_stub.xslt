@@ -132,10 +132,11 @@
 					</xsl:call-template>
 					<xsl:text>);</xsl:text>
 				</xsl:for-each>
-				<xsl:apply-templates select="output-data-example/element-example">
+				<xsl:apply-templates select="output-data-example/element-example | data-example/element-example">
 					<xsl:with-param name="parent" select="'result'" />
 					<xsl:with-param name="api" select="$api" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="errorcode" select="@resultcode" />
 				</xsl:apply-templates>
 				<xsl:text>
 
@@ -146,11 +147,11 @@
 	</xsl:template>
 	
 	<!-- Examples with output data section -->
-	<xsl:template match="element-example">
+	<xsl:template match="output-data-example//element-example | data-example//element-example">
 		<xsl:param name="parent" />
 		<xsl:param name="api" />
 		<xsl:param name="specsdir" />
-		<xsl:param name="useParentInVariable" />
+		<xsl:param name="errorcode" />
 
 		<xsl:variable name="elementName" select="@name" />
 		<xsl:variable name="elementObject">
@@ -160,11 +161,11 @@
 		</xsl:variable>
 		<xsl:variable name="elementVariable">
 			<xsl:choose>
-				<xsl:when test="$useParentInVariable = 'true'">
-					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
+				<xsl:when test="../../data-example or ../../output-data-example">
+					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
+					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -184,7 +185,17 @@
 					<xsl:with-param name="text" select="@name" />
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:variable name="type" select="/function/output/data/element[@name=$elementName]/attribute[@name=$attributeName]/@type" />
+			<xsl:variable name="type">
+				<xsl:choose>
+					<xsl:when test="$errorcode">
+						<xsl:variable name="rcd_file" select="concat($specsdir, '/', $errorcode, '.rcd')" />
+						<xsl:value-of select="document($rcd_file)/resultcode/output/data/element[@name=$elementName]/attribute[@name=$attributeName]/@type" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/function/output/data/element[@name=$elementName]/attribute[@name=$attributeName]/@type" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 
 			<xsl:text>
       </xsl:text>
@@ -205,15 +216,17 @@
 			<xsl:text>
       </xsl:text>
 			<xsl:value-of select="$elementVariable" />
-			<xsl:text>.pcdata(</xsl:text>
-			<xsl:value-of select="concat('&quot;', normalize-space(pcdata-example/text()), '&quot;')" />
-			<xsl:text>);</xsl:text>
+			<xsl:text>.pcdata("</xsl:text>
+			<xsl:call-template name="pcdata_to_java_string">
+				<xsl:with-param name="text" select="pcdata-example/text()" />
+			</xsl:call-template>
+			<xsl:text>");</xsl:text>
 		</xsl:if>
 		<xsl:apply-templates select="element-example">
 			<xsl:with-param name="parent" select="$elementVariable" />
 			<xsl:with-param name="api" select="$api" />
 			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="useParentInVariable" select="'true'" />
+			<xsl:with-param name="errorcode" select="$errorcode" />
 		</xsl:apply-templates>
 		<xsl:text>
       </xsl:text>
