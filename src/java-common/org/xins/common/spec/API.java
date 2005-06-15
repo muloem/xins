@@ -12,7 +12,7 @@ package org.xins.common.spec;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class API {
+public class API {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,7 +46,11 @@ public abstract class API {
     * @return
     *    The name of the API, never <code>null</code>.
     */
-   public abstract String getName();
+   public String getName() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the owner of the API.
@@ -54,7 +58,11 @@ public abstract class API {
     * @return
     *    The owner of the API or <code>null</code> if no owner is defined.
     */
-   public abstract String getOwner();
+   public String getOwner() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the description of the API.
@@ -62,7 +70,11 @@ public abstract class API {
     * @return
     *    The description of the API, never <code>null</code>.
     */
-   public abstract String getDescription();
+   public String getDescription() {
+      
+      // TODO implement this function
+      return null;
+   }
 
    /**
     * Gets the function specifications defined in the API.
@@ -70,7 +82,11 @@ public abstract class API {
     * @return
     *    The function specifications, never <code>null</code>.
     */
-   public abstract Function[] getFunctions();
+   public Function[] getFunctions() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Get the specification of the given function.
@@ -84,5 +100,9 @@ public abstract class API {
     * @throws IllegalArgumentException
     *    If the API does not define any function for the given name.
     */
-   public abstract Function getFunction(String functionName);
+   public Function getFunction(String functionName) {
+      
+      // TODO implement this function
+      return null;
+   }
 }

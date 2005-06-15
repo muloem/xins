@@ -14,7 +14,7 @@ import org.xins.common.types.Type;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class Parameter {
+public class Parameter {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -48,7 +48,11 @@ public abstract class Parameter {
     * @return
     *    The name of the parameter, never <code>null</code>.
     */
-   public abstract String getName();
+   public String getName() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the description of the parameter.
@@ -56,7 +60,11 @@ public abstract class Parameter {
     * @return
     *    The description of the parameter, never <code>null</code>.
     */
-   public abstract String getDescription();
+   public String getDescription() {
+      
+      // TODO implement this function
+      return null;
+   }
 
    /**
     * Returns whether the parameter is mandatory.
@@ -64,7 +72,11 @@ public abstract class Parameter {
     * @return
     *    <code>true</code> if the parameter is requierd, <code>false</code> otherwise.
     */
-   public abstract boolean isRequired();
+   public boolean isRequired() {
+      
+      // TODO implement this function
+      return false;
+   }
 
    /**
     * Gets the type of the parameter.
@@ -72,5 +84,9 @@ public abstract class Parameter {
     * @return
     *    The type of the parameter, never <code>null</code>.
     */
-   public abstract Type getType();
+   public Type getType() {
+      
+      // TODO implement this function
+      return null;
+   }
 }

@@ -12,7 +12,7 @@ package org.xins.common.spec;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class ErrorCode {
+public class ErrorCode {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,7 +46,11 @@ public abstract class ErrorCode {
     * @return
     *    The name of the error code, never <code>null</code>.
     */
-   public abstract String getName();
+   public String getName() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the description of the error code.
@@ -54,7 +58,11 @@ public abstract class ErrorCode {
     * @return
     *    The description of the error code, never <code>null</code>.
     */
-   public abstract String getDescription();
+   public String getDescription() {
+      
+      // TODO implement this function
+      return null;
+   }
 
    /**
     * Gets the output parameter specifications defined in the error code.
@@ -62,7 +70,11 @@ public abstract class ErrorCode {
     * @return
     *    The output parameters, never <code>null</code>.
     */
-   public abstract Parameter[] getOutputParameters();
+   public Parameter[] getOutputParameters() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the specification of the elements of the output data section.
@@ -70,6 +82,9 @@ public abstract class ErrorCode {
     * @return
     *   The specification of the output data section, never <code>null</code>.
     */
-   public abstract DataSectionElement[] getOutputDataSection();
-   
+   public DataSectionElement[] getOutputDataSection() {
+      
+      // TODO implement this function
+      return null;
+   }
 }

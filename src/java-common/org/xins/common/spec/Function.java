@@ -12,7 +12,7 @@ package org.xins.common.spec;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class Function {
+public class Function {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,7 +46,11 @@ public abstract class Function {
     * @return
     *    The name of the function, never <code>null</code>.
     */
-   public abstract String getName();
+   public String getName() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the description of the function.
@@ -54,7 +58,11 @@ public abstract class Function {
     * @return
     *    The description of the function, never <code>null</code>.
     */
-   public abstract String getDescription();
+   public String getDescription() {
+      
+      // TODO implement this function
+      return null;
+   }
 
    /**
     * Gets the input parameter specifications defined in the function.
@@ -62,7 +70,11 @@ public abstract class Function {
     * @return
     *    The input parameters, never <code>null</code>.
     */
-   public abstract Parameter[] getInputParameters();
+   public Parameter[] getInputParameters() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the output parameter specifications defined in the function.
@@ -70,7 +82,11 @@ public abstract class Function {
     * @return
     *    The output parameters, never <code>null</code>.
     */
-   public abstract Parameter[] getOutputParameters();
+   public Parameter[] getOutputParameters() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the error code specifications defined in the function.
@@ -79,7 +95,11 @@ public abstract class Function {
     * @return
     *    The error code specifications, never <code>null</code>.
     */
-   public abstract ErrorCode[] getErrorCodes();
+   public ErrorCode[] getErrorCodes() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the specification of the elements of the input data section.
@@ -87,7 +107,11 @@ public abstract class Function {
     * @return
     *   The specification of the input data section, never <code>null</code>.
     */
-   public abstract DataSectionElement[] getInputDataSection();
+   public DataSectionElement[] getInputDataSection() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the specification of the elements of the output data section.
@@ -95,7 +119,11 @@ public abstract class Function {
     * @return
     *   The specification of the output data section, never <code>null</code>.
     */
-   public abstract DataSectionElement[] getOutputDataSection();
+   public DataSectionElement[] getOutputDataSection() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the input param combo specifications.
@@ -103,7 +131,11 @@ public abstract class Function {
     * @return
     *    The specification of the input param combos, never <code>null</code>.
     */
-   public abstract ParamCombo[] getInputParamCombos();
+   public ParamCombo[] getInputParamCombos() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the output param combo specifications.
@@ -111,5 +143,9 @@ public abstract class Function {
     * @return
     *    The specification of the output param combos, never <code>null</code>.
     */
-   public abstract ParamCombo[] getOutputParamCombos();
+   public ParamCombo[] getOutputParamCombos() {
+      
+      // TODO implement this function
+      return null;
+   }
 }

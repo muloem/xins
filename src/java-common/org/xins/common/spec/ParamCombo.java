@@ -12,7 +12,7 @@ package org.xins.common.spec;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class ParamCombo {
+public class ParamCombo {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,7 +46,11 @@ public abstract class ParamCombo {
     * @return
     *    <code>true</code> if the type is all-or-none, <code>false</code> otherwise.
     */
-   public abstract boolean isAllOrNone();
+   public boolean isAllOrNone() {
+      
+      // TODO implement this function
+      return false;
+   }
    
    /**
     * Returns whether the param combo is a exclusive-or type.
@@ -54,7 +58,11 @@ public abstract class ParamCombo {
     * @return
     *    <code>true</code> if the type is exclusive-or, <code>false</code> otherwise.
     */
-   public abstract boolean isExclusiveOr();
+   public boolean isExclusiveOr() {
+      
+      // TODO implement this function
+      return false;
+   }
    
    /**
     * Returns whether the param combo is a inclusive-or type.
@@ -62,7 +70,11 @@ public abstract class ParamCombo {
     * @return
     *    <code>true</code> if the type is inclusive-or, <code>false</code> otherwise.
     */
-   public abstract boolean isInclusiveOr();
+   public boolean isInclusiveOr() {
+      
+      // TODO implement this function
+      return false;
+   }
    
    /**
     * Gets the parameters defined in the param combo.
@@ -70,6 +82,9 @@ public abstract class ParamCombo {
     * @return
     *    The specification of the parameters defined in the param combo, never <code>null</code>.
     */
-   public abstract Parameter[] getParameters();
-   
+   public Parameter[] getParameters() {
+      
+      // TODO implement this function
+      return null;
+   }
 }

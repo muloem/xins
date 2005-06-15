@@ -12,7 +12,7 @@ package org.xins.common.spec;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public abstract class DataSectionElement {
+public class DataSectionElement {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,7 +46,11 @@ public abstract class DataSectionElement {
     * @return
     *    The name of the data element, never <code>null</code>.
     */
-   public abstract String getName();
+   public String getName() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the description of the data element.
@@ -54,7 +58,11 @@ public abstract class DataSectionElement {
     * @return
     *    The description of the data element, never <code>null</code>.
     */
-   public abstract String getDescription();
+   public String getDescription() {
+      
+      // TODO implement this function
+      return null;
+   }
 
    /**
     * Gets the sub elements that are included in this element.
@@ -62,7 +70,11 @@ public abstract class DataSectionElement {
     * @return
     *    The specification of the sub elements, never <code>null</code>.
     */
-   public abstract DataSectionElement[] getSubElements();
+   public DataSectionElement[] getSubElements() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Gets the attributes of the element.
@@ -70,7 +82,11 @@ public abstract class DataSectionElement {
     * @return
     *    The specification of the attributes, never <code>null</code>.
     */
-   public abstract Parameter[] getAttributes();
+   public Parameter[] getAttributes() {
+      
+      // TODO implement this function
+      return null;
+   }
    
    /**
     * Returns whether the element can contain a PCDATA text.
@@ -78,5 +94,9 @@ public abstract class DataSectionElement {
     * @return
     *    <code>true</code> if the element can contain text, <code>false</code> otherwise.
     */
-   public abstract boolean hasText();
+   public boolean hasText() {
+      
+      // TODO implement this function
+      return false;
+   }
 }
