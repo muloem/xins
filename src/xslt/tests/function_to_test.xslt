@@ -23,6 +23,7 @@
 	<xsl:param name="api_file"     />
 
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../xml_to_java.xslt"  />
 	
 	<xsl:template match="function">
 		<xsl:text><![CDATA[/*
@@ -43,7 +44,8 @@ import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
 
 import org.xins.common.service.TargetDescriptor;
-
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 /**
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
@@ -142,9 +144,21 @@ public class ]]></xsl:text>
       request.setParameter("</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>", "</xsl:text>
-			<xsl:value-of select="." />
+			<xsl:call-template name="pcdata_to_java_string">
+				<xsl:with-param name="text" select="." />
+			</xsl:call-template>
 			<xsl:text>");</xsl:text>
 		</xsl:for-each>
+		<xsl:if test="input-data-example/element-example">
+			<xsl:text>
+      ElementBuilder dataSectionBuilder = new ElementBuilder("data");</xsl:text>
+			<xsl:apply-templates select="input-data-example/element-example">
+				<xsl:with-param name="parent" select="'dataSectionBuilder'" />
+			</xsl:apply-templates>
+			<xsl:text>
+      Element dataSection = dataSectionBuilder.createElement();
+      request.setDataSection(dataSection);</xsl:text>
+		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="@resultcode">
 				<xsl:text>
@@ -160,7 +174,7 @@ public class ]]></xsl:text>
 				<xsl:apply-templates select="output-example">
 					<xsl:with-param name="resultVariable" select="'uxcex'" />
 				</xsl:apply-templates>
-				<xsl:apply-templates select="output-data-example/element-example">
+				<xsl:apply-templates select="output-data-example/element-example | data-example/element-example">
 					<xsl:with-param name="parent" select="'uxcex.getDataElement()'" />
 				</xsl:apply-templates>
 			<xsl:text>
@@ -172,7 +186,7 @@ public class ]]></xsl:text>
 				<xsl:apply-templates select="output-example">
 					<xsl:with-param name="resultVariable" select="'result'" />
 				</xsl:apply-templates>
-				<xsl:apply-templates select="output-data-example/element-example">
+				<xsl:apply-templates select="output-data-example/element-example | data-example/element-example">
 					<xsl:with-param name="parent" select="'result.getDataElement()'" />
 				</xsl:apply-templates>
 			</xsl:otherwise>
@@ -189,7 +203,9 @@ public class ]]></xsl:text>
       assertEquals("The returned parameter \"</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>\" is incorrect.", "</xsl:text>
-		<xsl:value-of select="." />
+		<xsl:call-template name="pcdata_to_java_string">
+			<xsl:with-param name="text" select="." />
+		</xsl:call-template>
 		<xsl:text>", </xsl:text>
 		<xsl:value-of select="$resultVariable" />
 		<xsl:text>.getParameter("</xsl:text>
@@ -198,17 +214,16 @@ public class ]]></xsl:text>
 	</xsl:template>
 	
 	<!-- Check the returned data section -->
-	<xsl:template match="element-example">
+	<xsl:template match="data-example//element-example | output-data-example//element-example">
 		<xsl:param name="parent" />
-		<xsl:param name="useParentInVariable" />
 
 		<xsl:variable name="elementVariable">
 			<xsl:choose>
-				<xsl:when test="$useParentInVariable = 'true'">
-					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
+				<xsl:when test="../../data-example or ../../output-data-example">
+					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
+					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -231,7 +246,9 @@ public class ]]></xsl:text>
       assertEquals("The returned attribute \"</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>\" is incorrect.", "</xsl:text>
-			<xsl:value-of select="." />
+			<xsl:call-template name="pcdata_to_java_string">
+				<xsl:with-param name="text" select="." />
+			</xsl:call-template>
 			<xsl:text>", </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.getAttribute("</xsl:text>
@@ -241,14 +258,59 @@ public class ]]></xsl:text>
 		<xsl:if test="pcdata-example">
 			<xsl:text>
       assertEquals("Incorrect PCDATA value.", "</xsl:text>
-			<xsl:value-of select="pcdata-example/text()" />
+			<xsl:call-template name="pcdata_to_java_string">
+				<xsl:with-param name="text" select="pcdata-example/text()" />
+			</xsl:call-template>
 			<xsl:text>", </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.getText());</xsl:text>
 		</xsl:if>
 		<xsl:apply-templates select="element-example">
 			<xsl:with-param name="parent" select="$elementVariable" />
-			<xsl:with-param name="useParentInVariable" select="'true'" />
 		</xsl:apply-templates>
+	</xsl:template>
+	
+	<!-- Set the input data section in the request -->
+	<xsl:template match="input-data-example//element-example">
+		<xsl:param name="parent" />
+
+		<xsl:variable name="elementVariable">
+			<xsl:choose>
+				<xsl:when test="../../input-data-example">
+					<xsl:value-of select="concat(translate(@name, '-', '_'), position())" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($parent, translate(@name, '-', '_'), position())" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:text>
+      ElementBuilder </xsl:text>
+		<xsl:value-of select="$elementVariable" />
+		<xsl:text> = new ElementBuilder("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>");</xsl:text>
+		<xsl:for-each select="attribute-example">
+			<xsl:text>
+      </xsl:text>
+			<xsl:value-of select="$elementVariable" />
+			<xsl:text>.setAttribute("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>", "</xsl:text>
+			<xsl:call-template name="pcdata_to_java_string">
+				<xsl:with-param name="text" select="." />
+			</xsl:call-template>
+			<xsl:text>");</xsl:text>
+		</xsl:for-each>
+		<xsl:apply-templates select="element-example">
+			<xsl:with-param name="parent" select="$elementVariable" />
+		</xsl:apply-templates>
+		<xsl:text>
+      </xsl:text>
+		<xsl:value-of select="$parent" />
+		<xsl:text>.addChild(</xsl:text>
+		<xsl:value-of select="$elementVariable" />
+		<xsl:text>.createElement());</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
