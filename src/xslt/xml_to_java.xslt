@@ -82,4 +82,21 @@ $Id$
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<!-- Transform a PCDATA text to a Java string. -->	
+	<xsl:template name="pcdata_to_java_string">
+		<xsl:param name="text" />
+		
+		<xsl:variable name="normalized-text">
+			<xsl:call-template name="normalize">
+				<xsl:with-param name="text" select="$text" />
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<xsl:value-of>
+			<xsl:call-template name="xml_to_java_string">
+				<xsl:with-param name="text" select="$normalized-text" />
+			</xsl:call-template>
+		</xsl:value-of>
+	</xsl:template>
 </xsl:stylesheet>
