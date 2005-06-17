@@ -142,7 +142,7 @@
 								<em>
 									<xsl:value-of select="$functionName" />
 								</em>
-								<xsl:text> function on the </xsl:text>
+								<xsl:text> function on </xsl:text>
 								<em>
 									<xsl:value-of select="$environment" />
 								</em>
