@@ -683,7 +683,7 @@ APIs in this project are:
 			<!-- xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/',                      $api)" /-->
 			<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api, $implName2)" />
 			<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api, $implName2)" />
-			<!-- This test is not garanted to work with all XSLT processors. -->
+			<!-- XXX: This test is not guaranteed to work with all XSLT processors. -->
 			<xsl:variable name="logdoc_dir">
 				<xsl:choose>
 					<xsl:when test="document($new_api_file)">
