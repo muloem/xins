@@ -98,6 +98,7 @@
 	<translation entry="3430">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
+	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>
 
 	<translation entry="3520">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Received an HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />. Query string is <value-of-param name="queryString" format="quoted" />.</translation>

@@ -98,6 +98,7 @@
 	<translation entry="3430">Etat invalide lors de l'ajout d'un manageable: <value-of-param name="state" />.</translation>
 
 	<translation entry="3500">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exception attrapée.</translation>
+<!-- FIXME TODO for Anthony --><translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>
 
 	<translation entry="3520">Reçu une requète HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requète <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La chaîne de la requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requète HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. La chaîne de la requête est <value-of-param name="queryString" format="quoted" />.</translation>

@@ -66,7 +66,9 @@ implements DefaultResultCodes {
    throws IllegalArgumentException {
 
       // Check arguments
-      MandatoryArgumentChecker.check("api", api, "name", name, "version", version);
+      MandatoryArgumentChecker.check("api",     api,
+                                     "name",    name,
+                                     "version", version);
 
       // Initialize fields
       _statistics   = new FunctionStatistics();
@@ -235,22 +237,27 @@ implements DefaultResultCodes {
       int callID = assignCallID();
 
       // Check if this function is enabled
-      if (!_enabled) {
-         performedCall(functionRequest, ip, start, callID, DISABLED_FUNCTION_RESULT);
+      if (! _enabled) {
+         performedCall(functionRequest, ip, start, callID,
+                       DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
       // Construct a CallContext object
-      CallContext context = new CallContext(functionRequest, start, this, callID, ip);
+      CallContext context = new CallContext(functionRequest, start, this,
+                                            callID, ip);
 
       FunctionResult result;
       try {
 
+         // Handle the call
          result = handleCall(context);
 
+         // Make sure the result is valid
          InvalidResponseResult invalidResponse = result.checkOutputParameters();
          if (invalidResponse != null) {
             result = invalidResponse;
+            Log.log_3501(functionRequest.getFunctionName(), callID);
          }
 
       } catch (Throwable exception) {

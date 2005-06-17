@@ -427,8 +427,13 @@
 	<group id="runtime" name="Runtime">
 		<entry id="3500" level="NOTICE" exception="true">
 			<description>Exception thrown during function call.</description>
-			<param name="function" nullable="false" />
-			<param name="callID" type="int32" nullable="false" />
+			<param name="function" type="text"  nullable="false" />
+			<param name="callID"   type="int32" nullable="false" />
+		</entry>
+		<entry id="3501" level="ERROR">
+			<description>Function attempted to return invalid response.</description>
+			<param name="function" type="text"  nullable="false" />
+			<param name="callID"   type="int32" nullable="false" />
 		</entry>
 	</group>
 
