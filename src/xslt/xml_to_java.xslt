@@ -93,10 +93,8 @@ $Id$
 			</xsl:call-template>
 		</xsl:variable>
 		
-		<xsl:value-of>
-			<xsl:call-template name="xml_to_java_string">
-				<xsl:with-param name="text" select="$normalized-text" />
-			</xsl:call-template>
-		</xsl:value-of>
+		<xsl:call-template name="xml_to_java_string">
+			<xsl:with-param name="text" select="$normalized-text" />
+		</xsl:call-template>
 	</xsl:template>
 </xsl:stylesheet>
