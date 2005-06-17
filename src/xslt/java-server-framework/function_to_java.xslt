@@ -23,6 +23,7 @@
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
+	<xsl:param name="impl_file"     />
 
 	<!-- Perform includes -->
 	<xsl:include href="../java.xslt" />
@@ -102,7 +103,6 @@ public abstract class ]]></xsl:text>
 			<xsl:text>();</xsl:text>
 		</xsl:for-each>
 		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
-			<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 			<xsl:for-each select="document($impl_file)/impl/instance">
 				<xsl:text>
       </xsl:text>
@@ -147,7 +147,6 @@ public abstract class ]]></xsl:text>
 </xsl:text>
 		</xsl:for-each>
 		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
-			<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 			<xsl:for-each select="document($impl_file)/impl/instance">
 				<xsl:text>
    protected final </xsl:text>

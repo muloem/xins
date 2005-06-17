@@ -19,6 +19,7 @@
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api_file"     />
+	<xsl:param name="impl_file"     />
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
@@ -37,7 +38,6 @@
 
 		<xsl:apply-templates select="impl-java" />
 		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
-			<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>
 			<xsl:apply-templates select="document($impl_file)/impl" />
 		</xsl:if>
 	</xsl:template>
@@ -155,7 +155,7 @@ public class APIImpl extends API {
       super("]]></xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text>");
-		_runtimeProperties = new RuntimeProperties();</xsl:text>
+      _runtimeProperties = new RuntimeProperties();</xsl:text>
 		<xsl:choose>
 			<xsl:when test="instance">
 				<xsl:for-each select="instance">
@@ -246,19 +246,24 @@ public class APIImpl extends API {
 			<xsl:value-of select="@class" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@getter" />
-			<xsl:text>() {&#10;      return </xsl:text>
+			<xsl:text>() {
+      return </xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>;&#10;   }</xsl:text>
+			<xsl:text>;
+   }</xsl:text>
 		</xsl:for-each>
 		<xsl:for-each select="property">
 			<xsl:text>   public </xsl:text>
 			<xsl:value-of select="@class" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@getter" />
-			<xsl:text>() {&#10;      return _</xsl:text>
+			<xsl:text>() {
+      return _</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>;&#10;   }</xsl:text>
+			<xsl:text>;
+   }</xsl:text>
 		</xsl:for-each>
-		<xsl:text>&#10;}</xsl:text>
+		<xsl:text>
+}</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>

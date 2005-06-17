@@ -782,6 +782,19 @@ APIs in this project are:
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 				</dependset>
+				<xsl:variable name="impl_file">
+					<xsl:choose>
+						<xsl:when test="local-name() = 'impl'">
+							<xsl:value-of select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$api_file" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xmlvalidate file="{$impl_file}" warn="false">
+					<xmlcatalog refid="all-dtds" />
+				</xmlvalidate>
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
@@ -796,21 +809,9 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
+					<param name="impl_file"    expression="{$impl_file}"    />
 					<param name="package"      expression="{$package}"      />
 				</style>
-				<xsl:variable name="impl_file">
-					<xsl:choose>
-						<xsl:when test="local-name() = 'impl'">
-							<xsl:value-of select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$api_file" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xmlvalidate file="{$impl_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
 				<style
 				in="{$impl_file}"
 				out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
@@ -843,6 +844,7 @@ APIs in this project are:
 					<param name="package"      expression="{$package}"      />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
+					<param name="impl_file"    expression="{$impl_file}"    />
 				</style>
 				<!-- Generation of the result code files. -->
 				<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
@@ -1425,6 +1427,14 @@ APIs in this project are:
 			<delete dir="build/specdocs/{$api}" />
 			<delete dir="build/types/{$api}" />
 			<delete dir="build/webapps/{$api}" />
+			<xsl:for-each select="impl/@name">
+				<xsl:variable name="impl" select="." />
+				<delete dir="build/classes-api/{$api}-{$impl}" />
+				<delete dir="build/java-fundament/{$api}-{$impl}" />
+				<delete dir="build/javadoc-api/{$api}-{$impl}" />
+				<delete dir="build/logdoc/{$api}-{$impl}" />
+				<delete dir="build/webapps/{$api}-{$impl}" />
+			</xsl:for-each>
 		</target>
 
 		<target name="rebuild-{$api}" depends="clean-{$api}, all-{$api}"
