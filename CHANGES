@@ -7,10 +7,13 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 
 * XINS/Java Common Library:
+  - Added tests for the spec package.
+  - Renamed some functions in spec package.
   - Fixed bug #1215611: Unmappable character for encoding UTF8.
   - The Perl5Matcher objects are no longer static as this class is not
     thread safe.
   - Added the spec package. The methods are not implemented yet.
+
 
 * XINS/Java Server Framework:
   - Added SOAP calling convention.
