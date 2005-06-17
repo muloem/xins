@@ -26,6 +26,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
     server side. Added log entry 3501 for this.
   - Fixed SF.net bug #1222681: Transaction logging logs the API name instead
     of the function name for meta-functions.
+  - Implemented SF.net RFE #1189399: Return lastReset from _GetStatistics.
 
 * XINS/Java Client Framework:
   - Fixed bug #1215589: Parameter name does not match pattern.

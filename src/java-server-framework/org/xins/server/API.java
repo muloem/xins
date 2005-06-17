@@ -123,14 +123,15 @@ implements DefaultResultCodes {
       }
 
       // Initialize fields
-      _name              = name;
-      _startupTimestamp  = System.currentTimeMillis();
-      _manageableObjects = new ArrayList();
-      _functionsByName   = new HashMap();
-      _functionList      = new ArrayList();
-      _resultCodesByName = new HashMap();
-      _resultCodeList    = new ArrayList();
-      _emptyProperties   = new RuntimeProperties();
+      _name                = name;
+      _startupTimestamp    = System.currentTimeMillis();
+      _lastStatisticsReset = _startupTimestamp;
+      _manageableObjects   = new ArrayList();
+      _functionsByName     = new HashMap();
+      _functionList        = new ArrayList();
+      _resultCodesByName   = new HashMap();
+      _resultCodeList      = new ArrayList();
+      _emptyProperties     = new RuntimeProperties();
    }
 
 
@@ -208,6 +209,11 @@ implements DefaultResultCodes {
     * Timestamp indicating when this API instance was created.
     */
    private final long _startupTimestamp;
+
+   /**
+    * Last time the statistics were reset. Initially the startup timestamp.
+    */
+   private long _lastStatisticsReset;
 
    /**
     * Host name for the machine that was used for this build.
@@ -959,8 +965,9 @@ implements DefaultResultCodes {
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
 
-      builder.param("startup", DateConverter.toDateString(_timeZone, _startupTimestamp));
-      builder.param("now",     DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
+      builder.param("startup",   DateConverter.toDateString(_timeZone, _startupTimestamp));
+      builder.param("lastReset", DateConverter.toDateString(_timeZone, _lastStatisticsReset));
+      builder.param("now",       DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
 
       // Currently available processors
       Runtime rt = Runtime.getRuntime();
@@ -1166,6 +1173,10 @@ implements DefaultResultCodes {
     *    the call result, never <code>null</code>.
     */
    private final FunctionResult doResetStatistics() {
+
+      // Remember when we last reset the statistics
+      _lastStatisticsReset = System.currentTimeMillis();
+
       // Function-specific statistics
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
