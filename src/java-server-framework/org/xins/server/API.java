@@ -936,17 +936,40 @@ implements DefaultResultCodes {
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
 
+      // Loop over all functions
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
+
+         // Get some details about the function
          Function function = (Function) _functionList.get(i);
+         String name    = function.getName();
+         String version = function.getVersion();
+         String enabled = function.isEnabled()
+                        ? "true"
+                        : "false";
+
+         // Add an element describing the function
          ElementBuilder functionElem = new ElementBuilder("function");
-         functionElem.setAttribute("name",    function.getName());
-         functionElem.setAttribute("version", function.getVersion());
-         functionElem.setAttribute("enabled", function.isEnabled() ? "true" : "false");
+         functionElem.setAttribute("name",    name   );
+         functionElem.setAttribute("version", version);
+         functionElem.setAttribute("enabled", enabled);
          builder.add(functionElem.createElement());
       }
 
       return builder;
+   }
+
+   /**
+    * Converts the specified timestamp to a date string.
+    *
+    * @param millis
+    *    the timestamp, as a number of milliseconds since the Epoch.
+    *
+    * @return
+    *    the date string, never <code>null</code>.
+    */
+   private final String toDateString(long millis) {
+      return DateConverter.toDateString(_timeZone, millis);
    }
 
    /**
@@ -965,14 +988,15 @@ implements DefaultResultCodes {
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
 
-      builder.param("startup",   DateConverter.toDateString(_timeZone, _startupTimestamp));
-      builder.param("lastReset", DateConverter.toDateString(_timeZone, _lastStatisticsReset));
-      builder.param("now",       DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
+      builder.param("startup",   toDateString(_startupTimestamp));
+      builder.param("lastReset", toDateString(_lastStatisticsReset));
+      builder.param("now",       toDateString(System.currentTimeMillis()));
 
       // Currently available processors
       Runtime rt = Runtime.getRuntime();
       try {
-         builder.param("availableProcessors", String.valueOf(rt.availableProcessors()));
+         builder.param("availableProcessors",
+                       String.valueOf(rt.availableProcessors()));
       } catch (NoSuchMethodError error) {
          // NOTE: Runtime.availableProcessors() is not available in Java 1.3
       }
