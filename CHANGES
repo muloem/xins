@@ -16,6 +16,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
   - Added SOAP calling convention.
   - The Perl5Matcher objects are no longer static as this class is not
     thread safe.
+  - Added Logdoc entry 3003, an error message logged when the doService method
+    throws an exception.
+  - Continued work on RFE #1203640, which pertains to refactoring of the
+    APIServlet class.
 
 * XINS/Java Client Framework:
   - Fixed bug #1215589: Parameter name does not match pattern.
@@ -52,8 +56,8 @@ NOTE: This release is based on XINS 1.2.0.
 * XINS/Java Common Library:
   - Made tests for type classes Date and Timestamp compatible with Java 1.3.
     Previously they used Java 1.4-specific functionality.
-  - Fixed SF.net bug #1201270: the run target works also if the computer is not
-    connected to Internet.
+  - Fixed SF.net bug #1201270, so that the 'run' target now works, even if the
+    computer is not connected to the Internet.
   - Removed trace logs from the code.
   - Fixed bug #1211277: XINS does not work with proxies.
 
@@ -64,7 +68,8 @@ NOTE: This release is based on XINS 1.2.0.
   - Refactored the APIServlet class. The APIServlet is now only a small
     servlet class, that delegates completely to the newly-introduced Engine
     class. The inner class APIServlet.State has been replaced by the
-    EngineState class.
+    EngineState class. This is in the scope of RFE #1203640, which pertains to
+    simplification of the APIServlet class.
   - Fixed bug #1208936: Erroneous non-assignments in XSLTCallingConvention
     class.
 

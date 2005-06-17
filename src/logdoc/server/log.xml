@@ -21,6 +21,9 @@
 		<entry id="3002" level="FATAL" exception="true">
 			<description>Servlet initialization failed.</description>
 		</entry>
+		<entry id="3003" level="FATAL" exception="true">
+			<description>Servlet failed while servicing request.</description>
+		</entry>
 	</group>
 
 	<group id="lifespan" name="Internal lifespan-related">

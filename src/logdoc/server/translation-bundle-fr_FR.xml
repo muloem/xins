@@ -11,6 +11,7 @@
 	<translation entry="3000">Démarrage de l'initialisation de la servlet.</translation>
 	<translation entry="3001">Succès de l'initialisation de la servlet.</translation>
 	<translation entry="3002">L'initialisation de la servlet a échoué.</translation>
+<!-- TODO FIXME for Anthony --><translation entry="3003">Servlet failed while servicing request.</translation>
 
 	<translation entry="3100">Changement de l'état de l'APIServlet de <value-of-param name="oldState" /> à <value-of-param name="newState" />.</translation>
 	<translation entry="3101">Changement de l'état à échoué. L'état <value-of-param name="newState" /> ne peut pas suivre l'état <value-of-param name="oldState" />.</translation>

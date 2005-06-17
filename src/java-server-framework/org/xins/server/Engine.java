@@ -83,89 +83,6 @@ final class Engine extends Object {
    private static final String CLASSNAME = Engine.class.getName();
 
    /**
-    * The <em>INITIAL</em> state.
-    */
-   private static final EngineState INITIAL = new EngineState("INITIAL", false);
-
-   /**
-    * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
-    */
-   private static final EngineState BOOTSTRAPPING_FRAMEWORK =
-      new EngineState("BOOTSTRAPPING_FRAMEWORK", false);
-
-   /**
-    * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
-    */
-   private static final EngineState FRAMEWORK_BOOTSTRAP_FAILED =
-      new EngineState("FRAMEWORK_BOOTSTRAP_FAILED", true);
-
-   /**
-    * The <em>CONSTRUCTING_API</em> state.
-    */
-   private static final EngineState CONSTRUCTING_API =
-      new EngineState("CONSTRUCTING_API", false);
-
-   /**
-    * The <em>API_CONSTRUCTION_FAILED</em> state.
-    */
-   private static final EngineState API_CONSTRUCTION_FAILED =
-      new EngineState("API_CONSTRUCTION_FAILED", true);
-
-   /**
-    * The <em>BOOTSTRAPPING_API</em> state.
-    */
-   private static final EngineState BOOTSTRAPPING_API =
-      new EngineState("BOOTSTRAPPING_API", false);
-
-   /**
-    * The <em>API_BOOTSTRAP_FAILED</em> state.
-    */
-   private static final EngineState API_BOOTSTRAP_FAILED =
-      new EngineState("API_BOOTSTRAP_FAILED", true);
-
-   /**
-    * The <em>DETERMINE_INTERVAL</em> state.
-    */
-   private static final EngineState DETERMINE_INTERVAL =
-      new EngineState("DETERMINE_INTERVAL", false);
-
-   /**
-    * The <em>DETERMINE_INTERVAL_FAILED</em> state.
-    */
-   private static final EngineState DETERMINE_INTERVAL_FAILED =
-      new EngineState("DETERMINE_INTERVAL_FAILED", true);
-
-   /**
-    * The <em>INITIALIZING_API</em> state.
-    */
-   private static final EngineState INITIALIZING_API =
-      new EngineState("INITIALIZING_API", false);
-
-   /**
-    * The <em>API_INITIALIZATION_FAILED</em> state.
-    */
-   private static final EngineState API_INITIALIZATION_FAILED =
-      new EngineState("API_INITIALIZATION_FAILED", true);
-
-   /**
-    * The <em>READY</em> state.
-    */
-   private static final EngineState READY =
-      new EngineState("READY", false);
-
-   /**
-    * The <em>DISPOSING</em> state.
-    */
-   private static final EngineState DISPOSING =
-      new EngineState("DISPOSING", false);
-
-   /**
-    * The <em>DISPOSED</em> state.
-    */
-   private static final EngineState DISPOSED
-      = new EngineState("DISPOSED", false);
-
-   /**
     * The date formatter used for the context identifier.
     */
    private static final SimpleDateFormat DATE_FORMATTER =
@@ -382,8 +299,7 @@ final class Engine extends Object {
 
       final String THIS_METHOD = "<init>(javax.servlet.ServletConfig)";
 
-      _stateLock             = new Object();
-      _state                 = INITIAL;
+      _state                 = new EngineStateMachine();
       _configFileListener    = new ConfigurationFileListener();
       _random                = new Random();
       _runtimePropertiesLock = new Object();
@@ -408,350 +324,343 @@ final class Engine extends Object {
       //                     Checks and preparations                       //
       //-------------------------------------------------------------------//
 
-      // Check preconditions
-      synchronized (_stateLock) {
-         if (_state != INITIAL                 && _state != FRAMEWORK_BOOTSTRAP_FAILED
-          && _state != API_CONSTRUCTION_FAILED && _state != API_BOOTSTRAP_FAILED
-          && _state != API_INITIALIZATION_FAILED) {
-            Log.log_3201(_state == null ? null : _state.getName());
-            throw new ServletException();
-         } else if (config == null) {
-            Log.log_3202("config == null");
-            throw new ServletException();
+      // TODO: Logdoc entry 3201 is never logged anymore. Remote it.
+
+      if (config == null) {
+         Log.log_3202("config == null");
+         throw new ServletException();
+      }
+
+      // Get the ServletContext
+      ServletContext context = config.getServletContext();
+      if (context == null) {
+         Log.log_3202("config.getServletContext() == null");
+         throw new ServletException();
+      }
+
+      // Check the expected vs implemented Java Servlet API version
+      // 2.2, 2.3 and 2.4 are supported
+      int major = context.getMajorVersion();
+      int minor = context.getMinorVersion();
+      if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
+         String expected = "2.2/2.3/2.4";
+         String actual   = "" + major + '.' + minor;
+         Log.log_3203(actual, expected);
+      }
+
+      // Store the ServletConfig object, per the Servlet API Spec, see:
+      // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
+      // TODO: Store this only if the initialization completely succeeded
+      //       and no exception was thrown.
+      _servletConfig = config;
+
+      // Store the localhost hostname for the contextID
+      _hostname = IPAddressUtils.getLocalHost();
+
+      //-------------------------------------------------------------------//
+      //                      Bootstrap framework                          //
+      //-------------------------------------------------------------------//
+
+      // Proceed to first actual stage
+      _state.setState(EngineStateMachine.BOOTSTRAPPING_FRAMEWORK);
+
+      // Determine configuration file location
+      try {
+         _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
+      } catch (SecurityException exception) {
+         Log.log_3230(exception, CONFIG_FILE_SYSTEM_PROPERTY);
+      }
+
+      // If the config file is not set at start-up try to get it from the
+      // web.xml file
+      if (_configFile == null) {
+         Log.log_3231(CONFIG_FILE_SYSTEM_PROPERTY);
+         _configFile = config.getInitParameter(CONFIG_FILE_SYSTEM_PROPERTY);
+      }
+
+      // Property value must be set
+      // NOTE: Don't trim the configuration file name, since it may start
+      //       with a space or other whitespace character.
+      if (_configFile == null || _configFile.length() < 1) {
+         Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
+         _state.setState(EngineStateMachine.FRAMEWORK_BOOTSTRAP_FAILED);
+         throw new ServletException();
+      }
+
+      // Unify the file separator character
+      _configFile = _configFile.replace('/',  File.separatorChar);
+      _configFile = _configFile.replace('\\', File.separatorChar);
+
+      // Initialize the logging subsystem
+      readRuntimeProperties();
+
+      // Log XINS version
+      Log.log_3225(serverVersion);
+
+      // Warn if API build version is more recent than running version
+      if (Library.isProductionRelease(serverVersion)) {
+         String buildVersion = config.getInitParameter(
+            API_BUILD_VERSION_PROPERTY);
+         if (buildVersion == null ||
+               (Library.isProductionRelease(buildVersion)
+                && Library.isMoreRecent(buildVersion))) {
+            Log.log_3229(buildVersion, serverVersion);
          }
-
-         // Get the ServletContext
-         ServletContext context = config.getServletContext();
-         if (context == null) {
-            Log.log_3202("config.getServletContext() == null");
-            throw new ServletException();
-         }
-
-         // Check the expected vs implemented Java Servlet API version
-         // 2.2, 2.3 and 2.4 are supported
-         int major = context.getMajorVersion();
-         int minor = context.getMinorVersion();
-         if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
-            String expected = "2.2/2.3/2.4";
-            String actual   = "" + major + '.' + minor;
-            Log.log_3203(actual, expected);
-         }
-
-         // Store the ServletConfig object, per the Servlet API Spec, see:
-         // http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/Servlet.html#getServletConfig()
-         // TODO: Store this only if the initialization completely succeeded
-         //       and no exception was thrown.
-         _servletConfig = config;
-
-         // Store the localhost hostname for the contextID
-         _hostname = IPAddressUtils.getLocalHost();
-
-         //----------------------------------------------------------------//
-         //                     Bootstrap framework                        //
-         //----------------------------------------------------------------//
-
-         // Proceed to first actual stage
-         setState(BOOTSTRAPPING_FRAMEWORK);
-
-         // Determine configuration file location
-         try {
-            _configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
-         } catch (SecurityException exception) {
-            Log.log_3230(exception, CONFIG_FILE_SYSTEM_PROPERTY);
-         }
-
-         // If the config file is not set at start-up try to get it from the
-         // web.xml file
-         if (_configFile == null) {
-            Log.log_3231(CONFIG_FILE_SYSTEM_PROPERTY);
-            _configFile = config.getInitParameter(
-               CONFIG_FILE_SYSTEM_PROPERTY);
-         }
-
-         // Property value must be set
-         // NOTE: Don't trim the configuration file name, since it may start
-         //       with a space or other whitespace character.
-         if (_configFile == null || _configFile.length() < 1) {
-            Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
-            setState(FRAMEWORK_BOOTSTRAP_FAILED);
-            throw new ServletException();
-         }
-
-         // Unify the file separator character
-         _configFile = _configFile.replace('/',  File.separatorChar);
-         _configFile = _configFile.replace('\\', File.separatorChar);
-
-         // Initialize the logging subsystem
-         readRuntimeProperties();
-
-         // Log XINS version
-         Log.log_3225(serverVersion);
-
-         // Warn if API build version is more recent than running version
-         if (Library.isProductionRelease(serverVersion)) {
-            String buildVersion = config.getInitParameter(
-               API_BUILD_VERSION_PROPERTY);
-            if (buildVersion == null ||
-                  (Library.isProductionRelease(buildVersion)
-                   && Library.isMoreRecent(buildVersion))) {
-               Log.log_3229(buildVersion, serverVersion);
-            }
-         }
+      }
 
 
-         //----------------------------------------------------------------//
-         //                        Construct API                           //
-         //----------------------------------------------------------------//
+      //-------------------------------------------------------------------//
+      //                          Construct API                            //
+      //-------------------------------------------------------------------//
 
-         // Proceed to next stage
-         setState(CONSTRUCTING_API);
+      // Proceed to next stage
+      _state.setState(EngineStateMachine.CONSTRUCTING_API);
 
-         // Determine the API class
-         String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
-         apiClassName = TextUtils.isEmpty(apiClassName)
-                      ? null
-                      : apiClassName.trim();
-         if (apiClassName == null) {
-            Log.log_3206(API_CLASS_PROPERTY);
-            setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
-         }
+      // Determine the API class
+      String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
+      apiClassName = TextUtils.isEmpty(apiClassName)
+                   ? null
+                   : apiClassName.trim();
+      if (apiClassName == null) {
+         Log.log_3206(API_CLASS_PROPERTY);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw new ServletException();
+      }
 
-         // Load the API class
-         Class apiClass;
-         try {
-            apiClass = Class.forName(apiClassName);
-         } catch (Throwable exception) {
-            String detail = "Caught unexpected "
-                          + exception.getClass().getName()
-                          + " while loading class "
-                          + apiClassName
-                          + '.';
-            Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
-            setState(API_CONSTRUCTION_FAILED);
-            throw servletExceptionFor(exception);
-         }
+      // Load the API class
+      Class apiClass;
+      try {
+         apiClass = Class.forName(apiClassName);
+      } catch (Throwable exception) {
+         String detail = "Caught unexpected "
+                       + exception.getClass().getName()
+                       + " while loading class "
+                       + apiClassName
+                       + '.';
+         Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw servletExceptionFor(exception);
+      }
 
-         // Check that the loaded API class is derived from the API base class
-         if (! API.class.isAssignableFrom(apiClass)) {
-            String detail = "Class "
-                          + apiClassName
-                          + " is not derived from "
-                          + API.class.getName()
-                          + '.';
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-            setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
-         }
+      // Check that the loaded API class is derived from the API base class
+      if (! API.class.isAssignableFrom(apiClass)) {
+         String detail = "Class "
+                       + apiClassName
+                       + " is not derived from "
+                       + API.class.getName()
+                       + '.';
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw new ServletException();
+      }
 
-         // Get the SINGLETON field and the value of it
-         Field singletonField;
-         try {
-            singletonField = apiClass.getDeclaredField("SINGLETON");
-            _api = (API) singletonField.get(null);
-         } catch (Throwable exception) {
-            String detail = "Caught unexpected "
-                          + exception.getClass().getName()
-                          + " while retrieving the value of the static field"
-                          + " SINGLETON in class "
-                          + apiClassName
-                          + '.';
-            Utils.logProgrammingError(CLASSNAME,    THIS_METHOD,
-                                      apiClassName, "SINGLETON",
-                                      detail,       exception);
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-            setState(API_CONSTRUCTION_FAILED);
-            throw servletExceptionFor(exception);
-         }
+      // Get the SINGLETON field and the value of it
+      Field singletonField;
+      try {
+         singletonField = apiClass.getDeclaredField("SINGLETON");
+         _api = (API) singletonField.get(null);
+      } catch (Throwable exception) {
+         String detail = "Caught unexpected "
+                       + exception.getClass().getName()
+                       + " while retrieving the value of the static field"
+                       + " SINGLETON in class "
+                       + apiClassName
+                       + '.';
+         Utils.logProgrammingError(CLASSNAME,    THIS_METHOD,
+                                   apiClassName, "SINGLETON",
+                                   detail,       exception);
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw servletExceptionFor(exception);
+      }
 
-         // Make sure that the value of the field is not null
-         if (_api == null) {
-            String detail = "Value of static field SINGLETON in class "
-                          + apiClassName
-                          + " is null.";
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-            setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
-         }
+      // Make sure that the value of the field is not null
+      if (_api == null) {
+         String detail = "Value of static field SINGLETON in class "
+                       + apiClassName
+                       + " is null.";
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw new ServletException();
+      }
 
-         // Make sure that the value of the field is an instance of that class
-         if (_api.getClass() != apiClass) {
-            String detail = "Value of static field SINGLETON in class "
-                          + apiClassName
-                          + " is not an instance of that class.";
-            Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-            setState(API_CONSTRUCTION_FAILED);
-            throw new ServletException();
-         }
+      // Make sure that the value of the field is an instance of that class
+      if (_api.getClass() != apiClass) {
+         String detail = "Value of static field SINGLETON in class "
+                       + apiClassName
+                       + " is not an instance of that class.";
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         throw new ServletException();
+      }
 
 
-         //----------------------------------------------------------------//
-         //                        Bootstrap API                           //
-         //----------------------------------------------------------------//
+      //-------------------------------------------------------------------//
+      //                          Bootstrap API                            //
+      //-------------------------------------------------------------------//
 
-         // Proceed to next stage
-         setState(BOOTSTRAPPING_API);
+      // Proceed to next stage
+      _state.setState(EngineStateMachine.BOOTSTRAPPING_API);
 
-         // Determine the name of the API
-         String apiName = config.getInitParameter(API_NAME_PROPERTY);
-         if (TextUtils.isEmpty(apiName)) {
-            Log.log_3232(API_NAME_PROPERTY);
-            apiName = "-";
+      // Determine the name of the API
+      String apiName = config.getInitParameter(API_NAME_PROPERTY);
+      if (TextUtils.isEmpty(apiName)) {
+         Log.log_3232(API_NAME_PROPERTY);
+         apiName = "-";
 /* TODO for XINS 2.0.0: Fail if API name is not set.
-            Log.log_3209(API_NAME_PROPERTY);
-            setState(API_BOOTSTRAP_FAILED);
-            throw new ServletException();
+         Log.log_3209(API_NAME_PROPERTY);
+         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         throw new ServletException();
 */
+      } else {
+         apiName = apiName.trim();
+      }
+      Log.log_3235(apiName);
+      _apiName = apiName;
+
+      // Determine the name of the Log class
+      String classPrefix;
+      int lastDot = apiClassName.lastIndexOf('.');
+      if (lastDot < 0) {
+         classPrefix = "";
+      } else {
+         classPrefix = apiClassName.substring(0, lastDot + 1);
+      }
+      String logdocClassName = classPrefix + "Log";
+
+      // Load the Logdoc if available
+      try {
+
+         // Attempt to load the Logdoc 'Log' class. This should execute the
+         // static initializer, which is what we want.
+         Class logdocClass = Class.forName(logdocClassName);
+
+         // Is the loaded class really a Logdoc 'Log' class or just some
+         // other class that is coincedentally called 'Log' ?
+         if (AbstractLog.class.isAssignableFrom(logdocClass)) {
+            // The API indeed uses Logdoc logging
+            Log.log_3233();
          } else {
-            apiName = apiName.trim();
-         }
-         Log.log_3235(apiName);
-         _apiName = apiName;
-
-         // Determine the name of the Log class
-         String classPrefix;
-         int lastDot = apiClassName.lastIndexOf('.');
-         if (lastDot < 0) {
-            classPrefix = "";
-         } else {
-            classPrefix = apiClassName.substring(0, lastDot + 1);
-         }
-         String logdocClassName = classPrefix + "Log";
-
-         // Load the Logdoc if available
-         try {
-
-            // Attempt to load the Logdoc 'Log' class. This should execute the
-            // static initializer, which is what we want.
-            Class logdocClass = Class.forName(logdocClassName);
-
-            // Is the loaded class really a Logdoc 'Log' class or just some
-            // other class that is coincedentally called 'Log' ?
-            if (AbstractLog.class.isAssignableFrom(logdocClass)) {
-               // The API indeed uses Logdoc logging
-               Log.log_3233();
-            } else {
-               // The API does not use Logdoc logging
-               Log.log_3234();
-            }
-
-         // There is no 'Log' class in the API package
-         } catch (ClassNotFoundException cnfe) {
+            // The API does not use Logdoc logging
             Log.log_3234();
-
-         // The locale is not supported
-         } catch (UnsupportedLocaleError exception) {
-            Log.log_3309(exception.getLocale());
-            setState(API_BOOTSTRAP_FAILED);
-            throw servletExceptionFor(exception);
-
-         // Other unexpected exception
-         } catch (Throwable exception) {
-            Utils.logProgrammingError(
-               CLASSNAME,             THIS_METHOD,
-               Class.class.getName(), "forName(java.lang.String)",
-               "Unexpected exception while loading Logdoc Log class for API.",
-               exception);
          }
 
-         // Bootstrap the API self
-         Throwable caught;
-         try {
-            _api.bootstrap(new ServletConfigPropertyReader(config));
-            caught = null;
+      // There is no 'Log' class in the API package
+      } catch (ClassNotFoundException cnfe) {
+         Log.log_3234();
 
-         // Missing required property
-         } catch (MissingRequiredPropertyException exception) {
-            Log.log_3209(exception.getPropertyName());
-            caught = exception;
+      // The locale is not supported
+      } catch (UnsupportedLocaleError exception) {
+         Log.log_3309(exception.getLocale());
+         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         throw servletExceptionFor(exception);
 
-         // Invalid property value
-         } catch (InvalidPropertyValueException exception) {
-            Log.log_3210(exception.getPropertyName(),
-                         exception.getPropertyValue(),
-                         exception.getReason());
-            caught = exception;
+      // Other unexpected exception
+      } catch (Throwable exception) {
+         Utils.logProgrammingError(
+            CLASSNAME,             THIS_METHOD,
+            Class.class.getName(), "forName(java.lang.String)",
+            "Unexpected exception while loading Logdoc Log class for API.",
+            exception);
+      }
 
-         // Other bootstrap error
-         } catch (Throwable exception) {
-            Log.log_3211(exception);
-            caught = exception;
-         }
+      // Bootstrap the API self
+      Throwable caught;
+      try {
+         _api.bootstrap(new ServletConfigPropertyReader(config));
+         caught = null;
 
-         // Determine the default calling convention
-         try {
-            _defaultCallingConvention = config.getInitParameter(
-               API_CALLING_CONVENTION_PROPERTY);
-            if (! TextUtils.isEmpty(_defaultCallingConvention)) {
-               _callingConvention = createCallingConvention(
-                  _defaultCallingConvention);
-               if (_callingConvention == null) {
-                  Log.log_3210(API_CALLING_CONVENTION_PROPERTY,
-                               _defaultCallingConvention,
-                               "No such calling convention.");
-                  setState(API_BOOTSTRAP_FAILED);
-                  throw new ServletException();
-               }
-               // TODO: Log that we use the specified calling convention
-            } else {
-               // TODO: Use shared StandardCallingConvention instance
-               _defaultCallingConvention = "_xins-std";
-               _callingConvention = new StandardCallingConvention();
-               _callingConvention.bootstrap(new ServletConfigPropertyReader(_servletConfig));
-               // TODO: Log that we use the default calling convention
+      // Missing required property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3209(exception.getPropertyName());
+         caught = exception;
+
+      // Invalid property value
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3210(exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+         caught = exception;
+
+      // Other bootstrap error
+      } catch (Throwable exception) {
+         Log.log_3211(exception);
+         caught = exception;
+      }
+
+      // Determine the default calling convention
+      try {
+         _defaultCallingConvention = config.getInitParameter(
+            API_CALLING_CONVENTION_PROPERTY);
+         if (! TextUtils.isEmpty(_defaultCallingConvention)) {
+            _callingConvention = createCallingConvention(
+               _defaultCallingConvention);
+            if (_callingConvention == null) {
+               Log.log_3210(API_CALLING_CONVENTION_PROPERTY,
+                            _defaultCallingConvention,
+                            "No such calling convention.");
+               _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+               throw new ServletException();
             }
-         } catch (Throwable exception) {
-            // TODO: Log
-            caught = exception;
+            // TODO: Log that we use the specified calling convention
+         } else {
+            // TODO: Use shared StandardCallingConvention instance
+            _defaultCallingConvention = "_xins-std";
+            _callingConvention = new StandardCallingConvention();
+            _callingConvention.bootstrap(new ServletConfigPropertyReader(_servletConfig));
+            // TODO: Log that we use the default calling convention
          }
+      } catch (Throwable exception) {
+         // TODO: Log
+         caught = exception;
+      }
 
-         // Throw a ServletException if the bootstrap failed
-         if (caught != null) {
-            setState(API_BOOTSTRAP_FAILED);
-            ServletException se = new ServletException("API bootstrap failed.");
-            ExceptionUtils.setCause(se, caught);
-            throw se;
-         }
+      // Throw a ServletException if the bootstrap failed
+      if (caught != null) {
+         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         ServletException se = new ServletException("API bootstrap failed.");
+         ExceptionUtils.setCause(se, caught);
+         throw se;
+      }
 
-         // Make the API have a link to this Engine
-         _api.setEngine(this);
-
-
-         //----------------------------------------------------------------//
-         //                Determine config file reload interval           //
-         //----------------------------------------------------------------//
-
-         int interval;
-         boolean intervalParsed;
-         try {
-            interval = determineConfigReloadInterval();
-            intervalParsed = true;
-         } catch (InvalidPropertyValueException exception) {
-            intervalParsed = false;
-            interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
-         }
+      // Make the API have a link to this Engine
+      _api.setEngine(this);
 
 
-         //----------------------------------------------------------------//
-         //                      Initialize the API                        //
-         //----------------------------------------------------------------//
+      //-------------------------------------------------------------------//
+      //                 Determine config file reload interval             //
+      //-------------------------------------------------------------------//
 
-         if (intervalParsed) {
-            initAPI();
-         }
+      int interval;
+      boolean intervalParsed;
+      try {
+         interval = determineConfigReloadInterval();
+         intervalParsed = true;
+      } catch (InvalidPropertyValueException exception) {
+         intervalParsed = false;
+         interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
+      }
 
 
-         //----------------------------------------------------------------//
-         //                      Watch the config file                     //
-         //----------------------------------------------------------------//
+      //-------------------------------------------------------------------//
+      //                        Initialize the API                         //
+      //-------------------------------------------------------------------//
 
-         // Create and start a file watch thread
-         if (interval > 0) {
-            _configFileWatcher = new FileWatcher(_configFile,
-                                                 interval,
-                                                 _configFileListener);
-            _configFileWatcher.start();
-         }
+      if (intervalParsed) {
+         initAPI();
+      }
+
+
+      //-------------------------------------------------------------------//
+      //                       Watch the config file                       //
+      //-------------------------------------------------------------------//
+
+      // Create and start a file watch thread
+      if (interval > 0) {
+         _configFileWatcher = new FileWatcher(_configFile,
+                                              interval,
+                                              _configFileListener);
+         _configFileWatcher.start();
       }
 
       // TODO: TRACE: Leave constructor ?
@@ -768,15 +677,9 @@ final class Engine extends Object {
    private ServletConfig _servletConfig;
 
    /**
-    * Lock for the <code>_state</code> field. This object must be locked on
-    * before _state may be read or changed.
+    * The state machine for this engine. Never <code>null</code>.
     */
-   private final Object _stateLock;
-
-   /**
-    * The current state.
-    */
-   private EngineState _state;
+   private final EngineStateMachine _state;
 
    /**
     * The listener that is notified when the configuration file changes. Only
@@ -896,158 +799,6 @@ final class Engine extends Object {
    }
 
    /**
-    * Gets the current state. This method first synchronizes on
-    * {@link #_stateLock} and then returns the value of {@link #_state}.
-    *
-    * @return
-    *    the current state, cannot be <code>null</code>.
-    */
-   private EngineState getState() {
-      synchronized (_stateLock) {
-         return _state;
-      }
-   }
-
-   /**
-    * Changes the current state. This method first synchronizes on
-    * {@link #_stateLock} and then sets the value of {@link #_state}.
-    *
-    * <p>If the state change is considered invalid, then an
-    * {@link IllegalStateException} is thrown.
-    *
-    * @param newState
-    *    the new state, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>newState == null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the state change is considered invalid.
-    */
-   private void setState(EngineState newState)
-   throws IllegalArgumentException, IllegalStateException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("newState", newState);
-
-      synchronized (_stateLock) {
-
-         // Remember the current state
-         EngineState oldState = _state;
-
-         // Determine name of current and new state
-         String oldStateName = (oldState == null)
-                             ? null
-                             : oldState.getName();
-         String newStateName = newState.getName();
-
-         // Short-circuit if the current equals the new state
-         if (oldState == newState) {
-            return;
-
-         // Always allow changing state to DISPOSING
-         } else if (oldState != DISPOSING && newState == DISPOSING) {
-
-         // The first state change should be to bootstrap the framework
-         } else if (oldState == INITIAL
-                 && newState == BOOTSTRAPPING_FRAMEWORK) {
-
-         // Bootstrapping the framework may fail
-         } else if (oldState == BOOTSTRAPPING_FRAMEWORK
-                 && newState == FRAMEWORK_BOOTSTRAP_FAILED) {
-
-         // Bootstrapping the framework can be retried
-         } else if (oldState == FRAMEWORK_BOOTSTRAP_FAILED
-                 && newState == BOOTSTRAPPING_FRAMEWORK) {
-
-         // Bootstrapping the framework may succeed, in which case the API
-         // will be constructed
-         } else if (oldState == BOOTSTRAPPING_FRAMEWORK
-                 && newState == CONSTRUCTING_API) {
-
-         // Construction of API may fail
-         } else if (oldState == CONSTRUCTING_API
-                 && newState == API_CONSTRUCTION_FAILED) {
-
-         // API construction can be retried
-         } else if (oldState == API_CONSTRUCTION_FAILED
-                 && newState == CONSTRUCTING_API) {
-
-         // Construction of API may succeed, in which case the API is
-         // bootstrapped
-         } else if (oldState == CONSTRUCTING_API
-                 && newState == BOOTSTRAPPING_API) {
-
-         // Bootstrapping the API may fail
-         } else if (oldState == BOOTSTRAPPING_API
-                 && newState == API_BOOTSTRAP_FAILED) {
-
-         // Bootstrapping the API can be retried
-         } else if (oldState == API_BOOTSTRAP_FAILED
-                 && newState == BOOTSTRAPPING_API) {
-
-         // If bootstrapping the API succeeds, then the next step is to
-         // determine the watch interval
-         } else if (oldState == BOOTSTRAPPING_API
-                 && newState == DETERMINE_INTERVAL) {
-
-         // Determination of the watch interval may change
-         } else if (oldState == DETERMINE_INTERVAL
-                 && newState == DETERMINE_INTERVAL_FAILED) {
-
-         // Determination of the watch interval may be retried
-         } else if (oldState == DETERMINE_INTERVAL_FAILED
-                 && newState == DETERMINE_INTERVAL) {
-
-         // If determination of the watch interval succeeds, then the next
-         // step is to initialize the API
-         } else if (oldState == DETERMINE_INTERVAL
-                 && newState == INITIALIZING_API) {
-
-         // API initialization may fail
-         } else if (oldState == INITIALIZING_API
-                 && newState == API_INITIALIZATION_FAILED) {
-
-         // API initialization may be retried, but then the interval is
-         // determined first
-         } else if (oldState == API_INITIALIZATION_FAILED
-                 && newState == DETERMINE_INTERVAL) {
-
-         // API initialization may succeed, in which case the engine is ready
-         } else if (oldState == INITIALIZING_API
-                 && newState == READY) {
-
-         // While the servet is ready, the watch interval may be redetermined,
-         // which is the first step in reinitialization
-         } else if (oldState == READY
-                 && newState == DETERMINE_INTERVAL) {
-
-         // After disposal the state changes to the final disposed state
-         } else if (oldState == DISPOSING
-                 && newState == DISPOSED) {
-
-         // Otherwise the state change is not allowed, fail!
-         } else {
-
-            // Log error
-            Log.log_3101(oldStateName, newStateName);
-
-            // Throw exception
-            String error = "The state "
-                         + oldStateName
-                         + " cannot be followed by the state "
-                         + newStateName
-                         + '.';
-            throw new IllegalStateException(error);
-         }
-
-         // Perform the state change
-         _state = newState;
-         Log.log_3100(oldStateName, newStateName);
-      }
-   }
-
-   /**
     * Determines the interval for checking the runtime properties file for
     * modifications.
     *
@@ -1061,7 +812,7 @@ final class Engine extends Object {
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
-      setState(DETERMINE_INTERVAL);
+      _state.setState(EngineStateMachine.DETERMINE_INTERVAL);
 
       // Get the runtime property
       String s = _runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -1073,7 +824,7 @@ final class Engine extends Object {
             interval = Integer.parseInt(s);
             if (interval < 0) {
                Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               setState(DETERMINE_INTERVAL_FAILED);
+               _state.setState(EngineStateMachine.DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(
                   CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
@@ -1081,7 +832,7 @@ final class Engine extends Object {
             }
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            setState(DETERMINE_INTERVAL_FAILED);
+            _state.setState(EngineStateMachine.DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(
                CONFIG_RELOAD_INTERVAL_PROPERTY, s,
                "Not a 32-bit integer number.");
@@ -1101,7 +852,7 @@ final class Engine extends Object {
     */
    void initAPI() {
 
-      setState(INITIALIZING_API);
+      _state.setState(EngineStateMachine.INITIALIZING_API);
 
       synchronized (_runtimePropertiesLock) {
 
@@ -1125,7 +876,7 @@ final class Engine extends Object {
                   Log.log_3307(currentLocale, newLocale);
                } catch (UnsupportedLocaleException exception) {
                   Log.log_3308(currentLocale, newLocale);
-                  setState(API_INITIALIZATION_FAILED);
+                  _state.setState(EngineStateMachine.API_INITIALIZATION_FAILED);
                   return;
                }
             }
@@ -1154,10 +905,10 @@ final class Engine extends Object {
          } finally {
 
             if (succeeded) {
-               setState(READY);
+               _state.setState(EngineStateMachine.READY);
                Log.log_3415();
             } else {
-               setState(API_INITIALIZATION_FAILED);
+               _state.setState(EngineStateMachine.API_INITIALIZATION_FAILED);
             }
          }
       }
@@ -1289,6 +1040,10 @@ final class Engine extends Object {
       try {
          doService(request, response);
 
+      // Catch and log all exceptions
+      } catch (Throwable exception) {
+         Log.log_3003(exception);
+
       // And disassociate the context ID from this thread
       } finally {
          NDC.pop();
@@ -1356,13 +1111,11 @@ final class Engine extends Object {
       }
       Log.log_3521(ip, method, queryString);
 
-
       // Determine the calling convention. If an existing calling convention
       // is specified in the request, then use that, otherwise use the calling
       // convention stored in the field.
       String ccParam = (String) request.getParameter(
          CALLING_CONVENTION_PARAMETER);
-
       CallingConvention callingConvention = null;
       if (ccParam != null && !ccParam.equals(_defaultCallingConvention)) {
          try {
@@ -1372,7 +1125,7 @@ final class Engine extends Object {
             }
          } catch (Exception ex) {
 
-            // the calling convention could not be created or initialized
+            // The calling convention could not be created or initialized
             Log.log_3560(ex, ccParam);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -1386,8 +1139,8 @@ final class Engine extends Object {
 
       // Call the API if the state is READY
       FunctionResult result;
-      EngineState state = getState();
-      if (state == READY) {
+      EngineState state = _state.getState();
+      if (state == EngineStateMachine.READY) {
 
          String subjectClass  = callingConvention.getClass().getName();
          String subjectMethod = "convertRequest("
@@ -1442,11 +1195,11 @@ final class Engine extends Object {
          }
 
       // Otherwise return an appropriate 50x HTTP response code
-      } else if (state == INITIAL
-              || state == BOOTSTRAPPING_FRAMEWORK
-              || state == CONSTRUCTING_API
-              || state == BOOTSTRAPPING_API
-              || state == INITIALIZING_API) {
+      } else if (state == EngineStateMachine.INITIAL
+              || state == EngineStateMachine.BOOTSTRAPPING_FRAMEWORK
+              || state == EngineStateMachine.CONSTRUCTING_API
+              || state == EngineStateMachine.BOOTSTRAPPING_API
+              || state == EngineStateMachine.INITIALIZING_API) {
          response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
          return;
       } else {
@@ -1579,7 +1332,7 @@ final class Engine extends Object {
       Log.log_3600();
 
       // Set the state temporarily to DISPOSING
-      setState(DISPOSING);
+      _state.setState(EngineStateMachine.DISPOSING);
 
       // Destroy the API
       if (_api != null) {
@@ -1591,7 +1344,7 @@ final class Engine extends Object {
       }
 
       // Set the state to DISPOSED
-      setState(DISPOSED);
+      _state.setState(EngineStateMachine.DISPOSED);
 
       Log.log_3602();
    }
