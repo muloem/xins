@@ -13,33 +13,33 @@ package org.xins.common.spec;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class Function {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of Function
     */
    public Function() {
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Gets the name of the function.
     *
@@ -47,11 +47,11 @@ public class Function {
     *    The name of the function, never <code>null</code>.
     */
    public String getName() {
-      
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the description of the function.
     *
@@ -59,7 +59,7 @@ public class Function {
     *    The description of the function, never <code>null</code>.
     */
    public String getDescription() {
-      
+
       // TODO implement this function
       return null;
    }
@@ -71,11 +71,11 @@ public class Function {
     *    The input parameters, never <code>null</code>.
     */
    public Parameter[] getInputParameters() {
-      
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the output parameter specifications defined in the function.
     *
@@ -83,11 +83,11 @@ public class Function {
     *    The output parameters, never <code>null</code>.
     */
    public Parameter[] getOutputParameters() {
-      
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the error code specifications defined in the function.
     * The standard error code are not included.
@@ -96,35 +96,35 @@ public class Function {
     *    The error code specifications, never <code>null</code>.
     */
    public ErrorCode[] getErrorCodes() {
-      
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the specification of the elements of the input data section.
     *
     * @return
-    *   The specification of the input data section, never <code>null</code>.
+    *   The input data section elements, never <code>null</code>.
     */
-   public DataSectionElement[] getInputDataSection() {
-      
+   public DataSectionElement[] getInputDataSectionElements() {
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the specification of the elements of the output data section.
     *
     * @return
-    *   The specification of the output data section, never <code>null</code>.
+    *   The output data section elements, never <code>null</code>.
     */
-   public DataSectionElement[] getOutputDataSection() {
-      
+   public DataSectionElement[] getOutputDataSectionElements() {
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the input param combo specifications.
     *
@@ -132,11 +132,11 @@ public class Function {
     *    The specification of the input param combos, never <code>null</code>.
     */
    public ParamCombo[] getInputParamCombos() {
-      
+
       // TODO implement this function
       return null;
    }
-   
+
    /**
     * Gets the output param combo specifications.
     *
@@ -144,7 +144,7 @@ public class Function {
     *    The specification of the output param combos, never <code>null</code>.
     */
    public ParamCombo[] getOutputParamCombos() {
-      
+
       // TODO implement this function
       return null;
    }
