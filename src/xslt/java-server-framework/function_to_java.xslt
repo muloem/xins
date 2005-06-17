@@ -265,10 +265,10 @@ public abstract class ]]></xsl:text>
     * exception. All exceptions will be handled by the caller.
     *
     * @param request
-    *    the container that contains the input values, never <code>null</code>.
+    *    the request, never <code>null</code>.
     *
-    * @return Result
-    *    the result of your function, cannot be <code>null</code>.
+    * @return
+    *    the result of the function call, should never be <code>null</code>.
     *
     * @throws Throwable
     *    if anything went wrong.

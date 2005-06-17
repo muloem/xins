@@ -91,7 +91,7 @@ public class ]]></xsl:text>
     */
    public ]]></xsl:text>
 		<xsl:value-of select="@name" />
-		<xsl:text>Impl(APIImpl api) {
+		<xsl:text><![CDATA[Impl(APIImpl api) {
       super(api);
    }
 
@@ -104,7 +104,20 @@ public class ]]></xsl:text>
    // Methods
    //-------------------------------------------------------------------------
 
-   public final Result call(Request request) throws Throwable {</xsl:text>
+   /**
+    * Calls this function. If the function fails, it may throw any kind of
+    * exception. All exceptions will be handled by the caller.
+    *
+    * @param request
+    *    the request, never <code>null</code>.
+    *
+    * @return
+    *    the result of the function call, should never be <code>null</code>.
+    *
+    * @throws Throwable
+    *    if anything went wrong.
+    */
+   public final Result call(Request request) throws Throwable {]]></xsl:text>
 		<xsl:call-template name="callcontent" />
 		<xsl:text>
    }</xsl:text>
