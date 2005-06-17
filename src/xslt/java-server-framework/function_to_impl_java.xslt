@@ -62,7 +62,7 @@ package ]]></xsl:text>
 				</xsl:choose>
 		<xsl:text><![CDATA[
  */
-public class ]]></xsl:text>
+public final class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>Impl extends </xsl:text>
 		<xsl:value-of select="@name" />
@@ -117,7 +117,7 @@ public class ]]></xsl:text>
     * @throws Throwable
     *    if anything went wrong.
     */
-   public final Result call(Request request) throws Throwable {]]></xsl:text>
+   public Result call(Request request) throws Throwable {]]></xsl:text>
 		<xsl:call-template name="callcontent" />
 		<xsl:text>
    }</xsl:text>
