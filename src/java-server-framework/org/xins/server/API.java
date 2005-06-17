@@ -895,8 +895,9 @@ implements DefaultResultCodes {
          LogdocSerializable outParams = new FormattedParameters(result.getParameters());
 
          // Log transaction before returning the result
-         Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);
-         Log.log_3541(serStart, ip, _name, duration, code);
+         Log.log_3540(serStart, ip, functionName, duration, code, inParams,
+                      outParams);
+         Log.log_3541(serStart, ip, functionName, duration, code);
 
          return result;
       }
