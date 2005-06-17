@@ -57,8 +57,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
   - Added wsdl-<api> targets that generated the WSDL file for the given API.
   - Added target that creates the Windows installer.
 
-* The debug and profile targets in the NetBeans build script do not require
-  Jetty anymore.
+* Other:
+  - The debug and profile targets in the NetBeans build script do not require
+    Jetty anymore.
+  - Implemented RFE #1189407. All XSLT files that transform a resultcode XML
+    file now warn if the name differs from the value.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 1:

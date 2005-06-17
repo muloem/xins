@@ -41,6 +41,18 @@
 
 		<xsl:variable name="resultcode_name" select="@name" />
 
+        <!-- Warn if name differs from value -->
+        <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
+            <xsl:message terminate="no">
+				<xsl:text>.
+ *-*-* WARNING : Errorcode name ('</xsl:text>
+                <xsl:value-of select="@name" />
+                <xsl:text>') differs from value ('</xsl:text>
+                <xsl:value-of select="@value" />
+                <xsl:text>'). This may cause confusion and errors.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>

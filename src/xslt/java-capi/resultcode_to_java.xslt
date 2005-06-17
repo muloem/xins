@@ -28,10 +28,23 @@
 	<xsl:include href="../java.xslt"  />
 	<xsl:include href="../types.xslt"  />
 
+    <!-- Handle the <resultcode/> element -->
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode" select="@name" />
 		<xsl:variable name="className" select="concat($resultcode, 'Exception')" />
+
+        <!-- Warn if name differs from value -->
+        <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
+            <xsl:message terminate="no">
+				<xsl:text>.
+ *-*-* WARNING : Errorcode name ('</xsl:text>
+                <xsl:value-of select="@name" />
+                <xsl:text>') differs from value ('</xsl:text>
+                <xsl:value-of select="@value" />
+                <xsl:text>'). This may cause confusion and errors.</xsl:text>
+            </xsl:message>
+        </xsl:if>
 
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
@@ -109,6 +122,5 @@ public final class ]]></xsl:text>
    //-------------------------------------------------------------------------
 }
 </xsl:text>
-
 	</xsl:template>
 </xsl:stylesheet>
