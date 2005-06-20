@@ -6,19 +6,11 @@
  */
 package org.xins.tests.common.spec;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.xins.common.spec.API;
-import org.xins.common.spec.DataSectionElement;
-import org.xins.common.spec.ErrorCode;
 import org.xins.common.spec.Function;
-import org.xins.common.spec.ParamCombo;
 import org.xins.common.spec.Parameter;
-import org.xins.common.types.Type;
 import org.xins.common.types.standard.Text;
 
 /**
@@ -121,7 +113,8 @@ public class ParameterTests extends TestCase {
             assertEquals("TextList", userDefinedParameter.getType().getName());
             assertFalse(userDefinedParameter.isRequired());
          }else {
-            fail();
+            fail("Contains a parameter: " + userDefinedParameter.getName() 
+               + " which should not be there.");
          }
 
       }

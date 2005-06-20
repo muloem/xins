@@ -6,19 +6,11 @@
  */
 package org.xins.tests.common.spec;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.xins.common.spec.API;
 import org.xins.common.spec.DataSectionElement;
-import org.xins.common.spec.ErrorCode;
-import org.xins.common.spec.Function;
-import org.xins.common.spec.ParamCombo;
 import org.xins.common.spec.Parameter;
-import org.xins.common.types.Type;
 import org.xins.common.types.standard.Int32;
 import org.xins.common.types.standard.Int64;
 import org.xins.common.types.standard.Text;
@@ -131,7 +123,7 @@ public class DataSectionElementTests extends TestCase {
             assertFalse(attribute.isRequired());
             assertTrue(attribute.getType() instanceof Int32);
          } else {
-            fail();
+            fail("Contains an attribute " + attribute.getName() + " which should not be there.");
          }
       }
    }
