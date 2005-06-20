@@ -66,6 +66,13 @@ public class AllTests extends TestSuite {
 
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
 
+      suite.addTestSuite(org.xins.tests.common.spec.APITests.class);
+      suite.addTestSuite(org.xins.tests.common.spec.DataSectionElementTests.class);
+      suite.addTestSuite(org.xins.tests.common.spec.ErrorCodeTests.class);
+      suite.addTestSuite(org.xins.tests.common.spec.FunctionTests.class);
+      suite.addTestSuite(org.xins.tests.common.spec.ParamComboTests.class);
+      suite.addTestSuite(org.xins.tests.common.spec.ParameterTests.class);
+      
       suite.addTestSuite(org.xins.tests.common.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.service.TargetDescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.service.GroupDescriptorTests.class);
@@ -108,6 +115,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
+      
 
       // XXX: Perform just a single test
       // suite.addTestSuite(org.xins.tests.client.InvalidRequestTests.class);
