@@ -165,7 +165,7 @@ public abstract class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext context)
-   throws Throwable {</xsl:text>
+   throws java.lang.Exception {</xsl:text>
 
 		<!-- ************************************************************* -->
 		<!-- Retrieve input parameters                                     -->
@@ -270,10 +270,11 @@ public abstract class ]]></xsl:text>
     * @return
     *    the result of the function call, should never be <code>null</code>.
     *
-    * @throws Throwable
+    * @throws java.lang.Exception
     *    if anything went wrong.
     */
-   public abstract Result call(Request request) throws Throwable;
+   public abstract Result call(Request request)
+   throws java.lang.Exception;
 
 
    //-------------------------------------------------------------------------
