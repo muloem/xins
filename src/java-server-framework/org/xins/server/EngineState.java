@@ -20,6 +20,90 @@ final class EngineState extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The <em>INITIAL</em> state.
+    */
+   static final EngineState INITIAL = new EngineState("INITIAL", false);
+
+   /**
+    * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
+    */
+   static final EngineState BOOTSTRAPPING_FRAMEWORK =
+      new EngineState("BOOTSTRAPPING_FRAMEWORK", false);
+
+   /**
+    * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
+    */
+   static final EngineState FRAMEWORK_BOOTSTRAP_FAILED =
+      new EngineState("FRAMEWORK_BOOTSTRAP_FAILED", true);
+
+   /**
+    * The <em>CONSTRUCTING_API</em> state.
+    */
+   static final EngineState CONSTRUCTING_API =
+      new EngineState("CONSTRUCTING_API", false);
+
+   /**
+    * The <em>API_CONSTRUCTION_FAILED</em> state.
+    */
+   static final EngineState API_CONSTRUCTION_FAILED =
+      new EngineState("API_CONSTRUCTION_FAILED", true);
+
+   /**
+    * The <em>BOOTSTRAPPING_API</em> state.
+    */
+   static final EngineState BOOTSTRAPPING_API =
+      new EngineState("BOOTSTRAPPING_API", false);
+
+   /**
+    * The <em>API_BOOTSTRAP_FAILED</em> state.
+    */
+   static final EngineState API_BOOTSTRAP_FAILED =
+      new EngineState("API_BOOTSTRAP_FAILED", true);
+
+   /**
+    * The <em>DETERMINE_INTERVAL</em> state.
+    */
+   static final EngineState DETERMINE_INTERVAL =
+      new EngineState("DETERMINE_INTERVAL", false);
+
+   /**
+    * The <em>DETERMINE_INTERVAL_FAILED</em> state.
+    */
+   static final EngineState DETERMINE_INTERVAL_FAILED =
+      new EngineState("DETERMINE_INTERVAL_FAILED", true);
+
+   /**
+    * The <em>INITIALIZING_API</em> state.
+    */
+   static final EngineState INITIALIZING_API =
+      new EngineState("INITIALIZING_API", false);
+
+   /**
+    * The <em>API_INITIALIZATION_FAILED</em> state.
+    */
+   static final EngineState API_INITIALIZATION_FAILED =
+      new EngineState("API_INITIALIZATION_FAILED", true);
+
+   /**
+    * The <em>READY</em> state.
+    */
+   static final EngineState READY =
+      new EngineState("READY", false);
+
+   /**
+    * The <em>DISPOSING</em> state.
+    */
+   static final EngineState DISPOSING =
+      new EngineState("DISPOSING", false);
+
+   /**
+    * The <em>DISPOSED</em> state.
+    */
+   static final EngineState DISPOSED
+      = new EngineState("DISPOSED", false);
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -47,6 +131,7 @@ final class EngineState extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
+      // Initialize fields
       _name  = name;
       _error = error;
    }

@@ -362,7 +362,7 @@ final class Engine extends Object {
       //-------------------------------------------------------------------//
 
       // Proceed to first actual stage
-      _state.setState(EngineStateMachine.BOOTSTRAPPING_FRAMEWORK);
+      _state.setState(EngineState.BOOTSTRAPPING_FRAMEWORK);
 
       // Determine configuration file location
       try {
@@ -383,7 +383,7 @@ final class Engine extends Object {
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
-         _state.setState(EngineStateMachine.FRAMEWORK_BOOTSTRAP_FAILED);
+         _state.setState(EngineState.FRAMEWORK_BOOTSTRAP_FAILED);
          throw new ServletException();
       }
 
@@ -414,7 +414,7 @@ final class Engine extends Object {
       //-------------------------------------------------------------------//
 
       // Proceed to next stage
-      _state.setState(EngineStateMachine.CONSTRUCTING_API);
+      _state.setState(EngineState.CONSTRUCTING_API);
 
       // Determine the API class
       String apiClassName = config.getInitParameter(API_CLASS_PROPERTY);
@@ -423,7 +423,7 @@ final class Engine extends Object {
                    : apiClassName.trim();
       if (apiClassName == null) {
          Log.log_3206(API_CLASS_PROPERTY);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
 
@@ -438,7 +438,7 @@ final class Engine extends Object {
                        + apiClassName
                        + '.';
          Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw servletExceptionFor(exception);
       }
 
@@ -450,7 +450,7 @@ final class Engine extends Object {
                        + API.class.getName()
                        + '.';
          Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
 
@@ -470,7 +470,7 @@ final class Engine extends Object {
                                    apiClassName, "SINGLETON",
                                    detail,       exception);
          Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw servletExceptionFor(exception);
       }
 
@@ -480,7 +480,7 @@ final class Engine extends Object {
                        + apiClassName
                        + " is null.";
          Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
 
@@ -490,7 +490,7 @@ final class Engine extends Object {
                        + apiClassName
                        + " is not an instance of that class.";
          Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineStateMachine.API_CONSTRUCTION_FAILED);
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
 
@@ -500,7 +500,7 @@ final class Engine extends Object {
       //-------------------------------------------------------------------//
 
       // Proceed to next stage
-      _state.setState(EngineStateMachine.BOOTSTRAPPING_API);
+      _state.setState(EngineState.BOOTSTRAPPING_API);
 
       // Determine the name of the API
       String apiName = config.getInitParameter(API_NAME_PROPERTY);
@@ -509,7 +509,7 @@ final class Engine extends Object {
          apiName = "-";
 /* TODO for XINS 2.0.0: Fail if API name is not set.
          Log.log_3209(API_NAME_PROPERTY);
-         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          throw new ServletException();
 */
       } else {
@@ -552,7 +552,7 @@ final class Engine extends Object {
       // The locale is not supported
       } catch (UnsupportedLocaleError exception) {
          Log.log_3309(exception.getLocale());
-         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          throw servletExceptionFor(exception);
 
       // Other unexpected exception
@@ -599,7 +599,7 @@ final class Engine extends Object {
                Log.log_3210(API_CALLING_CONVENTION_PROPERTY,
                             _defaultCallingConvention,
                             "No such calling convention.");
-               _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+               _state.setState(EngineState.API_BOOTSTRAP_FAILED);
                throw new ServletException();
             }
             // TODO: Log that we use the specified calling convention
@@ -617,7 +617,7 @@ final class Engine extends Object {
 
       // Throw a ServletException if the bootstrap failed
       if (caught != null) {
-         _state.setState(EngineStateMachine.API_BOOTSTRAP_FAILED);
+         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          ServletException se = new ServletException("API bootstrap failed.");
          ExceptionUtils.setCause(se, caught);
          throw se;
@@ -812,7 +812,7 @@ final class Engine extends Object {
    private int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
-      _state.setState(EngineStateMachine.DETERMINE_INTERVAL);
+      _state.setState(EngineState.DETERMINE_INTERVAL);
 
       // Get the runtime property
       String s = _runtimeProperties.get(CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -824,7 +824,7 @@ final class Engine extends Object {
             interval = Integer.parseInt(s);
             if (interval < 0) {
                Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               _state.setState(EngineStateMachine.DETERMINE_INTERVAL_FAILED);
+               _state.setState(EngineState.DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(
                   CONFIG_RELOAD_INTERVAL_PROPERTY, s, "Negative value.");
             } else {
@@ -832,7 +832,7 @@ final class Engine extends Object {
             }
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            _state.setState(EngineStateMachine.DETERMINE_INTERVAL_FAILED);
+            _state.setState(EngineState.DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(
                CONFIG_RELOAD_INTERVAL_PROPERTY, s,
                "Not a 32-bit integer number.");
@@ -852,7 +852,7 @@ final class Engine extends Object {
     */
    void initAPI() {
 
-      _state.setState(EngineStateMachine.INITIALIZING_API);
+      _state.setState(EngineState.INITIALIZING_API);
 
       synchronized (_runtimePropertiesLock) {
 
@@ -876,7 +876,7 @@ final class Engine extends Object {
                   Log.log_3307(currentLocale, newLocale);
                } catch (UnsupportedLocaleException exception) {
                   Log.log_3308(currentLocale, newLocale);
-                  _state.setState(EngineStateMachine.API_INITIALIZATION_FAILED);
+                  _state.setState(EngineState.API_INITIALIZATION_FAILED);
                   return;
                }
             }
@@ -905,10 +905,10 @@ final class Engine extends Object {
          } finally {
 
             if (succeeded) {
-               _state.setState(EngineStateMachine.READY);
+               _state.setState(EngineState.READY);
                Log.log_3415();
             } else {
-               _state.setState(EngineStateMachine.API_INITIALIZATION_FAILED);
+               _state.setState(EngineState.API_INITIALIZATION_FAILED);
             }
          }
       }
@@ -1140,7 +1140,7 @@ final class Engine extends Object {
       // Call the API if the state is READY
       FunctionResult result;
       EngineState state = _state.getState();
-      if (state == EngineStateMachine.READY) {
+      if (state == EngineState.READY) {
 
          String subjectClass  = callingConvention.getClass().getName();
          String subjectMethod = "convertRequest("
@@ -1195,11 +1195,11 @@ final class Engine extends Object {
          }
 
       // Otherwise return an appropriate 50x HTTP response code
-      } else if (state == EngineStateMachine.INITIAL
-              || state == EngineStateMachine.BOOTSTRAPPING_FRAMEWORK
-              || state == EngineStateMachine.CONSTRUCTING_API
-              || state == EngineStateMachine.BOOTSTRAPPING_API
-              || state == EngineStateMachine.INITIALIZING_API) {
+      } else if (state == EngineState.INITIAL
+              || state == EngineState.BOOTSTRAPPING_FRAMEWORK
+              || state == EngineState.CONSTRUCTING_API
+              || state == EngineState.BOOTSTRAPPING_API
+              || state == EngineState.INITIALIZING_API) {
          response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
          return;
       } else {
@@ -1332,7 +1332,7 @@ final class Engine extends Object {
       Log.log_3600();
 
       // Set the state temporarily to DISPOSING
-      _state.setState(EngineStateMachine.DISPOSING);
+      _state.setState(EngineState.DISPOSING);
 
       // Destroy the API
       if (_api != null) {
@@ -1344,7 +1344,7 @@ final class Engine extends Object {
       }
 
       // Set the state to DISPOSED
-      _state.setState(EngineStateMachine.DISPOSED);
+      _state.setState(EngineState.DISPOSED);
 
       Log.log_3602();
    }
