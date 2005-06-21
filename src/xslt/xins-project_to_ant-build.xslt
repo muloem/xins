@@ -813,6 +813,19 @@ APIs in this project are:
 					<param name="package"      expression="{$package}"      />
 				</style>
 				<style
+				in="{$api_file}"
+				out="{$javaDestDir}/{$packageAsDir}/package.html"
+				style="{$xins_home}/src/xslt/java-server-framework/api_to_packagehtml.xslt">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+					<param name="package"      expression="{$package}"      />
+				</style>
+				<style
 				in="{$impl_file}"
 				out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
 				style="{$xins_home}/src/xslt/java-server-framework/impl_to_java.xslt">
