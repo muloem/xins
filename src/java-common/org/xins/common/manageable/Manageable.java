@@ -423,11 +423,11 @@ public abstract class Manageable extends Object {
     * finds that the state is correct. The state will have been set to
     * {@link #DEINITIALIZING}.
     *
-    * @throws Exception
+    * @throws Throwable
     *    if the deinitialization caused an exception.
     */
    protected void deinitImpl()
-   throws Exception {
+   throws Throwable {
       // empty
    }
 

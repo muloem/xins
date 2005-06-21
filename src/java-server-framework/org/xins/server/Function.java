@@ -304,11 +304,11 @@ implements DefaultResultCodes {
     * @return
     *    the result of the call, never <code>null</code>.
     *
-    * @throws Exception
+    * @throws Throwable
     *    if anything goes wrong.
     */
    protected abstract FunctionResult handleCall(CallContext context)
-   throws Exception;
+   throws Throwable;
 
    /**
     * Callback method that should be called after a call to this function.
