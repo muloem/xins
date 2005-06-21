@@ -219,7 +219,7 @@ public class AllInOneTests extends TestCase {
 
       try {
          allInOne.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
-         fail("The param-combo call should return an _InvalidRequest error code.");
+         fail("The ParamCombo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
       }

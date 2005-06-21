@@ -6,6 +6,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<description>API that uses all the features included in XINS.</description>
 
+	<function name="ParamComboNotAll" />
 	<function name="DataSection"     />
 	<function name="DataSection2" freeze="1.1" />
 	<function name="DataSection3"    />
@@ -27,4 +28,5 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<resultcode name="AlreadySet"     />
 	<resultcode name="InvalidNumber"  />
+
 </api>

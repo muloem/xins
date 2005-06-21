@@ -318,6 +318,14 @@
 		</li>
 	</xsl:template>
 
+	<xsl:template match="param-combo[@type='not-all']">
+		<li>
+			<xsl:text>The following parameters cannot all be set at the same time: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
 	<xsl:template match="param-combo" priority="-1">
 		<xsl:message terminate="yes">Unrecognized type of param-combo.</xsl:message>
 	</xsl:template>

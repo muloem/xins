@@ -227,6 +227,8 @@ APIs in this project are:
 
 					<dtd publicId="-//XINS//DTD XINS Project 1.3//EN"
 					     location="xins-project_1_3.dtd" />
+					<dtd publicId="-//XINS//DTD Function 1.3//EN"
+					     location="function_1_3.dtd" />
 				</xmlcatalog>
 			</target>
 

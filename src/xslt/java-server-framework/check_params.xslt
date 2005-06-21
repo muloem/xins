@@ -315,6 +315,45 @@
 		</xsl:if>
 
 		<!-- ************************************************************* -->
+		<!-- Check 'not-all' combos                                        -->
+		<!-- ************************************************************* -->
+
+		<xsl:if test="param-combo[@type='not-all']">
+			<xsl:text>
+
+      // Check not-all parameter combinations</xsl:text>
+			<xsl:for-each select="param-combo[@type='not-all']">
+				<xsl:text>
+      if (</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:if test="position() &gt; 1">
+          &amp;&amp; </xsl:if>
+					<xsl:text>(</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text> != null)</xsl:text>
+				</xsl:for-each>
+				<xsl:text>)
+      {</xsl:text>
+				<xsl:call-template name="create-error">
+					<xsl:with-param name="side" select="$side" />
+					<xsl:with-param name="errorclass" select="$errorclass" />
+				</xsl:call-template>
+				<xsl:text>
+         java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
+				<xsl:for-each select="param-ref">
+					<xsl:text>
+         _invalidComboElements.add("</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>");</xsl:text>
+				</xsl:for-each>
+				<xsl:text>
+         _errorResult.addParamCombo("not-all", _invalidComboElements);
+      }</xsl:text>
+
+			</xsl:for-each>
+		</xsl:if>
+
+		<!-- ************************************************************* -->
 		<!-- Check data section                                            -->
 		<!-- ************************************************************* -->
 		<xsl:choose>
