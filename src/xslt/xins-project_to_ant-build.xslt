@@ -672,8 +672,8 @@ APIs in this project are:
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:choose>
-							<xsl:when test="//project/@javadir">
-								<xsl:value-of select="//project/@javadir" />
+							<xsl:when test="document($project_file)/project/@javadir">
+								<xsl:value-of select="document($project_file)/project/@javadir" />
 							</xsl:when>
 							<xsl:otherwise>src/impl-java</xsl:otherwise>
 						</xsl:choose>
