@@ -30,28 +30,30 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:include href="broken_freeze.xslt" />
+	<xsl:include href="broken_freeze.xslt"  />
 	<xsl:include href="output_section.xslt" />
-	<xsl:include href="../header.xslt"     />
-	<xsl:include href="../footer.xslt"     />
+	<xsl:include href="../header.xslt"      />
+	<xsl:include href="../footer.xslt"      />
 	<xsl:include href="../types.xslt"       />
 	<xsl:include href="../urlencode.xslt"   />
+	<xsl:include href="../warning.xslt"     />
 
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode_name" select="@name" />
 
-        <!-- Warn if name differs from value -->
-        <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
-            <xsl:message terminate="no">
-				<xsl:text>.
- *-*-* WARNING : Errorcode name ('</xsl:text>
-                <xsl:value-of select="@name" />
-                <xsl:text>') differs from value ('</xsl:text>
-                <xsl:value-of select="@value" />
-                <xsl:text>'). This may cause confusion and errors.</xsl:text>
-            </xsl:message>
-        </xsl:if>
+      <!-- Warn if name differs from value -->
+      <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
+         <xsl:call-template name="warn">
+            <xsl:with-param name="message">
+               <xsl:text>Errorcode name ('</xsl:text>
+               <xsl:value-of select="@name" />
+               <xsl:text>') differs from value ('</xsl:text>
+               <xsl:value-of select="@value" />
+               <xsl:text>'). This may cause confusion and errors.</xsl:text>
+            </xsl:with-param>
+         </xsl:call-template>
+      </xsl:if>
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>

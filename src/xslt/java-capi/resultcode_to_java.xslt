@@ -25,8 +25,9 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../java.xslt"  />
-	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../java.xslt"       />
+	<xsl:include href="../types.xslt"      />
+	<xsl:include href="../warning.xslt"    />
 
     <!-- Handle the <resultcode/> element -->
 	<xsl:template match="resultcode">
@@ -36,14 +37,15 @@
 
         <!-- Warn if name differs from value -->
         <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
-            <xsl:message terminate="no">
-				<xsl:text>.
- *-*-* WARNING : Errorcode name ('</xsl:text>
-                <xsl:value-of select="@name" />
-                <xsl:text>') differs from value ('</xsl:text>
-                <xsl:value-of select="@value" />
-                <xsl:text>'). This may cause confusion and errors.</xsl:text>
-            </xsl:message>
+				<xsl:call-template name="warn">
+               <xsl:with-param name="message">
+                  <xsl:text>Errorcode name ('</xsl:text>
+                  <xsl:value-of select="@name" />
+                  <xsl:text>') differs from value ('</xsl:text>
+                  <xsl:value-of select="@value" />
+                  <xsl:text>'). This may cause confusion and errors.</xsl:text>
+               </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
 
 		<xsl:call-template name="java-header" />

@@ -23,11 +23,12 @@
 	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
+	<xsl:include href="check_params.xslt"  />
+	<xsl:include href="result_java.xslt"   />
 	<xsl:include href="../casechange.xslt" />
-	<xsl:include href="../java.xslt"  />
-	<xsl:include href="../types.xslt"  />
-	<xsl:include href="check_params.xslt" />
-	<xsl:include href="result_java.xslt" />
+	<xsl:include href="../java.xslt"       />
+	<xsl:include href="../types.xslt"      />
+	<xsl:include href="../warning.xslt"    />
 
 	<xsl:template match="resultcode">
 
@@ -45,26 +46,28 @@
 		<!-- Truncate the first ", " -->
 		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
 
-        <!-- Warn if name differs from value -->
-        <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
-            <xsl:message terminate="no">
-				<xsl:text>.
- *-*-* WARNING : Errorcode name ('</xsl:text>
-                <xsl:value-of select="@name" />
-                <xsl:text>') differs from value ('</xsl:text>
-                <xsl:value-of select="@value" />
-                <xsl:text>'). This may cause confusion and errors.</xsl:text>
-            </xsl:message>
-        </xsl:if>
+      <!-- Warn if name differs from value -->
+      <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
+         <xsl:call-template name="warn">
+            <xsl:with-param name="message">
+               <xsl:text>Errorcode name ('</xsl:text>
+               <xsl:value-of select="@name" />
+               <xsl:text>') differs from value ('</xsl:text>
+               <xsl:value-of select="@value" />
+               <xsl:text>'). This may cause confusion and errors.</xsl:text>
+            </xsl:with-param>
+         </xsl:call-template>
+      </xsl:if>
 
 		<!-- Warn if no function uses this ResultCode -->
 		<xsl:if test="$resultcodeIncludes = ''">
-			<xsl:message>
-				<xsl:text>.
- *-*-* WARNING : This result code '</xsl:text>
-				<xsl:value-of select="$resultcode" />
- 				<xsl:text>'is not used in any function. *-*-*</xsl:text>
- 			</xsl:message>
+         <xsl:call-template name="warn">
+            <xsl:with-param name="message">
+               <xsl:text>Errorcode '</xsl:text>
+               <xsl:value-of select="$resultcode" />
+               <xsl:text>'is not used in any function.</xsl:text>
+            </xsl:with-param>
+		   </xsl:call-template>
 		</xsl:if>
 
 		<xsl:call-template name="java-header" />
@@ -77,8 +80,11 @@
  * UnsuccessfulResult due to a </xsl:text>
 		<xsl:value-of select="$resultcode" />
 		<xsl:if test="$resultcodeIncludes = ''">
-			<xsl:text>.
- * WARNING : This ResultCode is not used in any function.</xsl:text>
+			<xsl:call-template name="warn">
+            <xsl:with-param name="message">
+               <xsl:text>This errorcode is not used in any function.</xsl:text>
+            </xsl:with-param>
+         </xsl:call-template>
 		</xsl:if>
 		<xsl:text>.
  */
