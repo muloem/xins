@@ -105,15 +105,18 @@ extends org.xins.client.AbstractCAPICallRequest {
 
    /**
     * Validates whether this request is considered acceptable. If any
-    * constraints are violated, then an {@link UnacceptableRequestException}
+    * constraints are violated, then an
+    * {@link org.xins.client.UnacceptableRequestException UnacceptableRequestException}
     * is returned.
     *
     * <p>This method is called automatically when this request is executed, so
     * it typically does not need to be called manually in advance.
     *
     * @return
-    *    an {@link UnacceptableRequestException} instance if this request is
-    *    considered unacceptable, otherwise <code>null</code>.
+    *    an
+    *    {@link org.xins.client.UnacceptableRequestException UnacceptableRequestException}
+    *    instance if this request is considered unacceptable, otherwise
+    *    <code>null</code>.
     */
    public org.xins.client.UnacceptableRequestException checkParameters() {
 ]]></xsl:text>
