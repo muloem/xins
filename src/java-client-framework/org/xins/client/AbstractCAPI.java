@@ -23,6 +23,9 @@ import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
+import org.xins.common.spec.API;
+import org.xins.common.spec.InvalidSpecificationException;
+
 import org.xins.common.text.TextUtils;
 
 /**
@@ -293,6 +296,23 @@ public abstract class AbstractCAPI extends Object {
       //       XINS (before 1.2.0)
 
       return null;
+   }
+
+   /**
+    * Get the specification of the API.
+    *
+    * @return
+    *    the API specifications.
+    *
+    * @throws InvalidSpecificationException
+    *    if the specification cannot be found or is invalid.
+    *
+    * @see org.xins.common.spec.API.class
+    *
+    * @since XINS 1.3.0
+    */
+   public final API getAPISpecification() throws InvalidSpecificationException {
+      return new org.xins.common.spec.API(getClass());
    }
 
    /**

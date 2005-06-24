@@ -26,6 +26,7 @@ import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
+import org.xins.common.spec.InvalidSpecificationException;
 
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
@@ -762,6 +763,24 @@ implements DefaultResultCodes {
    final Function getFunction(String name) {
       return (Function) _functionsByName.get(name);
    }
+
+   /**
+    * Get the specification of the API.
+    *
+    * @return
+    *    the API specifications.
+    *
+    * @throws InvalidSpecificationException
+    *    if the specification cannot be found or is invalid.
+    *
+    * @see org.xins.common.spec.API.class
+    *
+    * @since XINS 1.3.0
+    */
+   public final org.xins.common.spec.API getAPISpecification() throws InvalidSpecificationException {
+      return new org.xins.common.spec.API(getClass());
+   }
+
 
    /**
     * Forwards a call to a function. The call will actually be handled by

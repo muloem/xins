@@ -29,14 +29,47 @@ public class Parameter {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of Parameter
+    * Creates a new instance of Parameter.
+    *
+    * @param name
+    *    the name of the parameter
+    * @param type
+    *    the type of the parameter
+    * @param required
+    *    <code>true</code> if the parameter is required, <code>false</code> otherwise.
+    * @param description
+    *    the description of the parameter.
     */
-   public Parameter() {
+   public Parameter(String name, String type, boolean required, String description) {
+      _parameterName = name;
+      _parameterType = type;
+      _required = required;
+      _description = description;
    }
    
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+   
+   /**
+    * Name of the parameter.
+    */
+   private final String _parameterName;
+   
+   /**
+    * Type of the parameter.
+    */
+   private final String _parameterType;
+   
+   /**
+    * Flags indicating if this parameter is required.
+    */
+   private final boolean _required;
+   
+   /**
+    * Description of the parameter.
+    */
+   private String _description;
    
    //-------------------------------------------------------------------------
    // Methods
@@ -50,8 +83,7 @@ public class Parameter {
     */
    public String getName() {
       
-      // TODO implement this function
-      return null;
+      return _parameterName;
    }
    
    /**
@@ -62,8 +94,7 @@ public class Parameter {
     */
    public String getDescription() {
       
-      // TODO implement this function
-      return null;
+      return _description;
    }
 
    /**
@@ -74,8 +105,7 @@ public class Parameter {
     */
    public boolean isRequired() {
       
-      // TODO implement this function
-      return false;
+      return _required;
    }
 
    /**

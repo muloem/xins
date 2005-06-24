@@ -270,6 +270,7 @@ APIs in this project are:
 				<property file="{$project_home}/build.properties" />
 				<!-- If not set by the user set it to true. -->
 				<property name="build.deprecation" value="true" />
+				<property name="build.java.version" value="${{ant.java.version}}" />
 				<path id="xins.classpath">
 					<pathelement path="{$xins_home}/build/logdoc.jar" />
 					<pathelement path="{$xins_home}/build/xins-common.jar" />
@@ -625,8 +626,7 @@ APIs in this project are:
 				destdir="{$typeClassesDir}"
 				debug="true"
 				deprecation="${{build.deprecation}}"
-				source="1.3"
-				target="1.3">
+				source="${{build.java.version}}">
 					<classpath>
 						<pathelement path="{$xins_home}/build/logdoc.jar" />
 						<pathelement path="{$xins_home}/build/xins-common.jar" />
@@ -945,8 +945,7 @@ APIs in this project are:
 				destdir="{$classesDestDir}"
 				debug="true"
 				deprecation="${{build.deprecation}}"
-				source="1.3"
-				target="1.3">
+				source="${{build.java.version}}">
 					<src path="{$javaDestDir}" />
 					<src path="{$javaImplDir}" />
 					<classpath>
@@ -1045,7 +1044,6 @@ APIs in this project are:
 				use="yes"
 				author="yes"
 				access="package"
-				source="1.3"
 				windowtitle="Implementation of {$api} API"
 				doctitle="Implementation of {$api} API">
 					<packageset dir="{$javaDestDir}" />
@@ -1138,8 +1136,7 @@ APIs in this project are:
 				destdir="build/classes-tests/{$api}"
 				debug="true"
 				deprecation="${{build.deprecation}}"
-				source="1.3"
-				target="1.3">
+				source="${{build.java.version}}">
 					<src path="apis/{$api}/test" />
 					<classpath>
 						<path refid="xins.classpath" />
@@ -1327,8 +1324,7 @@ APIs in this project are:
 			destdir="{$project_home}/build/classes-capi/{$api}"
 			debug="true"
 			deprecation="${{build.deprecation}}"
-			source="1.3"
-			target="1.3">
+			source="${{build.java.version}}">
 				<classpath>
 					<path refid="xins.classpath" />
 					<xsl:if test="$apiHasTypes">
@@ -1371,7 +1367,6 @@ APIs in this project are:
 			use="yes"
 			author="yes"
 			access="public"
-			source="1.3"
 			windowtitle="Call interface for {$api} API"
 			doctitle="Call interface for {$api} API">
 				<packageset dir="build/java-capi/{$api}" />

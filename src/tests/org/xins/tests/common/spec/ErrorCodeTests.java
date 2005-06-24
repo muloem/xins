@@ -6,7 +6,10 @@
  */
 package org.xins.tests.common.spec;
 
+import com.mycompany.allinone.capi.CAPI;
+
 import junit.framework.TestCase;
+import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.spec.API;
 import org.xins.common.spec.ErrorCode;
@@ -55,7 +58,12 @@ public class ErrorCodeTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API();
+      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/",
+                                     5000,
+                                     1000,
+                                     4000);
+      CAPI allInOne = new CAPI(target);
+      allInOneAPI = allInOne.getAPISpecification();
       String functionName = "ResultCode";
       Function function = allInOneAPI.getFunction(functionName);
       errorCode = function.getErrorCodes()[0];

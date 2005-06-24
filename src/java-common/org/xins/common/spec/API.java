@@ -6,6 +6,20 @@
  */
 package org.xins.common.spec;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.xins.common.text.ParseException;
+
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementParser;
+
 /**
  * Specification of an API.
  *
@@ -28,13 +42,58 @@ public class API {
    
    /**
     * Creates a new instance of API
+    *
+    * @param reference
+    *    the reference class used to located the specifications.
     */
-   public API() {
+   public API(Class reference) throws InvalidSpecificationException {
+      _reference = reference;
+      try {
+         InputStream in = reference.getResourceAsStream("/specs/api.xml");
+         InputStreamReader reader = new InputStreamReader(in);
+         parseApi(reader);
+         reader.close();
+         in.close();
+      } catch (IOException ioe) {
+         throw new InvalidSpecificationException(ioe.getMessage());
+      }
    }
+   
    
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+   
+   /**
+    * The refence class.
+    */
+   private final Class _reference;
+   
+   /**
+    * Name of the API.
+    */
+   private String _apiName;
+   
+   /**
+    * Owner of the API.
+    */
+   private String _owner;
+   
+   /**
+    * Description of the API.
+    */
+   private String _description;
+   
+   /**
+    * List of the API functions.
+    */
+   private List _functionNames = new ArrayList();
+   
+   /**
+    * Cache for the functions of the API.
+    */
+   private Map _functions = new HashMap();
+
    
    //-------------------------------------------------------------------------
    // Methods
@@ -47,9 +106,8 @@ public class API {
     *    The name of the API, never <code>null</code>.
     */
    public String getName() {
-      
-      // TODO implement this function
-      return null;
+
+      return _apiName;
    }
    
    /**
@@ -60,8 +118,7 @@ public class API {
     */
    public String getOwner() {
       
-      // TODO implement this function
-      return null;
+      return _owner;
    }
    
    /**
@@ -72,8 +129,7 @@ public class API {
     */
    public String getDescription() {
       
-      // TODO implement this function
-      return null;
+      return _description;
    }
 
    /**
@@ -82,12 +138,17 @@ public class API {
     * @return
     *    The function specifications, never <code>null</code>.
     */
-   public Function[] getFunctions() {
+   public Function[] getFunctions() throws InvalidSpecificationException {
       
-      // TODO implement this function
-      return null;
+      int functionsCount = _functionNames.size();
+      Function[] result = new Function[functionsCount];
+      
+      for (int i = 0; i < functionsCount; i++) {
+         result[i] = getFunction((String) _functionNames.get(i));
+      }
+      return result;
    }
-   
+
    /**
     * Get the specification of the given function.
     *
@@ -100,9 +161,34 @@ public class API {
     * @throws IllegalArgumentException
     *    If the API does not define any function for the given name.
     */
-   public Function getFunction(String functionName) {
+   public Function getFunction(String functionName) throws InvalidSpecificationException {
+
+      Function function = (Function) _functions.get(functionName);
       
-      // TODO implement this function
-      return null;
+      if (function == null) {
+         function = new Function(functionName, _reference);
+         _functions.put(functionName, function);
+      }
+      
+      return function;
+   }
+
+   private void parseApi(Reader reader) throws IOException, InvalidSpecificationException {
+      ElementParser parser = new ElementParser();
+      Element api = null;
+      try {
+         api = parser.parse(reader);
+      } catch (ParseException pe) {
+         throw new InvalidSpecificationException(pe.getMessage());
+      }
+      _apiName = api.getAttribute("name");
+      _owner = api.getAttribute("owner");
+      Element descriptionElement = (Element) api.getChildElements("description").get(0);
+      _description = descriptionElement.getText();
+      Iterator functions = api.getChildElements("function").iterator();
+      while (functions.hasNext()) {
+         Element nextFunction = (Element) functions.next();
+         _functionNames.add(nextFunction.getAttribute("name"));
+      }
    }
 }

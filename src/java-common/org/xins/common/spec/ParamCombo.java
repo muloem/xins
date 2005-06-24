@@ -28,13 +28,31 @@ public class ParamCombo {
    
    /**
     * Creates a new instance of ParamCombo
+    *
+    * @param type
+    *    The type of the param-combo.
+    * @param parameters
+    *    The parameters this param-combo refers to.
     */
-   public ParamCombo() {
+   public ParamCombo(String type, Parameter[] parameters) {
+      _type = type;
+      _parameters = parameters;
    }
    
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+   
+   /**
+    * The type of the param-combo.
+    */
+   private final String _type;
+   
+   /**
+    * The parameters of this param-combo.
+    */
+   private final Parameter[] _parameters;
+   
    
    //-------------------------------------------------------------------------
    // Methods
@@ -48,8 +66,7 @@ public class ParamCombo {
     */
    public boolean isAllOrNone() {
       
-      // TODO implement this function
-      return false;
+      return _type.equals("all-or-none");
    }
    
    /**
@@ -60,10 +77,9 @@ public class ParamCombo {
     */
    public boolean isExclusiveOr() {
       
-      // TODO implement this function
-      return false;
+      return _type.equals("exclusive-or");
    }
-   
+
    /**
     * Returns whether the param combo is a inclusive-or type.
     *
@@ -72,8 +88,7 @@ public class ParamCombo {
     */
    public boolean isInclusiveOr() {
       
-      // TODO implement this function
-      return false;
+      return _type.equals("inclusive-or");
    }
    
    /**
@@ -84,7 +99,6 @@ public class ParamCombo {
     */
    public Parameter[] getParameters() {
       
-      // TODO implement this function
-      return null;
+      return _parameters;
    }
 }

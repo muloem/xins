@@ -100,7 +100,7 @@
 				<xsl:apply-templates select="int64"      />
 				<xsl:apply-templates select="float32"    />
 				<xsl:apply-templates select="float64"    />
-				<xsl:apply-templates select="base64"    />
+				<xsl:apply-templates select="base64"     />
 				<xsl:apply-templates select="list"       />
 				<xsl:apply-templates select="set"        />
 
