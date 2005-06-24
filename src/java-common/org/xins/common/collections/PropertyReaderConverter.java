@@ -38,7 +38,7 @@ public final class PropertyReaderConverter extends Object {
     * @throws IllegalArgumentException
     *    if <code>propertyReader == null</code>.
     */
-   public static final Properties toProperties(PropertyReader propertyReader)
+   public static Properties toProperties(PropertyReader propertyReader)
    throws IllegalArgumentException {
 
       // Check preconditions

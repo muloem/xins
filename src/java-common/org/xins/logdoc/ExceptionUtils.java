@@ -94,7 +94,7 @@ public final class ExceptionUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   public static final Throwable getRootCause(Throwable exception)
+   public static Throwable getRootCause(Throwable exception)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -123,7 +123,7 @@ public final class ExceptionUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   public static final Throwable getCause(Throwable exception)
+   public static Throwable getCause(Throwable exception)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -164,7 +164,7 @@ public final class ExceptionUtils extends Object {
     * @throws IllegalStateException
     *    if the cause exception was already set.
     */
-   public static final void setCause(Throwable exception, Throwable cause)
+   public static void setCause(Throwable exception, Throwable cause)
    throws IllegalArgumentException, IllegalStateException {
 
       // TODO: Add unit test for IllegalStateException

@@ -44,7 +44,7 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>cause == null</code>.
     */
-   private static final String createMessage(Throwable cause)
+   private static String createMessage(Throwable cause)
    throws IllegalArgumentException {
 
       // Check preconditions

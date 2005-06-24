@@ -52,7 +52,7 @@ extends RuntimeException {
     * @throws IllegalArgumentException
     *    if <code>target == null</code>.
     */
-   private static final String createMessage(TargetDescriptor target)
+   private static String createMessage(TargetDescriptor target)
    throws IllegalArgumentException {
 
       // Check preconditions

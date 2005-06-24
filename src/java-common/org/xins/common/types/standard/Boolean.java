@@ -154,7 +154,7 @@ public final class Boolean extends Type {
       return "true".equals(string) ? java.lang.Boolean.TRUE : java.lang.Boolean.FALSE;
    }
 
-   public final String toString(Object value)
+   public String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
       java.lang.Boolean b = (java.lang.Boolean) value;

@@ -63,7 +63,7 @@ public final class LogCentral {
     * @throws UnsupportedLocaleException
     *    if {@link AbstractLog.LogController} does not support the current Locale.
     */
-   static final void registerLog(AbstractLog.LogController controller)
+   static void registerLog(AbstractLog.LogController controller)
    throws IllegalArgumentException, UnsupportedLocaleException {
 
       // Check preconditions
@@ -104,7 +104,7 @@ public final class LogCentral {
     *    the current diagnostic context identifier, or <code>null</code> if
     *    there is none.
     */
-   public static final String getContext() {
+   public static String getContext() {
       return NDC.peek();
    }
 
@@ -121,7 +121,7 @@ public final class LogCentral {
     *    if the specified locale is not supported by all registered
     *    <em>logdoc</em> <code>Log</code> classes.
     */
-   public static final void setLocale(String newLocale)
+   public static void setLocale(String newLocale)
    throws IllegalArgumentException, UnsupportedLocaleException {
 
       // Check preconditions
@@ -150,7 +150,7 @@ public final class LogCentral {
     * @return
     *    the locale as set for java properties file (e.g. "en_US").
     */
-   public static final String getLocale() {
+   public static String getLocale() {
       return LOCALE;
    }
 

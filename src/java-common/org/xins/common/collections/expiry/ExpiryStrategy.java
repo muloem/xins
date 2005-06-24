@@ -195,7 +195,7 @@ public final class ExpiryStrategy extends Object {
     * @return
     *    the time-out, in milliseconds.
     */
-   public final long getTimeOut() {
+   public long getTimeOut() {
       return _timeOut;
    }
 
@@ -205,7 +205,7 @@ public final class ExpiryStrategy extends Object {
     * @return
     *    the time-out precision, in milliseconds.
     */
-   public final long getPrecision() {
+   public long getPrecision() {
       return _precision;
    }
 
@@ -216,7 +216,7 @@ public final class ExpiryStrategy extends Object {
     * @return
     *    the slot count, always &gt;= 1.
     */
-   public final int getSlotCount() {
+   public int getSlotCount() {
       return _slotCount;
    }
 

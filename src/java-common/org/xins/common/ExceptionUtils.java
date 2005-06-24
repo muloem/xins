@@ -41,7 +41,7 @@ public final class ExceptionUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   public static final Throwable getRootCause(Throwable exception)
+   public static Throwable getRootCause(Throwable exception)
    throws IllegalArgumentException {
       return org.xins.logdoc.ExceptionUtils.getRootCause(exception);
    }

@@ -43,9 +43,9 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>propertyName == null || propertyValue == null</code>.
     */
-   private static final String createMessage(String propertyName,
-                                             String propertyValue,
-                                             String reason)
+   private static String createMessage(String propertyName,
+                                       String propertyValue,
+                                       String reason)
    throws IllegalArgumentException {
 
       // Check preconditions

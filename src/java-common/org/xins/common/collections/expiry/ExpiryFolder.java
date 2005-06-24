@@ -299,7 +299,7 @@ extends Object {
     * @return
     *    the name assigned to this expiry folder, not <code>null</code>.
     */
-   public final String getName() {
+   public String getName() {
       return _name;
    }
 

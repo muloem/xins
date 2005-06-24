@@ -31,7 +31,7 @@ public final class Library extends Object {
     *    the version of this library, for example <code>"1.0.0"</code>,
     *    never <code>null</code>.
     */
-   public static final String getVersion() {
+   public static String getVersion() {
       return "%%VERSION%%";
    }
 

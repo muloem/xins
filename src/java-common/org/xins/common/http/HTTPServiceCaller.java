@@ -394,7 +394,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.2.0
     */
-   protected final void setHTTPCallConfig(HTTPCallConfig config)
+   protected void setHTTPCallConfig(HTTPCallConfig config)
    throws IllegalArgumentException {
       super.setCallConfig(config);
    }
@@ -411,11 +411,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.2.0
     */
-   public final HTTPCallConfig getHTTPCallConfig() {
+   public HTTPCallConfig getHTTPCallConfig() {
       return (HTTPCallConfig) getCallConfig();
    }
 
-   /**
    /**
     * Executes a request towards the specified target. If the call succeeds,
     * then a {@link HTTPCallResult} object is returned, otherwise a

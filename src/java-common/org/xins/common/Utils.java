@@ -41,7 +41,7 @@ public final class Utils extends Object {
     *
     * @since XINS 1.2.0
     */
-   public static final double getJavaVersion() {
+   public static double getJavaVersion() {
       return Double.parseDouble(System.getProperty("java.version").substring(0, 3));
    }
 
@@ -53,7 +53,7 @@ public final class Utils extends Object {
     *    the class name of the caller of the caller of this method, never an
     *    empty string and never <code>null</code>.
     */
-   public static final String getCallingClass() {
+   public static String getCallingClass() {
       if (getJavaVersion() >= 1.4) {
          Throwable exception = new Throwable();
          StackTraceElement[] trace = exception.getStackTrace();
@@ -80,7 +80,7 @@ public final class Utils extends Object {
     *    the method name of the caller of the caller of this method, never an
     *    empty string and never <code>null</code>.
     */
-   public static final String getCallingMethod() {
+   public static String getCallingMethod() {
       if (getJavaVersion() >= 1.4) {
          Throwable exception = new Throwable();
          StackTraceElement[] trace = exception.getStackTrace();
@@ -113,7 +113,7 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingException
+   public static ProgrammingException
    logProgrammingError(String detail) {
       return logProgrammingError(getCallingClass(), getCallingMethod(),
                                  getCallingClass(), getCallingMethod(),
@@ -131,7 +131,7 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingException
+   public static ProgrammingException
    logProgrammingError(Throwable cause) {
 
       String sourceClass;
@@ -193,7 +193,7 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingException
+   public static ProgrammingException
    logProgrammingError(String    detectingClass,
                        String    detectingMethod,
                        String    subjectClass,
@@ -249,7 +249,7 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static final ProgrammingException
+   public static ProgrammingException
    logProgrammingError(String    detectingClass,
                        String    detectingMethod,
                        String    subjectClass,
@@ -275,7 +275,7 @@ public final class Utils extends Object {
     *
     * @since XINS 1.2.0
     */
-   public static final String getNameOfClass(Class c)
+   public static String getNameOfClass(Class c)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -311,7 +311,7 @@ public final class Utils extends Object {
     *
     * @since XINS 1.2.0
     */
-   public static final String getClassName(Object object)
+   public static String getClassName(Object object)
    throws IllegalArgumentException {
 
       // Check preconditions

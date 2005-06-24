@@ -84,9 +84,9 @@ extends Object {
     *    <code>""</code> (an empty string), nor <code>"true"</code> nor
     *    <code>"false"</code>.
     */
-   public static final boolean getBooleanProperty(PropertyReader properties,
-                                                  String         propertyName,
-                                                  boolean        fallbackDefault)
+   public static boolean getBooleanProperty(PropertyReader properties,
+                                            String         propertyName,
+                                            boolean        fallbackDefault)
    throws IllegalArgumentException,
           InvalidPropertyValueException {
 
@@ -134,8 +134,8 @@ extends Object {
     * @throws InvalidPropertyValueException
     *    if the conversion to an <code>int</code> failed.
     */
-   public static final int getIntProperty(PropertyReader properties,
-                                          String         propertyName)
+   public static int getIntProperty(PropertyReader properties,
+                                    String         propertyName)
    throws IllegalArgumentException,
           MissingRequiredPropertyException,
           InvalidPropertyValueException {
@@ -181,8 +181,8 @@ extends Object {
     *    if the value of the property is either <code>null</code> or an empty
     *    string.
     */
-   public static final String getRequiredProperty(PropertyReader properties,
-                                                  String         name)
+   public static String getRequiredProperty(PropertyReader properties,
+                                            String         name)
    throws IllegalArgumentException,
           MissingRequiredPropertyException {
 
@@ -222,7 +222,7 @@ extends Object {
     * @throws IOException
     *    if there was an I/O error while reading from the stream.
     */
-   public static final PropertyReader createPropertyReader(InputStream in)
+   public static PropertyReader createPropertyReader(InputStream in)
    throws IllegalArgumentException, IOException {
 
       // Check preconditions
@@ -269,8 +269,8 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
     */
-   public static final void serialize(PropertyReader properties,
-                                      LogdocStringBuffer buffer)
+   public static void serialize(PropertyReader properties,
+                                LogdocStringBuffer buffer)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -332,9 +332,9 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
     */
-   public static final void serialize(PropertyReader   properties,
-                                      FastStringBuffer buffer,
-                                      String           valueIfEmpty)
+   public static void serialize(PropertyReader   properties,
+                                FastStringBuffer buffer,
+                                String           valueIfEmpty)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -391,8 +391,8 @@ extends Object {
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     */
-   public static final LogdocSerializable
-   serialize(PropertyReader p, String valueIfEmpty) {
+   public static LogdocSerializable serialize(PropertyReader p,
+                                              String         valueIfEmpty) {
       return new SerializedPropertyReader(p, valueIfEmpty);
    }
 
@@ -421,8 +421,8 @@ extends Object {
     *    the character string with the serialized data, never
     *    <code>null</code>.
     */
-   public static final String toString(PropertyReader properties,
-                                       String         valueIfEmpty) {
+   public static String toString(PropertyReader properties,
+                                 String         valueIfEmpty) {
       FastStringBuffer buffer = new FastStringBuffer(129);
       serialize(properties, buffer, valueIfEmpty);
       return buffer.toString();

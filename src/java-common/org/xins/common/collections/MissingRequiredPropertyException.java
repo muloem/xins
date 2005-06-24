@@ -36,7 +36,7 @@ extends Exception {
     * @throws IllegalArgumentException
     *    if <code>propertyName == null</code>.
     */
-   private static final String createMessage(String propertyName)
+   private static String createMessage(String propertyName)
    throws IllegalArgumentException {
 
       // Check preconditions

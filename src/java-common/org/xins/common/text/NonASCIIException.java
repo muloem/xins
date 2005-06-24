@@ -39,7 +39,7 @@ extends RuntimeException {
     *    the message the constructor can pass up to the superclass
     *    constructor, never <code>null</code>.
     */
-   private static final String createMessage(char c)
+   private static String createMessage(char c)
    throws IllegalArgumentException {
 
       // Check the precondition

@@ -42,7 +42,7 @@ extends Exception {
     * @return
     *    the message, never <code>null</code>.
     */
-   private static final String createMessage(String message, Throwable cause) {
+   private static String createMessage(String message, Throwable cause) {
 
       // TODO: Improve this method.
 

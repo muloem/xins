@@ -35,7 +35,7 @@ public final class TextUtils extends Object {
     *    if <code>s != null</code> the quoted string, otherwise the string
     *    <code>"(null)"</code>.
     */
-   public static final String quote(String s) {
+   public static String quote(String s) {
       if (s != null) {
          FastStringBuffer buffer = new FastStringBuffer(s.length() + 2);
          buffer.append('"');
@@ -61,7 +61,7 @@ public final class TextUtils extends Object {
     *
     * @since XINS 1.0.1
     */
-   public static final String quote(Object o) {
+   public static String quote(Object o) {
       String s = (o == null) ? null : o.toString();
       return quote(s);
    }
@@ -78,7 +78,7 @@ public final class TextUtils extends Object {
     *
     * @since XINS 1.0.1
     */
-   public static final boolean isEmpty(String s) {
+   public static boolean isEmpty(String s) {
       return (s == null) || (s.length() < 1);
    }
 

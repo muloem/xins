@@ -64,7 +64,7 @@ public final class TimeOutController extends Object {
     *    if the thread did not finish within the total time-out period and was
     *    interrupted.
     */
-   public static final void execute(Runnable task, int timeOut)
+   public static void execute(Runnable task, int timeOut)
    throws IllegalArgumentException,
           IllegalThreadStateException,
           SecurityException,

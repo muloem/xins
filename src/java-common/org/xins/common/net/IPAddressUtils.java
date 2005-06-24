@@ -56,7 +56,7 @@ public final class IPAddressUtils extends Object {
     * @throws ParseException
     *    if <code>ip</code> cannot be parsed as an IP address.
     */
-   public static final int ipToInt(String ip)
+   public static int ipToInt(String ip)
    throws IllegalArgumentException, ParseException {
 
       int value = 0;
@@ -120,7 +120,7 @@ public final class IPAddressUtils extends Object {
     * @throws ParseException
     *    if the part cannot be parsed.
     */
-   private static final int ipPartToInt(String ip, String part)
+   private static int ipPartToInt(String ip, String part)
    throws ParseException {
 
       int length = part.length();
@@ -164,7 +164,7 @@ public final class IPAddressUtils extends Object {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static final String getLocalHost() {
+   public static String getLocalHost() {
       if (Utils.getJavaVersion() < 1.4) {
          return getLocalHostJava13();
       } else {
@@ -180,7 +180,7 @@ public final class IPAddressUtils extends Object {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static final String getLocalHostJava13() {
+   public static String getLocalHostJava13() {
       try {
          return InetAddress.getLocalHost().getHostName();
       } catch (UnknownHostException exception) {
@@ -198,7 +198,7 @@ public final class IPAddressUtils extends Object {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static final String getLocalHostJava14() {
+   public static String getLocalHostJava14() {
       try {
          return InetAddress.getLocalHost().getCanonicalHostName();
       } catch (UnknownHostException unknownHostException) {
@@ -250,7 +250,7 @@ public final class IPAddressUtils extends Object {
     * @throws IllegalArgumentException
     *    if <code>ip == null</code>.
     */
-   private static final ParseException newParseException(String ip)
+   private static ParseException newParseException(String ip)
    throws IllegalArgumentException {
 
       // Check preconditions

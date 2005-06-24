@@ -44,7 +44,7 @@ extends RuntimeException {
     *    the message the constructor can pass up to the superclass
     *    constructor, never <code>null</code>.
     */
-   private static final String createMessage(String string, String reason)
+   private static String createMessage(String string, String reason)
    throws IllegalArgumentException {
 
       // Check the precondition

@@ -124,7 +124,7 @@ public final class URL extends Type {
       return string;
    }
 
-   public final String toString(Object value)
+   public String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
       return (String) value;

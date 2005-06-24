@@ -178,7 +178,7 @@ public final class GroupDescriptor extends Descriptor {
     *    where <em>group</em> is any {@link GroupDescriptor} instance found in
     *    <code>members</code> (at any level).
     */
-   private final void addTargetsByCRC(Descriptor[] members)
+   private void addTargetsByCRC(Descriptor[] members)
    throws NullPointerException {
 
       int size = members.length;

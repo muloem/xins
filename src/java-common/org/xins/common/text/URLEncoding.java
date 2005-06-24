@@ -157,7 +157,7 @@ public final class URLEncoding extends Object {
     * @throws NonASCIIException
     *    if a decoded character is found that has a value &gt; 127.
     */
-   public static final String decode(String s)
+   public static String decode(String s)
    throws IllegalArgumentException, FormatException, NonASCIIException {
 
       // Check preconditions
