@@ -150,7 +150,7 @@ public class ErrorCode {
          
          // Output parameters
          Element outputElement = (Element) output.get(0);
-         _outputParameters = Function.parseParameters(outputElement);
+         _outputParameters = Function.parseParameters(_reference, outputElement);
 
          // Data section
          List dataSections = outputElement.getChildElements("data");
@@ -159,7 +159,7 @@ public class ErrorCode {
          } else {
             Element dataSection = (Element) dataSections.get(0);
             // TODO String contains = dataSection.getAttribute("contains");
-            _outputDataSectionElements = Function.parseDataSectionElements(dataSection, dataSection);
+            _outputDataSectionElements = Function.parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
    }

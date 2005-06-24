@@ -237,10 +237,10 @@ public class Function {
          
          // Input parameters
          Element inputElement = (Element) input.get(0);
-         _inputParameters = parseParameters(inputElement);
+         _inputParameters = parseParameters(_reference, inputElement);
 
          // Param combos
-         _inputParamCombos = parseParamCombos(inputElement, _inputParameters);
+         _inputParamCombos = parseParamCombos(_reference, inputElement, _inputParameters);
          
          // Data section
          List dataSections = inputElement.getChildElements("data");
@@ -249,7 +249,7 @@ public class Function {
          } else {
             Element dataSection = (Element) dataSections.get(0);
             // TODO String contains = dataSection.getAttribute("contains");
-            _inputDataSectionElements = parseDataSectionElements(dataSection, dataSection);
+            _inputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
       
@@ -275,10 +275,10 @@ public class Function {
          }
          
          // Output parameters
-         _outputParameters = parseParameters(outputElement);
+         _outputParameters = parseParameters(_reference, outputElement);
 
          // Param combos
-         _outputParamCombos = parseParamCombos(outputElement, _outputParameters);
+         _outputParamCombos = parseParamCombos(_reference, outputElement, _outputParameters);
          
          // Data section
          List dataSections = outputElement.getChildElements("data");
@@ -287,12 +287,12 @@ public class Function {
          } else {
             Element dataSection = (Element) dataSections.get(0);
             // TODO String contains = dataSection.getAttribute("contains");
-            _outputDataSectionElements = parseDataSectionElements(dataSection, dataSection);
+            _outputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
    }
    
-   static DataSectionElement[] parseDataSectionElements(Element topElement, Element dataSection) {
+   static DataSectionElement[] parseDataSectionElements(Class reference, Element topElement, Element dataSection) {
       List dataSectionContains = topElement.getChildElements("contains");
       if (!dataSectionContains.isEmpty()) {
          Element containsElement = (Element) dataSectionContains.get(0);
@@ -303,7 +303,7 @@ public class Function {
          while (itContained.hasNext()) {
             Element containedElement = (Element) itContained.next();
             String name = containedElement.getAttribute("element");
-            DataSectionElement dataSectionElement = getDataSectionElement(name, dataSection);
+            DataSectionElement dataSectionElement = getDataSectionElement(reference, name, dataSection);
             dataSectionElements[i++] = dataSectionElement;
          }
          return dataSectionElements;
@@ -312,7 +312,7 @@ public class Function {
       }
    }
    
-   static DataSectionElement getDataSectionElement(String name, Element dataSection) {
+   static DataSectionElement getDataSectionElement(Class reference, String name, Element dataSection) {
       Iterator itElements = dataSection.getChildElements("element").iterator();
       while (itElements.hasNext()) {
          Element nextElement = (Element) itElements.next();
@@ -321,7 +321,7 @@ public class Function {
             
             String description = ((Element) nextElement.getChildElements("description").get(0)).getText();
             
-            DataSectionElement[] subElements = parseDataSectionElements(nextElement, dataSection);
+            DataSectionElement[] subElements = parseDataSectionElements(reference, nextElement, dataSection);
             
             boolean isPcdataEnable = false;
             List dataSectionContains = nextElement.getChildElements("contains");
@@ -337,7 +337,7 @@ public class Function {
             int attributesCount = attributesList.size();
             Parameter[] attributes = new Parameter[attributesCount];
             for (int i = 0; i < attributesCount; i++) {
-               attributes[i] = parseParameter((Element) attributesList.get(i));
+               attributes[i] = parseParameter(reference, (Element) attributesList.get(i));
             }
             
             DataSectionElement result = new DataSectionElement(nextName, description, isPcdataEnable, subElements, attributes);
@@ -347,28 +347,28 @@ public class Function {
       return null;
    }
    
-   static Parameter parseParameter(Element paramElement) {
+   static Parameter parseParameter(Class reference, Element paramElement) {
       String parameterName = paramElement.getAttribute("name");
       String parameterTypeName = paramElement.getAttribute("type");
       boolean requiredParameter = "true".equals(paramElement.getAttribute("required"));
       String parameterDescription = ((Element) paramElement.getChildElements("description").get(0)).getText();
-      Parameter parameter = new Parameter(parameterName, parameterTypeName, requiredParameter, parameterDescription);
+      Parameter parameter = new Parameter(reference ,parameterName, parameterTypeName, requiredParameter, parameterDescription);
       return parameter;
    }
    
-   static Parameter[] parseParameters(Element topElement) {
+   static Parameter[] parseParameters(Class reference, Element topElement) {
       List parametersList = topElement.getChildElements("param");
       Parameter[] parameters = new Parameter[parametersList.size()];
       Iterator itParameters = parametersList.iterator();
       int i = 0;
       while (itParameters.hasNext()) {
          Element nextParameter = (Element) itParameters.next();
-         parameters[i++] = parseParameter(nextParameter);
+         parameters[i++] = parseParameter(reference, nextParameter);
       }
       return parameters;
    }
    
-   static ParamCombo[] parseParamCombos(Element topElement, Parameter[] parameters) {
+   static ParamCombo[] parseParamCombos(Class reference, Element topElement, Parameter[] parameters) {
       
       // The parameter table is needed for the param combo.
       Map parameterTable = new HashMap();
