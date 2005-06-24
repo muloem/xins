@@ -8,7 +8,6 @@ package org.xins.common.service;
 
 import java.io.IOException;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**

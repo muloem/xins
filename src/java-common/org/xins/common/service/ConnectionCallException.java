@@ -6,8 +6,6 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.Log;
-
 /**
  * Exception that indicates that a connection to a service could not be
  * established.

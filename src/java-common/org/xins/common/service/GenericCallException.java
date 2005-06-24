@@ -6,8 +6,6 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.Log;
-
 /**
  * Generic call exception, not related to any particular kind of service.
  *

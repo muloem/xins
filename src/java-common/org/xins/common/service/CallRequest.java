@@ -6,8 +6,6 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.Log;
-
 /**
  * Abstraction of a request for a <code>ServiceCaller</code> call. Specific
  * service callers typically only accept a single type of request, derived

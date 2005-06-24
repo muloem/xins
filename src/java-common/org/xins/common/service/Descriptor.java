@@ -8,8 +8,6 @@ package org.xins.common.service;
 
 import java.util.Iterator;
 
-import org.xins.common.Log;
-
 /**
  * Descriptor for a service or group of services.
  *

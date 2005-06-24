@@ -6,8 +6,6 @@
  */
 package org.xins.common.http;
 
-import org.xins.common.Log;
-
 import org.xins.common.service.TargetDescriptor;
 
 /**

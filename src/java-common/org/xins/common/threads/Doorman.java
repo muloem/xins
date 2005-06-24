@@ -12,12 +12,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
-
-import org.xins.common.text.TextUtils;
 
 import org.xins.logdoc.ExceptionUtils;
 

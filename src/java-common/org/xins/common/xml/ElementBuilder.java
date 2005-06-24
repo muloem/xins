@@ -6,7 +6,6 @@
  */
 package org.xins.common.xml;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 

@@ -6,8 +6,6 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.Log;
-
 /**
  * Exception that indicates that data was not received on a socket within a
  * designated time-out period.

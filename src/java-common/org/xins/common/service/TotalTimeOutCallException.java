@@ -6,8 +6,6 @@
  */
 package org.xins.common.service;
 
-import org.xins.common.Log;
-
 /**
  * Exception that indicates the total time-out for a request was reached, so
  * the request was aborted.
