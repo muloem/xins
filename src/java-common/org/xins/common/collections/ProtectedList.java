@@ -272,8 +272,18 @@ public final class ProtectedList extends AbstractList implements Cloneable {
     *    a new clone of this object, never <code>null</code>.
     */
    public Object clone() {
-      ProtectedList clone = new ProtectedList(_secretKey);
-      clone._list = (ArrayList)_list.clone();
+
+      // Use Object.clone() to create a shallow clone
+      ProtectedList clone = null;
+      try {
+         clone = (ProtectedList) super.clone();
+      } catch(CloneNotSupportedException e){
+         // should never happen
+      }
+
+      // For a deep clone, duplicate the list as well
+      clone._list = (ArrayList) _list.clone();
+
       return clone;
    }
 }
