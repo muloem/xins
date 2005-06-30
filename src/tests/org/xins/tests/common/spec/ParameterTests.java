@@ -55,7 +55,7 @@ public class ParameterTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API();
+      allInOneAPI = new API(null); // TODO
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
       parameter = function.getInputParameters()[0];
@@ -86,14 +86,14 @@ public class ParameterTests extends TestCase {
    /**
     * @see org.xins.common.spec.Parameter#getType()
     */
-   public void testParameterGetType() {
+   public void testParameterGetType() throws Exception {
       assertTrue(parameter.getType() instanceof Text);
    }
 
    /**
     * @see org.xins.common.spec.Parameter#getType()
     */
-   public void testParameterGetTypeUserDefined() {
+   public void testParameterGetTypeUserDefined() throws Exception {
       for (int i = 0; i < userDefinedParams.length; i++) {
          Parameter userDefinedParameter = userDefinedParams[i];
          if ("inputIP".equals(userDefinedParameter.getName())) {

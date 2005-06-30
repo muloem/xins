@@ -60,7 +60,7 @@ public class ParamComboTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API();
+      allInOneAPI = new API(null);
       String functionName = "ParamCombo";
       Function function = allInOneAPI.getFunction(functionName);
       parameterCombo = function.getInputParamCombos();

@@ -59,7 +59,7 @@ public class APITests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API();
+      allInOneAPI = new API(null); // TODO
    }
 
 
@@ -88,7 +88,7 @@ public class APITests extends TestCase {
     * @see org.xins.common.spec.API#getFunctions()
     * @see org.xins.common.spec.API#getFunction(String)
     */
-   public void testAPIGetFunctions() {
+   public void testAPIGetFunctions() throws Exception {
       ArrayList list = new ArrayList();
       list.add("DataSection");
       list.add("DataSection2");

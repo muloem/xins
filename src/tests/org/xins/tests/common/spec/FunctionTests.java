@@ -59,14 +59,14 @@ public class FunctionTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API();
+      allInOneAPI = new API(null);
    }
 
 
    /**
     * @see org.xins.common.spec.Function#getName()
     */
-   public void testFunctionsGetName() {
+   public void testFunctionsGetName() throws Exception {
 
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
@@ -76,7 +76,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getDescription()
     */
-   public void testFunctionsGetDescription() {
+   public void testFunctionsGetDescription() throws Exception {
 
       String functionName = "DataSection";
       String functionDescription = "An example of a data section.";
@@ -87,7 +87,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getInputParameters()
     */
-   public void testFunctionsGetInputParameters() {
+   public void testFunctionsGetInputParameters() throws Exception {
 
       String functionName = "SimpleOutput";
       Function function = allInOneAPI.getFunction(functionName);
@@ -115,7 +115,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getOutputParameters()
     */
-   public void testFunctionsGetOutputParameters() {
+   public void testFunctionsGetOutputParameters() throws Exception {
 
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
@@ -143,7 +143,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getErrorCodes()
     */
-   public void testFunctionsGetErrorCodes() {
+   public void testFunctionsGetErrorCodes() throws Exception {
 
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
@@ -168,7 +168,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getInputDataSectionElements()
     */
-   public void testFunctionsGetInputDataSectionElements() {
+   public void testFunctionsGetInputDataSectionElements() throws Exception {
 
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
@@ -194,7 +194,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getOutputDataSectionElements()
     */
-   public void testFunctionsGetOutputDataSectionElements() {
+   public void testFunctionsGetOutputDataSectionElements() throws Exception {
 
       String functionName = "InvalidResponse";
       Function function = allInOneAPI.getFunction(functionName);
@@ -221,7 +221,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getInputParamCombos()
     */
-   public void testFunctionsInputParamCombos() {
+   public void testFunctionsInputParamCombos() throws Exception {
 
       String functionName = "InvalidResponse";
       Function function = allInOneAPI.getFunction(functionName);
@@ -254,7 +254,7 @@ public class FunctionTests extends TestCase {
    /**
     * @see org.xins.common.spec.Function#getOutputParamCombos()
     */
-   public void testFunctionsOutputParamCombos() {
+   public void testFunctionsOutputParamCombos() throws Exception {
 
       String functionName = "InvalidResponse";
       Function function = allInOneAPI.getFunction(functionName);

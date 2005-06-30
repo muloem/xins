@@ -86,7 +86,7 @@ public class ErrorCodeTests extends TestCase {
    /**
     * @see org.xins.common.spec.ErrorCode#getOutputParameters()
     */
-   public void testErrorCodeGetOutputParameters() {
+   public void testErrorCodeGetOutputParameters() throws Exception {
       Parameter[] outputParam = errorCode.getOutputParameters();
       
       assertEquals(1, outputParam.length);
