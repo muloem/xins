@@ -1011,6 +1011,7 @@ APIs in this project are:
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java" />
+					<zipfileset dir="{$api_specsdir}" includes="*.xml *.fnc *.typ *.rcd" prefix="specs" />
 				</war>
 				<checksum file="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
@@ -1344,8 +1345,10 @@ APIs in this project are:
 			</manifest>
 			<jar
 			destfile="{$project_home}/build/capis/{$api}-capi.jar"
-			basedir="{$project_home}/build/classes-capi/{$api}"
-			manifest="{$project_home}/build/capis/{$api}-MANIFEST.MF" />
+			manifest="{$project_home}/build/capis/{$api}-MANIFEST.MF">
+				<fileset dir="{$project_home}/build/classes-capi/{$api}" includes="**/*.class" />
+				<zipfileset dir="{$api_specsdir}" includes="*.xml *.fnc *.typ *.rcd" prefix="specs" />
+			</jar>
 		</target>
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
