@@ -156,6 +156,9 @@ ${sf.file}</fail>
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
 		<property name="javadoc.srcdir.xins" value="src/java-common:build/src/java-common:src/java-server-framework:build/src/java-server-framework:src/java-client-framework:build/src/java-client-framework" />
+
+		<!-- Unit testing-related properties -->
+      <property name="testclass" value="org.xins.tests.AllTests" />
 	</target>
 
 	<target name="version" depends="-init">
@@ -479,7 +482,7 @@ ${sf.file}</fail>
 		<junit fork="true" printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
-			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
 				<pathelement location="build/classes/tests" />
 				<pathelement location="build/xins-common.jar" />
@@ -515,7 +518,7 @@ ${sf.file}</fail>
 		<java fork="true" classname="junit.swingui.TestRunner">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<arg value="-noloading"/>
-			<arg value="org.xins.tests.AllTests"/>
+			<arg value="${testclass}"/>
 			<classpath>
 				<pathelement location="build/classes/tests" />
 				<pathelement location="build/xins-common.jar" />
@@ -585,14 +588,14 @@ ${sf.file}</fail>
 		</instrument>
 	</target>
 
-	<target name="coverage" depends="-junit-task, classes-tests, -prepare-coverage">
+	<target name="coverage" depends="-junit-task,classes-tests,-prepare-coverage">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
 		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="false">
 			<sysproperty key="user.dir" value="${basedir}" />
 			<formatter type="xml" />
-			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
 				<pathelement location="build/instrumented-classes/java-client" />
 				<pathelement location="build/instrumented-classes/java-server" />
@@ -1243,7 +1246,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo message="   refer to the directory containing the Docbook XSLT files."        />
 	</target>
 
-	<target name="netbeans-debug" depends="-junit-task, classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
+	<target name="netbeans-debug" depends="-junit-task,classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
 		<nbjpdastart name="XINS tests" addressproperty="jpda.address" transport="dt_socket">
 			<classpath>
 				<pathelement location="build/classes/tests" />
@@ -1274,7 +1277,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
-			<test name="org.xins.tests.AllTests" todir="build/testresults/xml" outfile="testresults"/>
+			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
 				<pathelement location="build/classes/tests" />
 				<pathelement location="build/xins-common.jar" />
