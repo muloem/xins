@@ -47,6 +47,9 @@ public class Function {
       _functionName = functionName;
       try {
          InputStream in = reference.getResourceAsStream("/specs/" + functionName + ".fnc");
+         if (in == null) {
+            throw new IllegalArgumentException("No function named \"" + functionName +"\" found in the specifications.");
+         }
          InputStreamReader reader = new InputStreamReader(in);
          parseFunction(reader);
          reader.close();
