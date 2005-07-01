@@ -216,6 +216,11 @@ public abstract class AbstractCAPI extends Object {
     */
    private final XINSServiceCaller _caller;
 
+   /**
+    * The API specification. This field can be <code>null</code> 
+    * if the CAPI does not contain the specifications.
+    */
+   private API _apiSpecification;
 
    //-------------------------------------------------------------------------
    // Methods
@@ -312,7 +317,10 @@ public abstract class AbstractCAPI extends Object {
     * @since XINS 1.3.0
     */
    public final API getAPISpecification() throws InvalidSpecificationException {
-      return new org.xins.common.spec.API(getClass());
+      if (_apiSpecification == null) {
+         _apiSpecification = new API(getClass());
+      }
+      return _apiSpecification;
    }
 
    /**

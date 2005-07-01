@@ -252,6 +252,11 @@ implements DefaultResultCodes {
     */
    private boolean _statisticsLocked;
 
+   /**
+    * The API specification.
+    */
+   private org.xins.common.spec.API _apiSpecification;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -778,7 +783,10 @@ implements DefaultResultCodes {
     * @since XINS 1.3.0
     */
    public final org.xins.common.spec.API getAPISpecification() throws InvalidSpecificationException {
-      return new org.xins.common.spec.API(getClass());
+      if (_apiSpecification == null) {
+         _apiSpecification = new org.xins.common.spec.API(getClass());
+      }
+      return _apiSpecification;
    }
 
 
