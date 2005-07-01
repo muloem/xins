@@ -118,11 +118,19 @@ final class SOAPCallingConvention extends CallingConvention {
          }
          Element functionElem = (Element) functionsElem.get(0);
          String functionName = functionElem.getLocalName();
-         
+
+         Element parametersElem = null;
+         List parametersList = functionElem.getChildElements("parameters");
+         if (parametersList.size() == 0) {
+            parametersElem = functionElem;
+         } else {
+            parametersElem = (Element) parametersList.get(0);
+         }
+
          BasicPropertyReader parameters = new BasicPropertyReader();
-         Iterator parametersElem = functionElem.getChildElements().iterator();
-         while (parametersElem.hasNext()) {
-            Element parameterElem = (Element) parametersElem.next();
+         Iterator itParameters = parametersElem.getChildElements().iterator();
+         while (itParameters.hasNext()) {
+            Element parameterElem = (Element) itParameters.next();
             String parameterName = parameterElem.getLocalName();
             String parameterValue = parameterElem.getText();
             parameters.set(parameterName, parameterValue);
