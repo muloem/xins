@@ -77,12 +77,12 @@ final class SOAPCallingConvention extends CallingConvention {
       // Check content type
       // TODO: Support other character sets as well
       String contentType = httpRequest.getContentType();
-      if (!contentType.startsWith("application/soap+xml;")) {
+      /*if (!contentType.startsWith("application/soap+xml;")) {
          final String DETAIL = "Incorrect content type \""
                              + contentType
                              + "\".";
          throw new InvalidRequestException(DETAIL);
-      }
+      }*/
 
       try {
 
