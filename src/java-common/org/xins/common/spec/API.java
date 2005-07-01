@@ -6,15 +6,18 @@
  */
 package org.xins.common.spec;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
 import org.xins.common.xml.Element;
@@ -31,6 +34,33 @@ public class API {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+   
+   /**
+    * Gets the content of the file without the DTD.
+    */
+   static Reader getReader(Class reference, String fileName) throws IOException {
+      InputStream in = reference.getResourceAsStream("/specs/" + fileName);
+      if (in == null) {
+         throw new IllegalArgumentException("File \"" + fileName +"\" not found in the specifications.");
+      }
+      BufferedReader contentReader = new BufferedReader(new InputStreamReader(in));
+      FastStringBuffer content = new FastStringBuffer(1024);
+      String nextLine = "";
+      while (nextLine != null) {
+         nextLine = contentReader.readLine();
+         if (nextLine != null) {
+            content.append(nextLine);
+            content.append("\n");
+         }
+      }
+      String xmlContentString = content.toString();
+      int beginDTD = xmlContentString.indexOf("<!DOCTYPE ");
+      int endDTD = xmlContentString.indexOf(".dtd\">", beginDTD) + 6;
+      String xmlWithoutDTD = xmlContentString.substring(0, beginDTD) +
+            xmlContentString.substring(endDTD);
+      StringReader reader = new StringReader(xmlWithoutDTD.trim());
+      return reader;
+   }
    
    //-------------------------------------------------------------------------
    // Class fields
@@ -49,11 +79,8 @@ public class API {
    public API(Class reference) throws InvalidSpecificationException {
       _reference = reference;
       try {
-         InputStream in = reference.getResourceAsStream("/specs/api.xml");
-         InputStreamReader reader = new InputStreamReader(in);
+         Reader reader = getReader(reference, "api.xml");
          parseApi(reader);
-         reader.close();
-         in.close();
       } catch (IOException ioe) {
          throw new InvalidSpecificationException("I/O Exception:" + ioe.getMessage());
       }
@@ -177,7 +204,7 @@ public class API {
       try {
          api = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException(pe.getMessage());
+         throw new InvalidSpecificationException("[API] " + pe.getMessage());
       }
       _apiName = api.getAttribute("name");
       _owner = api.getAttribute("owner");

@@ -175,7 +175,7 @@ public class Parameter {
             truncatePos = className.lastIndexOf(".api.APIImpl");
          }
          try {
-            String typeClassName = className.substring(0, truncatePos) + ".types." + typeName + ".class";
+            String typeClassName = className.substring(0, truncatePos) + ".types." + typeName;
             Class typeClass = Class.forName(typeClassName);
             Type type = (Type) typeClass.getField("SINGLETON").get(null);
             return type;

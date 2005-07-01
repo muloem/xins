@@ -46,14 +46,8 @@ public class Function {
       _reference = reference;
       _functionName = functionName;
       try {
-         InputStream in = reference.getResourceAsStream("/specs/" + functionName + ".fnc");
-         if (in == null) {
-            throw new IllegalArgumentException("No function named \"" + functionName +"\" found in the specifications.");
-         }
-         InputStreamReader reader = new InputStreamReader(in);
+         Reader reader = API.getReader(reference, functionName + ".fnc");
          parseFunction(reader);
-         reader.close();
-         in.close();
       } catch (IOException ioe) {
          throw new InvalidSpecificationException(ioe.getMessage());
       }
@@ -227,7 +221,7 @@ public class Function {
       try {
          function = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException(pe.getMessage());
+         throw new InvalidSpecificationException("[Function:" + _functionName + "] " + pe.getMessage());
       }
       Element descriptionElement = (Element) function.getChildElements("description").get(0);
       _description = descriptionElement.getText();

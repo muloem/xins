@@ -44,11 +44,8 @@ public class ErrorCode {
       _reference = reference;
       
       try {
-         InputStream in = reference.getResourceAsStream("/specs/" + name + ".rcd");
-         InputStreamReader reader = new InputStreamReader(in);
+         Reader reader = API.getReader(reference, name + ".rcd");
          parseErrorCode(reader);
-         reader.close();
-         in.close();
       } catch (IOException ioe) {
          throw new InvalidSpecificationException(ioe.getMessage());
       }
@@ -138,7 +135,7 @@ public class ErrorCode {
       try {
          errorCode = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException(pe.getMessage());
+         throw new InvalidSpecificationException("[ErrorCode:" + _errorCodeName + "] " + pe.getMessage());
       }
       Element descriptionElement = (Element) errorCode.getChildElements("description").get(0);
       _description = descriptionElement.getText();
