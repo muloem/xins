@@ -44,17 +44,16 @@
 		</xsl:variable>
 		
 		<definitions name="{$apiname}"
-			targetNamespace="{$location}"
+			targetNamespace="{$location}/{$apiname}.wsdl"
 			xmlns="http://schemas.xmlsoap.org/wsdl/"
 			xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:tns="http://localhost:8080/">
+			xmlns:tns="http://localhost:8080/apiname.wsdl">
 			<types>
 				<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-										elementFormDefault="qualified"
-										attributeFormDefault="unqualified">
+										targetNamespace="{$location}/{$apiname}.wsdl">
 					
 					<!-- Write the elements -->
 					<xsl:apply-templates select="function" mode="elements">
@@ -78,10 +77,11 @@
 				<documentation>
 					<xsl:value-of select="description" />
 				</documentation>
-        <soapbind:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
 				<xsl:apply-templates select="function" mode="bindings">
 					<xsl:with-param name="location" select="$location" />
+					<xsl:with-param name="apiname" select="$apiname" />
 				</xsl:apply-templates>
+        <soapbind:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
 			</binding>
 			
 			<!-- Write the services -->
@@ -184,6 +184,7 @@
 	<xsl:template match="function" mode="bindings">
 	
 		<xsl:param name="location" />
+		<xsl:param name="apiname" />
 		
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
@@ -192,12 +193,12 @@
 			<documentation>
 				<xsl:value-of select="document($function_file)/function/description" />
 			</documentation>
-			<soapbind:operation soapAction="{$location}{$functionname}" />
+			<soapbind:operation soapAction="{$location}/{$functionname}" />
 			<input>
-				<soapbind:body use="literal"/>
+				<soapbind:body use="literal" namespace="{$location}/{$apiname}.wsdl" />
 			</input>
 			<output>
-				<soapbind:body use="literal"/>
+				<soapbind:body use="literal" namespace="{$location}/{$apiname}.wsdl" />
 			</output>
 			<xsl:for-each select="document($function_file)/function/resultcode-ref">
 				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
