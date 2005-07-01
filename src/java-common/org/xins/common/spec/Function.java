@@ -295,7 +295,7 @@ public class Function {
       }
    }
    
-   static DataSectionElement[] parseDataSectionElements(Class reference, Element topElement, Element dataSection) {
+   static DataSectionElement[] parseDataSectionElements(Class reference, Element topElement, Element dataSection) throws InvalidSpecificationException {
       List dataSectionContains = topElement.getChildElements("contains");
       if (!dataSectionContains.isEmpty()) {
          Element containsElement = (Element) dataSectionContains.get(0);
@@ -315,7 +315,7 @@ public class Function {
       }
    }
    
-   static DataSectionElement getDataSectionElement(Class reference, String name, Element dataSection) {
+   static DataSectionElement getDataSectionElement(Class reference, String name, Element dataSection) throws InvalidSpecificationException {
       Iterator itElements = dataSection.getChildElements("element").iterator();
       while (itElements.hasNext()) {
          Element nextElement = (Element) itElements.next();
@@ -350,7 +350,7 @@ public class Function {
       return null;
    }
    
-   static Parameter parseParameter(Class reference, Element paramElement) {
+   static Parameter parseParameter(Class reference, Element paramElement) throws InvalidSpecificationException {
       String parameterName = paramElement.getAttribute("name");
       String parameterTypeName = paramElement.getAttribute("type");
       boolean requiredParameter = "true".equals(paramElement.getAttribute("required"));
@@ -359,7 +359,7 @@ public class Function {
       return parameter;
    }
    
-   static Parameter[] parseParameters(Class reference, Element topElement) {
+   static Parameter[] parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
       List parametersList = topElement.getChildElements("param");
       Parameter[] parameters = new Parameter[parametersList.size()];
       Iterator itParameters = parametersList.iterator();

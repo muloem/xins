@@ -55,7 +55,7 @@ public class API {
          reader.close();
          in.close();
       } catch (IOException ioe) {
-         throw new InvalidSpecificationException(ioe.getMessage());
+         throw new InvalidSpecificationException("I/O Exception:" + ioe.getMessage());
       }
    }
    
@@ -85,12 +85,8 @@ public class API {
    private String _description;
    
    /**
-    * List of the API functions.
-    */
-   private List _functionNames = new ArrayList();
-   
-   /**
     * Cache for the functions of the API.
+    * The key is the name of the function, the value is the Function object.
     */
    private Map _functions = new HashMap();
 
@@ -138,13 +134,16 @@ public class API {
     * @return
     *    The function specifications, never <code>null</code>.
     */
-   public Function[] getFunctions() throws InvalidSpecificationException {
+   public Function[] getFunctions() {
       
-      int functionsCount = _functionNames.size();
+      int functionsCount = _functions.size();
       Function[] result = new Function[functionsCount];
       
-      for (int i = 0; i < functionsCount; i++) {
-         result[i] = getFunction((String) _functionNames.get(i));
+      Iterator itFunctions = _functions.values().iterator();
+      int i = 0;
+      while (itFunctions.hasNext()) {
+         Function nextFunction = (Function) itFunctions.next();
+         result[i++] = nextFunction;
       }
       return result;
    }
@@ -161,13 +160,12 @@ public class API {
     * @throws IllegalArgumentException
     *    If the API does not define any function for the given name.
     */
-   public Function getFunction(String functionName) throws InvalidSpecificationException {
+   public Function getFunction(String functionName) {
 
       Function function = (Function) _functions.get(functionName);
       
       if (function == null) {
-         function = new Function(functionName, _reference);
-         _functions.put(functionName, function);
+         throw new IllegalArgumentException("Function \"" + functionName + "\" not found.");
       }
       
       return function;
@@ -188,7 +186,9 @@ public class API {
       Iterator functions = api.getChildElements("function").iterator();
       while (functions.hasNext()) {
          Element nextFunction = (Element) functions.next();
-         _functionNames.add(nextFunction.getAttribute("name"));
+         String functionName = nextFunction.getAttribute("name");
+         Function function = new Function(functionName, _reference);
+         _functions.put(functionName, function);
       }
    }
 }
