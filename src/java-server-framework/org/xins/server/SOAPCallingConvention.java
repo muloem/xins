@@ -95,7 +95,7 @@ final class SOAPCallingConvention extends CallingConvention {
             content.append("\n");
          }
 
-         String contentString = content.toString();
+         String contentString = content.toString().trim();
          ElementParser parser = new ElementParser();
          Element envelopElem = parser.parse(new StringReader(contentString));
          
