@@ -11,10 +11,13 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.API;
 import org.xins.common.spec.Function;
 import org.xins.common.spec.ParamCombo;
 import org.xins.common.spec.Parameter;
+
+import com.mycompany.allinone.capi.CAPI;
 
 /**
  * API spec TestCase. The testcase assumes that the example api allinone is
@@ -60,7 +63,10 @@ public class ParamComboTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API(null);
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+      CAPI allInOne = new CAPI(target);
+      allInOneAPI = allInOne.getAPISpecification();
+
       String functionName = "ParamCombo";
       Function function = allInOneAPI.getFunction(functionName);
       parameterCombo = function.getInputParamCombos();
@@ -69,7 +75,7 @@ public class ParamComboTests extends TestCase {
          if (combo.isExclusiveOr()) {
             exclusiveCombo = parameterCombo[i];
          } else if (combo.isInclusiveOr()) {
-            inclusiveCombo = parameterCombo[i];	
+            inclusiveCombo = parameterCombo[i];
          } else if (combo.isAllOrNone()) {
             allornoneCombo = parameterCombo[i];
          }
@@ -83,7 +89,7 @@ public class ParamComboTests extends TestCase {
    public void testErrorCodeIsExclusiveOr() {
       assertTrue(exclusiveCombo.isExclusiveOr());
       assertFalse(inclusiveCombo.isExclusiveOr());
-      assertFalse(allornoneCombo.isExclusiveOr());      
+      assertFalse(allornoneCombo.isExclusiveOr());
    }
 
    /**
@@ -92,16 +98,16 @@ public class ParamComboTests extends TestCase {
    public void testErrorCodeIsInclusiveOr() {
       assertTrue(inclusiveCombo.isInclusiveOr());
       assertFalse(exclusiveCombo.isInclusiveOr());
-      assertFalse(allornoneCombo.isInclusiveOr());      
+      assertFalse(allornoneCombo.isInclusiveOr());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#isAllOrNone()
     */
    public void testErrorCodeIsAllOrNode() {
-      assertTrue(allornoneCombo.isInclusiveOr());      
-      assertFalse(inclusiveCombo.isInclusiveOr());
-      assertFalse(exclusiveCombo.isInclusiveOr());
+      assertTrue(allornoneCombo.isAllOrNone());
+      assertFalse(inclusiveCombo.isAllOrNone());
+      assertFalse(exclusiveCombo.isAllOrNone());
    }
 
    /**

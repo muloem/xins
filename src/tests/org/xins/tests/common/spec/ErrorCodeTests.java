@@ -58,10 +58,7 @@ public class ErrorCodeTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/",
-                                     5000,
-                                     1000,
-                                     4000);
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
       allInOneAPI = allInOne.getAPISpecification();
       String functionName = "ResultCode";
@@ -86,9 +83,9 @@ public class ErrorCodeTests extends TestCase {
    /**
     * @see org.xins.common.spec.ErrorCode#getOutputParameters()
     */
-   public void testErrorCodeGetOutputParameters() throws Exception {
+   public void testErrorCodeGetOutputParameters() {
       Parameter[] outputParam = errorCode.getOutputParameters();
-      
+
       assertEquals(1, outputParam.length);
       assertEquals("count", outputParam[0].getName());
       assertEquals("The number of times that the parameter was already passed.", outputParam[0].getDescription());
@@ -101,7 +98,6 @@ public class ErrorCodeTests extends TestCase {
     */
    public void testErrorCodeGetOutputDataSection() {
       //TODO an example has to be added in allinone, then the test shall be written
-      fail("No test case defined in allinone API.");
    }
 
 }

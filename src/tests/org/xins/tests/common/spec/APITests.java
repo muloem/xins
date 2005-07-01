@@ -7,12 +7,14 @@
 package org.xins.tests.common.spec;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.API;
 import org.xins.common.spec.Function;
+
+import com.mycompany.allinone.capi.CAPI;
 
 /**
  * API spec TestCase. The testcase assumes that the example api allinone is
@@ -34,10 +36,6 @@ public class APITests extends TestCase {
     */
    private static API allInOneAPI;
 
-   /**
-    * Hu TODO.
-    */
-   private static List functionNameList;
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -59,7 +57,9 @@ public class APITests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API(null); // TODO
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+      CAPI allInOne = new CAPI(target);
+      allInOneAPI = allInOne.getAPISpecification();
    }
 
 
@@ -87,8 +87,9 @@ public class APITests extends TestCase {
    /**
     * @see org.xins.common.spec.API#getFunctions()
     * @see org.xins.common.spec.API#getFunction(String)
+    *
     */
-   public void testAPIGetFunctions() throws Exception {
+   public void testAPIGetFunctions() {
       ArrayList list = new ArrayList();
       list.add("DataSection");
       list.add("DataSection2");
@@ -97,6 +98,7 @@ public class APITests extends TestCase {
       list.add("InvalidResponse");
       list.add("Logdoc");
       list.add("ParamCombo");
+      list.add("ParamComboNotAll");
       list.add("ResultCode");
       list.add("RuntimeProps");
       list.add("SimpleOutput");
@@ -120,53 +122,13 @@ public class APITests extends TestCase {
       int i = 0;
       try {
          for (i = 0; i < list.size(); i++) {
-            String functionName = (String)list.get(i);
-            assertEquals(allInOneAPI.getFunction(functionName).getName(),functionName);
+            String functionName = (String) list.get(i);
+            assertEquals(allInOneAPI.getFunction(functionName).getName(), functionName);
          }
       } catch (IllegalArgumentException exc) {
          fail("Could not find the function " + list.get(i) + " in allInOneAPI.");
       }
    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 

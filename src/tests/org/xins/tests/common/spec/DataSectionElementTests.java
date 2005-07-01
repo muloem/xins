@@ -8,12 +8,15 @@ package org.xins.tests.common.spec;
 
 import junit.framework.TestCase;
 
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.API;
 import org.xins.common.spec.DataSectionElement;
 import org.xins.common.spec.Parameter;
 import org.xins.common.types.standard.Int32;
 import org.xins.common.types.standard.Int64;
 import org.xins.common.types.standard.Text;
+
+import com.mycompany.allinone.capi.CAPI;
 
 /**
  * API spec TestCase. The testcase assumes that the example api allinone is
@@ -55,7 +58,10 @@ public class DataSectionElementTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API(null);
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+      CAPI allInOne = new CAPI(target);
+      allInOneAPI = allInOne.getAPISpecification();
+
    }
 
    /**
@@ -70,7 +76,7 @@ public class DataSectionElementTests extends TestCase {
    /**
     * @see org.xins.common.spec.DataSectionElement#getDescription()
     */
-   public void testDataSectionGetDescription() throws Exception {
+   public void testDataSectionGetDescription() {
       DataSectionElement element =
          allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
       assertEquals("A user.", element.getDescription());
@@ -79,7 +85,7 @@ public class DataSectionElementTests extends TestCase {
    /**
     * @see org.xins.common.spec.DataSectionElement#getSubElements()
     */
-   public void testDataSectionGetSubElements() throws Exception {
+   public void testDataSectionGetSubElements() {
       DataSectionElement element =
          allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
       assertEquals(1, element.getSubElements().length);
@@ -89,7 +95,7 @@ public class DataSectionElementTests extends TestCase {
    /**
     * @see org.xins.common.spec.DataSectionElement#getAttributes()
     */
-   public void testDataSectionGetAttributes() throws Exception {
+   public void testDataSectionGetAttributes() {
       DataSectionElement element =
          allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
 
@@ -106,11 +112,11 @@ public class DataSectionElementTests extends TestCase {
    /**
     * @see org.xins.common.spec.DataSectionElement#getAttributes()
     */
-   public void testDataSectionGetAttributesSubElement() throws Exception {
+   public void testDataSectionGetAttributesSubElement() {
       DataSectionElement element =
          allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
       DataSectionElement subElement = element.getSubElements()[0];
-      Parameter[] subElementAttributes = element.getAttributes();
+      Parameter[] subElementAttributes = subElement.getAttributes();
 
       for (int i = 0; i < subElementAttributes.length; i++) {
          Parameter attribute = subElementAttributes[i];
@@ -131,7 +137,7 @@ public class DataSectionElementTests extends TestCase {
    /**
     * @see org.xins.common.spec.DataSectionElement#isPCDataAllowed()
     */
-   public void testDataSectionIsPCDataAllowed() throws Exception {
+   public void testDataSectionIsPCDataAllowed() {
       DataSectionElement element =
          allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
 

@@ -8,10 +8,13 @@ package org.xins.tests.common.spec;
 
 import junit.framework.TestCase;
 
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.API;
 import org.xins.common.spec.Function;
 import org.xins.common.spec.Parameter;
 import org.xins.common.types.standard.Text;
+
+import com.mycompany.allinone.capi.CAPI;
 
 /**
  * API spec TestCase. The testcase assumes that the example api allinone is
@@ -55,7 +58,10 @@ public class ParameterTests extends TestCase {
     */
    protected void setUp()
    throws Exception {
-      allInOneAPI = new API(null); // TODO
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+      CAPI allInOne = new CAPI(target);
+      allInOneAPI = allInOne.getAPISpecification();
+
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
       parameter = function.getInputParameters()[0];
@@ -86,14 +92,14 @@ public class ParameterTests extends TestCase {
    /**
     * @see org.xins.common.spec.Parameter#getType()
     */
-   public void testParameterGetType() throws Exception {
+   public void testParameterGetType() {
       assertTrue(parameter.getType() instanceof Text);
    }
 
    /**
     * @see org.xins.common.spec.Parameter#getType()
     */
-   public void testParameterGetTypeUserDefined() throws Exception {
+   public void testParameterGetTypeUserDefined() {
       for (int i = 0; i < userDefinedParams.length; i++) {
          Parameter userDefinedParameter = userDefinedParams[i];
          if ("inputIP".equals(userDefinedParameter.getName())) {
@@ -112,14 +118,10 @@ public class ParameterTests extends TestCase {
             assertEquals("An example of input for a list.", userDefinedParameter.getDescription());
             assertEquals("TextList", userDefinedParameter.getType().getName());
             assertFalse(userDefinedParameter.isRequired());
-         }else {
-            fail("Contains a parameter: " + userDefinedParameter.getName() 
+         } else {
+            fail("Contains a parameter: " + userDefinedParameter.getName()
                + " which should not be there.");
          }
-
       }
    }
-
 }
-
-
