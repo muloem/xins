@@ -163,7 +163,7 @@ public class Parameter {
          }
          try {
             String typeClassName = className.substring(0, truncatePos) + ".types." + _parameterType + ".class";
-            Class typeClass = Class.forName(className);
+            Class typeClass = Class.forName(typeClassName);
             Type type = (Type) typeClass.getField("SINGLETON").get(null);
             return type;
          } catch (Exception ex) {
