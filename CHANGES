@@ -67,6 +67,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
     defines the unit tests to run. By default the value is
     'org.xins.tests.AllTests'.
 
+* Libraries:
+  - Upgrade Jakarta Commons HttpClient from 3.0-rc2 to 3.0-rc3.
+
 * Other:
   - The debug and profile targets in the NetBeans build script do not require
     Jetty anymore.
