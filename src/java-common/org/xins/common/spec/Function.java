@@ -336,7 +336,7 @@ public class Function {
                }
             }
             
-            List attributesList = nextElement.getChildElements("attributes");
+            List attributesList = nextElement.getChildElements("attribute");
             int attributesCount = attributesList.size();
             Parameter[] attributes = new Parameter[attributesCount];
             for (int i = 0; i < attributesCount; i++) {
