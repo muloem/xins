@@ -49,7 +49,8 @@
 			xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://localhost:8080/">
 			<types>
 				<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 										elementFormDefault="qualified"
@@ -73,11 +74,11 @@
 			</portType>
 			
 			<!-- Write the bindings -->
-			<binding name="{$apiname}SOAPBinding" type="{$apiname}PortType">
-				<document>
+			<binding name="{$apiname}SOAPBinding" type="tns:{$apiname}PortType">
+				<documentation>
 					<xsl:value-of select="description" />
-				</document>
-				<soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+				</documentation>
+        <soapbind:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
 				<xsl:apply-templates select="function" mode="bindings">
 					<xsl:with-param name="location" select="$location" />
 				</xsl:apply-templates>
@@ -85,7 +86,7 @@
 			
 			<!-- Write the services -->
 			<service name="{$apiname}Service">
-				<port name="{$apiname}Port" binding="{$apiname}SOAPBinding">
+				<port name="{$apiname}Port" binding="tns:{$apiname}SOAPBinding">
 					<soapbind:address location="{$location}" />
 				</port>
 			</service>
