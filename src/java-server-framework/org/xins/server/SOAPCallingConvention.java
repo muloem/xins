@@ -99,11 +99,11 @@ final class SOAPCallingConvention extends CallingConvention {
          ElementParser parser = new ElementParser();
          Element envelopElem = parser.parse(new StringReader(contentString));
          
-         if (envelopElem.getLocalName().equals("soap:Envelope")) {
+         if (!envelopElem.getLocalName().equals("Envelope")) {
             throw new ParseException("Root element is not a SOAP envelop.");
          }
          
-         List bodiesElem = envelopElem.getChildElements("soap:Body");
+         List bodiesElem = envelopElem.getChildElements("Body");
          if (bodiesElem.size() == 0) {
             throw new ParseException("No body specified in the SOAP envelop.");
          } else if (bodiesElem.size() > 1) {
@@ -117,16 +117,13 @@ final class SOAPCallingConvention extends CallingConvention {
             throw new ParseException("More than one function specified in the SOAP body.");
          }
          Element functionElem = (Element) functionsElem.get(0);
-         String functionName = functionElem.getLocalName().substring(functionElem.getLocalName().indexOf(':') + 1);
+         String functionName = functionElem.getLocalName();
          
          BasicPropertyReader parameters = new BasicPropertyReader();
          Iterator parametersElem = functionElem.getChildElements().iterator();
          while (parametersElem.hasNext()) {
             Element parameterElem = (Element) parametersElem.next();
             String parameterName = parameterElem.getLocalName();
-            if (parameterName.indexOf(':') != -1) {
-               parameterName = parameterName.substring(parameterName.indexOf(':') + 1);
-            }
             String parameterValue = parameterElem.getText();
             parameters.set(parameterName, parameterValue);
          }

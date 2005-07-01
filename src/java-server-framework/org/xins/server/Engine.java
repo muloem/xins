@@ -1190,6 +1190,8 @@ final class Engine extends Object {
                                          exception);
             }
 
+            Log.log_3522(exception, error);
+
             response.sendError(error);
             return;
          }
