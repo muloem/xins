@@ -386,7 +386,7 @@ public class Function {
       while (itParamCombos.hasNext()) {
          Element nextParamCombo = (Element) itParamCombos.next();
          String type = nextParamCombo.getAttribute("type");
-         List paramDefs = nextParamCombo.getChildElements("param-def");
+         List paramDefs = nextParamCombo.getChildElements("param-ref");
          Iterator itParamDefs = paramDefs.iterator();
          Parameter[] paramComboParameters = new Parameter[paramDefs.size()];
          int j = 0;
