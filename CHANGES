@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
     implementation classes (<Function>Impl.java) are now marked final.
   - Implemented SF.net RFE #1172503. Now generating a package.html file for
     the package with server-side implementation classes.
+  - Fixed bug #1231030: getParameters in FunctionResult can return null.
 
 * Generation of client-side Java code:
   - Fixed SF.net bug #1211447: Presence of mandatory Result Items not checked.

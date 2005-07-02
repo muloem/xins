@@ -60,7 +60,11 @@ public class FunctionResult extends Object {
     */
    public FunctionResult(String code, BasicPropertyReader parameters) {
       _code = code;
-      _parameters = parameters;
+      if (parameters == null) {
+          _parameters = new BasicPropertyReader();
+      } else {
+        _parameters = parameters;
+      }
    }
 
 
@@ -76,7 +80,6 @@ public class FunctionResult extends Object {
 
    /**
     * The parameters and their values. This field is never <code>null</code>.
-    * If there are no parameters, then this field is <code>null</code>.
     */
    private BasicPropertyReader _parameters;
 
@@ -131,9 +134,6 @@ public class FunctionResult extends Object {
     *    empty string.
     */
    protected void param(String name, String value) {
-      if (_parameters == null) {
-         _parameters = new BasicPropertyReader();
-      }
 
       // This will erase any value set before with the same name.
       _parameters.set(name, value);
@@ -164,9 +164,6 @@ public class FunctionResult extends Object {
     *    or <code>null</code> if the value is not set.
     */
    public String getParameter(String name) {
-      if (_parameters == null) {
-         return null;
-      }
       return _parameters.get(name);
    }
 
