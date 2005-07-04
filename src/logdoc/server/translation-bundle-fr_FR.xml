@@ -100,8 +100,8 @@
 	<translation entry="3500">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exception attrapée.</translation>
 	<translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: la fonction a retouné une réponse invalide.</translation>
 
-	<translation entry="3520">Reçu une requète HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requète <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La chaîne de la requête est <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="3521">Reçu une requète HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. La chaîne de la requête est <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="3520">Reçu une requète HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requète <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
+	<translation entry="3521">Reçu une requète HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3522">La requète reçue ne peut pas être décodée correctement. Le code HTTP <value-of-param name="errorCode" /> est retourné au client.</translation>
 
 	<translation entry="3540"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /> <value-of-param name="inParams" /> <value-of-param name="outParams" /></translation>
