@@ -75,9 +75,9 @@ final class SOAPCallingConvention extends CallingConvention {
           FunctionNotSpecifiedException {
 
       // Check content type
-      // TODO: Support other character sets as well
-      String contentType = httpRequest.getContentType();
-      /*if (!contentType.startsWith("application/soap+xml;")) {
+      // Some SOAP implementations send the incorrect content type, so don't check it
+      /*String contentType = httpRequest.getContentType();
+      if (!contentType.startsWith("application/soap+xml;")) {
          final String DETAIL = "Incorrect content type \""
                              + contentType
                              + "\".";
