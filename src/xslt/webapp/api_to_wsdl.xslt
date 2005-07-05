@@ -44,16 +44,16 @@
 		</xsl:variable>
 		
 		<definitions name="{$apiname}"
-			targetNamespace="{$location}/{$apiname}.wsdl"
+			targetNamespace="urn:{$apiname}"
 			xmlns="http://schemas.xmlsoap.org/wsdl/"
 			xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
 			xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:tns="http://localhost:8080/apiname.wsdl">
+			xmlns:tns="urn:apiname">
 			<types>
 				<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-										targetNamespace="{$location}/{$apiname}.wsdl">
+										targetNamespace="urn:{$apiname}">
 					
 					<!-- Write the elements -->
 					<xsl:apply-templates select="function" mode="elements">
@@ -81,7 +81,7 @@
 					<xsl:with-param name="location" select="$location" />
 					<xsl:with-param name="apiname" select="$apiname" />
 				</xsl:apply-templates>
-        <soapbind:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 			</binding>
 			
 			<!-- Write the services -->
@@ -195,10 +195,10 @@
 			</documentation>
 			<soapbind:operation soapAction="{$location}/{$functionname}" />
 			<input>
-				<soapbind:body use="literal" namespace="{$location}/{$apiname}.wsdl" />
+				<soapbind:body use="literal" />
 			</input>
 			<output>
-				<soapbind:body use="literal" namespace="{$location}/{$apiname}.wsdl" />
+				<soapbind:body use="literal" />
 			</output>
 			<xsl:for-each select="document($function_file)/function/resultcode-ref">
 				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />

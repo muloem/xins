@@ -646,6 +646,9 @@ APIs in this project are:
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
 			</style>
+			<replace file="{$builddir}/webapps/{$api}/{$api}.wsdl"
+			token="urn:apiname"
+			value="urn:{$api}" />
 		</target>
 
 		<xsl:for-each select="document($api_file)/api/impl-java | impl">

@@ -1070,10 +1070,7 @@ ${sf.file}</fail>
 			</filterchain>
 		</loadfile>
 		<delete file="../VERSION" />
-		<get src="http://heanet.dl.sourceforge.net/sourceforge/${name}/${name}-${exe.version}.tgz"
-		     dest="../${name}-${exe.version}.tgz"
-				 usetimestamp="true" />
-		<gunzip src="../${name}-${exe.version}.tgz" dest="../${name}-${exe.version}.tar" />
+		<gunzip src="build/${name}-${exe.version}.tgz" dest="../${name}-${exe.version}.tar" />
 		<untar src="../${name}-${exe.version}.tar" dest=".." />
 		<delete file="../${name}-${exe.version}.tar" />
 		<replace file="src/tools/installer/${name}.iss"
