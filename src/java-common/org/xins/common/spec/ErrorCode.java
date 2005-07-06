@@ -11,13 +11,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
-import org.xins.common.text.ParseException;
 
+import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * Specification of the error code (also known as result code).
+ * Specification of a error code (also known as result code).
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -38,6 +38,15 @@ public class ErrorCode {
    
    /**
     * Creates a new instance of ErrorCode
+    *
+    * @param name
+    *    the name of the error code, cannot be <code>null</code>.
+    *
+    * @param reference
+    *    the reference class used to locate the result code file, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the result code file cannot be found or is incorrect.
     */
    public ErrorCode(String name, Class reference) throws InvalidSpecificationException {
       _errorCodeName = name;
@@ -129,6 +138,18 @@ public class ErrorCode {
       return _outputDataSectionElements;
    }
    
+   /**
+    * Parses the result code file.
+    *
+    * @param reader
+    *    the reader that contains the content of the result code file, cannot be <code>null</code>.
+    *
+    * @throw IOException
+    *    if the parser cannot read the content.
+    *
+    * @throw InvalidSpecificationException
+    *    if the result code file is incorrect.
+    */
    private void parseErrorCode(Reader reader) throws IOException, InvalidSpecificationException {
       ElementParser parser = new ElementParser();
       Element errorCode = null;

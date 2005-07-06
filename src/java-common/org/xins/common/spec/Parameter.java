@@ -9,7 +9,7 @@ package org.xins.common.spec;
 import org.xins.common.types.Type;
 
 /**
- * Specification of the parameter.
+ * Specification of a parameter.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -32,15 +32,22 @@ public class Parameter {
     * Creates a new instance of Parameter.
     *
     * @param reference
-    *    the reference class.
+    *    the reference class, cannot be <code>null</code>.
+    *
     * @param name
-    *    the name of the parameter.
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
     * @param type
-    *    the type of the parameter.
+    *    the type of the parameter, can be <code>null</code>.
+    *
     * @param required
     *    <code>true</code> if the parameter is required, <code>false</code> otherwise.
+    *
     * @param description
-    *    the description of the parameter.
+    *    the description of the parameter, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the type is not recognized.
     */
    Parameter(Class reference, String name, String type, boolean required, String description) throws InvalidSpecificationException {
       _reference = reference;

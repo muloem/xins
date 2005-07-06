@@ -27,12 +27,13 @@ public class ParamCombo {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of ParamCombo
+    * Creates a new <code>ParamCombo</code>.
     *
     * @param type
-    *    The type of the param-combo.
+    *    The type of the param-combo, cannot be <code>null</code>.
+    *
     * @param parameters
-    *    The parameters this param-combo refers to.
+    *    The parameters this param-combo refers to, cannot be <code>null</code>.
     */
    public ParamCombo(String type, Parameter[] parameters) {
       _type = type;

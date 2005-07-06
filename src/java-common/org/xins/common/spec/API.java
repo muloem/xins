@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
-
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -36,13 +36,30 @@ public class API {
    //-------------------------------------------------------------------------
    
    /**
-    * Gets the content of the file without the DTD.
+    * Gets the content of the file without the DTD declaration.
+    *
+    * @param reference
+    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    *
+    * @param fileName
+    *    the name of the file that contains the specifications, cannot be <code>null</code>.
+    *
+    * @return
+    *    the content of the file, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if the specified file cannot be found.
+    *
+    * @throws IOException
+    *    if the specification cannot be read.
     */
    static Reader getReader(Class reference, String fileName) throws IOException {
       InputStream in = reference.getResourceAsStream("/specs/" + fileName);
       if (in == null) {
          throw new IllegalArgumentException("File \"" + fileName +"\" not found in the specifications.");
       }
+      
+      // Return the XML file without the DTD declaration
       BufferedReader contentReader = new BufferedReader(new InputStreamReader(in));
       FastStringBuffer content = new FastStringBuffer(1024);
       String nextLine = "";
@@ -74,7 +91,10 @@ public class API {
     * Creates a new instance of API
     *
     * @param reference
-    *    the reference class used to located the specifications.
+    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the result code file cannot be found or is incorrect.
     */
    public API(Class reference) throws InvalidSpecificationException {
       _reference = reference;
@@ -198,6 +218,18 @@ public class API {
       return function;
    }
 
+   /**
+    * Parses the api.xml file.
+    *
+    * @param reader
+    *    the reader that contain the content of the api.xml file, cannot be <code>null</code>.
+    *
+    * @throw IOException
+    *    if one of the specification file cannot be read correctly.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    private void parseApi(Reader reader) throws IOException, InvalidSpecificationException {
       ElementParser parser = new ElementParser();
       Element api = null;

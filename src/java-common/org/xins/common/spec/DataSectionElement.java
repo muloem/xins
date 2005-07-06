@@ -27,9 +27,24 @@ public class DataSectionElement {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of DataSectionElement
+    * Creates a new instance of DataSectionElement.
+    *
+    * @param name
+    *    the name of the data section element, cannot be <code>null</code>.
+    *
+    * @param description
+    *    the description of the data section element, cannot be <code>null</code>.
+    *
+    * @param isPCDataAllowed
+    *    <code>true</code> if the element can contain text, <code>false</code> otherwise.
+    *
+    * @param subElements
+    *    the sub elements that can contain this element, cannot be <code>null</code>.
+    *
+    * @param attributes
+    *    the possible attributes for this element, cannot be <code>null</code>.
     */
-   public DataSectionElement(String name, String description, boolean isPCDataAllowed, DataSectionElement[] subElements, Parameter[] attributes) {
+   DataSectionElement(String name, String description, boolean isPCDataAllowed, DataSectionElement[] subElements, Parameter[] attributes) {
       _name = name;
       _description = description;
       _isPCDataAllowed = isPCDataAllowed;

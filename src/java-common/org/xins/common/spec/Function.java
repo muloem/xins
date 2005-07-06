@@ -15,12 +15,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * Specification of the function.
+ * Specification of a function.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -40,7 +41,16 @@ public class Function {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of Function
+    * Creates a new <code>Function</code> by parsing the .fnc file.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param reference
+    *    the reference used to locate the function file, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect or cannot be found.
     */
    public Function(String functionName, Class reference) throws InvalidSpecificationException {
       _reference = reference;
@@ -213,7 +223,16 @@ public class Function {
    }
    
    /**
-    * Parses the function file.
+    * Parses the function specification file.
+    *
+    * @param reader
+    *    the reader that contains the content of the result code file, cannot be <code>null</code>.
+    *
+    * @throw IOException
+    *    if the parser cannot read the content.
+    *
+    * @throw InvalidSpecificationException
+    *    if the result code file is incorrect.
     */
    private void parseFunction(Reader reader) throws IOException, InvalidSpecificationException {
       ElementParser parser = new ElementParser();
@@ -289,6 +308,21 @@ public class Function {
       }
    }
    
+   /**
+    * Parse an element in the data section.
+    *
+    * @param reference
+    *    the reference class used to locate the files.
+    *
+    * @param topElement
+    *    the element to parse, cannot be <code>null</code>.
+    *
+    * @param dataSection
+    *    the data section, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    static DataSectionElement[] parseDataSectionElements(Class reference, Element topElement, Element dataSection) throws InvalidSpecificationException {
       List dataSectionContains = topElement.getChildElements("contains");
       if (!dataSectionContains.isEmpty()) {
@@ -309,6 +343,21 @@ public class Function {
       }
    }
    
+   /**
+    * Gets the specified element in the data section.
+    *
+    * @param reference
+    *    the reference class used to locate the files, cannot be <code>null</code>.
+    *
+    * @param name
+    *    the name of the element to retreive, cannot be <code>null</code>.
+    *
+    * @param dataSection
+    *    the data section, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    static DataSectionElement getDataSectionElement(Class reference, String name, Element dataSection) throws InvalidSpecificationException {
       Iterator itElements = dataSection.getChildElements("element").iterator();
       while (itElements.hasNext()) {
@@ -344,6 +393,18 @@ public class Function {
       return null;
    }
    
+   /**
+    * Parses a function parameter or an attribute of a data section element.
+    *
+    * @param reference
+    *    the reference class used to locate the files, cannot be <code>null</code>.
+    *
+    * @param paramElement
+    *    the element that contains the specification of the parameter, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    static Parameter parseParameter(Class reference, Element paramElement) throws InvalidSpecificationException {
       String parameterName = paramElement.getAttribute("name");
       String parameterTypeName = paramElement.getAttribute("type");
@@ -353,6 +414,18 @@ public class Function {
       return parameter;
    }
    
+   /**
+    * Parses the input or output parameters.
+    *
+    * @param reference
+    *    the reference class used to locate the files, cannot be <code>null</code>.
+    *
+    * @param topElement
+    *    the input or output element, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    static Parameter[] parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
       List parametersList = topElement.getChildElements("param");
       Parameter[] parameters = new Parameter[parametersList.size()];
@@ -365,6 +438,21 @@ public class Function {
       return parameters;
    }
    
+   /**
+    * Parses the param-combo element.
+    *
+    * @param reference
+    *    the reference class used to locate the files, cannot be <code>null</code>.
+    *
+    * @param topElement
+    *    the input or output element, cannot be <code>null</code>.
+    *
+    * @param parameters
+    *    the list of the input or output parameters, cannot be <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
    static ParamCombo[] parseParamCombos(Class reference, Element topElement, Parameter[] parameters) {
       
       // The parameter table is needed for the param combo.

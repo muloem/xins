@@ -7,7 +7,7 @@
 package org.xins.common.spec;
 
 /**
- *
+ * Thrown when the specification of the API is incorrect or cannot be found.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -27,13 +27,17 @@ public class InvalidSpecificationException extends Exception {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of InvalidSpecificationException
+    * Creates a new <code>InvalidSpecificationException</code>.
     */
    public InvalidSpecificationException() {
    }
    
    /**
-    * Creates a new instance of InvalidSpecificationException
+    * Creates a new <code>InvalidSpecificationException</code> with the reason
+    * of the problem.
+    *
+    * @param message
+    *    the reason why this exception has been thrown, can be <code>null</code>.
     */
    public InvalidSpecificationException(String message) {
       super(message);
