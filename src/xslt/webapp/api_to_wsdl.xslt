@@ -87,7 +87,7 @@
 			<!-- Write the services -->
 			<service name="{$apiname}Service">
 				<port name="{$apiname}Port" binding="tns:{$apiname}SOAPBinding">
-					<soapbind:address location="{$location}" />
+					<soapbind:address location="{$location}/?_convention=_xins-soap" />
 				</port>
 			</service>
 		</definitions>
@@ -193,7 +193,7 @@
 			<documentation>
 				<xsl:value-of select="document($function_file)/function/description" />
 			</documentation>
-			<soapbind:operation soapAction="{$location}/{$functionname}" />
+			<!--soapbind:operation soapAction="{$location}/{$functionname}" /-->
 			<input>
 				<soapbind:body use="literal" />
 			</input>
