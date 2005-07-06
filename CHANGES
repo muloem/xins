@@ -8,6 +8,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
 
 * XINS/Java Common Library:
   - Improved Javadoc of the spec package.
+  - Improved the parsing of HTTP POST requests for the internal servlet 
+    container.
+
+* XINS/Java Server Framework:
+  - If no content-type is passed, the _xins-xml calling convention will fail
+    nicely.
 
 * Generated WSDL:
   - Changed the stype from rpc to document.

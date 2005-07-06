@@ -157,9 +157,33 @@ public class LocalServletHandler {
     *    If the query is not handled correctly by the servlet.
     */
    public XINSServletResponse query(String url) throws IOException {
+      return query(url, null, null);
+   }
+
+   /**
+    * Queries the Servlet with the specified URL with the specific content
+    * and the specified MIME type.
+    *
+    * @param url
+    *    the url query for the request, if <code>null</code> then the /
+    *    path is used as default with no parameters.
+    *
+    * @param data
+    *    the data post for the request. <code>null</code> for HTTP GET queries.
+    *
+    * @param contentType
+    *    the content type of the request, can be <code>null</code>.
+    *
+    * @return
+    *    the servlet response.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly by the servlet.
+    */
+   public XINSServletResponse query(String url, char[] data, String contentType) throws IOException {
       Log.log_1504(url);
 
-      XINSServletRequest request = new XINSServletRequest(url);
+      XINSServletRequest request = new XINSServletRequest(url, data, contentType);
       XINSServletResponse response = new XINSServletResponse();
       try {
          _apiServlet.service(request, response);

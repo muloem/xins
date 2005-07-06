@@ -192,7 +192,7 @@ public class CallingConventionTests extends TestCase {
     */
    // To run this test add <calling-convention name="_xins-xml" /> to impl.xml
    // and remove a input.realLine() in the HTTPServletHandler.
-   /*public void testXMLCallingConvention() throws Throwable {
+   public void testXMLCallingConvention() throws Throwable {
       FastStringBuffer buffer = new FastStringBuffer(16);
       HexConverter.toHexString(buffer, RANDOM.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
@@ -202,7 +202,7 @@ public class CallingConventionTests extends TestCase {
 
       // Unsuccessful call
       postXMLRequest(randomFive, false);
-   }*/
+   }
 
    /**
     * Posts XML request.
@@ -217,7 +217,7 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postXMLRequest(String randomFive, boolean success) throws Exception {
-      PostMethod post = new PostMethod("http://127.0.0.1:8080/");
+      PostMethod post = new PostMethod("http://127.0.0.1:8080/allinone/?_convention=_xins-xml");
       post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
       post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request>" +

@@ -350,49 +350,52 @@ public class HTTPServletHandler {
     */
    public String httpQuery(BufferedReader input) throws IOException {
       String inputLine;
-      String query = null;
-      String virtualPath = "/";
+      String url = null;
+      char[] contentData = null;
+      String contentType = null;
+      boolean inputRead = false;
 
-      while (query == null && (inputLine = input.readLine()) != null) {
+      while (!inputRead && (inputLine = input.readLine()) != null) {
          if (inputLine.startsWith("GET ")) {
-            int questionPos = inputLine.indexOf('?');
-            if (questionPos !=-1) {
-               int lastSpace = inputLine.indexOf(' ', questionPos);
-               if (lastSpace != -1) {
-                  query = inputLine.substring(questionPos + 1, lastSpace);
-               } else {
-                  query = inputLine.substring(questionPos + 1);
-               }
-               virtualPath = inputLine.substring(4, questionPos);
-            } else {
-               query = "";
-               int lastSpace = inputLine.indexOf(' ', 4);
-               if (lastSpace != -1) {
-                  virtualPath = inputLine.substring(4, lastSpace);
-               } else {
-                  virtualPath = inputLine.substring(4);
-               }
-            }
-            query = query.replace(',', '&');
-            if (virtualPath.length() > 1 && virtualPath.endsWith("/")) {
-               virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
-            }
+            url = inputLine.substring(4);
+            url = url.replace(',', '&');
+            inputRead = true;
          }
 
          // POST method
          if (inputLine.startsWith("POST ")) {
-            virtualPath = inputLine.substring(5, inputLine.indexOf(' ', 5));
+            url = inputLine.substring(5);
          }
-         if (inputLine.startsWith("Content-Length: ")) {
+         if (inputLine.toLowerCase().startsWith("content-type: ")) {
+            contentType = inputLine.substring(14);
+         }
+         if (inputLine.toLowerCase().startsWith("content-length: ")) {
             int postLength = Integer.parseInt(inputLine.substring(16));
             input.readLine();
-            input.readLine();
-            char[] data = new char[postLength];
-            input.read(data);
-            query = new String(data);
+            if (contentType == null) {
+               input.readLine();
+            }
+            contentData = new char[postLength];
+            input.read(contentData);
+            inputRead = true;
          }
       }
-      if (query != null) {
+
+      if (url != null) {
+         if (url.indexOf(' ') != -1) {
+            url = url.substring(0, url.indexOf(' '));
+         }
+         if ((contentType == null || contentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
+            url += '?' + new String(contentData);
+            contentData = null;
+         }
+         String virtualPath = url;
+         if (virtualPath.indexOf('?') != -1) {
+            virtualPath = virtualPath.substring(0, url.indexOf('?'));
+         }
+         if (virtualPath.endsWith("/") && virtualPath.length() > 1) {
+            virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
+         }
          LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
          if (servlet == null) {
             servlet = (LocalServletHandler) _servlets.get("/");
@@ -400,7 +403,7 @@ public class HTTPServletHandler {
          if (servlet == null) {
             return "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
          }
-         XINSServletResponse response = servlet.query(query);
+         XINSServletResponse response = servlet.query(url, contentData, contentType);
          String result = response.getResult();
          if (result == null) {
             return "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";

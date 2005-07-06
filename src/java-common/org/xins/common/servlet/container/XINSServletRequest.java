@@ -6,6 +6,8 @@
  */
 package org.xins.common.servlet.container;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
@@ -16,11 +18,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.xins.common.text.URLEncoding;
 
 /**
@@ -52,14 +56,35 @@ public class XINSServletRequest implements HttpServletRequest {
     *    with comma's.
     */
    public XINSServletRequest(String url) {
+      this(url, null, null);
+   }
+   
+   /**
+    * Creates a new Servlet request.
+    *
+    * @param url
+    *    the request url or the list of the parameters (name=value) separated
+    *    with comma's.
+    *
+    * @param data
+    *    the content of the request.
+    *
+    * @param contentType
+    *    the content type of the request.
+    */
+   public XINSServletRequest(String url, char[] data, String contentType) {
       _date = System.currentTimeMillis();
       _attributes = new Hashtable();
+      _contentType = contentType;
+      _postData = data;
 
       // Parse the URL
       _parameters = new Properties();
       int questionMarkPos = url.lastIndexOf('?');
-      if (questionMarkPos != -1 && !url.startsWith("<?xml")) {
-         _queryString = url.substring(questionMarkPos);
+      if (questionMarkPos != -1) {
+         _queryString = url.substring(questionMarkPos + 1);
+      } else if (questionMarkPos == url.length() - 1) {
+         _queryString = "";
       } else {
          _queryString = url;
       }
@@ -99,6 +124,16 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private String _queryString;
 
+   /**
+    * The content type of the query.
+    */
+   private String _contentType;
+
+   /**
+    * The content of the HTTP POST.
+    */
+   private char[] _postData;
+   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -126,7 +161,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public Object getAttribute(String str) {
-      throw new UnsupportedOperationException();
+      return _attributes.get(str);
    }
 
    public long getDateHeader(String str) {
@@ -170,11 +205,16 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getPathTranslated() {
-      return "";
+      int questionPos = _queryString.indexOf('?');
+      if (questionPos > 0) {
+         return _queryString.substring(0, questionPos);
+      } else {
+         return null;
+      }
    }
 
    public String getPathInfo() {
-      return "";
+      return getPathTranslated();
    }
 
    public Enumeration getParameterNames() {
@@ -186,7 +226,11 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getMethod() {
-      return "GET";
+      if (_postData == null) {
+         return "GET";
+      } else {
+         return "POST";
+      }
    }
 
    public Enumeration getLocales() {
@@ -206,7 +250,16 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getCharacterEncoding() {
-      return "UTF-8";
+      if (_contentType == null) {
+         return null;
+      } else {
+         int charsetPos = _contentType.indexOf("charset=");
+         if (charsetPos == -1) {
+            return "UTF-8";
+         } else {
+            return _contentType.substring(charsetPos + 8);
+         }
+      }
    }
 
    public int getContentLength() {
@@ -215,9 +268,7 @@ public class XINSServletRequest implements HttpServletRequest {
 
    public String getContentType() {
 
-      // This method is only used by the XMLCallingConvention
-      // so it returns what the calling convention expects.
-      return "text/xml; charset=UTF-8";
+      return _contentType;
    }
 
    public String getContextPath() {
@@ -236,8 +287,8 @@ public class XINSServletRequest implements HttpServletRequest {
       throw new UnsupportedOperationException();
    }
 
-   public java.io.BufferedReader getReader() {
-      return new java.io.BufferedReader(new java.io.StringReader(_queryString));
+   public BufferedReader getReader() {
+      return new BufferedReader(new StringReader(new String(_postData)));
    }
 
    public String getRemoteAddr() {
