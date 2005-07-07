@@ -227,8 +227,12 @@ APIs in this project are:
 
 					<dtd publicId="-//XINS//DTD XINS Project 1.3//EN"
 					     location="xins-project_1_3.dtd" />
+					<dtd publicId="-//XINS//DTD XINS API 1.3//EN"
+					     location="api_1_3.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.3//EN"
 					     location="function_1_3.dtd" />
+					<dtd publicId="-//XINS//DTD XINS Category 1.3//EN"
+					     location="category_1_3.dtd" />
 				</xmlcatalog>
 			</target>
 
@@ -400,6 +404,13 @@ APIs in this project are:
 				<xsl:text>.rcd</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
+		<xsl:variable name="categoryIncludes">
+			<xsl:for-each select="document($api_file)/api/category">
+				<xsl:if test="position() &gt; 1">,</xsl:if>
+				<xsl:value-of select="@name" />
+				<xsl:text>.cat</xsl:text>
+			</xsl:for-each>
+		</xsl:variable>
 		<xsl:variable name="clientPackage">
 			<xsl:call-template name="package_for_client_api">
 				<xsl:with-param name="project_file" select="$project_file" />
@@ -488,6 +499,21 @@ APIs in this project are:
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
 				includes="{$resultcodeIncludes}">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+				</style>
+			</xsl:if>
+			<xsl:if test="document($api_file)/api/category">
+				<style
+				basedir="{$api_specsdir}"
+				destdir="{$project_home}/build/specdocs/{$api}"
+				style="{$xins_home}/src/xslt/specdocs/category_to_html.xslt"
+				includes="{$categoryIncludes}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />

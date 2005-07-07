@@ -3,7 +3,7 @@
  project by adding the following lines at the top of the file :
 <!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.0 alpha//EN" "http://www.xins.org/dtd/api_1_0_alpha.dtd">
 -->
-<!ELEMENT api (description, session-based?, function*, type*, resultcode*, environment*, impl-java?)>
+<!ELEMENT api (description, session-based?, function*, type*, resultcode*, category*, environment*, impl-java?)>
 <!ATTLIST api
           name       NMTOKEN #REQUIRED
           freeze     NMTOKEN #IMPLIED
@@ -34,6 +34,10 @@
 <!ATTLIST resultcode
           name       NMTOKEN #REQUIRED
           freeze     NMTOKEN #IMPLIED
+>
+<!ELEMENT category EMPTY>
+<!ATTLIST category
+          name      NMTOKEN #REQUIRED
 >
 <!ELEMENT environment EMPTY>
 <!ATTLIST environment

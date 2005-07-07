@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="US-ASCII" ?>
+<!--
+ -*- mode: Fundamental; tab-width: 4; -*-
+ ex:ts=4
+
+ XSLT that generates the categories files that contain
+ the input description, the output description and the examples.
+
+ $Id$
+
+ Copyright 2003-2005 Wanadoo Nederland B.V.
+ See the COPYRIGHT file for redistribution and use restrictions.
+-->
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<!-- Define parameters -->
+	<xsl:param name="xins_version" />
+	<xsl:param name="project_home" />
+	<xsl:param name="project_file" />
+	<xsl:param name="specsdir"     />
+	<xsl:param name="api"          />
+	<xsl:param name="api_file"     />
+
+	<!-- Perform includes -->
+	<xsl:include href="broken_freeze.xslt"  />
+	<xsl:include href="output_section.xslt" />
+	<xsl:include href="../firstline.xslt" />
+	<xsl:include href="../header.xslt"      />
+	<xsl:include href="../footer.xslt"      />
+	<xsl:include href="../urlencode.xslt"   />
+
+	<xsl:output
+	method="html"
+	indent="yes"
+	encoding="US-ASCII"
+	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+	omit-xml-declaration="yes" />
+
+	<!-- Default indentation setting -->
+	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
+
+	<xsl:template match="category">
+
+		<xsl:variable name="category_name"    select="//category/@name"                               />
+		<xsl:variable name="category_file"    select="concat($specsdir, '/', $category_name, '.cat')" />
+
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+			<head>
+				<title>
+					<xsl:value-of select="@name" />
+				</title>
+
+				<meta name="generator" content="XINS" />
+
+				<link rel="stylesheet" type="text/css" href="style.css"                                  />
+				<link rel="top"                        href="../index.html" title="API index"            />
+				<link rel="up"                         href="index.html"    title="Overview of this API" />
+			</head>
+			<body>
+				<xsl:call-template name="header">
+					<xsl:with-param name="active">category</xsl:with-param>
+				</xsl:call-template>
+
+				<h1>
+					<xsl:text>Category </xsl:text>
+					<em>
+						<xsl:value-of select="@name" />
+					</em>
+				</h1>
+
+				<!-- Description -->
+				<xsl:call-template name="description" />
+
+		      <!-- <xsl:for-each select="function"> -->
+				<h2>Functions in this category:</h2>
+
+				<xsl:choose>
+					<xsl:when test="function-ref">
+						<table class="functionlist">
+						<tr>
+							<th>Function</th>
+							<th>Version</th>
+							<th>Status</th>
+							<th>Description</th>
+						</tr>
+						<xsl:apply-templates select="function-ref" />
+						</table>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							<xsl:text>The category "</xsl:text>
+							<xsl:value-of select="@name" />
+							<xsl:text>" should at least have one function defined.</xsl:text>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+
+				<xsl:call-template name="footer">
+					<xsl:with-param name="xins_version" select="$xins_version" />
+				</xsl:call-template>
+			</body>
+		</html>
+	</xsl:template>
+
+	<xsl:template match="function-ref">
+		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="version">
+			<xsl:call-template name="revision2string">
+				<xsl:with-param name="revision" select="document($function_file)/function/@rcsversion" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:if test="not(document($function_file)/function)">
+			<xsl:message terminate="yes">
+				<xsl:text>Function file '</xsl:text>
+				<xsl:value-of select="$function_file" />
+				<xsl:text>' not found for the defined function '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<tr>
+			<td>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@name" />
+						<xsl:text>.html</xsl:text>
+					</xsl:attribute>
+					<xsl:value-of select="@name" />
+				</a>
+			</td>
+			<td>
+				<xsl:value-of select="$version" />
+			</td>
+			<td class="status">
+				<xsl:choose>
+					<xsl:when test="@freeze = $version">Frozen</xsl:when>
+					<xsl:when test="@freeze">
+						<span class="broken_freeze">
+							<xsl:attribute name="title">
+								<xsl:text>Freeze broken after version </xsl:text>
+								<xsl:value-of select="@freeze" />
+								<xsl:text>.</xsl:text>
+							</xsl:attribute>
+							<xsl:text>Broken Freeze</xsl:text>
+						</span>
+					</xsl:when>
+					<xsl:when test="document($function_file)/function/deprecated">
+						<span class="broken_freeze" title="{document($function_file)/function/deprecated/text()}">
+							<xsl:text>Deprecated</xsl:text>
+						</span>
+					</xsl:when>
+				</xsl:choose>
+			</td>
+			<td>
+				<xsl:apply-templates select="document($function_file)/function/description" />
+			</td>
+		</tr>
+	</xsl:template>
+
+	<xsl:template match="function/description">
+		<xsl:call-template name="firstline">
+			<xsl:with-param name="text" select="text()" />
+		</xsl:call-template>
+	</xsl:template>
+
+</xsl:stylesheet>

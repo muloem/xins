@@ -105,8 +105,10 @@
 				<dtd publicId="-//XINS//DTD XINS Logdoc 1.2//EN"
 				     location="${xins_home}/src/dtd/log_1_2.dtd" />
 
-					<dtd publicId="-//XINS//DTD XINS Project 1.3//EN"
-					     location="xins-project_1_3.dtd" />
+				<dtd publicId="-//XINS//DTD XINS Project 1.3//EN"
+						 location="xins-project_1_3.dtd" />
+				<dtd publicId="-//XINS//DTD XINS API 1.3//EN"
+				     location="${xins_home}/src/dtd/api_1_3.dtd" />
 			</xmlcatalog>
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />

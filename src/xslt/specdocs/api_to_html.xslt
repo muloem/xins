@@ -126,6 +126,17 @@
 
 				<xsl:apply-templates select="description" />
 
+				<xsl:if test="category">
+					<h2>Categories</h2>
+					<table class="functionlist">
+						<tr>
+							<th>Category</th>
+							<th>Description</th>
+						</tr>
+						<xsl:apply-templates select="category" />
+					</table>
+				</xsl:if>
+				
 				<h2>Functions</h2>
 				<xsl:choose>
 					<xsl:when test="count(function) = 0">
@@ -377,12 +388,6 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="function/description">
-		<xsl:call-template name="firstline">
-			<xsl:with-param name="text" select="text()" />
-		</xsl:call-template>
-	</xsl:template>
-
 	<xsl:template match="type">
 
 		<xsl:variable name="type_file" select="concat($specsdir, '/', @name, '.typ')" />
@@ -439,12 +444,6 @@
 				<xsl:apply-templates select="document($type_file)/type/description" />
 			</td>
 		</tr>
-	</xsl:template>
-
-	<xsl:template match="type/description">
-		<xsl:call-template name="firstline">
-			<xsl:with-param name="text" select="text()" />
-		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="resultcode">
@@ -505,7 +504,43 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="resultcode/description">
+	<xsl:template match="category">
+
+		<xsl:variable name="category_file" select="concat($specsdir, '/', @name, '.cat')" />
+		<xsl:variable name="version">
+			<xsl:call-template name="revision2string">
+				<xsl:with-param name="revision" select="document($category_file)/category/@rcsversion" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:if test="not(document($category_file)/category)">
+			<xsl:message terminate="yes">
+				<xsl:text>Category file '</xsl:text>
+				<xsl:value-of select="$category_file" />
+				<xsl:text>' not found for the defined category '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<tr>
+			<td>
+				<a>
+					<xsl:attribute name="href">
+						<xsl:value-of select="@name" />
+						<xsl:text>.html</xsl:text>
+					</xsl:attribute>
+					<xsl:value-of select="@name" />
+				</a>
+			</td>
+			<td>
+				<xsl:apply-templates select="document($category_file)/category/description" />
+			</td>
+		</tr>
+	
+	</xsl:template>
+	
+	<xsl:template match="function/description | type/description | resultcode/description | category/description">
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />
 		</xsl:call-template>
