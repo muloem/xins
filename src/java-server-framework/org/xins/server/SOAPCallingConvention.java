@@ -52,6 +52,11 @@ final class SOAPCallingConvention extends CallingConvention {
     */
    static final String RESPONSE_CONTENT_TYPE = "application/soap+xml;charset=" + RESPONSE_ENCODING;
 
+   /**
+    * The key used to store the name of the function in the request attributes.
+    */
+   static final String FUNCTION_NAME = "_function";
+
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -61,9 +66,26 @@ final class SOAPCallingConvention extends CallingConvention {
    // Constructor
    //-------------------------------------------------------------------------
    
+   /**
+    * Creates a new <code>SOAPCallingConvention</code>
+    *
+    * @param api
+    *    the API, needed for the SOAP messages.
+    */
+   SOAPCallingConvention(API api) {
+      _api = api;
+   }
+   
+   
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+   
+   /**
+    * The API, never <code>null</code>.
+    */
+   private final API _api;
+   
    
    //-------------------------------------------------------------------------
    // Methods
@@ -118,6 +140,7 @@ final class SOAPCallingConvention extends CallingConvention {
          }
          Element functionElem = (Element) functionsElem.get(0);
          String functionName = functionElem.getLocalName();
+         httpRequest.setAttribute(FUNCTION_NAME, functionName);
 
          Element parametersElem = null;
          List parametersList = functionElem.getChildElements("parameters");
@@ -183,7 +206,6 @@ final class SOAPCallingConvention extends CallingConvention {
          
          // Write the false start tag
          xmlout.startTag("soap:Fault");
-         xmlout.attribute("xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/");
          xmlout.startTag("faultcode");
          if (xinsResult.getErrorCode().equals("_InvalidRequest")) {
             xmlout.pcdata("soap:Client");
@@ -199,7 +221,8 @@ final class SOAPCallingConvention extends CallingConvention {
          
          // Write the response start tag
          // XXX : Use the function name and the xmlns
-         xmlout.startTag("m:Response");
+         String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
+         xmlout.startTag(functionName + "Response");
 
          // Write the output parameters
          Iterator outputParameterNames = xinsResult.getParameters().getNames();

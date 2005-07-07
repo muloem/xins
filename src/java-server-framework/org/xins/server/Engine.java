@@ -1267,7 +1267,7 @@ final class Engine extends Object {
 
       // SOAP calling convention
       } else if (SOAP_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new SOAPCallingConvention();
+         createdConvention = new SOAPCallingConvention(_api);
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {

@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
 * XINS/Java Server Framework:
   - If no content-type is passed, the _xins-xml calling convention will fail
     nicely.
+  - No specific namespace is returned in the SOAP response.
 
 * Generated specification documentation:
   - Added to possibility to have categories in functions. RFE #1029268.
