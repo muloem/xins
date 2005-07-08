@@ -1048,7 +1048,7 @@ APIs in this project are:
 			</target>
 
 			<target name="run-{$api}{$implName2}" depends="war-{$api}{$implName2}" description="Runs the '{$api}{$implName2}' API">
-				<fail message="Please, specify the org.xins.server.config property as explained in the user guide." unless="org.xins.server.config" />
+				<property name="org.xins.server.config" value="" />
 				<property name="servlet.port" value="8080" />
 				<java classname="org.xins.common.servlet.container.HTTPServletStarter"
 							fork="true">

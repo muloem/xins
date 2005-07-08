@@ -26,6 +26,7 @@ import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
+import org.xins.common.net.IPAddressUtils;
 import org.xins.common.spec.InvalidSpecificationException;
 
 import org.xins.common.text.DateConverter;
@@ -133,6 +134,7 @@ implements DefaultResultCodes {
       _resultCodesByName   = new HashMap();
       _resultCodeList      = new ArrayList();
       _emptyProperties     = new RuntimeProperties();
+      _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
    }
 
 
@@ -257,6 +259,11 @@ implements DefaultResultCodes {
     */
    private org.xins.common.spec.API _apiSpecification;
 
+   /**
+    * The local IP address.
+    */
+   private String _localIPAddress;
+   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -840,21 +847,28 @@ implements DefaultResultCodes {
 
       // Check the access rule list
       boolean allow;
-      try {
-         allow = _accessRuleList.allow(ip, functionName);
+      
+      // If no property is defined only localhost is allowed
+      if (_accessRuleList == AccessRuleList.EMPTY && (ip.equals("127.0.0.1")
+            || ip.equals(_localIPAddress))) {
+         allow = true;
+      } else {
+         try {
+            allow = _accessRuleList.allow(ip, functionName);
 
-      // If the IP address cannot be parsed there is a programming error
-      // somewhere
-      } catch (ParseException exception) {
-         final String SUBJECT_CLASS  = _accessRuleList.getClass().getName();
-         final String SUBJECT_METHOD = "allow(java.lang.String,java.lang.String)";
-         final String DETAIL         = "Malformed IP address: \"" + ip + "\".";
-         throw Utils.logProgrammingError(CLASSNAME,
-                                         THIS_METHOD,
-                                         SUBJECT_CLASS,
-                                         SUBJECT_METHOD,
-                                         DETAIL,
-                                         exception);
+         // If the IP address cannot be parsed there is a programming error
+         // somewhere
+         } catch (ParseException exception) {
+            final String SUBJECT_CLASS  = _accessRuleList.getClass().getName();
+            final String SUBJECT_METHOD = "allow(java.lang.String,java.lang.String)";
+            final String DETAIL         = "Malformed IP address: \"" + ip + "\".";
+            throw Utils.logProgrammingError(CLASSNAME,
+                                            THIS_METHOD,
+                                            SUBJECT_CLASS,
+                                            SUBJECT_METHOD,
+                                            DETAIL,
+                                            exception);
+         }
       }
       if (!allow) {
          throw new AccessDeniedException(ip, functionName);

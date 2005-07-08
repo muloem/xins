@@ -156,6 +156,21 @@ public final class IPAddressUtils extends Object {
    }
 
    /**
+    * Retrieves the localhost IP address.
+    *
+    * @return
+    *    if possible the IP address for localhost, otherwise 
+    *    the string <code>"127.0.0.1"</code>.
+    */
+   public static String getLocalHostIPAddress() {
+      try {
+         return InetAddress.getLocalHost().getHostAddress();
+      } catch (UnknownHostException exception) {
+         return "127.0.0.1";
+      }
+   }
+
+   /**
     * Retrieves the localhost host name. This method applies several
     * techniques to attempt to retrieve the localhost host name.
     *

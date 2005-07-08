@@ -35,6 +35,7 @@ import org.apache.log4j.NDC;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
+import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.manageable.BootstrapException;
 
@@ -380,21 +381,21 @@ final class Engine extends Object {
          _configFile = config.getInitParameter(CONFIG_FILE_SYSTEM_PROPERTY);
       }
 
-      // Property value must be set
+      // If the value is not set only localhost can access the API.
       // NOTE: Don't trim the configuration file name, since it may start
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
-         _state.setState(EngineState.FRAMEWORK_BOOTSTRAP_FAILED);
-         throw new ServletException();
+         _runtimeProperties = PropertyReaderUtils.EMPTY_PROPERTY_READER;
+      } else {
+
+         // Unify the file separator character
+         _configFile = _configFile.replace('/',  File.separatorChar);
+         _configFile = _configFile.replace('\\', File.separatorChar);
+
+         // Initialize the logging subsystem
+         readRuntimeProperties();
       }
-
-      // Unify the file separator character
-      _configFile = _configFile.replace('/',  File.separatorChar);
-      _configFile = _configFile.replace('\\', File.separatorChar);
-
-      // Initialize the logging subsystem
-      readRuntimeProperties();
 
       // Log XINS version
       Log.log_3225(serverVersion);
@@ -658,7 +659,7 @@ final class Engine extends Object {
       //-------------------------------------------------------------------//
 
       // Create and start a file watch thread
-      if (interval > 0) {
+      if (_configFile != null && _configFile.length() > 0 && interval > 0) {
          _configFileWatcher = new FileWatcher(_configFile,
                                               interval,
                                               _configFileListener);

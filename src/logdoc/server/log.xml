@@ -61,7 +61,7 @@
 			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="3205" level="FATAL">
+		<entry id="3205" level="WARNING">
 			<description>The property that defines the runtime properties file to use is not set.</description>
 			<param name="propertyName" />
 		</entry>

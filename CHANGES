@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     container.
   - Added methods to get directly a parameter for a function or an error code
     in the spec package.
+  - Added a method in IPAddressUtils to get the local IP address.
 
 * XINS/Java Server Framework:
   - If no content-type is passed, the _xins-xml calling convention will fail
@@ -20,6 +21,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Boolean, data and dataTime types are converted from XINS format to SOAP
     format and vice versa.
   - Calling conventions other than the default one are cached.
+  - If no org.xins.server.config is not set or there is no org.xins.server.acl
+    property, only localhost is allowed to access the API.
 
 * Generated specification documentation:
   - Added to possibility to have categories in functions. RFE #1029268.
