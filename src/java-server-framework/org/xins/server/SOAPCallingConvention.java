@@ -57,7 +57,7 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   private static final String RESPONSE_CONTENT_TYPE = "application/soap+xml;charset=" + RESPONSE_ENCODING;
+   private static final String RESPONSE_CONTENT_TYPE = "text/xml; charset=" + RESPONSE_ENCODING;
 
    /**
     * The key used to store the name of the function in the request attributes.
@@ -122,16 +122,6 @@ final class SOAPCallingConvention extends CallingConvention {
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
-
-      // Check content type
-      // Some SOAP implementations send the incorrect content type, so don't check it
-      /*String contentType = httpRequest.getContentType();
-      if (!contentType.startsWith("application/soap+xml;")) {
-         final String DETAIL = "Incorrect content type \""
-                             + contentType
-                             + "\".";
-         throw new InvalidRequestException(DETAIL);
-      }*/
 
       try {
 
