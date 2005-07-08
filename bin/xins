@@ -60,7 +60,7 @@ do
    shift
 done
 
-# Default to the 'all' target
+# Default to the 'help' target
 #
 # This fixes SF.net bug #1199691: Calling 'xins' shell script should default
 # to target 'help'
