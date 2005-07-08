@@ -218,7 +218,7 @@ final class SOAPCallingConvention extends CallingConvention {
       xmlout.declaration();
 
       // Write the envelop start tag
-      xmlout.startTag("soap:Envelop");
+      xmlout.startTag("soap:Envelope");
       xmlout.attribute("xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/");
       
       // Write the body start tag
