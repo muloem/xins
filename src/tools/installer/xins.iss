@@ -23,6 +23,10 @@ Source: "c:\projects\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdir
 Source: "xins.ico"; DestDir: "{app}"
 
 [Icons]
+Name: "{group}\Run demo"; Filename: "{app}\demo\rundemo.bat"; WorkingDir: "{app}\demo\"; IconFilename: "{app}\xins.ico"
+Name: "{group}\Readme"; Filename: "{app}\README.html"; WorkingDir: "{app}"
+Name: "{group}\Guideline"; Filename: "{app}\docs\index.html"; WorkingDir: "{app}"
+;Name: "{group}\{cm:UninstallProgram,XINS}"; Filename: "{uninstallexe}"
 
 [Registry]
 Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: "{code:AddQuotes|{app}}"; Flags: uninsdeletevalue
