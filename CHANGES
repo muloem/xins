@@ -22,6 +22,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Calling conventions other than the default one are cached.
   - If no org.xins.server.config is not set or there is no org.xins.server.acl
     property, only localhost is allowed to access the API.
+  - The returned MIME type for the SOAP calling convention has been changed
+    from application/soap+xml to text/xml.
+
+* XINS/Java Client Framework:
+  - The API specification is stored in a static variable. This way the 
+    specifications are only parsed once.
 
 * Generated specification documentation:
   - Added to possibility to have categories in functions. RFE #1029268.
@@ -33,6 +39,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
 * Build- and release-process:
   - No need to download the release file to create the Windows installer as 
     the release file is located in the build directory.
+  - The build file has been splitted in 2. The file build.xml contains the
+    targets that also work in the release while build-dev.xml contains
+    the development targets. Note that you don't need to specify the file
+    name for the development targets (e.g. "ant -lib lib tests").
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
