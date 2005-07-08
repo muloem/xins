@@ -47,16 +47,18 @@ public class API {
     * @return
     *    the content of the file, never <code>null</code>.
     *
-    * @throws IllegalArgumentException
+    * @throws InvalidSpecificationException
     *    if the specified file cannot be found.
     *
     * @throws IOException
     *    if the specification cannot be read.
     */
-   static Reader getReader(Class reference, String fileName) throws IOException {
+   static Reader getReader(Class reference, String fileName)
+   throws InvalidSpecificationException, IOException {
+      
       InputStream in = reference.getResourceAsStream("/specs/" + fileName);
       if (in == null) {
-         throw new IllegalArgumentException("File \"" + fileName +"\" not found in the specifications.");
+         throw new InvalidSpecificationException("File \"" + fileName +"\" not found in the specifications.");
       }
       
       // Return the XML file without the DTD declaration
