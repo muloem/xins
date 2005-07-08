@@ -242,7 +242,6 @@ final class SOAPCallingConvention extends CallingConvention {
       } else {
          
          // Write the response start tag
-         // XXX : Use the function name and the xmlns
          String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
          xmlout.startTag(functionName + "Response");
 
