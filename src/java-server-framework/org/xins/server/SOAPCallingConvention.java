@@ -11,18 +11,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.io.FastStringWriter;
-
+import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
+import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
+
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -40,22 +47,42 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * The request encoding format.
     */
-   static final String REQUEST_ENCODING = "UTF-8";
+   private static final String REQUEST_ENCODING = "UTF-8";
 
    /**
     * The response encoding format.
     */
-   static final String RESPONSE_ENCODING = "UTF-8";
+   private static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   static final String RESPONSE_CONTENT_TYPE = "application/soap+xml;charset=" + RESPONSE_ENCODING;
+   private static final String RESPONSE_CONTENT_TYPE = "application/soap+xml;charset=" + RESPONSE_ENCODING;
 
    /**
     * The key used to store the name of the function in the request attributes.
     */
-   static final String FUNCTION_NAME = "_function";
+   private static final String FUNCTION_NAME = "_function";
+
+   /**
+    * The formatter for XINS Date type.
+    */
+   private static final DateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
+   
+   /**
+    * The formatter for SOAP Date type.
+    */
+   private static final DateFormat SOAP_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+   
+   /**
+    * The formatter for XINS Timestamp type.
+    */
+   private static final DateFormat XINS_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
+   
+   /**
+    * The formatter for SOAP dateType type.
+    */
+   private static final DateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
 
    
    //-------------------------------------------------------------------------
@@ -156,6 +183,11 @@ final class SOAPCallingConvention extends CallingConvention {
             Element parameterElem = (Element) itParameters.next();
             String parameterName = parameterElem.getLocalName();
             String parameterValue = parameterElem.getText();
+            try {
+               parameterValue = soapInputValueTransformation(functionName, parameterName, parameterValue);
+            } catch (InvalidSpecificationException ise) {
+               // keep the old value
+            }
             parameters.set(parameterName, parameterValue);
          }
          return new FunctionRequest(functionName, parameters, null);
@@ -229,6 +261,11 @@ final class SOAPCallingConvention extends CallingConvention {
          while (outputParameterNames.hasNext()) {
             String parameterName = (String) outputParameterNames.next();
             String parameterValue = xinsResult.getParameter(parameterName);
+            try {
+               parameterValue = soapOutputValueTransformation(functionName, parameterName, parameterValue);
+            } catch (InvalidSpecificationException ise) {
+               // keep the old value
+            }
             xmlout.startTag(parameterName);
             xmlout.pcdata(parameterValue);
             xmlout.endTag();
@@ -244,5 +281,92 @@ final class SOAPCallingConvention extends CallingConvention {
       out.write(buffer.toString());
       
       out.close();
+   }
+   
+   /**
+    * Transforms the value of a input SOAP parameter to the XINS equivalent.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param parameterName
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value return by the SOAP parameter, cannot be <code>null</code>.
+    *
+    * @return
+    *    the XINS value, never <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
+   private String soapInputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
+      org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+      Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+      if (parameterType instanceof org.xins.common.types.standard.Boolean) {
+         if (value.equals("1")) {
+            return "true";
+         } else if (value.equals("0")) {
+            return "false";
+         }
+      }
+      if (parameterType instanceof org.xins.common.types.standard.Date) {
+         try {
+            Date date = SOAP_DATE_FORMATTER.parse(value);
+            return XINS_DATE_FORMATTER.format(date);
+         } catch (java.text.ParseException pe) {
+            Utils.logProgrammingError(pe);
+         }
+      }
+      if (parameterType instanceof org.xins.common.types.standard.Timestamp) {
+         try {
+            Date date = SOAP_TIMESTAMP_FORMATTER.parse(value);
+            return XINS_TIMESTAMP_FORMATTER.format(date);
+         } catch (java.text.ParseException pe) {
+            Utils.logProgrammingError(pe);
+         }
+      }
+      return value;
+   }
+   
+   /**
+    * Transforms the value of a output XINS parameter to the SOAP equivalent.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param parameterName
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value return by the XINS function, cannot be <code>null</code>.
+    *
+    * @return
+    *    the SOAP value, never <code>null</code>.
+    *
+    * @throw InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
+   private String soapOutputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
+      org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+      Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
+      if (parameterType instanceof org.xins.common.types.standard.Date) {
+         try {
+            Date date = XINS_DATE_FORMATTER.parse(value);
+            return SOAP_DATE_FORMATTER.format(date);
+         } catch (java.text.ParseException pe) {
+            Utils.logProgrammingError(pe);
+         }
+      }
+      if (parameterType instanceof org.xins.common.types.standard.Timestamp) {
+         try {
+            Date date = XINS_TIMESTAMP_FORMATTER.parse(value);
+            return SOAP_TIMESTAMP_FORMATTER.format(date);
+         } catch (java.text.ParseException pe) {
+            Utils.logProgrammingError(pe);
+         }
+      }
+      return value;
    }
 }

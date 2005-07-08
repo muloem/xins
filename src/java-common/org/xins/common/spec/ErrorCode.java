@@ -7,10 +7,11 @@
 package org.xins.common.spec;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
@@ -82,7 +83,7 @@ public class ErrorCode {
    /**
     * The output parameters of the function.
     */
-   private Parameter[] _outputParameters;
+   private Map _outputParameters = new HashMap();
 
    /**
     * The output data section elements of the function.
@@ -117,6 +118,28 @@ public class ErrorCode {
    }
 
    /**
+    * Gets the output parameter for the specified name.
+    *
+    * @param parameterName
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
+    * @return
+    *    the parameter, never <code>null</code>.
+    *
+    * @throw IllegalArgumentException
+    *    if the error code does not contain any output parameter with the specified name.
+    */
+   public Parameter getOutputParameter(String parameterName) throws IllegalArgumentException {
+      Parameter parameter = (Parameter) _outputParameters.get(parameterName);
+      
+      if (parameter == null) {
+         throw new IllegalArgumentException("Output parameter \"" + parameterName + "\" not found.");
+      }
+      
+      return parameter;
+   }
+   
+   /**
     * Gets the output parameter specifications defined in the error code.
     *
     * @return
@@ -124,7 +147,16 @@ public class ErrorCode {
     */
    public Parameter[] getOutputParameters() {
       
-      return _outputParameters;
+      int parametersCount = _outputParameters.size();
+      Parameter[] result = new Parameter[parametersCount];
+      
+      Iterator itParameters = _outputParameters.values().iterator();
+      int i = 0;
+      while (itParameters.hasNext()) {
+         Parameter nextParameter = (Parameter) itParameters.next();
+         result[i++] = nextParameter;
+      }
+      return result;
    }
    
    /**
@@ -162,7 +194,6 @@ public class ErrorCode {
       _description = descriptionElement.getText();
       List output = errorCode.getChildElements("output");
       if (output.size() == 0) {
-         _outputParameters = new Parameter[0];
          _outputDataSectionElements = new DataSectionElement[0];
       } else {
          

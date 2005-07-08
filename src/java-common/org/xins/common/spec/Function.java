@@ -84,8 +84,9 @@ public class Function {
    
    /**
     * The input parameters of the function.
+    * The key is the name of the parameter, the value is the <code>Function</code> object.
     */
-   private Parameter[] _inputParameters;
+   private Map _inputParameters = new HashMap();
 
    /**
     * The input param combos of the function.
@@ -104,8 +105,9 @@ public class Function {
 
    /**
     * The output parameters of the function.
+    * The key is the name of the parameter, the value is the <code>Parameter</code> object.
     */
-   private Parameter[] _outputParameters;
+   private Map _outputParameters = new HashMap();
 
    /**
     * The output param combos of the function.
@@ -145,6 +147,28 @@ public class Function {
    }
 
    /**
+    * Gets the input parameter for the specified name.
+    *
+    * @param parameterName
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
+    * @return
+    *    the parameter, never <code>null</code>.
+    *
+    * @throw IllegalArgumentException
+    *    if the function does not contain any input parameter with the specified name.
+    */
+   public Parameter getInputParameter(String parameterName) throws IllegalArgumentException {
+      Parameter parameter = (Parameter) _inputParameters.get(parameterName);
+      
+      if (parameter == null) {
+         throw new IllegalArgumentException("Input parameter \"" + parameterName + "\" not found.");
+      }
+      
+      return parameter;
+   }
+   
+   /**
     * Gets the input parameter specifications defined in the function.
     *
     * @return
@@ -152,9 +176,40 @@ public class Function {
     */
    public Parameter[] getInputParameters() {
       
-      return _inputParameters;
+      int parametersCount = _inputParameters.size();
+      Parameter[] result = new Parameter[parametersCount];
+      
+      Iterator itParameters = _inputParameters.values().iterator();
+      int i = 0;
+      while (itParameters.hasNext()) {
+         Parameter nextParameter = (Parameter) itParameters.next();
+         result[i++] = nextParameter;
+      }
+      return result;
    }
 
+   /**
+    * Gets the output parameter for the specified name.
+    *
+    * @param parameterName
+    *    the name of the parameter, cannot be <code>null</code>.
+    *
+    * @return
+    *    the parameter, never <code>null</code>.
+    *
+    * @throw IllegalArgumentException
+    *    if the function does not contain any output parameter with the specified name.
+    */
+   public Parameter getOutputParameter(String parameterName) throws IllegalArgumentException {
+      Parameter parameter = (Parameter) _outputParameters.get(parameterName);
+      
+      if (parameter == null) {
+         throw new IllegalArgumentException("Output parameter \"" + parameterName + "\" not found.");
+      }
+      
+      return parameter;
+   }
+   
    /**
     * Gets the output parameter specifications defined in the function.
     *
@@ -163,7 +218,16 @@ public class Function {
     */
    public Parameter[] getOutputParameters() {
       
-      return _outputParameters;
+      int parametersCount = _outputParameters.size();
+      Parameter[] result = new Parameter[parametersCount];
+      
+      Iterator itParameters = _outputParameters.values().iterator();
+      int i = 0;
+      while (itParameters.hasNext()) {
+         Parameter nextParameter = (Parameter) itParameters.next();
+         result[i++] = nextParameter;
+      }
+      return result;
    }
 
    /**
@@ -246,7 +310,6 @@ public class Function {
       _description = descriptionElement.getText();
       List input = function.getChildElements("input");
       if (input.size() == 0) {
-         _inputParameters = new Parameter[0];
          _inputParamCombos = new ParamCombo[0];
          _inputDataSectionElements = new DataSectionElement[0];
       } else {
@@ -272,7 +335,6 @@ public class Function {
       List output = function.getChildElements("output");
       if (output.size() == 0) {
          _errorCodes = new ErrorCode[0];
-         _outputParameters = new Parameter[0];
          _outputParamCombos = new ParamCombo[0];
          _outputDataSectionElements = new DataSectionElement[0];
       } else {
@@ -320,6 +382,10 @@ public class Function {
     * @param dataSection
     *    the data section, cannot be <code>null</code>.
     *
+    * @return
+    *    the top elements of the data section, or an empty array there is no
+    *    data section.
+    *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect.
     */
@@ -354,6 +420,9 @@ public class Function {
     *
     * @param dataSection
     *    the data section, cannot be <code>null</code>.
+    *
+    * @return
+    *    the data section element.
     *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect.
@@ -402,6 +471,9 @@ public class Function {
     * @param paramElement
     *    the element that contains the specification of the parameter, cannot be <code>null</code>.
     *
+    * @return
+    *    the parameter.
+    *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect.
     */
@@ -423,17 +495,21 @@ public class Function {
     * @param topElement
     *    the input or output element, cannot be <code>null</code>.
     *
+    * @return
+    *    a map containing the parameter names as keys, and the 
+    *    <code>Parameter</code> objects as value.
+    *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static Parameter[] parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
+   static Map parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
       List parametersList = topElement.getChildElements("param");
-      Parameter[] parameters = new Parameter[parametersList.size()];
+      Map parameters = new HashMap();
       Iterator itParameters = parametersList.iterator();
-      int i = 0;
       while (itParameters.hasNext()) {
          Element nextParameter = (Element) itParameters.next();
-         parameters[i++] = parseParameter(reference, nextParameter);
+         Parameter parameter = parseParameter(reference, nextParameter);
+         parameters.put(parameter.getName(), parameter);
       }
       return parameters;
    }
@@ -450,17 +526,14 @@ public class Function {
     * @param parameters
     *    the list of the input or output parameters, cannot be <code>null</code>.
     *
+    * @return
+    *    the param-combo elements or an empty array if no param-combo is defined.
+    *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static ParamCombo[] parseParamCombos(Class reference, Element topElement, Parameter[] parameters) {
+   static ParamCombo[] parseParamCombos(Class reference, Element topElement, Map parameters) {
       
-      // The parameter table is needed for the param combo.
-      Map parameterTable = new HashMap();
-      for (int j = 0; j < parameters.length; j++) {
-         parameterTable.put(parameters[j].getName(), parameters[j]);
-      }
-
       List paramCombosList = topElement.getChildElements("param-combo");
       ParamCombo[] paramCombos = new ParamCombo[paramCombosList.size()];
       Iterator itParamCombos = paramCombosList.iterator();
@@ -475,7 +548,7 @@ public class Function {
          while (itParamDefs.hasNext()) {
             Element paramDef = (Element) itParamDefs.next();
             String parameterName = paramDef.getAttribute("name");
-            Parameter parameter = (Parameter) parameterTable.get(parameterName);
+            Parameter parameter = (Parameter) parameters.get(parameterName);
             paramComboParameters[j++] = parameter;
          }
          ParamCombo paramCombo = new ParamCombo(type, paramComboParameters);

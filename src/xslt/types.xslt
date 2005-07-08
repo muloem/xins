@@ -649,6 +649,7 @@
 	<!--
 	* Returns the SOAP type for the specified XINS type.
 	* The type could be a standard type or a defined type.
+	* For more information about the returned type: http://www.w3.org/TR/xmlschema-2
 	*
 	* @param project_file
 	*    the location of the xins-project.xml file.
@@ -691,7 +692,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<!-- Note that boolean, data and timestamp values should be translated. -->
+		<!-- Note that boolean, date and timestamp values should be translated. -->
 		<xsl:choose>
 			<xsl:when test="string-length($paramtype) = 0 or $paramtype = '_text'">string</xsl:when>
 			<xsl:when test="$paramtype = '_boolean'">boolean</xsl:when>
