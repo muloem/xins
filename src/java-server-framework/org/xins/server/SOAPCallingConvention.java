@@ -82,7 +82,7 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * The formatter for SOAP dateType type.
     */
-   private static final DateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss");
+   private static final DateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
    
    //-------------------------------------------------------------------------
