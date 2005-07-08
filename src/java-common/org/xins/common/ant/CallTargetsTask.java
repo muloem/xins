@@ -98,7 +98,7 @@ public class CallTargetsTask extends Task {
    public void setTargets(String targets) {
       _targets = new Vector();
       if (targets != null) {
-         StringTokenizer tokenizer = new StringTokenizer(targets, " ");
+         StringTokenizer tokenizer = new StringTokenizer(targets, " ,'\"");
          while (tokenizer.hasMoreTokens()) {
             _targets.add(tokenizer.nextToken());
          }

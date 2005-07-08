@@ -44,6 +44,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     the development targets. Note that you don't need to specify the file
     name for the development targets (e.g. "ant -lib lib tests").
 
+* XINS shell script:
+  - Implemented SF.net RFE #1234788: Allow quotes, double quotes and commas in
+    shell script.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 
