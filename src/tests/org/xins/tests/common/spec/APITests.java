@@ -87,8 +87,10 @@ public class APITests extends TestCase {
     * @see org.xins.common.spec.API#getDescription()
     */
    public void testAPIGetDescription() {
-      assertEquals("Incorrect description of the API: " + _allInOneAPI.getDescription(), 
-         "API that uses all the features included in XINS.", _allInOneAPI.getDescription());
+      assertEquals("Incorrect description of the API: " + 
+         _allInOneAPI.getDescription(), 
+         "API that uses all the features included in XINS.", 
+         _allInOneAPI.getDescription());
    }
 
    /**
@@ -127,8 +129,9 @@ public class APITests extends TestCase {
          // consume, this is valid
       }
 
-      assertEquals("Incorrect number of functions in the API: " + _allInOneAPI.getFunctions().length, 
-                 _allInOneAPI.getFunctions().length, list.size());
+      assertEquals("Incorrect number of functions in the API: " + 
+         _allInOneAPI.getFunctions().length, 
+         _allInOneAPI.getFunctions().length, list.size());
       int i = 0;
       try {
          for (i = 0; i < list.size(); i++) {

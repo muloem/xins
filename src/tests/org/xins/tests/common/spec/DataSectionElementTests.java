@@ -73,8 +73,8 @@ public class DataSectionElementTests extends TestCase {
    public void testDataSectionGetName() throws Exception {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
-      assertEquals("For function 'DataSection', incorrect datasection name: " + element.getName(), 
-         "user", element.getName());
+      assertEquals("For function 'DataSection', incorrect datasection name: " +
+         element.getName(), "user", element.getName());
    }
 
    /**
@@ -85,7 +85,8 @@ public class DataSectionElementTests extends TestCase {
    public void testDataSectionGetDescription() {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
-      assertEquals("For function 'DataSection', Incorrect description of the datasection: " + element.getDescription(),
+      assertEquals("For function 'DataSection', Incorrect description of the " +
+         "datasection: " + element.getDescription(),
          "A user.", element.getDescription());
    }
 
@@ -97,9 +98,11 @@ public class DataSectionElementTests extends TestCase {
    public void testDataSectionGetSubElements() {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
-      assertEquals("In dataelement 'product' for function 'DataSection2', incorrect number of sub-elements: " + element.getSubElements().length, 
+      assertEquals("In dataelement 'product' for function 'DataSection2', " +
+         "incorrect number of sub-elements: " + element.getSubElements().length, 
          1, element.getSubElements().length);
-      assertEquals("In dataelement 'product' for function 'DataSection2', incorrect name of the sub-element: " + element.getSubElements()[0].getName(), 
+      assertEquals("In dataelement 'product' for function 'DataSection2', " +
+         "incorrect name of the sub-element: " + element.getSubElements()[0].getName(), 
          "product", element.getSubElements()[0].getName());
    }
 
@@ -114,16 +117,21 @@ public class DataSectionElementTests extends TestCase {
 
       assertEquals(1, element.getAttributes().length);
       Parameter attribute = element.getAttributes()[0];
-      assertEquals("In output datasection for function 'DataSection2', incorrect attribute name: " + attribute.getName(), 
+      assertEquals("In output datasection for function 'DataSection2', incorrect " +
+         "attribute name: " + attribute.getName(), 
          "destination", attribute.getName());
-      assertEquals("In output datasection for function 'DataSection2', incorrect attribute description: " + attribute.getDescription(),
+      assertEquals("In output datasection for function 'DataSection2', incorrect" +
+         " attribute description: " + attribute.getDescription(),
          "The destination of the packet.", attribute.getDescription());
-      assertTrue("In output datasection for function 'DataSection2', incorrect attribute's 'is required' property: ", 
+      assertTrue("In output datasection for function 'DataSection2', incorrect" +
+         " attribute's 'is required' property: ", 
          attribute.isRequired());
-      assertTrue("In output datasection for function 'DataSection2', incorrect attribute type: " + attribute.getType(), 
+      assertTrue("In output datasection for function 'DataSection2', incorrect" +
+         " attribute type: " + attribute.getType(), 
          attribute.getType() instanceof Text);
 
-      assertEquals("In output datasection for function 'DataSection2', incorrect number subelements: " + element.getSubElements().length,
+      assertEquals("In output datasection for function 'DataSection2', incorrect " +
+         "number subelements: " + element.getSubElements().length,
          1, element.getSubElements().length);
    }
 
@@ -141,21 +149,30 @@ public class DataSectionElementTests extends TestCase {
       for (int i = 0; i < subElementAttributes.length; i++) {
          Parameter attribute = subElementAttributes[i];
          if ("id".equals(attribute.getName())) {
-            assertEquals("In subelement of output datasection for function 'DataSection2', incorrect attribute 'id' description: " + attribute.getDescription(), 
+            assertEquals("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'id' description: " + 
+               attribute.getDescription(), 
                "The id of the product.", attribute.getDescription());
-            assertTrue("In subelement of output datasection for function 'DataSection2', incorrect attribute 'id's 'is required' property: ", 
+            assertTrue("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'id's 'is required' property: ", 
                attribute.isRequired());
-            assertTrue("In subelement of output datasection for function 'DataSection2', incorrect attribute 'id's type: ", 
+            assertTrue("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'id's type: ", 
                attribute.getType() instanceof Int64);
          } else if ("price".equals(attribute.getName())) {
-            assertEquals("In subelement of output datasection for function 'DataSection2', incorrect attribute 'price' description: " + attribute.getDescription(), 
+            assertEquals("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'price' description: " + 
+               attribute.getDescription(), 
                "The description of the product.", attribute.getDescription());
-            assertFalse("In subelement of output datasection for function 'DataSection2', incorrect attribute 'price's 'is required' property: ", 
+            assertFalse("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'price's 'is required' property: ", 
                attribute.isRequired());
-            assertTrue("In subelement of output datasection for function 'DataSection2', incorrect attribute 'price's type: ", 
+            assertTrue("In subelement of output datasection for function " +
+               "'DataSection2', incorrect attribute 'price's type: ", 
                attribute.getType() instanceof Int32);
          } else {
-            fail("Contains an attribute " + attribute.getName() + " which should not be there.");
+            fail("Contains an attribute " + attribute.getName() + 
+               " which should not be there.");
          }
       }
    }

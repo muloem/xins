@@ -97,36 +97,36 @@ public class ParamComboTests extends TestCase {
     * @see org.xins.common.spec.ParamCombo#isExclusiveOr()
     */
    public void testErrorCodeIsExclusiveOr() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect isExclusive", 
-         _exclusiveCombo.isExclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isExculsive",
-         _inclusiveCombo.isExclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isExclusive",
-         _allOrNoneCombo.isExclusiveOr());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
+         "isExclusive", _exclusiveCombo.isExclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isExculsive", _inclusiveCombo.isExclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isExclusive", _allOrNoneCombo.isExclusiveOr());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#isInclusiveOr()
     */
    public void testErrorCodeIsInclusiveOr() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
-         _inclusiveCombo.isInclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
-         _exclusiveCombo.isInclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
-         _allOrNoneCombo.isInclusiveOr());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
+         "isInxclusive", _inclusiveCombo.isInclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isInxclusive", _exclusiveCombo.isInclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isInxclusive", _allOrNoneCombo.isInclusiveOr());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#isAllOrNone()
     */
    public void testErrorCodeIsAllOrNode() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
-         _allOrNoneCombo.isAllOrNone());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
-         _inclusiveCombo.isAllOrNone());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
-         _exclusiveCombo.isAllOrNone());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
+         "isAllorNone", _allOrNoneCombo.isAllOrNone());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isAllorNone", _inclusiveCombo.isAllOrNone());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
+         "isAllorNone", _exclusiveCombo.isAllOrNone());
    }
 
    /**

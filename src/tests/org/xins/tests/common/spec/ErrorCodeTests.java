@@ -73,8 +73,8 @@ public class ErrorCodeTests extends TestCase {
     * @see org.xins.common.spec.ErrorCode#getName()
     */
    public void testErrorCodeGetName() {
-      assertEquals("For function 'ResultCode', incorrect errorcode name: " + _errorCode.getName(),
-         "AlreadySet", _errorCode.getName());
+      assertEquals("For function 'ResultCode', incorrect errorcode name: " + 
+         _errorCode.getName(), "AlreadySet", _errorCode.getName());
    }
 
    /**
@@ -83,8 +83,9 @@ public class ErrorCodeTests extends TestCase {
     * @see org.xins.common.spec.ErrorCode#getDescription()
     */
    public void testErrorCodeGetDescription() {
-      assertEquals("For function 'ResultCode', incorrect errorcode description: " + _errorCode.getDescription(),
-         "The parameter has already been given.", _errorCode.getDescription());
+      assertEquals("For function 'ResultCode', incorrect errorcode description: "
+         + _errorCode.getDescription(), "The parameter has already been given.",
+         _errorCode.getDescription());
    }
 
    /**
@@ -96,18 +97,51 @@ public class ErrorCodeTests extends TestCase {
       Parameter[] outputParams = _errorCode.getOutputParameters();
       Parameter outputParam = outputParams[0];
       
-      assertEquals("For errorcode in function 'ResultCode', incorrect number of parameter of the errorcode: " + outputParams.length 
+      assertEquals("For errorcode in function 'ResultCode', incorrect number of " +
+         "parameter of the errorcode: " + outputParams.length 
          , 1, outputParams.length);
-      assertEquals("For errorcode in function 'ResultCode', incorrect name of the parameter of the errorcode: " + outputParam.getName(),
+      assertEquals("For errorcode in function 'ResultCode', incorrect name of the" +
+         " parameter of the errorcode: " + outputParam.getName(),
          "count", outputParam.getName());
-      assertEquals("For errorcode in function 'ResultCode', incorrect description of the parameter of the errorcode: " + outputParam.getDescription(),
-         "The number of times that the parameter was already passed.", outputParam.getDescription());
-      assertTrue("For errorcode in function 'ResultCode', incorrect 'is required' property of the paramter of the errorcode",
+      assertEquals("For errorcode in function 'ResultCode', incorrect description" +
+         " of the parameter of the errorcode: " + outputParam.getDescription(),
+         "The number of times that the parameter was already passed.", 
+      outputParam.getDescription());
+      assertTrue("For errorcode in function 'ResultCode', incorrect 'is required'" +
+         " property of the paramter of the errorcode",
          outputParam.isRequired());
-      assertTrue("For errorcode in function 'ResultCode', incorrect type of the paramter of the errorcode",
+      assertTrue("For errorcode in function 'ResultCode', incorrect type of the " +
+         "paramter of the errorcode",
          outputParam.getType() instanceof Int32);
    }
 
+   /**
+    * Tests that the  getOutputParameter(String) returns the correct output 
+    * parameters of the errorcode of a function of the API when given an output
+    * parameter name.
+    * @see org.xins.common.spec.ErrorCode#getOutputParameter(String)()
+    */
+   public void testErrorCodeGetOutputParameter() {
+      try {
+         _errorCode.getOutputParameter("NoName"); 
+         fail("For erorrcode in function 'ResultCode', output paramter call " +
+            "should throw an exception, as no parameter with 'NoName' " +
+            "does not exists");
+      } catch (IllegalArgumentException e) {
+         //expecting exception
+      }
+      try {
+         Parameter outputParam = _errorCode.getOutputParameter("count");
+         assertEquals("For errorcode in function 'ResultCode', incorrect name of" +
+         		" the parameter of the errorcode: " + outputParam.getName(),
+                "count", outputParam.getName());
+      } catch (IllegalArgumentException e) {
+        fail("For erorrcode in function 'ResultCode', output paramter call " +
+           "should not throw an exception, as parameter 'count' " +
+           "does exist.");
+      }
+   }
+   
    /**
     * Tests the getOutputDataSection() return the correct output datasection of the
     * errorcode of a function of the API.
