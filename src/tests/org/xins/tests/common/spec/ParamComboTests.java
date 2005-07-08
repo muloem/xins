@@ -20,8 +20,8 @@ import org.xins.common.spec.Parameter;
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * API spec TestCase. The testcase assumes that the example api allinone is
- * the api being questioned for meta information like name, functions and so on.
+ * ParamCombo spec TestCase. The testcases use the <i>allinone</i> API 
+ * to test the API specification.
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
@@ -33,15 +33,25 @@ public class ParamComboTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-
    /**
-    * Hold a reference to the API for further questioning.
+    * Holds a reference to the exclusive parameter combo of the API
+    * for further questioning.
     */
-   private static API allInOneAPI;
-   private static ParamCombo[] parameterCombo;
-   private static ParamCombo exclusiveCombo;
-   private static ParamCombo inclusiveCombo;
-   private static ParamCombo allornoneCombo;
+   private ParamCombo _exclusiveCombo;
+   
+   /**
+    * Holds a reference to the inclusive parameter combo of the API
+    * for further questioning.
+    */
+   private static ParamCombo _inclusiveCombo;
+   
+   /**
+    * Holds a reference to the allornone parameter combo of the API
+    * for further questioning.
+    */
+   private static ParamCombo _allOrNoneCombo;
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -65,19 +75,19 @@ public class ParamComboTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      allInOneAPI = allInOne.getAPISpecification();
+      API allInOneAPI = allInOne.getAPISpecification();
 
       String functionName = "ParamCombo";
       Function function = allInOneAPI.getFunction(functionName);
-      parameterCombo = function.getInputParamCombos();
-      for (int i = 0; i < parameterCombo.length; i++) {
-         ParamCombo combo = parameterCombo[i];
+      ParamCombo[] paramterCombo = function.getInputParamCombos();
+      for (int i = 0; i < paramterCombo.length; i++) {
+         ParamCombo combo = paramterCombo[i];
          if (combo.isExclusiveOr()) {
-            exclusiveCombo = parameterCombo[i];
+            _exclusiveCombo = paramterCombo[i];
          } else if (combo.isInclusiveOr()) {
-            inclusiveCombo = parameterCombo[i];
+            _inclusiveCombo = paramterCombo[i];
          } else if (combo.isAllOrNone()) {
-            allornoneCombo = parameterCombo[i];
+            _allOrNoneCombo = paramterCombo[i];
          }
       }
 
@@ -87,35 +97,44 @@ public class ParamComboTests extends TestCase {
     * @see org.xins.common.spec.ParamCombo#isExclusiveOr()
     */
    public void testErrorCodeIsExclusiveOr() {
-      assertTrue(exclusiveCombo.isExclusiveOr());
-      assertFalse(inclusiveCombo.isExclusiveOr());
-      assertFalse(allornoneCombo.isExclusiveOr());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect isExclusive", 
+         _exclusiveCombo.isExclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isExculsive",
+         _inclusiveCombo.isExclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isExclusive",
+         _allOrNoneCombo.isExclusiveOr());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#isInclusiveOr()
     */
    public void testErrorCodeIsInclusiveOr() {
-      assertTrue(inclusiveCombo.isInclusiveOr());
-      assertFalse(exclusiveCombo.isInclusiveOr());
-      assertFalse(allornoneCombo.isInclusiveOr());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
+         _inclusiveCombo.isInclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
+         _exclusiveCombo.isInclusiveOr());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isInxclusive",
+         _allOrNoneCombo.isInclusiveOr());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#isAllOrNone()
     */
    public void testErrorCodeIsAllOrNode() {
-      assertTrue(allornoneCombo.isAllOrNone());
-      assertFalse(inclusiveCombo.isAllOrNone());
-      assertFalse(exclusiveCombo.isAllOrNone());
+      assertTrue("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
+         _allOrNoneCombo.isAllOrNone());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
+         _inclusiveCombo.isAllOrNone());
+      assertFalse("In parameter combos for function 'ParamCombo', incorrect isAllorNone",
+         _exclusiveCombo.isAllOrNone());
    }
 
    /**
     * @see org.xins.common.spec.ParamCombo#getParameters()
     */
    public void testErrorCodeGetParameters() {
-      assertEquals(3, exclusiveCombo.getParameters().length);
-      Parameter[] params = exclusiveCombo.getParameters();
+      assertEquals(3, _exclusiveCombo.getParameters().length);
+      Parameter[] params = _exclusiveCombo.getParameters();
       List paramNames = new ArrayList();
       for (int i = 0; i < params.length; i++) {
          paramNames.add(params[i].getName());
@@ -124,8 +143,8 @@ public class ParamComboTests extends TestCase {
       assertTrue(paramNames.contains("birthYear"));
       assertTrue(paramNames.contains("age"));
 
-      assertEquals(2, inclusiveCombo.getParameters().length);
-      assertEquals(3, allornoneCombo.getParameters().length);
+      assertEquals(2, _inclusiveCombo.getParameters().length);
+      assertEquals(3, _allOrNoneCombo.getParameters().length);
    }
 
 }

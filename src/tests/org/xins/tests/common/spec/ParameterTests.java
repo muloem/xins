@@ -15,10 +15,14 @@ import org.xins.common.spec.Parameter;
 import org.xins.common.types.standard.Text;
 
 import com.mycompany.allinone.capi.CAPI;
+import com.mycompany.allinone.types.Age;
+import com.mycompany.allinone.types.IPAddress;
+import com.mycompany.allinone.types.Salutation;
+import com.mycompany.allinone.types.TextList;
 
 /**
- * API spec TestCase. The testcase assumes that the example api allinone is
- * the api being questioned for meta information like name, functions and so on.
+ * Parameter spec TestCase. The testcases use the <i>allinone</i> API 
+ * to test the API specification.
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
@@ -30,13 +34,19 @@ public class ParameterTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-
    /**
-    * Hold a reference to the API for further questioning.
+    * Holds a reference to the paramter of a function of the API for further 
+    * questioning.
     */
-   private static API allInOneAPI;
-   private static Parameter parameter;
-   private static Parameter[] userDefinedParams;
+   private Parameter _parameter;
+   
+   /**
+    * Holds a reference to the user defined paramter of a function of the 
+    * API for further questioning.
+    */
+   private Parameter[] _userDefinedParams;
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -60,64 +70,98 @@ public class ParameterTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      allInOneAPI = allInOne.getAPISpecification();
+      API allInOneAPI = allInOne.getAPISpecification();
 
       String functionName = "DataSection";
       Function function = allInOneAPI.getFunction(functionName);
-      parameter = function.getInputParameters()[0];
-      userDefinedParams = allInOneAPI.getFunction("DefinedTypes").getInputParameters();
+      _parameter = function.getInputParameters()[0];
+      _userDefinedParams = allInOneAPI.getFunction("DefinedTypes").getInputParameters();
    }
 
    /**
+    * Tests that the getName() returns the correct name of the paramter 
+    * of a function of the API
     * @see org.xins.common.spec.Parameter#getName()
     */
    public void testParameterGetName() {
-      assertEquals("inputText", parameter.getName());
+      assertEquals("For function 'DataSection', incorrect name of the paramter: " + _parameter.getName(), 
+         "inputText", _parameter.getName());
    }
 
    /**
+    * Tests that the getDescription() returns the correct description of the
+    * parameter of a function of the API.
     * @see org.xins.common.spec.Parameter#getDescription()
     */
    public void testParameterGetDescription() {
-      assertEquals("An example of input for a text.", parameter.getDescription());
+      assertEquals("For function 'DataSection', incorret description of the paramter: " + _parameter.getDescription(),
+         "An example of input for a text.", _parameter.getDescription());
    }
 
    /**
+    * Tests that isRequired() returns the correct flag for the parameter of
+    * a function of the API.
     * @see org.xins.common.spec.Parameter#isRequired()
     */
    public void testParameterIsRequired() {
-      assertFalse(parameter.isRequired());
+      assertFalse("For function 'DataSection', incorrect 'is required' flag: " + _parameter.isRequired(),
+         _parameter.isRequired());
    }
 
    /**
+    * Tests that getType() returns the correct type of the parameter of
+    * a function of the API.
     * @see org.xins.common.spec.Parameter#getType()
     */
    public void testParameterGetType() {
-      assertTrue(parameter.getType() instanceof Text);
+      assertTrue("For function 'DataSection', incorrect type of paramter: " + _parameter.getType(),
+         _parameter.getType() instanceof Text);
    }
 
    /**
+    * Tests that getType() returns the correct user defined type of the 
+    * parameter of a function of the API.
     * @see org.xins.common.spec.Parameter#getType()
     */
    public void testParameterGetTypeUserDefined() {
-      for (int i = 0; i < userDefinedParams.length; i++) {
-         Parameter userDefinedParameter = userDefinedParams[i];
+      for (int i = 0; i < _userDefinedParams.length; i++) {
+         Parameter userDefinedParameter = _userDefinedParams[i];
          if ("inputIP".equals(userDefinedParameter.getName())) {
-            assertEquals("An example of input for a pattern type.", userDefinedParameter.getDescription());
-            assertEquals("IPAddress", userDefinedParameter.getType().getName());
-            assertFalse(userDefinedParameter.isRequired());
+            assertEquals("For function 'DefinedTypes', incorrect description of the user defined type: " + userDefinedParameter.getDescription(),
+               "An example of input for a pattern type.", userDefinedParameter.getDescription());
+            assertEquals("For function 'DefinedTypes', incorrect name of the user defined type: " + userDefinedParameter.getType().getName(),
+               "IPAddress", userDefinedParameter.getType().getName());
+            assertTrue("For function 'DefinedTypes', incorrect type of the user defined type: " + userDefinedParameter.getType().getName(),
+               userDefinedParameter.getType() instanceof IPAddress);
+            assertFalse("For function 'DefinedTypes', incorrect 'is required' flag for the user defined type: " + userDefinedParameter.isRequired(), 
+               userDefinedParameter.isRequired());
          } else if ("inputSalutation".equals(userDefinedParameter.getName())) {
-            assertEquals("An example of input for an enum type.", userDefinedParameter.getDescription());
-            assertEquals("Salutation", userDefinedParameter.getType().getName());
-            assertTrue(userDefinedParameter.isRequired());
+            assertEquals("For function 'DefinedTypes', incorrect description of the user defined type: " + userDefinedParameter.getDescription(),
+               "An example of input for an enum type.", userDefinedParameter.getDescription());
+            assertEquals("For function 'DefinedTypes', incorrect name of the user defined type: " + userDefinedParameter.getType().getName(),
+               "Salutation", userDefinedParameter.getType().getName());
+            assertTrue("For function 'DefinedTypes', incorrect type of the user defined type: " + userDefinedParameter.getType().getName(),
+               userDefinedParameter.getType() instanceof Salutation);
+            assertTrue("For function 'DefinedTypes', incorrect 'is required' flag for the user defined type: " + userDefinedParameter.isRequired(),
+               userDefinedParameter.isRequired());
          } else if ("inputAge".equals(userDefinedParameter.getName())) {
-            assertEquals("An example of input for a int8 type with a minimum and maximum.", userDefinedParameter.getDescription());
-            assertEquals("Age", userDefinedParameter.getType().getName());
-            assertTrue(userDefinedParameter.isRequired());
+            assertEquals("For function 'DefinedTypes', incorrect description of the user defined type: " + userDefinedParameter.getDescription(),
+               "An example of input for a int8 type with a minimum and maximum.", userDefinedParameter.getDescription());
+            assertEquals("For function 'DefinedTypes', incorrect name of the user defined type: " + userDefinedParameter.getType().getName(),
+               "Age", userDefinedParameter.getType().getName());
+            assertTrue("For function 'DefinedTypes', incorrect type of the user defined type: " + userDefinedParameter.getType().getName(),
+               userDefinedParameter.getType() instanceof Age);
+            assertTrue("For function 'DefinedTypes', incorrect 'is required' flag for the user defined type: " + userDefinedParameter.isRequired(),
+               userDefinedParameter.isRequired());
          } else if ("inputList".equals(userDefinedParameter.getName())) {
-            assertEquals("An example of input for a list.", userDefinedParameter.getDescription());
-            assertEquals("TextList", userDefinedParameter.getType().getName());
-            assertFalse(userDefinedParameter.isRequired());
+            assertEquals("For function 'DefinedTypes', incorrect description of the user defined type: " + userDefinedParameter.getDescription(),
+               "An example of input for a list.", userDefinedParameter.getDescription());
+            assertEquals("For function 'DefinedTypes', incorrect name of the user defined type: " + userDefinedParameter.getType().getName(),
+               "TextList", userDefinedParameter.getType().getName());
+            assertTrue("For function 'DefinedTypes', incorrect type of the user defined type: " + userDefinedParameter.getType().getName(),
+               userDefinedParameter.getType() instanceof TextList);
+            assertFalse("For function 'DefinedTypes', incorrect 'is required' flag for the user defined type: " + userDefinedParameter.isRequired(),
+               userDefinedParameter.isRequired());
          } else {
             fail("Contains a parameter: " + userDefinedParameter.getName()
                + " which should not be there.");

@@ -18,8 +18,8 @@ import org.xins.common.spec.Parameter;
 import org.xins.common.types.standard.Int32;
 
 /**
- * API spec TestCase. The testcase assumes that the example api allinone is
- * the api being questioned for meta information like name, functions and so on.
+ * ErrorCode spec TestCase. The testcases use the <i>allinone</i> API 
+ * to test the API specification.
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
@@ -31,12 +31,13 @@ public class ErrorCodeTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-
    /**
-    * Hold a reference to the API for further questioning.
+    * Holds a reference to the errorCode of a function of the API for 
+    * further questioning.
     */
-   private static API allInOneAPI;
-   private static ErrorCode errorCode;
+   private ErrorCode _errorCode;
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -60,40 +61,56 @@ public class ErrorCodeTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      allInOneAPI = allInOne.getAPISpecification();
+      API allInOneAPI = allInOne.getAPISpecification();
       String functionName = "ResultCode";
       Function function = allInOneAPI.getFunction(functionName);
-      errorCode = function.getErrorCodes()[0];
+      _errorCode = function.getErrorCodes()[0];
    }
 
    /**
+    * Tests that the getName() returns the correct name of the errorcode of a
+    * function of the API.
     * @see org.xins.common.spec.ErrorCode#getName()
     */
    public void testErrorCodeGetName() {
-      assertEquals("AlreadySet", errorCode.getName());
+      assertEquals("For function 'ResultCode', incorrect errorcode name: " + _errorCode.getName(),
+         "AlreadySet", _errorCode.getName());
    }
 
    /**
+    * Tests that the getDescription() returns the correct description of the 
+    * errorcode of a function of the API.
     * @see org.xins.common.spec.ErrorCode#getDescription()
     */
    public void testErrorCodeGetDescription() {
-      assertEquals("The parameter has already been given.", errorCode.getDescription());
+      assertEquals("For function 'ResultCode', incorrect errorcode description: " + _errorCode.getDescription(),
+         "The parameter has already been given.", _errorCode.getDescription());
    }
 
    /**
+    * Tests that the  getOutputParameters() returns the correct output parameters
+    * of the errorcode of a function of the API.
     * @see org.xins.common.spec.ErrorCode#getOutputParameters()
     */
    public void testErrorCodeGetOutputParameters() {
-      Parameter[] outputParam = errorCode.getOutputParameters();
-
-      assertEquals(1, outputParam.length);
-      assertEquals("count", outputParam[0].getName());
-      assertEquals("The number of times that the parameter was already passed.", outputParam[0].getDescription());
-      assertTrue(outputParam[0].isRequired());
-      assertTrue(outputParam[0].getType() instanceof Int32);
+      Parameter[] outputParams = _errorCode.getOutputParameters();
+      Parameter outputParam = outputParams[0];
+      
+      assertEquals("For errorcode in function 'ResultCode', incorrect number of parameter of the errorcode: " + outputParams.length 
+         , 1, outputParams.length);
+      assertEquals("For errorcode in function 'ResultCode', incorrect name of the parameter of the errorcode: " + outputParam.getName(),
+         "count", outputParam.getName());
+      assertEquals("For errorcode in function 'ResultCode', incorrect description of the parameter of the errorcode: " + outputParam.getDescription(),
+         "The number of times that the parameter was already passed.", outputParam.getDescription());
+      assertTrue("For errorcode in function 'ResultCode', incorrect 'is required' property of the paramter of the errorcode",
+         outputParam.isRequired());
+      assertTrue("For errorcode in function 'ResultCode', incorrect type of the paramter of the errorcode",
+         outputParam.getType() instanceof Int32);
    }
 
    /**
+    * Tests the getOutputDataSection() return the correct output datasection of the
+    * errorcode of a function of the API.
     * @see org.xins.common.spec.ErrorCode#getOutputDataSection()
     */
    public void testErrorCodeGetOutputDataSection() {

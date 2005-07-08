@@ -13,12 +13,13 @@ import junit.framework.TestCase;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.API;
 import org.xins.common.spec.Function;
+import org.xins.common.spec.InvalidSpecificationException;
 
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * API spec TestCase. The testcase assumes that the example api allinone is
- * the api being questioned for meta information like name, functions and so on.
+ * API spec TestCase. The testcases use the <i>allinone</i> API to test 
+ * the API specification.
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
@@ -30,12 +31,12 @@ public class APITests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-
    /**
-    * Hold a reference to the API for further questioning.
+    * Holds a reference to the allInone API for further questioning.
     */
-   private static API allInOneAPI;
+   private API _allInOneAPI;
 
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -59,32 +60,40 @@ public class APITests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      allInOneAPI = allInOne.getAPISpecification();
+      _allInOneAPI = allInOne.getAPISpecification();
    }
 
 
    /**
+    * Tests that the getName() returns the correct name of the API.
     * @see org.xins.common.spec.API#getName()
     */
    public void testAPIGetName() {
-      assertEquals("allinone", allInOneAPI.getName());
+      assertEquals("Incorrect API name: " + _allInOneAPI.getName(), 
+         "allinone", _allInOneAPI.getName());
    }
 
    /**
+    * Tests that the getOwner() returns the correct owner of the API.
     * @see org.xins.common.spec.API#getOwner()
     */
    public void testAPIGetOwner() {
-      assertEquals("johnd", allInOneAPI.getOwner());
+      assertEquals("Incorrect Owner of the API: " + _allInOneAPI.getOwner(), 
+         "johnd", _allInOneAPI.getOwner());
    }
 
    /**
+    * Tests that the getDescription() returns the correct description of the API.
     * @see org.xins.common.spec.API#getDescription()
     */
    public void testAPIGetDescription() {
-      assertEquals("API that uses all the features included in XINS.", allInOneAPI.getDescription());
+      assertEquals("Incorrect description of the API: " + _allInOneAPI.getDescription(), 
+         "API that uses all the features included in XINS.", _allInOneAPI.getDescription());
    }
 
    /**
+    * Tests that the getFunctions() and the getFunction(String) returns the 
+    * correct functions of the API.
     * @see org.xins.common.spec.API#getFunctions()
     * @see org.xins.common.spec.API#getFunction(String)
     *
@@ -104,7 +113,7 @@ public class APITests extends TestCase {
       list.add("SimpleOutput");
       list.add("SimpleTypes");
 
-      Function[] functions = allInOneAPI.getFunctions();
+      Function[] functions = _allInOneAPI.getFunctions();
 
       for (int i = 0; i < functions.length; i++) {
          Function function = functions[i];
@@ -112,23 +121,44 @@ public class APITests extends TestCase {
       }
 
       try {
-         allInOneAPI.getFunction("RubbishName");
+         _allInOneAPI.getFunction("RubbishName");
          fail("Expected getFunction to throw an IllegalArgumentException");
       } catch (IllegalArgumentException e) {
          // consume, this is valid
       }
 
-      assertEquals(allInOneAPI.getFunctions().length, list.size());
+      assertEquals("Incorrect number of functions in the API: " + _allInOneAPI.getFunctions().length, 
+                 _allInOneAPI.getFunctions().length, list.size());
       int i = 0;
       try {
          for (i = 0; i < list.size(); i++) {
             String functionName = (String) list.get(i);
-            assertEquals(allInOneAPI.getFunction(functionName).getName(), functionName);
+            assertEquals("Incorrect function name in the API: " + _allInOneAPI.getFunction(functionName).getName(),
+               _allInOneAPI.getFunction(functionName).getName(), functionName);
          }
       } catch (IllegalArgumentException exc) {
          fail("Could not find the function " + list.get(i) + " in allInOneAPI.");
       }
    }
+   
+   /**
+    * Tests the backword compatability with older version of xins.
+    * The system is actualy not backword compatible so it throws an exception.
+    */
+   public void testCompatibility() {
+   	
+      try {
+      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+      com.mycompany.myproject.capi.CAPI capi = 
+         new com.mycompany.myproject.capi.CAPI(target);
+      capi.getAPISpecification();
+      } catch (InvalidSpecificationException e) {
+         //Expecting exception	
+      } catch (Exception e) {
+         fail("Unexpected exception occurs: " + e.getMessage());      	
+      }
+   }
+   
 }
 
 
