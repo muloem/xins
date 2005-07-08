@@ -10,16 +10,15 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Improved Javadoc of the spec package.
   - Improved the parsing of HTTP POST requests for the internal servlet 
     container.
-  - Added methods to get directly a parameter for a function or an error code
-    in the spec package.
+  - Added methods to retreive the specification of a parameter given its name.
   - Added a method in IPAddressUtils to get the local IP address.
 
 * XINS/Java Server Framework:
-  - If no content-type is passed, the _xins-xml calling convention will fail
-    nicely.
+  - An InvalidRequestException is thorwn if the request does not contain
+    any content-type in the _xins-xml calling convention.
   - No specific namespace is returned in the SOAP response.
-  - Boolean, data and dataTime types are converted from XINS format to SOAP
-    format and vice versa.
+  - The _boolean, _date and _timestamp types are converted from XINS format 
+    to SOAP format and vice versa.
   - Calling conventions other than the default one are cached.
   - If no org.xins.server.config is not set or there is no org.xins.server.acl
     property, only localhost is allowed to access the API.
@@ -28,11 +27,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Added to possibility to have categories in functions. RFE #1029268.
 
 * Generated WSDL:
-  - Changed the stype from rpc to document.
+  - Changed the SOAP binding style from rpc to document.
   - Changed target name space to urn:<apiname>
 
 * Build- and release-process:
-  - No need to download the file as the file is build locally.
+  - No need to download the release file to create the Windows installer as 
+    the release file is located in the build directory.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
