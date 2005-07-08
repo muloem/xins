@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -704,6 +706,13 @@ final class Engine extends Object {
    private String _defaultCallingConvention;
 
    /**
+    * The cache for the calling convention other than the default one.
+    * The key is the name of the calling convention, the value is the
+    * calling convention object.
+    */
+   private Map _callingConventionCache = new HashMap();
+   
+   /**
     * The name of the runtime configuration file.
     */
    private String _configFile;
@@ -890,6 +899,9 @@ final class Engine extends Object {
             if (_callingConvention != null) {
                _callingConvention.init(_runtimeProperties);
             }
+            
+            // Clear the cache for the other calling convention
+            _callingConventionCache.clear();
 
             succeeded = true;
          } catch (MissingRequiredPropertyException exception) {
@@ -1118,17 +1130,21 @@ final class Engine extends Object {
          CALLING_CONVENTION_PARAMETER);
       CallingConvention callingConvention = null;
       if (ccParam != null && !ccParam.equals(_defaultCallingConvention)) {
-         try {
-            callingConvention = createCallingConvention(ccParam);
-            if (callingConvention != null) {
-               callingConvention.init(_runtimeProperties);
-            }
-         } catch (Exception ex) {
+         callingConvention = (CallingConvention) _callingConventionCache.get(ccParam);
+         if (callingConvention == null) {
+            try {
+               callingConvention = createCallingConvention(ccParam);
+               if (callingConvention != null) {
+                  callingConvention.init(_runtimeProperties);
+               }
+               _callingConventionCache.put(ccParam, callingConvention);
+            } catch (Exception ex) {
 
-            // The calling convention could not be created or initialized
-            Log.log_3560(ex, ccParam);
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
+               // The calling convention could not be created or initialized
+               Log.log_3560(ex, ccParam);
+               response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+               return;
+            }
          }
       }
 
