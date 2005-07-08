@@ -62,6 +62,12 @@ public abstract class AbstractCAPI extends Object {
     */
    private final static HashSet VERSION_COMPARISIONS_DONE = new HashSet();
 
+   /**
+    * The API specification. This field can be <code>null</code> 
+    * if the CAPI does not contain the specifications.
+    */
+   private static API API_SPECIFICATION;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -215,12 +221,7 @@ public abstract class AbstractCAPI extends Object {
     * The XINS service caller to use. This field cannot be <code>null</code>.
     */
    private final XINSServiceCaller _caller;
-
-   /**
-    * The API specification. This field can be <code>null</code> 
-    * if the CAPI does not contain the specifications.
-    */
-   private API _apiSpecification;
+   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -317,10 +318,10 @@ public abstract class AbstractCAPI extends Object {
     * @since XINS 1.3.0
     */
    public final API getAPISpecification() throws InvalidSpecificationException {
-      if (_apiSpecification == null) {
-         _apiSpecification = new API(getClass());
+      if (API_SPECIFICATION == null) {
+         API_SPECIFICATION = new API(getClass());
       }
-      return _apiSpecification;
+      return API_SPECIFICATION;
    }
 
    /**
