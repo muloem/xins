@@ -47,16 +47,20 @@ public class Function {
     *    the name of the function, cannot be <code>null</code>.
     *
     * @param reference
-    *    the reference used to locate the function file, cannot be <code>null</code>.
+    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
     * @throw InvalidSpecificationException
     *    if the specification is incorrect or cannot be found.
     */
-   public Function(String functionName, Class reference) throws InvalidSpecificationException {
+   Function(String functionName, Class reference, String baseURL) throws InvalidSpecificationException {
       _reference = reference;
+      _baseURL = baseURL;
       _functionName = functionName;
       try {
-         Reader reader = API.getReader(reference, functionName + ".fnc");
+         Reader reader = API.getReader(baseURL, functionName + ".fnc");
          parseFunction(reader);
       } catch (IOException ioe) {
          throw new InvalidSpecificationException(ioe.getMessage());
@@ -71,6 +75,11 @@ public class Function {
     * The class used as reference.
     */
    private final Class _reference;
+   
+   /**
+    * The base URL used to locate the specifications.
+    */
+   private final String _baseURL;
    
    /**
     * Name of the function.
@@ -349,7 +358,7 @@ public class Function {
          while (itErrorCodes.hasNext()) {
             Element nextErrorCode = (Element) itErrorCodes.next();
             String errorCodeName = nextErrorCode.getAttribute("name");
-            _errorCodes[i++] = new ErrorCode(errorCodeName, _reference);
+            _errorCodes[i++] = new ErrorCode(errorCodeName, _reference, _baseURL);
          }
          
          // Output parameters

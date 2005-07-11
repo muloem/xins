@@ -65,7 +65,9 @@
 			</types>
 					
 			<!-- Write the messages -->
-			<xsl:apply-templates select="function" mode="messages" />
+			<xsl:apply-templates select="function" mode="messages">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+			</xsl:apply-templates>
 
 			<!-- Write the port types -->
 			<portType name="{$apiname}PortType">
@@ -94,19 +96,87 @@
 	</xsl:template>
 	
 	<xsl:template match="function" mode="elements">
+		
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		
+		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+
+		<xsl:apply-templates select="document($function_file)/function/input" mode="elements">
+			<xsl:with-param name="project_file" select="$project_file" />
+			<xsl:with-param name="specsdir"     select="$specsdir"     />
+			<xsl:with-param name="api"          select="$api"          />
+			<xsl:with-param name="elementname"  select="concat(@name, 'Request')" />
+		</xsl:apply-templates>
+		<xsl:if test="document($function_file)/function/input/data">
+			<xsd:element name="{@name}RequestData">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsl:if test="document($function_file)/function/input/data/@contains">
+							<xsl:variable name="contained_element" select="document($function_file)/function/input/data/@contains" />
+							<xsl:apply-templates select="document($function_file)/function/input/data/element[@name=$contained_element]" mode="datasection">
+								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="specsdir"     select="$specsdir" />
+								<xsl:with-param name="api"          select="$api" />
+							</xsl:apply-templates>
+						</xsl:if>
+						<xsl:for-each select="document($function_file)/function/input/data/contains/contained">
+							<xsl:variable name="contained_element" select="@element" />
+							<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
+								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="specsdir"     select="$specsdir" />
+								<xsl:with-param name="api"          select="$api" />
+							</xsl:apply-templates>
+						</xsl:for-each>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsl:if>
+		<xsl:apply-templates select="document($function_file)/function/output" mode="elements">
+			<xsl:with-param name="project_file" select="$project_file" />
+			<xsl:with-param name="specsdir"     select="$specsdir"     />
+			<xsl:with-param name="api"          select="$api"          />
+			<xsl:with-param name="elementname"  select="concat(@name, 'Response')" />
+		</xsl:apply-templates>
+		<xsl:if test="document($function_file)/function/output/data">
+			<xsd:element name="{@name}ResponseData">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsl:if test="document($function_file)/function/output/data/@contains">
+							<xsl:variable name="contained_element" select="document($function_file)/function/output/data/@contains" />
+							<xsl:apply-templates select="document($function_file)/function/output/data/element[@name=$contained_element]" mode="datasection">
+								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="specsdir"     select="$specsdir" />
+								<xsl:with-param name="api"          select="$api" />
+							</xsl:apply-templates>
+						</xsl:if>
+						<xsl:for-each select="document($function_file)/function/output/data/contains/contained">
+							<xsl:variable name="contained_element" select="@element" />
+							<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
+								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="specsdir"     select="$specsdir" />
+								<xsl:with-param name="api"          select="$api" />
+							</xsl:apply-templates>
+						</xsl:for-each>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="input | output" mode="elements">
 
 		<xsl:param name="project_file" />
 		<xsl:param name="specsdir"     />
-		<xsl:param name="api" />
+		<xsl:param name="api"          />
+		<xsl:param name="elementname"  />
 		
-		<xsl:variable name="functionname" select="@name" />
-		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
-
-		<!-- The input parameters of the function -->
-		<xsd:element name="{$functionname}">
+		<!-- The input or output parameters of the function -->
+		<xsd:element name="{$elementname}">
 			<xsd:complexType>
 				<xsd:sequence>
-					<xsl:for-each select="document($function_file)/function/input/param">
+					<xsl:for-each select="param">
 						<xsl:variable name="soaptype">
 							<xsl:call-template name="soaptype_for_type">
 								<xsl:with-param name="project_file" select="$project_file" />
@@ -122,48 +192,73 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="paramname" select="@name" />
-						<xsd:element minOccurs="{$minoccurs}" maxOccurs="1" name="{$paramname}" type="xsd:{$soaptype}" />
-					</xsl:for-each>
-				</xsd:sequence>
-			</xsd:complexType>
-		</xsd:element>
-		
-		<!-- The output parameters of the function -->
-		<xsd:element name="{$functionname}Response">
-			<xsd:complexType>
-				<xsd:sequence>
-					<xsl:for-each select="document($function_file)/function/output/param">
-						<xsl:variable name="soaptype">
-							<xsl:call-template name="soaptype_for_type">
-								<xsl:with-param name="project_file" select="$project_file" />
-								<xsl:with-param name="specsdir"     select="$specsdir" />
-								<xsl:with-param name="api"          select="$api" />
-								<xsl:with-param name="type"         select="@type" />
-							</xsl:call-template>
-						</xsl:variable>
-						<xsl:variable name="minoccurs">
-							<xsl:choose>
-								<xsl:when test="@required = 'true'">1</xsl:when>
-								<xsl:otherwise>0</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<xsl:variable name="paramname" select="@name" />
-						<xsd:element minOccurs="{$minoccurs}" maxOccurs="1" name="{$paramname}" type="xsd:{$soaptype}" />
+						<xsd:element name="{$paramname}" type="xsd:{$soaptype}" minOccurs="{$minoccurs}" maxOccurs="1" />
 					</xsl:for-each>
 				</xsd:sequence>
 			</xsd:complexType>
 		</xsd:element>
 	</xsl:template>
 	
+	<xsl:template match="element" mode="datasection">
+	
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		
+		<xsd:element name="{@name}" minOccurs="0">
+			<xsd:complexType>
+				<xsl:if test="contains/contained">
+					<xsd:sequence>
+						<xsl:for-each select="contains/contained">
+							<xsl:variable name="contained_element" select="@element" />
+							<xsl:apply-templates select="../../../element[@name=$contained_element]" mode="datasection">
+								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="specsdir"     select="$specsdir" />
+								<xsl:with-param name="api"          select="$api" />
+							</xsl:apply-templates>
+						</xsl:for-each>
+					</xsd:sequence>
+				</xsl:if>
+				<xsl:for-each select="attribute">
+					<xsl:variable name="soaptype">
+						<xsl:call-template name="soaptype_for_type">
+							<xsl:with-param name="project_file" select="$project_file" />
+							<xsl:with-param name="specsdir"     select="$specsdir" />
+							<xsl:with-param name="api"          select="$api" />
+							<xsl:with-param name="type"         select="@type" />
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:variable name="use">
+						<xsl:choose>
+							<xsl:when test="@required = 'true'">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:variable name="attributename" select="@name" />
+					<xsd:attribute name="{$attributename}" type="xsd:{$soaptype}" use="{$use}" />
+				</xsl:for-each>
+			</xsd:complexType>
+		</xsd:element>
+	</xsl:template>
+	
 	<xsl:template match="function" mode="messages">
 	
+		<xsl:param name="specsdir" />
+		
+		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="functionname" select="@name" />
 		
 		<message name="{$functionname}Input">
-			<part name="parameters" element="tns:{$functionname}" />
+			<part name="parameters" element="tns:{$functionname}Request" />
+			<xsl:if test="document($function_file)/function/input/data">
+				<part name="data" element="tns:{$functionname}RequestData" />
+			</xsl:if>
 		</message>
 		<message name="{$functionname}Output">
 			<part name="parameters" element="tns:{$functionname}Response" />
+			<xsl:if test="document($function_file)/function/output/data">
+				<part name="data" element="tns:{$functionname}ResponseData" />
+			</xsl:if>
 		</message>
 	</xsl:template>
 	

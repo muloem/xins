@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,8 +39,8 @@ public class API {
    /**
     * Gets the content of the file without the DTD declaration.
     *
-    * @param reference
-    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    * @param baseURL
+    *    the base URL used to located the specifications, cannot be <code>null</code>.
     *
     * @param fileName
     *    the name of the file that contains the specifications, cannot be <code>null</code>.
@@ -53,10 +54,11 @@ public class API {
     * @throws IOException
     *    if the specification cannot be read.
     */
-   static Reader getReader(Class reference, String fileName)
+   static Reader getReader(String baseURL, String fileName)
    throws InvalidSpecificationException, IOException {
       
-      InputStream in = reference.getResourceAsStream("/specs/" + fileName);
+      URL fileURL = new URL(baseURL + fileName);
+      InputStream in = fileURL.openStream();
       if (in == null) {
          throw new InvalidSpecificationException("File \"" + fileName +"\" not found in the specifications.");
       }
@@ -93,15 +95,19 @@ public class API {
     * Creates a new instance of API
     *
     * @param reference
+    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
     *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
     * @throw InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public API(Class reference) throws InvalidSpecificationException {
+   public API(Class reference, String baseURL) throws InvalidSpecificationException {
       _reference = reference;
+      _baseURL = baseURL;
       try {
-         Reader reader = getReader(reference, "api.xml");
+         Reader reader = getReader(baseURL, "api.xml");
          parseApi(reader);
       } catch (IOException ioe) {
          throw new InvalidSpecificationException("I/O Exception:" + ioe.getMessage());
@@ -117,6 +123,11 @@ public class API {
     * The refence class.
     */
    private final Class _reference;
+   
+   /**
+    * The base URL used to locate the specifications.
+    */
+   private final String _baseURL;
    
    /**
     * Name of the API.
@@ -248,7 +259,7 @@ public class API {
       while (functions.hasNext()) {
          Element nextFunction = (Element) functions.next();
          String functionName = nextFunction.getAttribute("name");
-         Function function = new Function(functionName, _reference);
+         Function function = new Function(functionName, _reference, _baseURL);
          _functions.put(functionName, function);
       }
    }

@@ -6,6 +6,7 @@
  */
 package org.xins.server;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -791,7 +792,14 @@ implements DefaultResultCodes {
     */
    public final org.xins.common.spec.API getAPISpecification() throws InvalidSpecificationException {
       if (_apiSpecification == null) {
-         _apiSpecification = new org.xins.common.spec.API(getClass());
+         String baseURL = null;
+         try {
+            baseURL = _engine.getServletConfig().getServletContext().getResource("/specs/").toExternalForm();
+         } catch (MalformedURLException muex) {
+            
+            // Leave the variable as null
+         }
+         _apiSpecification = new org.xins.common.spec.API(getClass(), baseURL);
       }
       return _apiSpecification;
    }

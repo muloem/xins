@@ -29,6 +29,7 @@ import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
+import org.xins.common.xml.ElementSerializer;
 
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -159,6 +160,7 @@ final class SOAPCallingConvention extends CallingConvention {
          String functionName = functionElem.getLocalName();
          httpRequest.setAttribute(FUNCTION_NAME, functionName);
 
+         // Parse the input parameters
          Element parametersElem = null;
          List parametersList = functionElem.getChildElements("parameters");
          if (parametersList.size() == 0) {
@@ -180,7 +182,17 @@ final class SOAPCallingConvention extends CallingConvention {
             }
             parameters.set(parameterName, parameterValue);
          }
-         return new FunctionRequest(functionName, parameters, null);
+         
+         // Parse the input data section
+         Element dataSection = null;
+         List dataSectionList = functionElem.getChildElements("data");
+         if (dataSectionList.size() == 1) {
+            dataSection = (Element) dataSectionList.get(0);
+         } else if (dataSectionList.size() > 1) {
+            throw new InvalidRequestException("Only one data section is allowed.");
+         }
+         
+         return new FunctionRequest(functionName, parameters, dataSection);
          
       // I/O error
       } catch (IOException ex) {
@@ -258,6 +270,13 @@ final class SOAPCallingConvention extends CallingConvention {
             xmlout.startTag(parameterName);
             xmlout.pcdata(parameterValue);
             xmlout.endTag();
+         }
+
+         // Write the data element
+         Element dataElement = xinsResult.getDataElement();
+         if (dataElement != null) {
+            ElementSerializer serializer = new ElementSerializer();
+            serializer.output(xmlout, dataElement);
          }
 
          xmlout.endTag(); // response

@@ -44,17 +44,21 @@ public class ErrorCode {
     *    the name of the error code, cannot be <code>null</code>.
     *
     * @param reference
-    *    the reference class used to locate the result code file, cannot be <code>null</code>.
+    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
     * @throw InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public ErrorCode(String name, Class reference) throws InvalidSpecificationException {
+   public ErrorCode(String name, Class reference, String baseURL) throws InvalidSpecificationException {
       _errorCodeName = name;
       _reference = reference;
+      _baseURL = baseURL;
       
       try {
-         Reader reader = API.getReader(reference, name + ".rcd");
+         Reader reader = API.getReader(baseURL, name + ".rcd");
          parseErrorCode(reader);
       } catch (IOException ioe) {
          throw new InvalidSpecificationException(ioe.getMessage());
@@ -69,6 +73,11 @@ public class ErrorCode {
     * The class used as reference.
     */
    private final Class _reference;
+   
+   /**
+    * The base URL used to locate the specifications.
+    */
+   private final String _baseURL;
    
    /**
     * Name of the function.

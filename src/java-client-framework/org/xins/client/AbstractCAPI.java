@@ -319,7 +319,7 @@ public abstract class AbstractCAPI extends Object {
     */
    public final API getAPISpecification() throws InvalidSpecificationException {
       if (API_SPECIFICATION == null) {
-         API_SPECIFICATION = new API(getClass());
+         API_SPECIFICATION = new API(getClass(), getClass().getResource("/specs/").toExternalForm());
       }
       return API_SPECIFICATION;
    }
