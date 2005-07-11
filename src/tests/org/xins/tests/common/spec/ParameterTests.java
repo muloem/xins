@@ -34,19 +34,6 @@ public class ParameterTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Holds a reference to the paramter of a function of the API for further 
-    * questioning.
-    */
-   private Parameter _parameter;
-   
-   /**
-    * Holds a reference to the user defined paramter of a function of the 
-    * API for further questioning.
-    */
-   private Parameter[] _userDefinedParams;
-   
-   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -59,6 +46,18 @@ public class ParameterTests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The input parameter specification of the <i>DataSection</i> function.
+    */
+   private Parameter _parameter;
+	   
+   /**
+    * The user defined input parameters specification of 
+    * the <i>DefinedTypes</i> function.
+    */
+   private Parameter[] _userDefinedParams;
+	   
+	   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -80,110 +79,138 @@ public class ParameterTests extends TestCase {
    }
 
    /**
-    * Tests that the getName() returns the correct name of the paramter 
-    * of a function of the API
-    * @see org.xins.common.spec.Parameter#getName()
+    * Tests that {@link Parameter#getName() getName()} returns the correct 
+    * name of the paramter of a function of the API
     */
    public void testParameterGetName() {
-      assertEquals("For function 'DataSection', incorrect name of the " +
-         "paramter: " + _parameter.getName(), "inputText", _parameter.getName());
+      assertEquals("Function 'DataSection' has an incorrect parameter name: " +
+         _parameter.getName(), "inputText", _parameter.getName());
    }
 
    /**
-    * Tests that the getDescription() returns the correct description of the
-    * parameter of a function of the API.
-    * @see org.xins.common.spec.Parameter#getDescription()
+    * Tests that the {@link Parameter#getDescription() getDescription()} returns
+    * the correct description of the parameter of a function of the API.
     */
    public void testParameterGetDescription() {
-      assertEquals("For function 'DataSection', incorret description of the " +
-         "paramter: " + _parameter.getDescription(),
+      assertEquals("Function 'DataSection' has an incorrect parameter description: " +
+         _parameter.getDescription(),
          "An example of input for a text.", _parameter.getDescription());
    }
 
    /**
-    * Tests that isRequired() returns the correct flag for the parameter of
-    * a function of the API.
-    * @see org.xins.common.spec.Parameter#isRequired()
+    * Tests that {@link Parameter#isRequired() isRequired()} returns the correct 
+    * flag for the parameter of a function of the API.
     */
    public void testParameterIsRequired() {
-      assertFalse("For function 'DataSection', incorrect 'is required' flag: " 
+      assertFalse("Function 'DataSection' has an incorrect 'is required' value: " 
          + _parameter.isRequired(), _parameter.isRequired());
    }
 
    /**
-    * Tests that getType() returns the correct type of the parameter of
-    * a function of the API.
-    * @see org.xins.common.spec.Parameter#getType()
+    * Tests that {@link Parameter#getType() getType()} returns the correct type of 
+    * the parameter of a function of the API.
     */
    public void testParameterGetType() {
-      assertTrue("For function 'DataSection', incorrect type of paramter: " + 
+      assertTrue("Function 'DataSection' has an incorrect parameter type: " + 
          _parameter.getType(), _parameter.getType() instanceof Text);
    }
 
    /**
-    * Tests that getType() returns the correct user defined type of the 
-    * parameter of a function of the API.
-    * @see org.xins.common.spec.Parameter#getType()
+    * Tests that {@link Parameter#getType() getType()} returns the correct 
+    * user defined type of the parameter of a function of the API.
     */
    public void testParameterGetTypeUserDefined() {
       for (int i = 0; i < _userDefinedParams.length; i++) {
          Parameter userDefinedParameter = _userDefinedParams[i];
          if ("inputIP".equals(userDefinedParameter.getName())) {
-            assertEquals("For function 'DefinedTypes', incorrect description of " +
-               "the user defined type: " + userDefinedParameter.getDescription(),
-               "An example of input for a pattern type.", userDefinedParameter.getDescription());
-            assertEquals("For function 'DefinedTypes', incorrect name of the user" +
-               " defined type: " + userDefinedParameter.getType().getName(),
+            assertEquals("User defined type 'inputIP' of the function " +
+               "'DefinedTypes' has an incorrect description: " + 
+               userDefinedParameter.getDescription(),
+               "An example of input for a pattern type.", 
+               userDefinedParameter.getDescription());
+            
+            assertEquals("User defined type 'inputIP' of the function " +
+               "'DefinedTypes' has an incorrect name: " + 
+               userDefinedParameter.getType().getName(),
                "IPAddress", userDefinedParameter.getType().getName());
-            assertTrue("For function 'DefinedTypes', incorrect type of the user " +
-               "defined type: " + userDefinedParameter.getType().getName(),
+            
+            assertTrue("User defined type 'inputIP' of the function " +
+               "'DefinedTypes' has an incorrect type: " + 
+               userDefinedParameter.getType().getName(),
                userDefinedParameter.getType() instanceof IPAddress);
-            assertFalse("For function 'DefinedTypes', incorrect 'is required' flag" +
-               " for the user defined type: " + userDefinedParameter.isRequired(), 
+            
+            assertFalse("User defined type 'inputIP' of the function " +
+               "'DefinedTypes' has an incorrect 'is required' value: " + 
+               userDefinedParameter.isRequired(), 
                userDefinedParameter.isRequired());
+            
          } else if ("inputSalutation".equals(userDefinedParameter.getName())) {
-            assertEquals("For function 'DefinedTypes', incorrect description of " +
-               "the user defined type: " + userDefinedParameter.getDescription(),
+            assertEquals("User defined type 'inputSalutation' of the function " +
+               "'DefinedTypes' has an incorrect description" + 
+               userDefinedParameter.getDescription(),
                "An example of input for an enum type.", 
                userDefinedParameter.getDescription());
-            assertEquals("For function 'DefinedTypes', incorrect name of the user" +
-               " defined type: " + userDefinedParameter.getType().getName(),
+            
+            assertEquals("User defined type 'inputSalutation' of the function " +
+               "'DefinedTypes' has an incorrect name: " +
+               userDefinedParameter.getType().getName(),
                "Salutation", userDefinedParameter.getType().getName());
-            assertTrue("For function 'DefinedTypes', incorrect type of the user" +
-               " defined type: " + userDefinedParameter.getType().getName(),
+            
+            assertTrue("User defined type 'inputSalutation' of the function " +
+               "'DefinedTypes' has an incorrect type: " +
+               userDefinedParameter.getType().getName(),
                userDefinedParameter.getType() instanceof Salutation);
-            assertTrue("For function 'DefinedTypes', incorrect 'is required' flag" +
-               " for the user defined type: " + userDefinedParameter.isRequired(),
+            
+            assertTrue("User defined type 'inputSalutation' of the function " +
+               "'DefinedTypes' has an incorrect 'is required' value: " +
+               userDefinedParameter.isRequired(),
                userDefinedParameter.isRequired());
+            
          } else if ("inputAge".equals(userDefinedParameter.getName())) {
-            assertEquals("For function 'DefinedTypes', incorrect description of " +
-               "the user defined type: " + userDefinedParameter.getDescription(),
-               "An example of input for a int8 type with a minimum and maximum.", userDefinedParameter.getDescription());
-            assertEquals("For function 'DefinedTypes', incorrect name of the user" +
-               " defined type: " + userDefinedParameter.getType().getName(),
+            assertEquals("User defined type 'inputAge' of the function " +
+               "'DefinedTypes' has an incorrect description: " +
+               userDefinedParameter.getDescription(),
+               "An example of input for a int8 type with a minimum and maximum.", 
+			   userDefinedParameter.getDescription());
+            
+            assertEquals("User defined type 'inputAge' of the function " +
+               "'DefinedTypes' has an incorrect name: " +
+               userDefinedParameter.getType().getName(),
                "Age", userDefinedParameter.getType().getName());
-            assertTrue("For function 'DefinedTypes', incorrect type of the user " +
-               "defined type: " + userDefinedParameter.getType().getName(),
+            
+            assertTrue("User defined type 'inputAge' of the function " +
+               "'DefinedTypes' has an incorrect type: " +
+               userDefinedParameter.getType().getName(),
                userDefinedParameter.getType() instanceof Age);
-            assertTrue("For function 'DefinedTypes', incorrect 'is required' flag" +
-               " for the user defined type: " + userDefinedParameter.isRequired(),
+            
+            assertTrue("User defined type 'inputAge' of the function " +
+               "'DefinedTypes' has an incorrect 'is required' value: " +
+               userDefinedParameter.isRequired(),
                userDefinedParameter.isRequired());
+            
          } else if ("inputList".equals(userDefinedParameter.getName())) {
-            assertEquals("For function 'DefinedTypes', incorrect description of " +
-               "the user defined type: " + userDefinedParameter.getDescription(),
-               "An example of input for a list.", userDefinedParameter.getDescription());
-            assertEquals("For function 'DefinedTypes', incorrect name of the user" +
-               " defined type: " + userDefinedParameter.getType().getName(),
+            assertEquals("User defined type 'inputList' of the function " +
+               "'DefinedTypes' has an incorrect description: " +
+               userDefinedParameter.getDescription(),
+               "An example of input for a list.", 
+               userDefinedParameter.getDescription());
+            
+            assertEquals("User defined type 'inputList' of the function " +
+               "'DefinedTypes' has an incorrect name:" +
+               userDefinedParameter.getType().getName(),
                "TextList", userDefinedParameter.getType().getName());
-            assertTrue("For function 'DefinedTypes', incorrect type of the user " +
-               "defined type: " + userDefinedParameter.getType().getName(),
+            
+            assertTrue("User defined type 'inputList' of the function " +
+               "'DefinedTypes' has an incorrect type: " +
+               userDefinedParameter.getType().getName(),
                userDefinedParameter.getType() instanceof TextList);
-            assertFalse("For function 'DefinedTypes', incorrect 'is required' " +
-               "flag for the user defined type: " + userDefinedParameter.isRequired(),
+            assertFalse("User defined type 'inputList' of the function " +
+               "'DefinedTypes' has an incorrect 'is required' value: " +
+               userDefinedParameter.isRequired(),
                userDefinedParameter.isRequired());
          } else {
-            fail("Contains a parameter: " + userDefinedParameter.getName()
-               + " which should not be there.");
+            fail("Function 'DefinedTypes' contains a user defined type : "
+               + userDefinedParameter.getName() + " which is not specified.");
          }
       }
    }

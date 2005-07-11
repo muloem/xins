@@ -33,25 +33,6 @@ public class ParamComboTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Holds a reference to the exclusive parameter combo of the API
-    * for further questioning.
-    */
-   private ParamCombo _exclusiveCombo;
-   
-   /**
-    * Holds a reference to the inclusive parameter combo of the API
-    * for further questioning.
-    */
-   private static ParamCombo _inclusiveCombo;
-   
-   /**
-    * Holds a reference to the allornone parameter combo of the API
-    * for further questioning.
-    */
-   private static ParamCombo _allOrNoneCombo;
-   
-   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -63,6 +44,25 @@ public class ParamComboTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+	
+   /**
+    * The exclusive input parameter combo specification of the 
+    * <i>ParamCombo</i> function.
+    */
+   private ParamCombo _exclusiveCombo;
+	   
+   /**
+    * The inclusive input parameter combo specification of the 
+    * <i>ParamCombo</i> function.
+    */
+   private ParamCombo _inclusiveCombo;
+	   
+   /**
+    * The all-or-none input parameter combo specification of the 
+    * <i>ParamCombo</i> function.
+    */
+   private ParamCombo _allOrNoneCombo;
+	   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -94,43 +94,47 @@ public class ParamComboTests extends TestCase {
    }
 
    /**
-    * @see org.xins.common.spec.ParamCombo#isExclusiveOr()
+    * Tests that {@link ParamCombo#isExclusiveOr() isExclusiveOr()} returns 
+    * the correct value for the parameter combo.
     */
    public void testErrorCodeIsExclusiveOr() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
-         "isExclusive", _exclusiveCombo.isExclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isExculsive", _inclusiveCombo.isExclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isExclusive", _allOrNoneCombo.isExclusiveOr());
+      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+         _exclusiveCombo.isExclusiveOr());
+      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+         _inclusiveCombo.isExclusiveOr());
+      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+         _allOrNoneCombo.isExclusiveOr());
    }
 
    /**
-    * @see org.xins.common.spec.ParamCombo#isInclusiveOr()
+    * Tests that {@link ParamCombo#isInclusiveOr() isInclusiveOr()} returns 
+    * the correct value for the parameter combo.
     */
    public void testErrorCodeIsInclusiveOr() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
-         "isInxclusive", _inclusiveCombo.isInclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isInxclusive", _exclusiveCombo.isInclusiveOr());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isInxclusive", _allOrNoneCombo.isInclusiveOr());
+      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+         _inclusiveCombo.isInclusiveOr());
+      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+         _exclusiveCombo.isInclusiveOr());
+      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+         _allOrNoneCombo.isInclusiveOr());
    }
 
    /**
-    * @see org.xins.common.spec.ParamCombo#isAllOrNone()
+    * Tests that {@link ParamCombo#isAllOrNone() isAllOrNone()} returns 
+    * the correct value for the parameter combo.
     */
    public void testErrorCodeIsAllOrNode() {
-      assertTrue("In parameter combos for function 'ParamCombo', incorrect " +
-         "isAllorNone", _allOrNoneCombo.isAllOrNone());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isAllorNone", _inclusiveCombo.isAllOrNone());
-      assertFalse("In parameter combos for function 'ParamCombo', incorrect " +
-         "isAllorNone", _exclusiveCombo.isAllOrNone());
+      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+         _allOrNoneCombo.isAllOrNone());
+      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+         _inclusiveCombo.isAllOrNone());
+      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+         _exclusiveCombo.isAllOrNone());
    }
 
    /**
-    * @see org.xins.common.spec.ParamCombo#getParameters()
+    * Tests that {@link ParamCombo#getParameters() getParameters()} returns 
+    * the correct value for the parameter combo.
     */
    public void testErrorCodeGetParameters() {
       assertEquals(3, _exclusiveCombo.getParameters().length);
@@ -139,12 +143,22 @@ public class ParamComboTests extends TestCase {
       for (int i = 0; i < params.length; i++) {
          paramNames.add(params[i].getName());
       }
-      assertTrue(paramNames.contains("birthDate"));
-      assertTrue(paramNames.contains("birthYear"));
-      assertTrue(paramNames.contains("age"));
+      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+         " does not contain the paramter 'birthDate'",
+         paramNames.contains("birthDate"));
+      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+         " does not contain the paramter 'birthYear'",
+         paramNames.contains("birthYear"));
+      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+         " does not contain the paramter 'age'",
+         paramNames.contains("age"));
 
-      assertEquals(2, _inclusiveCombo.getParameters().length);
-      assertEquals(3, _allOrNoneCombo.getParameters().length);
+      assertEquals("The inclusive input parameter combo of the function " +
+         "'Paramcombo' has an incorrect number of the parameters.",
+         2, _inclusiveCombo.getParameters().length);
+      assertEquals("The all-or-none input parameter combo of the function " +
+         "'Paramcombo' has an incorrect number of the parameters.",
+         3, _allOrNoneCombo.getParameters().length);
    }
 
 }

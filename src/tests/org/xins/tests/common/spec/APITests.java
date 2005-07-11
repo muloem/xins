@@ -31,12 +31,6 @@ public class APITests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Holds a reference to the allInone API for further questioning.
-    */
-   private API _allInOneAPI;
-
-   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -49,6 +43,12 @@ public class APITests extends TestCase {
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The API specification of the <i>allinone</i> API.
+    */
+   private API _allInOneAPI;
+
+	   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -65,40 +65,38 @@ public class APITests extends TestCase {
 
 
    /**
-    * Tests that the getName() returns the correct name of the API.
-    * @see org.xins.common.spec.API#getName()
+    * Tests that {@link API#getName() getName()} returns the correct 
+    * name of the API.
     */
    public void testAPIGetName() {
-      assertEquals("Incorrect API name: " + _allInOneAPI.getName(), 
+      assertEquals("The API has an incorrect name: " + _allInOneAPI.getName(), 
          "allinone", _allInOneAPI.getName());
    }
 
    /**
-    * Tests that the getOwner() returns the correct owner of the API.
-    * @see org.xins.common.spec.API#getOwner()
+    * Tests that {@link API#getOwner()() getOwner()} returns the correct 
+    * owner of the API.
     */
    public void testAPIGetOwner() {
-      assertEquals("Incorrect Owner of the API: " + _allInOneAPI.getOwner(), 
+      assertEquals("The API has an incorrect owner: " + _allInOneAPI.getOwner(), 
          "johnd", _allInOneAPI.getOwner());
    }
 
    /**
-    * Tests that the getDescription() returns the correct description of the API.
-    * @see org.xins.common.spec.API#getDescription()
+    * Tests that {@link API#getDescription() getDescription()} returns the 
+    * correct description of the API.
     */
    public void testAPIGetDescription() {
-      assertEquals("Incorrect description of the API: " + 
+      assertEquals("The API has an incorrect description: " + 
          _allInOneAPI.getDescription(), 
          "API that uses all the features included in XINS.", 
          _allInOneAPI.getDescription());
    }
 
    /**
-    * Tests that the getFunctions() and the getFunction(String) returns the 
+    * Tests that {@link API#getFunctions() getFunctions()} and the 
+    * {@link API#getFunction(String) getFunction(String)} returns the 
     * correct functions of the API.
-    * @see org.xins.common.spec.API#getFunctions()
-    * @see org.xins.common.spec.API#getFunction(String)
-    *
     */
    public void testAPIGetFunctions() {
       ArrayList list = new ArrayList();
@@ -129,14 +127,15 @@ public class APITests extends TestCase {
          // consume, this is valid
       }
 
-      assertEquals("Incorrect number of functions in the API: " + 
+      assertEquals("The API has an incorrect number of the functions: " + 
          _allInOneAPI.getFunctions().length, 
          _allInOneAPI.getFunctions().length, list.size());
       int i = 0;
       try {
          for (i = 0; i < list.size(); i++) {
             String functionName = (String) list.get(i);
-            assertEquals("Incorrect function name in the API: " + _allInOneAPI.getFunction(functionName).getName(),
+            assertEquals("The function in the API has an incorrect name:" +
+               _allInOneAPI.getFunction(functionName).getName(),
                _allInOneAPI.getFunction(functionName).getName(), functionName);
          }
       } catch (IllegalArgumentException exc) {
@@ -145,21 +144,22 @@ public class APITests extends TestCase {
    }
    
    /**
-    * Tests the backword compatability with older version of xins.
-    * The system is actualy not backword compatible so it throws an exception.
+    * Tests the backward compatibility with older version of xins.
+    * The system is actualy not backward compatible so it throws an exception.
     */
    public void testCompatibility() {
    	
       try {
-      TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
-      com.mycompany.myproject.capi.CAPI capi = 
-         new com.mycompany.myproject.capi.CAPI(target);
-      capi.getAPISpecification();
+         TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
+         com.mycompany.myproject.capi.CAPI capi = 
+            new com.mycompany.myproject.capi.CAPI(target);
+         capi.getAPISpecification();
+         fail("Calling an older version of CAPI should throw an exception.");
       } catch (InvalidSpecificationException e) {
          //Expecting exception	
       } catch (Exception e) {
          fail("Unexpected exception occurs: " + e.getMessage());      	
-      }
+      }      	
    }
    
 }

@@ -31,12 +31,6 @@ public class DataSectionElementTests extends TestCase {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * Holds a reference to the allInone API for further questioning.
-    */
-   private API _allInOneAPI;
-   
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -49,6 +43,12 @@ public class DataSectionElementTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+	
+   /**
+    * The API specification of the <i>allinone</i> API.
+    */
+   private API _allInOneAPI;
+	   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -66,50 +66,47 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that the getOutputDataSectionElements() returns the correct 
-    * datasection for a function of the API.
-    * @see org.xins.common.spec.DataSectionElement#getName()
+    * Tests that {@link DataSectionElement#getName() getName()} returns 
+    * the correct name for a data section element for a function of the API.
     */
    public void testDataSectionGetName() throws Exception {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
-      assertEquals("For function 'DataSection', incorrect datasection name: " +
-         element.getName(), "user", element.getName());
+      assertEquals("Function 'DataSection' has an incorrect data section element " +
+         "name: " + element.getName(), "user", element.getName());
    }
 
    /**
-    * Tests that the getDescription() returns the correct description for a 
-    * datasection element for a function of the API. 
-    * @see org.xins.common.spec.DataSectionElement#getDescription()
+    * Tests that {@link DataSectionElement#getDescription() getDescription()} 
+    * returns the correct description for a data section element for a function of 
+    * the API. 
     */
    public void testDataSectionGetDescription() {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
-      assertEquals("For function 'DataSection', Incorrect description of the " +
-         "datasection: " + element.getDescription(),
+      assertEquals("Function 'DataSection' has an incorrect " +
+         "data section element description: " + element.getDescription(),
          "A user.", element.getDescription());
    }
 
    /**
-    * Tests that the getSubElements() returns the correct sub-elements of
-    * a datasection for a function of the API. 
-    * @see org.xins.common.spec.DataSectionElement#getSubElements()
+    * Tests that {@link DataSectionElement#getSubElements() getSubElements()} 
+    * returns the correct sub-elements of a data section for a function of the API. 
     */
    public void testDataSectionGetSubElements() {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
-      assertEquals("In dataelement 'product' for function 'DataSection2', " +
-         "incorrect number of sub-elements: " + element.getSubElements().length, 
+      assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
+         "incorrect number of the sub-elemets: " + element.getSubElements().length, 
          1, element.getSubElements().length);
-      assertEquals("In dataelement 'product' for function 'DataSection2', " +
-         "incorrect name of the sub-element: " + element.getSubElements()[0].getName(), 
+      assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
+         "incorrect name of the sub-elemet: " + element.getSubElements()[0].getName(), 
          "product", element.getSubElements()[0].getName());
    }
 
    /**
-    * Tests that the getAttributes() returns the correct attributes for a 
-    * datasection of a funciton of the API.
-    * @see org.xins.common.spec.DataSectionElement#getAttributes()
+    * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
+    * returns the correct attributes for a data section of a funciton of the API.
     */
    public void testDataSectionGetAttributes() {
       DataSectionElement element =
@@ -117,28 +114,29 @@ public class DataSectionElementTests extends TestCase {
 
       assertEquals(1, element.getAttributes().length);
       Parameter attribute = element.getAttributes()[0];
-      assertEquals("In output datasection for function 'DataSection2', incorrect " +
-         "attribute name: " + attribute.getName(), 
+      assertEquals("The attribute in the output data section element for the " +
+         "function 'DataSection2' has an incorrect name: " + attribute.getName(), 
          "destination", attribute.getName());
-      assertEquals("In output datasection for function 'DataSection2', incorrect" +
-         " attribute description: " + attribute.getDescription(),
+      assertEquals("The attribute in the output data section element for the " +
+         "function 'DataSection2' has an incorrect description: "  
+         + attribute.getDescription(),
          "The destination of the packet.", attribute.getDescription());
-      assertTrue("In output datasection for function 'DataSection2', incorrect" +
-         " attribute's 'is required' property: ", 
+      assertTrue("The attribute in the output data section element for the " +
+         "function 'DataSection2' has an incorrect 'is required' value: " , 
          attribute.isRequired());
-      assertTrue("In output datasection for function 'DataSection2', incorrect" +
-         " attribute type: " + attribute.getType(), 
+      assertTrue("The attribute in the output data section element for the " +
+         "function 'DataSection2' has an incorrect type: "  + attribute.getType(), 
          attribute.getType() instanceof Text);
 
-      assertEquals("In output datasection for function 'DataSection2', incorrect " +
-         "number subelements: " + element.getSubElements().length,
-         1, element.getSubElements().length);
+      assertEquals("The output data section element for the function 'DataSection2'" +
+         " has an incorrect number of the sub-elements: " + 
+         element.getSubElements().length, 1, element.getSubElements().length);
    }
 
    /**
-    * Tests that the getAttributes() returns the correct sub-elemets of attributes 
-    * for a datasection of a funciton of the API.
-    * @see org.xins.common.spec.DataSectionElement#getAttributes()
+    * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
+    * returns the correct sub-elemets of attributes for a datasection of a funciton
+    * of the API.
     */
    public void testDataSectionGetAttributesSubElement() {
       DataSectionElement element =
@@ -149,44 +147,45 @@ public class DataSectionElementTests extends TestCase {
       for (int i = 0; i < subElementAttributes.length; i++) {
          Parameter attribute = subElementAttributes[i];
          if ("id".equals(attribute.getName())) {
-            assertEquals("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'id' description: " + 
-               attribute.getDescription(), 
+            assertEquals("Attribute 'id' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "description: " + attribute.getDescription(), 
                "The id of the product.", attribute.getDescription());
-            assertTrue("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'id's 'is required' property: ", 
-               attribute.isRequired());
-            assertTrue("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'id's type: ", 
-               attribute.getType() instanceof Int64);
+            assertTrue("Attribute 'id' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "'is required' value: " , attribute.isRequired());
+            assertTrue("Attribute 'id' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "type: ", attribute.getType() instanceof Int64);
          } else if ("price".equals(attribute.getName())) {
-            assertEquals("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'price' description: " + 
-               attribute.getDescription(), 
+            assertEquals("Attribute 'price' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "description: " + attribute.getDescription(), 
                "The description of the product.", attribute.getDescription());
-            assertFalse("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'price's 'is required' property: ", 
-               attribute.isRequired());
-            assertTrue("In subelement of output datasection for function " +
-               "'DataSection2', incorrect attribute 'price's type: ", 
-               attribute.getType() instanceof Int32);
+            assertFalse("Attribute 'price' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "'is required' value: ", attribute.isRequired());
+            assertTrue("Attribute 'price' in the sub-element of the output data " +
+               "section element of the function 'DataSection2' has an incorrect " +
+               "type: ", attribute.getType() instanceof Int32);
          } else {
-            fail("Contains an attribute " + attribute.getName() + 
-               " which should not be there.");
+            fail("The sub-element of the output data section element of the " +
+               "function 'DataSection2' contains an attribute" +
+               attribute.getName() + " which should not be there.");
          }
       }
    }
 
    /**
-    * Tests that isPCDataAllowed() returns the correct PC data allowed in a 
-    * datasection for a function of the API.
-    * @see org.xins.common.spec.DataSectionElement#isPCDataAllowed()
+    * Tests that {@link DataSectionElement#isPCDataAllowed() isPCDataAllowed()} 
+    * returns the correct PC data allowed in a datasection for a function of 
+    * the API.
     */
    public void testDataSectionIsPCDataAllowed() {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
 
-      assertTrue("PC data allowed property is incorrect",
-         element.isPCDataAllowed());
+      assertTrue("The output data section element for the function 'DataSection2'" +
+         " has an incorrect 'PC data allowed' value", element.isPCDataAllowed());
    }
 }
