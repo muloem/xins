@@ -157,7 +157,8 @@ final class SOAPCallingConvention extends CallingConvention {
             throw new ParseException("More than one function specified in the SOAP body.");
          }
          Element functionElem = (Element) functionsElem.get(0);
-         String functionName = functionElem.getLocalName();
+         String requestName = functionElem.getLocalName();
+         String functionName = requestName.substring(0, requestName.lastIndexOf("Request"));
          httpRequest.setAttribute(FUNCTION_NAME, functionName);
 
          // Parse the input parameters
