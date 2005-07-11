@@ -90,7 +90,7 @@ public class XINSServletContext implements ServletContext {
    }
 
    public URL getResource(String str) {
-      throw new UnsupportedOperationException();
+      return getClass().getResource(str);
    }
 
    public InputStream getResourceAsStream(String str) {
