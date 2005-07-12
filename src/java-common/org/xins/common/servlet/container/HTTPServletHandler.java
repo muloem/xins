@@ -353,6 +353,7 @@ public class HTTPServletHandler {
       String url = null;
       char[] contentData = null;
       String contentType = null;
+      int contentLength = -1;
       boolean inputRead = false;
 
       while (!inputRead && (inputLine = input.readLine()) != null) {
@@ -370,12 +371,13 @@ public class HTTPServletHandler {
             contentType = inputLine.substring(14);
          }
          if (inputLine.toLowerCase().startsWith("content-length: ")) {
-            int postLength = Integer.parseInt(inputLine.substring(16));
-            input.readLine();
+            contentLength = Integer.parseInt(inputLine.substring(16));
+         }
+         if (contentLength != -1 && inputLine.trim().equals("")) {
             if (contentType == null) {
                input.readLine();
             }
-            contentData = new char[postLength];
+            contentData = new char[contentLength];
             input.read(contentData);
             inputRead = true;
          }
