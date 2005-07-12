@@ -728,4 +728,33 @@ public class AllInOneAPITests extends TestCase {
          assertEquals(_target,          exception.getTarget());
       }
    }
+   
+   /**
+    * Tests the function 'DefinedTypes' that should return an _InvalidResponse error code.
+    */
+   public void testInvalidResponse3() throws Exception {
+      TextList.Value textList = new TextList.Value();
+      textList.add("Hello");
+      textList.add("Test");
+      try {
+         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1",
+                                                            Salutation.LADY,
+                                                            (byte) 60,
+                                                            textList);
+         fail("The request is invalid, the function should throw an exception");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         List invalidParams = dataSection.getChildElements();
+         assertEquals(1, invalidParams.size());
+         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         assertEquals("invalid-value-for-type", invalidParam1.getName());
+         assertEquals("outputProperties", invalidParam1.get("param"));
+         assertEquals(0, invalidParam1.getChildElements().size());
+         assertNull(invalidParam1.getText());
+      }
+   }
 }

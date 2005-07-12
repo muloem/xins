@@ -25,6 +25,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - The returned MIME type for the SOAP calling convention has been changed
     from application/soap+xml to text/xml.
   - The SOAP calling convention now handles the input and output data sections.
+  - The returned <FunctionName>Response element for the SOAP calling 
+    convention has now a diffenrent namespace.
+  - Added a test for the SOAP calling convention.
+  - Added a test for the _InvalidResponse error code.
 
 * XINS/Java Client Framework:
   - The API specification is stored in a static variable. This way the 
@@ -106,12 +110,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
 * Generated build file:
   - Added support for multiple implementation.
   - Added the test-<api> target.
+  - Added wsdl-<api> targets that generated the WSDL file for the given API.
   - Reduced generated file size by putting XINS classpath in a reference.
   - Fixed bug #1225433: Cannot find shared instance classes.
   - Fixed bug #1225478: Cannot use 1.4 or 1.5 code in xins.
 
 * Build- and release-process:
-  - Added wsdl-<api> targets that generated the WSDL file for the given API.
   - Added target that creates the Windows installer.
   - Added support for 'testclass' property, which indicates which class
     defines the unit tests to run. By default the value is

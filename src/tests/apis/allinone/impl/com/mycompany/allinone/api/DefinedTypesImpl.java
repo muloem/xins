@@ -92,7 +92,7 @@ public class DefinedTypesImpl extends DefinedTypes  {
       // Set the output properties
       BasicPropertyReader prop = new BasicPropertyReader();
       prop.set("Doe", "28");
-      // If the age input value is between 56 and 65, you will receive an _InvalidResult errorcode
+      // If the age input value is between 56 and 65, you will receive an _InvalidResponse errorcode
       prop.set("Irene", String.valueOf(age + 10));
       result.setOutputProperties(prop);
 

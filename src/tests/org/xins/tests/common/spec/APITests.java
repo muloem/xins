@@ -153,7 +153,7 @@ public class APITests extends TestCase {
          TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
          com.mycompany.myproject.capi.CAPI capi = 
             new com.mycompany.myproject.capi.CAPI(target);
-         capi.getAPISpecification();
+         API myProjectAPI = capi.getAPISpecification();
          fail("Calling an older version of CAPI should throw an exception.");
       } catch (InvalidSpecificationException e) {
          //Expecting exception	

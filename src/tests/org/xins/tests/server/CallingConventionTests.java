@@ -190,8 +190,6 @@ public class CallingConventionTests extends TestCase {
    /**
     * Test the XML calling convention.
     */
-   // To run this test add <calling-convention name="_xins-xml" /> to impl.xml
-   // and remove a input.realLine() in the HTTPServletHandler.
    public void testXMLCallingConvention() throws Throwable {
       FastStringBuffer buffer = new FastStringBuffer(16);
       HexConverter.toHexString(buffer, RANDOM.nextLong());
@@ -286,5 +284,78 @@ public class CallingConventionTests extends TestCase {
 
       HTTPCallResult result = caller.call(request);
       return result.getString();
+   }
+   
+   /**
+    * Tests the SOAP calling convention.
+    */
+   public void testSOAPCallingConvention() throws Throwable {
+      FastStringBuffer buffer = new FastStringBuffer(16);
+      HexConverter.toHexString(buffer, RANDOM.nextLong());
+      String randomFive = buffer.toString().substring(0, 5);
+
+      // Successful call
+      postSOAPRequest(randomFive, true);
+
+      // Unsuccessful call
+      postSOAPRequest(randomFive, false);
+   }
+   
+   /**
+    * Posts SOAP request.
+    *
+    * @param randomFive
+    *    A randomly generated String.
+    * @param success
+    *    <code>true</code> if the expected result should be successfal,
+    *    <code>false</code> otherwise.
+    *
+    * @throws Exception
+    *    If anything goes wrong.
+    */
+   private void postSOAPRequest(String randomFive, boolean success) throws Exception {
+      PostMethod post = new PostMethod("http://127.0.0.1:8080/allinone/?_convention=_xins-soap");
+      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+      post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+              "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+              "  <soap:Body>" +
+              "    <ResultCodeRequest>" +
+              "      <inputText>" + randomFive + "</inputText>" +
+              "    </ResultCodeRequest>" +
+              "  </soap:Body>" +
+              "</soap:Envelope>");
+      HttpClient client = new HttpClient();
+      client.setConnectionTimeout(5000);
+      client.setTimeout(5000);
+      try {
+         int code = client.executeMethod(post);
+         byte[] data = post.getResponseBody();
+         ElementParser parser = new ElementParser();
+         Element result = parser.parse(new StringReader(new String(data)));
+         assertEquals("Envelope", result.getLocalName());
+         assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
+         assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
+         Element bodyElem = (Element) result.getChildElements("Body").get(0);
+         if (success) {
+            assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("ResultCodeResponse").size());
+            Element responseElem = (Element) bodyElem.getChildElements("ResultCodeResponse").get(0);
+            assertEquals("Incorrect number of \"outputText\" elements.", 1, responseElem.getChildElements("outputText").size());
+            Element outputTextElem = (Element) responseElem.getChildElements("outputText").get(0);
+            assertEquals("Incorrect returned text", randomFive + " added.", outputTextElem.getText());
+         } else {
+            assertEquals("Incorrect number of \"Fault\" elements.", 1, bodyElem.getChildElements("Fault").size());
+            Element faultElem = (Element) bodyElem.getChildElements("Fault").get(0);
+            assertEquals("Incorrect number of \"faultcode\" elements.", 1, faultElem.getChildElements("faultcode").size());
+            Element faultCodeElem = (Element) faultElem.getChildElements("faultcode").get(0);
+            assertEquals("Incorrect faultcode text", "soap:Server", faultCodeElem.getText());
+            assertEquals("Incorrect number of \"faultstring\" elements.", 1, faultElem.getChildElements("faultstring").size());
+            Element faultStringElem = (Element) faultElem.getChildElements("faultstring").get(0);
+            assertEquals("Incorrect faultstring text", "AlreadySet", faultStringElem.getText());
+         }
+      } finally {
+
+         // Release current connection to the connection pool once you are done
+         post.releaseConnection();
+      }
    }
 }

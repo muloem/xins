@@ -66,6 +66,11 @@ final class SOAPCallingConvention extends CallingConvention {
    private static final String FUNCTION_NAME = "_function";
 
    /**
+    * The key used to store the name of the namespace in the request attributes.
+    */
+   private static final String REQUEST_NAMESPACE = "_namespace";
+
+   /**
     * The formatter for XINS Date type.
     */
    private static final DateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
@@ -160,6 +165,7 @@ final class SOAPCallingConvention extends CallingConvention {
          String requestName = functionElem.getLocalName();
          String functionName = requestName.substring(0, requestName.lastIndexOf("Request"));
          httpRequest.setAttribute(FUNCTION_NAME, functionName);
+         httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
 
          // Parse the input parameters
          Element parametersElem = null;
@@ -258,7 +264,9 @@ final class SOAPCallingConvention extends CallingConvention {
          
          // Write the response start tag
          String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
-         xmlout.startTag(functionName + "Response");
+         String namespaceURI = (String) httpRequest.getAttribute(REQUEST_NAMESPACE);
+         xmlout.startTag("ns0:" + functionName + "Response");
+         xmlout.attribute("xmlns:ns0", namespaceURI);
 
          // Write the output parameters
          Iterator outputParameterNames = xinsResult.getParameters().getNames();
