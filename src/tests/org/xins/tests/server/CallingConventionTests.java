@@ -317,11 +317,11 @@ public class CallingConventionTests extends TestCase {
       PostMethod post = new PostMethod("http://127.0.0.1:8080/allinone/?_convention=_xins-soap");
       post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
       post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-              "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+              "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
-              "    <ResultCodeRequest>" +
+              "    <ns0:ResultCodeRequest>" +
               "      <inputText>" + randomFive + "</inputText>" +
-              "    </ResultCodeRequest>" +
+              "    </ns0:ResultCodeRequest>" +
               "  </soap:Body>" +
               "</soap:Envelope>");
       HttpClient client = new HttpClient();
@@ -331,7 +331,9 @@ public class CallingConventionTests extends TestCase {
          int code = client.executeMethod(post);
          byte[] data = post.getResponseBody();
          ElementParser parser = new ElementParser();
-         Element result = parser.parse(new StringReader(new String(data)));
+         String content = new String(data);
+         System.err.println("content:" + content);
+         Element result = parser.parse(new StringReader(content));
          assertEquals("Envelope", result.getLocalName());
          assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
          assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
