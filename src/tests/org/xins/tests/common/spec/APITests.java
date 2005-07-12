@@ -127,7 +127,7 @@ public class APITests extends TestCase {
          // consume, this is valid
       }
 
-      assertEquals("The API has an incorrect number of the functions: " + 
+      assertEquals("The API has an incorrect number of functions: " + 
          _allInOneAPI.getFunctions().length, 
          _allInOneAPI.getFunctions().length, list.size());
       int i = 0;
@@ -139,7 +139,7 @@ public class APITests extends TestCase {
                _allInOneAPI.getFunction(functionName).getName(), functionName);
          }
       } catch (IllegalArgumentException exc) {
-         fail("Could not find the function " + list.get(i) + " in allInOneAPI.");
+         fail("Could not find the function " + list.get(i) + " in allinone API.");
       }
    }
    

@@ -97,10 +97,10 @@ public class DataSectionElementTests extends TestCase {
       DataSectionElement element =
          _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
       assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect number of the sub-elemets: " + element.getSubElements().length, 
+         "incorrect number of the sub-elements: " + element.getSubElements().length, 
          1, element.getSubElements().length);
       assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect name of the sub-elemet: " + element.getSubElements()[0].getName(), 
+         "incorrect name of the sub-element: " + element.getSubElements()[0].getName(), 
          "product", element.getSubElements()[0].getName());
    }
 
@@ -135,7 +135,7 @@ public class DataSectionElementTests extends TestCase {
 
    /**
     * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
-    * returns the correct sub-elemets of attributes for a datasection of a funciton
+    * returns the correct sub-elements of attributes for a datasection of a funciton
     * of the API.
     */
    public void testDataSectionGetAttributesSubElement() {

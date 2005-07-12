@@ -180,7 +180,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "DataSection";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'DataSection' has an incorrect number of the output" +
+      assertEquals("Function 'DataSection' has an incorrect number of output" +
          " parameters: " + function.getOutputParameters().length,
          0, function.getOutputParameters().length);
 
@@ -195,12 +195,12 @@ public class FunctionTests extends TestCase {
       Function function1 = _allInOneAPI.getFunction(functionName1);
 
       Parameter[] functionParameters = function1.getOutputParameters();
-      assertEquals("Function 'DefinedTypes' has an incorrect number of the output" +
+      assertEquals("Function 'DefinedTypes' has an incorrect number of output" +
          " parameters: " + functionParameters.length,
          parameters.size(), functionParameters.length);
 
       for (int i = 0; i < functionParameters.length; i++) {
-         assertTrue("Function 'DefinedTypes' does not contain output parameter: " + 
+         assertTrue("Function 'DefinedTypes' does not contain the output parameter: " + 
             functionParameters[i].getName(),
             parameters.contains(functionParameters[i].getName()));
       }
@@ -299,7 +299,7 @@ public class FunctionTests extends TestCase {
       inputDataSectionElements.add("address");
       //TODO need to check the function with multiple data section elements.
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'DataSection3' has incorrect number of the input " +
+      assertEquals("Function 'DataSection3' has an incorrect number of the input " +
          "data section elements: " + function1.getInputDataSectionElements().length,
          1, function1.getInputDataSectionElements().length);
 
@@ -324,7 +324,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "InvalidResponse";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'Invalidresponse' has an incorrect number of the " +
+      assertEquals("Function 'Invalidresponse' has an incorrect number of " +
          "output data section elements: " + 
          function.getOutputDataSectionElements().length,
          0, function.getOutputDataSectionElements().length);
@@ -335,7 +335,7 @@ public class FunctionTests extends TestCase {
       outputDataSectionElements.add("envelope");
 
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'DataSection3' has an incorrect number of the output " +
+      assertEquals("Function 'DataSection3' has an incorrect number of output " +
          "data section elements: " + 
          function1.getOutputDataSectionElements().length,
          2, function1.getOutputDataSectionElements().length);
@@ -362,7 +362,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "DataSection2";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'DataSection2' has an incorrect number of the output " +
+      assertEquals("Function 'DataSection2' has an incorrect number of output " +
          "data section elements: " + function.getOutputDataSectionElements().length,
          1, function.getOutputDataSectionElements().length);
    }
@@ -370,7 +370,7 @@ public class FunctionTests extends TestCase {
    
    
    /**
-    * Tests that getInputParamCombos() returns the correct input parameter combo
+    * Tests that getInputParamCombos() returns the correct input param combo
     * of a function of the API.
     * @see org.xins.common.spec.Function#getInputParamCombos()
     */
@@ -378,7 +378,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "InvalidResponse";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'InvalidResponse' has incorrect number of the input " +
+      assertEquals("Function 'InvalidResponse' has an incorrect number of the input " +
          "paramter combos: " + function.getInputParamCombos().length,
          0, function.getInputParamCombos().length);
 
@@ -412,7 +412,7 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputParamCombos() returns the correct output parameter combo
+    * Tests that getOutputParamCombos() returns the correct output param combo
     * of a function of the API.
     * @see org.xins.common.spec.Function#getOutputParamCombos()
     */
@@ -420,7 +420,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "InvalidResponse";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'InvalidResponse' has an incorrect number of the " +
+      assertEquals("Function 'InvalidResponse' has an incorrect number of " +
          "output paramter combos: " + function.getOutputParamCombos().length,
          0, function.getOutputParamCombos().length);
 
@@ -430,7 +430,7 @@ public class FunctionTests extends TestCase {
       int allCount = 0;
 
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'ParamCombo' has an incorrect number of the " +
+      assertEquals("Function 'ParamCombo' has an incorrect number of " +
          "output paramter combos: " + function1.getOutputParamCombos().length,
          2, function1.getOutputParamCombos().length);
 

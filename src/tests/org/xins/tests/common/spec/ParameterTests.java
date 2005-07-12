@@ -102,8 +102,8 @@ public class ParameterTests extends TestCase {
     * flag for the parameter of a function of the API.
     */
    public void testParameterIsRequired() {
-      assertFalse("Function 'DataSection' has an incorrect 'is required' value: " 
-         + _parameter.isRequired(), _parameter.isRequired());
+      assertFalse("Function 'DataSection' has an incorrect 'is required' value." 
+         , _parameter.isRequired());
    }
 
    /**
@@ -140,8 +140,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getType() instanceof IPAddress);
             
             assertFalse("User defined type 'inputIP' of the function " +
-               "'DefinedTypes' has an incorrect 'is required' value: " + 
-               userDefinedParameter.isRequired(), 
+               "'DefinedTypes' has an incorrect 'is required' value.", 
                userDefinedParameter.isRequired());
             
          } else if ("inputSalutation".equals(userDefinedParameter.getName())) {
@@ -162,8 +161,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getType() instanceof Salutation);
             
             assertTrue("User defined type 'inputSalutation' of the function " +
-               "'DefinedTypes' has an incorrect 'is required' value: " +
-               userDefinedParameter.isRequired(),
+               "'DefinedTypes' has an incorrect 'is required' value: ",
                userDefinedParameter.isRequired());
             
          } else if ("inputAge".equals(userDefinedParameter.getName())) {
@@ -184,8 +182,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getType() instanceof Age);
             
             assertTrue("User defined type 'inputAge' of the function " +
-               "'DefinedTypes' has an incorrect 'is required' value: " +
-               userDefinedParameter.isRequired(),
+               "'DefinedTypes' has an incorrect 'is required' value: ",
                userDefinedParameter.isRequired());
             
          } else if ("inputList".equals(userDefinedParameter.getName())) {
@@ -204,9 +201,9 @@ public class ParameterTests extends TestCase {
                "'DefinedTypes' has an incorrect type: " +
                userDefinedParameter.getType().getName(),
                userDefinedParameter.getType() instanceof TextList);
+            
             assertFalse("User defined type 'inputList' of the function " +
-               "'DefinedTypes' has an incorrect 'is required' value: " +
-               userDefinedParameter.isRequired(),
+               "'DefinedTypes' has an incorrect 'is required' value: ",
                userDefinedParameter.isRequired());
          } else {
             fail("Function 'DefinedTypes' contains a user defined type : "

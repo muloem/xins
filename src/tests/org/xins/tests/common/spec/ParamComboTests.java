@@ -46,19 +46,19 @@ public class ParamComboTests extends TestCase {
    //-------------------------------------------------------------------------
 	
    /**
-    * The exclusive input parameter combo specification of the 
+    * The exclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _exclusiveCombo;
 	   
    /**
-    * The inclusive input parameter combo specification of the 
+    * The inclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _inclusiveCombo;
 	   
    /**
-    * The all-or-none input parameter combo specification of the 
+    * The all-or-none input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _allOrNoneCombo;
@@ -95,46 +95,46 @@ public class ParamComboTests extends TestCase {
 
    /**
     * Tests that {@link ParamCombo#isExclusiveOr() isExclusiveOr()} returns 
-    * the correct value for the parameter combo.
+    * the correct exclusive flag for a param combo.
     */
    public void testErrorCodeIsExclusiveOr() {
-      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+      assertTrue("Function 'ParamCombo' has an incorrect exclusive param combo: ",
          _exclusiveCombo.isExclusiveOr());
-      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect inclusive param combo: ",
          _inclusiveCombo.isExclusiveOr());
-      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
          _allOrNoneCombo.isExclusiveOr());
    }
 
    /**
     * Tests that {@link ParamCombo#isInclusiveOr() isInclusiveOr()} returns 
-    * the correct value for the parameter combo.
+    * the correct inclusive flag for a param combo.
     */
    public void testErrorCodeIsInclusiveOr() {
-      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+      assertTrue("Function 'ParamCombo' has an incorrect exclusive param combo: ",
          _inclusiveCombo.isInclusiveOr());
-      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect inclusive param combo: ",
          _exclusiveCombo.isInclusiveOr());
-      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
          _allOrNoneCombo.isInclusiveOr());
    }
 
    /**
     * Tests that {@link ParamCombo#isAllOrNone() isAllOrNone()} returns 
-    * the correct value for the parameter combo.
+    * the correct all-or-none flag for a param combo.
     */
    public void testErrorCodeIsAllOrNode() {
-      assertTrue("Function 'ParamCombo' has incorrect exclusive parameter combo: ",
+      assertTrue("Function 'ParamCombo' has an incorrect exclusive param combo: ",
          _allOrNoneCombo.isAllOrNone());
-      assertFalse("Function 'ParamCombo' has incorrect inclusive parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect inclusive param combo: ",
          _inclusiveCombo.isAllOrNone());
-      assertFalse("Function 'ParamCombo' has incorrect all-or-none parameter combo: ",
+      assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
          _exclusiveCombo.isAllOrNone());
    }
 
    /**
     * Tests that {@link ParamCombo#getParameters() getParameters()} returns 
-    * the correct value for the parameter combo.
+    * the correct parameters for a param combo.
     */
    public void testErrorCodeGetParameters() {
       assertEquals(3, _exclusiveCombo.getParameters().length);
@@ -143,21 +143,21 @@ public class ParamComboTests extends TestCase {
       for (int i = 0; i < params.length; i++) {
          paramNames.add(params[i].getName());
       }
-      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
          " does not contain the paramter 'birthDate'",
          paramNames.contains("birthDate"));
-      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
          " does not contain the paramter 'birthYear'",
          paramNames.contains("birthYear"));
-      assertTrue("The exclusive input parameter combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
          " does not contain the paramter 'age'",
          paramNames.contains("age"));
 
-      assertEquals("The inclusive input parameter combo of the function " +
-         "'Paramcombo' has an incorrect number of the parameters.",
+      assertEquals("The inclusive input param combo of the function " +
+         "'Paramcombo' has an incorrect number of parameters.",
          2, _inclusiveCombo.getParameters().length);
-      assertEquals("The all-or-none input parameter combo of the function " +
-         "'Paramcombo' has an incorrect number of the parameters.",
+      assertEquals("The all-or-none input param combo of the function " +
+         "'Paramcombo' has an incorrect number of parameters.",
          3, _allOrNoneCombo.getParameters().length);
    }
 
