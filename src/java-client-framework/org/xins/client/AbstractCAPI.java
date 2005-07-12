@@ -6,6 +6,7 @@
  */
 package org.xins.client;
 
+import java.net.URL;
 import java.util.HashSet;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -61,12 +62,6 @@ public abstract class AbstractCAPI extends Object {
     * already been checked against the XINS version at run-time.
     */
    private final static HashSet VERSION_COMPARISIONS_DONE = new HashSet();
-
-   /**
-    * The API specification. This field can be <code>null</code> 
-    * if the CAPI does not contain the specifications.
-    */
-   private static API API_SPECIFICATION;
 
 
    //-------------------------------------------------------------------------
@@ -222,6 +217,12 @@ public abstract class AbstractCAPI extends Object {
     */
    private final XINSServiceCaller _caller;
    
+   /**
+    * The API specification. This field can be <code>null</code> 
+    * if the CAPI does not contain the specifications.
+    */
+   private API _apiSpecification;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -318,10 +319,11 @@ public abstract class AbstractCAPI extends Object {
     * @since XINS 1.3.0
     */
    public final API getAPISpecification() throws InvalidSpecificationException {
-      if (API_SPECIFICATION == null) {
-         API_SPECIFICATION = new API(getClass(), getClass().getResource("/specs/").toExternalForm());
+      if (_apiSpecification == null) {
+         URL specsURL = getClass().getResource("/specs/");
+         _apiSpecification = new API(getClass(), specsURL.toExternalForm());
       }
-      return API_SPECIFICATION;
+      return _apiSpecification;
    }
 
    /**
