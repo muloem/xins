@@ -362,7 +362,15 @@ APIs in this project are:
 				</xsl:attribute>
 			</target>
 
-			<target name="all" depends="specdocs,wars" description="Generates everything" />
+			<target name="all" description="Generates everything">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="//project/api">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>all-</xsl:text>
+						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
 
 			<xsl:apply-templates select="api" />
 		</project>

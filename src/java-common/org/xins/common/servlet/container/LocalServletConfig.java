@@ -51,8 +51,9 @@ public class LocalServletConfig implements ServletConfig {
     *    cannot be <code>null</code>.
     */
    public LocalServletConfig(File warFileLocation) {
+      _warFile = warFileLocation;
       _initParameters = new Properties();
-      _context = new XINSServletContext();
+      _context = new XINSServletContext(this);
 
       try {
          JarFile warFile = new JarFile(warFileLocation);
@@ -106,6 +107,12 @@ public class LocalServletConfig implements ServletConfig {
     * The servlet context.
     */
    private ServletContext _context;
+   
+   /**
+    * The WAR file.
+    */
+   private File _warFile;
+   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -155,6 +162,16 @@ public class LocalServletConfig implements ServletConfig {
       return _initParameters.keys();
    }
 
+   /**
+    * Gets the WAR file location.
+    *
+    * @return
+    *    the WAR file, never <code>null</code>
+    */
+   File getWarFile() {
+      return _warFile;
+   }
+   
    /**
     * Parser for the web.xml containing the information about the Servlet.
     */

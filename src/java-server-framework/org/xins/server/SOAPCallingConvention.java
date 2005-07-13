@@ -184,8 +184,7 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterValue = parameterElem.getText();
             try {
                parameterValue = soapInputValueTransformation(functionName, parameterName, parameterValue);
-            //} catch (InvalidSpecificationException ise) {
-            } catch (Exception ise) {
+            } catch (InvalidSpecificationException ise) {
                
                // keep the old value
             }
@@ -275,8 +274,7 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterValue = xinsResult.getParameter(parameterName);
             try {
                parameterValue = soapOutputValueTransformation(functionName, parameterName, parameterValue);
-            //} catch (InvalidSpecificationException ise) {
-            } catch (Exception ise) {
+            } catch (InvalidSpecificationException ise) {
                
                // keep the old value
             }

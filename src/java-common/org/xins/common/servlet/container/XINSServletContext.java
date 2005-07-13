@@ -6,10 +6,12 @@
  */
 package org.xins.common.servlet.container;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Set;
+import java.util.jar.JarFile;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
@@ -37,14 +39,38 @@ public class XINSServletContext implements ServletContext {
    // Constructor
    //-------------------------------------------------------------------------
 
-   /** Creates a new instance of LocalServletContext */
+   /** 
+    * Creates a new instance of <code>XINSServletContext</code>
+    */
    public XINSServletContext() {
    }
 
+   /** 
+    * Creates a new instance of <code>XINSServletContext</code>
+    *
+    * @param config
+    *    the config of the servlet.
+    */
+   XINSServletContext(LocalServletConfig config) {
+      _config = config;
+      _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!/";
+   }
+   
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The configuration of the servlet.
+    */
+   private LocalServletConfig _config;
+
+   /**
+    * The root URL for the servlet
+    */
+   private String _rootURL;
+   
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -90,11 +116,22 @@ public class XINSServletContext implements ServletContext {
    }
 
    public URL getResource(String str) {
-      return getClass().getResource(str);
+      try {
+         return new URL(_rootURL + str);
+      } catch (IOException ioe) {
+         ioe.printStackTrace();
+         return null;
+      }
    }
 
    public InputStream getResourceAsStream(String str) {
-      throw new UnsupportedOperationException();
+      try {
+         JarFile warFile = new JarFile(_config.getWarFile());
+         return warFile.getInputStream(warFile.getJarEntry(str));
+      } catch (IOException ioe) {
+         ioe.printStackTrace();
+         return null;
+      }
    }
 
    public void log(Exception exception, String msg) {

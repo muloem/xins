@@ -332,7 +332,6 @@ public class CallingConventionTests extends TestCase {
          byte[] data = post.getResponseBody();
          ElementParser parser = new ElementParser();
          String content = new String(data);
-         System.err.println("content:" + content);
          Element result = parser.parse(new StringReader(content));
          assertEquals("Envelope", result.getLocalName());
          assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
