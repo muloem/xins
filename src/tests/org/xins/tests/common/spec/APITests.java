@@ -95,7 +95,7 @@ public class APITests extends TestCase {
 
    /**
     * Tests that {@link API#getFunctions() getFunctions()} and the 
-    * {@link API#getFunction(String) getFunction(String)} returns the 
+    * {@link API#getFunction(String) getFunction(String)} return the 
     * correct functions of the API.
     */
    public void testAPIGetFunctions() {

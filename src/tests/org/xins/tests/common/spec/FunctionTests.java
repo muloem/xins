@@ -65,7 +65,6 @@ public class FunctionTests extends TestCase {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
       _allInOneAPI = allInOne.getAPISpecification();
-
    }
 
 
@@ -103,7 +102,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "SimpleOutput";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'SimpleOutput' has an incorrect number of the input" +
+      assertEquals("Function 'SimpleOutput' has an incorrect number of input" +
          " parameters: " + function.getInputParameters().length,
          0, function.getInputParameters().length);
 
@@ -115,14 +114,14 @@ public class FunctionTests extends TestCase {
       parameters.add("inputList");
 
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'DefinedTypes' has an incorrect number of the input" +
+      assertEquals("Function 'DefinedTypes' has an incorrect number of input" +
          " parameters: " + function.getInputParameters().length,
          parameters.size(), function1.getInputParameters().length);
 
       Parameter[] functionParameters = function1.getInputParameters();
 
       for (int i = 0; i < functionParameters.length; i++) {
-         assertTrue("Function 'DefinedTypes' does not contain input parameter: " + 
+         assertTrue("Function 'DefinedTypes' does not contain the input parameter: " + 
             functionParameters[i].getName(),  
             parameters.contains(functionParameters[i].getName()));
       }
@@ -259,7 +258,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "DataSection";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'DataSection' has an incorrect number of the " +
+      assertEquals("Function 'DataSection' has an incorrect number of " +
          "error codes: " + function.getErrorCodes().length,
          0, function.getErrorCodes().length);
 
@@ -282,15 +281,15 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getInputDataSectionElements() returns correct input datasection
-    * of a funtion of the API.
+    * Tests that getInputDataSectionElements() returns the correct input data
+    * section of a funtion of the API.
     * @see org.xins.common.spec.Function#getInputDataSectionElements()
     */
    public void testFunctionsGetInputDataSectionElements() {
 
       String functionName = "DataSection";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'DataSection' has an incorrect number of the input " +
+      assertEquals("Function 'DataSection' has an incorrect number of input " +
          "data section elements: " + function.getInputDataSectionElements().length,
          0, function.getInputDataSectionElements().length);
 
@@ -299,7 +298,7 @@ public class FunctionTests extends TestCase {
       inputDataSectionElements.add("address");
       //TODO need to check the function with multiple data section elements.
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'DataSection3' has an incorrect number of the input " +
+      assertEquals("Function 'DataSection3' has an incorrect number of input " +
          "data section elements: " + function1.getInputDataSectionElements().length,
          1, function1.getInputDataSectionElements().length);
 
@@ -316,8 +315,8 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputDataSectionElements() returns correct output datasection
-    * for a funtion of the API.
+    * Tests that getOutputDataSectionElements() returns  the correct output data 
+    * section for a funtion of the API.
     * @see org.xins.common.spec.Function#getOutputDataSectionElements()
     */
    public void testFunctionsGetOutputDataSectionElements() {
@@ -353,9 +352,9 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputDataSectionElements() returns correct output datasection
-    * for a funtion of the API. This test case tests a function which has one 
-    * datasection element and one sub-element for output.
+    * Tests that getOutputDataSectionElements() returns the correct output data
+    * section for a funtion of the API. This test case tests a function which has 
+    * one data section element and one sub-element for output.
     * @see org.xins.common.spec.Function#getOutputDataSectionElements()
     */
    public void testFunctionsGetOutputDataSecElementsWithOneElementAndSubElements() {
@@ -378,7 +377,7 @@ public class FunctionTests extends TestCase {
 
       String functionName = "InvalidResponse";
       Function function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'InvalidResponse' has an incorrect number of the input " +
+      assertEquals("Function 'InvalidResponse' has an incorrect number of input " +
          "paramter combos: " + function.getInputParamCombos().length,
          0, function.getInputParamCombos().length);
 
@@ -388,7 +387,7 @@ public class FunctionTests extends TestCase {
       int allCount = 0;
 
       Function function1 = _allInOneAPI.getFunction(functionName1);
-      assertEquals("Function 'ParamCombo' has an incorrect number of the input " +
+      assertEquals("Function 'ParamCombo' has an incorrect number of input " +
          "paramter combos: " + function1.getInputParamCombos().length,
          3, function1.getInputParamCombos().length);
 

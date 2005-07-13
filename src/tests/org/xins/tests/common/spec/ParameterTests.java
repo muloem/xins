@@ -145,7 +145,7 @@ public class ParameterTests extends TestCase {
             
          } else if ("inputSalutation".equals(userDefinedParameter.getName())) {
             assertEquals("User defined type 'inputSalutation' of the function " +
-               "'DefinedTypes' has an incorrect description" + 
+               "'DefinedTypes' has an incorrect description: " + 
                userDefinedParameter.getDescription(),
                "An example of input for an enum type.", 
                userDefinedParameter.getDescription());

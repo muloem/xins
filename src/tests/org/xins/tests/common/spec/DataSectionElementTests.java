@@ -62,7 +62,6 @@ public class DataSectionElementTests extends TestCase {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
       _allInOneAPI = allInOne.getAPISpecification();
-
    }
 
    /**
@@ -106,7 +105,7 @@ public class DataSectionElementTests extends TestCase {
 
    /**
     * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
-    * returns the correct attributes for a data section of a funciton of the API.
+    * returns the correct attributes for a data section of a function of the API.
     */
    public void testDataSectionGetAttributes() {
       DataSectionElement element =
@@ -135,7 +134,7 @@ public class DataSectionElementTests extends TestCase {
 
    /**
     * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
-    * returns the correct sub-elements of attributes for a datasection of a funciton
+    * returns correct attributes for the sub-element in a data section
     * of the API.
     */
    public void testDataSectionGetAttributesSubElement() {
@@ -178,7 +177,7 @@ public class DataSectionElementTests extends TestCase {
 
    /**
     * Tests that {@link DataSectionElement#isPCDataAllowed() isPCDataAllowed()} 
-    * returns the correct PC data allowed in a datasection for a function of 
+    * returns the correct PC data allowed in a data section for a function of 
     * the API.
     */
    public void testDataSectionIsPCDataAllowed() {

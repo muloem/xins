@@ -114,7 +114,7 @@ public class ErrorCodeTests extends TestCase {
 
    /**
     * Tests that the  {@link ErrorCode#getOutputParameter(String) getOutputParameter(String)}
-    * returns the correct outputparameters of the errorcode of a function of 
+    * returns the correct output parameters of the error code of a function of 
     * the API when given an output parameter name.
     */
    public void testErrorCodeGetOutputParameter() {
@@ -138,7 +138,7 @@ public class ErrorCodeTests extends TestCase {
    
    /**
     * Tests the {@link ErrorCode#getOutputDataSection() getOutputDataSection()}
-    * return the correct output datasection of the errorcode of a function of 
+    * return the correct output datasection of the error code of a function of 
     * the API.
     */
 /*

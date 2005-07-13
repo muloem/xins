@@ -90,7 +90,6 @@ public class ParamComboTests extends TestCase {
             _allOrNoneCombo = paramterCombo[i];
          }
       }
-
    }
 
    /**
@@ -143,21 +142,21 @@ public class ParamComboTests extends TestCase {
       for (int i = 0; i < params.length; i++) {
          paramNames.add(params[i].getName());
       }
-      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'ParamCombo'" +
          " does not contain the paramter 'birthDate'",
          paramNames.contains("birthDate"));
-      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'ParamCombo'" +
          " does not contain the paramter 'birthYear'",
          paramNames.contains("birthYear"));
-      assertTrue("The exclusive input param combo of the function 'Paramcombo'" +
+      assertTrue("The exclusive input param combo of the function 'ParamCombo'" +
          " does not contain the paramter 'age'",
          paramNames.contains("age"));
 
       assertEquals("The inclusive input param combo of the function " +
-         "'Paramcombo' has an incorrect number of parameters.",
+         "'ParamCombo' has an incorrect number of parameters.",
          2, _inclusiveCombo.getParameters().length);
       assertEquals("The all-or-none input param combo of the function " +
-         "'Paramcombo' has an incorrect number of parameters.",
+         "'ParamCombo' has an incorrect number of parameters.",
          3, _allOrNoneCombo.getParameters().length);
    }
 
