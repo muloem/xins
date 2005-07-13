@@ -33,13 +33,13 @@
 	<xsl:include href="result_java.xslt" />
 	<xsl:include href="check_params.xslt" />
 
-   <xsl:variable name="functionName" select="//function/@name" />
-   <xsl:variable name="className"    select="$functionName"    />
-   <xsl:variable name="fqcn">
-      <xsl:value-of select="$package" />
-      <xsl:text>.</xsl:text>
-      <xsl:value-of select="$className" />
-   </xsl:variable>
+	<xsl:variable name="functionName" select="//function/@name" />
+	<xsl:variable name="className"    select="$functionName"    />
+	<xsl:variable name="fqcn">
+		<xsl:value-of select="$package" />
+		<xsl:text>.</xsl:text>
+		<xsl:value-of select="$className" />
+	</xsl:variable>
 
 	<xsl:template match="function">
 
