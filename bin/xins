@@ -32,6 +32,23 @@ then
 	rm build/build.xml
 fi
 
+# Detect Cygwin
+cygwin=false
+case "`uname`" in
+   CYGWIN*)
+      cygwin=true
+      ;;
+   *)
+      cygwin=false
+      ;;
+esac
+
+CURR_DIR=`pwd`
+if [ "${cygwin}" = "true" ];
+then
+   CURR_DIR=`cygpath --windows ${CURR_DIR}`
+fi
+
 # Split options and target arguments.
 # Options start with a hyphen, while target arguments do not.
 #
@@ -72,7 +89,7 @@ fi
 # Construct the command to execute
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
 __CMD__="${__CMD__} -Dxins_home=${XINS_HOME}"
-__CMD__="${__CMD__} -Dpwd=`pwd`"
+__CMD__="${__CMD__} -Dpwd=${CURR_DIR}"
 if [ ! -z "${__OPTS__}" ]
 then
     __CMD__="${__CMD__} ${__OPTS__}"
@@ -82,6 +99,8 @@ __CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
 # If verbose mode is on, print the command that will be executed
 if [ "${XINS_VERBOSE}" = "true" ]
 then
+    echo "Cygwin detected: ${cygwin}"
+    echo
     echo "Executing:"
     echo "${__CMD__}"
     echo
