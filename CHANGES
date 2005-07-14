@@ -46,6 +46,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
 
 * Generated build file:
   - Implemented RFE #1235979: "xins all" now generates everything.
+  - Removed the source attribute for the javac task, as not needed.
 
 * Build- and release-process:
   - No need to download the release file to create the Windows installer as 

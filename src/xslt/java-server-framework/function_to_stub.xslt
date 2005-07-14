@@ -16,6 +16,7 @@
 
 	<!-- Perform import -->
 	<xsl:import href="function_to_impl_java.xslt" />
+	<xsl:import href="../xml_to_java.xslt" />
 
 	<!-- Write the content of the call method -->
 	<xsl:template name="callcontent">
@@ -217,7 +218,7 @@
       </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.pcdata("</xsl:text>
-			<xsl:call-template name="pcdata_to_java_string">
+			<xsl:call-template name="xml_to_java_string">
 				<xsl:with-param name="text" select="pcdata-example/text()" />
 			</xsl:call-template>
 			<xsl:text>");</xsl:text>
