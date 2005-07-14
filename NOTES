@@ -1,0 +1,45 @@
+This file contains the XINS 1.3.0-alpha3 release notes.
+
+Contents:
+- Introduction
+- Prerequisites
+- Compatibility
+- Bugs
+
+
+*** INTRODUCTION ***
+
+This is an unstable release. New features have not been tested extensively and
+they may undergo major changes.
+
+This release should be compatible with previous stable releases.
+
+
+*** PREREQUISITES ***
+
+The following are prerequisites for using the XINS framework:
+- Apache Ant 1.6.2 or higher (1.6.5 recommended)
+- Java SDK 1.3.1 or higher (1.4.2 recommended)
+
+
+*** COMPATIBILITY ***
+
+This release has been tested successfully in combination with Apache Ant
+versions 1.6.2 to 1.6.5. See: http://ant.apache.org/
+To download it, visit: http://ant.apache.org/bindownload.cgi
+
+The 'xins' shell script in this release has been tested with bash 2.0x on
+Linux 2.4/x86, Linux 2.6/x86, Mac OS/X, Solaris 8 and Cygwin 1.5.12 (on
+Windows 2000).
+
+The 'xins.bat' batch file has been tested with various Windows versions,
+including Windows ME, 2000 and XP.
+
+
+*** BUGS ***
+
+To get an overview of all XINS-related bugs, or to submit a new one, visit:
+http://sourceforge.net/tracker/?group_id=71598&atid=531814
+
+______________________________________________________________________________
+$Id$
