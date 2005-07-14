@@ -124,7 +124,8 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testSimpleTypes() throws Exception {
       SimpleTypesResult result =
-         _capi.callSimpleTypes((byte) 8,              // _int8
+         _capi.callSimpleTypes(Boolean.FALSE,         // _boolean
+                               (byte) 8,              // _int8
                                (Short) null,          // _int16
                                65,                    // _int32
                                88L,                   // _int64
@@ -216,7 +217,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testMissingParam() throws Exception {
       try {
-         SimpleTypesResult result = _capi.callSimpleTypes((byte)8, null, 65, 88L, 72.5f, new Double(37.2),
+         SimpleTypesResult result = _capi.callSimpleTypes(Boolean.TRUE, (byte)8, null, 65, 88L, 72.5f, new Double(37.2),
             null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
