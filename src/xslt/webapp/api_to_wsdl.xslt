@@ -109,60 +109,12 @@
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Request')" />
 		</xsl:apply-templates>
-		<xsl:if test="document($function_file)/function/input/data">
-			<xsd:element name="{@name}RequestData">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsl:if test="document($function_file)/function/input/data/@contains">
-							<xsl:variable name="contained_element" select="document($function_file)/function/input/data/@contains" />
-							<xsl:apply-templates select="document($function_file)/function/input/data/element[@name=$contained_element]" mode="datasection">
-								<xsl:with-param name="project_file" select="$project_file" />
-								<xsl:with-param name="specsdir"     select="$specsdir" />
-								<xsl:with-param name="api"          select="$api" />
-							</xsl:apply-templates>
-						</xsl:if>
-						<xsl:for-each select="document($function_file)/function/input/data/contains/contained">
-							<xsl:variable name="contained_element" select="@element" />
-							<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
-								<xsl:with-param name="project_file" select="$project_file" />
-								<xsl:with-param name="specsdir"     select="$specsdir" />
-								<xsl:with-param name="api"          select="$api" />
-							</xsl:apply-templates>
-						</xsl:for-each>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-		</xsl:if>
 		<xsl:apply-templates select="document($function_file)/function/output" mode="elements">
 			<xsl:with-param name="project_file" select="$project_file" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Response')" />
 		</xsl:apply-templates>
-		<xsl:if test="document($function_file)/function/output/data">
-			<xsd:element name="{@name}ResponseData">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsl:if test="document($function_file)/function/output/data/@contains">
-							<xsl:variable name="contained_element" select="document($function_file)/function/output/data/@contains" />
-							<xsl:apply-templates select="document($function_file)/function/output/data/element[@name=$contained_element]" mode="datasection">
-								<xsl:with-param name="project_file" select="$project_file" />
-								<xsl:with-param name="specsdir"     select="$specsdir" />
-								<xsl:with-param name="api"          select="$api" />
-							</xsl:apply-templates>
-						</xsl:if>
-						<xsl:for-each select="document($function_file)/function/output/data/contains/contained">
-							<xsl:variable name="contained_element" select="@element" />
-							<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
-								<xsl:with-param name="project_file" select="$project_file" />
-								<xsl:with-param name="specsdir"     select="$specsdir" />
-								<xsl:with-param name="api"          select="$api" />
-							</xsl:apply-templates>
-						</xsl:for-each>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="input | output" mode="elements">
@@ -192,8 +144,32 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="paramname" select="@name" />
-						<xsd:element name="{$paramname}" type="xsd:{$soaptype}" minOccurs="{$minoccurs}" maxOccurs="1" />
+						<xsd:element name="{$paramname}" type="xsd:{$soaptype}" minOccurs="{$minoccurs}" />
 					</xsl:for-each>
+					<xsl:if test="data">
+						<xsd:element name="data" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsl:if test="data/@contains">
+										<xsl:variable name="contained_element" select="data/@contains" />
+										<xsl:apply-templates select="data/element[@name=$contained_element]" mode="datasection">
+											<xsl:with-param name="project_file" select="$project_file" />
+											<xsl:with-param name="specsdir"     select="$specsdir" />
+											<xsl:with-param name="api"          select="$api" />
+										</xsl:apply-templates>
+									</xsl:if>
+									<xsl:for-each select="data/contains/contained">
+										<xsl:variable name="contained_element" select="@element" />
+										<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
+											<xsl:with-param name="project_file" select="$project_file" />
+											<xsl:with-param name="specsdir"     select="$specsdir" />
+											<xsl:with-param name="api"          select="$api" />
+										</xsl:apply-templates>
+									</xsl:for-each>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsl:if>
 				</xsd:sequence>
 			</xsd:complexType>
 		</xsd:element>
@@ -205,7 +181,7 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		
-		<xsd:element name="{@name}" minOccurs="0">
+		<xsd:element name="{@name}" minOccurs="0" maxOccurs="unbounded">
 			<xsd:complexType>
 				<xsl:if test="contains/contained">
 					<xsd:sequence>
@@ -218,6 +194,11 @@
 							</xsl:apply-templates>
 						</xsl:for-each>
 					</xsd:sequence>
+				</xsl:if>
+				<xsl:if test="contains/pcdata">
+					<xsl:text disable-output-escaping="yes">
+&lt;xsd:simpleContent>
+&lt;xsd:extension base="xsd:string"></xsl:text>
 				</xsl:if>
 				<xsl:for-each select="attribute">
 					<xsl:variable name="soaptype">
@@ -237,6 +218,12 @@
 					<xsl:variable name="attributename" select="@name" />
 					<xsd:attribute name="{$attributename}" type="xsd:{$soaptype}" use="{$use}" />
 				</xsl:for-each>
+				<xsl:if test="contains/pcdata">
+					<xsl:text disable-output-escaping="yes">
+&lt;/xsd:extension>
+&lt;/xsd:simpleContent>
+</xsl:text>
+				</xsl:if>
 			</xsd:complexType>
 		</xsd:element>
 	</xsl:template>
@@ -250,15 +237,9 @@
 		
 		<message name="{$functionname}Input">
 			<part name="parameters" element="tns:{$functionname}Request" />
-			<xsl:if test="document($function_file)/function/input/data">
-				<part name="data" element="tns:{$functionname}RequestData" />
-			</xsl:if>
 		</message>
 		<message name="{$functionname}Output">
 			<part name="parameters" element="tns:{$functionname}Response" />
-			<xsl:if test="document($function_file)/function/output/data">
-				<part name="data" element="tns:{$functionname}ResponseData" />
-			</xsl:if>
 		</message>
 	</xsl:template>
 	

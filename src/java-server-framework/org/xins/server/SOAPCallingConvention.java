@@ -193,7 +193,7 @@ final class SOAPCallingConvention extends CallingConvention {
          
          // Parse the input data section
          Element dataSection = null;
-         List dataSectionList = functionElem.getChildElements("data");
+         List dataSectionList = parametersElem.getChildElements("data");
          if (dataSectionList.size() == 1) {
             dataSection = (Element) dataSectionList.get(0);
          } else if (dataSectionList.size() > 1) {
