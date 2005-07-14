@@ -1,26 +1,28 @@
 #!/bin/sh
 #
-# -*- mode: Fundamental; tab-width: 4; -*-
-# ex:ts=4
-#
-# $Id$
-#
 # Bootstraps the XINS execution program, by means of an Ant build file,
 # bootstrap.xml.
 #
+# $Id$
 
 # Make sure XINS_HOME is set
 if [ "${XINS_HOME}" = "" ]
 then
-	echo "`basename $0`: FATAL: XINS_HOME not set."
-	exit 1
+   # Determine script directory
+   __DIRNAME__=`dirname $0`
+
+   # Assume parent of script directory is XINS home
+   XINS_HOME=`dirname ${__DIRNAME__}`
+   if [ "${XINS_VERBOSE}" = "true" ]; then
+      echo "XINS_HOME not set, assuming: ${XINS_HOME}"
+   fi
 fi
 
-# Recognize version option
+# Recognize '-version' (or 'version') option
 if [ "$1" = "-version" ] || [ "$1" = "version" ]
 then
-	ant -q -f ${XINS_HOME}/build.xml version
-	exit 0
+   ant -q -f ${XINS_HOME}/build.xml version
+   exit 0
 fi
 
 # Recognize clean option
@@ -29,24 +31,7 @@ fi
 # removed with 'xins clean'
 if [ "$1" = "clean" ] && [ -f build/build.xml ]
 then
-	rm build/build.xml
-fi
-
-# Detect Cygwin
-cygwin=false
-case "`uname`" in
-   CYGWIN*)
-      cygwin=true
-      ;;
-   *)
-      cygwin=false
-      ;;
-esac
-
-CURR_DIR=`pwd`
-if [ "${cygwin}" = "true" ];
-then
-   CURR_DIR=`cygpath --windows ${CURR_DIR}`
+   rm build/build.xml
 fi
 
 # Split options and target arguments.
@@ -86,24 +71,41 @@ then
    __ARGS__=help
 fi
 
+# Detect Cygwin
+case "`uname`" in
+   CYGWIN*)
+      __CYGWIN__=true
+      ;;
+   *)
+      __CYGWIN__=false
+      ;;
+esac
+
+# Determine current directory
+CURR_DIR=`pwd`
+if [ "${__CYGWIN__}" = "true" ];
+then
+   CURR_DIR=`cygpath --windows ${CURR_DIR}`
+fi
+
 # Construct the command to execute
 __CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
 __CMD__="${__CMD__} -Dxins_home=${XINS_HOME}"
 __CMD__="${__CMD__} -Dpwd=${CURR_DIR}"
 if [ ! -z "${__OPTS__}" ]
 then
-    __CMD__="${__CMD__} ${__OPTS__}"
+   __CMD__="${__CMD__} ${__OPTS__}"
 fi
 __CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
 
-# If verbose mode is on, print the command that will be executed
+# In verbose mode, print the command that will be executed
 if [ "${XINS_VERBOSE}" = "true" ]
 then
-    echo "Cygwin detected: ${cygwin}"
-    echo
-    echo "Executing:"
-    echo "${__CMD__}"
-    echo
+   echo "Cygwin detected: ${__CYGWIN__}"
+   echo
+   echo "Executing:"
+   echo "${__CMD__}"
+   echo
 fi
 
 # Execute the command; pass control to Ant
