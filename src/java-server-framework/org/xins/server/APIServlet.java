@@ -6,63 +6,16 @@
  */
 package org.xins.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.Random;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.NDC;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.helpers.NullEnumeration;
-
-import org.xins.common.manageable.BootstrapException;
-
-import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.LogCentral;
-import org.xins.logdoc.UnsupportedLocaleError;
-import org.xins.logdoc.UnsupportedLocaleException;
-
-import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.Utils;
-
-import org.xins.common.collections.InvalidPropertyValueException;
-import org.xins.common.collections.MissingRequiredPropertyException;
-import org.xins.common.collections.PropertiesPropertyReader;
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderConverter;
-
-import org.xins.common.io.FileWatcher;
-
-import org.xins.common.manageable.InitializationException;
-
-import org.xins.common.net.IPAddressUtils;
-
-import org.xins.common.servlet.ServletConfigPropertyReader;
-
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.HexConverter;
-import org.xins.common.text.TextUtils;
-
-import org.xins.logdoc.ExceptionUtils;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -130,93 +83,89 @@ extends HttpServlet {
     * The name of the system property that specifies the location of the
     * configuration file.
     */
-   public static final String CONFIG_FILE_SYSTEM_PROPERTY =
-      Engine.CONFIG_FILE_SYSTEM_PROPERTY;
+   static final String CONFIG_FILE_SYSTEM_PROPERTY =
+      "org.xins.server.config";
 
    /**
     * The name of the runtime property that specifies the interval
     * for the configuration file modification checks, in seconds.
     */
-   public static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
-      Engine.CONFIG_RELOAD_INTERVAL_PROPERTY;
+   static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
+      "org.xins.server.config.reload";
 
    /**
     * The name of the runtime property that hostname for the server
     * running the API.
     */
-   public static final String HOSTNAME_PROPERTY =
-      Engine.HOSTNAME_PROPERTY;
+   static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
 
    /**
     * The default configuration file modification check interval, in seconds.
     */
-   public static final int DEFAULT_CONFIG_RELOAD_INTERVAL =
-      Engine.DEFAULT_CONFIG_RELOAD_INTERVAL;
+   static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
 
    /**
     * The name of the build property that specifies the name of the
     * API class to load.
     */
-   public static final String API_CLASS_PROPERTY =
-      Engine.API_CLASS_PROPERTY;
+   static final String API_CLASS_PROPERTY = "org.xins.api.class";
 
    /**
     * The name of the build property that specifies the name of the
     * API.
     */
-   public static final String API_NAME_PROPERTY =
-      Engine.API_NAME_PROPERTY;
+   static final String API_NAME_PROPERTY = "org.xins.api.name";
 
    /**
     * The name of the build property that specifies the version with which the
     * API was built.
     */
-   public static final String API_BUILD_VERSION_PROPERTY =
-      Engine.API_BUILD_VERSION_PROPERTY;
+   static final String API_BUILD_VERSION_PROPERTY =
+      "org.xins.api.build.version";
 
    /**
     * The name of the build property that specifies the default calling
     * convention.
     */
-   public static final String API_CALLING_CONVENTION_PROPERTY =
-      Engine.API_CALLING_CONVENTION_PROPERTY;
+   static final String API_CALLING_CONVENTION_PROPERTY =
+      "org.xins.api.calling.convention";
 
    /**
     * The name of the build property that specifies the class of the default
     * calling convention.
     */
-   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
-      Engine.API_CALLING_CONVENTION_CLASS_PROPERTY;
+   static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
+      "org.xins.api.calling.convention.class";
 
    /**
     * The parameter of the query to specify the calling convention.
     */
-   public static final String CALLING_CONVENTION_PARAMETER =
-      Engine.CALLING_CONVENTION_PARAMETER;
+   static final String CALLING_CONVENTION_PARAMETER = "_convention";
 
    /**
     * The standard calling convention.
     */
-   public static final String STANDARD_CALLING_CONVENTION =
-      Engine.STANDARD_CALLING_CONVENTION;
+   static final String STANDARD_CALLING_CONVENTION = "_xins-std";
 
    /**
     * The old style calling convention.
     */
-   public static final String OLD_STYLE_CALLING_CONVENTION =
-      Engine.OLD_STYLE_CALLING_CONVENTION;
+   static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
 
    /**
     * The XML calling convention.
     */
-   public static final String XML_CALLING_CONVENTION =
-      Engine.XML_CALLING_CONVENTION;
+   static final String XML_CALLING_CONVENTION = "_xins-xml";
 
    /**
     * The XSLT calling convention.
     */
-   public static final String XSLT_CALLING_CONVENTION =
-      Engine.XSLT_CALLING_CONVENTION;
+   static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
+
+   /**
+    * The SOAP calling convention.
+    */
+   static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
    /**
     * The name of the runtime property that specifies the locale for the log
@@ -225,8 +174,8 @@ extends HttpServlet {
     * @deprecated
     *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
-   public static final String LOG_LOCALE_PROPERTY =
-      Engine.LOG_LOCALE_PROPERTY;
+   static final String LOG_LOCALE_PROPERTY =
+      "org.xins.server.log.locale";
 
 
    //-------------------------------------------------------------------------
@@ -239,7 +188,7 @@ extends HttpServlet {
     * {@link Engine#configureLoggerFallback()}.
     */
    static {
-      Engine.configureLoggerFallback();
+      ConfigManager.configureLoggerFallback();
    }
 
 
@@ -345,13 +294,6 @@ extends HttpServlet {
    }
 
    /**
-    * Initializes the API using the current runtime settings.
-    */
-   void initAPI() {
-      _engine.initAPI();
-   }
-
-   /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
     * object is the one passed to the {@link #init(ServletConfig)} method.
@@ -383,13 +325,6 @@ extends HttpServlet {
                        HttpServletResponse response)
    throws IOException {
       _engine.service(request, response);
-   }
-
-   /**
-    * Re-initialise the properties if the property file has changed.
-    */
-   void reloadPropertiesIfChanged() {
-      _engine.reloadPropertiesIfChanged();
    }
 
    /**

@@ -264,7 +264,7 @@ implements DefaultResultCodes {
     * The local IP address.
     */
    private String _localIPAddress;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -796,7 +796,7 @@ implements DefaultResultCodes {
          try {
             baseURL = _engine.getServletConfig().getServletContext().getResource("specs/").toExternalForm();
          } catch (MalformedURLException muex) {
-            
+
             // Leave the variable as null
          }
          _apiSpecification = new org.xins.common.spec.API(getClass(), baseURL);
@@ -855,7 +855,7 @@ implements DefaultResultCodes {
 
       // Check the access rule list
       boolean allow;
-      
+
       // If no property is defined only localhost is allowed
       if (_accessRuleList == AccessRuleList.EMPTY && (ip.equals("127.0.0.1")
             || ip.equals(_localIPAddress))) {
@@ -929,7 +929,7 @@ implements DefaultResultCodes {
          } else if ("_ResetStatistics".equals(functionName)) {
             result = doResetStatistics();
          } else if ("_ReloadProperties".equals(functionName)) {
-            _engine.reloadPropertiesIfChanged();
+            _engine.getConfigManager().reloadPropertiesIfChanged();
             result = SUCCESSFUL_RESULT;
          } else {
             throw new NoSuchFunctionException(functionName);
