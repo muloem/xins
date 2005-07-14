@@ -7,6 +7,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<description>Test all possible types as input and output.</description>
 
 	<input>
+		<param name="inputBoolean" required="false" type="_boolean">
+			<description>An example of input for a boolean.</description>
+		</param>
 		<param name="inputByte" required="true" type="_int8">
 			<description>An example of input for a byte.</description>
 		</param>
@@ -50,6 +53,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	</input>
 
 	<output>
+		<param name="outputBoolean" required="false" type="_boolean">
+			<description>An example of output for a boolean.</description>
+		</param>
 		<param name="outputByte" required="false" type="_int8">
 			<description>An example of output for a byte.</description>
 		</param>
