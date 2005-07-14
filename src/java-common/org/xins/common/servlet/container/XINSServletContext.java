@@ -117,7 +117,7 @@ public class XINSServletContext implements ServletContext {
 
    public URL getResource(String str) {
       if (!str.startsWith("/")) {
-         str += "/" + str;
+         str = "/" + str;
       }
       try {
          return new URL(_rootURL + str);
