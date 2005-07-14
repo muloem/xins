@@ -28,7 +28,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     property, only localhost is allowed to access the API.
   - The returned MIME type for the SOAP calling convention has been changed
     from application/soap+xml to text/xml.
-  - The SOAP calling convention now handles the input and output data sections.
+  - The SOAP calling convention now handles the input and output data
+    sections.
   - The returned <FunctionName>Response element for the SOAP calling
     convention has now a diffenrent namespace.
   - Added a test for the SOAP calling convention.
@@ -51,6 +52,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - The input and output data sections are now taken into account in the WSDL.
 
 * Generated build file:
+  - Fixed SF.net bug #1143791: Sometimes incorrect XINS version displayed on
+    Linux.
   - Implemented RFE #1235979: "xins all" now generates everything.
   - Removed the source attribute for the javac task, as not needed.
 

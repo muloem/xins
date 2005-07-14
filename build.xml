@@ -68,9 +68,9 @@ ${version.file}</fail>
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="version"             value="${version.major}.${version.middle}.${version.minor}${version.build}${version.suffix}" />
-		<property name="package-basename"    value="${name}-${version}" />
-		<property name="vendor"              value="Wanadoo Nederland B.V." />
+		<property name="xins_version"        value="${version.major}.${version.middle}.${version.minor}${version.build}${version.suffix}" />
+		<property name="package-basename"    value="${name}-${xins_version}" />
+		<property name="xins_vendor"         value="Wanadoo Nederland B.V." />
 		<property name="cvs.module"          value="${name}" />
 
 		<!-- SourceForge-related properties -->
@@ -102,7 +102,7 @@ ${version.file}</fail>
 	<target name="version" depends="-init">
 		<echo message="Java ${java.version}" />
 		<echo message="${ant.version}" />
-		<echo message="${title} ${version}" />
+		<echo message="${title} ${xins_version}" />
 	</target>
 
 	<target name="clean" description="Removes all generated files">
@@ -130,12 +130,12 @@ ${version.file}</fail>
 		</javac>
 		<manifest file="build/MANIFEST.MF">
 			<section name="logdoc">
-				<attribute name="Specification-Title"    value="Logdoc" />
-				<attribute name="Specification-Version"  value="${version}" />
-				<attribute name="Specification-Vendor"   value="${vendor}"  />
-				<attribute name="Implementation-Title"   value="Logdoc" />
-				<attribute name="Implementation-Version" value="${version}" />
-				<attribute name="Implementation-Vendor"  value="${vendor}"  />
+				<attribute name="Specification-Title"    value="Logdoc"          />
+				<attribute name="Specification-Version"  value="${xins_version}" />
+				<attribute name="Specification-Vendor"   value="${xins_vendor}"  />
+				<attribute name="Implementation-Title"   value="Logdoc"          />
+				<attribute name="Implementation-Version" value="${xins_version}" />
+				<attribute name="Implementation-Vendor"  value="${xins_vendor}"  />
 			</section>
 		</manifest>
 		<jar
@@ -182,7 +182,7 @@ ${version.file}</fail>
 	<target name="-build-framework">
 		<mkdir dir="build/src/java-${src.side}" />
 		<copy file="src/java-${src.side}/org/xins/${side}/Library.java" todir="build/src/java-${src.side}/org/xins/${side}/" />
-		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${version}" />
+		<replace dir="build/src/java-${src.side}" token="%%VERSION%%" value="${xins_version}" />
 		<mkdir dir="build/classes/java-${side}" />
 		<javac
 		sourcepath=""
@@ -220,11 +220,11 @@ ${version.file}</fail>
 		<manifest file="build/MANIFEST.MF">
 			<section name="xins-${side}">
 				<attribute name="Specification-Title"    value="XINS/Java ${type}" />
-				<attribute name="Specification-Version"  value="${version}"        />
-				<attribute name="Specification-Vendor"   value="${vendor}"         />
+				<attribute name="Specification-Version"  value="${xins_version}"        />
+				<attribute name="Specification-Vendor"   value="${xins_vendor}"    />
 				<attribute name="Implementation-Title"   value="XINS/Java ${type}" />
-				<attribute name="Implementation-Version" value="${version}"        />
-				<attribute name="Implementation-Vendor"  value="${vendor}"         />
+				<attribute name="Implementation-Version" value="${xins_version}"        />
+				<attribute name="Implementation-Vendor"  value="${xins_vendor}"    />
 			</section>
 		</manifest>
 		<jar
@@ -421,7 +421,7 @@ ${version.file}</fail>
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="docs/javadoc" />
-			<param name="javadoc.title"   value="${title} ${version}" />
+			<param name="javadoc.title"   value="${title} ${xins_version}" />
 			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${www.url}'&gt;${www.url}&lt;/a&gt;." />
 		</antcall>
 	</target>
@@ -430,7 +430,7 @@ ${version.file}</fail>
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="yes" />
 			<param name="javadoc.destdir" value="docs/javadoc-private" />
-			<param name="javadoc.title"   value="${title} ${version}" />
+			<param name="javadoc.title"   value="${title} ${xins_version}" />
 			<param name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${www.url}'&gt;${www.url}&lt;/a&gt;.&lt;br /&gt;This Javadoc API documentation set contains private and package private members as well." />
 		</antcall>
 	</target>
@@ -438,7 +438,7 @@ ${version.file}</fail>
 	<target name="all" depends="java-server,javadoc" description="Generates everything" />
 
 	<target name="help" description="Print the help of the main targets" depends="-init">
-		<echo message="XINS ${version}"                                                     />
+		<echo message="XINS ${xins_version}"                                                />
 		<echo message=""                                                                    />
 		<echo message="Main targets:"                                                       />
 		<echo message="  clean        : Remove all generated files"                         />
