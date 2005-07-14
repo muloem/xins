@@ -53,7 +53,7 @@ public class XINSServletContext implements ServletContext {
     */
    XINSServletContext(LocalServletConfig config) {
       _config = config;
-      _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!/";
+      _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
    }
    
    //-------------------------------------------------------------------------
@@ -116,6 +116,9 @@ public class XINSServletContext implements ServletContext {
    }
 
    public URL getResource(String str) {
+      if (!str.startsWith("/")) {
+         str += "/" + str;
+      }
       try {
          return new URL(_rootURL + str);
       } catch (IOException ioe) {
