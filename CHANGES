@@ -56,6 +56,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     name for the development targets (e.g. "ant -lib lib tests").
   - The Windows installer now creates a program group with icons to run
     the demo or look at the documentation.
+  - Added some of the new 1.3 features in the allinone demo.
 
 * XINS shell script:
   - Fixed SF.net bug #1237446. The script now works correctly with Cygwin.

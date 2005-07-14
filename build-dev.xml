@@ -468,6 +468,7 @@ ${sf.file}</fail>
 				<include name="xins-project/**/*.fnc" />
 				<include name="xins-project/**/*.typ" />
 				<include name="xins-project/**/*.rcd" />
+				<include name="xins-project/**/*.cat" />
 				<include name="xins-project/**/*.java" />
 				<exclude name="build" />
 				<exclude name="xins-project/build/**/*" />
