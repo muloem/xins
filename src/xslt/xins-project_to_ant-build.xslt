@@ -231,7 +231,7 @@ APIs in this project are:
 					     location="api_1_3.dtd" />
 					<dtd publicId="-//XINS//DTD Function 1.3//EN"
 					     location="function_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Category 1.3//EN"
+					<dtd publicId="-//XINS//DTD Category 1.3//EN"
 					     location="category_1_3.dtd" />
 				</xmlcatalog>
 			</target>
@@ -516,6 +516,10 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
+			<xmlvalidate warn="false">
+				<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
+				<xmlcatalog refid="all-dtds" />
+			</xmlvalidate>
 			<xsl:if test="document($api_file)/api/category">
 				<style
 				basedir="{$api_specsdir}"
