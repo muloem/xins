@@ -794,7 +794,7 @@ implements DefaultResultCodes {
       if (_apiSpecification == null) {
          String baseURL = null;
          try {
-            baseURL = _engine.getServletConfig().getServletContext().getResource("/specs/").toExternalForm();
+            baseURL = _engine.getServletConfig().getServletContext().getResource("specs/").toExternalForm();
          } catch (MalformedURLException muex) {
             
             // Leave the variable as null
