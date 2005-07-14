@@ -215,45 +215,32 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postXMLRequest(String randomFive, boolean success) throws Exception {
-      PostMethod post = new PostMethod("http://127.0.0.1:8080/allinone/?_convention=_xins-xml");
-      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
-      post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xml";
+      String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request>" +
               "  <param name=\"_function\">ResultCode</param>" +
               "  <param name=\"inputText\">" + randomFive + "</param>" +
-              "</request>");
-      HttpClient client = new HttpClient();
-      client.setConnectionTimeout(5000);
-      client.setTimeout(5000);
-      try {
-         int code = client.executeMethod(post);
-         byte[] data = post.getResponseBody();
-         ElementParser parser = new ElementParser();
-         Element result = parser.parse(new StringReader(new String(data)));
-         assertEquals("result", result.getLocalName());
-         if (success) {
-            assertNull("The method returned an error code: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
-         } else {
-            assertNotNull("The method did not return an error code for the second call: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
-            assertEquals("AlreadySet", result.getAttribute("errorcode"));
-         }
-         assertNull("The method returned a code attribute: " + result.getAttribute("code"), result.getAttribute("code"));
-         assertNull("The method returned a success attribute.", result.getAttribute("success"));
-         List child = result.getChildElements();
-         assertEquals(1, child.size());
-         Element param = (Element) child.get(0);
-         assertEquals("param", param.getLocalName());
-         if (success) {
-            assertEquals("outputText", param.getAttribute("name"));
-            assertEquals(randomFive + " added.", param.getText());
-         } else {
-            assertEquals("count", param.getAttribute("name"));
-            assertEquals("1", param.getText());
-         }
-      } finally {
-
-         // Release current connection to the connection pool once you are done
-         post.releaseConnection();
+              "</request>";
+      Element result = postXML(destination, data);
+      assertEquals("result", result.getLocalName());
+      if (success) {
+         assertNull("The method returned an error code: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
+      } else {
+         assertNotNull("The method did not return an error code for the second call: " + result.getAttribute("errorcode"), result.getAttribute("errorcode"));
+         assertEquals("AlreadySet", result.getAttribute("errorcode"));
+      }
+      assertNull("The method returned a code attribute: " + result.getAttribute("code"), result.getAttribute("code"));
+      assertNull("The method returned a success attribute.", result.getAttribute("success"));
+      List child = result.getChildElements();
+      assertEquals(1, child.size());
+      Element param = (Element) child.get(0);
+      assertEquals("param", param.getLocalName());
+      if (success) {
+         assertEquals("outputText", param.getAttribute("name"));
+         assertEquals(randomFive + " added.", param.getText());
+      } else {
+         assertEquals("count", param.getAttribute("name"));
+         assertEquals("1", param.getText());
       }
    }
    
@@ -314,47 +301,95 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postSOAPRequest(String randomFive, boolean success) throws Exception {
-      PostMethod post = new PostMethod("http://127.0.0.1:8080/allinone/?_convention=_xins-soap");
-      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
-      post.setRequestBody("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
               "    <ns0:ResultCodeRequest>" +
               "      <inputText>" + randomFive + "</inputText>" +
               "    </ns0:ResultCodeRequest>" +
               "  </soap:Body>" +
-              "</soap:Envelope>");
+              "</soap:Envelope>";
+      Element result = postXML(destination, data);
+      assertEquals("Envelope", result.getLocalName());
+      assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
+      assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
+      Element bodyElem = (Element) result.getChildElements("Body").get(0);
+      if (success) {
+         assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("ResultCodeResponse").size());
+         Element responseElem = (Element) bodyElem.getChildElements("ResultCodeResponse").get(0);
+         assertEquals("Incorrect number of \"outputText\" elements.", 1, responseElem.getChildElements("outputText").size());
+         Element outputTextElem = (Element) responseElem.getChildElements("outputText").get(0);
+         assertEquals("Incorrect returned text", randomFive + " added.", outputTextElem.getText());
+      } else {
+         assertEquals("Incorrect number of \"Fault\" elements.", 1, bodyElem.getChildElements("Fault").size());
+         Element faultElem = (Element) bodyElem.getChildElements("Fault").get(0);
+         assertEquals("Incorrect number of \"faultcode\" elements.", 1, faultElem.getChildElements("faultcode").size());
+         Element faultCodeElem = (Element) faultElem.getChildElements("faultcode").get(0);
+         assertEquals("Incorrect faultcode text", "soap:Server", faultCodeElem.getText());
+         assertEquals("Incorrect number of \"faultstring\" elements.", 1, faultElem.getChildElements("faultstring").size());
+         Element faultStringElem = (Element) faultElem.getChildElements("faultstring").get(0);
+         assertEquals("Incorrect faultstring text", "AlreadySet", faultStringElem.getText());
+      }
+   }
+   
+   /**
+    * Tests the SOAP calling convention for the type convertion.
+    */
+   public void testSOAPCallingConvention2() throws Throwable {
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+              "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
+              "  <soap:Body>" +
+              "    <ns0:SimpleTypesRequest>" +
+              "      <inputBoolean>0</inputBoolean>" +
+              "      <inputByte>0</inputByte>" +
+              "      <inputInt>0</inputInt>" +
+              "      <inputLong>0</inputLong>" +
+              "      <inputFloat>1.0</inputFloat>" +
+              "      <inputText>0</inputText>" +
+              "    </ns0:SimpleTypesRequest>" +
+              "  </soap:Body>" +
+              "</soap:Envelope>";
+      Element result = postXML(destination, data);
+      assertEquals("Envelope", result.getLocalName());
+      assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
+      assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
+      Element bodyElem = (Element) result.getChildElements("Body").get(0);
+      assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("SimpleTypesResponse").size());
+   }
+
+   /**
+    * Posts the XML data the the given destination.
+    *
+    * @param destination
+    *    the destination where the XML has to be posted.
+    * @param data
+    *    the XML to post.
+    *
+    * @return
+    *    the returned XML already parsed.
+    *
+    * @throw Exception
+    *    if anything goes wrong.
+    */
+   private Element postXML(String destination, String data) throws Exception {
+      PostMethod post = new PostMethod(destination);
+      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+      post.setRequestBody(data);
       HttpClient client = new HttpClient();
       client.setConnectionTimeout(5000);
       client.setTimeout(5000);
       try {
          int code = client.executeMethod(post);
-         byte[] data = post.getResponseBody();
+         byte[] returnedData = post.getResponseBody();
          ElementParser parser = new ElementParser();
-         String content = new String(data);
+         String content = new String(returnedData);
+         System.err.println("content: " + content);
          Element result = parser.parse(new StringReader(content));
-         assertEquals("Envelope", result.getLocalName());
-         assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
-         assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
-         Element bodyElem = (Element) result.getChildElements("Body").get(0);
-         if (success) {
-            assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("ResultCodeResponse").size());
-            Element responseElem = (Element) bodyElem.getChildElements("ResultCodeResponse").get(0);
-            assertEquals("Incorrect number of \"outputText\" elements.", 1, responseElem.getChildElements("outputText").size());
-            Element outputTextElem = (Element) responseElem.getChildElements("outputText").get(0);
-            assertEquals("Incorrect returned text", randomFive + " added.", outputTextElem.getText());
-         } else {
-            assertEquals("Incorrect number of \"Fault\" elements.", 1, bodyElem.getChildElements("Fault").size());
-            Element faultElem = (Element) bodyElem.getChildElements("Fault").get(0);
-            assertEquals("Incorrect number of \"faultcode\" elements.", 1, faultElem.getChildElements("faultcode").size());
-            Element faultCodeElem = (Element) faultElem.getChildElements("faultcode").get(0);
-            assertEquals("Incorrect faultcode text", "soap:Server", faultCodeElem.getText());
-            assertEquals("Incorrect number of \"faultstring\" elements.", 1, faultElem.getChildElements("faultstring").size());
-            Element faultStringElem = (Element) faultElem.getChildElements("faultstring").get(0);
-            assertEquals("Incorrect faultstring text", "AlreadySet", faultStringElem.getText());
-         }
+         return result;
       } finally {
-
+         
          // Release current connection to the connection pool once you are done
          post.releaseConnection();
       }
