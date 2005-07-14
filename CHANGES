@@ -16,6 +16,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     XINSServletContext class.
 
 * XINS/Java Server Framework:
+  - Implemented SF.net RFE #1236690. Logging message 3236 if the build version
+    is not set on the API package.
   - An InvalidRequestException is thorwn if the request does not contain
     any content-type in the _xins-xml calling convention.
   - No specific namespace is returned in the SOAP response.

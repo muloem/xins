@@ -400,14 +400,16 @@ final class Engine extends Object {
       // Log XINS version
       Log.log_3225(serverVersion);
 
+      // Determine the XINS version the package was built with
+      String buildVer = config.getInitParameter(API_BUILD_VERSION_PROPERTY);
+      if (TextUtils.isEmpty(buildVer)) {
+         Log.log_3236();
+
       // Warn if API build version is more recent than running version
-      if (Library.isProductionRelease(serverVersion)) {
-         String buildVersion = config.getInitParameter(
-            API_BUILD_VERSION_PROPERTY);
-         if (buildVersion == null ||
-               (Library.isProductionRelease(buildVersion)
-                && Library.isMoreRecent(buildVersion))) {
-            Log.log_3229(buildVersion, serverVersion);
+      } else if (Library.isProductionRelease(serverVersion)) {
+         if (Library.isProductionRelease(buildVer)
+             && Library.isMoreRecent(buildVer)) {
+            Log.log_3229(buildVer, serverVersion);
          }
       }
 

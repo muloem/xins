@@ -215,6 +215,9 @@
 			<description>Determined API name.</description>
 			<param name="apiName" />
 		</entry>
+		<entry id="3236" level="WARNING">
+			<description>API build version is not set.</description>
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
