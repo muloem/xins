@@ -500,7 +500,7 @@ public final static class Request {
       java.util.List elements = _element.getChildElements("</xsl:text>
 		<xsl:value-of select="@element" />
 		<xsl:text>");
-      java.util.List resultList = new java.util.ArrayList(elements.getSize());
+      java.util.List resultList = new java.util.ArrayList(elements.size());
       java.util.Iterator itElements = elements.listIterator();
       while (itElements.hasNext()) {
          org.xins.common.xml.Element nextElement = (org.xins.common.xml.Element)itElements.next();
