@@ -98,7 +98,16 @@ implements Result {
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
 
-		<xsl:apply-templates select="data/element" mode="addMethod" />
+		<xsl:if test="data/@contains">
+			<xsl:variable name="elementName" select="data/@contains" />
+			<xsl:apply-templates select="data/element[@name=$elementName]" mode="addMethod" />
+		</xsl:if>
+
+
+		<xsl:for-each select="data/contains/contained">
+			<xsl:variable name="elementName" select="@element" />
+			<xsl:apply-templates select="../../element[@name=$elementName]" mode="addMethod" />
+		</xsl:for-each>
 
 		<xsl:text>
 
