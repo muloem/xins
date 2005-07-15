@@ -672,7 +672,7 @@ ${sf.file}</fail>
 	</target>
 	<target name="-download-release" unless="release.file.exists">
 		<mkdir dir="build" />
-		<get src="http://heanet.dl.sourceforge.net/sourceforge/${name}/${name}-${exe.version}.tgz"
+		<get src="http://xins.sf.net/${name}-${exe.version}.tgz"
 		dest="build/${name}-${exe.version}.tgz"
 		usetimestamp="true" />
 	</target>
