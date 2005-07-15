@@ -182,6 +182,12 @@ public class Parameter {
             truncatePos = className.lastIndexOf(".api.APIImpl");
          }
          try {
+            Character firstChar = new Character(typeName.charAt(0));
+            if (Character.isLowerCase(typeName.charAt(0)) && typeName.length() > 1) {
+               typeName = Character.toUpperCase(typeName.charAt(0)) + typeName.substring(1);
+            } else if (Character.isLowerCase(typeName.charAt(0))) {
+               typeName = typeName.toUpperCase();
+            }
             String typeClassName = className.substring(0, truncatePos) + ".types." + typeName;
             Class typeClass = Class.forName(typeClassName);
             Type type = (Type) typeClass.getField("SINGLETON").get(null);
