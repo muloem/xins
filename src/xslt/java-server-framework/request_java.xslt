@@ -310,7 +310,14 @@ public final static class Request {
 		<xsl:choose>
 			<xsl:when test="name()='attribute'">
 				<xsl:if test="$typeIsPrimary = 'true'">
-					<xsl:value-of select="$javaobjecttype" />
+					<xsl:choose>
+						<xsl:when test="$javaobjecttype = 'Int'">
+							<xsl:text>Integer</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$javaobjecttype" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:text>.parse</xsl:text>
 					<xsl:value-of select="$javaobjecttype" />
 					<xsl:text>(</xsl:text>
