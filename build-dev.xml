@@ -648,6 +648,8 @@ ${sf.file}</fail>
 			</filterchain>
 		</loadfile>
 		<delete file="../VERSION" />
+		<available property="release.file.exists" file="build/${name}-${exe.version}.tgz" />
+		<antcall target="-download-release" />
 		<gunzip src="build/${name}-${exe.version}.tgz" dest="../${name}-${exe.version}.tar" />
 		<untar src="../${name}-${exe.version}.tar" dest=".." />
 		<delete file="../${name}-${exe.version}.tar" />
@@ -667,6 +669,12 @@ ${sf.file}</fail>
 		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
 			<fileset dir=".." includes="${name}-${exe.version}.exe" />
 		</ftp>
+	</target>
+	<target name="-download-release" unless="release.file.exists">
+		<mkdir dir="build" />
+		<get src="http://heanet.dl.sourceforge.net/sourceforge/${name}/${name}-${exe.version}.tgz"
+		dest="build/${name}-${exe.version}.tgz"
+		usetimestamp="true" />
 	</target>
 
 	<target name="-check-release-version" depends="-init" unless="force">

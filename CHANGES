@@ -66,8 +66,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Removed the source attribute for the javac task, as not needed.
 
 * Build- and release-process:
-  - No need to download the release file to create the Windows installer as
-    the release file is located in the build directory.
+  - The tar.gz release file is downloaded to create the Windows installer
+    only when needed.
   - The build file has been splitted in 2. The file build.xml contains the
     targets that also work in the release while build-dev.xml contains
     the development targets. Note that you don't need to specify the file
