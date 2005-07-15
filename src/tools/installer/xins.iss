@@ -6,7 +6,7 @@
 AppName=XINS
 AppVerName=XINS version %%VERSION%%
 DefaultDirName={sd}\xins-%%VERSION%%
-VersionInfoVersion=1.3.0
+VersionInfoVersion=%%VERSION%%
 OutputDir=c:\projects
 OutputBaseFilename=xins-%%VERSION%%
 SetupIconFile=xins.ico
