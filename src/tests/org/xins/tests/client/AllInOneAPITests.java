@@ -129,7 +129,7 @@ public class AllInOneAPITests extends TestCase {
                                (Short) null,          // _int16
                                65,                    // _int32
                                88L,                   // _int64
-                               32.5f,                 // _float32
+                               -32.5f,                // _float32
                                new Double(37.2),      // _float64
                                "text",                // _text
                                null,

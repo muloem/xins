@@ -134,7 +134,7 @@ public class Float32 extends Type {
     * used.
     */
    private Float32() {
-      this("_float32", Float.MIN_VALUE, Float.MAX_VALUE);
+      this("_float32", -Float.MAX_VALUE, Float.MAX_VALUE);
    }
 
    /**

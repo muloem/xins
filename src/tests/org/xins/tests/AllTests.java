@@ -118,7 +118,7 @@ public class AllTests extends TestSuite {
       
 
       // XXX: Perform just a single test
-      //suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention"));
+      //suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention2"));
 
       // Stop the server
       suite.addTestSuite(StopServer.class);

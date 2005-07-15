@@ -134,7 +134,7 @@ public class Float64 extends Type {
     * used.
     */
    private Float64() {
-      this("_float64", Double.MIN_VALUE, Double.MAX_VALUE);
+      this("_float64", -Double.MAX_VALUE, Double.MAX_VALUE);
    }
 
    /**
