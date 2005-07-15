@@ -43,6 +43,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - The API specification is stored in a static variable. This way the
     specifications are only parsed once.
 
+* Generation of server-side Java code:
+  - Fixed bug #1238721: Error when sub-elements in input data.
+
 * Generated specification documentation:
   - Added to possibility to have categories in functions. RFE #1029268.
 
