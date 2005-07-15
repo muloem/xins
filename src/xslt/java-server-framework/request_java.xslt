@@ -186,6 +186,11 @@ public final static class Request {
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="javaobjecttype">
+			<xsl:call-template name="hungarianUpper">
+				<xsl:with-param name="text" select="$javasimpletype" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="typeIsPrimary">
 			<xsl:call-template name="is_java_datatype">
 				<xsl:with-param name="text" select="$javasimpletype" />
@@ -283,40 +288,36 @@ public final static class Request {
 		</xsl:if>
 		<xsl:text>{
       </xsl:text>
-		<xsl:choose>
-			<xsl:when test="@required = 'true'">
-				<xsl:text>return _</xsl:text>
-				<xsl:choose>
-					<xsl:when test="name()='attribute'">
-						<xsl:text>element.getAttribute("</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>")</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@name" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>if (!isSet</xsl:text>
-				<xsl:value-of select="$hungarianName" />
-				<xsl:text>()) {
+		<xsl:if test="not(@required = 'true')">
+			<xsl:text>if (!isSet</xsl:text>
+			<xsl:value-of select="$hungarianName" />
+			<xsl:text>()) {
          throw new org.xins.server.ParameterNotInitializedException("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>");
-      }
-      return _</xsl:text>
-				<xsl:choose>
-					<xsl:when test="name()='attribute'">
-						<xsl:text>element.getAttribute("</xsl:text>
-						<xsl:value-of select="@name" />
-						<xsl:text>")</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@name" />
-					</xsl:otherwise>
-				</xsl:choose>
+      }</xsl:text>
+		</xsl:if>
+		<xsl:text>
+      return </xsl:text>
+		<xsl:choose>
+			<xsl:when test="name()='attribute'">
 				<xsl:if test="$typeIsPrimary = 'true'">
+					<xsl:value-of select="$javaobjecttype" />
+					<xsl:text>.parse</xsl:text>
+					<xsl:value-of select="$javaobjecttype" />
+					<xsl:text>(</xsl:text>
+				</xsl:if>
+				<xsl:text>_element.getAttribute("</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>")</xsl:text>
+				<xsl:if test="$typeIsPrimary = 'true'">
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>_</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:if test="not(@required = 'true') and $typeIsPrimary = 'true'">
 					<xsl:text>.</xsl:text>
 					<xsl:value-of select="$javasimpletype" />
 					<xsl:text>Value()</xsl:text>
