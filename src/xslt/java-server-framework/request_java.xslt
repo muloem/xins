@@ -76,7 +76,15 @@ public final static class Request {
 
 		<xsl:apply-templates select="input/param" mode="method" />
 
-		<xsl:apply-templates select="input/data/element" mode="listMethod" />
+		<xsl:if test="input/data/@contains">
+			<xsl:variable name="elementName" select="input/data/@contains" />
+			<xsl:apply-templates select="input/data/element[@name=$elementName]" mode="listMethod" />
+		</xsl:if>
+		<xsl:for-each select="input/data/contains/contained">
+			<xsl:variable name="elementName" select="@element" />
+			<xsl:apply-templates select="../../element[@name=$elementName]" mode="listMethod" />
+		</xsl:for-each>
+		
 		<xsl:apply-templates select="input/data/element" mode="elementClass" />
 		<xsl:text>
 }

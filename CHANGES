@@ -49,6 +49,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
   - Fixed bug #1203659: Element add method generated even if not needed.
   - Fixed bug #1238249: Error when input data element attribute is not _text
     type.
+  - Fixed bug #1238762: Element list method generated even if not needed.
 
 * Generated specification documentation:
   - Added to possibility to have categories in functions. RFE #1029268.
