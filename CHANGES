@@ -224,6 +224,38 @@ NOTE: This release is based on XINS 1.2.0.
     bash 2.03 on Solaris 8 and with bash 2.05 on OS/X.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.2 FINAL:
+
+* XINS/Java Server Framework:
+  - Implemented SF.net RFE #1188054: _InvalidResponse should generate ERROR on
+    server side. Added log entry 3501 for this.
+    Note that this SF.net RFE #1237524 is a duplicate of this RFE.
+
+* XINS shell script:
+  - Fixed SF.net bug #1237446. The script now works correctly with Cygwin.
+    This has been tested with Cygwin 1.5.12 on Windows 2000.
+  - Implemented SF.net RFE #1234788: Allow quotes, double quotes and commas in
+    shell script.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.1 FINAL:
+
+* XINS/Java Common Library:
+  - Fixed bug #1211277: XINS does not work with proxies.
+  - Fixed bug #1215589. The Perl5Matcher objects are no longer static as this
+    class is not thread safe.
+
+* XINS/Java Server Framework:
+  - Fixed bug #1215589. The Perl5Matcher objects are no longer static as this
+    class is not thread safe.
+
+* XINS/Java Client Framework:
+  - Fixed bug #1215589: Parameter name does not match pattern.
+
+* Generation of client-side Java code:
+  - Fixed bug #1211447: Presence of mandatory Result Items not checked.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 FINAL:
 
 * XINS/Java Server Framework:
