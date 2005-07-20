@@ -18,24 +18,19 @@ import java.util.TimeZone;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
-
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.net.IPAddressUtils;
 import org.xins.common.spec.InvalidSpecificationException;
-
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
-
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
-
 import org.xins.logdoc.LogdocSerializable;
 
 /**
@@ -43,6 +38,7 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -920,6 +916,8 @@ implements DefaultResultCodes {
             }
          } else if ("_GetVersion".equals(functionName)) {
             result = doGetVersion();
+         } else if ("_CheckLinks".equals(functionName)) {
+            result = doCheckLinks();
          } else if ("_GetSettings".equals(functionName)) {
             result = doGetSettings();
          } else if ("_DisableFunction".equals(functionName)) {
@@ -1105,6 +1103,20 @@ implements DefaultResultCodes {
       builder.param("api.version",    _apiVersion);
 
       return builder;
+   }
+
+   /**
+    * Returns the links in linked system components. It uses the 
+    * {@link CheckLinks} to connect to each link and builds a 
+    * {@link FunctionResult} which will have the total link count and total 
+    * link failures.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    */
+   private final FunctionResult doCheckLinks() {
+   	
+      return CheckLinks.checkLinks(getProperties().descriptors());
    }
 
    /**

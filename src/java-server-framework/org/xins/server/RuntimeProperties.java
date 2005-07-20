@@ -14,6 +14,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
  *
  * @since XINS 1.2.0
  */
@@ -55,5 +56,17 @@ public class RuntimeProperties {
     */
    protected void init(org.xins.common.collections.PropertyReader runtimeSettings)
    throws MissingRequiredPropertyException, InvalidPropertyValueException {
+   }
+
+   /**
+    * Gets the descriptor list. The list is created by getting all the 
+    * properties which are marked as <i>_descriptor</i> in the run time
+    * properties file.
+    *
+    * @return
+    *    the list of all descriptors, may not be <code>null</code>.
+    */
+   protected java.util.List descriptors() {
+      return new java.util.ArrayList();
    }
 }

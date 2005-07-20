@@ -5,11 +5,27 @@
 	<logdoc accesslevel="public" />
 	<runtime-properties>
 		<property name="allinone.rate" type="_float32" required="true">
-			<description>the tax rate of the country.</description>
+			<description>The tax rate of the country.</description>
 		</property>
 		<property name="currency" required="false">
-			<description>An currency of the country.</description>
+			<description>A currency of the country.</description>
 		</property>
+		<property name="capis.checkLinks1" type="_descriptor" required="false">
+			<description>A property with three links to test. One link should generate a ConnectionTimeOut error and the other should succeed</description>
+		</property>
+		<property name="capis.checkLinks2" type="_descriptor" required="false">
+			<description>A property with a link to test which should generate a ConnectionRefusal error.</description>
+		</property>
+		<property name="capis.checkLinks3" type="_descriptor" required="false">
+			<description>A property with a link to test which should generate an UnknownHost error.</description>
+		</property> 
+		<property name="capis.checkLinks4" type="_descriptor" required="false">
+			<description>A property with a link to test which should generate a SocketTimeOut error.</description>
+		</property>
+		<property name="capis.checkLinks5" type="_descriptor" required="false">
+			<description>A property with a link to test with should succeed.</description>
+		</property> 
+		
 	</runtime-properties>
 	<instance name="_sharedInstance" getter="getSharedInstance" class="SharedInstance" />
 </impl>

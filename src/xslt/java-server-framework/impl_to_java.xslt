@@ -64,6 +64,13 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="field" />
 
 		<xsl:text>
+
+   /**
+    * The list of descriptors with one or more target descriptors.
+    */
+   private java.util.List _descriptors; 
+   
+   
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -72,13 +79,31 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
    throws org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
 
+      // Initializing descriptor list.
+      _descriptors = new java.util.ArrayList();
+      
       // Get the properties</xsl:text>
 
 		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="check" />
 
 		<xsl:text>
+		
+      // The list is made unmodifiable so that no one can change it.
+      _descriptors = java.util.Collections.unmodifiableList(_descriptors);
    }</xsl:text>
 		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="method" />
+
+   /**
+    * Gets the descriptor list. The list is created by getting all the 
+    * properties which are marked as <i>_descriptor</i> in runtime properties
+    * file.
+    *
+    * @return
+    *    the unmodifiable list of all descriptors, never <code>null</code>.
+    */
+   protected java.util.List descriptors() {
+      return _descriptors;
+   }
 }
 	</xsl:template>
 
@@ -98,6 +123,11 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:text> = org.xins.common.service.DescriptorBuilder.build(runtimeSettings, "</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>");</xsl:text>
+            <xsl:text>
+      _descriptors.add(_</xsl:text>
+            <xsl:value-of select="$variableName" />
+            <xsl:text>);</xsl:text>
+
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>

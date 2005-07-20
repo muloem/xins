@@ -13,7 +13,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
@@ -41,6 +44,7 @@ import org.xins.client.XINSServiceCaller;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
  */
 public class MetaFunctionsTests extends TestCase {
 
@@ -398,4 +402,55 @@ public class MetaFunctionsTests extends TestCase {
          assertEquals("Incorrect status code found.", 404, exception.getStatusCode());
       }
    }
+   
+   /**
+    * Tests the _CheckLinks.
+    */
+   public void testCheckLinks() throws Throwable {
+      XINSCallRequest request = new XINSCallRequest("_CheckLinks", null);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 20000);
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull("The function returned a result code.", result.getErrorCode());
+
+      PropertyReader parameters = result.getParameters();
+      assertEquals(parameters.size(), 2);
+      assertEquals(parameters.get("linkCount"), "7");
+      assertEquals(parameters.get("errorCount"), "4");
+      
+      DataElement dataElement = result.getDataElement();
+      List elementList = dataElement.getChildElements();
+      assertEquals(elementList.size(), 7);
+      
+      Iterator elementIt = elementList.iterator();
+      while(elementIt.hasNext()) {
+         DataElement element = (DataElement)elementIt.next();
+         
+         assertEquals(element.getLocalName(), "check");
+         assertNotNull(element.getAttribute("url"));
+         assertNotNull(element.getAttribute("result"));
+         assertNotNull(element.getAttribute("duration"));
+         
+         String url = element.getAttribute("url");
+         if ("http://www.cnn.com".equals(url)) {
+            assertEquals(element.getAttribute("result"), "Success");
+         } else if ("http://www.bbc.co.uk".equals(url)) {
+            assertEquals(element.getAttribute("result"), "Success");
+         } else if ("http://www.hotmail.com".equals(url)) {
+            assertEquals(element.getAttribute("result"), "ConnectionTimeout");
+         } else if ("http://www.wanadoo.nl:8080/".equals(url)) {
+            assertEquals(element.getAttribute("result"), "ConnectionRefusal");
+         } else if ("http://www.tauseef.nl:8090/".equals(url)) {
+            assertEquals(element.getAttribute("result"), "UnknownHost");
+         } else if ("http://www.sourceforge.com/".equals(url)) {
+            assertEquals(element.getAttribute("result"), "SocketTimeout");
+         } else if ("http://www.wanadoo.nl/".equals(url)) {
+            assertEquals(element.getAttribute("result"), "Success");
+         } else {
+            fail("Contains a URL which was not specified in the xins.properties");
+         }
+      }
+      
+   }
+ 
 }
