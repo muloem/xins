@@ -106,7 +106,7 @@ public class InvalidRequestTests extends TestCase {
          String p     = params[i];
          String error = "Expected InvalidRequestException detail (\""
                       + exDetail
-                      + "\") to contain reference to missing required "
+                      + "\") to contain a reference to missing required "
                       + "parameter \""
                       + p
                       + "\".";
@@ -124,7 +124,6 @@ public class InvalidRequestTests extends TestCase {
       request.setParameter("param1", "a");
       request.setParameter("param2", "a");
       request.setParameter("param3", "a");
-      request.setParameter("param4", "a");
       InvalidRequestException exception;
       try {
          _caller.call(request);
@@ -138,15 +137,13 @@ public class InvalidRequestTests extends TestCase {
       assertEquals("_InvalidRequest", exception.getErrorCode());
 
       // The names of all parameters should be in the exception message
-      String[] params = {
-         "param1", "param2", "param3", "param4"
-      };
+      String[] params = { "param1", "param2", "param3" };
       String exDetail = exception.getDetail();
       for (int i = 0; i < params.length; i++) {
          String p     = params[i];
          String error = "Expected InvalidRequestException detail (\""
                       + exDetail
-                      + "\") to contain reference to parameter \""
+                      + "\") to contain a reference to parameter \""
                       + p
                       + "\" which has an invalid value.";
          String find = "The value for parameter \""
@@ -154,5 +151,37 @@ public class InvalidRequestTests extends TestCase {
                      + "\" is considered invalid";
          assertTrue(error, exDetail.indexOf(find) >= 0);
       }
+   }
+
+   public void testInvalidRequest_ParamCombo() throws Exception {
+
+      // Make a call to the ParamComboNotAll function
+      XINSCallRequest request = new XINSCallRequest("ParamComboNotAll");
+      request.setParameter("param1", "1");
+      request.setParameter("param2", "1");
+      request.setParameter("param3", "1");
+      request.setParameter("param4", "1");
+      InvalidRequestException exception;
+      try {
+         _caller.call(request);
+         fail("Expected InvalidRequestException.");
+         return;
+      } catch (InvalidRequestException e) {
+         exception = e;
+      }
+
+      // Error code must be _InvalidRequest
+      assertEquals("_InvalidRequest", exception.getErrorCode());
+
+      // The names of all parameters should be in the exception message
+      String exDetail = exception.getDetail();
+      String find = "Violated param-combo constraint of type \"not-all\" on"
+                  + " parameters"
+                  + " \"param1\", \"param2\", \"param3\" and \"param4\".";
+      String error = "Expected InvalidRequestException detail (\""
+                   + exDetail
+                   + "\") to contain the following string: "
+                   + find;
+      assertTrue(error, exDetail.indexOf(find) >= 0);
    }
 }
