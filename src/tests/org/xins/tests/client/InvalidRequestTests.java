@@ -82,6 +82,8 @@ public class InvalidRequestTests extends TestCase {
    }
 
    public void testInvalidRequest_RequiredParams() throws Exception {
+
+      // Make a call to the SimpleTypes function
       XINSCallRequest request = new XINSCallRequest("SimpleTypes");
       InvalidRequestException exception;
       try {
@@ -92,21 +94,65 @@ public class InvalidRequestTests extends TestCase {
          exception = e;
       }
 
+      // Error code must be _InvalidRequest
       assertEquals("_InvalidRequest", exception.getErrorCode());
-      String[] required = {
+
+      // The names of all parameters should be in the exception message
+      String[] params = {
          "inputByte", "inputInt", "inputLong", "inputFloat", "inputText"
       };
-
       String exDetail = exception.getDetail();
-      for (int i = 0; i < required.length; i++) {
-         String p     = required[i];
+      for (int i = 0; i < params.length; i++) {
+         String p     = params[i];
          String error = "Expected InvalidRequestException detail (\""
                       + exDetail
-                      + "\" to contain reference to missing required "
+                      + "\") to contain reference to missing required "
                       + "parameter \""
                       + p
                       + "\".";
-         assertTrue(error, exDetail.indexOf(p) >= 0);
+         String find = "No value given for required parameter \""
+                     + p
+                     + "\".";
+         assertTrue(error, exDetail.indexOf(find) >= 0);
+      }
+   }
+
+   public void testInvalidRequest_TypedParams() throws Exception {
+
+      // Make a call to the ParamComboNotAll function
+      XINSCallRequest request = new XINSCallRequest("ParamComboNotAll");
+      request.setParameter("param1", "a");
+      request.setParameter("param2", "a");
+      request.setParameter("param3", "a");
+      request.setParameter("param4", "a");
+      InvalidRequestException exception;
+      try {
+         _caller.call(request);
+         fail("Expected InvalidRequestException.");
+         return;
+      } catch (InvalidRequestException e) {
+         exception = e;
+      }
+
+      // Error code must be _InvalidRequest
+      assertEquals("_InvalidRequest", exception.getErrorCode());
+
+      // The names of all parameters should be in the exception message
+      String[] params = {
+         "param1", "param2", "param3", "param4"
+      };
+      String exDetail = exception.getDetail();
+      for (int i = 0; i < params.length; i++) {
+         String p     = params[i];
+         String error = "Expected InvalidRequestException detail (\""
+                      + exDetail
+                      + "\") to contain reference to parameter \""
+                      + p
+                      + "\" which has an invalid value.";
+         String find = "The value for parameter \""
+                     + p
+                     + "\" is considered invalid";
+         assertTrue(error, exDetail.indexOf(find) >= 0);
       }
    }
 }
