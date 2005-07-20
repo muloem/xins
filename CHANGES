@@ -6,6 +6,8 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
 
+* XINS/Java Server Framework:
+  - Implemented SF.net RFE #1224680. Added _CheckLinks meta-function.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
@@ -22,7 +24,6 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     non-positive numbers.
 
 * XINS/Java Server Framework:
-  - Implemented SF.net RFE #1224680. Added _CheckLinks meta-function.
   - Implemented SF.net RFE #1236690. Logging message 3236 if the build version
     is not set on the API package.
   - An InvalidRequestException is thrown if the request does not contain any
