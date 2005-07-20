@@ -92,15 +92,15 @@ extends StandardErrorCodeException {
          int size = missingParamElements.size();
          for (int i = 0; i < size; i++) {
             DataElement e = (DataElement) missingParamElements.get(i);
-            String parameterName = e.getAttribute("param");
+            String paramName = e.getAttribute("param");
             String elementName = e.getAttribute("element");
-            if (elementName == null && parameterName != null && parameterName.length() >= 1) {
+            if (elementName == null && paramName != null && paramName.length() >= 1) {
                detail.append("No value given for required parameter \""
-                           + parameterName
+                           + paramName
                            + "\". ");
-            } else if (elementName != null &&  elementName.length() >= 1 && parameterName != null && parameterName.length() >= 1) {
+            } else if (elementName != null &&  elementName.length() >= 1 && paramName != null && paramName.length() >= 1) {
                detail.append("No value given for required attribute \""
-                           + parameterName
+                           + paramName
                            + "\" in the element \""
                            + elementName
                            + "\". ");
@@ -114,18 +114,18 @@ extends StandardErrorCodeException {
          int size = invalidValueElements.size();
          for (int i = 0; i < size; i++) {
             DataElement e = (DataElement) invalidValueElements.get(i);
-            String parameterName = e.getAttribute("param");
+            String paramName = e.getAttribute("param");
             String typeName      = e.getAttribute("type");
             String elementName   = e.getAttribute("element");
-            if (parameterName != null && parameterName.length() >= 1) {
+            if (paramName != null && paramName.length() >= 1) {
                detail.append("The value for parameter \""
-                           + parameterName
+                           + paramName
                            + "\" is considered invalid for the type \""
                            + typeName
                            + "\". ");
-            } else if (elementName != null &&  elementName.length() >= 1 && parameterName != null && parameterName.length() >= 1) {
+            } else if (elementName != null &&  elementName.length() >= 1 && paramName != null && paramName.length() >= 1) {
                detail.append("The value for attribute \""
-                           + parameterName
+                           + paramName
                            + "\" in the element \""
                            + elementName
                            + "\" is considered invalid for the type \""
@@ -140,24 +140,50 @@ extends StandardErrorCodeException {
       List paramComboElements = element.getChildElements("param-combo");
       if (paramComboElements != null) {
          int size = paramComboElements.size();
+
+         // Loop through all param-combo elements
          for (int i = 0; i < size; i++) {
             DataElement e = (DataElement) paramComboElements.get(i);
-            String typeName      = e.getAttribute("type");
-            detail.append("The values of the parameters ");
-            List parameterList   = e.getChildElements("param");
-            int parametersSize = parameterList.size();
-            for (int j = 0; j < parametersSize; j++) {
-               DataElement e2 = (DataElement) parameterList.get(j);
-               String parameterName = e2.getAttribute("name");
-               if (parameterName != null && parameterName.length() >= 1) {
-                  detail.append("\""
-                              + parameterName
-                              + "\" ");
+
+            // There should be a 'type' attribute
+            String typeName = e.getAttribute("type");
+            if (typeName == null || typeName.trim().length() < 1) {
+               // TODO: Log?
+               continue;
+            }
+
+            // There should be at least 2 'param' elements
+            List paramList = e.getChildElements("param");
+            if (paramList == null || paramList.size() < 2) {
+               // TODO: Log?
+               continue;
+            }
+
+            // Create detail message
+            detail.append("Violated param-combo constraint of type \"");
+            detail.append(typeName);
+            detail.append("\" on parameters ");
+            int paramCount = paramList.size();
+            for (int j = 0; j < paramCount; j++) {
+               DataElement e2 = (DataElement) paramList.get(j);
+               String paramName = e2.getAttribute("name");
+               if (paramName == null || paramName.trim().length() < 1) {
+                  // TODO: Log?
+                  continue;
+               }
+
+               detail.append("\"");
+               detail.append(paramName);
+               detail.append("\"");
+
+               if (j == (paramCount - 1)) {
+                  detail.append(". ");
+               } else if (j == (paramCount - 2)) {
+                  detail.append(" and ");
+               } else {
+                  detail.append(", ");
                }
             }
-            detail.append("do not match the param-combo of type \""
-                           + typeName
-                           + "\". ");
          }
       }
       
