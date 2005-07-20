@@ -43,6 +43,7 @@ import org.xins.common.text.TextUtils;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -53,13 +54,14 @@ public abstract class AbstractCAPI extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
+    * Fully-qualified name of this class. Never <code>null</code>.
     */
    private final static String CLASSNAME = AbstractCAPI.class.getName();
 
    /**
     * Set of all CAPI classes for which the XINS version at build-time has
-    * already been checked against the XINS version at run-time.
+    * already been checked against the XINS version at run-time. Never
+    * <code>null</code>.
     */
    private final static HashSet VERSION_COMPARISIONS_DONE = new HashSet();
 
@@ -79,7 +81,6 @@ public abstract class AbstractCAPI extends Object {
     * <p><em>This constructor is considered internal to XINS. Do not use it
     * directly.</em>
     *
-    *
     * @param descriptor
     *    the descriptor for the service(s), cannot be <code>null</code>.
     *
@@ -91,7 +92,8 @@ public abstract class AbstractCAPI extends Object {
     *    if <code>descriptor == null</code>.
     *
     * @throws UnsupportedProtocolException
-    *    if any of the target descriptors specifies an unsupported protocol.
+    *    if any of the target descriptors in <code>descriptor</code> specifies
+    *    an unsupported protocol.
     *
     * @since XINS 1.1.0
     */
@@ -129,8 +131,8 @@ public abstract class AbstractCAPI extends Object {
     *    if <code>descriptor == null</code>.
     *
     * @throws UnsupportedProtocolException
-    *    if any of the target descriptors specifies an unsupported protocol
-    *    (<em>since XINS 1.1.0</em>).
+    *    if any of the target descriptors in <code>descriptor</code> specifies
+    *    an unsupported protocol (<em>since XINS 1.1.0</em>).
     */
    protected AbstractCAPI(Descriptor descriptor)
    throws IllegalArgumentException, UnsupportedProtocolException {
@@ -218,8 +220,8 @@ public abstract class AbstractCAPI extends Object {
    private final XINSServiceCaller _caller;
    
    /**
-    * The API specification. This field can be <code>null</code> 
-    * if the CAPI does not contain the specifications.
+    * The API specification. This field is lazily initialized by
+    * {@link #getAPISpecification()}.
     */
    private API _apiSpecification;
 
@@ -309,7 +311,7 @@ public abstract class AbstractCAPI extends Object {
     * Get the specification of the API.
     *
     * @return
-    *    the API specifications.
+    *    the {@link API} specification object.
     *
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
@@ -318,11 +320,15 @@ public abstract class AbstractCAPI extends Object {
     *
     * @since XINS 1.3.0
     */
-   public final API getAPISpecification() throws InvalidSpecificationException {
+   public final API getAPISpecification()
+   throws InvalidSpecificationException {
+
+      // Lazily initialize _apiSpecification
       if (_apiSpecification == null) {
          URL specsURL = getClass().getResource("/specs/");
          _apiSpecification = new API(getClass(), specsURL.toExternalForm());
       }
+
       return _apiSpecification;
    }
 
@@ -366,7 +372,7 @@ public abstract class AbstractCAPI extends Object {
     * called directly, nor overridden.</em>
     *
     * <p><em>This method is expected to be marked <code>final</code> in XINS
-    * 2.0. This is not done yet to remain fully compatible with XINS 1.0.</em>
+    * 2.0. This is not done yet to remain fully compatible with XINS 1.x.</em>
     *
     * @return
     *    the {@link XINSServiceCaller} to use, never <code>null</code>.
