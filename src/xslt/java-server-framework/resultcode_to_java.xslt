@@ -29,11 +29,20 @@
 	<xsl:include href="../java.xslt"       />
 	<xsl:include href="../types.xslt"      />
 	<xsl:include href="../warning.xslt"    />
+	<xsl:include href="../resultcode_uniqueness.xslt"    />
 
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode" select="@name" />
 		<xsl:variable name="className" select="concat($resultcode, 'Result')" />
+
+                <xsl:call-template name="resultcodeValidity">
+                        <xsl:with-param name="resultcode_name" select="@name" />
+                        <xsl:with-param name="resultcode_value" select="@value" />
+                        <xsl:with-param name="specsdirectory" select="$specsdir" />
+                        <xsl:with-param name="api_file" select="$api_file" />
+                </xsl:call-template>
+
 
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="document($api_file)/api/function">
@@ -46,28 +55,28 @@
 		<!-- Truncate the first ", " -->
 		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
 
-      <!-- Warn if name differs from value -->
-      <xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
-         <xsl:call-template name="warn">
-            <xsl:with-param name="message">
-               <xsl:text>Errorcode name ('</xsl:text>
-               <xsl:value-of select="@name" />
-               <xsl:text>') differs from value ('</xsl:text>
-               <xsl:value-of select="@value" />
-               <xsl:text>'). This may cause confusion and errors.</xsl:text>
-            </xsl:with-param>
-         </xsl:call-template>
-      </xsl:if>
+		<!-- Warn if name differs from value -->
+		<xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
+			<xsl:call-template name="warn">
+				<xsl:with-param name="message">
+					<xsl:text>Errorcode name ('</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>') differs from value ('</xsl:text>
+					<xsl:value-of select="@value" />
+					<xsl:text>'). This may cause confusion and errors.</xsl:text>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
 
 		<!-- Warn if no function uses this ResultCode -->
 		<xsl:if test="$resultcodeIncludes = ''">
-         <xsl:call-template name="warn">
-            <xsl:with-param name="message">
-               <xsl:text>Errorcode '</xsl:text>
-               <xsl:value-of select="$resultcode" />
-               <xsl:text>'is not used in any function.</xsl:text>
-            </xsl:with-param>
-		   </xsl:call-template>
+			<xsl:call-template name="warn">
+				<xsl:with-param name="message">
+					<xsl:text>Errorcode '</xsl:text>
+					<xsl:value-of select="$resultcode" />
+					<xsl:text>'is not used in any function.</xsl:text>
+				</xsl:with-param>
+			</xsl:call-template>
 		</xsl:if>
 
 		<xsl:call-template name="java-header" />
