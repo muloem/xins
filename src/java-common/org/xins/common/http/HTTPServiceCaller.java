@@ -683,7 +683,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
          // Socket time-out (Java 1.3)
          } else if (exception instanceof InterruptedIOException) {
             String exMessage = exception.getMessage();
+
             // XXX: Only tested on Sun JVM
+            // TODO: Test on non-Sun JVM
             if (exMessage != null && exMessage.startsWith("Read timed out")) {
                Log.log_1105(url, params, duration, socketTimeOut);
                executor.dispose();
@@ -693,14 +695,16 @@ public final class HTTPServiceCaller extends ServiceCaller {
             } else {
                Log.log_1109(exception, url, params, duration);
                executor.dispose();
-               throw new IOCallException(request, target, duration, (IOException) exception);
+               throw new IOCallException(request, target, duration,
+                                         (IOException) exception);
             }
 
          // Unspecific I/O error
          } else if (exception instanceof IOException) {
             Log.log_1109(exception, url, params, duration);
             executor.dispose();
-            throw new IOCallException(request, target, duration, (IOException) exception);
+            throw new IOCallException(request, target, duration,
+                                      (IOException) exception);
 
          // Unrecognized kind of exception caught
          } else {
