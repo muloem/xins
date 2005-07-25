@@ -107,8 +107,13 @@ public final class URLEncoding extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
 
-      // Construct a buffer
+      // Short-circuit if the string is empty
       int length = s.length();
+      if (length < 1) {
+         return "";
+      }
+
+      // Construct a buffer
       FastStringBuffer buffer = new FastStringBuffer(length * 2);
 
       // Loop through the string and just append whatever we find

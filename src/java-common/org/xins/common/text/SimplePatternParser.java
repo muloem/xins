@@ -148,12 +148,19 @@ public class SimplePatternParser extends Object {
    private String convertToPerl5RegularExpression(String pattern)
    throws NullPointerException, ParseException {
 
-      char[] contents = pattern.toCharArray();
-      int size = contents.length;
-      FastStringBuffer buffer = new FastStringBuffer(size * 2);
-      char prevChar = (char) 0;
+      // Short-circuit if the pattern is empty
+      int length = pattern.length();
+      if (length < 1) {
+         return;
+      }
 
-      for (int i= 0; i < size; i++) {
+      // Convert to char array and construct buffer
+      char[] contents = pattern.toCharArray();
+      FastStringBuffer buffer = new FastStringBuffer(length * 2);
+
+      // Loop through all characters
+      char prevChar = (char) 0;
+      for (int i= 0; i < length; i++) {
          char currChar = contents[i];
 
          if (currChar >= 'a' && currChar <= 'z') {
