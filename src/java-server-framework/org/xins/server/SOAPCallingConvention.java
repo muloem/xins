@@ -317,7 +317,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * @return
     *    the XINS value, never <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    private String soapInputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
@@ -364,7 +364,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * @return
     *    the SOAP value, never <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    private String soapOutputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
