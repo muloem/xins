@@ -248,6 +248,31 @@ NOTE: This release is based on XINS 1.2.0.
     bash 2.03 on Solaris 8 and with bash 2.05 on OS/X.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.4 FINAL:
+
+* Libraries:
+  - Updated xmlenc from 0.47 to 0.48. This fixes SF.net bug #1201368:
+    NoSuchFieldError for xmlenc on IBM Java 1.3/Linux.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.2.3 FINAL:
+
+* XINS/Java Common Library:
+  - Fixed bug #1238197. The _float32 and _float64 types now properly support
+    non-positive numbers.
+
+* Generation of server-side Java code:
+  - Fixed bug #1238721: Error when sub-elements in input data.
+  - Fixed bug #1203659: Element add method generated even if not needed.
+  - Fixed bug #1238249: Error when input data element attribute is not _text
+    type.
+  - Fixed bug #1238762: Element list method generated even if not needed.
+
+* XINS/Java Server Framework:
+  - Implemented SF.net RFE #1236690. Logging message 3236 if the build version
+    is not set on the API package.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.2 FINAL:
 
 * XINS/Java Server Framework:
@@ -282,8 +307,26 @@ CHANGES INTRODUCED IN XINS 1.2.1 FINAL:
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 FINAL:
 
+* XINS/Java Common Library:
+  - Removed trace logs from the code.
+
 * XINS/Java Server Framework:
   - Removed the trace methods in the APIServlet class.
+
+* XINS/Java Client Framework:
+  - Removed trace logs from the code.
+
+* Generation of server-side Java code:
+  - Fixed: NullPointerException thrown when generated the Java class with
+    Java 1.4.1.
+  - Fixed bug #1208936: Erroneous non-assignments in XSLTCallingConvention
+    class.
+
+* Generated build file:
+  - Fixed bug #1205102: The API does not compile created with 1.2 DTDs if the
+    computer is offline.
+  - Classpath element added to locate DTDs if XINS is installed in a directory
+    that contain spaces.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 2:
