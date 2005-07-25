@@ -20,10 +20,10 @@ import org.xins.common.xml.ElementParser;
 /**
  * Specification of a error code (also known as result code).
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class ErrorCode {
+public class ErrorCode extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -49,7 +49,7 @@ public class ErrorCode {
     * @param baseURL
     *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
    public ErrorCode(String name, Class reference, String baseURL) throws InvalidSpecificationException {
@@ -64,6 +64,7 @@ public class ErrorCode {
          throw new InvalidSpecificationException(ioe.getMessage());
       }
    }
+
    
    //-------------------------------------------------------------------------
    // Fields
@@ -135,7 +136,7 @@ public class ErrorCode {
     * @return
     *    the parameter, never <code>null</code>.
     *
-    * @throw IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if the error code does not contain any output parameter with the specified name.
     */
    public Parameter getOutputParameter(String parameterName) throws IllegalArgumentException {
@@ -185,10 +186,10 @@ public class ErrorCode {
     * @param reader
     *    the reader that contains the content of the result code file, cannot be <code>null</code>.
     *
-    * @throw IOException
+    * @throws IOException
     *    if the parser cannot read the content.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the result code file is incorrect.
     */
    private void parseErrorCode(Reader reader) throws IOException, InvalidSpecificationException {

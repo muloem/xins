@@ -23,10 +23,10 @@ import org.xins.common.xml.ElementParser;
 /**
  * Specification of a function.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class Function {
+public class Function extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -52,7 +52,7 @@ public class Function {
     * @param baseURL
     *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect or cannot be found.
     */
    Function(String functionName, Class reference, String baseURL) throws InvalidSpecificationException {
@@ -66,6 +66,7 @@ public class Function {
          throw new InvalidSpecificationException(ioe.getMessage());
       }
    }
+
 
    //-------------------------------------------------------------------------
    // Fields
@@ -164,7 +165,7 @@ public class Function {
     * @return
     *    the parameter, never <code>null</code>.
     *
-    * @throw IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if the function does not contain any input parameter with the specified name.
     */
    public Parameter getInputParameter(String parameterName) throws IllegalArgumentException {
@@ -206,7 +207,7 @@ public class Function {
     * @return
     *    the parameter, never <code>null</code>.
     *
-    * @throw IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if the function does not contain any output parameter with the specified name.
     */
    public Parameter getOutputParameter(String parameterName) throws IllegalArgumentException {
@@ -301,10 +302,10 @@ public class Function {
     * @param reader
     *    the reader that contains the content of the result code file, cannot be <code>null</code>.
     *
-    * @throw IOException
+    * @throws IOException
     *    if the parser cannot read the content.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the result code file is incorrect.
     */
    private void parseFunction(Reader reader) throws IOException, InvalidSpecificationException {
@@ -395,7 +396,7 @@ public class Function {
     *    the top elements of the data section, or an empty array there is no
     *    data section.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static DataSectionElement[] parseDataSectionElements(Class reference, Element topElement, Element dataSection) throws InvalidSpecificationException {
@@ -433,7 +434,7 @@ public class Function {
     * @return
     *    the data section element.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static DataSectionElement getDataSectionElement(Class reference, String name, Element dataSection) throws InvalidSpecificationException {
@@ -483,7 +484,7 @@ public class Function {
     * @return
     *    the parameter.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static Parameter parseParameter(Class reference, Element paramElement) throws InvalidSpecificationException {
@@ -508,7 +509,7 @@ public class Function {
     *    a map containing the parameter names as keys, and the 
     *    <code>Parameter</code> objects as value.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static Map parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
@@ -538,7 +539,7 @@ public class Function {
     * @return
     *    the param-combo elements or an empty array if no param-combo is defined.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static ParamCombo[] parseParamCombos(Class reference, Element topElement, Map parameters) {

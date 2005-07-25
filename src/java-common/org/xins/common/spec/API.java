@@ -27,10 +27,10 @@ import org.xins.common.xml.ElementParser;
 /**
  * Specification of an API.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class API {
+public class API extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -83,6 +83,7 @@ public class API {
       return reader;
    }
    
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -100,7 +101,7 @@ public class API {
     * @param baseURL
     *    the reference class used to located the specifications, cannot be <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
    public API(Class reference, String baseURL) throws InvalidSpecificationException {
@@ -237,10 +238,10 @@ public class API {
     * @param reader
     *    the reader that contain the content of the api.xml file, cannot be <code>null</code>.
     *
-    * @throw IOException
+    * @throws IOException
     *    if one of the specification file cannot be read correctly.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    private void parseApi(Reader reader) throws IOException, InvalidSpecificationException {

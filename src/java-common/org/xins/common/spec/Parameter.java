@@ -11,10 +11,10 @@ import org.xins.common.types.Type;
 /**
  * Specification of a parameter.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class Parameter {
+public class Parameter extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -46,16 +46,23 @@ public class Parameter {
     * @param description
     *    the description of the parameter, cannot be <code>null</code>.
     *
-    * @throw InvalidSpecificationException
+    * @throws InvalidSpecificationException
     *    if the type is not recognized.
     */
-   Parameter(Class reference, String name, String type, boolean required, String description) throws InvalidSpecificationException {
-      _reference = reference;
+   Parameter(Class   reference,
+             String  name,
+             String  type,
+             boolean required,
+             String  description)
+   throws InvalidSpecificationException {
+
+      _reference     = reference;
       _parameterName = name;
       _parameterType = getType(type);
-      _required = required;
-      _description = description;
+      _required      = required;
+      _description   = description;
    }
+
    
    //-------------------------------------------------------------------------
    // Fields

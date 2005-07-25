@@ -777,16 +777,18 @@ implements DefaultResultCodes {
     * Get the specification of the API.
     *
     * @return
-    *    the API specifications.
+    *    the {@link org.xins.common.spec.API} specification object.
     *
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
     *
-    * @see org.xins.common.spec.API.class
+    * @see org.xins.common.spec.API
     *
     * @since XINS 1.3.0
     */
-   public final org.xins.common.spec.API getAPISpecification() throws InvalidSpecificationException {
+   public final org.xins.common.spec.API getAPISpecification()
+   throws InvalidSpecificationException {
+
       if (_apiSpecification == null) {
          String baseURL = null;
          try {

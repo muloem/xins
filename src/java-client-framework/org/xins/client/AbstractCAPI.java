@@ -316,8 +316,6 @@ public abstract class AbstractCAPI extends Object {
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
     *
-    * @see org.xins.common.spec.API.class
-    *
     * @since XINS 1.3.0
     */
    public final API getAPISpecification()
