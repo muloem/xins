@@ -31,14 +31,21 @@
 
 		<xsl:text>package </xsl:text>
 		<xsl:value-of select="$package_name" />
-		<xsl:text><![CDATA[;
+		<xsl:text>;
 
 /**
  * Translation bundle for log messages.
  *
- * @see Log
+ * @see Log</xsl:text>
+      <xsl:if test="string-length(@since) &gt; 0">
+         <xsl:text>
+ *
+ * @since </xsl:text>
+         <xsl:value-of select="@since" />
+      </xsl:if>
+      <xsl:text>
  */
-]]></xsl:text>
+</xsl:text>
 		<xsl:value-of select="$accessmodifier" />
 		<xsl:text>abstract class TranslationBundle extends Object {
 

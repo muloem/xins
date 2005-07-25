@@ -37,7 +37,14 @@
 		<xsl:text>;
 
 /**
- * Central logging handler.
+ * Central logging handler.</xsl:text>
+      <xsl:if test="string-length(@since) &gt; 0">
+         <xsl:text>
+ *
+ * @since </xsl:text>
+         <xsl:value-of select="@since" />
+      </xsl:if>
+      <xsl:text>
  */
 </xsl:text>
 		<xsl:value-of select="$accessmodifier" />

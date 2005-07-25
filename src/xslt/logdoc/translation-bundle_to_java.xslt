@@ -48,9 +48,16 @@ import org.xins.logdoc.LogdocStringBuffer;
 
 		<xsl:text><![CDATA[</em> locale.
  *
- * @see Log
+ * @see Log]]></xsl:text>
+      <xsl:if test="string-length(document($log_file)/log/@since) &gt; 0">
+         <xsl:text>
+ *
+ * @since </xsl:text>
+         <xsl:value-of select="document($log_file)/log/@since" />
+      </xsl:if>
+      <xsl:text>
  */
-]]></xsl:text>
+</xsl:text>
 		<xsl:value-of select="$accessmodifier" />
 		<xsl:text>final class </xsl:text>
 		<xsl:value-of select="$classname" />
