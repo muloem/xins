@@ -498,9 +498,6 @@ final class ConfigManager {
                return;
             }
 
-            // Reconfigure the Log4J system
-            configureLogger(PropertyReaderConverter.toProperties(_engine.getRunTimeProperties()));
-
             // Re-initialize the API
             _engine.initAPI();
 
