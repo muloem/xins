@@ -151,7 +151,7 @@ public class SimplePatternParser extends Object {
       // Short-circuit if the pattern is empty
       int length = pattern.length();
       if (length < 1) {
-         return;
+         return "";
       }
 
       // Convert to char array and construct buffer

@@ -91,7 +91,7 @@ public final class WhislEncoding extends Object {
       // Short-circuit if the string is empty
       int length = s.length();
       if (length < 1) {
-         return;
+         return "";
       }
 
       // Construct a buffer
