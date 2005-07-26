@@ -32,6 +32,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     possible to define a value for an error code.
   - Implemented SF.net RFE #1190166: Make XINS_HOME environment variable 
     optional.
+  - Implemented second half of SF.net RFE #1190166: Make XINS_HOME environment
+    variable optional. This part involved making the change to the batch file.
+    The shell script was already adapated in XINS 1.3.0-alpha3.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
