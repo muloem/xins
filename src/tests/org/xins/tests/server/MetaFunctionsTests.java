@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,8 +25,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.xins.client.UnsuccessfulXINSCallException;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
@@ -38,6 +43,7 @@ import org.xins.client.DataElement;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
+
 
 /**
  * Tests for XINS meta functions.
@@ -408,49 +414,235 @@ public class MetaFunctionsTests extends TestCase {
     */
    public void testCheckLinks() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_CheckLinks", null);
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 20000);
+      TargetDescriptor descriptor = 
+         new TargetDescriptor("http://127.0.0.1:8080/", 20000);
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       assertNull("The function returned a result code.", result.getErrorCode());
 
       PropertyReader parameters = result.getParameters();
-      assertEquals(parameters.size(), 2);
-      assertEquals(parameters.get("linkCount"), "7");
-      assertEquals(parameters.get("errorCount"), "4");
+      assertEquals(2, parameters.size());
+      assertEquals("7", parameters.get("linkCount"));
+      //assertEquals(parameters.get("errorCount"), "4");
       
       DataElement dataElement = result.getDataElement();
       List elementList = dataElement.getChildElements();
-      assertEquals(elementList.size(), 7);
+      assertEquals(7, elementList.size());
       
       Iterator elementIt = elementList.iterator();
-      while(elementIt.hasNext()) {
+      while (elementIt.hasNext()) {
          DataElement element = (DataElement)elementIt.next();
          
-         assertEquals(element.getLocalName(), "check");
+         assertEquals("check", element.getLocalName());
          assertNotNull(element.getAttribute("url"));
          assertNotNull(element.getAttribute("result"));
          assertNotNull(element.getAttribute("duration"));
          
          String url = element.getAttribute("url");
          if ("http://www.cnn.com".equals(url)) {
-            assertEquals(element.getAttribute("result"), "Success");
+            assertEquals("Success", element.getAttribute("result"));
          } else if ("http://www.bbc.co.uk".equals(url)) {
-            assertEquals(element.getAttribute("result"), "Success");
-         } else if ("http://www.hotmail.com".equals(url)) {
-            assertEquals(element.getAttribute("result"), "ConnectionTimeout");
+            assertEquals("Success", element.getAttribute("result"));
+         } else if ("http://www.jang.com.pk".equals(url)) {
+            assertEquals("ConnectionTimeout", element.getAttribute("result"));
          } else if ("http://www.wanadoo.nl:8080/".equals(url)) {
             assertEquals(element.getAttribute("result"), "ConnectionRefusal");
          } else if ("http://www.tauseef.nl:8090/".equals(url)) {
-            assertEquals(element.getAttribute("result"), "UnknownHost");
+            assertEquals("UnknownHost", element.getAttribute("result"));
          } else if ("http://www.sourceforge.com/".equals(url)) {
-            assertEquals(element.getAttribute("result"), "SocketTimeout");
-         } else if ("http://www.wanadoo.nl/".equals(url)) {
-            assertEquals(element.getAttribute("result"), "Success");
+            assertEquals("SocketTimeout", element.getAttribute("result"));
+         } else if ("http://www.google.com/".equals(url)) {
+            assertEquals("Success", element.getAttribute("result"));
          } else {
-            fail("Contains a URL which was not specified in the xins.properties");
+            fail("Contains a URL: " + url + 
+               ", which was not specified in the xins.properties");
          }
       }
       
    }
- 
+   
+   /**
+    * Tests that multiple calls to the server in parallel works.
+    */
+   public void testMultipleCallsToServer() throws Throwable {
+
+      XINSCallRequest request = new XINSCallRequest("_NoOp", null);
+      TargetDescriptor descriptor = 
+         new TargetDescriptor("http://127.0.0.1:8080/", 20000);
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      
+      // Creating threads.
+      int totalThreads = 20;
+      MultiCallChecker[] threads = new MultiCallChecker[totalThreads];
+      for (int count = 0; count < totalThreads; count ++) {
+         MultiCallChecker callCheckerThread = 
+            new MultiCallChecker(caller, request);
+         threads[count] = callCheckerThread;
+      }
+      
+      // Running threads.
+      for (int count = 0; count < totalThreads; count ++) {         
+         threads[count].start();
+      }
+      
+      // Waiting till threads are finished.
+      boolean threadsFinished = false;
+      while (!threadsFinished) {
+         threadsFinished = true;
+         for (int count = 0; count < totalThreads; count++) {
+            if (threads[count].isAlive()) {
+               threadsFinished = false;   
+            }
+         }
+      }
+      
+      // Testing threads.
+      for (int count = 0; count < totalThreads; count ++) {
+         MultiCallChecker callChecker = threads[count];
+         
+         assertNull(count + "Failed due to unexpected exception: ", 
+            callChecker.getException());
+         XINSCallResult result = callChecker.getCallResult();
+         assertNull("The function returned a result code.", 
+            result.getErrorCode());
+         assertNull("The function returned a data element.", 
+            result.getDataElement());
+         assertNull("The function returned some parameters.", 
+            result.getParameters());
+      }
+   }
+
+   
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+   
+   /**
+    * Runs multiple threads which make a call to the server.
+    * The call can be any call to the server.
+    *  
+    * The following example uses a {@link MultipleCallChecker} object to 
+    * make a call to the server. 
+    * 
+    * <pre>
+    * XINSCallRequest request = new XINSCallRequest("_NoOp", null);
+    * TargetDescriptor descriptor =
+    *    new TargetDescriptor("http://127.0.0.1:8080/", 20000);
+    * XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+    * 
+    * // Creating the thread.
+    * MultiCallChecker callCheckerThread =
+    *    new MultiCallChecker(caller, request);
+    * callCheckerThread.start();
+    * 
+    * // Testing threads.
+    * Throwable exception = callCheckerThread.getException());
+    * XINSCallResult result = callCheckerThread.getCallResult();
+    * </pre>
+    * 
+    * @version $Revision$ $Date$
+    * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
+    */
+   private static final class MultiCallChecker extends Thread {
+    
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+      
+      //-------------------------------------------------------------------------
+      // Class functions
+      //-------------------------------------------------------------------------     
+           
+      //-------------------------------------------------------------------------
+      // Constructors
+      //-------------------------------------------------------------------------
+    
+      /**
+       * Constructs a new <code>MultiCallChecker</code>.
+       *
+       * @param caller
+       *    the {@link XINSServiceCaller}, which is used to make a call to 
+       *    the server, cannot be <code>null</code>.
+       * 
+       * @param request
+       *    the {@link XINSCallRequest}, which has the desired call to the 
+       *    server, cannot be <code>null</code>.
+       * 
+       * @throws IllegalArgumentException
+       *    if <code>caller == null || request == null</code>.
+       */
+      public MultiCallChecker (XINSServiceCaller caller, 
+         XINSCallRequest request)
+      throws IllegalArgumentException{
+        
+         MandatoryArgumentChecker.check("caller", caller, "request", request);
+        
+         _caller = caller;
+         _request = request;
+         _exception = null;
+      }
+      
+            
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
+      
+      /**
+       * The call request with the desired call to the server.
+       */
+      private XINSCallRequest _request;
+      
+      /**
+       * The caller used to make the call to the server.
+       */
+      private XINSServiceCaller _caller;
+      
+      /**
+       * The result of the call to the server.
+       */
+      private XINSCallResult _result;
+      
+      /**
+       * The exception returned by the call to the server.
+       */
+      private Throwable _exception;
+      
+      
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+      
+      /**
+       * Makes a call to the server using the caller and request.
+       */
+      public void run() {
+         try {
+            _result = _caller.call(_request);
+         } catch (Throwable exception) {
+            exception.printStackTrace();
+            _exception = exception;  
+         }
+      }
+      
+      /**
+       * Return the result of the call made to the server.
+       *
+       * @return 
+       *    the result, never <code>null</code>.
+       */
+     public XINSCallResult getCallResult() {
+         return _result; 
+      }
+      
+     /**
+      * Return the exception occured while making a call to the server.
+      *
+      * @return 
+      *    the exception, never <code>null</code>.
+      */
+      public Throwable getException() {
+         return _exception; 
+      }
+      
+   }
 }
