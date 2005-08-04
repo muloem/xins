@@ -363,12 +363,19 @@ extends HttpServlet {
     * @throws NullPointerException
     *    if this servlet is yet uninitialized. 
     *
+    * @throws ClassCastException
+    *    if <code>! (request instanceof {@link HttpServletRequest}
+    *    &amp;&amp; response instanceof {@link HttpServletResponse})</code>.
+    *
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
    public void service(ServletRequest  request,
                        ServletResponse response)
-   throws NullPointerException, IOException {
+   throws NullPointerException,
+          ClassCastException,
+          IOException {
+
       _engine.service((HttpServletRequest)  request,
                       (HttpServletResponse) response);
    }
