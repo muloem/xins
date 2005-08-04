@@ -161,8 +161,8 @@ extends HttpServlet {
       "org.xins.api.build.version";
 
    /**
-    * The name of the build property that specifies the default calling
-    * convention.
+    * The name of the build property that specifies the name of the default
+    * calling convention.
     */
    static final String API_CALLING_CONVENTION_PROPERTY =
       "org.xins.api.calling.convention";
@@ -175,32 +175,33 @@ extends HttpServlet {
       "org.xins.api.calling.convention.class";
 
    /**
-    * The parameter of the query to specify the calling convention.
+    * The name of the request parameter that specifies the name of the calling
+    * convention to use.
     */
    static final String CALLING_CONVENTION_PARAMETER = "_convention";
 
    /**
-    * The standard calling convention.
+    * The name of the XINS standard calling convention.
     */
    static final String STANDARD_CALLING_CONVENTION = "_xins-std";
 
    /**
-    * The old style calling convention.
+    * The old-style XINS calling convention.
     */
    static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
 
    /**
-    * The XML calling convention.
+    * The XINS XML calling convention.
     */
    static final String XML_CALLING_CONVENTION = "_xins-xml";
 
    /**
-    * The XSLT calling convention.
+    * The XINS XSLT calling convention.
     */
    static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
 
    /**
-    * The SOAP calling convention.
+    * The XINS SOAP calling convention.
     */
    static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
@@ -288,8 +289,8 @@ extends HttpServlet {
          throw new ServletException();
       }
 
-      // Check the expected vs implemented Java Servlet API version
-      // 2.2, 2.3 and 2.4 are supported
+      // Compare the expected with the implemented Java Servlet API version;
+      // versions 2.2, 2.3 and 2.4 are supported
       int major = context.getMajorVersion();
       int minor = context.getMinorVersion();
       if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
@@ -342,7 +343,7 @@ extends HttpServlet {
     *
     * @return
     *    the {@link ServletConfig} object that was used to initialize this
-    *    servlet, not <code>null</code> if this servlet is indeed already
+    *    servlet, or <code>null</code> if this servlet is not yet
     *    initialized.
     */
    public ServletConfig getServletConfig() {
@@ -350,9 +351,8 @@ extends HttpServlet {
    }
 
    /**
-    * Handles a request to this servlet (wrapper method). If any of the
-    * arguments is <code>null</code>, then the behaviour of this method is
-    * undefined.
+    * Handles a request to this servlet. If any of the arguments is
+    * <code>null</code>, then the behaviour of this method is undefined.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
@@ -360,12 +360,15 @@ extends HttpServlet {
     * @param response
     *    the servlet response, should not be <code>null</code>.
     *
+    * @throws NullPointerException
+    *    if this servlet is yet uninitialized. 
+    *
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
    public void service(ServletRequest  request,
                        ServletResponse response)
-   throws IOException {
+   throws NullPointerException, IOException {
       _engine.service((HttpServletRequest)  request,
                       (HttpServletResponse) response);
    }
@@ -374,10 +377,13 @@ extends HttpServlet {
     * Destroys this servlet. A best attempt will be made to release all
     * resources.
     *
-    * <p>After this method has finished, it will set the state to
-    * <em>disposed</em>. In that state no more requests will be handled.
+    * <p>After this method has finished, no more requests will be handled
+    * successfully.
     */
    public void destroy() {
-      _engine.destroy();
+      if (_engine != null) {
+         _engine.destroy();
+         _engine = null;
+      }
    }
 }
