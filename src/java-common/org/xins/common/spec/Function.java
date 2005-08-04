@@ -55,10 +55,15 @@ public class Function extends Object {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect or cannot be found.
     */
-   Function(String functionName, Class reference, String baseURL) throws InvalidSpecificationException {
-      _reference = reference;
-      _baseURL = baseURL;
+   Function(String functionName,
+            Class  reference,
+            String baseURL)
+   throws InvalidSpecificationException {
+
+      _reference    = reference;
+      _baseURL      = baseURL;
       _functionName = functionName;
+
       try {
          Reader reader = API.getReader(baseURL, functionName + ".fnc");
          parseFunction(reader);
@@ -538,11 +543,10 @@ public class Function extends Object {
     *
     * @return
     *    the param-combo elements or an empty array if no param-combo is defined.
-    *
-    * @throws InvalidSpecificationException
-    *    if the specification is incorrect.
     */
-   static ParamCombo[] parseParamCombos(Class reference, Element topElement, Map parameters) {
+   static ParamCombo[] parseParamCombos(Class   reference,
+                                        Element topElement,
+                                        Map     parameters) {
       
       List paramCombosList = topElement.getChildElements("param-combo");
       ParamCombo[] paramCombos = new ParamCombo[paramCombosList.size()];

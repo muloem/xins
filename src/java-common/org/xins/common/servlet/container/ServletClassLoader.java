@@ -220,6 +220,18 @@ public class ServletClassLoader {
        * java.land.Classloader.
        * <p>
        * The implementation is surprisingly straightforward.
+       *
+       * @param name
+       *    the name of the class to load, should not be <code>null</code>.
+       *
+       * @param resolve
+       *    flag that indicates whether the class should be resolved.
+       *
+       * @return
+       *    the loaded class, never <code>null</code>.
+       *
+       * @throws ClassNotFoundException
+       *    if the class could not be loaded.
        */
       protected Class loadClass(String name, boolean resolve)
       throws ClassNotFoundException {
@@ -238,8 +250,8 @@ public class ServletClassLoader {
             }
          }
 
-         // if we could not find it, delegate to parent
-         // Note that we don't attempt to catch any ClassNotFoundException
+         // If we could not find it, delegate to parent
+         // Note that we do not attempt to catch any ClassNotFoundException
          if (c == null) {
             if (getParent() != null) {
                c = getParent().loadClass(name);
@@ -248,6 +260,7 @@ public class ServletClassLoader {
             }
          }
 
+         // Resolve the class, if required
          if (resolve) {
             resolveClass(c);
          }
@@ -258,14 +271,23 @@ public class ServletClassLoader {
       /**
        * Override the parent-first resource loading model established by
        * java.land.Classloader with child-first behavior.
+       *
+       * @param name
+       *    the name of the resource to load, should not be <code>null</code>.
+       *
+       * @return
+       *    a {@link URL} for the resource, or <code>null</code> if it could
+       *    not be found.
        */
       public URL getResource(String name) {
+
          URL url = findResource(name);
 
-         // if local search failed, delegate to parent
-         if(url == null) {
+         // If local search failed, delegate to parent
+         if (url == null) {
             url = getParent().getResource(name);
          }
+
          return url;
      }
    }

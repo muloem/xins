@@ -221,7 +221,8 @@ public class API extends Object {
     * @throws IllegalArgumentException
     *    If the API does not define any function for the given name.
     */
-   public Function getFunction(String functionName) {
+   public Function getFunction(String functionName)
+   throws IllegalArgumentException {
 
       Function function = (Function) _functions.get(functionName);
       
