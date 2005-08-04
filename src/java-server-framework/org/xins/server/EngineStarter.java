@@ -1,7 +1,8 @@
 /*
- * $Id$ Copyright
- * 2003-2005 Wanadoo Nederland B.V. See the COPYRIGHT file for redistribution
- * and use restrictions.
+ * $Id$
+ *
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
 
@@ -20,22 +21,42 @@ import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.UnsupportedLocaleError;
 
 /**
- * XINS engine starter. TODO Fix documentation.
+ * XINS engine starter.
  *
- * @version $Revision$
- * @author Mees Witteman (<a
- *         href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @version $Revision$ $Date$
+ * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  */
-final class EngineStarter {
+final class EngineStarter extends Object {
 
-   // -------------------------------------------------------------------------
+   //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>ServletException</code> with the specified cause.
+    *
+    * @param t
+    *    the cause for the {@link ServletException}, can be <code>null</code>.
+    *
+    * @return
+    *    the new {@link ServletException}, that has <code>t</code> registered
+    *    as the cause for it, never <code>null</code>.
+    *
+    * @see ExceptionUtils#setCause(Throwable,Throwable)
+    */
+   static ServletException servletExceptionFor(Throwable t) {
+
+      ServletException servletException = new ServletException();
+      if (t != null) {
+         ExceptionUtils.setCause(servletException, t);
+      }
+
+      return servletException;
+   }
 
 
    //-------------------------------------------------------------------------
@@ -102,10 +123,11 @@ final class EngineStarter {
    }
 
    /**
-    * Logs the version number of the Library and checks the build version of the
-    * Library class with the build version property from the serevlet config.
+    * Performs some logging with regards to the version of the XINS/Java
+    * Server Framework.
     */
    void checkAndLogVersionNumber() {
+
       // Log XINS version
       String serverVersion = Library.getVersion();
       Log.log_3225(serverVersion);
@@ -219,7 +241,7 @@ final class EngineStarter {
                                    exception);
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
          _state.setState(EngineState.API_CONSTRUCTION_FAILED);
-         throw Engine.servletExceptionFor(exception);
+         throw servletExceptionFor(exception);
       }
       return api;
    }
@@ -249,7 +271,7 @@ final class EngineStarter {
             + '.';
          Log.log_3207(exception, APIServlet.API_CLASS_PROPERTY, apiClassName);
          _state.setState(EngineState.API_CONSTRUCTION_FAILED);
-         throw Engine.servletExceptionFor(exception);
+         throw servletExceptionFor(exception);
       }
 
       // Check that the loaded API class is derived from the API base class
@@ -406,7 +428,7 @@ final class EngineStarter {
       } catch (UnsupportedLocaleError exception) {
          Log.log_3309(exception.getLocale());
          state.setState(EngineState.API_BOOTSTRAP_FAILED);
-         throw Engine.servletExceptionFor(exception);
+         throw servletExceptionFor(exception);
 
          // Other unexpected exception
       } catch (Throwable exception) {

@@ -145,42 +145,6 @@ final class ConfigManager {
    }
 
    /**
-    * Checks the servlet config object.
-    *
-    * @throws ServletException
-    *    if the config is <code>null</code> or if the context in the
-    *    config is null
-    *
-    */
-   void checkServletConfig()
-   throws ServletException {
-
-      // TODO: Logdoc entry 3201 is never logged anymore. Remote it.
-
-      if (_config == null) {
-         Log.log_3202("config == null");
-         throw new ServletException();
-      }
-
-      // Get the ServletContext
-      ServletContext context = _config.getServletContext();
-      if (context == null) {
-         Log.log_3202("config.getServletContext() == null");
-         throw new ServletException();
-      }
-
-      // Check the expected vs implemented Java Servlet API version
-      // 2.2, 2.3 and 2.4 are supported
-      int major = context.getMajorVersion();
-      int minor = context.getMinorVersion();
-      if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
-         String expected = "2.2/2.3/2.4";
-         String actual   = "" + major + '.' + minor;
-         Log.log_3203(actual, expected);
-      }
-   }
-
-   /**
     * Determines the config file name by getting the name from the System
     * properties. If this doesn't succeed then the value will be retrieved
     * from the servlet init parameters (config). Will be stored in the configFile field.

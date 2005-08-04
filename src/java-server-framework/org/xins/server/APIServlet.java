@@ -11,10 +11,13 @@ import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
 
 /**
@@ -23,52 +26,86 @@ import org.xins.logdoc.LogCentral;
  * <p>This servlet supports the following HTTP request methods:
  *
  * <ul>
+ *   <li>OPTIONS
+ *   <li>HEAD
  *   <li>GET
  *   <li>POST
- *   <li>HEAD
- *   <li>OPTIONS
  * </ul>
  *
- * <p>A method with any other request method will make this servlet return:
- * <blockquote><code>405 Method Not Allowed</code></blockquote>
+ * <p>A method with any other request method will make this servlet return the
+ * HTTP status code <code>405 Method Not Allowed</code>.
  *
- * <p>If no matching function is found, then this servlet will return:
- * <blockquote><code>404 Not Found</code></blockquote>
+ * <p>If no matching function is found, then this servlet will return the HTTP
+ * status code <code>404 Not Found</code>.
  *
  * <p>If the state is not <em>ready</em>, then depending on the state, an HTTP
- * response code will be returned:
+ * status code in the 5xx range will be returned:
  *
  * <table class="APIServlet_HTTP_response_codes">
- *    <tr><th>State               </th><th>HTTP response code       </th></tr>
+ *    <tr>
+ *       <th>State</th>
+ *       <th>HTTP response code</th>
+ *    </tr>
  *
- *    <tr><td>Initial             </td><td>503 Service Unavailable  </td></tr>
- *    <tr><td>Bootstrapping
- *            framework           </td><td>503 Service Unavailable  </td></tr>
- *    <tr><td>Framework bootstrap
- *                          failed</td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Constructing API    </td><td>503 Service Unavailable  </td></tr>
- *    <tr><td>API construction
- *            failed              </td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Bootstrapping API   </td><td>503 Service Unavailable  </td></tr>
- *    <tr><td>API bootstrap failed</td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Initializing API    </td><td>503 Service Unavailable  </td></tr>
- *    <tr><td>API initialization
- *            failed              </td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Disposing           </td><td>500 Internal Server Error</td></tr>
- *    <tr><td>Disposed            </td><td>500 Internal Server Error</td></tr>
+ *    <tr>
+ *       <td>Initial</td>
+ *       <td><code>503 Service Unavailable</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>Bootstrapping framework</td>
+ *       <td><code>503 Service Unavailable</code></td>
+ *    </tr>
+ *
+ *    <tr>
+ *       <td>Framework bootstrap failed</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *       </tr>
+ *    <tr>
+ *       <td>Constructing API</td>
+ *       <td><code>503 Service Unavailable</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>API construction failed</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>Bootstrapping API</td>
+ *       <td><code>503 Service Unavailable</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>API bootstrap failed</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>Initializing API</td>
+ *       <td><code>503 Service Unavailable</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>API initialization failed</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>Disposing</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *    </tr>
+ *    <tr>
+ *       <td>Disposed</td>
+ *       <td><code>500 Internal Server Error</code></td>
+ *    </tr>
  * <table>
+ *
+ * <p>If the state is <em>ready</em> then the HTTP status code
+ * <code>200 OK</code> is returned.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
 public final class APIServlet
 extends HttpServlet {
-
-   //-------------------------------------------------------------------------
-   // TODO: Add trace logging for all methods
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -174,8 +211,7 @@ extends HttpServlet {
     * @deprecated
     *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
-   static final String LOG_LOCALE_PROPERTY =
-      "org.xins.server.log.locale";
+   static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
 
    //-------------------------------------------------------------------------
@@ -200,6 +236,7 @@ extends HttpServlet {
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
+      // empty
    }
 
 
@@ -208,7 +245,8 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
-    * XINS server engine. Never <code>null</code>.
+    * XINS server engine. Initially <code>null</code> but set to a
+    * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
     */
    private Engine _engine;
 
@@ -275,7 +313,8 @@ extends HttpServlet {
          // Initialization failed, log the exception
          Log.log_3002(exception);
 
-         // TODO: Make sure the current state is an error state?
+         // TODO: Make sure the current state is an error state and log a
+         //       programming error if it is not.
 
          // Pass the exception through
          if (exception instanceof ServletException) {
@@ -285,10 +324,13 @@ extends HttpServlet {
          } else if (exception instanceof RuntimeException) {
             throw (RuntimeException) exception;
 
+         // Should in theory never happen, but because of the design of the
+         // JVM this cannot be guaranteed. So throw an Error that wraps
+         // around the original exception.
          } else {
-            // Should in theory never happen, but because of the design of the
-            // JVM this cannot be guaranteed
-            throw new Error();
+            Error wrappingError = new Error();
+            ExceptionUtils.setCause(wrappingError, exception);
+            throw wrappingError;
          }
       }
    }
@@ -321,10 +363,11 @@ extends HttpServlet {
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
-   public void service(HttpServletRequest  request,
-                       HttpServletResponse response)
+   public void service(ServletRequest  request,
+                       ServletResponse response)
    throws IOException {
-      _engine.service(request, response);
+      _engine.service((HttpServletRequest)  request,
+                      (HttpServletResponse) response);
    }
 
    /**
