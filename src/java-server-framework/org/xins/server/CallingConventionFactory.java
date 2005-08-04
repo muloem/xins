@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 
 import javax.servlet.ServletConfig;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.manageable.BootstrapException;
