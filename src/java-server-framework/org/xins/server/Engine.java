@@ -137,8 +137,10 @@ final class Engine extends Object {
       // Initialize the configuration manager
       _configManager.init();
 
-      // TODO: Make sure _apiName is not null.
-      // TODO: Make sure _runtimeProperties is not null.
+      // TODO: Make sure _apiName               is not null
+      // TODO: Make sure _runtimeProperties     is not null
+      // TODO: Make sure _defaultConventionName is not null
+      // TODO: Make sure _defaultConvention     is not null
    }
 
 
@@ -178,16 +180,22 @@ final class Engine extends Object {
    private PropertyReader _runtimeProperties;
 
    /**
-    * The name of the default calling convention for this engine.
+    * The name of the default calling convention for this engine. This field
+    * can never be <code>null</code> and must always be in sync with
+    * {@link #_defaultConvention}.
+    *
+    * <p>If no calling convention is specified in a request, then the default
+    * calling convention is used.
     */
    private String _defaultConventionName;
 
    /**
-    * The default calling convention for this engine. Can be overridden by the
-    * input parameter {@link APIServlet#CALLING_CONVENTION_PARAMETER}.
+    * The default calling convention for this engine. <p>This field can never
+    * be <code>null</code> and must always be in sync with
+    * {@link #_defaultConventionName}.
     *
-    * <p>This field can never be <code>null</code> so there will always be a
-    * calling convention to fall back to.
+    * <p>If no calling convention is specified in a request, then the default
+    * calling convention is used.
     */
    private CallingConvention _defaultConvention;
 
@@ -213,13 +221,14 @@ final class Engine extends Object {
     * @throws IllegalArgumentException
     *    if <code>properties == null</code>.
     */
-   void setRuntimeProperties(final PropertyReader properties) {
+   void setRuntimeProperties(final PropertyReader newProperties)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties);
+      MandatoryArgumentChecker.check("newProperties", newProperties);
 
       // Store the runtime properties
-      _runtimeProperties = properties;
+      _runtimeProperties = newProperties;
    }
 
    /**
@@ -229,13 +238,14 @@ final class Engine extends Object {
     * @param name
     *    the name for the API, cannot be <code>null</code>.
     *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    *
     * @throws IllegalStateException
     *    if the API name is already set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   void initAPIName(final String name) {
+   void initAPIName(final String name)
+   throws IllegalStateException, IllegalArgumentException {
 
       // Check preconditions
       if (_apiName != null) {
@@ -382,10 +392,8 @@ final class Engine extends Object {
     * arguments is <code>null</code>, then the behaviour of this method is
     * undefined.
     *
-    * <p>This method is called from
-    * {@link #service(HttpServletRequest,HttpServletResponse)}. The latter
-    * first determines the <em>nested diagnostic context</em> and then
-    * forwards the call to this method.
+    * <p>This method is called from the corresponding wrapper method,
+    * {@link #service(HttpServletRequest,HttpServletResponse)}.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
@@ -406,6 +414,8 @@ final class Engine extends Object {
       // Determine the remote IP address and the query string
       String remoteIP    = request.getRemoteAddr();
       String queryString = request.getQueryString();
+
+      // TODO: Return 'Server' header
 
       // Check the HTTP request method
       String  method = request.getMethod();
@@ -428,7 +438,6 @@ final class Engine extends Object {
       } else if ("OPTIONS".equals(method)) {
          Log.log_3521(remoteIP, method, queryString);
          response.setContentLength(0);
-         // TODO: Return 'Server' header
          response.setHeader("Accept", "GET, HEAD, POST");
          response.setStatus(HttpServletResponse.SC_OK);
          return;
@@ -463,8 +472,9 @@ final class Engine extends Object {
             try {
 
                // Have the factory create a CallingConvention instance...
-               cc = CallingConventionFactory.createCallingConvention(
-                  ccParam, _servletConfig, _api);
+               cc = CallingConventionFactory.create(ccParam,
+                                                    _servletConfig,
+                                                    _api);
 
                // ...initialize it...
                if (cc != null) {
@@ -536,12 +546,13 @@ final class Engine extends Object {
             } else {
                error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-               Utils.logProgrammingError(Engine.class.getName(),
-                                         "doService(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
-                                         subjectClass,
-                                         subjectMethod,
-                                         null,
-                                         exception);
+               Utils.logProgrammingError(
+                  Engine.class.getName(),
+                  "doService(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+                  subjectClass,
+                  subjectMethod,
+                  null,
+                  exception);
             }
 
             Log.log_3522(exception, error);
@@ -595,10 +606,9 @@ final class Engine extends Object {
          // If the name is specified, attempt to construct an instance
          CallingConvention cc;
          if (! TextUtils.isEmpty(ccName)) {
-            cc = CallingConventionFactory.createCallingConvention(
-               ccName,
-               _servletConfig,
-               _api);
+            cc = CallingConventionFactory.create(ccName,
+                                                 _servletConfig,
+                                                 _api);
 
             // If the factory method returned null, then the specified name
             // does not identify a known calling convention

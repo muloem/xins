@@ -16,37 +16,50 @@ import org.xins.common.manageable.BootstrapException;
 import org.xins.common.servlet.ServletConfigPropertyReader;
 
 /**
- * XINS Calling convention factory.
+ * Factory for <code>CallingConvention</code> instances.
  *
  * @version $Revision$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  */
-class CallingConventionFactory {
+class CallingConventionFactory extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
    /**
-    * Retrieves a calling convention based on a name. If the name is not
-    * recognized as identifying a certain calling convention, then
-    * <code>null</code> is returned.
+    * Retrieves a calling convention based on a name. If the name does not
+    * identify a recognized calling convention, then <code>null</code> is
+    * returned.
     *
     * <p>Either an existing {@link CallingConvention} object is retrieved or a
     * new one is constructed.
     *
+    * <p>Before returning the {@link CallingConvention} instance, it will be
+    * bootstrapped with the properties of the servlet configuration.
+    *
     * @param name
-    *    the name of the calling convention to retrieve, can be
+    *    the name of the calling convention to retrieve, cannot be
     *    <code>null</code>.
     *
+    * @param servletConfig
+    *    the servlet configuration, cannot be <code>null</code>.
+    *
+    * @param api
+    *    the API, cannot be <code>null</code>.
+    *
     * @return
-    *    a {@link CallingConvention} object that matches the specified calling
-    *    convention name, or <code>null</code> if no match is found.
+    *    a bootstrapped {@link CallingConvention} that matches the specified
+    *    calling convention name, or <code>null</code> if no match is found.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name          == null
+    *          || servletConfig == null
+    *          || api           == null</code>.
     *
     * @throws MissingRequiredPropertyException
     *    if the created calling convention requires a bootstrap property that
@@ -60,37 +73,44 @@ class CallingConventionFactory {
     *    if an error occured during the bootstraping of the calling
     *    convention.
     */
-   static CallingConvention createCallingConvention(String name,
-                                             ServletConfig servletConfig,
-                                             API api)
-   throws MissingRequiredPropertyException,
+   static CallingConvention create(String        name,
+                                   ServletConfig servletConfig,
+                                   API           api)
+   throws IllegalArgumentException,
+          MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
 
-      CallingConvention createdConvention = null;
-      // Old-style calling convention
+      // Check preconditions
+      MandatoryArgumentChecker.check("name",          name,
+                                     "servletConfig", servletConfig,
+                                     "api",           api);
+
+      CallingConvention created = null;
+
+      // Old-style XINS calling convention
       if (APIServlet.OLD_STYLE_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new OldStyleCallingConvention();
+         created = new OldStyleCallingConvention();
 
-      // Standard calling convention
+      // XINS standard calling convention
       } else if (APIServlet.STANDARD_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new StandardCallingConvention();
+         created = new StandardCallingConvention();
 
-      // XML calling convention
+      // XINS XML calling convention
       } else if (APIServlet.XML_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new XMLCallingConvention();
+         created = new XMLCallingConvention();
 
-      // XSLT calling convention
+      // XINS XSLT calling convention
       } else if (APIServlet.XSLT_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new XSLTCallingConvention();
+         created = new XSLTCallingConvention();
 
-      // SOAP calling convention
+      // XINS SOAP calling convention
       } else if (APIServlet.SOAP_CALLING_CONVENTION.equals(name)) {
-         createdConvention = new SOAPCallingConvention(api);
+         created = new SOAPCallingConvention(api);
 
       // Custom calling convention
       } else if (name.charAt(0) != '_') {
-         if (!name.equals(servletConfig.getInitParameter(
+         if (! name.equals(servletConfig.getInitParameter(
                 APIServlet.API_CALLING_CONVENTION_PROPERTY))) {
 
             // TODO: Log
@@ -103,12 +123,12 @@ class CallingConventionFactory {
             // First try with a constructor with the API as parameter then
             // with the empty constructor
             try {
-               Class[]  construtorClasses = {API.class};
-               Object[] constructorArgs   = {api};
-               Constructor customConstructor = Class.forName(conventionClass).getConstructor(construtorClasses);
-               createdConvention = (CustomCallingConvention) customConstructor.newInstance(constructorArgs);
+               Class[]  constructorClasses = { API.class };
+               Object[] constructorArgs    = { api       };
+               Constructor customConstructor = Class.forName(conventionClass).getConstructor(constructorClasses);
+               created = (CustomCallingConvention) customConstructor.newInstance(constructorArgs);
             } catch (NoSuchMethodException nsmex) {
-               createdConvention = (CustomCallingConvention) Class.forName(conventionClass).newInstance();
+               created = (CustomCallingConvention) Class.forName(conventionClass).newInstance();
             }
          } catch (Exception ex) {
 
@@ -121,8 +141,11 @@ class CallingConventionFactory {
       } else {
          return null;
       }
-      createdConvention.bootstrap(new ServletConfigPropertyReader(servletConfig));
-      return createdConvention;
+
+      // Bootstrap the calling convention
+      created.bootstrap(new ServletConfigPropertyReader(servletConfig));
+
+      return created;
    }
 
 
@@ -130,11 +153,9 @@ class CallingConventionFactory {
    // Constructors
    //-------------------------------------------------------------------------
 
-
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
 
    //-------------------------------------------------------------------------
    // Methods

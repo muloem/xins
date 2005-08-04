@@ -93,7 +93,8 @@ final class EngineStarter extends Object {
     */
    EngineStarter(Engine             engine,
                  ServletConfig      config,
-                 EngineStateMachine state) {
+                 EngineStateMachine state)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("engine", engine,
@@ -288,13 +289,23 @@ final class EngineStarter extends Object {
     * class.
     *
     * @param apiClassName
+    *    the name of the API class that should be loaded, cannot be
+    *    <code>null</code>.
     *
-    * @return the class that is loaded
+    * @return
+    *    the loaded API class, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>apiClassName == null</code>.
     *
     * @throws ServletException
+    *    if the API class loading failed.
     */
    private Class loadAPIClass(String apiClassName)
-   throws ServletException {
+   throws IllegalArgumentException, ServletException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("apiClassName", apiClassName);
 
       // Load the API class
       Class apiClass;

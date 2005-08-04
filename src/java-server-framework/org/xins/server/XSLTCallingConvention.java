@@ -51,12 +51,14 @@ class XSLTCallingConvention extends StandardCallingConvention {
    public final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
-    * The runtime property name that define the base directory of the XSLT templates.
+    * The runtime property name that defines the base directory of the XSLT
+    * templates.
     */
    public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
-    * The input parameter that specify the location of the XSLT template tot use.
+    * The input parameter that specify the location of the XSLT template tot
+    * use.
     */
    public final static String TEMPLATE_PARAMETER = "_template";
 
@@ -119,7 +121,8 @@ class XSLTCallingConvention extends StandardCallingConvention {
           InvalidPropertyValueException,
           InitializationException {
 
-      _cacheTemplates = "false".equals(runtimeProperties.get(TEMPLATES_CACHE_PROPERTY));
+      _cacheTemplates = "false".equals(
+         runtimeProperties.get(TEMPLATES_CACHE_PROPERTY));
 
       // Get the base directory of the Style Sheet
       // e.g. http://xslt.mycompany.com/myapi/
@@ -158,7 +161,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          xsltLocation = _baseXSLTDir + httpRequest.getParameter("_function") + ".xslt";
       }
       try {
-         Templates template = null;
+         Templates t = null;
          if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
             TEMPLATE_CACHE.clear();
             PrintWriter out = httpResponse.getWriter();
@@ -167,14 +170,14 @@ class XSLTCallingConvention extends StandardCallingConvention {
             return;
          }
          if (!_cacheTemplates && TEMPLATE_CACHE.containsKey(xsltLocation)) {
-            template = (Templates) TEMPLATE_CACHE.get(xsltLocation);
+            t = (Templates) TEMPLATE_CACHE.get(xsltLocation);
          } else {
-            template = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
+            t = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
             if (_cacheTemplates) {
-               TEMPLATE_CACHE.put(xsltLocation, template);
+               TEMPLATE_CACHE.put(xsltLocation, t);
             }
          }
-         Transformer xformer = template.newTransformer();
+         Transformer xformer = t.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
          Writer buffer = new FastStringWriter();
          Result result = new StreamResult(buffer);
@@ -183,9 +186,9 @@ class XSLTCallingConvention extends StandardCallingConvention {
          PrintWriter out = httpResponse.getWriter();
 
          // Determine the MIME type for the output.
-         String mimeType = template.getOutputProperties().getProperty("media-type");
+         String mimeType = t.getOutputProperties().getProperty("media-type");
          if (mimeType == null) {
-            String method = template.getOutputProperties().getProperty("method");
+            String method = t.getOutputProperties().getProperty("method");
             if ("xml".equals(method)) {
                mimeType = "text/xml";
             } else if ("html".equals(method)) {
@@ -194,7 +197,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
                mimeType = "text/plain";
             }
          }
-         String encoding = template.getOutputProperties().getProperty("encoding");
+         String encoding = t.getOutputProperties().getProperty("encoding");
          if (mimeType != null && encoding != null) {
             mimeType += ";charset=" + encoding;
          }

@@ -43,7 +43,7 @@ final class ContextIDGenerator {
    /**
     * The hostname for localhost.
     */
-   private static String _hostname = IPAddressUtils.getLocalHost();;
+   private static String HOSTNAME = IPAddressUtils.getLocalHost();;
 
 
    //-------------------------------------------------------------------------
@@ -88,11 +88,11 @@ final class ContextIDGenerator {
       HexConverter.toHexString(buffer, RANDOM.nextLong());
       String randomFive = buffer.toString().substring(0, 5);
 
-      int length = apiName.length() + _hostname.length() + 27;
+      int length = apiName.length() + HOSTNAME.length() + 27;
       FastStringBuffer contextID = new FastStringBuffer(length);
       contextID.append(apiName);
       contextID.append('@');
-      contextID.append(_hostname);
+      contextID.append(HOSTNAME);
       contextID.append(':');
       contextID.append(currentDate);
       contextID.append(':');
@@ -112,9 +112,9 @@ final class ContextIDGenerator {
    static void changeHostNameIfNeeded(Properties properties) {
 
       String hostname = properties.getProperty(APIServlet.HOSTNAME_PROPERTY);
-      if (!(TextUtils.isEmpty(hostname) || hostname.equals(_hostname))) {
-         Log.log_3310(_hostname, hostname);
-         _hostname = hostname;
+      if (!(TextUtils.isEmpty(hostname) || hostname.equals(HOSTNAME))) {
+         Log.log_3310(HOSTNAME, hostname);
+         HOSTNAME = hostname;
       }
    }
 
