@@ -211,7 +211,8 @@ final class ConfigManager {
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         _engine.setRuntimeProperties(PropertyReaderUtils.EMPTY_PROPERTY_READER);
+         _engine.setRuntimeProperties(
+            PropertyReaderUtils.EMPTY_PROPERTY_READER);
       } else {
 
          // Unify the file separator character
@@ -248,7 +249,8 @@ final class ConfigManager {
             ContextIDGenerator.changeHostNameIfNeeded(properties);
 
             // Store the runtime properties on the engine
-            _engine.setRuntimeProperties(new PropertiesPropertyReader(properties));
+            _engine.setRuntimeProperties(
+               new PropertiesPropertyReader(properties));
          }
       }
    }

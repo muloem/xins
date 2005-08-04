@@ -101,7 +101,7 @@ final class Engine extends Object {
     * @throws ServletException
     *    if the engine could not be constructed.
     */
-   Engine(ServletConfig config)
+   Engine(final ServletConfig config)
    throws IllegalArgumentException, ServletException {
 
       // Check preconditions
@@ -136,6 +136,9 @@ final class Engine extends Object {
 
       // Initialize the configuration manager
       _configManager.init();
+
+      // TODO: Make sure _apiName is not null.
+      // TODO: Make sure _runtimeProperties is not null.
    }
 
 
@@ -159,18 +162,18 @@ final class Engine extends Object {
    private final API _api;
 
    /**
-    * The name of the API.
-    * <p>TODO: Describe.
+    * The name of the API. Never <code>null</code>.
     */
    private String _apiName;
 
    /**
-    * Manager for the runtime configuration file.
+    * Manager for the runtime configuration file. Never <code>null</code>.
     */
    private final ConfigManager _configManager;
 
    /**
-    * The set of properties read from the runtime configuration file.
+    * The set of properties read from the runtime configuration file. Never
+    * <code>null</code>.
     */
    private PropertyReader _runtimeProperties;
 
@@ -201,7 +204,52 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Initializes the API using the current runtime settings.
+    * Initializes or re-initializes the runtime properties. This is a callback
+    * method for the {@link ConfigManager}.
+    *
+    * @param newProperties
+    *    the new runtime properties, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null</code>.
+    */
+   void setRuntimeProperties(final PropertyReader properties) {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties);
+
+      // Store the runtime properties
+      _runtimeProperties = properties;
+   }
+
+   /**
+    * Initializes the API name. This is a callback method for the
+    * {@link EngineStarter}.
+    *
+    * @param name
+    *    the name for the API, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the API name is already set.
+    */
+   void initAPIName(final String name) {
+
+      // Check preconditions
+      if (_apiName != null) {
+         throw new IllegalStateException("API name is already initialized.");
+      }
+      MandatoryArgumentChecker.check("name", name);
+
+      // Store the API name
+      _apiName = name;
+   }
+
+   /**
+    * Initializes the API using the current runtime settings. This method
+    * should be called whenever the runtime properties changed.
     */
    void initAPI() {
 
@@ -275,8 +323,8 @@ final class Engine extends Object {
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
-   void service(HttpServletRequest  request,
-                HttpServletResponse response)
+   void service(final HttpServletRequest  request,
+                final HttpServletResponse response)
    throws IOException {
 
       // Associate the current diagnostic context identifier with this thread
@@ -311,16 +359,21 @@ final class Engine extends Object {
     *    the diagnostic context identifier, never <code>null</code> and never
     *    an empty string.
     */
-   private String determineContextID(HttpServletRequest request) {
+   private String determineContextID(final HttpServletRequest request) {
 
-      // See if request already specifies a diagnostic context identifier
+      // See if the request already specifies a diagnostic context identifier
+      // TODO: Use constant for that request parameter name
       String contextID = request.getParameter("_context");
 
       // If it does not, then generate a new one
-      if ((contextID == null) || (contextID.length() < 1)) {
+      if (TextUtils.isEmpty(contextID)) {
          // TODO: Construct a ContextIDGenerator with the API name?
+         // TODO: Support custom format (SF.net RFE #1078846)
          contextID = ContextIDGenerator.generate(_apiName);
       }
+
+      // TODO: If not empty, check validity (SF.net RFE #1078843)
+
       return contextID;
    }
 
@@ -530,7 +583,7 @@ final class Engine extends Object {
     * @throws ServletException
     *    if the calling convention can not be created.
     */
-   void initCallingConvention(ServletConfig config)
+   void initCallingConvention(final ServletConfig config)
    throws ServletException {
 
       try {
@@ -654,7 +707,8 @@ final class Engine extends Object {
    /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
-    * object is the one passed to the {@link APIServlet#init(ServletConfig)} method.
+    * object is the one passed to the {@link APIServlet#init(ServletConfig)}
+    * method.
     *
     * @return
     *    the {@link ServletConfig} object that was used to initialize this
@@ -663,36 +717,5 @@ final class Engine extends Object {
     */
    ServletConfig getServletConfig() {
       return _servletConfig;
-   }
-
-   /**
-    * @param properties The runtime properties to set.
-    */
-   void setRuntimeProperties(PropertyReader properties) {
-      _runtimeProperties = properties;
-   }
-
-   /**
-    * @param newConvention
-    *    the calling convention to set.
-    */
-   void setCallingConvention(CallingConvention newConvention) {
-      _defaultConvention = newConvention;
-   }
-
-   /**
-    * @param newConvention The default calling convention to set.
-    */
-   void setDefaultCallingConvention(String newConvention) {
-      _defaultConventionName = newConvention;
-      // TODO: Look it up and update _defaultConvention as well?
-   }
-
-   /**
-    * @param name The api name to set.
-    */
-   void setApiName(String name) {
-      // TODO: Why do we have this method?
-      _apiName = name;
    }
 }

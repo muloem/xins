@@ -293,7 +293,7 @@ extends HttpServlet {
       // versions 2.2, 2.3 and 2.4 are supported
       int major = context.getMajorVersion();
       int minor = context.getMinorVersion();
-      if (major != 2 || (minor != 2 && minor != 3 && minor != 4)) {
+      if (major != 2 || minor < 2 || minor > 4) {
          String expected = "2.2/2.3/2.4";
          String actual   = "" + major + '.' + minor;
          Log.log_3203(actual, expected);
