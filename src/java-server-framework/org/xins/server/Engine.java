@@ -374,17 +374,40 @@ final class Engine extends Object {
       // See if the request already specifies a diagnostic context identifier
       // TODO: Use constant for that request parameter name
       String contextID = request.getParameter("_context");
-
-      // If it does not, then generate a new one
       if (TextUtils.isEmpty(contextID)) {
+         contextID = null;
+
+      // If it does, then it must be a valid one
+      } else if (! isValidContextID(contextID)) {
+         // TODO: Log
+         contextID = null;
+      }
+
+      // If we have no (acceptable) context ID yet, then generate one now
+      if (contextID == null) {
          // TODO: Construct a ContextIDGenerator with the API name?
          // TODO: Support custom format (SF.net RFE #1078846)
          contextID = ContextIDGenerator.generate(_apiName);
       }
 
-      // TODO: If not empty, check validity (SF.net RFE #1078843)
-
       return contextID;
+   }
+
+   /**
+    * Determines if the specified incoming context identifier is considered
+    * valid.
+    *
+    * @param contextID
+    *    the incoming diagnostic context identifier, should not be
+    *    <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if <code>contextID</code> is considered acceptable,
+    *    <code>false</code> if it is considered unacceptable.
+    */
+   private boolean isValidContextID(String contextID) {
+      // TODO: Check validity (SF.net RFE #1078843)
+      return true;
    }
 
    /**
