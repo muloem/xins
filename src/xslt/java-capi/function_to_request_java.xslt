@@ -210,16 +210,21 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:if test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
 			<xsl:text>n</xsl:text>
 		</xsl:if>
-		<xsl:text><![CDATA[ <code>]]></xsl:text>
+		<xsl:text><![CDATA[
+    * <code>]]></xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text><![CDATA[</code>.
     *
     * @param ]]></xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text><![CDATA[
-    *    the new value for the parameter.
+				<xsl:text>
+    *    the new value for the parameter</xsl:text>
+		<xsl:if test="$isJavaDatatype = 'false'">
+			<xsl:text><![CDATA[, or <code>null</code> if it should be reset]]></xsl:text>
+		</xsl:if>
+		<xsl:text>.
     */
-   public void ]]></xsl:text>
+   public void </xsl:text>
 		<xsl:value-of select="$setMethod" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$javatype" />
@@ -246,6 +251,54 @@ extends org.xins.client.AbstractCAPICallRequest {
 		</xsl:if>
 		<xsl:text>
    }</xsl:text>
+
+		<xsl:if test="$isJavaDatatype = 'true'">
+			<xsl:variable name="wraptype">
+				<xsl:call-template name="javaclass_for_javatype">
+					<xsl:with-param name="javatype" select="$javatype" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:text><![CDATA[
+
+   /**
+    * Sets or resets the <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[</em> parameter as a]]></xsl:text>
+			<xsl:if test="translate(substring($wraptype,1,1),'aeiouy','******') = '*'">
+				<xsl:text>n</xsl:text>
+			</xsl:if>
+			<xsl:text><![CDATA[
+    * <code>]]></xsl:text>
+			<xsl:value-of select="$wraptype" />
+			<xsl:text><![CDATA[</code>.
+    *
+    * @param ]]></xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text><![CDATA[
+    *    the new value for the parameter, or <code>null</code> if it should be
+	 *    reset.
+    */
+   public void ]]></xsl:text>
+			<xsl:value-of select="$setMethod" />
+			<xsl:text>(</xsl:text>
+			<xsl:value-of select="$wraptype" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>) {
+      if (</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text> != null &amp;&amp; !</xsl:text>
+			<xsl:value-of select="$typeToString" />
+			<xsl:text>.equals("")) {
+         parameterValue("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>",  </xsl:text>
+		<xsl:value-of select="$typeToString" />
+		<xsl:text>);
+      }
+   }</xsl:text>
+		</xsl:if>
 
 	</xsl:template>
 
