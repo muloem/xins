@@ -55,7 +55,7 @@ final class ContextIDGenerator {
     * Generates a diagnostic context identifier. The generated context
     * identifier will be in the format:
     *
-    * <blockquote>app@host:time:rnd</blockquote>
+    * <blockquote><em>app</em>@<em>host</em>:<em>time</em>:<em>rnd</em></blockquote>
     *
     * where:
     *
@@ -74,12 +74,17 @@ final class ContextIDGenerator {
     * </ul>
     *
     * @param apiName
-    *    The api to generate the context id for
+    *    name of the API to generate the context id for, cannot be
+	 *    <code>null</code>.
     *
     * @return
     *    the generated diagnostic context identifier, never <code>null</code>.
     */
-   static String generate(String apiName) {
+   static String generate(String apiName)
+   throws IllegalArgumentException {
+
+		// Check preconditions
+		MandatoryArgumentChecker.check("apiName", apiName);
 
       // TODO: Improve performance of this method
 

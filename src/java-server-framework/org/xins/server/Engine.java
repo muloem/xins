@@ -237,6 +237,9 @@ final class Engine extends Object {
 
       // Store the runtime properties
       _runtimeProperties = newProperties;
+
+		// Make sure the context ID generator is updated if needed
+      ContextIDGenerator.changeHostNameIfNeeded(newProperties);
    }
 
    /**
@@ -758,7 +761,7 @@ final class Engine extends Object {
    PropertyReader getRuntimeProperties() throws IllegalStateException {
 
 		// Check preconditions
-		if (_state == Engine.DISPOSED) {
+		if (_state.getState() == EngineState.DISPOSED) {
 			throw new IllegalStateException("Engine has been disposed.");
 		}
 
@@ -766,12 +769,22 @@ final class Engine extends Object {
    }
 
    /**
-    * Returns the state.
+    * Returns the current state.
     *
     * @return
     *    the state, never <code>null</code>.
     */
-   EngineStateMachine getState() {
-      return _state;
+   EngineState getState() {
+      return _state.getState();
+   }
+
+   /**
+    * Changes the current state.
+    *
+    * @param newState
+    *    the new state, never <code>null</code>.
+    */
+   void setState(EngineState newState) {
+      _state.setState(newState);
    }
 }
