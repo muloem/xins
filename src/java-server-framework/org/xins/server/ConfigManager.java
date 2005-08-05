@@ -246,8 +246,6 @@ final class ConfigManager {
             // Attempt to configure Log4J
             configureLogger(properties);
 
-            ContextIDGenerator.changeHostNameIfNeeded(properties);
-
             // Store the runtime properties on the engine
             _engine.setRuntimeProperties(
                new PropertiesPropertyReader(properties));
@@ -302,7 +300,7 @@ final class ConfigManager {
    int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
-      _engine.getState().setState(EngineState.DETERMINE_INTERVAL);
+      _engine.setState(EngineState.DETERMINE_INTERVAL);
 
       // Get the runtime property
       String s = _engine.getRuntimeProperties().get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
@@ -315,7 +313,7 @@ final class ConfigManager {
             if (interval < 0) {
                Log.log_3409(_configFile,
                             APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-               _engine.getState().setState(EngineState.DETERMINE_INTERVAL_FAILED);
+               _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY,
                                                        s,
                                                        "Negative value.");
@@ -324,7 +322,7 @@ final class ConfigManager {
             }
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY, s);
-            _engine.getState().setState(EngineState.DETERMINE_INTERVAL_FAILED);
+            _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY,
                                                     s,
                                                     "Not a 32-bit integer number.");
@@ -385,7 +383,7 @@ final class ConfigManager {
                Log.log_3307(currentLocale, newLocale);
             } catch (UnsupportedLocaleException exception) {
                Log.log_3308(currentLocale, newLocale);
-               _engine.getState().setState(EngineState.API_INITIALIZATION_FAILED);
+               _engine.setState(EngineState.API_INITIALIZATION_FAILED);
                return;
             }
          }
@@ -397,11 +395,14 @@ final class ConfigManager {
     * Stops the config file watcher thread.
     */
    void destroy() {
-      // Stop the FileWatcher
+
+		// TODO: Change state of this object?
+
+      // stop the FileWatcher
       if (_configFileWatcher != null) {
          _configFileWatcher.end();
       }
-
+      _configFileWatcher = null;
    }
 
    //-------------------------------------------------------------------------

@@ -8,9 +8,10 @@ package org.xins.server;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Random;
 
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.net.IPAddressUtils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
@@ -107,12 +108,19 @@ final class ContextIDGenerator {
     * property value.
     *
     * @param properties
-    *    Then properties to get the hostname from
+    *    the properties to get the hostname from, cannot be <code>null</code>.
+	 *
+	 * @throws IllegalArgumentException
+	 *    if <code>properties == null</code>.
     */
-   static void changeHostNameIfNeeded(Properties properties) {
+   static void changeHostNameIfNeeded(PropertyReader properties) {
 
-      String hostname = properties.getProperty(APIServlet.HOSTNAME_PROPERTY);
-      if (!(TextUtils.isEmpty(hostname) || hostname.equals(HOSTNAME))) {
+		// Check preconditions
+		MandatoryArgumentChecker.check("properties", properties);
+
+		// Determine if the hostname has changed
+      String hostname = properties.get(APIServlet.HOSTNAME_PROPERTY);
+      if (!TextUtils.isEmpty(hostname) && hostname.equals(HOSTNAME)) {
          Log.log_3310(HOSTNAME, hostname);
          HOSTNAME = hostname;
       }
@@ -127,7 +135,7 @@ final class ContextIDGenerator {
     * Constructs a new <code>ContextIDGenerator</code> object.
     */
    private ContextIDGenerator() {
-      // Empty
+      // empty
    }
 
 

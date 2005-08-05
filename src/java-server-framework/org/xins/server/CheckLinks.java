@@ -111,7 +111,7 @@ class CheckLinks {
     * Creates a new <code>CheckLinks</code> object.
     */
    private CheckLinks() {
-      // Empty
+      // empty
    }
    
    
