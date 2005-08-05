@@ -305,7 +305,7 @@ final class ConfigManager {
       _engine.getState().setState(EngineState.DETERMINE_INTERVAL);
 
       // Get the runtime property
-      String s = _engine.getRunTimeProperties().get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+      String s = _engine.getRuntimeProperties().get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
       int interval = -1;
 
       // If the property is set, parse it
@@ -368,11 +368,11 @@ final class ConfigManager {
     */
    void determineLogLocale() {
 
-      String newLocale = _engine.getRunTimeProperties().get(
+      String newLocale = _engine.getRuntimeProperties().get(
       LogCentral.LOG_LOCALE_PROPERTY);
 
       if (TextUtils.isEmpty(newLocale)) {
-         newLocale = _engine.getRunTimeProperties().get(APIServlet.LOG_LOCALE_PROPERTY);
+         newLocale = _engine.getRuntimeProperties().get(APIServlet.LOG_LOCALE_PROPERTY);
       }
 
       // If the log locale is set, apply it

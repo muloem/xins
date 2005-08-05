@@ -137,10 +137,18 @@ final class Engine extends Object {
       // Initialize the configuration manager
       _configManager.init();
 
-      // TODO: Make sure _apiName               is not null
-      // TODO: Make sure _runtimeProperties     is not null
-      // TODO: Make sure _defaultConventionName is not null
-      // TODO: Make sure _defaultConvention     is not null
+      // Check post-conditions
+      if (_api == null) {
+         throw Utils.logProgrammingError("_api == null");
+      } else if (_apiName == null) {
+         throw Utils.logProgrammingError("_apiName == null");
+      } else if (_runtimeProperties == null) {
+         throw Utils.logProgrammingError("_runtimeProperties == null");
+      } else if (_defaultConventionName == null) {
+         throw Utils.logProgrammingError("_defaultConventionName == null");
+      } else if (_defaultConvention == null) {
+         throw Utils.logProgrammingError("_defaultConvention == null");
+      }
    }
 
 
@@ -255,6 +263,78 @@ final class Engine extends Object {
 
       // Store the API name
       _apiName = name;
+   }
+
+   /**
+    * Determines the default calling convention name from the config object
+    * and uses this to create a calling convention. If this does not work out,
+    * a default XINS standard calling convention is constructed.
+    *
+    * @param config
+    *    the {@link ServletConfig} object which contains build properties for
+    *    this servlet, as specified by the <em>assembler</em>, cannot be
+    *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the calling convention can not be created.
+    */
+   void initCallingConvention(final ServletConfig config)
+   throws ServletException {
+
+      try {
+         // Determine the name of the default calling convention, as specified
+         // in the build-time propertie
+         String ccName = config.getInitParameter(
+            APIServlet.API_CALLING_CONVENTION_PROPERTY);
+
+         // If the name is specified, attempt to construct an instance
+         CallingConvention cc;
+         if (! TextUtils.isEmpty(ccName)) {
+            cc = CallingConventionFactory.create(ccName,
+                                                 _servletConfig,
+                                                 _api);
+
+            // If the factory method returned null, then the specified name
+            // does not identify a known calling convention
+            if (cc == null) {
+               Log.log_3210(APIServlet.API_CALLING_CONVENTION_PROPERTY,
+                            ccName,
+                            "No such calling convention.");
+               _state.setState(EngineState.API_BOOTSTRAP_FAILED);
+               throw new ServletException();
+            }
+
+            // On success, store the calling convention name and object
+            _defaultConventionName = ccName;
+            _defaultConvention     = cc;
+
+            // TODO: Log that we use the specified calling convention
+
+         // No calling convention is specified in the build-time properties,
+         // so use the standard calling convention
+         } else {
+            _defaultConventionName = "_xins-std";
+            _defaultConvention     = new StandardCallingConvention();
+            _defaultConvention.bootstrap(
+               new ServletConfigPropertyReader(_servletConfig));
+
+            // TODO: Log that we use the standard calling convention
+         }
+
+      } catch (Throwable t) {
+         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
+
+         // Throw a ServletException
+         ServletException se;
+         if (t instanceof ServletException) {
+            se = (ServletException) t;
+         } else {
+            se = new ServletException(
+               "Calling convention construction failed.");
+            ExceptionUtils.setCause(se, t);
+         }
+         throw se;
+      }
    }
 
    /**
@@ -605,78 +685,6 @@ final class Engine extends Object {
    }
 
    /**
-    * Determines the default calling convention name from the config object
-    * and uses this to create a calling convention. If this does not work out,
-    * a default XINS standard calling convention is constructed.
-    *
-    * @param config
-    *    the {@link ServletConfig} object which contains build properties for
-    *    this servlet, as specified by the <em>assembler</em>, cannot be
-    *    <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the calling convention can not be created.
-    */
-   void initCallingConvention(final ServletConfig config)
-   throws ServletException {
-
-      try {
-         // Determine the name of the default calling convention, as specified
-         // in the build-time propertie
-         String ccName = config.getInitParameter(
-            APIServlet.API_CALLING_CONVENTION_PROPERTY);
-
-         // If the name is specified, attempt to construct an instance
-         CallingConvention cc;
-         if (! TextUtils.isEmpty(ccName)) {
-            cc = CallingConventionFactory.create(ccName,
-                                                 _servletConfig,
-                                                 _api);
-
-            // If the factory method returned null, then the specified name
-            // does not identify a known calling convention
-            if (cc == null) {
-               Log.log_3210(APIServlet.API_CALLING_CONVENTION_PROPERTY,
-                            ccName,
-                            "No such calling convention.");
-               _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-               throw new ServletException();
-            }
-
-            // On success, store the calling convention name and object
-            _defaultConventionName = ccName;
-            _defaultConvention     = cc;
-
-            // TODO: Log that we use the specified calling convention
-
-         // No calling convention is specified in the build-time properties,
-         // so use the standard calling convention
-         } else {
-            _defaultConventionName = "_xins-std";
-            _defaultConvention     = new StandardCallingConvention();
-            _defaultConvention.bootstrap(
-               new ServletConfigPropertyReader(_servletConfig));
-
-            // TODO: Log that we use the standard calling convention
-         }
-
-      } catch (Throwable t) {
-         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-
-         // Throw a ServletException
-         ServletException se;
-         if (t instanceof ServletException) {
-            se = (ServletException) t;
-         } else {
-            se = new ServletException(
-               "Calling convention construction failed.");
-            ExceptionUtils.setCause(se, t);
-         }
-         throw se;
-      }
-   }
-
-   /**
     * Destroys this servlet. A best attempt will be made to release all
     * resources.
     *
@@ -685,12 +693,18 @@ final class Engine extends Object {
     */
    void destroy() {
 
-      _configManager.destroy();
-
+      // Log: Shutting down XINS/Java Server Framework
       Log.log_3600();
 
       // Set the state temporarily to DISPOSING
       _state.setState(EngineState.DISPOSING);
+
+      // Destroy the configuration manager
+      try {
+         _configManager.destroy();
+      } catch (Throwable t) {
+         // ignore
+      }
 
       // Destroy the API
       if (_api != null) {
@@ -704,6 +718,7 @@ final class Engine extends Object {
       // Set the state to DISPOSED
       _state.setState(EngineState.DISPOSED);
 
+		// Log: Shutdown completed
       Log.log_3602();
    }
 
@@ -711,19 +726,42 @@ final class Engine extends Object {
     * Returns the config manager.
     *
     * @return
-    *    the config manager.
+    *    the config manager, never <code>null</code>.
     */
    ConfigManager getConfigManager() {
       return _configManager;
    }
 
    /**
+    * Returns the <code>ServletConfig</code> object which contains the
+    * build properties for this servlet. The returned {@link ServletConfig}
+    * object is the one passed to the constructor.
+    *
+    * @return
+    *    the {@link ServletConfig} object that was used to initialize this
+    *    servlet, never <code>null</code>.
+    */
+   ServletConfig getServletConfig() {
+      return _servletConfig;
+   }
+
+   /**
     * Returns the runtime properties.
     *
     * @return
-    *    the property reader containing the runtime properties.
+    *    the property reader containing the runtime properties, never
+    *    <code>null</code>.
+	 *
+	 * @throws IllegalStateException
+	 *    if this engine has been disposed, see {@link #destroy()}.
     */
-   PropertyReader getRunTimeProperties() {
+   PropertyReader getRuntimeProperties() throws IllegalStateException {
+
+		// Check preconditions
+		if (_state == Engine.DISPOSED) {
+			throw new IllegalStateException("Engine has been disposed.");
+		}
+
       return _runtimeProperties;
    }
 
@@ -731,24 +769,9 @@ final class Engine extends Object {
     * Returns the state.
     *
     * @return
-    *    the state.
+    *    the state, never <code>null</code>.
     */
    EngineStateMachine getState() {
       return _state;
-   }
-
-   /**
-    * Returns the <code>ServletConfig</code> object which contains the
-    * build properties for this servlet. The returned {@link ServletConfig}
-    * object is the one passed to the {@link APIServlet#init(ServletConfig)}
-    * method.
-    *
-    * @return
-    *    the {@link ServletConfig} object that was used to initialize this
-    *    servlet, not <code>null</code> if this servlet is indeed already
-    *    initialized.
-    */
-   ServletConfig getServletConfig() {
-      return _servletConfig;
    }
 }
