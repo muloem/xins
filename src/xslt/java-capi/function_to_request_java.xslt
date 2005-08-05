@@ -197,10 +197,14 @@ extends org.xins.client.AbstractCAPICallRequest {
 			<xsl:value-of select="substring(@name,2)" />
 		</xsl:variable>
 
-		<xsl:text><![CDATA[
+		<xsl:text>
 
    /**
-    * Sets or resets the <em>]]></xsl:text>
+    * Sets</xsl:text>
+		<xsl:if test="isJavaDatatype = 'false'">
+			<xsl:text> or resets</xsl:text>
+		</xsl:if>
+		<xsl:text><![CDATA[ the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> parameter as a]]></xsl:text>
 		<xsl:if test="translate(substring($javatype,1,1),'aeiouy','******') = '*'">
