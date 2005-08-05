@@ -201,7 +201,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
    /**
     * Sets</xsl:text>
-		<xsl:if test="isJavaDatatype = 'false'">
+		<xsl:if test="$isJavaDatatype = 'false'">
 			<xsl:text> or resets</xsl:text>
 		</xsl:if>
 		<xsl:text><![CDATA[ the <em>]]></xsl:text>
