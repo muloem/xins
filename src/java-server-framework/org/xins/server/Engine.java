@@ -134,6 +134,14 @@ final class Engine extends Object {
       _api = starter.constructAPI();
       starter.bootstrapAPI(_api);
 
+   	// Construct a generator for diagnostic context IDs
+   	_contextIDGenerator = new ContextIDGenerator(this);
+   	try {
+   	   _contextIDGenerator.bootstrap(new ServletConfigPropertyReader(config));
+   	} catch (Exception exception) {
+   		throw EngineStarter.servletExceptionFor(exception);
+   	}
+
       // Initialize the configuration manager
       _configManager.init();
 
@@ -170,6 +178,11 @@ final class Engine extends Object {
     * The API that this engine forwards requests to. Never <code>null</code>.
     */
    private final API _api;
+
+   /**
+    * Diagnostic context ID generator. Never <code>null</code>.
+    */
+   private ContextIDGenerator _contextIDGenerator;
 
    /**
     * The name of the API. Never <code>null</code>.
@@ -237,9 +250,6 @@ final class Engine extends Object {
 
       // Store the runtime properties
       _runtimeProperties = newProperties;
-
-		// Make sure the context ID generator is updated if needed
-      ContextIDGenerator.changeHostNameIfNeeded(newProperties);
    }
 
    /**
@@ -266,6 +276,16 @@ final class Engine extends Object {
 
       // Store the API name
       _apiName = name;
+   }
+
+   /**
+    * Retrieves the API name.
+    *
+    * @return
+    *    the API name, never <code>null</code>.
+    */
+   String getAPIName() {
+   	return _apiName;
    }
 
    /**
@@ -355,6 +375,9 @@ final class Engine extends Object {
          _configManager.determineLogLocale();
 
          try {
+
+   	      // Initialize the diagnostic context ID generator
+            _contextIDGenerator.init(_runtimeProperties);
 
             // Initialize the API
             _api.init(_runtimeProperties);
@@ -468,9 +491,8 @@ final class Engine extends Object {
 
       // If we have no (acceptable) context ID yet, then generate one now
       if (contextID == null) {
-         // TODO: Construct a ContextIDGenerator with the API name?
          // TODO: Support custom format (SF.net RFE #1078846)
-         contextID = ContextIDGenerator.generate(_apiName);
+         contextID = _contextIDGenerator.generate();
       }
 
       return contextID;
@@ -721,7 +743,7 @@ final class Engine extends Object {
       // Set the state to DISPOSED
       _state.setState(EngineState.DISPOSED);
 
-		// Log: Shutdown completed
+   	// Log: Shutdown completed
       Log.log_3602();
    }
 
@@ -754,16 +776,16 @@ final class Engine extends Object {
     * @return
     *    the property reader containing the runtime properties, never
     *    <code>null</code>.
-	 *
-	 * @throws IllegalStateException
-	 *    if this engine has been disposed, see {@link #destroy()}.
+    *
+    * @throws IllegalStateException
+    *    if this engine has been disposed, see {@link #destroy()}.
     */
    PropertyReader getRuntimeProperties() throws IllegalStateException {
 
-		// Check preconditions
-		if (_state.getState() == EngineState.DISPOSED) {
-			throw new IllegalStateException("Engine has been disposed.");
-		}
+   	// Check preconditions
+   	if (_state.getState() == EngineState.DISPOSED) {
+   		throw new IllegalStateException("Engine has been disposed.");
+   	}
 
       return _runtimeProperties;
    }
