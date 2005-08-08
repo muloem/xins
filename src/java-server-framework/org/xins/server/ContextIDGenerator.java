@@ -160,8 +160,6 @@ final class ContextIDGenerator extends Manageable {
       // Check preconditions
       assertUsable();
 
-      // TODO: Synchronize before calling nextLong() ?
-
       // Construct a new string buffer with the exact needed capacity
       FastStringBuffer buffer = new FastStringBuffer(_length + 3, _prefix);
 
@@ -170,6 +168,9 @@ final class ContextIDGenerator extends Manageable {
       buffer.append(':');
 
       // Append 5 random hex digits
+		// 
+		// NOTE: We assume that java.util.Random is thread-safe, although this
+		//       is not officially documented.
       HexConverter.toHexString(buffer, _random.nextInt());
 		buffer.crop(_length);
 
