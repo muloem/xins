@@ -27,6 +27,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
 	 Request.
 
+* Generated build file:
+  - Fixed SF.net bug #1250043: No filtering on specification files.
+
 * Libraries:
   - Updated xmlenc from 0.47 to 0.48. This fixes SF.net bug #1201368:
     NoSuchFieldError for xmlenc on IBM Java 1.3/Linux.

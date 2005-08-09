@@ -516,11 +516,11 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
-			<xmlvalidate warn="false">
-				<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
-				<xmlcatalog refid="all-dtds" />
-			</xmlvalidate>
 			<xsl:if test="document($api_file)/api/category">
+				<xmlvalidate warn="false">
+					<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
+					<xmlcatalog refid="all-dtds" />
+				</xmlvalidate>
 				<style
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
