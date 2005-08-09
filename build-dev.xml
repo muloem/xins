@@ -264,7 +264,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
-		<junit printsummary="true" failureproperty="tests.failed" fork="yes" showoutput="true" haltonfailure="false">
+		<junit printsummary="true" failureproperty="tests.failed" fork="yes" maxmemory="512M" showoutput="false" haltonfailure="false">
 			<sysproperty key="user.dir" value="${basedir}" />
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
@@ -272,19 +272,20 @@ ${sf.file}</fail>
 				<pathelement location="build/instrumented-classes/java-client" />
 				<pathelement location="build/instrumented-classes/java-server" />
 				<pathelement location="build/instrumented-classes/java-common" />
-				<pathelement location="build/classes/java-client" />
-				<pathelement location="build/classes/java-server" />
-				<pathelement location="build/classes/java-common" />
 				<pathelement location="build/classes/tests" />
-				<pathelement location="../xins-examples/xins-project/build/classes-capi/allinone" />
-				<pathelement location="../xins-examples/xins-project/build/classes-api/allinone" />
-				<pathelement location="../xins-examples/xins-project/build/classes-types/allinone" />
-				<pathelement location="lib/jcoverage.jar" />
+				<pathelement location="build/xins-common.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="src/tests/build/capis/allinone-capi.jar" />
+				<pathelement location="src/tests/build/classes-api/allinone" />
+				<pathelement location="src/tests/build/classes-types/allinone" />
+				<pathelement location="src/tests/myproject-capi.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
 		<report
-		srcdir="src/java-common"
+		srcdir="src/java-server-framework"
 		destdir="build/testresults/coverage" />
 	</target>
 

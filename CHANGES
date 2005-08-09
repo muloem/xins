@@ -31,6 +31,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Updated xmlenc from 0.47 to 0.48. This fixes SF.net bug #1201368:
     NoSuchFieldError for xmlenc on IBM Java 1.3/Linux.
 
+* Build- and release-process:
+  - Fixed the incorrect classpath for the "coverage" target.
+
 * Other:
   - Implemented SF.net RFE #1189408: Enforce that errorcode value is unique.
     This only applies to pre-XINS 1.0 errorcodes. Since XINS 1.0, it is not
