@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Implemented SF.net RFE #1224680. Added _CheckLinks meta-function.
   - Fixed SF.net bug #1187894. Duplicate 3305 message after re-init for change
     of xins.properties.
+  - Applied some refactorings.
 
 * Generated CAPI classes:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
