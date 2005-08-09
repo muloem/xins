@@ -8,6 +8,7 @@ package org.xins.common.servlet.container;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Set;
@@ -17,6 +18,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
 import org.xins.common.Log;
+import org.xins.common.Utils;
 
 /**
  * This class is an implementation of the ServletContext that can be
@@ -53,7 +55,17 @@ public class XINSServletContext implements ServletContext {
     */
    XINSServletContext(LocalServletConfig config) {
       _config = config;
-      _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
+      if (Utils.getJavaVersion() < 1.4) {
+         try {
+            _rootURL = "jar:" + config.getWarFile().toURL().toString() + "!";
+         } catch (MalformedURLException muex) {
+            
+            // TODO Log
+            muex.printStackTrace();
+         }
+      } else {
+         _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
+      }
    }
    
    //-------------------------------------------------------------------------
