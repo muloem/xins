@@ -48,7 +48,7 @@ public class APITests extends TestCase {
     */
    private API _allInOneAPI;
 
-	   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -148,7 +148,7 @@ public class APITests extends TestCase {
     * The system is actualy not backward compatible so it throws an exception.
     */
    public void testCompatibility() {
-   	
+
       try {
          TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
          com.mycompany.myproject.capi.CAPI capi = 
@@ -156,10 +156,10 @@ public class APITests extends TestCase {
          API myProjectAPI = capi.getAPISpecification();
          fail("Calling an older version of CAPI should throw an exception.");
       } catch (InvalidSpecificationException e) {
-         //Expecting exception	
+         //Expecting exception
       } catch (Exception e) {
-         fail("Unexpected exception occurs: " + e.getMessage());      	
-      }      	
+         fail("Unexpected exception occurs: " + e.getMessage());
+      }
    }
    
 }

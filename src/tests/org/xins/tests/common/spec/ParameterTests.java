@@ -50,14 +50,14 @@ public class ParameterTests extends TestCase {
     * The input parameter specification of the <i>DataSection</i> function.
     */
    private Parameter _parameter;
-	   
+
    /**
     * The user defined input parameters specification of 
     * the <i>DefinedTypes</i> function.
     */
    private Parameter[] _userDefinedParams;
-	   
-	   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -169,7 +169,7 @@ public class ParameterTests extends TestCase {
                "'DefinedTypes' has an incorrect description: " +
                userDefinedParameter.getDescription(),
                "An example of input for a int8 type with a minimum and maximum.", 
-			   userDefinedParameter.getDescription());
+               userDefinedParameter.getDescription());
             
             assertEquals("User defined type 'inputAge' of the function " +
                "'DefinedTypes' has an incorrect name: " +

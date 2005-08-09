@@ -100,7 +100,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:apply-templates select="input/param" mode="methods" />
 
 		<xsl:apply-templates select="input/data/element" mode="methods" />
-		
+
 		<xsl:text><![CDATA[
 
    /**
@@ -277,7 +277,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 				<xsl:value-of select="@name" />
 				<xsl:text><![CDATA[
     *    the new value for the parameter, or <code>null</code> if it should be
-	 *    reset.
+    *    reset.
     */
    public void ]]></xsl:text>
 			<xsl:value-of select="$setMethod" />

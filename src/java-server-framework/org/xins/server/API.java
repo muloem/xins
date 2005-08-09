@@ -1117,7 +1117,6 @@ implements DefaultResultCodes {
     *    the call result, never <code>null</code>.
     */
    private final FunctionResult doCheckLinks() {
-   	
       return CheckLinks.checkLinks(getProperties().descriptors());
    }
 

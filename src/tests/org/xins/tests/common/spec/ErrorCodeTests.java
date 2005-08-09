@@ -43,12 +43,12 @@ public class ErrorCodeTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-	
+
    /**
     * The Error Code specification of the <i>ResultCode</i> function.
     */
    private ErrorCode _errorCode;
-	   
+
 
    //-------------------------------------------------------------------------
    // Methods

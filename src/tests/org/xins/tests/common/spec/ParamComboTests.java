@@ -44,25 +44,25 @@ public class ParamComboTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-	
+
    /**
     * The exclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _exclusiveCombo;
-	   
+
    /**
     * The inclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _inclusiveCombo;
-	   
+
    /**
     * The all-or-none input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
    private ParamCombo _allOrNoneCombo;
-	   
+
 
    //-------------------------------------------------------------------------
    // Methods

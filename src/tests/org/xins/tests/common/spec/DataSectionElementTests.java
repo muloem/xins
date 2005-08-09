@@ -43,12 +43,12 @@ public class DataSectionElementTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-	
+
    /**
     * The API specification of the <i>allinone</i> API.
     */
    private API _allInOneAPI;
-	   
+
 
    //-------------------------------------------------------------------------
    // Methods

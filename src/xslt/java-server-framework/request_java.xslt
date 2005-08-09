@@ -17,62 +17,56 @@
 	<xsl:template name="request">
 
 <xsl:text><![CDATA[
-/**
- * Container for the input parameters of the <em>]]></xsl:text>
+   /**
+    * Container for the input parameters of the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
- */
-public final static class Request {
+    */
+   public final static class Request extends Object {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
 ]]></xsl:text>
 		<xsl:call-template name="constructor_request" />
 		<xsl:text>
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
 
-   /**
-    * The IP address from where the call came from.
-    */
-   private final String __ip;</xsl:text>
+      /**
+       * The IP address of the originating host.
+       */
+      private final String __ip;</xsl:text>
+
 		<xsl:apply-templates select="input/param" mode="field" />
 
 		<xsl:if test="input/data/element">
 			<xsl:text>
 
-   /**
-    * The data section for the request.
-    */
-   private final org.xins.common.xml.Element __dataSection;</xsl:text>
+      /**
+       * The data section for the request.
+       */
+      private final org.xins.common.xml.Element __dataSection;</xsl:text>
 		</xsl:if>
 
-		<xsl:text>
+		<xsl:text><![CDATA[
 
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
 
-   /**
-    * Gets the IP address of the host that requested the function.
-    *
-    * @return
-    *    IP address (e.g. 192.168.0.1), cannot be &lt;code&gt;null&lt;/code&gt;.
-    */
-   public final String remoteIP() {
-      return __ip;
-   }</xsl:text>
+      /**
+       * Gets the IP address of the originating host.
+       *
+       * @return
+       *    the IP address of the originating host (e.g.
+       *    <code>"192.168.0.1"</code>), never <code>null</code>.
+       */
+      public final String remoteIP() {
+         return __ip;
+      }]]></xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="method" />
 
@@ -87,7 +81,7 @@ public final static class Request {
 		
 		<xsl:apply-templates select="input/data/element" mode="elementClass" />
 		<xsl:text>
-}
+   }
 </xsl:text>
 	</xsl:template>
 
@@ -97,10 +91,10 @@ public final static class Request {
 	<xsl:template name="constructor_request">
 
 		<xsl:text><![CDATA[
-   /**
-    * Constructs a new <code>Request</code> instance.
-    */
-   public Request(String __ipArg]]></xsl:text>
+      /**
+       * Constructs a new <code>Request</code> instance.
+       */
+      public Request(String __ipArg]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
@@ -111,28 +105,29 @@ public final static class Request {
 					<xsl:with-param name="type"         select="@type"         />
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:text>, </xsl:text>
+			<xsl:text>,
+                     </xsl:text>
 			<xsl:value-of select="$javatype" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
-			<xsl:text>, org.xins.common.xml.Element _dataSection</xsl:text>
+			<xsl:text>,
+                     org.xins.common.xml.Element _dataSection</xsl:text>
 		</xsl:if>
 		<xsl:text>) {
-      __ip = __ipArg;
-</xsl:text>
+         __ip = __ipArg;</xsl:text>
 		<xsl:for-each select="input/param">
-			<xsl:text>      _</xsl:text>
+			<xsl:text>
+         _</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text> = </xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>;
-</xsl:text>
+			<xsl:text>;</xsl:text>
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
 			<xsl:text>
-      __dataSection = _dataSection;</xsl:text>
+         __dataSection = _dataSection;</xsl:text>
 		</xsl:if>
 		<xsl:text>
    }</xsl:text>
@@ -152,7 +147,7 @@ public final static class Request {
 
 		<xsl:text>
 
-   private final </xsl:text>
+      private final </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> _</xsl:text>
 		<xsl:value-of select="@name" />
@@ -207,26 +202,28 @@ public final static class Request {
 
 		<!-- If the object is not required, write a isSetType() method -->
 		<xsl:if test="not(@required = 'true')">
-			<xsl:text>
-   /**
-    * As the parameter is optional, this method checks whether this parameter
-    * has been sent.
-    *
-    * @return
-    *    true is the parameter has been sent, false otherwise.</xsl:text>
+			<xsl:text><![CDATA[
+
+      /**
+       * As the parameter is optional, this method checks whether this parameter
+       * has been sent.
+       *
+       * @return
+       *    <code>true</code> is the parameter has been sent,
+       *    <code>false</code> otherwise.]]></xsl:text>
 		<xsl:if test="deprecated">
 			<xsl:text>
-    *
-    * @deprecated
-    *    </xsl:text>
+       *
+       * @deprecated
+       *    </xsl:text>
 			<xsl:value-of select="deprecated/text()" />
 		</xsl:if>
 		<xsl:text>
-    */
-   boolean isSet</xsl:text>
+       */
+      boolean isSet</xsl:text>
 			<xsl:value-of select="$hungarianName" />
 			<xsl:text>() {
-      return _</xsl:text>
+         return _</xsl:text>
 			<xsl:choose>
 				<xsl:when test="name()='attribute'">
 					<xsl:text>element.getAttribute("</xsl:text>
@@ -238,14 +235,13 @@ public final static class Request {
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text> != null;
-   }
-			</xsl:text>
+      }</xsl:text>
 		</xsl:if>
 		<!-- Generates the get method. -->
 		<xsl:text><![CDATA[
 
-   /**
-    * Gets the value of the ]]></xsl:text>
+      /**
+       * Gets the value of the ]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="@required = 'true'">
 				<xsl:text>required</xsl:text>
@@ -257,12 +253,12 @@ public final static class Request {
 		<xsl:text><![CDATA[ input parameter <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em>,
-    * which is ]]></xsl:text>
+       * which is ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
 		<xsl:text><![CDATA[
-    *
-    * @return
-    *    the value of the <em>]]></xsl:text>
+       *
+       * @return
+       *    the value of the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> input parameter]]></xsl:text>
 		<xsl:choose>
@@ -273,40 +269,41 @@ public final static class Request {
 		</xsl:choose>
 		<xsl:if test="not(@required = 'true')">
 			<xsl:text>
-    *
-    * @throws ParameterNotInitializedException
-    *    if the value has not been set.</xsl:text>
+       *
+       * @throws org.xins.server.ParameterNotInitializedException
+       *    if the value has not been set.</xsl:text>
 		</xsl:if>
 		<xsl:if test="deprecated">
 			<xsl:text>
-    *
-    * @deprecated
-    *    </xsl:text>
+       *
+       * @deprecated
+       *    </xsl:text>
 			<xsl:value-of select="deprecated/text()" />
 		</xsl:if>
 		<xsl:text>
-    */
-   </xsl:text>
+       */
+      </xsl:text>
 		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
 		<xsl:text>() </xsl:text>
 		<xsl:if test="not(@required = 'true')">
-			<xsl:text>throws org.xins.server.ParameterNotInitializedException </xsl:text>
+			<xsl:text>
+      throws org.xins.server.ParameterNotInitializedException </xsl:text>
 		</xsl:if>
-		<xsl:text>{
-      </xsl:text>
+		<xsl:text>{</xsl:text>
 		<xsl:if test="not(@required = 'true')">
-			<xsl:text>if (!isSet</xsl:text>
+			<xsl:text>
+         if (!isSet</xsl:text>
 			<xsl:value-of select="$hungarianName" />
 			<xsl:text>()) {
-         throw new org.xins.server.ParameterNotInitializedException("</xsl:text>
+            throw new org.xins.server.ParameterNotInitializedException("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>");
-      }</xsl:text>
+         }</xsl:text>
 		</xsl:if>
 		<xsl:text>
-      return </xsl:text>
+         return </xsl:text>
 		<xsl:choose>
 			<xsl:when test="name()='attribute'">
 				<xsl:if test="$typeIsPrimary = 'true'">
@@ -340,7 +337,7 @@ public final static class Request {
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>;
-   }</xsl:text>
+      }</xsl:text>
 	</xsl:template>
 
 	<!-- ************************************************************* -->

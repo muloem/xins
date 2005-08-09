@@ -396,7 +396,7 @@ final class ConfigManager {
     */
    void destroy() {
 
-		// TODO: Change state of this object?
+      // TODO: Change state of this object?
 
       // stop the FileWatcher
       if (_configFileWatcher != null) {

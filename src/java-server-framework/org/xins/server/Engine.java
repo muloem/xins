@@ -134,13 +134,13 @@ final class Engine extends Object {
       _api = starter.constructAPI();
       starter.bootstrapAPI(_api);
 
-   	// Construct a generator for diagnostic context IDs
-   	_contextIDGenerator = new ContextIDGenerator(this);
-   	try {
-   	   _contextIDGenerator.bootstrap(new ServletConfigPropertyReader(config));
-   	} catch (Exception exception) {
-   		throw EngineStarter.servletExceptionFor(exception);
-   	}
+      // Construct a generator for diagnostic context IDs
+      _contextIDGenerator = new ContextIDGenerator(this);
+      try {
+         _contextIDGenerator.bootstrap(new ServletConfigPropertyReader(config));
+      } catch (Exception exception) {
+        throw EngineStarter.servletExceptionFor(exception);
+      }
 
       // Initialize the configuration manager
       _configManager.init();
@@ -285,7 +285,7 @@ final class Engine extends Object {
     *    the API name, never <code>null</code>.
     */
    String getAPIName() {
-   	return _apiName;
+      return _apiName;
    }
 
    /**
@@ -376,7 +376,7 @@ final class Engine extends Object {
 
          try {
 
-   	      // Initialize the diagnostic context ID generator
+            // Initialize the diagnostic context ID generator
             _contextIDGenerator.init(_runtimeProperties);
 
             // Initialize the API
@@ -743,7 +743,7 @@ final class Engine extends Object {
       // Set the state to DISPOSED
       _state.setState(EngineState.DISPOSED);
 
-   	// Log: Shutdown completed
+      // Log: Shutdown completed
       Log.log_3602();
    }
 
@@ -782,10 +782,10 @@ final class Engine extends Object {
     */
    PropertyReader getRuntimeProperties() throws IllegalStateException {
 
-   	// Check preconditions
-   	if (_state.getState() == EngineState.DISPOSED) {
-   		throw new IllegalStateException("Engine has been disposed.");
-   	}
+      // Check preconditions
+      if (_state.getState() == EngineState.DISPOSED) {
+         throw new IllegalStateException("Engine has been disposed.");
+      }
 
       return _runtimeProperties;
    }

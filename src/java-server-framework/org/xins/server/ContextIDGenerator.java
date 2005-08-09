@@ -168,11 +168,11 @@ final class ContextIDGenerator extends Manageable {
       buffer.append(':');
 
       // Append 5 random hex digits
-		// 
-		// NOTE: We assume that java.util.Random is thread-safe, although this
-		//       is not officially documented.
+      // 
+      // NOTE: We assume that java.util.Random is thread-safe, although this
+      //       is not officially documented.
       HexConverter.toHexString(buffer, _random.nextInt());
-		buffer.crop(_length);
+      buffer.crop(_length);
 
       // Log and return the context ID
       String contextID = buffer.toString();

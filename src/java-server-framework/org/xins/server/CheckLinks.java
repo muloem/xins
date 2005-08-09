@@ -49,7 +49,7 @@ class CheckLinks {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-	
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -268,7 +268,7 @@ class CheckLinks {
     */
    private static void waitTillThreadsRunning(List threads, int timeout)
    throws IllegalArgumentException {
-   	
+
       MandatoryArgumentChecker.check("threads", threads);
       
       Iterator threadIterator = threads.iterator();
@@ -277,7 +277,7 @@ class CheckLinks {
       // Storing the time approximately when the first thread was started
       long startTime = System.currentTimeMillis();
       try {
-      	
+
          // Iterate over all the threads
          while (threadIterator.hasNext()) {
             URLChecker urlThread = (URLChecker) threadIterator.next();
@@ -298,7 +298,7 @@ class CheckLinks {
             }
          }
       } catch (InterruptedException exception) {
-      	
+
          // The exception is thrown when another thread has interrupted 
          // the current thread. This should never happen so it should log
          // a programming error and throw a Programming exception.
@@ -330,9 +330,9 @@ class CheckLinks {
     */
    private static int addCheckElements(FunctionResult builder, List threads)
    throws IllegalArgumentException {
-   	
+
       MandatoryArgumentChecker.check("builder", builder, "threads", threads);
-   	
+
       Iterator threadIterator = threads.iterator();
       int errorCount = 0;
       
@@ -376,9 +376,9 @@ class CheckLinks {
     */
    private static String getResult(URLChecker urlThread)
    throws IllegalArgumentException {
-   	
+
       MandatoryArgumentChecker.check("urlThread", urlThread);
-   	
+
       if (urlThread.getSuccess()) {
          return "Success";
       } else {
@@ -462,7 +462,7 @@ class CheckLinks {
     * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
     */
    private static final class URLChecker extends Thread {
-   	
+
       //-------------------------------------------------------------------------
       // Class fields
       //-------------------------------------------------------------------------
@@ -490,14 +490,14 @@ class CheckLinks {
       throws IllegalArgumentException {
            
          MandatoryArgumentChecker.check("targetDescriptor", targetDescriptor);
-      	
+
          _targetDescriptor = targetDescriptor;
          _url = targetDescriptor.getURL();
          _statusCode = 0;
          _success = false;
       }
-   	  
-   	  
+
+
       //-------------------------------------------------------------------------
       // Fields
       //-------------------------------------------------------------------------
@@ -536,7 +536,7 @@ class CheckLinks {
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
-   	  
+
       /**
        * Runs this thread. It tries to connect to the URL provided in the 
        * {@link TargetDescriptor}. The URL is connected by sending a request 
