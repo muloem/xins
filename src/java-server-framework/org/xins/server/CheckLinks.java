@@ -78,9 +78,8 @@ class CheckLinks {
    public static FunctionResult checkLinks(List descriptors) 
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("descriptors", descriptors);
-      
-      FunctionResult builder = new FunctionResult();
       
       // Get all the targets from the descriptor list
       List targetDescriptors = getTargetDescriptors(descriptors);
@@ -95,6 +94,7 @@ class CheckLinks {
       waitTillThreadsRunning(threads, timeout);
 
       // Start building the result
+      FunctionResult builder = new FunctionResult();
       int errorCount = addCheckElements(builder, threads);
       builder.param("linkCount", String.valueOf(threads.size()));
       builder.param("errorCount", String.valueOf(errorCount));
@@ -142,15 +142,16 @@ class CheckLinks {
    private static List getTargetDescriptors(List descriptors)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("descriptors", descriptors);
       
       Iterator descriptorIterator = descriptors.iterator();
-      List targetDescriptors = new ArrayList();
+      List     targetDescriptors  = new ArrayList();
     
       // Each decriptor in the list contains target descriptors, so 
       // iterate over descriptors and get all the target descriptors, then
       // iterate over each target descriptor and get the individual 
-      // target descriptor.
+      // target descriptors.
       while (descriptorIterator.hasNext()) {
          Descriptor descriptor = (Descriptor)descriptorIterator.next();
          
@@ -189,9 +190,10 @@ class CheckLinks {
    private static List createAndRunUrlCheckThreads(List targetDescriptors)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("targetDescriptors", targetDescriptors);
       
-      List threads = new ArrayList();
+      List     threads = new ArrayList();
       Iterator targets = targetDescriptors.iterator();
       
       // Iterate over all target descriptors 
@@ -222,19 +224,20 @@ class CheckLinks {
     *    the list of {@link TargetDescriptor}s, cannot be <code>null</code>.
     *
     * @return
-    *    the biggest timeout from the list, never <code>null</code>.
+    *    the biggest timeout from the list, or <code>-1</code> if none of the
+	 *    target descriptors defines a time-out.
     * 
     * @throws IllegalArgumentException
     *    if <code>targetDescriptors == null</code>.
-    * 
     */
    private static int getBiggestTimeout(List targetDescriptors)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("targetDescriptors", targetDescriptors);
       
-      Iterator targets = targetDescriptors.iterator();
-      int biggestTimeout = -1;
+      Iterator targets        = targetDescriptors.iterator();
+      int      biggestTimeout = -1;
       
       // Iterate over all target descriptors 
       while (targets.hasNext()) {
@@ -264,15 +267,15 @@ class CheckLinks {
     * 
     * @throws IllegalArgumentException
     *    if <code>threads == null</code>.
-    * 
     */
    private static void waitTillThreadsRunning(List threads, int timeout)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("threads", threads);
       
       Iterator threadIterator = threads.iterator();
-      long threadTimeout = timeout;
+      long threadTimeout      = timeout;
       
       // Storing the time approximately when the first thread was started
       long startTime = System.currentTimeMillis();
@@ -331,17 +334,18 @@ class CheckLinks {
    private static int addCheckElements(FunctionResult builder, List threads)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("builder", builder, "threads", threads);
 
       Iterator threadIterator = threads.iterator();
-      int errorCount = 0;
+      int      errorCount     = 0;
       
       // Iterate over the threads of target descriptors and create the 
       // check element.
       while (threadIterator.hasNext()) {
          URLChecker urlThread = (URLChecker) threadIterator.next();
          ElementBuilder check = new ElementBuilder("check");
-         check.setAttribute("url", urlThread.getUrl());
+         check.setAttribute("url", urlThread.getURL());
          check.setAttribute("duration", 
             new Long(urlThread.getDuration()).toString());
          check.setAttribute("result", getResult(urlThread));
@@ -372,12 +376,16 @@ class CheckLinks {
     *    the result message, never <code>null</code>.
     * 
     * @throws IllegalArgumentException
-    *    if <code>urlThread == null</code>.
+    *    if <code>urlThread == null || urlThread.hasRun() == false</code>.
     */
    private static String getResult(URLChecker urlThread)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("urlThread", urlThread);
+		if (! urlThread.hasRun()) {
+			throw new IllegalArgumentException("urlThread().hasRun() == false");
+		}
 
       if (urlThread.getSuccess()) {
          return "Success";
@@ -407,6 +415,7 @@ class CheckLinks {
    private static String getResult(Throwable exception)
    throws IllegalArgumentException {
 
+		// Check preconditions
       MandatoryArgumentChecker.check("exception", exception);
       
       if (exception instanceof UnknownHostException) {
@@ -440,23 +449,21 @@ class CheckLinks {
     * <code>OPTIONS</code> method. Also calculates the total time to 
     * connect to the provided URL.
     *  
-    * The following example uses a {@link CheckLinks} object to get the 
+    * <p>The following example uses a {@link CheckLinks} object to get the 
     * {@link FunctionResult}.
     * 
-    * <pre>
-    * TargetDescriptor target = new TargetDescriptor();
+    * <blockquote><pre>TargetDescriptor target = new TargetDescriptor();
     * target.setURL("www.hotmail.com");
     * 
     * URLChecker urlThread = new URLChecker(target);
     * urlThread.start();
     * 
-    * String URL = urlThread.getUrl();
+    * String URL = urlThread.getURL();
     * int duration = urlThread.getDuration();
     * boolean success = urlThread.getSuccess();
     * if (!success) {
     *    exception = urlThread.getException();
-    * }
-    * </pre>
+    * }</pre></blockquote>
     * 
     * @version $Revision$ $Date$
     * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
@@ -489,12 +496,19 @@ class CheckLinks {
       public URLChecker(TargetDescriptor targetDescriptor)
       throws IllegalArgumentException {
            
+			// Check preconditions
          MandatoryArgumentChecker.check("targetDescriptor", targetDescriptor);
 
+			// Initialize fields
          _targetDescriptor = targetDescriptor;
-         _url = targetDescriptor.getURL();
-         _statusCode = 0;
-         _success = false;
+         _url              = targetDescriptor.getURL();
+			_duration         = -1;
+			_statusCode       = -1;
+
+			// Check postconditions
+			if (_url == null) {
+				throw Utils.logProgrammingError("_url == null");
+			}
       }
 
 
@@ -503,32 +517,38 @@ class CheckLinks {
       //-------------------------------------------------------------------------
       
       /**
-       * The target descriptor for which the URL needs to be checked.
+       * The target descriptor for which the URL needs to be checked. Never
+		 * <code>null</code>.
        */
       private TargetDescriptor _targetDescriptor;
       
       /**
-       * The exception thrown by the URL.
-       */
-      private Throwable _exception;
-      
-      /**
-       * The URL to be checked.
+       * The URL to be checked. Never <code>null</code>.
        */
       private String _url;
       
       /**
-       * The result of the URL check.
+       * The exception thrown when accessing the URL. Can be
+		 * <code>null</code> if the <code>URLChecker</code> has not run yet, or
+		 * if there was no error.
+       */
+      private Throwable _exception;
+      
+      /**
+       * The result of the URL check. Is <code>true</code> if the
+		 * <code>URLChecker</code> has run and was successful. If either of
+		 * these conditions is not met, then <code>false</code>.
        */
       private boolean _success;
       
       /**
-       * The time taken to check the URL.
+       * The time taken to check the URL. Initially <code>-1</code>.
        */
       private long _duration;
       
       /**
-       * The status code of the URL.
+       * The status code returned when the URL was called. Initially
+		 * <code>-1</code>, when the <code>URLChecker</code> was not run yet.
        */
       private int _statusCode;
 
@@ -543,9 +563,18 @@ class CheckLinks {
        * associated with an HTTP <code>OPTIONS</code> method. It also
        * calculates the total time to connect to the provided URL and saves
        * the exception in case an exception occurs.
+		 * 
+		 * @throws IllegalStateException
+		 *    if this <code>URLChecker</code> has already run.
        */
-      public void run() {
-         _duration = 0;
+      public void run() throws IllegalStateException {
+
+			// Check preconditions
+			if (hasRun()) {
+				throw new IllegalStateException("This URLChecker has already run.");
+			}
+
+			// Register current time, to compute total duration later
          long startTime = System.currentTimeMillis();
 
          try {
@@ -570,14 +599,42 @@ class CheckLinks {
          }
          _duration = System.currentTimeMillis() - startTime;
       }
+
+		/**
+		 * Checks if this <code>URLChecker</code> has already run.
+		 *
+		 * @return
+		 *    <code>true</code> if this <code>URLChecker</code> has already run,
+		 *    or <code>false</code> otherwise.
+		 */
+		boolean hasRun() {
+			return (_duration >= 0);
+		}
+      
+		/**
+		 * Checks if this <code>URLChecker</code> has already run and if not,
+		 * throws an exception
+		 *
+		 * @throws IllegalStateException
+		 *    if this <code>URLChecker</code> has not run yet.
+		 */
+		private void assertHasRun() throws IllegalStateException {
+			if (!hasRun()) {
+				throw new IllegalStateException("This URLChecker has not run yet.");
+			}
+		}
       
       /**
-       * Returns the total duration it took to connect to the URL.
+       * Returns the total time it took to connect to the URL.
        *
        * @return 
-       *    the total duration, never <code>null</code>.
+       *    the total duration in milliseconds, never <code>null</code>.
+       *
+       * @throws IllegalStateException 
+		 *    if this <code>URLChecker</code> has not run yet.
        */
-      public long getDuration() {
+      public long getDuration() throws IllegalStateException {
+			assertHasRun();
          return _duration;
       }
       
@@ -586,8 +643,12 @@ class CheckLinks {
        *
        * @return 
        *    the success flag, never <code>null</code>.
+       *
+       * @throws IllegalStateException 
+		 *    if this <code>URLChecker</code> has not run yet.
        */
-      public boolean getSuccess() {
+      public boolean getSuccess() throws IllegalStateException {
+			assertHasRun();
          return _success;
       }
       
@@ -596,8 +657,12 @@ class CheckLinks {
        *
        * @return 
        *    the status code, never <code>null</code>.
+       *
+       * @throws IllegalStateException 
+		 *    if this <code>URLChecker</code> has not run yet.
        */
-      public int getStatusCode() {
+      public int getStatusCode() throws IllegalStateException {
+			assertHasRun();
          return _statusCode;
       }
       
@@ -606,8 +671,12 @@ class CheckLinks {
        *
        * @return 
        *    the URL, never <code>null</code>.
+       *
+       * @throws IllegalStateException 
+		 *    if this <code>URLChecker</code> has not run yet.
        */
-      public String getUrl() {
+      public String getURL() throws IllegalStateException {
+			assertHasRun();
          return _url;
       }
       
@@ -616,8 +685,12 @@ class CheckLinks {
        *
        * @return 
        *    the exception, never <code>null</code>.
+       *
+       * @throws IllegalStateException 
+		 *    if this <code>URLChecker</code> has not run yet.
        */
-      public Throwable getException() {
+      public Throwable getException() throws IllegalStateException {
+			assertHasRun();
          return _exception;
       }
    }
