@@ -500,6 +500,14 @@ ${sf.file}</fail>
 				<exclude name="XINSProtocol.html" />
 			</fileset>
 		</copy>
+		<mkdir dir="docs/primer" />
+		<copy todir="docs/primer">
+			<fileset dir="../${name}-docs/src/web">
+				<include name="primer.html" />
+				<include name="primer.css" />
+				<include name="${name}-primer-*.png" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="package" depends="javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">
@@ -527,15 +535,9 @@ ${sf.file}</fail>
 			<include name="lib/jakarta-oro.LICENSE"        />
 			<include name="lib/log4j.LICENSE"              />
 			<include name="lib/junit.LICENSE"              />
-			<include name="docs/*.html"                    />
-			<include name="docs/*.css"                     />
-			<include name="docs/protocol/*.html"           />
-			<include name="docs/protocol/*.css"            />
-			<include name="docs/javadoc/**/*.html"         />
-			<include name="docs/javadoc/*.css"             />
+			<include name="docs/**/*.html"                 />
+			<include name="docs/**/*.css"                  />
 			<include name="docs/javadoc/package-list"      />
-			<include name="docs/logdoc/**/*.html"          />
-			<include name="docs/logdoc/**/*.css"           />
 			<include name="demo/capis/**/*"                />
 			<include name="demo/xins-project/**/*"         />
 			<include name="demo/*.xml"                     />

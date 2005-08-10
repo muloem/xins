@@ -7,7 +7,7 @@ AppName=XINS
 AppVerName=XINS version %%VERSION%%
 DefaultDirName={sd}\xins-%%VERSION%%
 VersionInfoVersion=%%VERSION%%
-OutputDir=G:\
+OutputDir=C:\projects
 OutputBaseFilename=xins-%%VERSION%%
 SetupIconFile=xins.ico
 WizardImageFile=bigxinslogo.bmp
@@ -19,13 +19,14 @@ LicenseFile=G:\xins-%%VERSION%%\COPYRIGHT
 InfoBeforeFile=xins-info1.txt
 
 [Files]
-Source: "G:\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdirs
+Source: "C:\projects\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "xins.ico"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\Run demo"; Filename: "{app}\demo\rundemo.bat"; WorkingDir: "{app}\demo\"; IconFilename: "{app}\xins.ico"
 Name: "{group}\Readme"; Filename: "{app}\README.html"; WorkingDir: "{app}"
 Name: "{group}\Guideline"; Filename: "{app}\docs\index.html"; WorkingDir: "{app}"
+Name: "{group}\Primer"; Filename: "{app}\docs\primer\primer.html"; WorkingDir: "{app}"
 ;Name: "{group}\{cm:UninstallProgram,XINS}"; Filename: "{uninstallexe}"
 
 [Registry]
