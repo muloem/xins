@@ -13,9 +13,9 @@ SetupIconFile=xins.ico
 WizardImageFile=bigxinslogo.bmp
 WizardSmallImageFile=smallxinslogo.bmp
 UninstallDisplayIcon={app}\xins.ico
-DefaultGroupName=Xins
+DefaultGroupName=XINS %%VERSION%%
 DisableProgramGroupPage=yes
-LicenseFile=G:\xins-%%VERSION%%\COPYRIGHT
+LicenseFile=C:\projects\xins-%%VERSION%%\COPYRIGHT
 InfoBeforeFile=xins-info1.txt
 
 [Files]
