@@ -291,7 +291,7 @@ class CheckLinks {
             // by the time which is already passed.
             long endTime = System.currentTimeMillis();
             long timePassed = endTime - startTime;
-            threadTimeout = threadTimeout - timePassed;
+            threadTimeout = timeout - timePassed;
             
             // If the timeout becomes negative, it means that the total time
             // out interval has passed now we do not need to setup timeout 
