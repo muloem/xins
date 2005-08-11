@@ -31,6 +31,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
     Request.
 
+* Generated WSDL:
+  - The defined types are declared as types in the generated WSDL file.
+
 * Generated build file:
   - Fixed SF.net bug #1250043: No filtering on specification files.
 

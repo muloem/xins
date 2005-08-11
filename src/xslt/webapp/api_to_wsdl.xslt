@@ -61,6 +61,13 @@
 						<xsl:with-param name="specsdir"     select="$specsdir"     />
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
+					
+					<!-- Write the defined types -->
+					<xsl:apply-templates select="type" mode="types">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="specsdir"     select="$specsdir"     />
+						<xsl:with-param name="api"          select="$apiname"      />
+					</xsl:apply-templates>
 				</xsd:schema>
 			</types>
 					
@@ -129,8 +136,8 @@
 			<xsd:complexType>
 				<xsd:sequence>
 					<xsl:for-each select="param">
-						<xsl:variable name="soaptype">
-							<xsl:call-template name="soaptype_for_type">
+						<xsl:variable name="elementtype">
+							<xsl:call-template name="elementtype">
 								<xsl:with-param name="project_file" select="$project_file" />
 								<xsl:with-param name="specsdir"     select="$specsdir" />
 								<xsl:with-param name="api"          select="$api" />
@@ -144,7 +151,7 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="paramname" select="@name" />
-						<xsd:element name="{$paramname}" type="xsd:{$soaptype}" minOccurs="{$minoccurs}" />
+						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}" />
 					</xsl:for-each>
 					<xsl:if test="data">
 						<xsd:element name="data" minOccurs="0">
@@ -201,8 +208,8 @@
 &lt;xsd:extension base="xsd:string"></xsl:text>
 				</xsl:if>
 				<xsl:for-each select="attribute">
-					<xsl:variable name="soaptype">
-						<xsl:call-template name="soaptype_for_type">
+					<xsl:variable name="elementtype">
+						<xsl:call-template name="elementtype">
 							<xsl:with-param name="project_file" select="$project_file" />
 							<xsl:with-param name="specsdir"     select="$specsdir" />
 							<xsl:with-param name="api"          select="$api" />
@@ -216,7 +223,7 @@
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:variable name="attributename" select="@name" />
-					<xsd:attribute name="{$attributename}" type="xsd:{$soaptype}" use="{$use}" />
+					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}" />
 				</xsl:for-each>
 				<xsl:if test="contains/pcdata">
 					<xsl:text disable-output-escaping="yes">
@@ -286,5 +293,63 @@
 				</fault>
 			</xsl:for-each>
 		</operation>
+	</xsl:template>
+	
+	<xsl:template match="type" mode="types">
+	
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		
+		<xsl:variable name="type_name" select="@name" />
+		<xsl:variable name="type_file" select="concat($specsdir, '/', $type_name, '.typ')" />
+		
+		<xsl:choose>
+			<xsl:when test="document($type_file)/type/pattern">
+				<xsl:variable name="pattern" select="document($type_file)/type/pattern/text()" />
+				<simpleType name="{$type_name}Type" base="string">
+					<pattern value="{$pattern}" />
+				</simpleType>
+			</xsl:when>
+			<xsl:when test="document($type_file)/type/enum">
+				<simpleType name="{$type_name}Type" base="string">
+					<xsl:for-each select="document($type_file)/type/enum/item">
+						<xsl:variable name="enumeration_value" select="@value" />
+						<enumeration value="{$enumeration_value}" />
+					</xsl:for-each>
+				</simpleType>
+			</xsl:when>
+			<xsl:otherwise>
+				<simpleType name="{$type_name}Type" base="string" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="elementtype">
+		
+		<xsl:param name="project_file" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		<xsl:param name="type"         />
+
+		<xsl:choose>
+			<xsl:when test="starts-with($type, '_')">
+				<xsl:variable name="soaptype">
+					<xsl:call-template name="soaptype_for_type">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"          select="$api" />
+						<xsl:with-param name="type"         select="@type" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:text>xsd:</xsl:text>
+				<xsl:value-of select="$soaptype" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>tns:</xsl:text>
+				<xsl:value-of select="$type" />
+				<xsl:text>Type</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
