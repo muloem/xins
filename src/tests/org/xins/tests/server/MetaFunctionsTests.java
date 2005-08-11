@@ -486,27 +486,21 @@ public class MetaFunctionsTests extends TestCase {
       }
       
       // Waiting till threads are finished.
-      boolean threadsFinished = false;
-      while (!threadsFinished) {
-         threadsFinished = true;
-         for (int count = 0; count < totalThreads; count++) {
-            if (threads[count].isAlive()) {
-               threadsFinished = false;   
-            }
-         }
+      for (int count = 0; count < totalThreads; count ++) {
+         threads[count].join(); 
       }
       
       // Testing threads.
       for (int count = 0; count < totalThreads; count ++) {
          MultiCallChecker callChecker = threads[count];
          
-         assertNull(count + "Failed due to unexpected exception: ", 
-            callChecker.getException());
+         assertNull(count + "Failed due to unexpected exception: " + 
+            callChecker.getException(), callChecker.getException());
          XINSCallResult result = callChecker.getCallResult();
-         assertNull("The function returned a result code.", 
-            result.getErrorCode());
-         assertNull("The function returned a data element.", 
-            result.getDataElement());
+         assertNull("The function returned a result code." + 
+            result.getErrorCode(), result.getErrorCode());
+         assertNull("The function returned a data element." +  
+            result.getDataElement(), result.getDataElement());
          assertNull("The function returned some parameters.", 
             result.getParameters());
       }
