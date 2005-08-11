@@ -67,23 +67,25 @@ public class InvalidResponseServlet extends HttpServlet {
          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
          throw new IOException("Invalid request, no \"_function\" parameter passed.");
       }
+      String xmlResponse = null;
+      
       if (function.equals("SimpleTypes")) {
-         response.setStatus(HttpServletResponse.SC_OK);
-         response.setContentType("text/xml;charset=UTF-8");
-         Writer writer = response.getWriter();
-         writer.write(getInvalidSimpleTypesResult());
-         writer.close();
+         xmlResponse = getInvalidSimpleTypesResult();
       } else if (function.equals("DefinedTypes")) {
-         response.setStatus(HttpServletResponse.SC_OK);
-         response.setContentType("text/xml;charset=UTF-8");
-         Writer writer = response.getWriter();
-         writer.write(getInvalidDefinedTypesResult());
-         writer.close();
+         xmlResponse = getInvalidDefinedTypesResult();
       } else if (function.equals("ResultCode")) {
+         xmlResponse = getInvalidResultCodeResult();
+      } else if (function.equals("DataSection")) {
+         xmlResponse = getInvalidDataSectionResult();
+      } else if (function.equals("DataSection2")) {
+         xmlResponse = getInvalidDataSection2Result();
+      }
+      
+      if (xmlResponse != null) {
          response.setStatus(HttpServletResponse.SC_OK);
          response.setContentType("text/xml;charset=UTF-8");
          Writer writer = response.getWriter();
-         writer.write(getInvalidResultCodeResult());
+         writer.write(xmlResponse);
          writer.close();
       } else {
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -128,6 +130,42 @@ public class InvalidResponseServlet extends HttpServlet {
    private String getInvalidResultCodeResult() {
       return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
              "<result errorcode=\"InvalidNumber\">"+
+             "</result>";
+   }
+   
+   /**
+    * Returns an invalid result for the DataSection function.
+    *
+    * @returns
+    *    the invalid result as XML String.
+    */
+   private String getInvalidDataSectionResult() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result>" +
+             "<data>" +
+             "<user address=\"12 Madison Avenue\">This user has the root authorisation.</user>" +
+             "</data>" +
+             "</result>";
+   }
+   
+   /**
+    * Returns an invalid result for the DataSection2 function.
+    *
+    * @returns
+    *    the invalid result as XML String.
+    */
+   private String getInvalidDataSection2Result() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result>" +
+             "<data>" +
+             "<packet destination=\"20 West Street, New York\">" +
+             "<product id=\"123456\" price=\"12\" />" +
+             "<product id=\"321654\" price=\"23\" />" +
+             "</packet>" +
+             "<packet destination=\"55 Kennedy lane, Washinton DC\">" +
+             "<product id=\"123456\" price=\"bla\" />" +
+             "</packet>" +
+             "</data>" +
              "</result>";
    }
 }
