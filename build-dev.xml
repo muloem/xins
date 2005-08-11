@@ -245,6 +245,7 @@ ${sf.file}</fail>
 		<delete file="jcoverage.ser" />
 		<delete dir="build/instrumented-classes" />
 		<delete dir="build/testresults/coverage" />
+		<delete dir="build/coverage-src" />
 	</target>
 
 	<target name="-prepare-coverage">
@@ -258,13 +259,18 @@ ${sf.file}</fail>
 		<instrument todir="build/instrumented-classes/java-common">
 			<fileset dir="build/classes/java-common" includes="**/*.class" />
 		</instrument>
+		<copy todir="build/coverage-src">
+			<fileset dir="src/java-client-framework" includes="**/*.java" />
+			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-common" includes="**/*.java" />
+		</copy>
 	</target>
 
 	<target name="coverage" depends="-junit-task,classes-tests,-prepare-coverage">
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 		<mkdir dir="build/testresults/coverage" />
-		<junit printsummary="true" failureproperty="tests.failed" fork="yes" maxmemory="512M" showoutput="false" haltonfailure="false">
+		<junit printsummary="true" failureproperty="tests.failed" maxmemory="512m" fork="yes" showoutput="true" haltonfailure="false">
 			<sysproperty key="user.dir" value="${basedir}" />
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
@@ -285,7 +291,7 @@ ${sf.file}</fail>
 			</classpath>
 		</junit>
 		<report
-		srcdir="src/java-server-framework"
+		srcdir="build/coverage-src"
 		destdir="build/testresults/coverage" />
 	</target>
 
