@@ -155,7 +155,7 @@ final class ContextIDGenerator extends Manageable {
     *    if this object is currently not usable, i.e. in the
     *    {@link #USABLE} state.
     */
-   public String generate() throws IllegalStateException {
+   String generate() throws IllegalStateException {
 
       // Check preconditions
       assertUsable();
