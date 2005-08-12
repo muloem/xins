@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,11 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.io.FastStringWriter;
+import org.xins.common.spec.DataSectionElement;
 import org.xins.common.spec.InvalidSpecificationException;
+import org.xins.common.spec.Parameter;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.ElementSerializer;
 
@@ -183,7 +187,9 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterName = parameterElem.getLocalName();
             String parameterValue = parameterElem.getText();
             try {
-               parameterValue = soapInputValueTransformation(functionName, parameterName, parameterValue);
+               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+               parameterValue = soapInputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
                
                // keep the old value
@@ -193,9 +199,20 @@ final class SOAPCallingConvention extends CallingConvention {
          
          // Parse the input data section
          Element dataSection = null;
+         Element transformedDataSection = null;
          List dataSectionList = parametersElem.getChildElements("data");
          if (dataSectionList.size() == 1) {
             dataSection = (Element) dataSectionList.get(0);
+            
+            try {
+               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               DataSectionElement[] dataSectionSpec = functionSpec.getInputDataSectionElements();
+               transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
+            } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+               transformedDataSection = dataSection;
+            }
          } else if (dataSectionList.size() > 1) {
             throw new InvalidRequestException("Only one data section is allowed.");
          }
@@ -273,7 +290,9 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterName = (String) outputParameterNames.next();
             String parameterValue = xinsResult.getParameter(parameterName);
             try {
-               parameterValue = soapOutputValueTransformation(functionName, parameterName, parameterValue);
+               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
+               parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
                
                // keep the old value
@@ -286,8 +305,20 @@ final class SOAPCallingConvention extends CallingConvention {
          // Write the data element
          Element dataElement = xinsResult.getDataElement();
          if (dataElement != null) {
+            
+            Element transformedDataElement = null;
+            try {
+               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               DataSectionElement[] dataSectionSpec = functionSpec.getInputDataSectionElements();
+               transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
+            } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+               transformedDataElement = dataElement;
+            }
+            
             ElementSerializer serializer = new ElementSerializer();
-            serializer.output(xmlout, dataElement);
+            serializer.output(xmlout, transformedDataElement);
          }
 
          xmlout.endTag(); // response
@@ -305,11 +336,8 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * Transforms the value of a input SOAP parameter to the XINS equivalent.
     *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
-    * @param parameterName
-    *    the name of the parameter, cannot be <code>null</code>.
+    * @param parameterType
+    *    the type of the parameter, cannot be <code>null</code>.
     *
     * @param value
     *    the value return by the SOAP parameter, cannot be <code>null</code>.
@@ -320,9 +348,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private String soapInputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
-      org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
-      Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+   private String soapInputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
       if (parameterType instanceof org.xins.common.types.standard.Boolean) {
          if (value.equals("1")) {
             return "true";
@@ -352,11 +378,8 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * Transforms the value of a output XINS parameter to the SOAP equivalent.
     *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
-    * @param parameterName
-    *    the name of the parameter, cannot be <code>null</code>.
+    * @param parameterType
+    *    the type of the parameter, cannot be <code>null</code>.
     *
     * @param value
     *    the value return by the XINS function, cannot be <code>null</code>.
@@ -367,9 +390,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private String soapOutputValueTransformation(String functionName, String parameterName, String value) throws InvalidSpecificationException {
-      org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
-      Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
+   private String soapOutputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
       if (parameterType instanceof org.xins.common.types.standard.Date) {
          try {
             Date date = XINS_DATE_FORMATTER.parse(value);
@@ -387,5 +408,87 @@ final class SOAPCallingConvention extends CallingConvention {
          }
       }
       return value;
+   }
+   
+   /**
+    * Convert the values of element to the required format.
+    *
+    * @param dataSection
+    *    the spcification of the elements, cannot be <code>null</code>.
+    *
+    * @param input
+    *    <code>true</code> if it's the input parameter that should be transform,
+    *    <code>false</code> if it's the output parameter.
+    *
+    * @param element
+    *    the element node to process, cannot be <code>null</code>.
+    *
+    * @param top
+    *    <code>true</code> if it's the top element, <code>false</code> otherwise.
+    *
+    * @return
+    *    the converted value, never <code>null</code>.
+    *
+    * @throws InvalidSpecificationException
+    *    if the specification is incorrect.
+    */
+   private Element soapElementTransformation(DataSectionElement[] dataSection, boolean input, Element element, boolean top) {
+      String elementName = element.getLocalName();
+      String elementNameSpaceURI = element.getNamespaceURI();
+      Map elementAttributes = element.getAttributeMap();
+      String elementText = element.getText();
+      List elementChildren = element.getChildElements();
+      
+      ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
+      
+      if (!top) {
+         builder.setText(elementText);
+
+         // Find the DataSectionElement for this element.
+         DataSectionElement elementSpec = null;
+         for (int i = 0; i < dataSection.length || elementSpec != null; i++) {
+            if (dataSection[i].getName().equals(elementName)) {
+               elementSpec = dataSection[i];
+            }
+         }
+
+         // Go through the attributes
+         Iterator itAttributeNames = elementAttributes.keySet().iterator();
+         while (itAttributeNames.hasNext()) {
+            String attributeName = (String) itAttributeNames.next();
+            String attributeValue = (String) elementAttributes.get(attributeName);
+
+            // Convert the value if needed
+            Parameter[] attributesSpec = elementSpec.getAttributes();
+            Type attributeType = null;
+            for (int i = 0; i < attributesSpec.length || attributeType != null; i++) {
+               if (attributesSpec[i].getName().equals(attributeName)) {
+                  attributeType = attributesSpec[i].getType();
+               }
+            }
+            try {
+               if (input) {
+                  attributeValue = soapInputValueTransformation(attributeType, attributeValue);
+               } else {
+                  attributeValue = soapOutputValueTransformation(attributeType, attributeValue);
+               }
+            } catch (InvalidSpecificationException ise) {
+
+               // Keep the old value
+            }
+
+            builder.setAttribute(attributeName, attributeValue);
+         }
+      }
+      
+      // Add the children of this element
+      Iterator itChildren = elementChildren.iterator();
+      while (itChildren.hasNext()) {
+         Element nextChild = (Element) itChildren.next();
+         Element transformedChild = soapElementTransformation(dataSection , input, nextChild, false);
+         builder.addChild(transformedChild);
+      }
+      
+      return builder.createElement();
    }
 }
