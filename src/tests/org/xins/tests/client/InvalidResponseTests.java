@@ -122,7 +122,7 @@ public class InvalidResponseTests extends TestCase {
    
    /**
     * Tests that the required returned attribute are checked.
-    *
+    */
    public void testInvalidDataSection() throws Exception {
       try {
          _capi.callDataSection("hello");
@@ -133,11 +133,11 @@ public class InvalidResponseTests extends TestCase {
          exception.printStackTrace();
          fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
       }
-   }*/
+   }
    
    /**
     * Tests that the returned attribute types are checked.
-    *
+    */
    public void testInvalidDataSection2() throws Exception {
       try {
          _capi.callDataSection2("hello");
@@ -148,7 +148,7 @@ public class InvalidResponseTests extends TestCase {
          exception.printStackTrace();
          fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
       }
-   }*/
+   }
    
    public void tearDown() throws Exception {
       AllTests.HTTP_SERVER.removeServlet("/invalid");
