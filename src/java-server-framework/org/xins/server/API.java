@@ -905,6 +905,8 @@ implements DefaultResultCodes {
       if (functionName.charAt(0) == '_') {
 			try {
             return callMetaFunction(start, functionName, functionRequest, ip);
+			} catch (NoSuchFunctionException exception) {
+				throw exception;
 			} catch (Throwable exception) {
 				final int callID = 0; // TODO
 				return handleFunctionException(start, functionRequest, ip, callID,
