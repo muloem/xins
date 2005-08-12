@@ -22,9 +22,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     message.
 
 * XINS/Java Server Framework:
-  - Implemented SF.net RFE #1224680. Added _CheckLinks meta-function.
+  - Fixed SF.net bug #1256466: Exception in meta-function should generate
+    _InternalError.
   - Fixed SF.net bug #1187894. Duplicate 3305 message after re-init for change
     of xins.properties.
+  - Implemented SF.net RFE #1224680. Added _CheckLinks meta-function.
   - Applied some refactorings.
 
 * Generated CAPI classes:
