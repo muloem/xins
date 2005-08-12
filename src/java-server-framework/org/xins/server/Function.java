@@ -6,11 +6,7 @@
  */
 package org.xins.server;
 
-import java.io.PrintWriter;
-
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.Manageable;
 
 import org.xins.logdoc.LogdocSerializable;
@@ -261,32 +257,9 @@ implements DefaultResultCodes {
          }
 
       } catch (Throwable exception) {
-
-         Log.log_3500(exception, _name, callID);
-
-         // Create a set of parameters for the result
-         BasicPropertyReader resultParameters = new BasicPropertyReader();
-
-         // Add the exception class
-         resultParameters.set("_exception.class", exception.getClass().getName());
-
-         // Add the exception message, if any
-         String exceptionMessage = exception.getMessage();
-         if (exceptionMessage != null && exceptionMessage.length() > 0) {
-            resultParameters.set("_exception.message", exceptionMessage);
-         }
-
-         // Add the stack trace, if any
-         FastStringWriter stWriter = new FastStringWriter();
-         PrintWriter printWriter = new PrintWriter(stWriter);
-         exception.printStackTrace(printWriter);
-         String stackTrace = stWriter.toString();
-         if (stackTrace != null && stackTrace.length() > 0) {
-            resultParameters.set("_exception.stacktrace", stackTrace);
-         }
-
-         result = new FunctionResult("_InternalError", resultParameters);
-      }
+         result = _api.handleFunctionException(start, functionRequest, ip,
+                                               callID, exception);
+		}
 
       // Update function statistics
       // We assume that this method will never throw any exception

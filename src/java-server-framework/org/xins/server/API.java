@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import org.xins.common.io.FastStringWriter;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -18,6 +20,7 @@ import java.util.TimeZone;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -855,8 +858,8 @@ implements DefaultResultCodes {
       boolean allow;
 
       // If no property is defined only localhost is allowed
-      if (_accessRuleList == AccessRuleList.EMPTY && (ip.equals("127.0.0.1")
-            || ip.equals(_localIPAddress))) {
+      if (_accessRuleList == AccessRuleList.EMPTY &&
+          (ip.equals("127.0.0.1") || ip.equals(_localIPAddress))) {
          allow = true;
       } else {
          try {
@@ -892,85 +895,208 @@ implements DefaultResultCodes {
          }
       }
 
-      // Handle meta-functions
-      if (functionName.charAt(0) == '_') {
-
-         FunctionResult result;
-
-         if ("_NoOp".equals(functionName)) {
-            result = SUCCESSFUL_RESULT;
-         } else if ("_GetFunctionList".equals(functionName)) {
-            result = doGetFunctionList();
-         } else if ("_GetStatistics".equals(functionName)) {
-            String detailedArgument = functionRequest.getParameters().get("detailed");
-            boolean detailed = detailedArgument != null && detailedArgument.equals("true");
-            String resetArgument = functionRequest.getParameters().get("reset");
-            if (resetArgument != null && resetArgument.equals("true")) {
-               _statisticsLocked = true;
-               result = doGetStatistics(detailed);
-               doResetStatistics();
-               _statisticsLocked = false;
-               synchronized (this) {
-                  notifyAll();
-               }
-            } else {
-               result = doGetStatistics(detailed);
-            }
-         } else if ("_GetVersion".equals(functionName)) {
-            result = doGetVersion();
-         } else if ("_CheckLinks".equals(functionName)) {
-            result = doCheckLinks();
-         } else if ("_GetSettings".equals(functionName)) {
-            result = doGetSettings();
-         } else if ("_DisableFunction".equals(functionName)) {
-            result = doDisableFunction(functionRequest.getParameters().get("functionName"));
-         } else if ("_EnableFunction".equals(functionName)) {
-            result = doEnableFunction(functionRequest.getParameters().get("functionName"));
-         } else if ("_ResetStatistics".equals(functionName)) {
-            result = doResetStatistics();
-         } else if ("_ReloadProperties".equals(functionName)) {
-            _engine.getConfigManager().reloadPropertiesIfChanged();
-            result = SUCCESSFUL_RESULT;
-         } else {
-            throw new NoSuchFunctionException(functionName);
-         }
-
-         // Determine duration
-         long duration = System.currentTimeMillis() - start;
-
-         // Determine error code, fallback is a zero character
-         String code = result.getErrorCode();
-         if (code == null) {
-            code = "0";
-         }
-
-         // Prepare for transaction logging
-         LogdocSerializable serStart  = new FormattedDate(start);
-         LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
-         LogdocSerializable outParams = new FormattedParameters(result.getParameters());
-
-         // Log transaction before returning the result
-         Log.log_3540(serStart, ip, functionName, duration, code, inParams,
-                      outParams);
-         Log.log_3541(serStart, ip, functionName, duration, code);
-
-         return result;
-      }
-
       // Short-circuit if we are shutting down
       if (getState().equals(DEINITIALIZING)) {
          Log.log_3611(_name, functionName);
          return new FunctionResult("_InternalError");
       }
 
-      // Get the function object
+      // Handle meta-functions
+      if (functionName.charAt(0) == '_') {
+			try {
+            return callMetaFunction(start, functionName, functionRequest, ip);
+			} catch (Throwable exception) {
+				final int callID = 0; // TODO
+				return handleFunctionException(start, functionRequest, ip, callID,
+                                           exception);
+			}
+      }
+
+      // Handle normal functions
       Function function = getFunction(functionName);
       if (function == null)  {
          throw new NoSuchFunctionException(functionName);
       }
-
-      // Forward the call to the function
       return function.handleCall(start, functionRequest, ip);
+   }
+
+   /**
+    * Handles a call to a meta-function.
+    *
+    * @param start
+    *    the start time of the request, in milliseconds since midnight January
+    *    1, 1970.
+    *
+    * @param functionName
+    *    the name of the meta-function, cannot be <code>null</code> and must
+    *    start with the underscore character <code>'_'</code>.
+    *
+    * @param functionRequest
+    *    the function request, never <code>null</code>.
+    *
+    * @param ip
+    *    the IP address of the requester, never <code>null</code>.
+    *
+    * @return
+    *    the result of the function call, never <code>null</code>.
+    *
+    * @throws NoSuchFunctionException
+    *    if there is no meta-function by the specified name.
+    */
+   private FunctionResult callMetaFunction(long            start,
+                                           String          functionName,
+                                           FunctionRequest functionRequest,
+                                           String          ip)
+   throws NoSuchFunctionException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("functionName", functionName);
+      if (functionName.length() < 1) {
+         throw new IllegalArgumentException("functionName.length() < 1");
+      } else if (functionName.charAt(0) != '_') {
+         throw new IllegalArgumentException("Function name \"" +
+                                            functionName +
+                                            "\" is not a meta-function.");
+      }
+
+      FunctionResult result;
+
+      // No Operation
+      if ("_NoOp".equals(functionName)) {
+         result = SUCCESSFUL_RESULT;
+
+      // Retrieve function list
+      } else if ("_GetFunctionList".equals(functionName)) {
+         result = doGetFunctionList();
+
+      // Get function call quantity and performance statistics
+      } else if ("_GetStatistics".equals(functionName)) {
+         String detailedArgument = functionRequest.getParameters().get("detailed");
+         boolean detailed = detailedArgument != null && detailedArgument.equals("true");
+         String resetArgument = functionRequest.getParameters().get("reset");
+         if (resetArgument != null && resetArgument.equals("true")) {
+            _statisticsLocked = true;
+            result = doGetStatistics(detailed);
+            doResetStatistics();
+            _statisticsLocked = false;
+            synchronized (this) {
+               notifyAll();
+            }
+         } else {
+            result = doGetStatistics(detailed);
+         }
+
+      // Get version information
+      } else if ("_GetVersion".equals(functionName)) {
+         result = doGetVersion();
+
+      // Check links to underlying systems
+      } else if ("_CheckLinks".equals(functionName)) {
+         result = doCheckLinks();
+
+      // Retrieve configuration settings
+      } else if ("_GetSettings".equals(functionName)) {
+         result = doGetSettings();
+
+      // Disable a function
+      } else if ("_DisableFunction".equals(functionName)) {
+         result = doDisableFunction(functionRequest.getParameters().get("functionName"));
+
+      // Enable a function
+      } else if ("_EnableFunction".equals(functionName)) {
+         result = doEnableFunction(functionRequest.getParameters().get("functionName"));
+
+      // Reset the statistics
+      } else if ("_ResetStatistics".equals(functionName)) {
+         result = doResetStatistics();
+
+      // Reload the runtime properties
+      } else if ("_ReloadProperties".equals(functionName)) {
+         _engine.getConfigManager().reloadPropertiesIfChanged();
+         result = SUCCESSFUL_RESULT;
+
+      // Meta-function does not exist
+      } else {
+         throw new NoSuchFunctionException(functionName);
+      }
+
+      // Determine duration
+      long duration = System.currentTimeMillis() - start;
+
+      // Determine error code, fallback is a zero character
+      String code = result.getErrorCode();
+      if (code == null || code.length() < 1) {
+         code = "0";
+      }
+
+      // Prepare for transaction logging
+      LogdocSerializable serStart  = new FormattedDate(start);
+      LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
+      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
+
+      // Log transaction before returning the result
+      Log.log_3540(serStart, ip, functionName, duration, code, inParams,
+                   outParams);
+      Log.log_3541(serStart, ip, functionName, duration, code);
+
+      return result;
+   }
+
+   /**
+    * Handles an exception caught while a function was executed.
+    *
+    * @param start
+    *    the start time of the call, as milliseconds since midnight January 1,
+    *    1970.
+    *
+    * @param functionRequest
+    *    the request, never <code>null</code>.
+    *
+    * @param ip
+    *    the IP address of the requester, never <code>null</code>.
+    *
+    * @param callID
+    *    the call identifier, never <code>null</code>.
+    *
+    * @param exception
+    *    the exception caught, never <code>null</code>.
+    *
+    * @return
+    *    the call result, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this object is currently not initialized.
+    */
+   FunctionResult handleFunctionException(long            start,
+                                          FunctionRequest functionRequest,
+                                          String          ip,
+														int             callID,
+                                          Throwable       exception) {
+
+      Log.log_3500(exception, _name, callID);
+
+      // Create a set of parameters for the result
+      BasicPropertyReader resultParameters = new BasicPropertyReader();
+
+      // Add the exception class
+      resultParameters.set("_exception.class", exception.getClass().getName());
+
+      // Add the exception message, if any
+      String exceptionMessage = exception.getMessage();
+      if (exceptionMessage != null && exceptionMessage.length() > 0) {
+         resultParameters.set("_exception.message", exceptionMessage);
+      }
+
+      // Add the stack trace, if any
+      FastStringWriter stWriter = new FastStringWriter();
+      PrintWriter printWriter = new PrintWriter(stWriter);
+      exception.printStackTrace(printWriter);
+      String stackTrace = stWriter.toString();
+      if (stackTrace != null && stackTrace.length() > 0) {
+         resultParameters.set("_exception.stacktrace", stackTrace);
+      }
+
+      return new FunctionResult("_InternalError", resultParameters);
    }
 
    /**
