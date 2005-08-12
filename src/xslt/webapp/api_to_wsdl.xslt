@@ -303,26 +303,58 @@
 		
 		<xsl:variable name="type_name" select="@name" />
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type_name, '.typ')" />
+		<xsl:variable name="base_type">
+			<xsl:choose>
+				<xsl:when test="document($type_file)/type/pattern or document($type_file)/type/enum or document($type_file)/type/list or document($type_file)/type/set">
+					<xsl:text>string</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- It's the same as for the basic type -->
+					<xsl:call-template name="soaptype_for_type">
+						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"          select="$api" />
+						<xsl:with-param name="type"         select="concat('_', local-name(document($type_file)/type/*[2]))" />
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		
-		<xsl:choose>
-			<xsl:when test="document($type_file)/type/pattern">
-				<xsl:variable name="pattern" select="document($type_file)/type/pattern/text()" />
-				<simpleType name="{$type_name}Type" base="string">
-					<pattern value="{$pattern}" />
-				</simpleType>
-			</xsl:when>
-			<xsl:when test="document($type_file)/type/enum">
-				<simpleType name="{$type_name}Type" base="string">
+		<xsd:simpleType name="{$type_name}Type">
+			<xsd:annotation>
+				<xsd:documentation>
+					<xsl:value-of select="document($type_file)/type/description/text()" />
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:restriction base="xsd:{$base_type}">
+				<xsl:if test="document($type_file)/type/pattern">
+					<xsl:variable name="pattern" select="document($type_file)/type/pattern/text()" />
+					<xsd:pattern value="{$pattern}" />
+				</xsl:if>
+				<xsl:if test="document($type_file)/type/enum">
 					<xsl:for-each select="document($type_file)/type/enum/item">
 						<xsl:variable name="enumeration_value" select="@value" />
-						<enumeration value="{$enumeration_value}" />
+						<xsd:enumeration value="{$enumeration_value}" />
 					</xsl:for-each>
-				</simpleType>
-			</xsl:when>
-			<xsl:otherwise>
-				<simpleType name="{$type_name}Type" base="string" />
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:if>
+				<xsl:if test="document($type_file)/type/int8 or document($type_file)/type/int16 or document($type_file)/type/int32 or document($type_file)/type/int64 or document($type_file)/type/float32 or document($type_file)/type/float64">
+					<xsl:if test="document($type_file)/type/*[2]/@min">
+						<xsd:minInclusive value="{document($type_file)/type/*[2]/@min}" />
+					</xsl:if>
+					<xsl:if test="document($type_file)/type/*[2]/@max">
+						<xsd:maxInclusive value="{document($type_file)/type/*[2]/@max}" />
+					</xsl:if>
+				</xsl:if>
+				<xsl:if test="document($type_file)/type/base64">
+					<xsl:if test="document($type_file)/base64/@min">
+						<xsd:minLength value="{document($type_file)/base64/@min}" />
+					</xsl:if>
+					<xsl:if test="document($type_file)/base64/@max">
+						<xsd:maxLength value="{document($type_file)/base64/@max}" />
+					</xsl:if>
+				</xsl:if>
+			</xsd:restriction>
+		</xsd:simpleType>
 	</xsl:template>
 	
 	<xsl:template name="elementtype">
@@ -333,7 +365,7 @@
 		<xsl:param name="type"         />
 
 		<xsl:choose>
-			<xsl:when test="starts-with($type, '_')">
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:variable name="soaptype">
 					<xsl:call-template name="soaptype_for_type">
 						<xsl:with-param name="project_file" select="$project_file" />
