@@ -189,7 +189,7 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the old-style (XINS 1.0) shouldFailOver method is implemented
+      // The old-style (XINS 1.0) shouldFailOver method should be implemented
       try {
          shouldFailOver((CallRequest) null, (Throwable) null);
          throw new Error();
@@ -205,7 +205,7 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the new-style (XINS 1.1) doCallImpl method is not implemented
+      // The new-style (XINS 1.1) doCallImpl method should not be implemented
       try {
          doCallImpl((CallRequest) null, (CallConfig) null, (TargetDescriptor) null);
          throw new Error();
@@ -225,7 +225,8 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the new-style (XINS 1.1) shouldFailOver method is not implemented
+      // The new-style (XINS 1.1) shouldFailOver method should not be
+      // implemented
       try {
          shouldFailOver((CallRequest) null, (CallConfig) null, (CallExceptionList) null);
          throw new Error();
@@ -312,7 +313,7 @@ public abstract class ServiceCaller extends Object {
       // Set call configuration
       _callConfig = callConfig;
 
-      // Make sure the old-style (XINS 1.0) doCallImpl method is not implemented
+      // The old-style (XINS 1.0) doCallImpl method should not be implemented
       try {
          doCallImpl((CallRequest) null, (TargetDescriptor) null);
          throw new Error();
@@ -332,7 +333,8 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the old-style (XINS 1.0) shouldFailOver method is not implemented
+      // The old-style (XINS 1.0) shouldFailOver method should not be
+      // implemented
       try {
          shouldFailOver((CallRequest) null, (Throwable) null);
          throw new Error();
@@ -352,7 +354,7 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the new-style (XINS 1.1) doCallImpl method is implemented
+      // The new-style (XINS 1.1) doCallImpl method should be implemented
       try {
          doCallImpl((CallRequest) null, (CallConfig) null, (TargetDescriptor) null);
          throw new Error();
@@ -374,9 +376,10 @@ public abstract class ServiceCaller extends Object {
          }
       }
 
-      // Make sure the new-style (XINS 1.1) shouldFailOver method is implemented
+      // The new-style (XINS 1.1) shouldFailOver method should be implemented
       try {
-         shouldFailOver((CallRequest) null, (CallConfig) null, (CallExceptionList) null);
+         shouldFailOver((CallRequest) null, (CallConfig) null,
+                        (CallExceptionList) null);
          throw new Error();
       } catch (Throwable t) {
          if (t instanceof MethodNotImplementedError) {
