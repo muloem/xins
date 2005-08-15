@@ -9,6 +9,7 @@ package org.xins.server;
 import java.lang.reflect.Field;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -135,12 +136,36 @@ final class EngineStarter extends Object {
    /**
     * Logs server version, warns if server version differs from common version
     * and warns if the server version is not a production release.
+    *
+    * @param config
+    *    the servlet configuration object, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>config == null</code>.
     */
-   void logBootMessages() {
+   void logBootMessages(ServletConfig config)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("config", config);
+
+      // Determine the ServletContext
+      ServletContext context = config.getServletContext();
+      if (context == null) {
+         throw Utils.logProgrammingError(
+            "ServletConfig.getServletContext() returned null.");
+      }
+
+      // Determine servlet container info
+      String containerInfo = context.getServerInfo();
+      if (containerInfo == null) {
+         throw Utils.logProgrammingError(
+            "ServletContext.getServerInfo() returned null.");
+      }
 
       // Log: Bootstrapping XINS/Java Server Framework
       String serverVersion = Library.getVersion();
-      Log.log_3200(serverVersion);
+      Log.log_3200(serverVersion, containerInfo);
 
       // Warn if Server version differs from Common version
       String commonVersion = org.xins.common.Library.getVersion();

@@ -43,6 +43,7 @@
 		<entry id="3200" level="NOTICE">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
 			<param name="version" />
+			<param name="containerInfo" />
 		</entry>
 		<entry id="3201" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>

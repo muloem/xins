@@ -125,7 +125,7 @@ final class Engine extends Object {
       EngineStarter starter = new EngineStarter(this, config, _state);
 
       // Log some initial boot messages
-      starter.logBootMessages();
+      starter.logBootMessages(config);
 
       // Construct a configuration manager and store the servlet configuration
       _configManager = new ConfigManager(this, config);
