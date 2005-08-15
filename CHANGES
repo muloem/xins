@@ -16,6 +16,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     Java 1.3.
   - Implemented SF.net RFE #1242308: Extend log msg 1109 to include exception 
     class and message.
+  - Implemented SF.net RFE #1255596: Distinguish NoRouteToHost in
+    ServiceCaller. No unit test could be added, though, since there is no
+    obvious way to reproduce this situation.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception

@@ -12,6 +12,7 @@ import java.io.InterruptedIOException;
 import java.io.IOException;
 
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import org.xins.common.service.ConnectionTimeOutCallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GenericCallException;
 import org.xins.common.service.IOCallException;
+import org.xins.common.service.NoRouteToHostCallException;
 import org.xins.common.service.ServiceCaller;
 import org.xins.common.service.SocketTimeOutCallException;
 import org.xins.common.service.TargetDescriptor;
@@ -646,7 +648,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          duration = System.currentTimeMillis() - start;
       }
 
-      // Log the HTTP call done.
+      // Log that the HTTP call is done
       Log.log_1101(url, params, duration);
 
       // Check for exceptions
@@ -658,6 +660,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
             Log.log_1102(url, params, duration);
             executor.dispose();
             throw new UnknownHostCallException(request, target, duration);
+
+         // No route to host
+         } else if (exception instanceof NoRouteToHostException) {
+            Log.log_1110(url, params, duration);
+            executor.dispose();
+            throw new NoRouteToHostCallException(request, target, duration);
 
          // Connection refusal
          } else if (exception instanceof ConnectException) {
