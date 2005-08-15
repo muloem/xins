@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.NDC;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -78,6 +83,12 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -227,6 +238,13 @@ final class Engine extends Object {
     */
    private final Map _conventionCache;
 
+   /**
+    * Pattern which incoming diagnostic context identifiers must match. Can be
+    * <code>null</code> in case no pattern has been specified. Initially this
+    * field is indeed <code>null</code>.
+    */
+   private Pattern _contextIDPattern;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -249,7 +267,9 @@ final class Engine extends Object {
       MandatoryArgumentChecker.check("newProperties", newProperties);
 
       // Store the runtime properties
-      _runtimeProperties = newProperties;
+      synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
+         _runtimeProperties = newProperties;
+      }
    }
 
    /**
@@ -361,6 +381,63 @@ final class Engine extends Object {
    }
 
    /**
+    * Determines the filter for diagnostic context identifiers.
+    *
+    * @param properties
+    *    the runtime properties to retrieve information from, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the filter as a {@link Pattern} object, or <code>null</code> if no
+    *    filter is specified.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null</code>.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value for the filter property is considered invalid.
+    */
+   private Pattern determineContextIDPattern(PropertyReader properties)
+   throws IllegalArgumentException, InvalidPropertyValueException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties", properties);
+
+      // Determine pattern string
+      // TODO: Get from constant
+      final String propName  = "org.xins.server.contextID.filter";
+      String propValue = properties.get(propName);
+
+      // If the property value is empty, then there is no pattern
+      Pattern pattern;
+      if (propValue == null || propValue.trim().length() < 1) {
+         pattern = null;
+         Log.log_3431();
+
+      // Otherwise we must provide a Pattern instance
+      } else {
+
+         // Convert the string to a Pattern
+         try {
+            final int mask = Perl5Compiler.READ_ONLY_MASK
+                           | Perl5Compiler.CASE_INSENSITIVE_MASK;
+            pattern = PATTERN_COMPILER.compile(propValue, mask);
+            Log.log_3432(propValue);
+
+         // Malformed pattern indicates an invalid value
+         } catch (MalformedPatternException exception) {
+            Log.log_3433(propValue);
+            InvalidPropertyValueException ipve;
+            ipve = new InvalidPropertyValueException(propName, propValue);
+            ExceptionUtils.setCause(ipve, exception);
+            throw ipve;
+         }
+      }
+
+      return pattern;
+   }
+
+   /**
     * Initializes the API using the current runtime settings. This method
     * should be called whenever the runtime properties changed.
     */
@@ -368,59 +445,65 @@ final class Engine extends Object {
 
       _state.setState(EngineState.INITIALIZING_API);
 
+      // Determine the current runtime properties
+      PropertyReader properties;
       synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
+         properties = _runtimeProperties;
+      }
 
-         boolean succeeded = false;
+      boolean succeeded = false;
 
-         _configManager.determineLogLocale();
+      _configManager.determineLogLocale();
 
-         try {
+      try {
 
-            // Initialize the diagnostic context ID generator
-            _contextIDGenerator.init(_runtimeProperties);
+         // Determine filter for incoming diagnostic context IDs
+         _contextIDPattern = determineContextIDPattern(properties);
 
-            // Initialize the API
-            _api.init(_runtimeProperties);
+         // Initialize the diagnostic context ID generator
+         _contextIDGenerator.init(properties);
 
-            // Initialize the default calling convention for this API
-            if (_defaultConvention != null) {
-               _defaultConvention.init(_runtimeProperties);
-            }
+         // Initialize the API
+         _api.init(properties);
 
-            // Clear the cache for the other calling convention
-            _conventionCache.clear();
+         // Initialize the default calling convention for this API
+         if (_defaultConvention != null) {
+            _defaultConvention.init(properties);
+         }
 
-            succeeded = true;
+         // Clear the cache for the other calling convention
+         _conventionCache.clear();
 
-         // Missing required property
-         } catch (MissingRequiredPropertyException exception) {
-            Log.log_3411(exception.getPropertyName());
+         succeeded = true;
 
-         // Invalid property value
-         } catch (InvalidPropertyValueException exception) {
-            Log.log_3412(exception.getPropertyName(),
-                         exception.getPropertyValue(),
-                         exception.getReason());
+      // Missing required property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3411(exception.getPropertyName());
 
-         // Initialization of API failed for some other reason
-         } catch (InitializationException exception) {
-            Log.log_3413(exception.getMessage());
+      // Invalid property value
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3412(exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
 
-         // Unexpected error.
-         //
-         // XXX: According to the documentation of the Manageable class, this
-         //      cannot happen.
-         } catch (Throwable exception) {
-            Log.log_3414(exception);
+      // Initialization of API failed for some other reason
+      } catch (InitializationException exception) {
+         Log.log_3413(exception.getMessage());
 
-         // Always leave the object in a well-known state
-         } finally {
-            if (succeeded) {
-               _state.setState(EngineState.READY);
-               Log.log_3415();
-            } else {
-               _state.setState(EngineState.API_INITIALIZATION_FAILED);
-            }
+      // Unexpected error
+      //
+      // XXX: According to the documentation of the Manageable class, this
+      //      cannot happen.
+      } catch (Throwable exception) {
+         Log.log_3414(exception);
+
+      // Always leave the object in a well-known state
+      } finally {
+         if (succeeded) {
+            _state.setState(EngineState.READY);
+            Log.log_3415();
+         } else {
+            _state.setState(EngineState.API_INITIALIZATION_FAILED);
          }
       }
    }
@@ -481,18 +564,28 @@ final class Engine extends Object {
       // TODO: Use constant for that request parameter name
       String contextID = request.getParameter("_context");
       if (TextUtils.isEmpty(contextID)) {
+         Log.log_3580();
          contextID = null;
 
-      // If it does, then it must be a valid one
-      } else if (! isValidContextID(contextID)) {
-         // TODO: Log
-         contextID = null;
+      // Indeed there is a context ID in the request, make sure it's valid
+      } else {
+
+         // Valid context ID
+         if (isValidContextID(contextID)) {
+            Log.log_3581(contextID);
+
+         // Invalid context ID
+         } else {
+            Log.log_3582(contextID);
+            contextID = null;
+         }
       }
 
       // If we have no (acceptable) context ID yet, then generate one now
       if (contextID == null) {
          // TODO: Support custom format (SF.net RFE #1078846)
          contextID = _contextIDGenerator.generate();
+         Log.log_3583(contextID);
       }
 
       return contextID;
@@ -511,8 +604,17 @@ final class Engine extends Object {
     *    <code>false</code> if it is considered unacceptable.
     */
    private boolean isValidContextID(String contextID) {
-      // TODO: Check validity (SF.net RFE #1078843)
-      return true;
+
+      // If a filter is specified, validate that the ID matches it
+      if (_contextIDPattern != null) {
+         // TODO: Investigate whether this causes a performance bottleneck
+         Perl5Matcher matcher = new Perl5Matcher();
+         return matcher.matches(contextID, _contextIDPattern);
+
+      // No filter is specified, everything is allowed
+      } else {
+         return true;
+      }
    }
 
    /**
@@ -606,7 +708,15 @@ final class Engine extends Object {
 
                // ...initialize it...
                if (cc != null) {
-                  cc.init(_runtimeProperties);
+
+                  // Determine the current runtime properties
+                  PropertyReader properties;
+                  synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
+                     properties = _runtimeProperties;
+                  }
+
+                  // Initialize the created CallingConvention
+                  cc.init(properties);
                }
 
                // ...and finally store it in our cache

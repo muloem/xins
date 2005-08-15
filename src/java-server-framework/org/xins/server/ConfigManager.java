@@ -37,7 +37,6 @@ import org.xins.logdoc.UnsupportedLocaleException;
  *
  * @version $Revision$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
- *
  */
 final class ConfigManager {
 
@@ -201,9 +200,8 @@ final class ConfigManager {
     * Unifies the file separator character on the _configFile property and then
     * reads the runtime properties file, initializes the logging subsystem
     * with the read properties and then stores those properties on the engine.
-    * If the _configFile is empty, then an empty set of properties is set on the
-    * engine.
-    *
+    * If the _configFile is empty, then an empty set of properties is set on
+    * the engine.
     */
    void readRuntimeProperties() {
       // If the value is not set only localhost can access the API.

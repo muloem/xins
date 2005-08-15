@@ -425,6 +425,17 @@
 			<description>Invalid state when adding manageable.</description>
 			<param name="state" />
 		</entry>
+		<entry id="3431" level="INFO">
+			<description>No filter specified for incoming diagnostic context identifiers.</description>
+		</entry>
+		<entry id="3432" level="INFO">
+			<description>Valid filter specified for incoming diagnostic context identifiers.</description>
+			<param name="pattern" />
+		</entry>
+		<entry id="3433" level="ERROR">
+			<description>Invalid filter specified for incoming diagnostic context identifiers.</description>
+			<param name="pattern" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">
@@ -515,6 +526,24 @@
 		<entry id="3560" level="ERROR" exception="true">
 			<description>Error when creating or initializing a calling convention.</description>
 			<param name="convention" nullable="false" />
+		</entry>
+	</group>
+
+	<group id="runtime.context" name="Diagnostic Context Identifiers">
+		<entry id="3580" level="DEBUG">
+			<description>No diagnostic context identifier specified in request.</description>
+		</entry>
+		<entry id="3581" level="DEBUG">
+			<description>Valid diagnostic context identifier specified in request.</description>
+			<param name="contextID" type="text" nullable="false" />
+		</entry>
+		<entry id="3582" level="NOTICE">
+			<description>Invalid diagnostic context identifier specified in request.</description>
+			<param name="contextID" type="text" nullable="false" />
+		</entry>
+		<entry id="3583" level="DEBUG">
+			<description>Generated diagnostic context identifier.</description>
+			<param name="contextID" type="text" nullable="false" />
 		</entry>
 	</group>
 

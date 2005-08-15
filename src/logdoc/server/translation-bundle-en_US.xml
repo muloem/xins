@@ -97,6 +97,9 @@
 	<translation entry="3428">Failed to apply the specified access rule list. Reason: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3429">Access rule <value-of-param name="index" /> is <value-of-param name="rule" format="quoted" />.</translation>
 	<translation entry="3430">Invalid state when adding manageable: <value-of-param name="state" />.</translation>
+	<translation entry="3431">No filter specified for incoming diagnostic context identifiers.</translation>
+	<translation entry="3432">Valid filter <value-of-param name="pattern" format="quoted" /> specified for incoming diagnostic context identifiers.</translation>
+	<translation entry="3433">Invalid filter <value-of-param name="pattern" format="quoted" /> specified for incoming diagnostic context identifiers.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>
@@ -114,6 +117,11 @@
 	<translation entry="3553">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches no access rules.</translation>
 
 	<translation entry="3560">Error when creating or initializing the calling convention <value-of-param name="convention" format="quoted" />.</translation>
+	
+	<translation entry="3580">No diagnostic context identifier specified in request.</translation>
+	<translation entry="3581">Request specifies valid diagnostic context identifier <value-of-param name="contextID" format="quoted"/>.</translation>
+	<translation entry="3582">Request specifies invalid diagnostic context identifier <value-of-param name="contextID" format="quoted"/>.</translation>
+	<translation entry="3583">Generated diagnostic context identifier <value-of-param name="contextID" format="quoted"/>.</translation>
 	
 	<translation entry="3600">Shutting down XINS/Java Server Framework.</translation>
 	<translation entry="3601">Deinitialization of API failed during XINS/Java Server Framework shutdown.</translation>
