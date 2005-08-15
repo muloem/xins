@@ -463,6 +463,7 @@
 			<description>Received HTTP request with valid method.</description>
 			<param name="ip"          nullable="false" />
 			<param name="method"      nullable="true"  />
+			<param name="path"        nullable="true"  />
 			<param name="queryString" nullable="true"  />
 			<!-- TODO: Log parameters ? -->
 		</entry>

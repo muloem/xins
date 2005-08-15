@@ -666,7 +666,7 @@ final class Engine extends Object {
 
       // Support HTTP OPTIONS
       } else if ("OPTIONS".equals(method)) {
-         Log.log_3521(remoteIP, method, queryString);
+         Log.log_3521(remoteIP, method, request.getRequestURI(), queryString);
          response.setContentLength(0);
          response.setHeader("Accept", "GET, HEAD, POST");
          response.setStatus(HttpServletResponse.SC_OK);
@@ -681,7 +681,7 @@ final class Engine extends Object {
       }
 
       // Log that we have received an HTTP request
-      Log.log_3521(remoteIP, method, queryString);
+      Log.log_3521(remoteIP, method, request.getRequestURI(), queryString);
 
       // Determine the calling convention; if an existing calling convention
       // is specified in the request, then use that, otherwise use the default

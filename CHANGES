@@ -36,6 +36,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     match this filter, then a message is logged and a new diagnostic context
     identifier is generated. Added log messages 3431-3433 for the
     initialization and 3580-3583 for the runtime logging.
+  - Implemented SF.net RFE #1259918: Include path in log message 3521.
   - The value of the data section attributes are changed, if needed, to the 
     correct format in the SOAPCallingConvention.
   - Applied some refactorings.
