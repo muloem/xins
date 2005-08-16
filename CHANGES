@@ -19,6 +19,13 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Implemented SF.net RFE #1255596: Distinguish NoRouteToHost in
     ServiceCaller. No unit test could be added, though, since there is no
     obvious way to reproduce this situation.
+  - Added new methods to get the specification of the API based on the name
+    of the entity.
+  - EntityNotFoundException is thrown if the entiry is not found.
+  - Changed methods used to get the API specification return a Map or a List
+    instead of an array.
+  - Renamed the classes in the spec package by adding "Spec" at the end of
+    the class name.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception

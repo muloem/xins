@@ -24,7 +24,7 @@ import org.xins.common.service.GenericCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 
-import org.xins.common.spec.API;
+import org.xins.common.spec.APISpec;
 import org.xins.common.spec.InvalidSpecificationException;
 
 import org.xins.common.text.TextUtils;
@@ -223,7 +223,7 @@ public abstract class AbstractCAPI extends Object {
     * The API specification. This field is lazily initialized by
     * {@link #getAPISpecification()}.
     */
-   private API _apiSpecification;
+   private APISpec _apiSpecification;
 
 
    //-------------------------------------------------------------------------
@@ -318,13 +318,13 @@ public abstract class AbstractCAPI extends Object {
     *
     * @since XINS 1.3.0
     */
-   public final API getAPISpecification()
+   public final APISpec getAPISpecification()
    throws InvalidSpecificationException {
 
       // Lazily initialize _apiSpecification
       if (_apiSpecification == null) {
          URL specsURL = getClass().getResource("/specs/");
-         _apiSpecification = new API(getClass(), specsURL.toExternalForm());
+         _apiSpecification = new APISpec(getClass(), specsURL.toExternalForm());
       }
 
       return _apiSpecification;

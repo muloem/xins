@@ -14,7 +14,7 @@ import org.xins.common.types.Type;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class Parameter extends Object {
+public class ParameterSpec extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -49,11 +49,11 @@ public class Parameter extends Object {
     * @throws InvalidSpecificationException
     *    if the type is not recognized.
     */
-   Parameter(Class   reference,
-             String  name,
-             String  type,
-             boolean required,
-             String  description)
+   ParameterSpec(Class   reference,
+                 String  name,
+                 String  type,
+                 boolean required,
+                 String  description)
    throws InvalidSpecificationException {
 
       _reference     = reference;

@@ -6,13 +6,16 @@
  */
 package org.xins.common.spec;
 
+import java.util.Map;
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Specification of a data section element.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class DataSectionElement {
+public class DataSectionElementSpec {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -44,7 +47,7 @@ public class DataSectionElement {
     * @param attributes
     *    the possible attributes for this element, cannot be <code>null</code>.
     */
-   DataSectionElement(String name, String description, boolean isPCDataAllowed, DataSectionElement[] subElements, Parameter[] attributes) {
+   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, Map subElements, Map attributes) {
       _name = name;
       _description = description;
       _isPCDataAllowed = isPCDataAllowed;
@@ -69,7 +72,7 @@ public class DataSectionElement {
    /**
     * The attributes of the element.
     */
-   private Parameter[] _attributes;
+   private Map _attributes;
 
    /**
     * Flag indicating that the element can have PCDATA.
@@ -79,7 +82,7 @@ public class DataSectionElement {
    /**
     * The sub elements of the element.
     */
-   private DataSectionElement[] _subElements;
+   private Map _subElements;
 
    
    //-------------------------------------------------------------------------
@@ -109,23 +112,85 @@ public class DataSectionElement {
    }
 
    /**
-    * Gets the sub elements that are included in this element.
+    * Gets the specified sub element that are included in this element.
+    *
+    * @param elementName
+    *    the name of the element, cannot be <code>null</code>.
+    *
+    * @return
+    *    The specification of the sub element, never <code>null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the element does not have any sub element with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>elementName == null</code>.
+    */
+   public DataSectionElementSpec getSubElement(String elementName)
+   throws EntityNotFoundException, IllegalArgumentException {
+      
+      MandatoryArgumentChecker.check("elementName", elementName);
+      
+      DataSectionElementSpec element = (DataSectionElementSpec) _subElements.get(elementName);
+      
+      if (element == null) {
+         throw new EntityNotFoundException("Sub element \"" + elementName 
+                 + "\" not found in the element \"" + _name +"\".");
+      }
+      
+      return element;
+   }
+
+   /**
+    * Gets the specification of the sub elements that are included in this element.
+    * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
     *    The specification of the sub elements, never <code>null</code>.
     */
-   public DataSectionElement[] getSubElements() {
+   public Map getSubElements() {
       
       return _subElements;
    }
 
    /**
+    * Gets the specification of the specified attribute of the element.
+    *
+    * @param attributeName
+    *    the name of the attribute, cannot be <code>null</code>.
+    *
+    * @return
+    *    The specification of the attribute, never <code>null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the element does not have any attribute with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>attributeName == null</code>.
+    */
+   public ParameterSpec getAttribute(String attributeName)
+   throws EntityNotFoundException, IllegalArgumentException {
+      
+      MandatoryArgumentChecker.check("attributeName", attributeName);
+      
+      ParameterSpec attribute = (ParameterSpec) _attributes.get(attributeName);
+      
+      if (attribute == null) {
+         throw new EntityNotFoundException("Attribute \"" + attributeName
+                 + "\" not found in the element \"" + _name +"\".");
+      }
+      
+      return attribute;
+   }
+
+   /**
     * Gets the attributes of the element.
+    * The key is the name of the attribute, the value is the {@link ParameterSpec} object.
     *
     * @return
     *    The specification of the attributes, never <code>null</code>.
     */
-   public Parameter[] getAttributes() {
+   public Map getAttributes() {
       
       return _attributes;
    }

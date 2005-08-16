@@ -7,12 +7,15 @@
 package org.xins.tests.common.spec;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.spec.API;
-import org.xins.common.spec.Function;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 
 import com.mycompany.allinone.capi.CAPI;
@@ -46,7 +49,7 @@ public class APITests extends TestCase {
    /**
     * The API specification of the <i>allinone</i> API.
     */
-   private API _allInOneAPI;
+   private APISpec _allInOneAPI;
 
 
    //-------------------------------------------------------------------------
@@ -113,23 +116,24 @@ public class APITests extends TestCase {
       list.add("SimpleOutput");
       list.add("SimpleTypes");
 
-      Function[] functions = _allInOneAPI.getFunctions();
+      Map functions = _allInOneAPI.getFunctions();
 
-      for (int i = 0; i < functions.length; i++) {
-         Function function = functions[i];
-         assertTrue(list.contains(function.getName()));
+      Iterator itFunctionNames = functions.keySet().iterator();
+      while (itFunctionNames.hasNext()) {
+         String functionName = (String) itFunctionNames.next();
+         assertTrue(list.contains(functionName));
       }
 
       try {
          _allInOneAPI.getFunction("RubbishName");
-         fail("Expected getFunction to throw an IllegalArgumentException");
-      } catch (IllegalArgumentException e) {
+         fail("Expected getFunction to throw an EntityNotFoundException");
+      } catch (EntityNotFoundException e) {
          // consume, this is valid
       }
 
       assertEquals("The API has an incorrect number of functions: " + 
-         _allInOneAPI.getFunctions().length, 
-         _allInOneAPI.getFunctions().length, list.size());
+         _allInOneAPI.getFunctions().size(), 
+         _allInOneAPI.getFunctions().size(), list.size());
       int i = 0;
       try {
          for (i = 0; i < list.size(); i++) {
@@ -138,7 +142,7 @@ public class APITests extends TestCase {
                _allInOneAPI.getFunction(functionName).getName(),
                _allInOneAPI.getFunction(functionName).getName(), functionName);
          }
-      } catch (IllegalArgumentException exc) {
+      } catch (EntityNotFoundException exc) {
          fail("Could not find the function " + list.get(i) + " in allinone API.");
       }
    }
@@ -153,10 +157,11 @@ public class APITests extends TestCase {
          TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
          com.mycompany.myproject.capi.CAPI capi = 
             new com.mycompany.myproject.capi.CAPI(target);
-         API myProjectAPI = capi.getAPISpecification();
+         APISpec myProjectAPI = capi.getAPISpecification();
          fail("Calling an older version of CAPI should throw an exception.");
       } catch (InvalidSpecificationException e) {
-         //Expecting exception
+
+         // Expected exception
       } catch (Exception e) {
          fail("Unexpected exception occurs: " + e.getMessage());
       }

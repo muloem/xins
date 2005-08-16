@@ -6,12 +6,14 @@
  */
 package org.xins.tests.common.spec;
 
+import java.util.Iterator;
+import java.util.Map;
 import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.spec.API;
-import org.xins.common.spec.DataSectionElement;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.DataSectionElementSpec;
+import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Int32;
 import org.xins.common.types.standard.Int64;
 import org.xins.common.types.standard.Text;
@@ -47,7 +49,17 @@ public class DataSectionElementTests extends TestCase {
    /**
     * The API specification of the <i>allinone</i> API.
     */
-   private API _allInOneAPI;
+   private APISpec _allInOneAPI;
+
+   /**
+    * The first data section element of the DataSection function.
+    */
+   private DataSectionElementSpec _userElement;
+
+   /**
+    * The first data section element of the DataSection2 function.
+    */
+   private DataSectionElementSpec _packetElement;
 
 
    //-------------------------------------------------------------------------
@@ -62,6 +74,8 @@ public class DataSectionElementTests extends TestCase {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
       _allInOneAPI = allInOne.getAPISpecification();
+      _userElement = _allInOneAPI.getFunction("DataSection").getOutputDataSectionElement("user");
+      _packetElement = _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElement("packet");
    }
 
    /**
@@ -69,10 +83,8 @@ public class DataSectionElementTests extends TestCase {
     * the correct name for a data section element for a function of the API.
     */
    public void testDataSectionGetName() throws Exception {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
       assertEquals("Function 'DataSection' has an incorrect data section element " +
-         "name: " + element.getName(), "user", element.getName());
+         "name: " + _userElement.getName(), "user", _userElement.getName());
    }
 
    /**
@@ -81,38 +93,31 @@ public class DataSectionElementTests extends TestCase {
     * the API. 
     */
    public void testDataSectionGetDescription() {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
       assertEquals("Function 'DataSection' has an incorrect " +
-         "data section element description: " + element.getDescription(),
-         "A user.", element.getDescription());
+         "data section element description: " + _userElement.getDescription(),
+         "A user.", _userElement.getDescription());
    }
 
    /**
     * Tests that {@link DataSectionElement#getSubElements() getSubElements()} 
     * returns the correct sub-elements of a data section for a function of the API. 
     */
-   public void testDataSectionGetSubElements() {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
+   public void testDataSectionGetSubElements() throws Exception {
+      assertEquals("Data Element 'packet' in the function 'DataSection2' has an " +
+         "incorrect number of the sub-elements: " + _packetElement.getSubElements().size(), 
+         1, _packetElement.getSubElements().size());
       assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect number of the sub-elements: " + element.getSubElements().length, 
-         1, element.getSubElements().length);
-      assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect name of the sub-element: " + element.getSubElements()[0].getName(), 
-         "product", element.getSubElements()[0].getName());
+         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(), 
+         "product", _packetElement.getSubElement("product").getName());
    }
 
    /**
     * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
     * returns the correct attributes for a data section of a function of the API.
     */
-   public void testDataSectionGetAttributes() {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
-
-      assertEquals(1, element.getAttributes().length);
-      Parameter attribute = element.getAttributes()[0];
+   public void testDataSectionGetAttributes() throws Exception {
+      assertEquals(1, _packetElement.getAttributes().size());
+      ParameterSpec attribute = _packetElement.getAttribute("destination");
       assertEquals("The attribute in the output data section element for the " +
          "function 'DataSection2' has an incorrect name: " + attribute.getName(), 
          "destination", attribute.getName());
@@ -129,7 +134,7 @@ public class DataSectionElementTests extends TestCase {
 
       assertEquals("The output data section element for the function 'DataSection2'" +
          " has an incorrect number of the sub-elements: " + 
-         element.getSubElements().length, 1, element.getSubElements().length);
+         _packetElement.getSubElements().size(), 1, _packetElement.getSubElements().size());
    }
 
    /**
@@ -137,14 +142,13 @@ public class DataSectionElementTests extends TestCase {
     * returns correct attributes for the sub-element in a data section
     * of the API.
     */
-   public void testDataSectionGetAttributesSubElement() {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection2").getOutputDataSectionElements()[0];
-      DataSectionElement subElement = element.getSubElements()[0];
-      Parameter[] subElementAttributes = subElement.getAttributes();
+   public void testDataSectionGetAttributesSubElement() throws Exception {
+      DataSectionElementSpec subElement = _packetElement.getSubElement("product");
+      Map subElementAttributes = subElement.getAttributes();
+      Iterator itSubElementAttributes = subElementAttributes.values().iterator();
 
-      for (int i = 0; i < subElementAttributes.length; i++) {
-         Parameter attribute = subElementAttributes[i];
+      while (itSubElementAttributes.hasNext()) {
+         ParameterSpec attribute = (ParameterSpec) itSubElementAttributes.next();
          if ("id".equals(attribute.getName())) {
             assertEquals("Attribute 'id' in the sub-element of the output data " +
                "section element of the function 'DataSection2' has an incorrect " +
@@ -181,10 +185,7 @@ public class DataSectionElementTests extends TestCase {
     * the API.
     */
    public void testDataSectionIsPCDataAllowed() {
-      DataSectionElement element =
-         _allInOneAPI.getFunction("DataSection").getOutputDataSectionElements()[0];
-
-      assertTrue("The output data section element for the function 'DataSection2'" +
-         " has an incorrect 'PC data allowed' value", element.isPCDataAllowed());
+      assertTrue("The output data section element for the function 'DataSection'" +
+         " has an incorrect 'PC data allowed' value", _userElement.isPCDataAllowed());
    }
 }

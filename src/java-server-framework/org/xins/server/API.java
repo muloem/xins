@@ -257,7 +257,7 @@ implements DefaultResultCodes {
    /**
     * The API specification.
     */
-   private org.xins.common.spec.API _apiSpecification;
+   private org.xins.common.spec.APISpec _apiSpecification;
 
    /**
     * The local IP address.
@@ -789,7 +789,7 @@ implements DefaultResultCodes {
     *
     * @since XINS 1.3.0
     */
-   public final org.xins.common.spec.API getAPISpecification()
+   public final org.xins.common.spec.APISpec getAPISpecification()
    throws InvalidSpecificationException {
 
       if (_apiSpecification == null) {
@@ -800,7 +800,7 @@ implements DefaultResultCodes {
 
             // Leave the variable as null
          }
-         _apiSpecification = new org.xins.common.spec.API(getClass(), baseURL);
+         _apiSpecification = new org.xins.common.spec.APISpec(getClass(), baseURL);
       }
       return _apiSpecification;
    }

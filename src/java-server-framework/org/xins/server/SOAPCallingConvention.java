@@ -24,9 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.io.FastStringWriter;
-import org.xins.common.spec.DataSectionElement;
+import org.xins.common.spec.DataSectionElementSpec;
+import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.InvalidSpecificationException;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.ParameterSpec;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
@@ -187,10 +188,13 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterName = parameterElem.getLocalName();
             String parameterValue = parameterElem.getText();
             try {
-               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Type parameterType = functionSpec.getInputParameter(parameterName).getType();
                parameterValue = soapInputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
                
                // keep the old value
             }
@@ -205,10 +209,14 @@ final class SOAPCallingConvention extends CallingConvention {
             dataSection = (Element) dataSectionList.get(0);
             
             try {
-               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
-               DataSectionElement[] dataSectionSpec = functionSpec.getInputDataSectionElements();
+               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Map dataSectionSpec = functionSpec.getInputDataSectionElements();
                transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
             } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+               transformedDataSection = dataSection;
+            } catch (EntityNotFoundException enfe) {
                
                // keep the old value
                transformedDataSection = dataSection;
@@ -290,10 +298,13 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterName = (String) outputParameterNames.next();
             String parameterValue = xinsResult.getParameter(parameterName);
             try {
-               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
+               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
                parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
                
                // keep the old value
             }
@@ -308,10 +319,14 @@ final class SOAPCallingConvention extends CallingConvention {
             
             Element transformedDataElement = null;
             try {
-               org.xins.common.spec.Function functionSpec = _api.getAPISpecification().getFunction(functionName);
-               DataSectionElement[] dataSectionSpec = functionSpec.getInputDataSectionElements();
+               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Map dataSectionSpec = functionSpec.getInputDataSectionElements();
                transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
             } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+               transformedDataElement = dataElement;
+            } catch (EntityNotFoundException enfe) {
                
                // keep the old value
                transformedDataElement = dataElement;
@@ -432,12 +447,13 @@ final class SOAPCallingConvention extends CallingConvention {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private Element soapElementTransformation(DataSectionElement[] dataSection, boolean input, Element element, boolean top) {
+   private Element soapElementTransformation(Map dataSection, boolean input, Element element, boolean top) {
       String elementName = element.getLocalName();
       String elementNameSpaceURI = element.getNamespaceURI();
       Map elementAttributes = element.getAttributeMap();
       String elementText = element.getText();
       List elementChildren = element.getChildElements();
+      Map childrenSpec = dataSection;
       
       ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
       
@@ -445,34 +461,28 @@ final class SOAPCallingConvention extends CallingConvention {
          builder.setText(elementText);
 
          // Find the DataSectionElement for this element.
-         DataSectionElement elementSpec = null;
-         for (int i = 0; i < dataSection.length || elementSpec != null; i++) {
-            if (dataSection[i].getName().equals(elementName)) {
-               elementSpec = dataSection[i];
-            }
-         }
+         DataSectionElementSpec elementSpec = (DataSectionElementSpec) dataSection.get(elementName);
+         childrenSpec = elementSpec.getSubElements();
 
          // Go through the attributes
          Iterator itAttributeNames = elementAttributes.keySet().iterator();
          while (itAttributeNames.hasNext()) {
             String attributeName = (String) itAttributeNames.next();
             String attributeValue = (String) elementAttributes.get(attributeName);
-
-            // Convert the value if needed
-            Parameter[] attributesSpec = elementSpec.getAttributes();
-            Type attributeType = null;
-            for (int i = 0; i < attributesSpec.length || attributeType != null; i++) {
-               if (attributesSpec[i].getName().equals(attributeName)) {
-                  attributeType = attributesSpec[i].getType();
-               }
-            }
             try {
+               
+               // Convert the value if needed
+               ParameterSpec attributeSpec = elementSpec.getAttribute(attributeName);
+               Type attributeType = attributeSpec.getType();
                if (input) {
                   attributeValue = soapInputValueTransformation(attributeType, attributeValue);
                } else {
                   attributeValue = soapOutputValueTransformation(attributeType, attributeValue);
                }
             } catch (InvalidSpecificationException ise) {
+
+               // Keep the old value
+            } catch (EntityNotFoundException enfe) {
 
                // Keep the old value
             }
@@ -485,7 +495,7 @@ final class SOAPCallingConvention extends CallingConvention {
       Iterator itChildren = elementChildren.iterator();
       while (itChildren.hasNext()) {
          Element nextChild = (Element) itChildren.next();
-         Element transformedChild = soapElementTransformation(dataSection , input, nextChild, false);
+         Element transformedChild = soapElementTransformation(childrenSpec , input, nextChild, false);
          builder.addChild(transformedChild);
       }
       

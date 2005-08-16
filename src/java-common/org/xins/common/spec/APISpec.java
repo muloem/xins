@@ -16,8 +16,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -30,7 +32,7 @@ import org.xins.common.xml.ElementParser;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class API extends Object {
+public class APISpec extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -104,7 +106,7 @@ public class API extends Object {
     * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public API(Class reference, String baseURL) throws InvalidSpecificationException {
+   public APISpec(Class reference, String baseURL) throws InvalidSpecificationException {
       _reference = reference;
       _baseURL = baseURL;
       try {
@@ -146,10 +148,9 @@ public class API extends Object {
    private String _description;
    
    /**
-    * Cache for the functions of the API.
-    * The key is the name of the function, the value is the Function object.
+    * The functions of the API.
     */
-   private Map _functions = new HashMap();
+   private Map _functions = new LinkedHashMap();
 
    
    //-------------------------------------------------------------------------
@@ -191,22 +192,15 @@ public class API extends Object {
 
    /**
     * Gets the function specifications defined in the API.
+    * The key of the returned Map is the name of the function and the value
+    * is the {@link FunctionSpec} object.
     *
     * @return
     *    The function specifications, never <code>null</code>.
     */
-   public Function[] getFunctions() {
+   public Map getFunctions() {
       
-      int functionsCount = _functions.size();
-      Function[] result = new Function[functionsCount];
-      
-      Iterator itFunctions = _functions.values().iterator();
-      int i = 0;
-      while (itFunctions.hasNext()) {
-         Function nextFunction = (Function) itFunctions.next();
-         result[i++] = nextFunction;
-      }
-      return result;
+      return _functions;
    }
 
    /**
@@ -218,16 +212,21 @@ public class API extends Object {
     * @return
     *    The function specification.
     *
-    * @throws IllegalArgumentException
+    * @throws EntityNotFoundException
     *    If the API does not define any function for the given name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
     */
-   public Function getFunction(String functionName)
-   throws IllegalArgumentException {
+   public FunctionSpec getFunction(String functionName)
+   throws EntityNotFoundException, IllegalArgumentException {
 
-      Function function = (Function) _functions.get(functionName);
+      MandatoryArgumentChecker.check("functionName", functionName);
+      
+      FunctionSpec function = (FunctionSpec) _functions.get(functionName);
       
       if (function == null) {
-         throw new IllegalArgumentException("Function \"" + functionName + "\" not found.");
+         throw new EntityNotFoundException("Function \"" + functionName + "\" not found.");
       }
       
       return function;
@@ -261,7 +260,7 @@ public class API extends Object {
       while (functions.hasNext()) {
          Element nextFunction = (Element) functions.next();
          String functionName = nextFunction.getAttribute("name");
-         Function function = new Function(functionName, _reference, _baseURL);
+         FunctionSpec function = new FunctionSpec(functionName, _reference, _baseURL);
          _functions.put(functionName, function);
       }
    }

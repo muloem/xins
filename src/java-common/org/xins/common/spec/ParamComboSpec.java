@@ -6,13 +6,15 @@
  */
 package org.xins.common.spec;
 
+import java.util.Map;
+
 /**
  * Specification of a param combo.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class ParamCombo {
+public class ParamComboSpec {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -35,7 +37,7 @@ public class ParamCombo {
     * @param parameters
     *    The parameters this param-combo refers to, cannot be <code>null</code>.
     */
-   public ParamCombo(String type, Parameter[] parameters) {
+   public ParamComboSpec(String type, Map parameters) {
       _type = type;
       _parameters = parameters;
    }
@@ -52,7 +54,7 @@ public class ParamCombo {
    /**
     * The parameters of this param-combo.
     */
-   private final Parameter[] _parameters;
+   private final Map _parameters;
    
    
    //-------------------------------------------------------------------------
@@ -63,7 +65,7 @@ public class ParamCombo {
     * Returns whether the param combo is a all-or-none type.
     *
     * @return
-    *    <code>true</code> if the type is all-or-none, <code>false</code> otherwise.
+    *    <code>true</code> if the type is <i>all-or-none</i>, <code>false</code> otherwise.
     */
    public boolean isAllOrNone() {
       
@@ -71,10 +73,21 @@ public class ParamCombo {
    }
    
    /**
+    * Returns whether the param combo is a not-all type.
+    *
+    * @return
+    *    <code>true</code> if the type is <i>not-all</i>, <code>false</code> otherwise.
+    */
+   public boolean isNotAll() {
+      
+      return _type.equals("not-all");
+   }
+   
+   /**
     * Returns whether the param combo is a exclusive-or type.
     *
     * @return
-    *    <code>true</code> if the type is exclusive-or, <code>false</code> otherwise.
+    *    <code>true</code> if the type is <i>exclusive-or</i>, <code>false</code> otherwise.
     */
    public boolean isExclusiveOr() {
       
@@ -85,7 +98,7 @@ public class ParamCombo {
     * Returns whether the param combo is a inclusive-or type.
     *
     * @return
-    *    <code>true</code> if the type is inclusive-or, <code>false</code> otherwise.
+    *    <code>true</code> if the type is <i>inclusive-or</i>, <code>false</code> otherwise.
     */
    public boolean isInclusiveOr() {
       
@@ -94,11 +107,12 @@ public class ParamCombo {
    
    /**
     * Gets the parameters defined in the param combo.
+    * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
     *
     * @return
     *    The specification of the parameters defined in the param combo, never <code>null</code>.
     */
-   public Parameter[] getParameters() {
+   public Map getParameters() {
       
       return _parameters;
    }

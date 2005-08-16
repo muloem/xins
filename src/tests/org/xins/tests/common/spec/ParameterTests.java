@@ -6,12 +6,14 @@
  */
 package org.xins.tests.common.spec;
 
+import java.util.Iterator;
+import java.util.Map;
 import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.spec.API;
-import org.xins.common.spec.Function;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.FunctionSpec;
+import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Text;
 
 import com.mycompany.allinone.capi.CAPI;
@@ -49,13 +51,13 @@ public class ParameterTests extends TestCase {
    /**
     * The input parameter specification of the <i>DataSection</i> function.
     */
-   private Parameter _parameter;
+   private ParameterSpec _parameter;
 
    /**
     * The user defined input parameters specification of 
     * the <i>DefinedTypes</i> function.
     */
-   private Parameter[] _userDefinedParams;
+   private Map _userDefinedParams;
 
 
    //-------------------------------------------------------------------------
@@ -69,11 +71,11 @@ public class ParameterTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      API allInOneAPI = allInOne.getAPISpecification();
+      APISpec allInOneAPI = allInOne.getAPISpecification();
 
       String functionName = "DataSection";
-      Function function = allInOneAPI.getFunction(functionName);
-      _parameter = function.getInputParameters()[0];
+      FunctionSpec function = allInOneAPI.getFunction(functionName);
+      _parameter = function.getInputParameter("inputText");
       _userDefinedParams = 
          allInOneAPI.getFunction("DefinedTypes").getInputParameters();
    }
@@ -120,8 +122,10 @@ public class ParameterTests extends TestCase {
     * user defined type of the parameter of a function of the API.
     */
    public void testParameterGetTypeUserDefined() {
-      for (int i = 0; i < _userDefinedParams.length; i++) {
-         Parameter userDefinedParameter = _userDefinedParams[i];
+      Iterator itUserDefainedParameters = _userDefinedParams.values().iterator();
+
+      while (itUserDefainedParameters.hasNext()) {
+         ParameterSpec userDefinedParameter = (ParameterSpec) itUserDefainedParameters.next();
          if ("inputIP".equals(userDefinedParameter.getName())) {
             assertEquals("User defined type 'inputIP' of the function " +
                "'DefinedTypes' has an incorrect description: " + 

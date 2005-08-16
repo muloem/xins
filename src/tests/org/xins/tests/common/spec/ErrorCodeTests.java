@@ -7,15 +7,17 @@
 package org.xins.tests.common.spec;
 
 import com.mycompany.allinone.capi.CAPI;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import org.xins.common.service.TargetDescriptor;
 
-import org.xins.common.spec.API;
-import org.xins.common.spec.DataSectionElement;
-import org.xins.common.spec.ErrorCode;
-import org.xins.common.spec.Function;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.DataSectionElementSpec;
+import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.ErrorCodeSpec;
+import org.xins.common.spec.FunctionSpec;
+import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Int32;
 
 /**
@@ -47,7 +49,7 @@ public class ErrorCodeTests extends TestCase {
    /**
     * The Error Code specification of the <i>ResultCode</i> function.
     */
-   private ErrorCode _errorCode;
+   private ErrorCodeSpec _errorCode;
 
 
    //-------------------------------------------------------------------------
@@ -61,10 +63,10 @@ public class ErrorCodeTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      API allInOneAPI = allInOne.getAPISpecification();
+      APISpec allInOneAPI = allInOne.getAPISpecification();
       String functionName = "ResultCode";
-      Function function = allInOneAPI.getFunction(functionName);
-      _errorCode = function.getErrorCodes()[0];
+      FunctionSpec function = allInOneAPI.getFunction(functionName);
+      _errorCode = function.getErrorCode("AlreadySet");
    }
 
    /**
@@ -91,12 +93,12 @@ public class ErrorCodeTests extends TestCase {
     * returns the correct output parameters of the error code of a function of 
     * the API.
     */
-   public void testErrorCodeGetOutputParameters() {
-      Parameter[] outputParams = _errorCode.getOutputParameters();
-      Parameter outputParam = outputParams[0];
+   public void testErrorCodeGetOutputParameters() throws Exception {
+      Map outputParams = _errorCode.getOutputParameters();
+      ParameterSpec outputParam = _errorCode.getOutputParameter("count");
       
       assertEquals("The error code in the function 'ResultCode' has an incorrect " +
-         "number of the parameters: " + outputParams.length, 1, outputParams.length);
+         "number of the parameters: " + outputParams.size(), 1, outputParams.size());
       assertEquals("The output parameter of the error code in the function " +
          "'ResultCode' has an incorrect name: " + outputParam.getName(),
          "count", outputParam.getName());
@@ -122,15 +124,15 @@ public class ErrorCodeTests extends TestCase {
          _errorCode.getOutputParameter("NoName"); 
          fail("The erorr code in the function 'ResultCode' contains an output " +
             "paramter which is not specified.");
-      } catch (IllegalArgumentException e) {
+      } catch (EntityNotFoundException e) {
          //expecting exception
       }
       try {
-         Parameter outputParam = _errorCode.getOutputParameter("count");
+         ParameterSpec outputParam = _errorCode.getOutputParameter("count");
          assertEquals("The ouput parameter of the error code in the function " +
             "'ResultCode', has an incorrect name: " + outputParam.getName(),
             "count", outputParam.getName());
-      } catch (IllegalArgumentException e) {
+      } catch (EntityNotFoundException e) {
         fail("The erorr code in the function 'ResultCode' does not contain an " +
            "output paramter 'count' which was specified.");
       }

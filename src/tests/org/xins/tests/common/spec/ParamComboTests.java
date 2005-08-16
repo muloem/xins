@@ -7,15 +7,17 @@
 package org.xins.tests.common.spec;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.spec.API;
-import org.xins.common.spec.Function;
-import org.xins.common.spec.ParamCombo;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.FunctionSpec;
+import org.xins.common.spec.ParamComboSpec;
+import org.xins.common.spec.ParameterSpec;
 
 import com.mycompany.allinone.capi.CAPI;
 
@@ -49,19 +51,19 @@ public class ParamComboTests extends TestCase {
     * The exclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
-   private ParamCombo _exclusiveCombo;
+   private ParamComboSpec _exclusiveCombo;
 
    /**
     * The inclusive input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
-   private ParamCombo _inclusiveCombo;
+   private ParamComboSpec _inclusiveCombo;
 
    /**
     * The all-or-none input param combo specification of the 
     * <i>ParamCombo</i> function.
     */
-   private ParamCombo _allOrNoneCombo;
+   private ParamComboSpec _allOrNoneCombo;
 
 
    //-------------------------------------------------------------------------
@@ -75,19 +77,19 @@ public class ParamComboTests extends TestCase {
    throws Exception {
       TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
       CAPI allInOne = new CAPI(target);
-      API allInOneAPI = allInOne.getAPISpecification();
+      APISpec allInOneAPI = allInOne.getAPISpecification();
 
       String functionName = "ParamCombo";
-      Function function = allInOneAPI.getFunction(functionName);
-      ParamCombo[] paramterCombo = function.getInputParamCombos();
-      for (int i = 0; i < paramterCombo.length; i++) {
-         ParamCombo combo = paramterCombo[i];
+      FunctionSpec function = allInOneAPI.getFunction(functionName);
+      Iterator itParamCombo = function.getInputParamCombos().iterator();
+      while (itParamCombo.hasNext()) {
+         ParamComboSpec combo = (ParamComboSpec) itParamCombo.next();
          if (combo.isExclusiveOr()) {
-            _exclusiveCombo = paramterCombo[i];
+            _exclusiveCombo = combo;
          } else if (combo.isInclusiveOr()) {
-            _inclusiveCombo = paramterCombo[i];
+            _inclusiveCombo = combo;
          } else if (combo.isAllOrNone()) {
-            _allOrNoneCombo = paramterCombo[i];
+            _allOrNoneCombo = combo;
          }
       }
    }
@@ -136,12 +138,9 @@ public class ParamComboTests extends TestCase {
     * the correct parameters for a param combo.
     */
    public void testErrorCodeGetParameters() {
-      assertEquals(3, _exclusiveCombo.getParameters().length);
-      Parameter[] params = _exclusiveCombo.getParameters();
-      List paramNames = new ArrayList();
-      for (int i = 0; i < params.length; i++) {
-         paramNames.add(params[i].getName());
-      }
+      assertEquals(3, _exclusiveCombo.getParameters().size());
+      Set paramNames = _exclusiveCombo.getParameters().keySet();
+      
       assertTrue("The exclusive input param combo of the function 'ParamCombo'" +
          " does not contain the paramter 'birthDate'",
          paramNames.contains("birthDate"));
@@ -154,10 +153,10 @@ public class ParamComboTests extends TestCase {
 
       assertEquals("The inclusive input param combo of the function " +
          "'ParamCombo' has an incorrect number of parameters.",
-         2, _inclusiveCombo.getParameters().length);
+         2, _inclusiveCombo.getParameters().size());
       assertEquals("The all-or-none input param combo of the function " +
          "'ParamCombo' has an incorrect number of parameters.",
-         3, _allOrNoneCombo.getParameters().length);
+         3, _allOrNoneCombo.getParameters().size());
    }
 
 }

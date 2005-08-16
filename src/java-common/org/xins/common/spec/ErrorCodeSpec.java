@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
@@ -23,7 +25,7 @@ import org.xins.common.xml.ElementParser;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-public class ErrorCode extends Object {
+public class ErrorCodeSpec extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -52,13 +54,13 @@ public class ErrorCode extends Object {
     * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public ErrorCode(String name, Class reference, String baseURL) throws InvalidSpecificationException {
+   public ErrorCodeSpec(String name, Class reference, String baseURL) throws InvalidSpecificationException {
       _errorCodeName = name;
       _reference = reference;
       _baseURL = baseURL;
       
       try {
-         Reader reader = API.getReader(baseURL, name + ".rcd");
+         Reader reader = APISpec.getReader(baseURL, name + ".rcd");
          parseErrorCode(reader);
       } catch (IOException ioe) {
          throw new InvalidSpecificationException(ioe.getMessage());
@@ -93,12 +95,12 @@ public class ErrorCode extends Object {
    /**
     * The output parameters of the function.
     */
-   private Map _outputParameters = new HashMap();
+   private Map _outputParameters = new LinkedHashMap();
 
    /**
     * The output data section elements of the function.
     */
-   private DataSectionElement[] _outputDataSectionElements;
+   private Map _outputDataSectionElements;
 
    
    //-------------------------------------------------------------------------
@@ -136,14 +138,21 @@ public class ErrorCode extends Object {
     * @return
     *    the parameter, never <code>null</code>.
     *
-    * @throws IllegalArgumentException
+    * @throws EntityNotFoundException
     *    if the error code does not contain any output parameter with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>parameterName == null</code>.
     */
-   public Parameter getOutputParameter(String parameterName) throws IllegalArgumentException {
-      Parameter parameter = (Parameter) _outputParameters.get(parameterName);
+   public ParameterSpec getOutputParameter(String parameterName)
+   throws EntityNotFoundException, IllegalArgumentException {
+      
+      MandatoryArgumentChecker.check("parameterName", parameterName);
+      ParameterSpec parameter = (ParameterSpec) _outputParameters.get(parameterName);
       
       if (parameter == null) {
-         throw new IllegalArgumentException("Output parameter \"" + parameterName + "\" not found.");
+         throw new EntityNotFoundException("Output parameter \"" + parameterName 
+               + "\" not found in the error code \"" + _errorCodeName +"\".");
       }
       
       return parameter;
@@ -151,31 +160,55 @@ public class ErrorCode extends Object {
    
    /**
     * Gets the output parameter specifications defined in the error code.
+    * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
     *
     * @return
-    *    The output parameters, never <code>null</code>.
+    *    The output parameters specifications, never <code>null</code>.
     */
-   public Parameter[] getOutputParameters() {
-      
-      int parametersCount = _outputParameters.size();
-      Parameter[] result = new Parameter[parametersCount];
-      
-      Iterator itParameters = _outputParameters.values().iterator();
-      int i = 0;
-      while (itParameters.hasNext()) {
-         Parameter nextParameter = (Parameter) itParameters.next();
-         result[i++] = nextParameter;
-      }
-      return result;
+   public Map getOutputParameters() {
+
+      return _outputParameters;
    }
    
    /**
+    * Gets the specification of the element of the output data section with the
+    * specified name.
+    *
+    * @param elementName
+    *    the name of the element, cannot be <code>null</code>.
+    *
+    * @return
+    *   The specification of the output data section element, never <code>null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the error code does not define any output data element with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>elementName == null</code>.
+    */
+   public DataSectionElementSpec getOutputDataSectionElement(String elementName) 
+   throws EntityNotFoundException, IllegalArgumentException {
+      
+      MandatoryArgumentChecker.check("elementName", elementName);
+      
+      DataSectionElementSpec element = (DataSectionElementSpec) _outputDataSectionElements.get(elementName);
+      
+      if (element == null) {
+         throw new EntityNotFoundException("Output data section element \"" + elementName
+               + "\" not found in the error code \"" + _errorCodeName +"\".");
+      }
+      
+      return element;
+   }
+
+   /**
     * Gets the specification of the elements of the output data section.
+    * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
     *   The specification of the output data section, never <code>null</code>.
     */
-   public DataSectionElement[] getOutputDataSection() {
+   public Map getOutputDataSectionElements() {
       
       return _outputDataSectionElements;
    }
@@ -203,22 +236,18 @@ public class ErrorCode extends Object {
       Element descriptionElement = (Element) errorCode.getChildElements("description").get(0);
       _description = descriptionElement.getText();
       List output = errorCode.getChildElements("output");
-      if (output.size() == 0) {
-         _outputDataSectionElements = new DataSectionElement[0];
-      } else {
+      if (output.size() > 0) {
          
          // Output parameters
          Element outputElement = (Element) output.get(0);
-         _outputParameters = Function.parseParameters(_reference, outputElement);
+         _outputParameters = FunctionSpec.parseParameters(_reference, outputElement);
 
          // Data section
          List dataSections = outputElement.getChildElements("data");
-         if (dataSections.size() == 0) {
-            _outputDataSectionElements = new DataSectionElement[0];
-         } else {
+         if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
             // TODO String contains = dataSection.getAttribute("contains");
-            _outputDataSectionElements = Function.parseDataSectionElements(_reference, dataSection, dataSection);
+            _outputDataSectionElements = FunctionSpec.parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
    }

@@ -7,17 +7,20 @@
 package org.xins.tests.common.spec;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.spec.API;
-import org.xins.common.spec.DataSectionElement;
-import org.xins.common.spec.ErrorCode;
-import org.xins.common.spec.Function;
-import org.xins.common.spec.ParamCombo;
-import org.xins.common.spec.Parameter;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.DataSectionElementSpec;
+import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.ErrorCodeSpec;
+import org.xins.common.spec.FunctionSpec;
+import org.xins.common.spec.ParamComboSpec;
+import org.xins.common.spec.ParameterSpec;
 
 import com.mycompany.allinone.capi.CAPI;
 
@@ -50,7 +53,7 @@ public class FunctionTests extends TestCase {
    /**
     * The API specification of the <i>allinone</i> API.
     */
-   private API _allInOneAPI;
+   private APISpec _allInOneAPI;
 
 
    //-------------------------------------------------------------------------
@@ -72,10 +75,10 @@ public class FunctionTests extends TestCase {
     * Tests that the {@link Function#getName() getName()} returns the correct name
     * of a function of the API.
     */
-   public void testFunctionsGetName() {
+   public void testFunctionsGetName() throws Exception {
 
       String functionName = "DataSection";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection' has an incorrect name: " + 
          function.getName(), functionName, function.getName());
    }
@@ -84,11 +87,11 @@ public class FunctionTests extends TestCase {
     * Tests that the {@link Function#getDescription() getDescription()} returns 
     * the correct description of a function of the API.
     */
-   public void testFunctionsGetDescription() {
+   public void testFunctionsGetDescription() throws Exception {
 
       String functionName = "DataSection";
       String functionDescription = "An example of a data section.";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection' has an incorrect description: " +
          function.getDescription(),
          functionDescription, function.getDescription());
@@ -98,13 +101,13 @@ public class FunctionTests extends TestCase {
     * Tests that {@link Function#getInputParameters() getInputParameters()} returns
     * correct input parameters of a function of the API
     */
-   public void testFunctionsGetInputParameters() {
+   public void testFunctionsGetInputParameters() throws Exception {
 
       String functionName = "SimpleOutput";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'SimpleOutput' has an incorrect number of input" +
-         " parameters: " + function.getInputParameters().length,
-         0, function.getInputParameters().length);
+         " parameters: " + function.getInputParameters().size(),
+         0, function.getInputParameters().size());
 
       String functionName1 = "DefinedTypes";
       List parameters = new ArrayList();
@@ -113,36 +116,38 @@ public class FunctionTests extends TestCase {
       parameters.add("inputAge");
       parameters.add("inputList");
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'DefinedTypes' has an incorrect number of input" +
-         " parameters: " + function.getInputParameters().length,
-         parameters.size(), function1.getInputParameters().length);
+         " parameters: " + function.getInputParameters().size(),
+         parameters.size(), function1.getInputParameters().size());
 
-      Parameter[] functionParameters = function1.getInputParameters();
-
-      for (int i = 0; i < functionParameters.length; i++) {
+      Map functionParameters = function1.getInputParameters();
+      Iterator itFunctionParameters = functionParameters.keySet().iterator();
+      while (itFunctionParameters.hasNext()) {
+         String functionParameter = (String) itFunctionParameters.next();
          assertTrue("Function 'DefinedTypes' does not contain the input parameter: " + 
-            functionParameters[i].getName(),  
-            parameters.contains(functionParameters[i].getName()));
+            functionParameter,  
+            parameters.contains(functionParameter));
       }
-
    }
    
    /**
     * Tests that getInputParameter(String) returns correct input parameters 
     * for a function of the API when given an input parameter name.
+    *
     * @see org.xins.common.spec.Function#getInputParameter(String)
     */
-   public void testFunctionsGetInputParameter() {
+   public void testFunctionsGetInputParameter() throws Exception {
 
       String functionName = "SimpleOutput";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       try {
          function.getInputParameter("NoName");
          fail("Function 'SimpleOutput' contains an input parameter 'NoName' " + 
             "which was not specified.");
-      } catch (IllegalArgumentException e) {
-         //expecting exception
+      } catch (EntityNotFoundException e) {
+          
+         // Expected exception
       }
       
       String functionName1 = "DefinedTypes";
@@ -152,7 +157,7 @@ public class FunctionTests extends TestCase {
       parameters.add("inputAge");
       parameters.add("inputList");
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       String parameter = null;
       for (int i = 0; i < parameters.size(); i++) {
          try {
@@ -172,16 +177,17 @@ public class FunctionTests extends TestCase {
 
    /**
     * Tests that getOutputParameters() returns correct output parameters of a 
-    * function of the API
+    * function of the API.
+    *
     * @see org.xins.common.spec.Function#getOutputParameters()
     */
-   public void testFunctionsGetOutputParameters() {
+   public void testFunctionsGetOutputParameters() throws Exception {
 
       String functionName = "DataSection";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection' has an incorrect number of output" +
-         " parameters: " + function.getOutputParameters().length,
-         0, function.getOutputParameters().length);
+         " parameters: " + function.getOutputParameters().size(),
+         0, function.getOutputParameters().size());
 
       String functionName1 = "DefinedTypes";
       List parameters = new ArrayList();
@@ -191,17 +197,19 @@ public class FunctionTests extends TestCase {
       parameters.add("outputList");
       parameters.add("outputProperties");
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
 
-      Parameter[] functionParameters = function1.getOutputParameters();
+      Map functionParameters = function1.getOutputParameters();
+      Iterator itFunctionParameters = functionParameters.keySet().iterator();
       assertEquals("Function 'DefinedTypes' has an incorrect number of output" +
-         " parameters: " + functionParameters.length,
-         parameters.size(), functionParameters.length);
+         " parameters: " + functionParameters.size(),
+         parameters.size(), functionParameters.size());
 
-      for (int i = 0; i < functionParameters.length; i++) {
+      while (itFunctionParameters.hasNext()) {
+         String functionParameter = (String) itFunctionParameters.next();
          assertTrue("Function 'DefinedTypes' does not contain the output parameter: " + 
-            functionParameters[i].getName(),
-            parameters.contains(functionParameters[i].getName()));
+            functionParameter,
+            parameters.contains(functionParameter));
       }
 
    }
@@ -209,18 +217,19 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getOutputParameter(String) returns correct output parameters 
     * for a function of the API when given an output parameter name.
+    *
     * @see org.xins.common.spec.Function#getOutputParameter(String)
     */
-   public void testFunctionsGetOutputParameter() {
+   public void testFunctionsGetOutputParameter() throws Exception {
 
       String functionName = "DataSection";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       try {
-         function.getInputParameter("NoName");
+         function.getOutputParameter("NoName");
          fail("Function 'DataSection' contains an output parameter 'NoName' " + 
             "which was not specified.");
-      } catch (IllegalArgumentException e) {
-         //expecting exception
+      } catch (EntityNotFoundException e) {
+         // Expected exception
       }
       
       String functionName1 = "DefinedTypes";
@@ -231,7 +240,7 @@ public class FunctionTests extends TestCase {
       parameters.add("outputList");
       parameters.add("outputProperties");
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       String parameter = null;
       for (int i = 0; i < parameters.size(); i++) {
          try {
@@ -242,7 +251,7 @@ public class FunctionTests extends TestCase {
                     function1.getOutputParameter(parameter).getName(),
                     parameter, function1.getOutputParameter(parameter).getName());
             
-         } catch (IllegalArgumentException e) {
+         } catch (EntityNotFoundException e) {
             fail("The output parameter" + parameter + " of the function " +
                "'DefinedTypes' not found.");
          }
@@ -252,30 +261,32 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getErrorCodes() return correct errorcodes for a function 
     * of the API.
+    *
     * @see org.xins.common.spec.Function#getErrorCodes()
     */
-   public void testFunctionsGetErrorCodes() {
+   public void testFunctionsGetErrorCodes() throws Exception {
 
       String functionName = "DataSection";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection' has an incorrect number of " +
-         "error codes: " + function.getErrorCodes().length,
-         0, function.getErrorCodes().length);
+         "error codes: " + function.getErrorCodes().size(),
+         0, function.getErrorCodes().size());
 
       String functionName1 = "ResultCode";
       List errorCodes = new ArrayList();
       errorCodes.add("AlreadySet");
       //TODO need to check the function with multiple error codes.
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'AlreadySet' has an incorrect number of error codes: "
-         + function1.getErrorCodes().length, 1, function1.getErrorCodes().length);
+         + function1.getErrorCodes().size(), 1, function1.getErrorCodes().size());
 
-      ErrorCode[] functionErrorCodes = function1.getErrorCodes();
-
-      for (int i = 0; i < functionErrorCodes.length; i++) {
+      Map functionErrorCodes = function1.getErrorCodes();
+      Iterator itFunctionErrorCodes = functionErrorCodes.keySet().iterator();
+      while (itFunctionErrorCodes.hasNext()) {
+         String errorCodeName = (String) itFunctionErrorCodes.next();
          assertTrue("The error code in function 'AlreadySet' has an incorrect name: "
-            + functionErrorCodes[i].getName(),
-            errorCodes.contains(functionErrorCodes[i].getName()));
+            + errorCodeName,
+            errorCodes.contains(errorCodeName));
       }
 
    }
@@ -283,33 +294,33 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getInputDataSectionElements() returns the correct input data
     * section of a funtion of the API.
+    *
     * @see org.xins.common.spec.Function#getInputDataSectionElements()
     */
-   public void testFunctionsGetInputDataSectionElements() {
+   public void testFunctionsGetInputDataSectionElements() throws Exception {
 
       String functionName = "DataSection";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection' has an incorrect number of input " +
-         "data section elements: " + function.getInputDataSectionElements().length,
-         0, function.getInputDataSectionElements().length);
+         "data section elements: " + function.getInputDataSectionElements().size(),
+         0, function.getInputDataSectionElements().size());
 
       String functionName1 = "DataSection3";
       List inputDataSectionElements = new ArrayList();
       inputDataSectionElements.add("address");
       //TODO need to check the function with multiple data section elements.
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'DataSection3' has an incorrect number of input " +
-         "data section elements: " + function1.getInputDataSectionElements().length,
-         1, function1.getInputDataSectionElements().length);
+         "data section elements: " + function1.getInputDataSectionElements().size(),
+         1, function1.getInputDataSectionElements().size());
 
-      DataSectionElement[] functionInputDataSectionElements
-         = function1.getInputDataSectionElements();
-
-      for (int i = 0; i < functionInputDataSectionElements.length; i++) {
+      Map functionInputDataSectionElements = function1.getInputDataSectionElements();
+      Iterator itElementNames = functionInputDataSectionElements.keySet().iterator();
+      while (itElementNames.hasNext()) {
+         String elementName = (String) itElementNames.next();
          assertTrue("The input data section element of the function 'DataSection3'" +
-            " has an incorrect name: " + 
-            functionInputDataSectionElements[i].getName(),
-            inputDataSectionElements.contains(functionInputDataSectionElements[i].getName()));
+            " has an incorrect name: " + elementName,
+            inputDataSectionElements.contains(elementName));
       }
 
    }
@@ -317,36 +328,36 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getOutputDataSectionElements() returns  the correct output data 
     * section for a funtion of the API.
+    *
     * @see org.xins.common.spec.Function#getOutputDataSectionElements()
     */
-   public void testFunctionsGetOutputDataSectionElements() {
+   public void testFunctionsGetOutputDataSectionElements() throws Exception {
 
       String functionName = "InvalidResponse";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'Invalidresponse' has an incorrect number of " +
          "output data section elements: " + 
-         function.getOutputDataSectionElements().length,
-         0, function.getOutputDataSectionElements().length);
+         function.getOutputDataSectionElements().size(),
+         0, function.getOutputDataSectionElements().size());
 
       String functionName1 = "DataSection3";
       List outputDataSectionElements = new ArrayList();
       outputDataSectionElements.add("packet");
       outputDataSectionElements.add("envelope");
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'DataSection3' has an incorrect number of output " +
          "data section elements: " + 
-         function1.getOutputDataSectionElements().length,
-         2, function1.getOutputDataSectionElements().length);
+         function1.getOutputDataSectionElements().size(),
+         2, function1.getOutputDataSectionElements().size());
 
-      DataSectionElement[] functionOutputDataSectionElements =
-         function1.getOutputDataSectionElements();
-
-      for (int i = 0; i < functionOutputDataSectionElements.length; i++) {
+      Map functionOutputDataSectionElements = function1.getOutputDataSectionElements();
+      Iterator itElementNames = functionOutputDataSectionElements.keySet().iterator();
+      while (itElementNames.hasNext()) {
+         String elementName = (String) itElementNames.next();
          assertTrue("The output data section element of the function 'DataSection3'" +
-            " has an incorrect name: "
-            + functionOutputDataSectionElements[i].getName(),
-            outputDataSectionElements.contains(functionOutputDataSectionElements[i].getName()));
+            " has an incorrect name: " + elementName,
+            outputDataSectionElements.contains(elementName));
       }
 
    }
@@ -355,15 +366,16 @@ public class FunctionTests extends TestCase {
     * Tests that getOutputDataSectionElements() returns the correct output data
     * section for a funtion of the API. This test case tests a function which has 
     * one data section element and one sub-element for output.
+    *
     * @see org.xins.common.spec.Function#getOutputDataSectionElements()
     */
-   public void testFunctionsGetOutputDataSecElementsWithOneElementAndSubElements() {
+   public void testFunctionsGetOutputDataSecElementsWithOneElementAndSubElements() throws Exception {
 
       String functionName = "DataSection2";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'DataSection2' has an incorrect number of output " +
-         "data section elements: " + function.getOutputDataSectionElements().length,
-         1, function.getOutputDataSectionElements().length);
+         "data section elements: " + function.getOutputDataSectionElements().size(),
+         1, function.getOutputDataSectionElements().size());
    }
 
    
@@ -371,29 +383,30 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getInputParamCombos() returns the correct input param combo
     * of a function of the API.
+    *
     * @see org.xins.common.spec.Function#getInputParamCombos()
     */
-   public void testFunctionsInputParamCombos() {
+   public void testFunctionsInputParamCombos() throws Exception {
 
       String functionName = "InvalidResponse";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'InvalidResponse' has an incorrect number of input " +
-         "paramter combos: " + function.getInputParamCombos().length,
-         0, function.getInputParamCombos().length);
+         "paramter combos: " + function.getInputParamCombos().size(),
+         0, function.getInputParamCombos().size());
 
       String functionName1 = "ParamCombo";
       int exclusiveCount = 0;
       int inclusiveCount = 0;
       int allCount = 0;
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'ParamCombo' has an incorrect number of input " +
-         "paramter combos: " + function1.getInputParamCombos().length,
-         3, function1.getInputParamCombos().length);
+         "paramter combos: " + function1.getInputParamCombos().size(),
+         3, function1.getInputParamCombos().size());
 
-      ParamCombo[] functionInputParamCombos = function1.getInputParamCombos();
-      for (int i = 0; i < functionInputParamCombos.length; i++) {
-         ParamCombo combo = functionInputParamCombos[i];
+      Iterator itFunctionInputParamCombos = function1.getInputParamCombos().iterator();
+      while (itFunctionInputParamCombos.hasNext()) {
+         ParamComboSpec combo = (ParamComboSpec) itFunctionInputParamCombos.next();
          if (combo.isExclusiveOr()) {
             exclusiveCount++;
          } else if (combo.isInclusiveOr()) {
@@ -413,29 +426,30 @@ public class FunctionTests extends TestCase {
    /**
     * Tests that getOutputParamCombos() returns the correct output param combo
     * of a function of the API.
+    *
     * @see org.xins.common.spec.Function#getOutputParamCombos()
     */
-   public void testFunctionsOutputParamCombos() {
+   public void testFunctionsOutputParamCombos() throws Exception {
 
       String functionName = "InvalidResponse";
-      Function function = _allInOneAPI.getFunction(functionName);
+      FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'InvalidResponse' has an incorrect number of " +
-         "output paramter combos: " + function.getOutputParamCombos().length,
-         0, function.getOutputParamCombos().length);
+         "output paramter combos: " + function.getOutputParamCombos().size(),
+         0, function.getOutputParamCombos().size());
 
       String functionName1 = "ParamCombo";
       int exclusiveCount = 0;
       int inclusiveCount = 0;
       int allCount = 0;
 
-      Function function1 = _allInOneAPI.getFunction(functionName1);
+      FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'ParamCombo' has an incorrect number of " +
-         "output paramter combos: " + function1.getOutputParamCombos().length,
-         2, function1.getOutputParamCombos().length);
+         "output paramter combos: " + function1.getOutputParamCombos().size(),
+         2, function1.getOutputParamCombos().size());
 
-      ParamCombo[] functionOutputParamCombos = function1.getOutputParamCombos();
-      for (int i = 0; i < functionOutputParamCombos.length; i++) {
-         ParamCombo combo = functionOutputParamCombos[i];
+      Iterator itFunctionOutputParamCombos = function1.getOutputParamCombos().iterator();
+      while (itFunctionOutputParamCombos.hasNext()) {
+         ParamComboSpec combo = (ParamComboSpec) itFunctionOutputParamCombos.next();
          if (combo.isExclusiveOr()) {
             exclusiveCount++;
          } else if (combo.isInclusiveOr()) {
@@ -446,13 +460,12 @@ public class FunctionTests extends TestCase {
       }
       
       assertEquals("Function 'ParamCombo' has an incorrect number of exclusive " +
-         "input paramter combos: " + exclusiveCount, 1, exclusiveCount);
+         "output paramter combos: " + exclusiveCount, 1, exclusiveCount);
       assertEquals("Function 'ParamCombo' has an incorrect number of inclusive " +
-         "input paramter combos: " + inclusiveCount, 0, inclusiveCount);
-      assertEquals("Function 'ParamCombo' has an incorrect number of all input " +
+         "output paramter combos: " + inclusiveCount, 0, inclusiveCount);
+      assertEquals("Function 'ParamCombo' has an incorrect number of all output " +
          "paramter combos: " + allCount, 1, allCount);
    }
-
 }
 
 
