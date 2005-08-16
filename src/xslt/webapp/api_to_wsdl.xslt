@@ -23,22 +23,27 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="endpoint"     />
 
-	<xsl:output indent="yes" />
+	<xsl:output method="xml" indent="yes" />
 
 	<xsl:template match="api">
 	
 		<xsl:variable name="apiname" select="@name" />
 		<xsl:variable name="location">
 			<xsl:choose>
+				<xsl:when test="string-length($endpoint) > 0">
+					<xsl:value-of select="$endpoint" />
+				</xsl:when>
 				<xsl:when test="document($project_file)/project/api[@name=$apiname]/environments">
 					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $apiname, '/environments.xml')" />
 					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
+					<xsl:text>/?_convention=_xins-soap</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>http://localhost:8080/</xsl:text>
 					<xsl:value-of select="$apiname" />
-					<xsl:text>/</xsl:text>
+					<xsl:text>/?_convention=_xins-soap</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -96,7 +101,7 @@
 			<!-- Write the services -->
 			<service name="{$apiname}Service">
 				<port name="{$apiname}Port" binding="tns:{$apiname}SOAPBinding">
-					<soapbind:address location="{$location}/?_convention=_xins-soap" />
+					<soapbind:address location="{$location}" />
 				</port>
 			</service>
 		</definitions>

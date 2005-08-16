@@ -673,6 +673,8 @@ APIs in this project are:
 		</xsl:if>
 
 		<target name="wsdl-{$api}">
+			<property file="{$project_home}/build.properties" />
+			<property name="wsdl.endpoint" value="" />
 			<mkdir dir="{$builddir}/webapps/{$api}" />
 			<style
 			in="{$api_specsdir}/api.xml"
@@ -682,6 +684,7 @@ APIs in this project are:
 				<param name="project_home" expression="{$project_home}" />
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
+				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
 			</style>
 			<replace file="{$builddir}/webapps/{$api}/{$api}.wsdl"
 			token="urn:apiname"
