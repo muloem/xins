@@ -386,7 +386,7 @@
          return _errorResult;
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="$side = 'client' or ($side = 'server' and local-name() = 'output')">
+			<xsl:when test="($side = 'client' and local-name() = 'input') or ($side = 'client' and local-name() = 'output') or ($side = 'server' and local-name() = 'output')">
 				<xsl:text>
       return _errorResult;</xsl:text>
 			</xsl:when>
