@@ -25,6 +25,7 @@
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../java-server-framework/check_params.xslt"  />
 
 	<xsl:template match="function">
 		<xsl:variable name="version">
@@ -105,6 +106,35 @@ extends org.xins.client.AbstractCAPICallResult {
       return _dataElement;
    }]]></xsl:text>
 		</xsl:if>
+		<xsl:text><![CDATA[
+
+   /**
+    * Validates whether this result is considered acceptable. If any
+    * constraints are violated, then an
+    * {@link org.xins.client.UnacceptableRequestException UnacceptableRequestException}
+    * is returned.
+    *
+    * @param result
+    *    the returned result from the server, never <code>null</code>.
+    *
+    * @return
+    *    an
+    *    {@link org.xins.client.UnacceptableRequestException UnacceptableRequestException}
+    *    instance if this result is considered unacceptable, otherwise
+    *    <code>null</code>.
+    */
+   private org.xins.client.UnacceptableRequestException checkParameters(org.xins.client.XINSCallResult result) {
+]]></xsl:text>
+		<xsl:apply-templates select="output" mode="checkParams">
+			<xsl:with-param name="side" select="'client'" />
+		</xsl:apply-templates>
+		<xsl:if test="not(output)">
+			<xsl:text>
+      return null;</xsl:text>
+		</xsl:if>
+		<xsl:text>
+   }
+</xsl:text>
 		<xsl:text>
 }
 </xsl:text>
@@ -141,7 +171,12 @@ extends org.xins.client.AbstractCAPICallResult {
           org.xins.client.UnacceptableResultXINSCallException {
 
       // Call superconstructor, which will fail if result == null
-      super(result);</xsl:text>
+      super(result);
+
+      org.xins.client.UnacceptableRequestException invalidResult = checkParameters(result);
+      if (invalidResult != null) {
+          throw new org.xins.client.UnacceptableResultXINSCallException(result, invalidResult.getMessage(), null);
+      }</xsl:text>
 
 		<xsl:if test="output/param">
 			<xsl:text>

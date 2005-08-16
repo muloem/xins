@@ -17,7 +17,7 @@ import org.xins.common.service.TargetDescriptor;
  * considered unacceptable by the application layer.
  *
  * <p>Note that this exception is <em>not</em> thrown if the result is
- * invalid according to the XINS rules for an result XML document. Only if the
+ * invalid according to the XINS rules for a result XML document. Only if the
  * result is just invalid in relation to the applicable API specification this
  * exception is thrown.
  *

@@ -46,15 +46,10 @@ extends RuntimeException {
     *
     * @param request
     *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
-    *    never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
+    *    may be <code>null</code>.
     */
    public UnacceptableRequestException(AbstractCAPICallRequest request)
    throws IllegalArgumentException {
-
-      MandatoryArgumentChecker.check("request", request);
 
       // Store the information
       _request    = request;
@@ -171,7 +166,7 @@ extends RuntimeException {
       DataElement paramCombo = new DataElement(null, "param-combo");
       paramCombo.setAttribute(null, "type", type);
 
-      // Iterate ober all elements
+      // Iterate over all elements
       Iterator itElements = elements.iterator();
       while(itElements.hasNext()) {
          DataElement param = new DataElement(null, "param");

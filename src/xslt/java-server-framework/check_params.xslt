@@ -32,7 +32,8 @@
 					<xsl:text>org.xins.client.UnacceptableRequestException</xsl:text>
 				</xsl:when>
 				<xsl:when test="$side='client' and (local-name() = 'output' or (local-name() = 'element' and local-name(../..) = 'output'))">
-					<xsl:text>org.xins.client.UnacceptableResultXINSCallException</xsl:text>
+					<!-- TODO: Create another class for this purpose. -->
+					<xsl:text>org.xins.client.UnacceptableRequestException</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -50,6 +51,9 @@
 			<xsl:choose>
 				<xsl:when test="$side='server' and local-name() = 'input'">
 					<xsl:text>context.</xsl:text>
+				</xsl:when>
+				<xsl:when test="$side='client' and local-name() = 'output'">
+					<xsl:text>result.</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'element'">
 					<xsl:value-of select="@name" />
@@ -356,28 +360,19 @@
 		<!-- ************************************************************* -->
 		<!-- Check data section                                            -->
 		<!-- ************************************************************* -->
-		<xsl:choose>
-			<xsl:when test="$side='server' and local-name() = 'input'">
-				<xsl:text>
-      if (context.getDataElement() != null) {</xsl:text>
-				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
-					<xsl:with-param name="parentelement" select="'context.getDataElement()'" />
-					<xsl:with-param name="side" select="$side" />
-				</xsl:apply-templates>
-				<xsl:text>
+		<xsl:if test="local-name() = 'input' or local-name() = 'output'">
+			<xsl:text>
+      if (</xsl:text>
+			<xsl:value-of select="$context" />
+			<xsl:text>getDataElement() != null) {</xsl:text>
+			<xsl:apply-templates select="data/contains/contained" mode="checkParams">
+				<xsl:with-param name="parentelement" select="concat($context, 'getDataElement()')" />
+				<xsl:with-param name="side" select="$side" />
+			</xsl:apply-templates>
+			<xsl:text>
       }</xsl:text>
-			</xsl:when>
-			<xsl:when test="($side = 'client' and local-name() = 'input') or ($side = 'server' and local-name() = 'output')">
-				<xsl:text>
-      if (getDataElement() != null) {</xsl:text>
-				<xsl:apply-templates select="data/contains/contained" mode="checkParams">
-					<xsl:with-param name="parentelement" select="'getDataElement()'" />
-					<xsl:with-param name="side" select="$side" />
-				</xsl:apply-templates>
-				<xsl:text>
-      }</xsl:text>
-			</xsl:when>
-		</xsl:choose>
+		</xsl:if>
+
 		<xsl:apply-templates select="contains/contained" mode="checkParams">
 			<xsl:with-param name="parentelement" select="concat(@name, 'NextElement')" />
 			<xsl:with-param name="side" select="$side" />
@@ -391,7 +386,7 @@
          return _errorResult;
       }</xsl:text>
 			</xsl:when>
-			<xsl:when test="($side = 'client' and local-name() = 'input') or ($side = 'server' and local-name() = 'output')">
+			<xsl:when test="$side = 'client' or ($side = 'server' and local-name() = 'output')">
 				<xsl:text>
       return _errorResult;</xsl:text>
 			</xsl:when>
@@ -416,7 +411,7 @@
 		<xsl:value-of select="$elementname" />
 		<xsl:text>Iterator.hasNext()) {</xsl:text>
 		<xsl:choose>
-			<xsl:when test="$side='client' and local-name(../../..) = 'output'">
+			<xsl:when test="$side='client' and ancestor::output">
 				<xsl:text>
          org.xins.client.DataElement </xsl:text>
 			</xsl:when>
@@ -427,7 +422,7 @@
 		</xsl:choose>
 		<xsl:value-of select="$elementname" />
 		<xsl:choose>
-			<xsl:when test="$side='client' and local-name(../../..) = 'output'">
+			<xsl:when test="$side='client' and ancestor::output">
 				<xsl:text>NextElement = (org.xins.client.DataElement) </xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -455,8 +450,11 @@
             _errorResult = new </xsl:text>
 		<xsl:value-of select="$errorclass" />
 		<xsl:text>(</xsl:text>
-		<xsl:if test="$side = 'client'">
+		<xsl:if test="$side = 'client' and ancestor::input">
 			<xsl:text>this</xsl:text>
+		</xsl:if>
+		<xsl:if test="$side = 'client' and ancestor::output">
+			<xsl:text>null</xsl:text>
 		</xsl:if>
 		<xsl:text>);
          }</xsl:text>

@@ -53,6 +53,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
 * Generated CAPI classes:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
     Request.
+  - Fixed SF.net bug #1237539: Attribute values not checked.
 
 * Generated WSDL:
   - The defined types are declared as types in the generated WSDL file.
