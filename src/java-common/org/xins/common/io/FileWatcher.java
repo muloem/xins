@@ -9,6 +9,7 @@ package org.xins.common.io;
 import java.io.File;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 /**
  * File watcher thread. This thread checks if a file changed and if it has, it
@@ -33,6 +34,23 @@ public final class FileWatcher extends Thread {
     * Fully-qualified name of this class.
     */
    private static final String CLASSNAME = FileWatcher.class.getName();
+
+   /**
+    * State in which this file watcher thread is not running.
+    */
+   private static final int NOT_RUNNING = 1;
+
+   /**
+    * State in which this file watcher thread is currently running and has not
+    * been told to stop.
+    */
+   private static final int RUNNING = 2;
+
+   /**
+    * State in which this file watcher thread is currently running, but has
+    * been told to stop.
+    */
+   private static final int SHOULD_STOP = 3;
 
 
    //-------------------------------------------------------------------------
@@ -68,27 +86,19 @@ public final class FileWatcher extends Thread {
          throw new IllegalArgumentException("interval (" + interval + ") < 1");
       }
 
-      // Store the information
+      // Initialize the fields
       _file          = new File(file);
       _interval      = interval;
       _listener      = listener;
       _listenerClass = listener.getClass().getName();
-      _shouldStop    = false;
+      _state         = NOT_RUNNING;
 
       // Configure thread as daemon
       setDaemon(true);
 
       // Immediately check if the file can be read from
-      try {
-         if (_file.canRead()) {
-            _lastModified = _file.lastModified();
-         }
-      } catch (SecurityException exception) {
-         // ignore
-         // TODO: Log
-      }
+      firstCheck();
    }
-
 
    /**
     * Creates a new <code>FileWatcher</code> for the specified file.
@@ -112,25 +122,18 @@ public final class FileWatcher extends Thread {
       // Check preconditions
       MandatoryArgumentChecker.check("file", file, "listener", listener);
 
-      // Store the information
+      // Initialize the fields
       _file          = new File(file);
       _interval      = 0;
       _listener      = listener;
       _listenerClass = listener.getClass().getName();
-      _shouldStop    = false;
+      _state         = NOT_RUNNING;
 
       // Configure thread as daemon
       setDaemon(true);
 
       // Immediately check if the file can be read from
-      try {
-         if (_file.canRead()) {
-            _lastModified = _file.lastModified();
-         }
-      } catch (SecurityException exception) {
-         // ignore
-         // TODO: Log
-      }
+      firstCheck();
    }
 
 
@@ -169,9 +172,19 @@ public final class FileWatcher extends Thread {
    private long _lastModified;
 
    /**
-    * Flag that indicates if this thread has been ordered to stop.
+    * Current state. Never <code>null</code>. Value is one of the following
+    * values:
+    *
+    * <ul>
+    *    <li>{@link #NOT_RUNNING}
+    *    <li>{@link #RUNNING}
+    *    <li>{@link #SHOULD_STOP}
+    * </ul>
+    *
+    * Once the thread is stopped, the state will be changed to
+    * {@link #NOT_RUNNING} again.
     */
-   private boolean _shouldStop;
+   private int _state;
 
 
    //-------------------------------------------------------------------------
@@ -179,38 +192,77 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
 
    /**
+    * Performs the first check on the file to determine the date the file was
+    * last modified. This method is called from the constructors. If the file
+    * cannot be accessed due to a {@link SecurityException}, then this
+    * exception is logged and ignored.
+    */
+   private void firstCheck() {
+
+      String subjectMethod = "canRead";
+      try {
+         if (_file.canRead()) {
+            subjectMethod = "lastModified()";
+            _lastModified = _file.lastModified();
+         }
+
+      // Ignore a SecurityException
+      } catch (SecurityException exception) {
+         String thisMethod = "<init>(java.lang.String,int,"
+                                  + Listener.class.getName()
+                                  + ")";
+         String subjectClass = "java.io.File";
+         Utils.logIgnoredException(exception,
+                                   CLASSNAME,    thisMethod,
+                                   subjectClass, subjectMethod);
+      }
+   }
+
+   /**
     * Runs this thread. This method should not be called directly, call
     * {@link #start()} instead. That method will call this method.
     *
     * @throws IllegalStateException
-    *    if <code>{@link Thread#currentThread()} != this</code> or if the
-    *    interval was not set yet.
+    *    if <code>{@link Thread#currentThread()} != this</code>, if the thread
+    *    is already running or should stop, or if the interval was not set yet.
     */
    public void run() throws IllegalStateException {
-
-      // TODO: Check state
 
       // Check preconditions
       if (Thread.currentThread() != this) {
          throw new IllegalStateException("Thread.currentThread() != this");
+      } else if (_state == RUNNING) {
+         throw new IllegalStateException("The thread is already running.");
+      } else if (_state == SHOULD_STOP) {
+         throw new IllegalStateException("The thread should stop running.");
       } else if (_interval < 1) {
          throw new IllegalStateException("The interval has not been set yet.");
       }
 
       Log.log_1200(_file.getPath(), _interval);
 
-      while (! _shouldStop) {
+      boolean shouldStop = false;
+      while (! shouldStop) {
          try {
-            while(! _shouldStop) {
+            while(! shouldStop) {
 
                // Wait for the designated amount of time
                sleep(((long)_interval) * 1000L);
 
-               // Check if the file changed
-               check();
+               // Should we stop?
+               synchronized (this) {
+                  shouldStop = (_state != RUNNING);
+               }
+
+               // If we do not have to stop yet, check if the file changed
+               if (! shouldStop) {
+                  check();
+               }
             }
          } catch (InterruptedException exception) {
-            // Fall through
+            // TODO: (#HERE#) Compute how much time we still need to sleep
+            // before checking the file, depending on the new interval (if
+            // that caused the InterruptedException here)
          }
       }
    }
@@ -239,8 +291,6 @@ public final class FileWatcher extends Thread {
    public synchronized void setInterval(int newInterval)
    throws IllegalArgumentException {
 
-      // TODO: Check state
-
       // Check preconditions
       if (newInterval < 1) {
          throw new IllegalArgumentException("newInterval (" + newInterval + ") < 1");
@@ -251,19 +301,29 @@ public final class FileWatcher extends Thread {
          Log.log_1201(_file.getPath(), _interval, newInterval);
          _interval = newInterval;
       }
+
+      // TODO: Interrupt the thread (see #HERE#)
    }
 
    /**
     * Stops this thread.
+    *
+    * @throws IllegalStateException
+    *    if the thread is currently not running or already stopping.
     */
-   public synchronized void end() {
+   public synchronized void end() throws IllegalStateException {
 
-      // TODO: Check state
-
-      _shouldStop = true;
+      // Check state
+      if (_state == NOT_RUNNING) {
+         throw new IllegalStateException("The thread is currently not running.");
+      } else if (_state == SHOULD_STOP) {
+         throw new IllegalStateException("The thread is already stopping.");
+      }
 
       Log.log_1202(_file.getPath());
 
+      // Change the state and interrupt the thread
+      _state = SHOULD_STOP;
       this.interrupt();
    }
 
@@ -293,9 +353,7 @@ public final class FileWatcher extends Thread {
     */
    public synchronized void check() {
 
-      // TODO: Check state
-
-      final String THIS_METHOD = "check()";
+      String thisMethod = "check()";
 
       // Variable to store the file modification timestamp in. The value -1
       // indicates the file does not exist.
@@ -319,10 +377,11 @@ public final class FileWatcher extends Thread {
             _listener.securityException(securityException);
 
          // Ignore any exceptions thrown by the listener callback method
-         } catch (Throwable t) {
-            final String SUBJECT_METHOD = "securityException(java.lang.SecurityException)";
-            final String DETAIL         = null;
-            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
+         } catch (Throwable exception) {
+            String subjectMethod = "securityException(java.lang.SecurityException)";
+            Utils.logIgnoredException(exception,
+                                      CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod);
          }
 
          // Short-circuit
@@ -341,10 +400,11 @@ public final class FileWatcher extends Thread {
             _listener.fileNotFound();
 
          // Ignore any exceptions thrown by the listener callback method
-         } catch (Throwable t) {
-            final String SUBJECT_METHOD = "fileNotFound()";
-            final String DETAIL         = null;
-            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
+         } catch (Throwable exception) {
+            String subjectMethod = "fileNotFound()";
+            Utils.logIgnoredException(exception,
+                                      CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod);
          }
 
       // Previously the file could not be found, but now it can
@@ -358,10 +418,11 @@ public final class FileWatcher extends Thread {
             _listener.fileFound();
 
          // Ignore any exceptions thrown by the listener callback method
-         } catch (Throwable t) {
-            final String SUBJECT_METHOD = "fileFound()";
-            final String DETAIL         = null;
-            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
+         } catch (Throwable exception) {
+            String subjectMethod = "fileFound()";
+            Utils.logIgnoredException(exception,
+                                      CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod);
          }
 
       // File has been modified
@@ -375,10 +436,11 @@ public final class FileWatcher extends Thread {
             _listener.fileModified();
 
          // Ignore any exceptions thrown by the listener callback method
-         } catch (Throwable t) {
-            final String SUBJECT_METHOD = "fileModified()";
-            final String DETAIL         = null;
-            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
+         } catch (Throwable exception) {
+            String subjectMethod = "fileModified()";
+            Utils.logIgnoredException(exception,
+                                      CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod);
          }
 
       // File has not been modified
@@ -389,10 +451,11 @@ public final class FileWatcher extends Thread {
             _listener.fileNotModified();
 
          // Ignore any exceptions thrown by the listener callback method
-         } catch (Throwable t) {
-            final String SUBJECT_METHOD = "fileNotModified()";
-            final String DETAIL         = null;
-            Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
+         } catch (Throwable exception) {
+            String subjectMethod = "fileNotModified()";
+            Utils.logIgnoredException(exception,
+                                      CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod);
          }
       }
    }
