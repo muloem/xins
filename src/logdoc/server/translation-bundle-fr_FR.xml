@@ -82,6 +82,10 @@
 	<translation entry="3410">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> a été lu correctement.</translation>
 	<translation entry="3411">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
 	<translation entry="3412">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
+<!-- FIXME TODO: Update translation for 3411 and 3412 (added word 'runtime')
+	<translation entry="3411">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The required runtime property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
+	<translation entry="3412">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The runtime property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />. Reason: <value-of-param name="reason" /></translation>
+-->
 	<translation entry="3413">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3414">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué.</translation>
 	<translation entry="3415">La (ré)-initialisation du XINS/Java Server Framework a réussi.</translation>
