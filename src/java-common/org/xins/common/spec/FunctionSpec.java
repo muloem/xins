@@ -430,7 +430,6 @@ public class FunctionSpec extends Object {
          List dataSections = inputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            // TODO String contains = dataSection.getAttribute("contains");
             _inputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
@@ -459,7 +458,6 @@ public class FunctionSpec extends Object {
          List dataSections = outputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            // TODO String contains = dataSection.getAttribute("contains");
             _outputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }
@@ -484,8 +482,19 @@ public class FunctionSpec extends Object {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static Map parseDataSectionElements(Class reference, Element topElement, Element dataSection) throws InvalidSpecificationException {
-      Map dataSectionElements = new LinkedHashMap(); 
+   static Map parseDataSectionElements(Class reference, Element topElement, Element dataSection)
+   throws InvalidSpecificationException {
+
+      Map dataSectionElements = new LinkedHashMap();
+      
+      // The <data> may have a "contains" attribute.
+      String dataContainsAttr = topElement.getAttribute("contains");
+      if (dataContainsAttr != null) {
+         DataSectionElementSpec dataSectionElement = getDataSectionElement(reference, dataContainsAttr, dataSection);
+         dataSectionElements.put(dataContainsAttr, dataSectionElement);
+      }
+      
+      // Gets the sub elements of this element
       List dataSectionContains = topElement.getChildElements("contains");
       if (!dataSectionContains.isEmpty()) {
          Element containsElement = (Element) dataSectionContains.get(0);
@@ -500,7 +509,7 @@ public class FunctionSpec extends Object {
       }
       return dataSectionElements;
    }
-   
+
    /**
     * Gets the specified element in the data section.
     *
