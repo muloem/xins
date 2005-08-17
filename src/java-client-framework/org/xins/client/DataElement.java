@@ -19,6 +19,8 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 import org.xins.common.text.TextUtils;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Element in a XINS result data section.
@@ -526,6 +528,62 @@ public class DataElement implements Cloneable {
     */
    public String getText() {
       return _text;
+   }
+
+   /**
+    * Converts this DataElement to a {@link org.xins.common.xml.Element} object.
+    *
+    * @return
+    *    the converted object, never <code>null</code>.
+    */
+   public Element toXMLElement() {
+      return toXMLElement(this);
+   }
+   
+   /**
+    * Converts the given DataElement to a 
+    * {@link org.xins.common.xml.Element} object.
+    *
+    * @param dataElement
+    *    the input element to convert, cannot be <code>null</code>
+    *
+    * @return
+    *    the converted object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>dataElement == null</code>.
+    */
+   private Element toXMLElement(DataElement dataElement) {
+      
+      MandatoryArgumentChecker.check("dataElement", dataElement);
+      
+      String elementName = dataElement.getLocalName();
+      String elementNameSpaceURI = dataElement.getNamespaceURI();
+      Map elementAttributes = dataElement.getAttributeMap();
+      String elementText = dataElement.getText();
+      List elementChildren = dataElement.getChildElements();
+      
+      ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
+      
+      builder.setText(elementText);
+
+      // Go through the attributes
+      Iterator itAttributeNames = elementAttributes.keySet().iterator();
+      while (itAttributeNames.hasNext()) {
+         String attributeName = (String) itAttributeNames.next();
+         String attributeValue = (String) elementAttributes.get(attributeName);
+         builder.setAttribute(attributeName, attributeValue);
+      }
+      
+      // Add the children of this element
+      Iterator itChildren = elementChildren.iterator();
+      while (itChildren.hasNext()) {
+         DataElement nextChild = (DataElement) itChildren.next();
+         Element transformedChild = toXMLElement(nextChild);
+         builder.addChild(transformedChild);
+      }
+      
+      return builder.createElement();
    }
 
    /**
