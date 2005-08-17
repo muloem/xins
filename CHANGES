@@ -26,6 +26,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     instead of an array.
   - Renamed the classes in the spec package by adding "Spec" at the end of
     the class name.
+  - Added logIgnorableException methods to the Utils class.
+  - Slightly improved internal state checking in FileWatcher class.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception
