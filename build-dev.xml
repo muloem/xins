@@ -124,6 +124,7 @@ ${sf.file}</fail>
 		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
 		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
+		<ant antfile="build/build.xml" dir="src/tests" target="wsdl-allinone"     />
 
 		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />
