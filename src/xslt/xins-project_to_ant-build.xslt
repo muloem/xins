@@ -85,18 +85,23 @@ This build file was generated with XINS </xsl:text>
 The following commands assist in authoring specifications:
 - create-api          Generates a new api specification file.
 - create-function     Generates a new function specification file.
-- create-rcd          Generates a new result code specification file.
+- create-rcd          Generates a new error code specification
+                      file.
 - create-type         Generates a new type specification file.
 
-The following targets are specific for a single API, replace <api> with the name of an existing API:
+The following targets are specific for a single API, 
+replace <api> with the name of an existing API:
 - run-<api>           Runs the WAR file for the API.
 - war-<api>           Creates the WAR file for the API.
 - specdocs-<api>      Generates all specification docs for the API.
-- javadoc-api-<api>   Generates Javadoc for the API implementation (server).
-- server-<api>        Generates the WAR file, the API Javadoc for the server side and the specdocs for the API.
+- javadoc-api-<api>   Generates Javadoc for the server API
+                      implementation.
+- server-<api>        Generates the WAR file, the API Javadoc for
+                      the server side and the specdocs for the API.
 - jar-<api>           Generates and compiles the CAPI classes.
-- javadoc-capi-<api>  Generates the Javadoc for the CAPI classes (client).
-- client-<api>        Generates the CAPI JAR file and the corresponding Javadoc.
+- javadoc-capi-<api>  Generates the Javadoc for the CAPI classes.
+- client-<api>        Generates the CAPI JAR file and the
+                      corresponding Javadoc.
 - clean-<api>         Cleans everything for the API.
 - rebuild-<api>       Regenerates everything for the API.
 - all-<api>           Generates everything for the API.
