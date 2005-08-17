@@ -23,6 +23,7 @@ import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.PropertiesPropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.io.FileWatcher;
@@ -31,14 +32,14 @@ import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
 
 /**
- * XINS configuration file manager. Contains both the config file watcher and
- * the listener. Has the ability to check the ServletConfig object and can
- * configure the default Log settings.
+ * Manager for the runtime configuration file. Owns the watcher for the config
+ * file and is responsible for triggering actions when the file has actually
+ * changed.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  */
-final class ConfigManager {
+final class ConfigManager extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -63,20 +64,24 @@ final class ConfigManager {
       Properties settings = new Properties();
 
       // Send all log messages to the logger named 'console'
-      settings.setProperty("log4j.rootLogger",
-      "ALL, console");
+      settings.setProperty(
+         "log4j.rootLogger",
+         "ALL, console");
 
-      // Define the type of the logger named 'console'
-      settings.setProperty("log4j.appender.console",
-      "org.apache.log4j.ConsoleAppender");
+      // Define an appender for the console
+      settings.setProperty(
+         "log4j.appender.console",
+         "org.apache.log4j.ConsoleAppender");
 
-      // Use a pattern-layout for the logger
-      settings.setProperty("log4j.appender.console.layout",
-      "org.apache.log4j.PatternLayout");
+      // Use a pattern-layout for the appender
+      settings.setProperty(
+         "log4j.appender.console.layout",
+         "org.apache.log4j.PatternLayout");
 
-      // Define the pattern for the logger
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern",
-      "%16x %6c{1} %-6p %m%n");
+      // Define the pattern for the appender
+      settings.setProperty(
+         "log4j.appender.console.layout.ConversionPattern",
+         "%16x %6c{1} %-6p %m%n");
 
       // Perform Log4J configuration
       PropertyConfigurator.configure(settings);
@@ -90,12 +95,26 @@ final class ConfigManager {
    /**
     * Constructs a new <code>ConfigManager</code> object.
     *
-    * @param engine The servlet Engine.
-    * @param config The servlet configuration object
+    * @param engine
+    *    the {@link Engine} that owns this <code>ConfigManager</code>, cannot
+    *    be <code>null</code>.
+    *
+    * @param config
+    *    the servlet configuration, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>engine == null || config == null</code>.
     */
-   ConfigManager(Engine engine, ServletConfig config) {
-      _engine = engine;
-      _config = config;
+   ConfigManager(Engine engine, ServletConfig config)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("engine", engine, "config", config);
+
+      // Initialize fields
+      _engine             = engine;
+      _config             = config;
+      _configFileListener = new ConfigurationFileListener();
    }
 
 
@@ -104,28 +123,29 @@ final class ConfigManager {
    //-------------------------------------------------------------------------
 
    /**
-    * The name of the runtime configuration file.
+    * The <code>Engine</code> that owns this <code>ConfigManager</code>. Never
+    * <code>null</code>.
     */
-   private String _configFile;
+   private final Engine _engine;
 
    /**
-    * The engine.
+    * Servlet configuration. Never <code>null</code>.
     */
-   private Engine _engine;
-
-   /**
-    * Servlet confuration object.
-    */
-   private ServletConfig _config;
+   private final ServletConfig _config;
 
    /**
     * The listener that is notified when the configuration file changes. Only
     * one instance is created ever.
     */
-   private final ConfigurationFileListener _configFileListener = new ConfigurationFileListener();
+   private final ConfigurationFileListener _configFileListener;
 
    /**
-    * Runtime configuration file watcher.
+    * The name of the runtime configuration file. Initially <code>null</code>.
+    */
+   private String _configFile;
+
+   /**
+    * Watcher for the runtime configuration file. Initially <code>null</code>.
     */
    private FileWatcher _configFileWatcher;
 
@@ -135,65 +155,33 @@ final class ConfigManager {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines the reload interval for the config file, initializes the API
-    * if the interval has changed and starts the config file watcher.
-    */
-   void init() {
-      int interval = determineReloadIntervalAndInitAPI();
-      startConfigFileWatcher(interval);
-   }
-
-   /**
-    * Determines the config file name by getting the name from the System
-    * properties. If this doesn't succeed then the value will be retrieved
-    * from the servlet init parameters (config). Will be stored in the configFile field.
-    *
+    * Determines the name of the runtime configuration file. The system
+    * properties will be queried first. If they do not provide it, then the
+    * servlet initialization properties are tried. Once determined, the name
+    * will be stored internally.
     */
    void determineConfigFile() {
+
+      // TODO: Check state
+
+      // TODO: What if the name cannot be determined?
+
+      final String prop = APIServlet.CONFIG_FILE_SYSTEM_PROPERTY;
       String configFile = null;
       try {
-         configFile = System.getProperty(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
+         configFile = System.getProperty(prop);
       } catch (SecurityException exception) {
-         Log.log_3230(exception, APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
+         Log.log_3230(exception, prop);
       }
 
-      // If the config file is not set at start-up try to get it from the
-      // web.xml file
+      // If the name of the configuration file is not set in a system property
+      // (typically passed on the command-line) try to get it from the servlet
+      // initialization properties (typically set in a web.xml file)
       if (configFile == null) {
-         Log.log_3231(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         configFile = _config.getInitParameter(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
+         Log.log_3231(prop);
+         configFile = _config.getInitParameter(prop);
       }
       _configFile = configFile;
-   }
-
-   /**
-    * Starts the config file watcher watch thread.
-    *
-    * @param interval
-    *    the interval in seconds, must be greater than or equal to 1.
-    */
-   void startConfigFileWatcher(int interval) {
-
-      // Create and start a file watch thread
-      if (_configFile != null && _configFile.length() > 0 && interval > 0) {
-         _configFileWatcher = new FileWatcher(_configFile,
-                                              interval,
-                                              _configFileListener);
-         _configFileWatcher.start();
-      }
-   }
-
-   /**
-    * If the config file watcher == <code>null</code>, then the config file
-    * listener will be re-initialized. If not the file watcher will be
-    * interrupted.
-    */
-   void reloadPropertiesIfChanged() {
-      if (_configFileWatcher == null) {
-         _configFileListener.reinit();
-      } else {
-         _configFileWatcher.interrupt();
-      }
    }
 
    /**
@@ -204,18 +192,24 @@ final class ConfigManager {
     * the engine.
     */
    void readRuntimeProperties() {
+
+      // TODO: Check state
+
+      PropertyReader pr;
+
       // If the value is not set only localhost can access the API.
       // NOTE: Don't trim the configuration file name, since it may start
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         _engine.setRuntimeProperties(
-            PropertyReaderUtils.EMPTY_PROPERTY_READER);
+         pr = PropertyReaderUtils.EMPTY_PROPERTY_READER;
       } else {
 
          // Unify the file separator character
          _configFile = _configFile.replace('/',  File.separatorChar);
          _configFile = _configFile.replace('\\', File.separatorChar);
+
+         // TODO: Allow a slash in the file name?
 
          // Initialize the logging subsystem
          Log.log_3300(_configFile);
@@ -225,18 +219,20 @@ final class ConfigManager {
             Properties properties = new Properties();
             try {
 
-               // Open the file
+               // Open file, load properties, close file
                FileInputStream in = new FileInputStream(_configFile);
-
-               // Load the properties
                properties.load(in);
-
-               // Close the file
                in.close();
+
+            // No such file
             } catch (FileNotFoundException exception) {
                Log.log_3301(exception, _configFile);
+
+            // Security issue
             } catch (SecurityException exception) {
                Log.log_3302(exception, _configFile);
+
+            // Other I/O error
             } catch (IOException exception) {
                Log.log_3303(exception, _configFile);
             }
@@ -244,18 +240,81 @@ final class ConfigManager {
             // Attempt to configure Log4J
             configureLogger(properties);
 
-            // Store the runtime properties on the engine
-            _engine.setRuntimeProperties(
-               new PropertiesPropertyReader(properties));
+            // Convert to a PropertyReader
+            pr = new PropertiesPropertyReader(properties);
          }
+      }
+
+      // Assign the runtime properties to the Engine
+      _engine.setRuntimeProperties(pr);
+   }
+
+   /**
+    * Determines the reload interval for the config file, initializes the API
+    * if the interval has changed and starts the config file watcher.
+    */
+   void init() {
+
+      // TODO: Check the state
+
+      int interval = determineReloadIntervalAndInitAPI();
+      startConfigFileWatcher(interval);
+   }
+
+   /**
+    * Starts the runtime configuration file watch thread.
+    *
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 1.
+    *
+    * @throws IllegalStateException
+    *    if the configuration file has not been determined yet or if a
+    *    watcher has been created already.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>interval &lt; 1</code>.
+    */
+   void startConfigFileWatcher(int interval)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (_configFile == null || _configFile.length() < 1) {
+         throw new IllegalStateException("Name of runtime configuration file not set.");
+      } else if (_configFileWatcher != null) {
+         throw new IllegalArgumentException("Runtime configuration file watcher exists.");
+      } else if (interval < 1) {
+         throw new IllegalArgumentException("interval (" + interval + ") < 1");
+      }
+
+      // Create and start a file watch thread
+      _configFileWatcher = new FileWatcher(_configFile,
+                                           interval,
+                                           _configFileListener);
+      _configFileWatcher.start();
+   }
+
+   /**
+    * If the config file watcher == <code>null</code>, then the config file
+    * listener will be re-initialized. If not the file watcher will be
+    * interrupted.
+    */
+   void reloadPropertiesIfChanged() {
+
+      // TODO: Improve method description
+
+      if (_configFileWatcher == null) {
+         _configFileListener.reinit();
+      } else {
+         _configFileWatcher.interrupt();
       }
    }
 
    /**
-    * Configure the Log4J system.
+    * Initializes the logging subsystem.
     *
     * @param properties
-    *    the runtime properties containing the Log4J configuration.
+    *    the runtime properties containing the settings for the logging
+    *    subsystem, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null</code>.
@@ -276,9 +335,13 @@ final class ConfigManager {
       Enumeration appenders =
          LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
 
+      // If the properties did not include Log4J configuration settings, then
+      // fallback to default settings
       if (appenders instanceof NullEnumeration) {
          Log.log_3304(_configFile);
          configureLoggerFallback();
+
+      // Otherwise log that custom Log4J configuration settings were applied
       } else {
          Log.log_3305();
       }
@@ -298,37 +361,43 @@ final class ConfigManager {
    int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
+      // TODO: Check state
+
       _engine.setState(EngineState.DETERMINE_INTERVAL);
 
       // Get the runtime property
-      String s = _engine.getRuntimeProperties().get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+      final String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
+      final String s = _engine.getRuntimeProperties().get(prop);
       int interval = -1;
 
       // If the property is set, parse it
       if (s != null && s.length() >= 1) {
          try {
             interval = Integer.parseInt(s);
+
+            // Negative value
             if (interval < 0) {
-               Log.log_3409(_configFile,
-                            APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_3409(_configFile, prop, s);
                _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
-               throw new InvalidPropertyValueException(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY,
-                                                       s,
-                                                       "Negative value.");
+               throw new InvalidPropertyValueException(
+                  prop, s, "Negative value.");
+
+            // Non-negative value
             } else {
-               Log.log_3410(_configFile, APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+               Log.log_3410(_configFile, prop, s);
             }
+
+         // Not a valid number string
          } catch (NumberFormatException nfe) {
-            Log.log_3409(_configFile, APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY, s);
+            Log.log_3409(_configFile, prop, s);
             _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
-            throw new InvalidPropertyValueException(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY,
-                                                    s,
-                                                    "Not a 32-bit integer number.");
+            throw new InvalidPropertyValueException(
+               prop, s, "Not a 32-bit integer number.");
          }
 
-         // Otherwise, if the property is not set, use the default
+      // Property not set, use the default
       } else {
-         Log.log_3408(_configFile, APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+         Log.log_3408(_configFile, prop);
          interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
@@ -348,14 +417,17 @@ final class ConfigManager {
       try {
          interval = determineConfigReloadInterval();
          intervalParsed = true;
+
+      // Interval could not be parsed
       } catch (InvalidPropertyValueException exception) {
-         intervalParsed = false;
          interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+         intervalParsed = false;
       }
 
       if (intervalParsed) {
          _engine.initAPI();
       }
+
       return interval;
    }
 

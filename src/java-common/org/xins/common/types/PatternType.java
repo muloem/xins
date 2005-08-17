@@ -13,6 +13,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 import org.xins.logdoc.ExceptionUtils;
 
@@ -75,17 +76,21 @@ public abstract class PatternType extends Type {
          throw new IllegalArgumentException("pattern == null");
       }
 
+      // Compile the regular expression to a Pattern object
       try {
          synchronized (PATTERN_COMPILER) {
             _pattern = PATTERN_COMPILER.compile(pattern,
                                                 Perl5Compiler.READ_ONLY_MASK);
          }
+
+      // Handle pattern compilation error
       } catch (MalformedPatternException mpe) {
          PatternCompileException e = new PatternCompileException(pattern);
          ExceptionUtils.setCause(e, mpe);
          throw e;
       }
 
+      // Store the original pattern string
       _patternString = pattern;
    }
 
@@ -112,19 +117,29 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String value) {
+
+      // Determine if the value matches the pattern
       try {
          Perl5Matcher patternMatcher = new Perl5Matcher();
          return patternMatcher.matches(value, _pattern);
+
+      // If the call causes an exception, then log that exception and assume
+      // the value does not match the pattern
       } catch (Throwable exception) {
-         final String THIS_METHOD    = "isValidValueImpl(java.lang.String)";
-         final String SUBJECT_CLASS  = new Perl5Matcher().getClass().getName();
-         final String SUBJECT_METHOD = "matches(java.lang.String," + _pattern.getClass().getName() + ')';
-         final String DETAIL         = "Assuming the value \""
-                                     + value
-                                     + "\" is invalid for the pattern \""
-                                     + _patternString
-                                     + "\".";
-         Log.log_1052(exception, CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         String thisMethod    = "isValidValueImpl(java.lang.String)";
+         String subjectClass  = "org.apache.oro.text.regex.Perl5Matcher";
+         String subjectMethod = "matches(java.lang.String,"
+                              + _pattern.getClass().getName()
+                              + ')';
+         String detail        = "Assuming the value \""
+                              + value
+                              + "\" is invalid for the pattern \""
+                              + _patternString
+                              + "\".";
+         Utils.logProgrammingError(exception,
+                                   CLASSNAME,    thisMethod,
+                                   subjectClass, subjectMethod,
+                                   detail);
          return false;
       }
    }
@@ -150,6 +165,6 @@ public abstract class PatternType extends Type {
     *    the pattern, not <code>null</code>.
     */
    public String getPattern() {
-      return _pattern.getPattern();
+      return _patternString;
    }
 }

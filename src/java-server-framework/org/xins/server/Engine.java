@@ -352,19 +352,26 @@ final class Engine extends Object {
             _defaultConvention     = cc;
 
             // TODO: Log that we use the specified calling convention
+            // TODO: Log.log_3xxx(_defaultConventionName);
 
          // No calling convention is specified in the build-time properties,
          // so use the standard calling convention
          } else {
+            // TODO: Put "_xins-std" in a constant
             _defaultConventionName = "_xins-std";
             _defaultConvention     = new StandardCallingConvention();
             _defaultConvention.bootstrap(
                new ServletConfigPropertyReader(_servletConfig));
 
             // TODO: Log that we use the standard calling convention
+            // TODO: Log.log_3xxx("_xins-std");
          }
 
       } catch (Throwable t) {
+
+         // TODO: Consider catching the exception one level up so we do not
+         //       have to generate a ServletException here
+
          _state.setState(EngineState.API_BOOTSTRAP_FAILED);
 
          // Throw a ServletException
@@ -404,7 +411,7 @@ final class Engine extends Object {
       MandatoryArgumentChecker.check("properties", properties);
 
       // Determine pattern string
-      // TODO: Get from constant
+      // TODO: Store "org.xins.server.contextID.filter" in a constant
       final String propName  = "org.xins.server.contextID.filter";
       String propValue = properties.get(propName);
 
@@ -561,7 +568,7 @@ final class Engine extends Object {
    private String determineContextID(final HttpServletRequest request) {
 
       // See if the request already specifies a diagnostic context identifier
-      // TODO: Use constant for that request parameter name
+      // TODO: Store "_context" in a constant
       String contextID = request.getParameter("_context");
       if (TextUtils.isEmpty(contextID)) {
          Log.log_3580();
