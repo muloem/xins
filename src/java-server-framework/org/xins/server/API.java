@@ -780,12 +780,10 @@ implements DefaultResultCodes {
     * Get the specification of the API.
     *
     * @return
-    *    the {@link org.xins.common.spec.API} specification object.
+    *    the {@link org.xins.common.spec.APISpec} specification object.
     *
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
-    *
-    * @see org.xins.common.spec.API
     *
     * @since XINS 1.3.0
     */
