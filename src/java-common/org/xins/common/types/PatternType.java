@@ -136,10 +136,9 @@ public abstract class PatternType extends Type {
                               + "\" is invalid for the pattern \""
                               + _patternString
                               + "\".";
-         Utils.logProgrammingError(exception,
-                                   CLASSNAME,    thisMethod,
+         Utils.logProgrammingError(CLASSNAME,    thisMethod,
                                    subjectClass, subjectMethod,
-                                   detail);
+                                   detail,       exception);
          return false;
       }
    }
