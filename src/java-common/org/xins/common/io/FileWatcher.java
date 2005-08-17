@@ -15,6 +15,9 @@ import org.xins.common.MandatoryArgumentChecker;
  * notifies the listener. The check is performed every <em>n</em> seconds,
  * where <em>n</em> can be configured.
  *
+ * <p>Initially this thread will be a daemon thread. This can be changed by
+ * calling {@link #setDaemon(boolean)}.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -82,6 +85,7 @@ public final class FileWatcher extends Thread {
          }
       } catch (SecurityException exception) {
          // ignore
+         // TODO: Log
       }
    }
 
@@ -125,6 +129,7 @@ public final class FileWatcher extends Thread {
          }
       } catch (SecurityException exception) {
          // ignore
+         // TODO: Log
       }
    }
 
@@ -139,8 +144,8 @@ public final class FileWatcher extends Thread {
    private final File _file;
 
    /**
-    * Delay in seconds, at least 1. When the interval is uninitialized, this
-    * field is set to 0.
+    * Delay in seconds, at least 1. When the interval is uninitialized, the
+    * value of this field is less than 1.
     */
    private int _interval;
 
@@ -156,8 +161,8 @@ public final class FileWatcher extends Thread {
 
    /**
     * Timestamp of the last modification of the file. The value
-    * <code>-1</code> indicates that the file could not be found the last time
-    * this was checked.
+    * <code>-1L</code> indicates that the file could not be found the last
+    * time this was checked.
     *
     * <p>Initially this field is <code>-1L</code>.
     */
@@ -182,6 +187,8 @@ public final class FileWatcher extends Thread {
     *    interval was not set yet.
     */
    public void run() throws IllegalStateException {
+
+      // TODO: Check state
 
       // Check preconditions
       if (Thread.currentThread() != this) {
@@ -232,6 +239,8 @@ public final class FileWatcher extends Thread {
    public synchronized void setInterval(int newInterval)
    throws IllegalArgumentException {
 
+      // TODO: Check state
+
       // Check preconditions
       if (newInterval < 1) {
          throw new IllegalArgumentException("newInterval (" + newInterval + ") < 1");
@@ -248,6 +257,9 @@ public final class FileWatcher extends Thread {
     * Stops this thread.
     */
    public synchronized void end() {
+
+      // TODO: Check state
+
       _shouldStop = true;
 
       Log.log_1202(_file.getPath());
@@ -281,6 +293,8 @@ public final class FileWatcher extends Thread {
     */
    public synchronized void check() {
 
+      // TODO: Check state
+
       final String THIS_METHOD = "check()";
 
       // Variable to store the file modification timestamp in. The value -1
@@ -293,43 +307,48 @@ public final class FileWatcher extends Thread {
          if (_file.canRead()) {
             lastModified = _file.lastModified();
          } else {
-            lastModified = -1;
+            lastModified = -1L;
          }
 
       // Authorisation problem; our code is not allowed to call canRead()
       // and/or lastModified() on the File object
       } catch (SecurityException securityException) {
+
+         // Notify the listener
          try {
             _listener.securityException(securityException);
+
+         // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable t) {
             final String SUBJECT_METHOD = "securityException(java.lang.SecurityException)";
             final String DETAIL         = null;
             Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
-            // ignore
          }
 
+         // Short-circuit
          return;
       }
 
       // File can not be found
-      if (lastModified == -1) {
+      if (lastModified == -1L) {
 
          // Set _lastModified to -1, which indicates the file did not exist
          // last time it was checked.
-         _lastModified = -1;
+         _lastModified = -1L;
 
          // Notify the listener
          try {
             _listener.fileNotFound();
+
+         // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable t) {
             final String SUBJECT_METHOD = "fileNotFound()";
             final String DETAIL         = null;
             Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
-            // ignore
          }
 
       // Previously the file could not be found, but now it can
-      } else if (_lastModified == -1) {
+      } else if (_lastModified == -1L) {
 
          // Update the field that stores the last known modification date
          _lastModified = lastModified;
@@ -337,11 +356,12 @@ public final class FileWatcher extends Thread {
          // Notify the listener
          try {
             _listener.fileFound();
+
+         // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable t) {
             final String SUBJECT_METHOD = "fileFound()";
             final String DETAIL         = null;
             Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
-            // ignore
          }
 
       // File has been modified
@@ -353,11 +373,12 @@ public final class FileWatcher extends Thread {
          // Notify listener
          try {
             _listener.fileModified();
+
+         // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable t) {
             final String SUBJECT_METHOD = "fileModified()";
             final String DETAIL         = null;
             Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
-            // ignore
          }
 
       // File has not been modified
@@ -366,11 +387,12 @@ public final class FileWatcher extends Thread {
          // Notify listener
          try {
             _listener.fileNotModified();
+
+         // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable t) {
             final String SUBJECT_METHOD = "fileNotModified()";
             final String DETAIL         = null;
             Log.log_1051(t, CLASSNAME, THIS_METHOD, _listenerClass, SUBJECT_METHOD, DETAIL);
-            // ignore
          }
       }
    }
@@ -382,6 +404,9 @@ public final class FileWatcher extends Thread {
 
    /**
     * Interface for file watcher listeners.
+    *
+    * <p>Note that exceptions thrown by these callback methods will be ignored
+    * by the <code>FileWatcher</code>.
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
