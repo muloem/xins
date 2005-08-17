@@ -379,8 +379,7 @@ public final class Utils extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("c", c);
 
-      // TODO: if (c.isPrimitive()) {
-
+      // Handle arrays
       if (c.isArray()) {
          FastStringBuffer buffer = new FastStringBuffer(137);
          Class comp = c.getComponentType();
@@ -389,6 +388,8 @@ public final class Utils extends Object {
             buffer.append("[]");
          }
          return buffer.toString();
+
+      // Handle non-arrays (primitives and classes)
       } else {
          return c.getName();
       }
