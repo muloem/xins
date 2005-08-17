@@ -311,7 +311,7 @@ public abstract class AbstractCAPI extends Object {
     * Get the specification of the API.
     *
     * @return
-    *    the {@link API} specification object.
+    *    the {@link APISpec} specification object.
     *
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
