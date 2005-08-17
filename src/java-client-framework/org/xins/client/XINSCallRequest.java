@@ -37,6 +37,8 @@ import org.xins.common.text.TextUtils;
 /**
  * Abstraction of a XINS request.
  *
+ * <p>Note that instances of this class are <em>not</em> thread-safe.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -116,7 +118,6 @@ public final class XINSCallRequest extends CallRequest {
             CLASSNAME, THIS_METHOD,
             CLASSNAME, THIS_METHOD,
             DETAIL,    mpe);
-
       }
    }
 
