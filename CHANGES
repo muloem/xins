@@ -54,6 +54,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - The value of the data section attributes are changed, if needed, to the 
     correct format in the SOAPCallingConvention.
   - Applied some refactorings.
+  - Improved logging.
 
 * Generated CAPI classes:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
