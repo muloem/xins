@@ -148,8 +148,12 @@ final class EngineStateMachine extends Object {
          } else if (oldState == EngineState.API_BOOTSTRAP_FAILED
                  && newState == EngineState.BOOTSTRAPPING_API) {
 
-         // If bootstrapping the API succeeds, then the next step is to
-         // determine the watch interval
+         // If bootstrapping the API succeeds, then the next step is either to
+         // determine the watch interval...
+         } else if (oldState == EngineState.BOOTSTRAPPING_API
+                 && newState == EngineState.INITIALIZING_API) {
+
+         // ...or to skip that and start initializing the API
          } else if (oldState == EngineState.BOOTSTRAPPING_API
                  && newState == EngineState.DETERMINE_INTERVAL) {
 
