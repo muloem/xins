@@ -22,9 +22,7 @@
 	<translation entry="3203">Le serveur d'application implémente une version de la spécification Java Servlet API Specification non attendu. Version attendue: <value-of-param name="expected_version" />. Version présente: <value-of-param name="actual_version" />.</translation>
 	<translation entry="3204">Le XINS/Java Server Framework ne peut pas être démarré. Un problème de l'administration du système a été détecté. La propriété système <value-of-param name="propertyName" format="quoted" />, qui définie l'emplacement du fichier des propriétés, ne peut pas être lue à cause de restriction de sécurité.</translation>
 	<translation entry="3205">Le XINS/Java Server Framework ne peut pas être démarré. Un problème de l'administration du système a été détecté. La propriété <value-of-param name="propertyName" format="quoted" />, qui définie l'emplacement du fichier des propriétés, n'est pas définie.</translation>
-<!-- FIXME TODO: Update translation:
-	<translation entry="3205">The system property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, is not set. No runtime properties are available.</translation>
--->
+	<translation entry="3205">La propriété du système <value-of-param name="propertyName" format="quoted" /> qui indique l'emplacement du fichier des propriétés d'exécution n'est pas définie. Aucune propriété d'exécution n'est disponible.</translation>
 	<translation entry="3206">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" />, qui définie le nom de la classe de l'API, n'est pas définie.</translation>
 	<translation entry="3207">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" />, qui définie le nom de la classe de l'API, est définie à <value-of-param name="apiClass" format="quoted" />, mais la classe ne peut pas être chargée.</translation>
 	<translation entry="3208">Le XINS/Java Server Framework ne peut pas être démarré. Le paquetage de l'application est invalide. La propriété <value-of-param name="propertyName" format="quoted" />, qui définie le nom de la classe de l'API, est définie à <value-of-param name="apiClass" format="quoted" />, mais la classe n'est pas une classe API valide. Raison: <value-of-param name="reason" />.</translation>
@@ -80,12 +78,8 @@
 	<translation entry="3408">Le fichier des propriétés (<value-of-param name="configFile" format="quoted" />) ne spécifie pas d'intervalle de surveillance, la propriété <value-of-param name="propertyName" format="quoted" /> n'est pas définie. La propriété par défaut est utilisée.</translation>
 	<translation entry="3409">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> est invalide.</translation>
 	<translation entry="3410">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> a été lu correctement.</translation>
-	<translation entry="3411">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
-	<translation entry="3412">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
-<!-- FIXME TODO: Update translation for 3411 and 3412 (added word 'runtime')
-	<translation entry="3411">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The required runtime property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
-	<translation entry="3412">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The runtime property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />. Reason: <value-of-param name="reason" /></translation>
--->
+	<translation entry="3411">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété d'exécution requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
+	<translation entry="3412">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété d'exécution <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3413">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3414">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué.</translation>
 	<translation entry="3415">La (ré)-initialisation du XINS/Java Server Framework a réussi.</translation>
@@ -99,10 +93,7 @@
 	<translation entry="3423">L'initialisation de la fonction <value-of-param name="function" /> a echoué. La propriété requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>
 	<translation entry="3424">L'initialisation de la fonction <value-of-param name="function" /> a echoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3425">L'initialisation de la fonction <value-of-param name="function" /> a echoué.</translation>
-	<translation entry="3426">Pas de liste de règles d'accès définie dans la propriété <value-of-param name="propertyName" />.</translation>
-<!-- FIXME TODO: Update translation:
-	<translation entry="3426">Runtime property <value-of-param name="propertyName" /> is not set. No access rules defined. Only localhost is allowed to access the API; it may invoke any function.</translation>
--->
+	<translation entry="3426">La propriété d'exécution <value-of-param name="propertyName" /> n'est pas défini. Pas de liste de règles d'accès définie. Seul localhost est authorisé à avoir accès à l'API; il peut invoke n'importe quelle fonction.</translation>
 	<translation entry="3427">Le chargement de la liste de règles d'accès a réussi avec <value-of-param name="ruleCount" /> règle(s).</translation>
 	<translation entry="3428">Echec lors de l'application de la liste de règles d'accès. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3429">La règle d'accès <value-of-param name="index" /> est <value-of-param name="rule" format="quoted" />.</translation>
