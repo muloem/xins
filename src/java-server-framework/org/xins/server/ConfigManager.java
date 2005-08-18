@@ -177,10 +177,16 @@ final class ConfigManager extends Object {
       // If the name of the configuration file is not set in a system property
       // (typically passed on the command-line) try to get it from the servlet
       // initialization properties (typically set in a web.xml file)
-      if (configFile == null) {
+      if (configFile == null || configFile.trim().length() < 1) {
          Log.log_3231(prop);
          configFile = _config.getInitParameter(prop);
+
+         // If it is still not set, then assume null
+         if (configFile != null && configFile.trim().length() < 1) {
+            configFile = null;
+         }
       }
+
       _configFile = configFile;
    }
 
@@ -257,8 +263,26 @@ final class ConfigManager extends Object {
 
       // TODO: Check the state
 
-      int interval = determineReloadIntervalAndInitAPI();
-      startConfigFileWatcher(interval);
+      // Determine the reload interval
+      int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+      if (_configFile != null) {
+         try {
+            interval = determineConfigReloadInterval();
+
+         // If the interval could not be parsed, then use the default
+         } catch (InvalidPropertyValueException exception) {
+            // ignore
+         }
+      }
+
+      // Initialize the API
+      _engine.initAPI();
+
+      // Start the configuration file watch interval, if the location of the
+      // file is set
+      if (_configFile != null) {
+         startConfigFileWatcher(interval);
+      }
    }
 
    /**
@@ -277,11 +301,13 @@ final class ConfigManager extends Object {
    void startConfigFileWatcher(int interval)
    throws IllegalArgumentException {
 
+      // TODO: Describe preconditions
+
       // Check preconditions
       if (_configFile == null || _configFile.length() < 1) {
          throw new IllegalStateException("Name of runtime configuration file not set.");
       } else if (_configFileWatcher != null) {
-         throw new IllegalArgumentException("Runtime configuration file watcher exists.");
+         throw new IllegalStateException("Runtime configuration file watcher exists.");
       } else if (interval < 1) {
          throw new IllegalArgumentException("interval (" + interval + ") < 1");
       }
@@ -361,7 +387,10 @@ final class ConfigManager extends Object {
    int determineConfigReloadInterval()
    throws InvalidPropertyValueException {
 
-      // TODO: Check state
+      // Check state
+      if (_configFile == null || _configFile.length() < 1) {
+         throw new IllegalStateException("Name of runtime configuration file not set.");
+      }
 
       _engine.setState(EngineState.DETERMINE_INTERVAL);
 
@@ -399,33 +428,6 @@ final class ConfigManager extends Object {
       } else {
          Log.log_3408(_configFile, prop);
          interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
-      }
-
-      return interval;
-   }
-
-   /**
-    * Determines the reload interval and initialises the API if no exception is
-    * thrown from the determination.
-    *
-    * @return
-    *    the reload interval
-    */
-   int determineReloadIntervalAndInitAPI() {
-      int interval;
-      boolean intervalParsed;
-      try {
-         interval = determineConfigReloadInterval();
-         intervalParsed = true;
-
-      // Interval could not be parsed
-      } catch (InvalidPropertyValueException exception) {
-         interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
-         intervalParsed = false;
-      }
-
-      if (intervalParsed) {
-         _engine.initAPI();
       }
 
       return interval;
@@ -547,13 +549,20 @@ final class ConfigManager extends Object {
        * needed.
        *
        * @param newInterval The new interval to watch the config file
+       *
+       * @throws IllegalStateException
+       *    if there is no configuration file watcher.
        */
-      private void updateFileWatcher(int newInterval) {
-         // Update the file watch interval
-         int oldInterval = 0;
-         if (_configFileWatcher != null) {
-            oldInterval = _configFileWatcher.getInterval();
+      private void updateFileWatcher(int newInterval)
+      throws IllegalStateException {
+
+         // Check state
+         if (_configFileWatcher == null) {
+            throw new IllegalStateException("There is no configuration file watcher.");
          }
+
+         // Update the file watch interval
+         int oldInterval = _configFileWatcher.getInterval();
 
          if (oldInterval != newInterval) {
             if (newInterval == 0 && _configFileWatcher != null) {
