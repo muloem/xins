@@ -11,9 +11,9 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.CollectionUtils;
-
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;

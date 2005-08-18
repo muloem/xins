@@ -7,6 +7,7 @@
 package org.xins.common.spec;
 
 import java.util.Map;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
