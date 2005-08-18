@@ -4,6 +4,7 @@
 package org.xins.common.collections;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -21,6 +22,22 @@ public final class CollectionUtils extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * A {@link java.util.Comparator} that always returns the fact that
+    * the second object is greater than the first object.
+    */
+   public final static Comparator GREATER_COMPARATOR = new Comparator() {
+      public int compare(Object o1, Object o2) {
+         if (o1 == null && o2 == null) {
+            return 0;
+         } else if (o1 != null && o1.equals(o2)) {
+            return 0;
+         }
+         return 1;
+      }
+   };
+
 
    //-------------------------------------------------------------------------
    // Class functions

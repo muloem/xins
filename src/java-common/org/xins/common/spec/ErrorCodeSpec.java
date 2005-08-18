@@ -8,12 +8,11 @@ package org.xins.common.spec;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.CollectionUtils;
 
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
@@ -95,7 +94,7 @@ public class ErrorCodeSpec extends Object {
    /**
     * The output parameters of the function.
     */
-   private Map _outputParameters = new LinkedHashMap();
+   private Map _outputParameters = new TreeMap(CollectionUtils.GREATER_COMPARATOR);
 
    /**
     * The output data section elements of the function.

@@ -13,14 +13,12 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import org.xins.common.MandatoryArgumentChecker;
+import java.util.TreeMap;
 
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.CollectionUtils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
@@ -150,7 +148,7 @@ public class APISpec extends Object {
    /**
     * The functions of the API.
     */
-   private Map _functions = new LinkedHashMap();
+   private Map _functions = new TreeMap(CollectionUtils.GREATER_COMPARATOR);
 
    
    //-------------------------------------------------------------------------
