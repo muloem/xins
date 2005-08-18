@@ -21,7 +21,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     obvious way to reproduce this situation.
   - Added new methods to get the specification of the API based on the name
     of the entity.
-  - EntityNotFoundException is thrown if the entiry is not found.
+  - EntityNotFoundException is thrown if the entity is not found in the
+    classes of the spec package.
   - Changed methods used to get the API specification return a Map or a List
     instead of an array.
   - Renamed the classes in the spec package by adding "Spec" at the end of
