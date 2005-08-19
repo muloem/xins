@@ -6,7 +6,6 @@
  */
 package org.xins.server;
 
-import org.xins.common.io.FastStringWriter;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -18,17 +17,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.net.IPAddressUtils;
+import org.xins.common.spec.APISpec;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
@@ -41,6 +45,7 @@ import org.xins.logdoc.LogdocSerializable;
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
@@ -61,7 +66,8 @@ implements DefaultResultCodes {
    /**
     * Successful empty call result.
     */
-   private static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
+   private static final FunctionResult SUCCESSFUL_RESULT =
+      new FunctionResult();
 
    /**
     * The runtime (initialization) property that defines the ACL (access
@@ -121,7 +127,9 @@ implements DefaultResultCodes {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
       if (name.length() < 1) {
-         throw new IllegalArgumentException("name.length() (" + name.length() + " < 1");
+         String message = "name.length() == "
+                        + name.length();
+         throw new IllegalArgumentException(message);
       }
 
       // Initialize fields
@@ -257,7 +265,7 @@ implements DefaultResultCodes {
    /**
     * The API specification.
     */
-   private org.xins.common.spec.APISpec _apiSpecification;
+   private APISpec _apiSpecification;
 
    /**
     * The local IP address.
@@ -341,7 +349,12 @@ implements DefaultResultCodes {
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
          Log.log_3430(state.getName());
-         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
+         String message = "State is "
+                        + state
+                        + " instead of "
+                        + BOOTSTRAPPING
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       // Log the time zone
@@ -361,8 +374,11 @@ implements DefaultResultCodes {
 
       Log.log_3212(_buildHost, _buildTime, _buildVersion, _name, _apiVersion);
 
+      if (_buildVersion == null) {
+         // TODO: Log warning: build version not set in build properties
+
       // Check if build version identifies a production release of XINS
-      if (_buildVersion == null || ! Library.isProductionRelease(_buildVersion)) {
+      } else if (! Library.isProductionRelease(_buildVersion)) {
          Log.log_3228(_buildVersion);
       }
 
@@ -387,7 +403,11 @@ implements DefaultResultCodes {
 
          // Invalid property
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3216(_name, className, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3216(_name,
+                         className,
+                         exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
             throw exception;
 
          // Catch BootstrapException and any other exceptions not caught
@@ -424,7 +444,11 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3223(_name, functionName, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3223(_name,
+                         functionName,
+                         exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
             throw exception;
 
          // Catch BootstrapException and any other exceptions not caught
@@ -432,7 +456,8 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log this event
-            Log.log_3224(exception, _name, functionName, exception.getMessage());
+            String exceptionMessage = exception.getMessage();
+            Log.log_3224(exception, _name, functionName, exceptionMessage);
 
             // Throw a BootstrapException. If necessary, wrap around the
             // caught exception
@@ -526,7 +551,12 @@ implements DefaultResultCodes {
       Manageable.State state = getState();
       if (state != INITIALIZING) {
          Log.log_3430(state.getName());
-         throw new IllegalStateException("State is " + state + " instead of " + INITIALIZING + '.');
+         String message = "State is "
+                        + state
+                        + " instead of "
+                        + INITIALIZING
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       Log.log_3405(_name);
@@ -535,28 +565,51 @@ implements DefaultResultCodes {
       _runtimeSettings = runtimeSettings;
 
       // Initialize ACL subsystem
+      //
+      // TODO: Investigate whether we can take the configuration file reload
+      //       interval from somewhere (ConfigManager? Engine?).
       String acl = runtimeSettings.get(ACL_PROPERTY);
-      String aclInterval = runtimeSettings.get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+      String aclInterval =
+         runtimeSettings.get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
       if (aclInterval != null && aclInterval.trim().length() > 0) {
+         // TODO: Can this ever fail? Check and test.
          interval = Integer.parseInt(aclInterval);
       }
 
-      // Close the previous ACL
+      // Dispose the old access control list
       if (_accessRuleList != null) {
          _accessRuleList.dispose();
       }
+
+      // New access control list is empty
       if (acl == null || acl.trim().length() < 1) {
          _accessRuleList = AccessRuleList.EMPTY;
          Log.log_3426(ACL_PROPERTY);
+
+      // New access control list is non-empty
       } else {
+
+         // Parse the new ACL
          try {
-            _accessRuleList = AccessRuleList.parseAccessRuleList(acl, interval);
+            _accessRuleList =
+               AccessRuleList.parseAccessRuleList(acl, interval);
             int ruleCount = _accessRuleList.getRuleCount();
             Log.log_3427(ruleCount);
+
+         // Parsing failed
          } catch (ParseException exception) {
-            Log.log_3428(ACL_PROPERTY, acl, exception.getMessage());
-            throw new InvalidPropertyValueException(ACL_PROPERTY, acl, exception.getMessage());
+            String exceptionMessage = exception.getMessage();
+            if (exceptionMessage != null) {
+               exceptionMessage = exceptionMessage.trim();
+               if (exceptionMessage.length() < 1) {
+                  exceptionMessage = null;
+               }
+            }
+            Log.log_3428(ACL_PROPERTY, acl, exceptionMessage);
+            throw new InvalidPropertyValueException(ACL_PROPERTY,
+                                                    acl,
+                                                    exceptionMessage);
          }
       }
 
@@ -580,7 +633,11 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3419(_name, className, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3419(_name,
+                         className,
+                         exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
@@ -614,7 +671,11 @@ implements DefaultResultCodes {
 
          // Invalid property value
          } catch (InvalidPropertyValueException exception) {
-            Log.log_3424(_name, functionName, exception.getPropertyName(), exception.getPropertyValue(), exception.getReason());
+            Log.log_3424(_name,
+                         functionName,
+                         exception.getPropertyName(),
+                         exception.getPropertyValue(),
+                         exception.getReason());
             throw exception;
 
          // Catch InitializationException and any other exceptions not caught
@@ -660,7 +721,12 @@ implements DefaultResultCodes {
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
          Log.log_3430(state.getName());
-         throw new IllegalStateException("State is " + state + " instead of " + BOOTSTRAPPING + '.');
+         String message = "State is "
+                        + state
+                        + " instead of "
+                        + BOOTSTRAPPING
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       // Check preconditions
@@ -739,7 +805,12 @@ implements DefaultResultCodes {
       Manageable.State state = getState();
       if (state != UNUSABLE) {
          Log.log_3430(state.getName());
-         throw new IllegalStateException("State is " + state + " instead of " + UNUSABLE + '.');
+         String message = "State is "
+                        + state
+                        + " instead of "
+                        + UNUSABLE
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       _functionsByName.put(function.getName(), function);
@@ -780,25 +851,26 @@ implements DefaultResultCodes {
     * Get the specification of the API.
     *
     * @return
-    *    the {@link org.xins.common.spec.APISpec} specification object.
+    *    the {@link APISpec} specification object, never <code>null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the specification cannot be found or is invalid.
     *
     * @since XINS 1.3.0
     */
-   public final org.xins.common.spec.APISpec getAPISpecification()
+   public final APISpec getAPISpecification()
    throws InvalidSpecificationException {
 
       if (_apiSpecification == null) {
          String baseURL = null;
+         ServletConfig  config  = _engine.getServletConfig();
+         ServletContext context = config.getServletContext();
          try {
-            baseURL = _engine.getServletConfig().getServletContext().getResource("specs/").toExternalForm();
+            baseURL = context.getResource("specs/").toExternalForm();
          } catch (MalformedURLException muex) {
-
-            // Leave the variable as null
+            // Let the base URL be null
          }
-         _apiSpecification = new org.xins.common.spec.APISpec(getClass(), baseURL);
+         _apiSpecification = new APISpec(getClass(), baseURL);
       }
       return _apiSpecification;
    }
@@ -866,14 +938,14 @@ implements DefaultResultCodes {
          // If the IP address cannot be parsed there is a programming error
          // somewhere
          } catch (ParseException exception) {
-            final String SUBJECT_CLASS  = _accessRuleList.getClass().getName();
-            final String SUBJECT_METHOD = "allow(java.lang.String,java.lang.String)";
-            final String DETAIL         = "Malformed IP address: \"" + ip + "\".";
+            String subjectClass  = _accessRuleList.getClass().getName();
+            String subjectMethod = "allow(java.lang.String,java.lang.String)";
+            String detail        = "Malformed IP address: \"" + ip + "\".";
             throw Utils.logProgrammingError(CLASSNAME,
                                             THIS_METHOD,
-                                            SUBJECT_CLASS,
-                                            SUBJECT_METHOD,
-                                            DETAIL,
+                                            subjectClass,
+                                            subjectMethod,
+                                            detail,
                                             exception);
          }
       }
@@ -901,15 +973,15 @@ implements DefaultResultCodes {
 
       // Handle meta-functions
       if (functionName.charAt(0) == '_') {
-			try {
+         try {
             return callMetaFunction(start, functionName, functionRequest, ip);
-			} catch (NoSuchFunctionException exception) {
-				throw exception;
-			} catch (Throwable exception) {
-				final int callID = 0; // TODO
-				return handleFunctionException(start, functionRequest, ip, callID,
+         } catch (NoSuchFunctionException exception) {
+            throw exception;
+         } catch (Throwable exception) {
+            final int callID = 0; // TODO
+            return handleFunctionException(start, functionRequest, ip, callID,
                                            exception);
-			}
+         }
       }
 
       // Handle normal functions
@@ -971,10 +1043,16 @@ implements DefaultResultCodes {
 
       // Get function call quantity and performance statistics
       } else if ("_GetStatistics".equals(functionName)) {
-         String detailedArgument = functionRequest.getParameters().get("detailed");
-         boolean detailed = detailedArgument != null && detailedArgument.equals("true");
-         String resetArgument = functionRequest.getParameters().get("reset");
-         if (resetArgument != null && resetArgument.equals("true")) {
+
+         // Determine value of 'detailed' argument
+         String detailedArg = functionRequest.getParameters().get("detailed");
+         boolean detailed   = "true".equals(detailedArg);
+
+         // Determine value of 'reset' argument
+         String resetArg = functionRequest.getParameters().get("reset");
+         boolean reset   = "true".equals(resetArg);
+
+         if (reset) {
             _statisticsLocked = true;
             result = doGetStatistics(detailed);
             doResetStatistics();
@@ -1000,11 +1078,13 @@ implements DefaultResultCodes {
 
       // Disable a function
       } else if ("_DisableFunction".equals(functionName)) {
-         result = doDisableFunction(functionRequest.getParameters().get("functionName"));
+         functionName = functionRequest.getParameters().get("functionName");
+         result       = doDisableFunction(functionName);
 
       // Enable a function
       } else if ("_EnableFunction".equals(functionName)) {
-         result = doEnableFunction(functionRequest.getParameters().get("functionName"));
+         functionName = functionRequest.getParameters().get("functionName");
+         result       = doEnableFunction(functionName);
 
       // Reset the statistics
       } else if ("_ResetStatistics".equals(functionName)) {
@@ -1031,8 +1111,10 @@ implements DefaultResultCodes {
 
       // Prepare for transaction logging
       LogdocSerializable serStart  = new FormattedDate(start);
-      LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
-      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
+      LogdocSerializable inParams  =
+         new FormattedParameters(functionRequest.getParameters());
+      LogdocSerializable outParams =
+         new FormattedParameters(result.getParameters());
 
       // Log transaction before returning the result
       Log.log_3540(serStart, ip, functionName, duration, code, inParams,
@@ -1070,21 +1152,25 @@ implements DefaultResultCodes {
    FunctionResult handleFunctionException(long            start,
                                           FunctionRequest functionRequest,
                                           String          ip,
-														int             callID,
+                                          int             callID,
                                           Throwable       exception) {
 
       Log.log_3500(exception, _name, callID);
 
       // Create a set of parameters for the result
-      BasicPropertyReader resultParameters = new BasicPropertyReader();
+      BasicPropertyReader resultParams = new BasicPropertyReader();
 
       // Add the exception class
-      resultParameters.set("_exception.class", exception.getClass().getName());
+      String exceptionClass = exception.getClass().getName();
+      resultParams.set("_exception.class", exceptionClass);
 
       // Add the exception message, if any
       String exceptionMessage = exception.getMessage();
-      if (exceptionMessage != null && exceptionMessage.length() > 0) {
-         resultParameters.set("_exception.message", exceptionMessage);
+      if (exceptionMessage != null) {
+         exceptionMessage = exceptionMessage.trim();
+         if (exceptionMessage.length() > 0) {
+            resultParams.set("_exception.message", exceptionMessage);
+         }
       }
 
       // Add the stack trace, if any
@@ -1092,11 +1178,14 @@ implements DefaultResultCodes {
       PrintWriter printWriter = new PrintWriter(stWriter);
       exception.printStackTrace(printWriter);
       String stackTrace = stWriter.toString();
-      if (stackTrace != null && stackTrace.length() > 0) {
-         resultParameters.set("_exception.stacktrace", stackTrace);
+      if (stackTrace != null) {
+         stackTrace = stackTrace.trim();
+         if (stackTrace.length() > 0) {
+            resultParams.set("_exception.stacktrace", stackTrace);
+         }
       }
 
-      return new FunctionResult("_InternalError", resultParameters);
+      return new FunctionResult("_InternalError", resultParams);
    }
 
    /**
