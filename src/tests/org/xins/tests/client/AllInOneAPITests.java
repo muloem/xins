@@ -466,6 +466,34 @@ public class AllInOneAPITests extends TestCase {
    }
 
   /**
+   * Tests the generated add and list method for the input and output data section.
+   */
+   public void testGeneratedClassesDataSection3() throws Exception {
+      DataSection3Request.Address address1 = new DataSection3Request.Address();
+      address1.setPostcode("1001PZ");
+      address1.setCompany("MyCompany");
+      DataSection3Request request = new DataSection3Request();
+      request.addAddress(address1);
+      
+      // Make the call
+      DataSection3Result result = _capi.callDataSection3(request);
+      
+      List envelopes = result.listEnvelope();
+      assertEquals("Incorrect number of envelopes returned.", 2, envelopes.size());
+      boolean postCodeDone = false;
+      boolean washintonDone = false;
+      Iterator itEnvelopes = envelopes.iterator();
+      while (itEnvelopes.hasNext()) {
+         DataSection3Result.Envelope envelope = (DataSection3Result.Envelope) itEnvelopes.next();
+         String destination = envelope.getDestination();
+         postCodeDone = postCodeDone || destination.equals("1001PZ");
+         washintonDone = washintonDone || destination.equals("55 Kennedy lane, Washinton DC");
+      }
+      assertTrue("No postcode returned.", postCodeDone);
+      assertTrue("No address returned.", washintonDone);
+   }
+   
+  /**
    * Tests the param-combos using the old-style (XINS 1.0/1.1) call methods.
    */
    public void testParamCombo1() throws Exception {

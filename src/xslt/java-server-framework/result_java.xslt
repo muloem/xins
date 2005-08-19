@@ -86,7 +86,7 @@ implements Result {
 		<xsl:text>
 }
 </xsl:text>
-		<xsl:apply-templates select="output/data/element" mode="elementClass" />
+		<xsl:apply-templates select="output/data/element" mode="addElementClass" />
 	</xsl:template>
 
 	<xsl:template match="output">
@@ -117,7 +117,7 @@ implements Result {
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="output/param | output/data/element/attribute">
+	<xsl:template match="output/param | output/data/element/attribute | input/data/element/attribute">
 
 		<!-- Define the variables used in the set methods -->
 
@@ -241,7 +241,7 @@ implements Result {
 	<!-- Generate the add data/element methods                         -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="output/data/element" mode="addMethod">
+	<xsl:template match="output/data/element | input/data/element" mode="addMethod">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -268,6 +268,9 @@ implements Result {
 		<xsl:value-of select="$objectName" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="../../../@name" />
+		<xsl:if test="ancestor::input">
+			<xsl:text>Request</xsl:text>
+		</xsl:if>
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> </xsl:text>
@@ -284,7 +287,7 @@ implements Result {
 	<!-- Generate the data/element classes.                            -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="output/data/element" mode="elementClass">
+	<xsl:template match="output/data/element | input/data/element" mode="addElementClass">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -298,7 +301,11 @@ implements Result {
 		<xsl:value-of select="$objectName" />
 		<xsl:text> element.
     */
-   class </xsl:text>
+   </xsl:text>
+		<xsl:if test="ancestor::input">
+			<xsl:text>public static final </xsl:text>
+		</xsl:if>
+		<xsl:text>class </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[ {
       //-------------------------------------------------------------------------
@@ -319,6 +326,9 @@ implements Result {
 		<xsl:text><![CDATA[</code> instance.
        */
       ]]></xsl:text>
+		<xsl:if test="ancestor::input">
+			<xsl:text>public </xsl:text>
+		</xsl:if>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
       }
@@ -361,11 +371,15 @@ implements Result {
        * @param data
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
-      final void pcdata(String data) {
+      ]]></xsl:text>
+		<xsl:if test="ancestor::input">
+			<xsl:text>public </xsl:text>
+		</xsl:if>
+		<xsl:text>final void pcdata(String data) {
          _elementBuilder.setText(data);
       }
 
-]]></xsl:text>
+</xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute">

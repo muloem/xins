@@ -570,9 +570,9 @@ public class DataElement implements Cloneable {
       // Go through the attributes
       Iterator itAttributeNames = elementAttributes.keySet().iterator();
       while (itAttributeNames.hasNext()) {
-         String attributeName = (String) itAttributeNames.next();
+         DataElement.QualifiedName attributeName = (DataElement.QualifiedName) itAttributeNames.next();
          String attributeValue = (String) elementAttributes.get(attributeName);
-         builder.setAttribute(attributeName, attributeValue);
+         builder.setAttribute(attributeName.getNamespaceURI(), attributeName.getLocalName(), attributeValue);
       }
       
       // Add the children of this element

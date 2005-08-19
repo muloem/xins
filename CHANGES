@@ -39,6 +39,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     org.xins.common.xml.Element object.
   - Implemented SF.net RFE #1247370: A user agent is sent when calling a 
     XINS API with XINSCallRequest.
+  - Fixed: the data element specified in the generated CAPI request class was
+    not forwarded to the XINSCallRequest object.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1256466: Exception in meta-function should generate
@@ -66,6 +68,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated
     Request.
   - Fixed SF.net bug #1237539: Attribute values not checked.
+  - Implemented SF.net RFE #1203644: Generate method for data section.
+
+* Generation of server-side Java code:
+  - Fixed: Incorrect generated method if the request had a data section element
+    that could contain PCDATA.
 
 * Generated WSDL:
   - The defined types are declared as types in the generated WSDL file.

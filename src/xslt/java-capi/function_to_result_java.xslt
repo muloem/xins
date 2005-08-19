@@ -26,6 +26,7 @@
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
 	<xsl:include href="../java-server-framework/check_params.xslt"  />
+	<xsl:include href="../java-server-framework/request_java.xslt"  />
 
 	<xsl:template match="function">
 		<xsl:variable name="version">
@@ -106,6 +107,16 @@ extends org.xins.client.AbstractCAPICallResult {
       return _dataElement;
    }]]></xsl:text>
 		</xsl:if>
+
+		<xsl:if test="output/data/@contains">
+			<xsl:variable name="elementName" select="output/data/@contains" />
+			<xsl:apply-templates select="output/data/element[@name=$elementName]" mode="listMethod" />
+		</xsl:if>
+		<xsl:for-each select="output/data/contains/contained">
+			<xsl:variable name="elementName" select="@element" />
+			<xsl:apply-templates select="../../element[@name=$elementName]" mode="listMethod" />
+		</xsl:for-each>
+		
 		<xsl:text><![CDATA[
 
    /**
@@ -135,6 +146,7 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:text>
    }
 </xsl:text>
+		<xsl:apply-templates select="output/data/element" mode="listElementClass" />
 		<xsl:text>
 }
 </xsl:text>

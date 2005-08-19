@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Base class for generated CAPI function request classes.
@@ -63,6 +64,11 @@ public abstract class AbstractCAPICallRequest {
     * The data section of the function if any, can be <code>null</code>.
     */
    private Element _dataSection;
+
+   /**
+    * The data element builder, can be <code>null</code>.
+    */
+   private ElementBuilder _dataElementBuilder;
 
 
    //-------------------------------------------------------------------------
@@ -145,6 +151,12 @@ public abstract class AbstractCAPICallRequest {
             request.setParameter(name, value);
          }
       }
+      
+      Element dataSection = getDataElement();
+      if (dataSection != null) {
+         request.setDataSection(dataSection);
+      }
+      
       if (_callConfig != null) {
          request.setXINSCallConfig(_callConfig);
       }
@@ -177,19 +189,6 @@ public abstract class AbstractCAPICallRequest {
    }
 
    /**
-    * Sets the data section.
-    * If the value is <code>null</code> any previous data section set is removed.
-    * If a previous value was entered, the value will be overridden by this new
-    * value.
-    *
-    * @param dataSection
-    *    The data section.
-    */
-   protected final void putDataSection(Element dataSection) {
-      _dataSection = dataSection;
-   }
-
-   /**
     * Gets the value of a parameter or <code>null</code> if this parameter
     * is not set.
     *
@@ -209,12 +208,45 @@ public abstract class AbstractCAPICallRequest {
    }
 
    /**
+    * Sets the data section.
+    * If the value is <code>null</code> any previous data section set is removed.
+    * If a previous value was entered, the value will be overridden by this new
+    * value.
+    *
+    * @param dataSection
+    *    The data section.
+    */
+   protected final void putDataSection(Element dataSection) {
+      _dataSection = dataSection;
+      _dataElementBuilder = null;
+   }
+
+   /**
+    * Add a new Element to the data element.
+    * Any previous value was entered with the method {@link #putDataSection}, 
+    * will be removed.
+    *
+    * @param element
+    *    the new element to add to the result, cannot be <code>null</code>.
+    */
+   protected void add(Element element) {
+      if (_dataElementBuilder == null) {
+         _dataElementBuilder = new ElementBuilder("data");
+         _dataSection = null;
+      }
+      _dataElementBuilder.addChild(element);
+   }
+
+   /**
     * Gets the data section.
     *
     * @return
     *    The data section or <code>null</code> if there is no data section.
     */
    protected Element getDataElement() {
+      if (_dataElementBuilder != null) {
+         return _dataElementBuilder.createElement();
+      }
       return _dataSection;
    }
 

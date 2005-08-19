@@ -36,13 +36,12 @@
 		<xsl:variable name="resultcode" select="@name" />
 		<xsl:variable name="className" select="concat($resultcode, 'Result')" />
 
-                <xsl:call-template name="resultcodeValidity">
-                        <xsl:with-param name="resultcode_name" select="@name" />
-                        <xsl:with-param name="resultcode_value" select="@value" />
-                        <xsl:with-param name="specsdirectory" select="$specsdir" />
-                        <xsl:with-param name="api_file" select="$api_file" />
-                </xsl:call-template>
-
+		<xsl:call-template name="resultcodeValidity">
+			<xsl:with-param name="resultcode_name" select="@name" />
+			<xsl:with-param name="resultcode_value" select="@value" />
+			<xsl:with-param name="specsdirectory" select="$specsdir" />
+			<xsl:with-param name="api_file" select="$api_file" />
+		</xsl:call-template>
 
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="document($api_file)/api/function">
@@ -134,7 +133,7 @@ final class </xsl:text>
 		<xsl:text>
 }
 </xsl:text>
-		<xsl:apply-templates select="ouput/data/element" mode="elementClass">
+		<xsl:apply-templates select="ouput/data/element" mode="addElementClass">
 		</xsl:apply-templates>
 	</xsl:template>
 

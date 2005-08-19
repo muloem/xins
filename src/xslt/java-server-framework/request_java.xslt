@@ -79,7 +79,7 @@
 			<xsl:apply-templates select="../../element[@name=$elementName]" mode="listMethod" />
 		</xsl:for-each>
 		
-		<xsl:apply-templates select="input/data/element" mode="elementClass" />
+		<xsl:apply-templates select="input/data/element" mode="listElementClass" />
 		<xsl:text>
    }
 </xsl:text>
@@ -134,7 +134,7 @@
 	</xsl:template>
 
 	<!-- Generates the fields. -->
-	<xsl:template match="function/input/param | input/data/element/attribute" mode="field">
+	<xsl:template match="function/input/param | input/data/element/attribute | output/data/element/attribute" mode="field">
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_file" select="$project_file" />
@@ -155,7 +155,7 @@
 	</xsl:template>
 
 	<!-- Generates the get methods. -->
-	<xsl:template match="function/input/param | function/input/data/element/attribute" mode="method">
+	<xsl:template match="input/param | input/data/element/attribute | output/data/element/attribute" mode="method">
 		<xsl:variable name="basetype">
 			<xsl:call-template name="basetype_for_type">
 				<xsl:with-param name="specsdir" select="$specsdir" />
@@ -283,6 +283,9 @@
 		<xsl:text>
        */
       </xsl:text>
+		<xsl:if test="ancestor::output">
+			<xsl:text>public </xsl:text>
+		</xsl:if>
 		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
@@ -344,11 +347,31 @@
 	<!-- Generate the list data/element methods                         -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="input/data/element" mode="listMethod">
+	<xsl:template match="input/data/element | output/data/element" mode="listMethod">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="dataSectionField">
+			<xsl:choose>
+				<xsl:when test="ancestor::input">
+					<xsl:text>__dataSection</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>_dataElement</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="dataSectionClass">
+			<xsl:choose>
+				<xsl:when test="ancestor::input">
+					<xsl:text>org.xins.common.xml.Element</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>org.xins.client.DataElement</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 
 		<xsl:text><![CDATA[
@@ -374,21 +397,33 @@
    public java.util.List list</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
-      if (__dataSection == null) {
+      if (</xsl:text>
+		<xsl:value-of select="$dataSectionField" />
+		<xsl:text> == null) {
          return java.util.Collections.EMPTY_LIST;
       }
-      java.util.List elements = __dataSection.getChildElements("</xsl:text>
+      java.util.List elements = </xsl:text>
+		<xsl:value-of select="$dataSectionField" />
+		<xsl:text>.getChildElements("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>");
       java.util.List resultList = new java.util.ArrayList(elements.size());
       java.util.Iterator itElements = elements.listIterator();
       while (itElements.hasNext()) {
-         org.xins.common.xml.Element nextElement = (org.xins.common.xml.Element)itElements.next();
+         </xsl:text>
+		<xsl:value-of select="$dataSectionClass" />
+		<xsl:text> nextElement = (</xsl:text>
+		<xsl:value-of select="$dataSectionClass" />
+		<xsl:text>)itElements.next();
          </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> elem = new </xsl:text>
 		<xsl:value-of select="$objectName" />
-		<xsl:text>(nextElement);
+		<xsl:text>(nextElement</xsl:text>
+		<xsl:if test="ancestor::output">
+			<xsl:text>.toXMLElement()</xsl:text>
+		</xsl:if>
+		<xsl:text>);
          resultList.add(elem);
       }
       return resultList;
@@ -400,7 +435,7 @@
 	<!-- Generate the data/element classes.                            -->
 	<!-- ************************************************************* -->
 
-	<xsl:template match="input/data/element" mode="elementClass">
+	<xsl:template match="input/data/element | output/data/element" mode="listElementClass">
 		<xsl:variable name="objectName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -463,11 +498,15 @@
        * @return
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
-      final String pcdata() {
-         _element.getText();
+      ]]></xsl:text>
+		<xsl:if test="ancestor::output">
+			<xsl:text>public </xsl:text>
+		</xsl:if>
+		<xsl:text>final String pcdata() {
+         return _element.getText();
       }
 
-]]></xsl:text>
+</xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute" mode="method" />
@@ -477,7 +516,7 @@
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="input/data/element/contains/contained">
+	<xsl:template match="input/data/element/contains/contained | output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
 			<xsl:call-template name="hungarianUpper">
@@ -530,4 +569,3 @@
 	</xsl:template>
 
 </xsl:stylesheet>
-
