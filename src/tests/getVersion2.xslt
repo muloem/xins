@@ -13,19 +13,19 @@
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-    <xsl:output encoding="UTF-8"
-		            media-type="text/html" />
+	<xsl:output encoding="UTF-8"
+	            media-type="text/html" />
 
-    <xsl:template match="/">
-        <html>
-            <head>
-                <title>getVersion2.xslt</title>
-            </head>
-            <body>
-							API version : 
-							<xsl:value-of select="/result/param[@name='api.version']" />
-            </body>
-        </html>
-    </xsl:template>
+	<xsl:template match="/">
+		<html>
+			<head>
+				<title>getVersion2.xslt</title>
+			</head>
+			<body>
+				API version : 
+				<xsl:value-of select="/result/param[@name='api.version']" />
+			</body>
+		</html>
+	</xsl:template>
 
 </xsl:stylesheet>
