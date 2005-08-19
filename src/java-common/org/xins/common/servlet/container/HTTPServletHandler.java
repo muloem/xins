@@ -24,8 +24,9 @@ import javax.servlet.ServletException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.PropertyConfigurator;
 
-import org.xins.common.Log;
 import org.xins.common.Utils;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.Log;
 
 /**
  * HTTP Server used to invoke the XINS Servlet.
@@ -410,8 +411,17 @@ public class HTTPServletHandler {
          if (result == null) {
             return "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
          }
+         PropertyReader headers = response.getHeaders();
+         Iterator itHeaderNames = headers.getNames();
          String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
          httpResult += "Content-type: " + response.getContentType() + "\r\n";
+         while (itHeaderNames.hasNext()) {
+            String nextHeader = (String) itHeaderNames.next();
+            String headerValue = headers.get(nextHeader);
+            if (headerValue != null) {
+               httpResult += nextHeader + ": " + headerValue + "\r\n";
+            }
+         }
          int length = result.length() + 1;
          httpResult += "Content-Length: " + length + "\r\n";
          httpResult += "Connection: close\r\n";

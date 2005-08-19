@@ -12,6 +12,8 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
 
 /**
  * This class is an implementation of the HTTPServletResponse that can be
@@ -63,6 +65,12 @@ public class XINSServletResponse implements HttpServletResponse {
     * The writer where to write the result.
     */
    private StringWriter _writer;
+
+   /**
+    * The headers.
+    */
+   private BasicPropertyReader _headers = new BasicPropertyReader();
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -145,7 +153,7 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public void setHeader(String str, String str1) {
-      throw new UnsupportedOperationException();
+      _headers.set(str, str1);
    }
 
    public Locale getLocale() {
@@ -165,7 +173,7 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public void addHeader(String str, String str1) {
-      throw new UnsupportedOperationException();
+      _headers.set(str, str1);
    }
 
    public ServletOutputStream getOutputStream() {
@@ -220,5 +228,15 @@ public class XINSServletResponse implements HttpServletResponse {
     */
    public String getContentType() {
       return _contentType;
+   }
+
+   /**
+    * Gets the headers to return to the client.
+    *
+    * @return
+    *    The headers, cannot be <code>null</code>.
+    */
+   public PropertyReader getHeaders() {
+      return _headers;
    }
 }

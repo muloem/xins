@@ -191,6 +191,7 @@ extends CallingConvention {
       // TODO: OutputStream out = httpResponse.getOutputStream();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
       httpResponse.setStatus(HttpServletResponse.SC_OK);
+      httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());
       CallResultOutputter.output(out, RESPONSE_ENCODING, xinsResult, false);
       out.close();
    }

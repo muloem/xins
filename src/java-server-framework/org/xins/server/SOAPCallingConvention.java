@@ -251,6 +251,7 @@ final class SOAPCallingConvention extends CallingConvention {
       } else {
          httpResponse.setStatus(HttpServletResponse.SC_OK);
       }
+      httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());
       
       // Store the result in a StringWriter before sending it.
       Writer buffer = new FastStringWriter();
