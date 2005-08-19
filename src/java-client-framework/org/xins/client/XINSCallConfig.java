@@ -38,6 +38,7 @@ public final class XINSCallConfig extends CallConfig {
     */
    public XINSCallConfig() {
       _httpCallConfig = new HTTPCallConfig();
+      _httpCallConfig.setUserAgent("XINS/Java Client Framework " + Library.getVersion() + ".");
    }
 
 

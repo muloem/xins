@@ -47,6 +47,11 @@ public final class HTTPCallConfig extends CallConfig {
     */
    private HTTPMethod _method;
 
+   /**
+    * The HTTP user agent. This field can be <code>null</code>.
+    */
+   private String _userAgent;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -76,6 +81,31 @@ public final class HTTPCallConfig extends CallConfig {
    public void setMethod(HTTPMethod method) {
       synchronized (getLock()) {
          _method = method;
+      }
+   }
+
+   /**
+    * Sets the user agent associated with the HTTP call.
+    *
+    * @param agent
+    *    the HTTP user agent, can be <code>null</code> if you don't want any
+    *    user agent to be specified.
+    */
+   public void setUserAgent(String agent) {
+      synchronized (getLock()) {
+         _userAgent = agent;
+      }
+   }
+   
+   /**
+    * Returns the HTTP user agent associated with the HTTP call.
+    *
+    * @return
+    *    the HTTP user agent or <code>null</code> no user agent has been specified.
+    */
+   public String getUserAgent() {
+      synchronized (getLock()) {
+         return _userAgent;
       }
    }
 }

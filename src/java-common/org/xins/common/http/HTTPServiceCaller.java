@@ -1086,6 +1086,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Construct the method object
          HttpMethodBase method = createMethod(url, _request, _callConfig);
+         
+         // Set the user agent, if specified.
+         if (_callConfig.getUserAgent() != null) {
+            method.setRequestHeader("User-Agent", _callConfig.getUserAgent());
+         }
 
          // Perform the HTTP call
          try {

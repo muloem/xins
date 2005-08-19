@@ -29,12 +29,14 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     the class name.
   - Added logIgnorableException methods to the Utils class.
   - Slightly improved internal state checking in FileWatcher class.
+  - Added the possibility set the user agent in the HTTPCallConfig.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception
     message.
   - Added a new method to convert a org.xins.client.DataElement object to a
     org.xins.common.xml.Element object.
+  - A user agent is sent when calling a XINS API with XINSCallRequest.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1256466: Exception in meta-function should generate
