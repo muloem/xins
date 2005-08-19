@@ -309,6 +309,7 @@ extends HttpServlet {
 
          // Initialization succeeded
          Log.log_3001();
+
       } catch (Throwable exception) {
 
          // Initialization failed, log the exception
