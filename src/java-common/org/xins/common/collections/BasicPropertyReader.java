@@ -89,5 +89,4 @@ extends AbstractPropertyReader {
       // Remove the property
       getPropertiesMap().remove(name);
    }
-
 }
