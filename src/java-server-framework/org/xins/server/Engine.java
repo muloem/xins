@@ -447,8 +447,12 @@ final class Engine extends Object {
    /**
     * Initializes the API using the current runtime settings. This method
     * should be called whenever the runtime properties changed.
+    *
+    * @return
+    *    <code>true</code> if the initialization succeeded, otherwise
+    *    <code>false</code>.
     */
-   void initAPI() {
+   boolean initAPI() {
 
       _state.setState(EngineState.INITIALIZING_API);
 
@@ -513,6 +517,8 @@ final class Engine extends Object {
             _state.setState(EngineState.API_INITIALIZATION_FAILED);
          }
       }
+
+      return succeeded;
    }
 
    /**
