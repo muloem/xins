@@ -107,73 +107,42 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      // Check content type
-      // TODO: Support other character sets as well
-      String contentType = httpRequest.getContentType();
-      if (contentType == null || !contentType.startsWith("text/xml;")) {
-         final String DETAIL = "Incorrect content type \""
-                             + contentType
-                             + "\".";
-         throw new InvalidRequestException(DETAIL);
+
+      Element requestElem = parseXMLRequest(httpRequest, true);
+
+      String functionName = null;
+
+      // Determine function parameters
+      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      Iterator parameters = requestElem.getChildElements("param").iterator();
+      while (parameters.hasNext()) {
+         Element nextParam = (Element) parameters.next();
+         String name  = nextParam.getAttribute("name");
+         String value = nextParam.getText();
+         if (name.equals("_function")) {
+            functionName = value;
+         }
+         functionParams.set(SECRET_KEY, name, value);
       }
 
-      try {
-
-         // Convert the Reader to a string buffer
-         BufferedReader reader = httpRequest.getReader();
-         FastStringBuffer content = new FastStringBuffer(1024);
-         String nextLine;
-         while ((nextLine = reader.readLine()) != null) {
-            content.append(nextLine);
-            content.append("\n");
-         }
-
-         String contentString = content.toString();
-         ElementParser parser = new ElementParser();
-         Element requestElem = parser.parse(new StringReader(contentString));
-
-         String functionName = null;
-
-         // Determine function parameters
-         ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-         Iterator parameters = requestElem.getChildElements("param").iterator();
-         while (parameters.hasNext()) {
-            Element nextParam = (Element) parameters.next();
-            String name  = nextParam.getAttribute("name");
-            String value = nextParam.getText();
-            if (name.equals("_function")) {
-               functionName = value;
-            }
-            functionParams.set(SECRET_KEY, name, value);
-         }
-
-         // Check if function is specified
-         if (TextUtils.isEmpty(functionName)) {
-            throw new FunctionNotSpecifiedException();
-         }
-
-         // Remove all invalid parameters
-         cleanUpParameters(functionParams, SECRET_KEY);
-
-         // Get data section
-         Element dataElement = null;
-         List dataElementList = requestElem.getChildElements("data");
-         if (dataElementList.size() == 1) {
-            dataElement = (Element)dataElementList.get(0);
-         } else if (dataElementList.size() > 1) {
-            throw new InvalidRequestException("Found multiple data sections.");
-         }
-
-         return new FunctionRequest(functionName, functionParams, dataElement);
-
-      // I/O error
-      } catch (IOException ex) {
-         throw new InvalidRequestException("Cannot read the XML request.", ex);
-
-      // Parsing error
-      } catch (ParseException ex) {
-         throw new InvalidRequestException("Cannot parse the XML request.", ex);
+      // Check if function is specified
+      if (TextUtils.isEmpty(functionName)) {
+         throw new FunctionNotSpecifiedException();
       }
+
+      // Remove all invalid parameters
+      cleanUpParameters(functionParams, SECRET_KEY);
+
+      // Get data section
+      Element dataElement = null;
+      List dataElementList = requestElem.getChildElements("data");
+      if (dataElementList.size() == 1) {
+         dataElement = (Element)dataElementList.get(0);
+      } else if (dataElementList.size() > 1) {
+         throw new InvalidRequestException("Found multiple data sections.");
+      }
+
+      return new FunctionRequest(functionName, functionParams, dataElement);
    }
 
    /**

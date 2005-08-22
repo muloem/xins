@@ -28,6 +28,7 @@ import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -358,6 +359,95 @@ public class CallingConventionTests extends TestCase {
       Element bodyElem = (Element) result.getChildElements("Body").get(0);
       assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("SimpleTypesResponse").size());
    }
+   
+   /**
+    * Tests the XML-RPC calling convention.
+    */
+   public void testXMLRPCCallingConvention() throws Exception {
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      
+      // Send an incorrect request
+      String data = "<?xml version=\"1.0\"?>" +
+              "<methodCall>" +
+              "  <methodName>SimpleTypes</methodName>" + 
+              "  <params>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputBoolean</name>" +
+              "    <value><boolean>0</boolean></value>" +
+              "    </member></struct></value></param>" +
+              "  </params>" +
+              "</methodCall>";
+      Element result = postXML(destination, data);
+      assertEquals("methodResponse", result.getLocalName());
+      Element faultElem = getUniqueChild(result, "fault");
+      Element valueElem = getUniqueChild(faultElem, "value");
+      Element structElem = getUniqueChild(valueElem, "struct");
+      Element member1 = (Element) structElem.getChildElements("member").get(0);
+      Element member1Name = getUniqueChild(member1, "name");
+      assertEquals("faultCode", member1Name.getText());
+      Element member1Value = getUniqueChild(member1, "value");
+      Element member1IntValue = getUniqueChild(member1Value, "int");
+      assertEquals("3", member1IntValue.getText());
+      Element member2 = (Element) structElem.getChildElements("member").get(1);
+      Element member2Name = getUniqueChild(member2, "name");
+      assertEquals("faultString", member2Name.getText());
+      Element member2Value = getUniqueChild(member2, "value");
+      Element member2StringValue = getUniqueChild(member2Value, "string");
+      assertEquals("_InvalidRequest", member2StringValue.getText());
+   }
+      
+   /**
+    * Tests the XML-RPC calling convention.
+    */
+   public void testXMLRPCCallingConvention2() throws Exception {
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      
+      // Send a correct request
+      String data = "<?xml version=\"1.0\"?>" +
+              "<methodCall>" +
+              "  <methodName>SimpleTypes</methodName>" + 
+              "  <params>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputBoolean</name>" +
+              "    <value><boolean>1</boolean></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputByte</name>" +
+              "    <value><i4>0</i4></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputInt</name>" +
+              "    <value><i4>50</i4></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputLong</name>" +
+              "    <value><string>123456460</string></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputFloat</name>" +
+              "    <value><double>3.14159265</double></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputText</name>" +
+              "    <value><string>Hello World!</string></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputDate</name>" +
+              "    <value><dateTime.iso8601>19980717T14:08:55</dateTime.iso8601></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputTimestamp</name>" +
+              "    <value><dateTime.iso8601>19980817T15:08:55</dateTime.iso8601></value>" +
+              "    </member></struct></value></param>" +
+              "  </params>" +
+              "</methodCall>";
+      Element result = postXML(destination, data);
+      assertEquals("methodResponse", result.getLocalName());
+      Element paramsElem = getUniqueChild(result, "params");
+      Element paramElem = getUniqueChild(paramsElem, "param");
+      Element valueElem = getUniqueChild(paramElem, "value");
+      Element structElem = getUniqueChild(valueElem, "struct");
+   }
 
    /**
     * Posts the XML data the the given destination.
@@ -393,5 +483,38 @@ public class CallingConventionTests extends TestCase {
          // Release current connection to the connection pool once you are done
          post.releaseConnection();
       }
+   }
+
+   /**
+    * Gets the unique child of the element.
+    *
+    * @param parentElement
+    *    the parent element, cannot be <code>null</code>.
+    *
+    * @param elementName
+    *    the name of the child element to get, or <code>null</code> if the
+    *    parent have a unique child.
+    *
+    * @throws InvalidRequestException
+    *    if no child was found or more than one child was found.
+    */
+   private Element getUniqueChild(Element parentElement, String elementName)
+   throws ParseException {
+      List childList = null;
+      if (elementName == null) {
+         childList = parentElement.getChildElements();
+      } else {
+         childList = parentElement.getChildElements(elementName);
+      }
+      if (childList.size() == 0) {
+         throw new ParseException("No \"" + elementName + 
+               "\" children found in the \"" + parentElement.getLocalName() + 
+               "\" element of the XML-RPC request.");
+      } else if (childList.size() > 1) {
+         throw new ParseException("More than one \"" + elementName + 
+               "\" children found in the \"" + parentElement.getLocalName() + 
+               "\" element of the XML-RPC request.");
+      }
+      return (Element) childList.get(0);
    }
 }

@@ -6,23 +6,26 @@
  */
 package org.xins.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.Perl5Compiler;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.CollectionUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.manageable.Manageable;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementParser;
 
 /**
  * Abstraction of a calling convention. A calling convention determines how an
@@ -48,54 +51,11 @@ abstract class CallingConvention extends Manageable {
     */
    private static final String CLASSNAME = CallingConvention.class.getName();
 
-   /**
-    * Perl 5 pattern compiler.
-    */
-   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
-
-   /**
-    * The pattern which normal parameter names should match, as a character
-    * string. Note that this will be applied in a <em>case-insensitive</em>
-    * way.
-    */
-   private static final String PATTERN_STRING = "[a-z][a-z0-9_]*";
-
-   /**
-    * The compiled pattern which normal parameter names should match.
-    */
-   private static final Pattern PATTERN;
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Initializes this class. This function compiles {@link #PATTERN_STRING}
-    * to a {@link Pattern} and then stores that in {@link #PATTERN}.
-    */
-   static {
-      final String THIS_METHOD = "<clinit>()";
-      try {
-         PATTERN = PATTERN_COMPILER.compile(
-            PATTERN_STRING,
-            Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
-
-      } catch (MalformedPatternException exception) {
-         final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
-         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
-         final String DETAIL = "The pattern \""
-                             + PATTERN_STRING
-                             + "\" is considered malformed.";
-
-         throw Utils.logProgrammingError(CLASSNAME,
-                                         THIS_METHOD,
-                                         SUBJECT_CLASS,
-                                         SUBJECT_METHOD,
-                                         DETAIL,
-                                         exception);
-      }
-   }
 
    /**
     * Removes all parameters that should not be passed to a function. If the
@@ -136,14 +96,6 @@ abstract class CallingConvention extends Manageable {
          // XXX: If the parameter name is "function", then remove it
          } else if ("function".equals(name)) {
             parameters.set(secretKey, name, null);
-
-         // TODO: Enable this for XINS 2.0.0:
-/*
-         // If the pattern is not matched, then log and remove it
-         } else if (! PATTERN_MATCHER.matches(name, PATTERN)) {
-            // TODO: Log this
-            parameters.set(secretKey, name, null);
-*/
          }
       }
    }
@@ -348,4 +300,54 @@ abstract class CallingConvention extends Manageable {
    throws IOException;
    // XXX: Replace IOException with more appropriate exception?
 
+   /**
+    * Reads the HTTP request and parses it to an {@link org.xins.common.xml.Element}.
+    *
+    * @param httpRequest
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param checkType
+    *    flag indicating whether this method should check that the content type
+    *    of the request is text/xml.
+    *
+    * @return
+    *    the parsed element, never <code>null</code>.
+    * 
+    * @throws InvalidRequestException
+    *    if the HTTP request cannot be read or cannot be parsed correctly.
+    */
+   protected Element parseXMLRequest(HttpServletRequest httpRequest, boolean checkType)
+   throws InvalidRequestException {
+      
+      // Check content type
+      String contentType = httpRequest.getContentType();
+      if (checkType && (contentType == null || !contentType.startsWith("text/xml"))) {
+         throw new InvalidRequestException("Incorrect content type \"" + contentType + "\".");
+      }
+
+      try {
+
+         // Convert the Reader to a string buffer
+         BufferedReader reader = httpRequest.getReader();
+         FastStringBuffer content = new FastStringBuffer(1024);
+         String nextLine;
+         while ((nextLine = reader.readLine()) != null) {
+            content.append(nextLine);
+            content.append("\n");
+         }
+
+         String contentString = content.toString().trim();
+         ElementParser parser = new ElementParser();
+         Element parsedElem = parser.parse(new StringReader(contentString));
+         return parsedElem;
+         
+      // I/O error
+      } catch (IOException ex) {
+         throw new InvalidRequestException("Cannot read the XML request.", ex);
+
+      // Parsing error
+      } catch (ParseException ex) {
+         throw new InvalidRequestException("Cannot parse the XML request.", ex);
+      }
+   }   
 }

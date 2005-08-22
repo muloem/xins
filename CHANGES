@@ -63,6 +63,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Improved logging.
   - Implemented SF.net RFE #1247369: The Server header is sent back. Note that
     it applies only for a limited set of calling conventions.
+  - Added XML-RPC calling convention. The data section is not supported for 
+    this calling convention.
+  - Added a method in CallingConvention to parse XML input.
 
 * Generated CAPI classes:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated

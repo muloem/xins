@@ -206,6 +206,11 @@ extends HttpServlet {
    static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
    /**
+    * The XINS XMLRPC calling convention.
+    */
+   static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
+
+   /**
     * The name of the runtime property that specifies the locale for the log
     * messages.
     *

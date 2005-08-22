@@ -26,6 +26,7 @@ import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.spec.ParameterSpec;
 import org.xins.common.text.FastStringBuffer;
@@ -134,107 +135,86 @@ final class SOAPCallingConvention extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      try {
+      Element envelopElem = parseXMLRequest(httpRequest, true);
 
-         // Convert the Reader to a string buffer
-         BufferedReader reader = httpRequest.getReader();
-         FastStringBuffer content = new FastStringBuffer(1024);
-         String nextLine;
-         while ((nextLine = reader.readLine()) != null) {
-            content.append(nextLine);
-            content.append("\n");
-         }
-
-         String contentString = content.toString().trim();
-         ElementParser parser = new ElementParser();
-         Element envelopElem = parser.parse(new StringReader(contentString));
-         
-         if (!envelopElem.getLocalName().equals("Envelope")) {
-            throw new ParseException("Root element is not a SOAP envelop.");
-         }
-         
-         List bodiesElem = envelopElem.getChildElements("Body");
-         if (bodiesElem.size() == 0) {
-            throw new ParseException("No body specified in the SOAP envelop.");
-         } else if (bodiesElem.size() > 1) {
-            throw new ParseException("More than one body specified in the SOAP envelop.");
-         }
-         Element bodyElem = (Element) bodiesElem.get(0);
-         List functionsElem = bodyElem.getChildElements();
-         if (functionsElem.size() == 0) {
-            throw new ParseException("No function specified in the SOAP body.");
-         } else if (bodiesElem.size() > 1) {
-            throw new ParseException("More than one function specified in the SOAP body.");
-         }
-         Element functionElem = (Element) functionsElem.get(0);
-         String requestName = functionElem.getLocalName();
-         String functionName = requestName.substring(0, requestName.lastIndexOf("Request"));
-         httpRequest.setAttribute(FUNCTION_NAME, functionName);
-         httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
-
-         // Parse the input parameters
-         Element parametersElem = null;
-         List parametersList = functionElem.getChildElements("parameters");
-         if (parametersList.size() == 0) {
-            parametersElem = functionElem;
-         } else {
-            parametersElem = (Element) parametersList.get(0);
-         }
-
-         BasicPropertyReader parameters = new BasicPropertyReader();
-         Iterator itParameters = parametersElem.getChildElements().iterator();
-         while (itParameters.hasNext()) {
-            Element parameterElem = (Element) itParameters.next();
-            String parameterName = parameterElem.getLocalName();
-            String parameterValue = parameterElem.getText();
-            try {
-               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-               Type parameterType = functionSpec.getInputParameter(parameterName).getType();
-               parameterValue = soapInputValueTransformation(parameterType, parameterValue);
-            } catch (InvalidSpecificationException ise) {
-               
-               // keep the old value
-            } catch (EntityNotFoundException enfe) {
-               
-               // keep the old value
-            }
-            parameters.set(parameterName, parameterValue);
-         }
-         
-         // Parse the input data section
-         Element dataSection = null;
-         Element transformedDataSection = null;
-         List dataSectionList = parametersElem.getChildElements("data");
-         if (dataSectionList.size() == 1) {
-            dataSection = (Element) dataSectionList.get(0);
-            
-            try {
-               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-               Map dataSectionSpec = functionSpec.getInputDataSectionElements();
-               transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
-            } catch (InvalidSpecificationException ise) {
-               
-               // keep the old value
-               transformedDataSection = dataSection;
-            } catch (EntityNotFoundException enfe) {
-               
-               // keep the old value
-               transformedDataSection = dataSection;
-            }
-         } else if (dataSectionList.size() > 1) {
-            throw new InvalidRequestException("Only one data section is allowed.");
-         }
-         
-         return new FunctionRequest(functionName, parameters, dataSection);
-         
-      // I/O error
-      } catch (IOException ex) {
-         throw new InvalidRequestException("Cannot read the XML request.", ex);
-
-      // Parsing error
-      } catch (ParseException ex) {
-         throw new InvalidRequestException("Cannot parse the XML request.", ex);
+      if (!envelopElem.getLocalName().equals("Envelope")) {
+         throw new InvalidRequestException("Root element is not a SOAP envelop but \"" + 
+               envelopElem.getLocalName() + "\".");
       }
+
+      List bodiesElem = envelopElem.getChildElements("Body");
+      if (bodiesElem.size() == 0) {
+         throw new InvalidRequestException("No body specified in the SOAP envelop.");
+      } else if (bodiesElem.size() > 1) {
+         throw new InvalidRequestException("More than one body specified in the SOAP envelop.");
+      }
+      Element bodyElem = (Element) bodiesElem.get(0);
+      List functionsElem = bodyElem.getChildElements();
+      if (functionsElem.size() == 0) {
+         throw new InvalidRequestException("No function specified in the SOAP body.");
+      } else if (bodiesElem.size() > 1) {
+         throw new InvalidRequestException("More than one function specified in the SOAP body.");
+      }
+      Element functionElem = (Element) functionsElem.get(0);
+      String requestName = functionElem.getLocalName();
+      String functionName = requestName.substring(0, requestName.lastIndexOf("Request"));
+      httpRequest.setAttribute(FUNCTION_NAME, functionName);
+      httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
+
+      // Parse the input parameters
+      Element parametersElem = null;
+      List parametersList = functionElem.getChildElements("parameters");
+      if (parametersList.size() == 0) {
+         parametersElem = functionElem;
+      } else {
+         parametersElem = (Element) parametersList.get(0);
+      }
+
+      BasicPropertyReader parameters = new BasicPropertyReader();
+      Iterator itParameters = parametersElem.getChildElements().iterator();
+      while (itParameters.hasNext()) {
+         Element parameterElem = (Element) itParameters.next();
+         String parameterName = parameterElem.getLocalName();
+         String parameterValue = parameterElem.getText();
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+            parameterValue = soapInputValueTransformation(parameterType, parameterValue);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+         }
+         parameters.set(parameterName, parameterValue);
+      }
+
+      // Parse the input data section
+      Element dataSection = null;
+      Element transformedDataSection = null;
+      List dataSectionList = parametersElem.getChildElements("data");
+      if (dataSectionList.size() == 1) {
+         dataSection = (Element) dataSectionList.get(0);
+
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Map dataSectionSpec = functionSpec.getInputDataSectionElements();
+            transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+            transformedDataSection = dataSection;
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+            transformedDataSection = dataSection;
+         }
+      } else if (dataSectionList.size() > 1) {
+         throw new InvalidRequestException("Only one data section is allowed.");
+      }
+
+      return new FunctionRequest(functionName, parameters, dataSection);
    }
    
    protected void convertResultImpl(FunctionResult      xinsResult,
@@ -299,7 +279,7 @@ final class SOAPCallingConvention extends CallingConvention {
             String parameterName = (String) outputParameterNames.next();
             String parameterValue = xinsResult.getParameter(parameterName);
             try {
-               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
                parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
@@ -320,7 +300,7 @@ final class SOAPCallingConvention extends CallingConvention {
             
             Element transformedDataElement = null;
             try {
-               org.xins.common.spec.FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Map dataSectionSpec = functionSpec.getInputDataSectionElements();
                transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
             } catch (InvalidSpecificationException ise) {
@@ -356,7 +336,7 @@ final class SOAPCallingConvention extends CallingConvention {
     *    the type of the parameter, cannot be <code>null</code>.
     *
     * @param value
-    *    the value return by the SOAP parameter, cannot be <code>null</code>.
+    *    the value of the SOAP parameter, cannot be <code>null</code>.
     *
     * @return
     *    the XINS value, never <code>null</code>.
@@ -398,7 +378,7 @@ final class SOAPCallingConvention extends CallingConvention {
     *    the type of the parameter, cannot be <code>null</code>.
     *
     * @param value
-    *    the value return by the XINS function, cannot be <code>null</code>.
+    *    the value returned by the XINS function, cannot be <code>null</code>.
     *
     * @return
     *    the SOAP value, never <code>null</code>.

@@ -109,6 +109,10 @@ class CallingConventionFactory extends Object {
       } else if (APIServlet.SOAP_CALLING_CONVENTION.equals(name)) {
          created = new SOAPCallingConvention(api);
 
+      // XINS XML-RPC calling convention
+      } else if (APIServlet.XML_RPC_CALLING_CONVENTION.equals(name)) {
+         created = new XMLRPCCallingConvention(api);
+
       // Custom calling convention
       } else if (name.charAt(0) != '_') {
          if (! name.equals(servletConfig.getInitParameter(
