@@ -139,12 +139,23 @@ public class ErrorCodeTests extends TestCase {
    }
    
    /**
-    * Tests the {@link ErrorCode#getOutputDataSection() getOutputDataSection()}
+    * Tests the {@link ErrorCode#getOutputDataSectionElements() getOutputDataSection()}
     * return the correct output datasection of the error code of a function of 
     * the API.
     */
 /*
-   public void testErrorCodeGetOutputDataSection() {
+   public void testErrorCodeGetOutputDataSectionElements() {
+      //TODO an example has to be added in allinone, then the test shall be written
+   }
+*/
+   
+   /**
+    * Tests the {@link ErrorCodeSpec#getOutputDataSectionElement(String) getOutputDataSection()}
+    * return the correct output datasection of the error code of a function of 
+    * the API when specified with a name.
+    */
+/*
+   public void testErrorCodeGetOutputDataSectionElements() {
       //TODO an example has to be added in allinone, then the test shall be written
    }
 */

@@ -13,6 +13,7 @@ import junit.framework.TestCase;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.DataSectionElementSpec;
+import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Int32;
 import org.xins.common.types.standard.Int64;
@@ -110,6 +111,25 @@ public class DataSectionElementTests extends TestCase {
          "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(), 
          "product", _packetElement.getSubElement("product").getName());
    }
+   
+   /**
+    * Tests that {@link DataSectionElementSpec#getSubElement(String)
+    * returns the correct sub-elements of a data section for a function of the 
+    * API when specified with a name. 
+    */
+   public void testDataSectionGetSubElement() throws Exception {
+      assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
+         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(), 
+         "product", _packetElement.getSubElement("product").getName());
+      
+      try {
+         _packetElement.getSubElement("RubbishName");
+         fail("Expected getSubElementString) to throw an EntityNotFoundException" +
+         " for a element which does not exist.");
+      } catch (EntityNotFoundException e) {
+         // Consume, as it was expected. 
+      }
+   }
 
    /**
     * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
@@ -135,6 +155,32 @@ public class DataSectionElementTests extends TestCase {
       assertEquals("The output data section element for the function 'DataSection2'" +
          " has an incorrect number of the sub-elements: " + 
          _packetElement.getSubElements().size(), 1, _packetElement.getSubElements().size());
+   }
+   
+   /**
+    * Tests that {@link DataSectionElementSpec#getAttribute(String)} 
+    * returns the correct attributes for a data section of a function of the API
+    * when specified with a name.
+    */
+   public void testDataSectionGetAttribute() throws Exception {
+    
+      try {
+         ParameterSpec attribute = _packetElement.getAttribute("destination");
+         assertEquals("The attribute in the output data section element for the " +
+            "function 'DataSection2' has an incorrect name: " + attribute.getName(), 
+            "destination", attribute.getName());
+      } catch (EntityNotFoundException e) {
+         fail("Could not find the attribute 'destination' in datasection" +
+            " of 'DataSection2' function of allinone API.");
+      }
+      
+      try {
+         _packetElement.getAttribute("RubbishName");
+         fail("Expected getAttribute(String) to throw an EntityNotFoundException" +
+            " for a attribute which does not exist.");
+      } catch (EntityNotFoundException e) {
+       // Consume, as it was expected.
+      }
    }
 
    /**

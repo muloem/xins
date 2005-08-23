@@ -64,7 +64,12 @@ public class ParamComboTests extends TestCase {
     * <i>ParamCombo</i> function.
     */
    private ParamComboSpec _allOrNoneCombo;
-
+   
+   /**
+    * The not-all input param combo specification of the 
+    * <i>ParamComboNotAll</i> function.
+    */
+   private ParamComboSpec _notAll;
 
    //-------------------------------------------------------------------------
    // Methods
@@ -92,6 +97,8 @@ public class ParamComboTests extends TestCase {
             _allOrNoneCombo = combo;
          }
       }
+      
+      _notAll = (ParamComboSpec) allInOneAPI.getFunction("ParamComboNotAll").getInputParamCombos().get(0);
    }
 
    /**
@@ -118,6 +125,21 @@ public class ParamComboTests extends TestCase {
          _exclusiveCombo.isInclusiveOr());
       assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
          _allOrNoneCombo.isInclusiveOr());
+   }
+   
+   /**
+    * Tests that {@link ParamCombo#notAll()} returns the correct not-all
+    * flag for a param combo.
+    */
+   public void testErrorCodeNotAll() {
+      assertTrue("Function 'ParamComboNotAll' has an incorrect not-all param combo: ",
+         _notAll.isNotAll());
+      assertFalse("Function 'ParamCombo' has an incorrect exclusive param combo: ",
+         _inclusiveCombo.isNotAll());
+      assertFalse("Function 'ParamCombo' has an incorrect inclusive param combo: ",
+         _exclusiveCombo.isNotAll());
+      assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
+         _allOrNoneCombo.isNotAll());
    }
 
    /**
@@ -157,6 +179,9 @@ public class ParamComboTests extends TestCase {
       assertEquals("The all-or-none input param combo of the function " +
          "'ParamCombo' has an incorrect number of parameters.",
          3, _allOrNoneCombo.getParameters().size());
+      assertEquals("The not-all input param combo of the function " +
+            "'ParamComboNotAll' has an incorrect number of parameters.",
+            4, _notAll.getParameters().size());
    }
 
 }

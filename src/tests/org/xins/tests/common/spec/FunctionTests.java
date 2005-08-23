@@ -288,7 +288,32 @@ public class FunctionTests extends TestCase {
             + errorCodeName,
             errorCodes.contains(errorCodeName));
       }
+   }
 
+   /**
+    * Tests that getErrorCode(String) returns correct errorcode for a function 
+    * of the API when specified with a errorcode name.
+    *
+    * @see org.xins.common.spec.Function#getErrorCodes()
+    */
+   public void testFunctionsGetErrorCode() throws Exception {
+
+      FunctionSpec function = _allInOneAPI.getFunction("ResultCode");
+      try {
+         function.getErrorCode("AlreadySet");
+      } catch (EntityNotFoundException e) {
+         fail("Could not find the errorocode 'AlreadySet' in of 'ResultCode'" +
+            " function of allinone API.");
+      }
+      
+      try {
+         function.getErrorCode("RubbishName");
+         fail("Expected getErrorCode(String) to throw an EntityNotFoundException" +
+         " for an errorcode which does not exist.");
+      } catch (EntityNotFoundException e) {
+        
+         // Consume, as it was expected.
+      }
    }
 
    /**
