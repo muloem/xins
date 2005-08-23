@@ -457,6 +457,19 @@ public class Element implements Cloneable {
 
       return clone;
    }
+   
+   /**
+    * Overrides the {@link java.lang.Object#toString()} method to return
+    * the element as its XML representation.
+    *
+    * @return
+    *    the XML representation of this element without the XML declaration, 
+    *    never <code>null</code>.
+    */
+   public String toString() {
+      ElementSerializer serializer = new ElementSerializer();
+      return serializer.serialize(this);
+   }
 
 
    //-------------------------------------------------------------------------
