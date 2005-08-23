@@ -361,7 +361,7 @@ public class CallingConventionTests extends TestCase {
    }
    
    /**
-    * Tests the XML-RPC calling convention.
+    * Tests the XML-RPC calling convention with an incomplete request.
     */
    public void testXMLRPCCallingConvention() throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
@@ -397,7 +397,7 @@ public class CallingConventionTests extends TestCase {
    }
       
    /**
-    * Tests the XML-RPC calling convention.
+    * Tests the XML-RPC calling convention for a successful result.
     */
    public void testXMLRPCCallingConvention2() throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
@@ -438,6 +438,48 @@ public class CallingConventionTests extends TestCase {
               "    <param><value><struct><member>" +
               "    <name>inputTimestamp</name>" +
               "    <value><dateTime.iso8601>19980817T15:08:55</dateTime.iso8601></value>" +
+              "    </member></struct></value></param>" +
+              "  </params>" +
+              "</methodCall>";
+      Element result = postXML(destination, data);
+      assertEquals("methodResponse", result.getLocalName());
+      Element paramsElem = getUniqueChild(result, "params");
+      Element paramElem = getUniqueChild(paramsElem, "param");
+      Element valueElem = getUniqueChild(paramElem, "value");
+      Element structElem = getUniqueChild(valueElem, "struct");
+   }
+
+   /**
+    * Tests the XML-RPC calling convention for a data section.
+    */
+   public void testXMLRPCCallingConvention3() throws Exception {
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      
+      // Send a correct request
+      String data = "<?xml version=\"1.0\"?>" +
+              "<methodCall>" +
+              "  <methodName>DataSection3</methodName>" + 
+              "  <params>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputText</name>" +
+              "    <value><string>hello</string></value>" +
+              "    </member></struct></value></param>" +
+              "    <param><value><struct><member>" +
+              "    <name>data</name>" +
+              "    <value><array><data>" +
+              "    <value><struct><member>" +
+              "    <name>address</name>" +
+              "    <value><string></string></value>" +
+              "    </member>" +
+              "    <member>" +
+              "    <name>company</name>" +
+              "    <value><string>MyCompany</string></value>" +
+              "    </member>" +
+              "    <member>" +
+              "    <name>postcode</name>" +
+              "    <value><string>72650</string></value>" +
+              "    </member></struct></value>" +
+              "    </data></array></value>" +
               "    </member></struct></value></param>" +
               "  </params>" +
               "</methodCall>";

@@ -410,7 +410,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * Convert the values of element to the required format.
     *
     * @param dataSection
-    *    the spcification of the elements, cannot be <code>null</code>.
+    *    the specification of the elements, cannot be <code>null</code>.
     *
     * @param input
     *    <code>true</code> if it's the input parameter that should be transform,
@@ -448,8 +448,9 @@ final class SOAPCallingConvention extends CallingConvention {
          // Go through the attributes
          Iterator itAttributeNames = elementAttributes.keySet().iterator();
          while (itAttributeNames.hasNext()) {
-            String attributeName = (String) itAttributeNames.next();
-            String attributeValue = (String) elementAttributes.get(attributeName);
+            Element.QualifiedName attributeQName = (Element.QualifiedName) itAttributeNames.next();
+            String attributeName = attributeQName.getLocalName();
+            String attributeValue = (String) elementAttributes.get(attributeQName);
             try {
                
                // Convert the value if needed

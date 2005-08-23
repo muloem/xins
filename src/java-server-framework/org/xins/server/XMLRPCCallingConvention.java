@@ -14,15 +14,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.io.FastStringWriter;
+import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -150,8 +153,9 @@ class XMLRPCCallingConvention extends CallingConvention {
       String functionName = methodNameElem.getText();
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
       
-      // Determine function parameters
+      // Determine function parameters and data section
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      Element dataSection = null;
       
       List params = xmlRequest.getChildElements("params");
       if (params.size() == 0) {
@@ -164,30 +168,58 @@ class XMLRPCCallingConvention extends CallingConvention {
       while (itParam.hasNext()) {
          Element nextParam = (Element) itParam.next();
          Element valueElem = getUniqueChild(nextParam, "value");
-         Element structElem = getUniqueChild(valueElem, "struct");
-         Element memberElem = getUniqueChild(structElem, "member");
-         Element memberNameElem = getUniqueChild(memberElem, "name");
-         Element memberValueElem = getUniqueChild(memberElem, "value");
-         Element typeElem = getUniqueChild(memberValueElem, null);
-         String parameterName = memberNameElem.getText();
-         String parameterValue = typeElem.getText();
-         try {
-            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-            Type parameterType = functionSpec.getInputParameter(parameterName).getType();
-            parameterValue = convertInput(parameterType, typeElem);
-            System.err.println("niput: " + parameterValue);
-         } catch (InvalidSpecificationException ise) {
+         Element structElem = getUniqueChild(valueElem, null);
+         if (structElem.getLocalName().equals("struct")) {
+            Element memberElem = getUniqueChild(structElem, "member");
+            Element memberNameElem = getUniqueChild(memberElem, "name");
+            Element memberValueElem = getUniqueChild(memberElem, "value");
+            Element typeElem = getUniqueChild(memberValueElem, null);
+            String parameterName = memberNameElem.getText();
+            String parameterValue = typeElem.getText();
+            try {
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+               parameterValue = convertInput(parameterType, typeElem);
+            } catch (InvalidSpecificationException ise) {
 
-            // keep the old value
-         } catch (EntityNotFoundException enfe) {
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
 
-            // keep the old value
-         } catch (java.text.ParseException pex) {
+               // keep the old value
+            } catch (java.text.ParseException pex) {
 
-            throw new InvalidRequestException("Invalid value for parameter \"" +
-                  parameterName + "\".", pex);
+               throw new InvalidRequestException("Invalid value for parameter \"" +
+                     parameterName + "\".", pex);
+            }
+            functionParams.set(SECRET_KEY, parameterName, parameterValue);
+         } else if (structElem.getLocalName().equals("array")) {
+            Element arrayElem = getUniqueChild(valueElem, "array");
+            Element dataElem = getUniqueChild(valueElem, "data");
+            if (dataSection != null) {
+               throw new InvalidRequestException("Only one data section is allowed per request");
+            }
+            Map dataSectionSpec = null;
+            try {
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               dataSectionSpec = functionSpec.getInputDataSectionElements();
+            } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
+               
+               // keep the old value
+            }
+            ElementBuilder builder = new ElementBuilder("data");
+            Iterator itValueElems = dataElem.getChildElements("value").iterator();
+            while (itValueElems.hasNext()) {
+               Element childValueElem = (Element) itValueElems.next();
+               Element childElem = parseElement(childValueElem, dataSectionSpec);
+               builder.addChild(childElem);
+            }
+            dataSection = builder.createElement();
+         } else {
+            throw new InvalidRequestException("Only \"struct\" and \"array\" are valid as parameter type.");
          }
-         functionParams.set(SECRET_KEY, parameterName, parameterValue);
       }
       
       // TODO: The data section is not supported at the moment.
@@ -293,6 +325,40 @@ class XMLRPCCallingConvention extends CallingConvention {
             xmlout.endTag(); // member
          }
          
+         // Write the data section if needed
+         Element dataSection = xinsResult.getDataElement();
+         if (dataSection != null) {
+
+            Map dataSectionSpec = null;
+            try {
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               dataSectionSpec = functionSpec.getOutputDataSectionElements();
+            } catch (InvalidSpecificationException ise) {
+               
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
+               
+               // keep the old value
+            }
+            
+            xmlout.startTag("member");
+            xmlout.startTag("name");
+            xmlout.pcdata("data");
+            xmlout.endTag();
+            xmlout.startTag("value");
+            xmlout.startTag("array");
+            xmlout.startTag("data");
+            Iterator children = dataSection.getChildElements().iterator();
+            while (children.hasNext()) {
+               Element nextChild = (Element) children.next();
+               writeElement(nextChild, xmlout, dataSectionSpec);
+            }
+            xmlout.endTag(); // data
+            xmlout.endTag(); // array
+            xmlout.endTag(); // value
+            xmlout.endTag(); // member
+         }
+         
          xmlout.endTag(); // struct
          xmlout.endTag(); // value
          xmlout.endTag(); // param
@@ -338,6 +404,155 @@ class XMLRPCCallingConvention extends CallingConvention {
                "\" element of the XML-RPC request.");
       }
       return (Element) childList.get(0);
+   }
+   
+   /**
+    * Parses the data section element.
+    *
+    * @param valueElem
+    *    the value element, cannot be <code>null</code>.
+    *
+    * @param dataSection
+    *    the specification of the elements, cannot be <code>null</code>.
+    *
+    * @return
+    *    the data section element, never <code>null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the XML request is incorrect.
+    */
+   private Element parseElement(Element valueElem, Map dataSection) throws InvalidRequestException {
+      Element structElem = getUniqueChild(valueElem, "struct");
+      DataSectionElementSpec elementSpec = null;
+      Iterator itMemberElems = structElem.getChildElements("member").iterator();
+      ElementBuilder builder = null;
+      if (itMemberElems.hasNext()) {
+         Element memberElem = (Element) itMemberElems.next();
+         Element memberNameElem = getUniqueChild(memberElem, "name");
+         Element memberValueElem = getUniqueChild(memberElem, "value");
+         Element typeElem = getUniqueChild(memberValueElem, null);
+         String parameterName = memberNameElem.getText();
+         elementSpec = (DataSectionElementSpec) dataSection.get(parameterName);
+         builder = new ElementBuilder(parameterName);
+         if (typeElem.getLocalName().equals("string")) {
+            builder.setText(typeElem.getText());
+         } else if (typeElem.getLocalName().equals("array")) {
+            Map childrenSpec = elementSpec.getSubElements();
+            Element dataElem = getUniqueChild(typeElem, "data");
+            Iterator itValueElems = dataElem.getChildElements("value").iterator();
+            while (itValueElems.hasNext()) {
+               Element childValueElem = (Element) itValueElems.next();
+               Element childElem = parseElement(childValueElem, childrenSpec);
+               builder.addChild(childElem);
+            }
+         } else {
+            throw new InvalidRequestException("Only \"string\" and \"array\" are valid as member value type.");
+         }
+      } else {
+         throw new InvalidRequestException("The \"struct\" element should at least have one member");
+      }
+      
+      // Fill in the attributes
+      while (itMemberElems.hasNext()) {
+         Element memberElem = (Element) itMemberElems.next();
+         Element memberNameElem = getUniqueChild(memberElem, "name");
+         Element memberValueElem = getUniqueChild(memberElem, "value");
+         Element typeElem = getUniqueChild(memberValueElem, null);
+         String parameterName = memberNameElem.getText();
+         String parameterValue = typeElem.getText();
+
+         try {
+            Type xinsElemType = elementSpec.getAttribute(parameterName).getType();
+            parameterValue = convertInput(xinsElemType, memberValueElem);
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+         } catch (java.text.ParseException pex) {
+            throw new InvalidRequestException("Invalid value for parameter \"" + parameterName + "\".");
+         }
+         
+         builder.setAttribute(parameterName, parameterValue);
+      }
+      return builder.createElement();
+   }
+   
+   /**
+    * Write the given data section element to the output.
+    *
+    * @param dataElement
+    *    the data section element, cannot be <code>null</code>.
+    *
+    * @param xmlout
+    *    the output where the data section element should be serialised, cannot be <code>null</code>.
+    *
+    * @param dataSectionSpec
+    *    the specification of the data element to be written, cannot be <code>null</code>.
+    *
+    * @throws IOException
+    *    if an IO error occurs while writing on the output.
+    */
+   private void writeElement(Element dataElement, XMLOutputter xmlout, Map dataSectionSpec) throws IOException {
+      xmlout.startTag("value");
+      xmlout.startTag("member");
+      xmlout.startTag("name");
+      xmlout.pcdata(dataElement.getLocalName());
+      xmlout.endTag(); // name
+      xmlout.startTag("value");
+      DataSectionElementSpec elementSpec = (DataSectionElementSpec) dataSectionSpec.get(dataElement.getLocalName());
+      List children = dataElement.getChildElements();
+      if (children.size() > 0) {
+         Map childrenSpec = elementSpec.getSubElements();
+         xmlout.startTag("array");
+         xmlout.startTag("data");
+         Iterator itChildren = children.iterator();
+         while (itChildren.hasNext()) {
+            Element nextChild = (Element) itChildren.next();
+            writeElement(nextChild, xmlout, childrenSpec);
+         }
+         xmlout.endTag(); // data
+         xmlout.endTag(); // array
+      } else {
+         xmlout.startTag("string");
+         if (dataElement.getText() != null) {
+            xmlout.pcdata(dataElement.getText());
+         }
+         xmlout.endTag(); // string
+      }
+      xmlout.endTag(); // value
+      xmlout.endTag(); // member
+      
+      // Write the attributes
+      Map attributesMap = dataElement.getAttributeMap();
+      Iterator itAttributes = attributesMap.keySet().iterator();
+      while (itAttributes.hasNext()) {
+         Element.QualifiedName attributeQName = (Element.QualifiedName) itAttributes.next();
+         String attributeName = attributeQName.getLocalName();
+         String attributeValue = (String) attributesMap.get(attributeQName);
+         String attributeTag = "string";
+         
+         try {
+            Type attributeType = elementSpec.getAttribute(attributeName).getType();
+            attributeValue = convertOutput(attributeType, attributeValue);
+            attributeTag = convertType(attributeType);
+         } catch (EntityNotFoundException enfe) {
+               
+            // keep the old value
+         } catch (java.text.ParseException pex) {
+            throw new IOException("Invalid value for parameter \"" + attributeName + "\".");
+         }
+         
+         xmlout.startTag("member");
+         xmlout.startTag("name");
+         xmlout.pcdata(attributeName);
+         xmlout.endTag(); // name
+         xmlout.startTag("value");
+         xmlout.startTag(attributeTag);
+         xmlout.pcdata(attributeValue);
+         xmlout.endTag(); // tag
+         xmlout.endTag(); // value
+         xmlout.endTag(); // member
+      }
+      xmlout.endTag(); // value
    }
    
    /**
