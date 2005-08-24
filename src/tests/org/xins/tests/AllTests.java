@@ -53,6 +53,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
 
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
+      suite.addTestSuite(org.xins.tests.common.collections.ChainedMapTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.CollectionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.PropertyReaderUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.ProtectedListTests.class);

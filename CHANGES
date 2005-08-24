@@ -31,6 +31,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Slightly improved internal state checking in FileWatcher class.
   - Added the possibility set the user agent in the HTTPCallConfig.
   - Improved the servlet container to return custom HTTP headers.
+  - Added ChainedMap in the collection package. This class returns the 
+    values in the same order that they were added.
+  - Adapted the spec package classes to use the ChainedMap instead of the 
+    HashMap.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception

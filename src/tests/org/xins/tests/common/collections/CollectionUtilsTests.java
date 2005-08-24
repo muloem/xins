@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.common.collections.ChainedMap;
 
 import org.xins.common.collections.CollectionUtils;
 
@@ -133,27 +134,5 @@ public class CollectionUtilsTests extends TestCase {
       try {
          CollectionUtils.list(ARG_NAME, array, 0);
       } catch (IllegalArgumentException exception) {}
-   }
-   
-   public void testGreaterComparator() {
-      int itemsCount = 20;
-      Random rd = new Random();
-      List arrayList = new ArrayList(itemsCount);
-      Map sortedMap = new TreeMap(CollectionUtils.GREATER_COMPARATOR);
-      for (int i = 0; i < itemsCount; i++) {
-         byte[] randomText = new byte[8];
-         rd.nextBytes(randomText);
-         String randomString  = new String(randomText);
-         arrayList.add(randomString);
-         sortedMap.put(randomString, "value" + i);
-      }
-      Iterator itSortedMap = sortedMap.values().iterator();
-      int i = 0;
-      while (itSortedMap.hasNext()) {
-         String nextValue = (String) itSortedMap.next();
-         assertEquals("value" + i, nextValue);
-         i++;
-      }
-      assertEquals(itemsCount, sortedMap.size());
    }
 }

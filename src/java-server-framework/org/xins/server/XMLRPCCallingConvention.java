@@ -34,7 +34,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-class XMLRPCCallingConvention extends CallingConvention {
+final class XMLRPCCallingConvention extends CallingConvention {
    
    //-------------------------------------------------------------------------
    // Class functions

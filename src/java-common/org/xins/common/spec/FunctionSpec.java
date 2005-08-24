@@ -9,12 +9,12 @@ package org.xins.common.spec;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.ChainedMap;
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
@@ -100,7 +100,7 @@ public class FunctionSpec extends Object {
     * The input parameters of the function.
     * The key is the name of the parameter, the value is the {@link FunctionSpec} object.
     */
-   private Map _inputParameters = new HashMap();
+   private Map _inputParameters = new ChainedMap();
 
    /**
     * The input param combos of the function.
@@ -110,18 +110,18 @@ public class FunctionSpec extends Object {
    /**
     * The input data section elements of the function.
     */
-   private Map _inputDataSectionElements = new HashMap();
+   private Map _inputDataSectionElements = new ChainedMap();
 
    /**
     * The defined error code that the function can return.
     */
-   private Map _errorCodes = new HashMap();
+   private Map _errorCodes = new ChainedMap();
 
    /**
     * The output parameters of the function.
     * The key is the name of the parameter, the value is the <code>Parameter</code> object.
     */
-   private Map _outputParameters = new HashMap();
+   private Map _outputParameters = new ChainedMap();
 
    /**
     * The output param combos of the function.
@@ -131,7 +131,7 @@ public class FunctionSpec extends Object {
    /**
     * The output data section elements of the function.
     */
-   private Map _outputDataSectionElements = new HashMap();
+   private Map _outputDataSectionElements = new ChainedMap();
 
    
    //-------------------------------------------------------------------------
@@ -482,7 +482,7 @@ public class FunctionSpec extends Object {
    static Map parseDataSectionElements(Class reference, Element topElement, Element dataSection)
    throws InvalidSpecificationException {
 
-      Map dataSectionElements = new HashMap();
+      Map dataSectionElements = new ChainedMap();
       
       // The <data> may have a "contains" attribute.
       String dataContainsAttr = topElement.getAttribute("contains");
@@ -547,7 +547,7 @@ public class FunctionSpec extends Object {
             }
             
             List attributesList = nextElement.getChildElements("attribute");
-            Map attributes = new HashMap();
+            Map attributes = new ChainedMap();
             Iterator itAttributes = attributesList.iterator();
             while (itAttributes.hasNext()) {
                ParameterSpec attribute = parseParameter(reference, (Element) itAttributes.next());
@@ -603,7 +603,7 @@ public class FunctionSpec extends Object {
     */
    static Map parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
       List parametersList = topElement.getChildElements("param");
-      Map parameters = new HashMap();
+      Map parameters = new ChainedMap();
       Iterator itParameters = parametersList.iterator();
       while (itParameters.hasNext()) {
          Element nextParameter = (Element) itParameters.next();
@@ -640,7 +640,7 @@ public class FunctionSpec extends Object {
          String type = nextParamCombo.getAttribute("type");
          List paramDefs = nextParamCombo.getChildElements("param-ref");
          Iterator itParamDefs = paramDefs.iterator();
-         Map paramComboParameters = new HashMap();
+         Map paramComboParameters = new ChainedMap();
          while (itParamDefs.hasNext()) {
             Element paramDef = (Element) itParamDefs.next();
             String parameterName = paramDef.getAttribute("name");
