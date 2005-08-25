@@ -243,28 +243,23 @@ ${sf.file}</fail>
 	<target name="perftests" depends="do-perftests,perftestreports" description="Runs the performance tests and generates reports" />
 
 	<target name="clean-coverage">
-		<delete file="jcoverage.ser" />
+		<delete file="cobertura.ser" />
 		<delete dir="build/instrumented-classes" />
 		<delete dir="build/testresults/coverage" />
 		<delete dir="build/coverage-src" />
 	</target>
 
 	<target name="-prepare-coverage">
-		<taskdef classpath="lib/jcoverage.jar" resource="tasks.properties"/>
-		<instrument todir="build/instrumented-classes/java-client">
+		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties"/>
+		<cobertura-instrument todir="build/instrumented-classes/java-client">
 			<fileset dir="build/classes/java-client" includes="**/*.class" />
-		</instrument>
-		<instrument todir="build/instrumented-classes/java-server">
+		</cobertura-instrument>
+		<cobertura-instrument todir="build/instrumented-classes/java-server">
 			<fileset dir="build/classes/java-server" includes="**/*.class" />
-		</instrument>
-		<instrument todir="build/instrumented-classes/java-common">
+		</cobertura-instrument>
+		<cobertura-instrument todir="build/instrumented-classes/java-common">
 			<fileset dir="build/classes/java-common" includes="**/*.class" />
-		</instrument>
-		<copy todir="build/coverage-src">
-			<fileset dir="src/java-client-framework" includes="**/*.java" />
-			<fileset dir="src/java-server-framework" includes="**/*.java" />
-			<fileset dir="src/java-common" includes="**/*.java" />
-		</copy>
+		</cobertura-instrument>
 	</target>
 
 	<target name="coverage" depends="-junit-task,classes-tests,-prepare-coverage">
@@ -273,6 +268,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/testresults/coverage" />
 		<junit printsummary="true" failureproperty="tests.failed" maxmemory="512m" fork="yes" showoutput="true" haltonfailure="false">
 			<sysproperty key="user.dir" value="${basedir}" />
+			<sysproperty key="net.sourceforge.cobertura.datafile"	file="${basedir}/cobertura.ser" />
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
 			<classpath>
@@ -291,9 +287,11 @@ ${sf.file}</fail>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</junit>
-		<report
-		srcdir="build/coverage-src"
-		destdir="build/testresults/coverage" />
+		<cobertura-report format="html"	destdir="build/testresults/coverage">
+			<fileset dir="src/java-client-framework" includes="**/*.java" />
+			<fileset dir="src/java-server-framework" includes="**/*.java" />
+			<fileset dir="src/java-common" includes="**/*.java" />
+		</cobertura-report>
 	</target>
 
 	<target name="j2h" depends="-j2h-task,java" description="Generates pretty-printed Java code as HTML">
