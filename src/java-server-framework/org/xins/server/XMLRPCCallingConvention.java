@@ -15,8 +15,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.spec.DataSectionElementSpec;
@@ -26,6 +28,7 @@ import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
+
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -69,6 +72,33 @@ final class XMLRPCCallingConvention extends CallingConvention {
       }
    }
    
+   /**
+    * Attribute a number for the error code.
+    *
+    * @param errorCode
+    *    the error code, cannot be <code>null</code>.
+    *
+    * @return
+    *    the error code number, always > 0;
+    */
+   private static int getErrorCodeNumber(String errorCode) {
+      if (errorCode.equals("_DisabledFunction")) {
+         return 1;
+      } else if (errorCode.equals("_InternalError")) {
+         return 2;
+      } else if (errorCode.equals("_InvalidRequest")) {
+         return 3;
+      } else if (errorCode.equals("_InvalidResponse")) {
+         return 4;
+      } else {
+         
+         // Defined error code returned. For more information, see the 
+         // faultString element.
+         return 99;
+      }
+   }
+
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -153,7 +183,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       String functionName = methodNameElem.getText();
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
       
-      // Determine function parameters and data section
+      // Determine function parameters and the data section
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
       Element dataSection = null;
       
@@ -170,6 +200,8 @@ final class XMLRPCCallingConvention extends CallingConvention {
          Element valueElem = getUniqueChild(nextParam, "value");
          Element structElem = getUniqueChild(valueElem, null);
          if (structElem.getLocalName().equals("struct")) {
+            
+            // Parse the input parameter
             Element memberElem = getUniqueChild(structElem, "member");
             Element memberNameElem = getUniqueChild(memberElem, "name");
             Element memberValueElem = getUniqueChild(memberElem, "value");
@@ -193,6 +225,8 @@ final class XMLRPCCallingConvention extends CallingConvention {
             }
             functionParams.set(SECRET_KEY, parameterName, parameterValue);
          } else if (structElem.getLocalName().equals("array")) {
+            
+            // Parse the input data section
             Element arrayElem = getUniqueChild(valueElem, "array");
             Element dataElem = getUniqueChild(valueElem, "data");
             if (dataSection != null) {
@@ -221,8 +255,6 @@ final class XMLRPCCallingConvention extends CallingConvention {
             throw new InvalidRequestException("Only \"struct\" and \"array\" are valid as parameter type.");
          }
       }
-      
-      // TODO: The data section is not supported at the moment.
       
       return new FunctionRequest(functionName, functionParams, null);
    }
@@ -626,31 +658,5 @@ final class XMLRPCCallingConvention extends CallingConvention {
          return XML_RPC_TIMESTAMP_FORMATTER.format(date);
       }
       return parameterValue;
-   }
-   
-   /**
-    * Attribute a number for the error code.
-    *
-    * @param errorCode
-    *    the error code, cannot be <code>null</code>.
-    *
-    * @return
-    *    the error code number, always > 0;
-    */
-   private int getErrorCodeNumber(String errorCode) {
-      if (errorCode.equals("_DisabledFunction")) {
-         return 1;
-      } else if (errorCode.equals("_InternalError")) {
-         return 2;
-      } else if (errorCode.equals("_InvalidRequest")) {
-         return 3;
-      } else if (errorCode.equals("_InvalidResponse")) {
-         return 4;
-      } else {
-         
-         // Defined error code returned. For more information, see the 
-         // faultString element.
-         return 99;
-      }
    }
 }
