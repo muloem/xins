@@ -35,6 +35,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     values in the same order that they were added.
   - Adapted the spec package classes to use the ChainedMap instead of the 
     HashMap.
+  - Implemented SF.net RFE #1198237: Accept XML string in ElementBuilder.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception
