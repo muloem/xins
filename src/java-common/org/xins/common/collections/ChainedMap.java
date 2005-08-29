@@ -170,8 +170,11 @@ public class ChainedMap extends AbstractMap {
        * @param c
        *    the collection that contain the values of the set, never <code>null</code>.
        */
-      public ChainedSet(Collection c) {
-         _values.addAll(c);
+      public ChainedSet(Collection collection) {
+         Iterator itCollection = collection.iterator();
+         while (itCollection.hasNext()) {
+            _values.add(itCollection.next());
+         }
       }
       
       
