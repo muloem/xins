@@ -4,6 +4,13 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 5:
+
+* Build- and release-process:
+  - Added images associated with the primer.
+  - Removed the private javadoc.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
 
 * Logdoc:
