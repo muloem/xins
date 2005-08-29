@@ -54,7 +54,7 @@ public class TypeValueException extends Exception {
       // Check preconditions
       MandatoryArgumentChecker.check("type", type, "value", value);
 
-      FastStringBuffer buffer = new FastStringBuffer(128);
+      FastStringBuffer buffer = new FastStringBuffer(256);
       buffer.append("The string \"");
       buffer.append(value);
       buffer.append("\" does not represent a valid value for the type ");

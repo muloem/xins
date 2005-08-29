@@ -253,7 +253,7 @@ extends Object {
 
          _state            = PARSING;
          _level            = -1;
-         _characters       = new FastStringBuffer(45);
+         _characters       = new FastStringBuffer(145);
          _dataElementStack = new Stack();
       }
 

@@ -203,7 +203,7 @@ extends Object {
          Log.log_2205(exception, detail);
 
          // Construct a buffer for the error message
-         FastStringBuffer buffer = new FastStringBuffer(142, "Unable to convert the specified character string to XML");
+         FastStringBuffer buffer = new FastStringBuffer(182, "Unable to convert the specified character string to XML");
 
          // Include the exception message in our error message, if any
          if (detail != null && detail.length() > 0) {
@@ -264,7 +264,7 @@ extends Object {
 
          _state            = INITIAL;
          _level            = -1;
-         _characters       = new FastStringBuffer(45);
+         _characters       = new FastStringBuffer(145);
          _dataElementStack = new Stack();
       }
 

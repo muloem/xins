@@ -179,7 +179,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          }
          Transformer xformer = t.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
-         Writer buffer = new FastStringWriter();
+         Writer buffer = new FastStringWriter(1024);
          Result result = new StreamResult(buffer);
          xformer.transform(source, result);
 

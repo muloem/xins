@@ -272,7 +272,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());
       
       // Store the result in a StringWriter before sending it.
-      Writer buffer = new FastStringWriter();
+      Writer buffer = new FastStringWriter(1024);
 
       // Create an XMLOutputter
       XMLOutputter xmlout = new XMLOutputter(buffer, RESPONSE_ENCODING);

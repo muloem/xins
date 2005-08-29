@@ -1174,7 +1174,7 @@ implements DefaultResultCodes {
       }
 
       // Add the stack trace, if any
-      FastStringWriter stWriter = new FastStringWriter();
+      FastStringWriter stWriter = new FastStringWriter(360);
       PrintWriter printWriter = new PrintWriter(stWriter);
       exception.printStackTrace(printWriter);
       String stackTrace = stWriter.toString();

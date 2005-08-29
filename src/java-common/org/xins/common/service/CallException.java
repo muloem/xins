@@ -93,7 +93,7 @@ public abstract class CallException extends Exception {
          throw new IllegalArgumentException("duration (" + duration + ") < 0");
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(295, shortReason);
+      FastStringBuffer buffer = new FastStringBuffer(495, shortReason);
       buffer.append(" in ");
       buffer.append(duration);
       buffer.append(" ms while executing ");

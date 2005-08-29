@@ -84,7 +84,7 @@ extends StandardErrorCodeException {
          return null;
       }
 
-      FastStringBuffer detail = new FastStringBuffer(50);
+      FastStringBuffer detail = new FastStringBuffer(250);
 
       // Handle all missing parameters
       List missingParamElements = element.getChildElements("missing-param");

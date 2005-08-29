@@ -50,7 +50,7 @@ extends RuntimeException {
       // Check the precondition
       MandatoryArgumentChecker.check("string", string);
 
-      FastStringBuffer buffer = new FastStringBuffer(128);
+      FastStringBuffer buffer = new FastStringBuffer(256);
 
       buffer.append("The string \"");
       buffer.append(string);

@@ -36,6 +36,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
   - Adapted the spec package classes to use the ChainedMap instead of the 
     HashMap.
   - Implemented SF.net RFE #1198237: Accept XML string in ElementBuilder.
+  - Increased the default capacity of some FastStringBuffer.
 
 * XINS/Java Client Framework:
   - Implemented SF.net RFE #1115233: Show _InvalidRequest details in exception
@@ -46,6 +47,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     XINS API with XINSCallRequest.
   - Fixed: the data element specified in the generated CAPI request class was
     not forwarded to the XINSCallRequest object.
+  - Increased the default capacity of some FastStringBuffer.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1256466: Exception in meta-function should generate
@@ -70,6 +72,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 4:
     it applies only for a limited set of calling conventions.
   - Added XML-RPC calling convention.
   - Added a method in CallingConvention to parse XML input.
+  - Increased the default capacity of some FastStringBuffer.
 
 * Generated CAPI classes:
   - Implemented SF.net RFE #1252557: Support wrapper values in generated

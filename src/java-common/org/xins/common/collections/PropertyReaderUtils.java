@@ -531,7 +531,7 @@ extends Object {
             return _valueIfEmpty;
          }
 
-         FastStringBuffer buffer = new FastStringBuffer(99);
+         FastStringBuffer buffer = new FastStringBuffer(299);
 
          boolean first = true;
          do {

@@ -74,7 +74,7 @@ final class CallResultOutputter extends Object {
                                      "result",   result);
 
       // Store the result in a StringWriter before sending it.
-      Writer buffer = new FastStringWriter();
+      Writer buffer = new FastStringWriter(1024);
 
       // Create an XMLOutputter
       XMLOutputter xmlout = new XMLOutputter(buffer, encoding);
