@@ -69,6 +69,7 @@ ${sf.file}</fail>
 
 	<target name="-init-release-properties" depends="-load-version">
 		<property name="version"           value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+		<property name="xins_version"      value="${version}" />
 		<property name="tests.deprecation" value="false"  />
 	</target>
 
