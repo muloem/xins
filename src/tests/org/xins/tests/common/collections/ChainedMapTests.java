@@ -76,6 +76,10 @@ public class ChainedMapTests extends TestCase {
          byte[] randomText = new byte[8];
          rd.nextBytes(randomText);
          String randomString  = new String(randomText);
+         if (arrayList.contains(randomString)) {
+            i--;
+            continue;
+         }
          arrayList.add(randomString);
          sortedMap.put(randomString, "value" + i);
       }
