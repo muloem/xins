@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 import org.xins.common.service.TargetDescriptor;
 
 import org.xins.common.spec.APISpec;
-import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.ErrorCodeSpec;
 import org.xins.common.spec.FunctionSpec;
@@ -21,7 +20,7 @@ import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Int32;
 
 /**
- * ErrorCode spec TestCase. The testcases use the <i>allinone</i> API 
+ * ErrorCode spec TestCase. The testcases use the <i>allinone</i> API
  * to test the API specification.
  *
  * @version $Revision$ $Date$
@@ -70,16 +69,16 @@ public class ErrorCodeTests extends TestCase {
    }
 
    /**
-    * Tests that the {@link ErrorCode#getName() getName()} returns the correct 
+    * Tests that the {@link ErrorCodeSpec#getName() getName()} returns the correct
     * name of the error code of a function of the API.
     */
    public void testErrorCodeGetName() {
-      assertEquals("Function 'ResultCode' has an incorrect error code name: " + 
+      assertEquals("Function 'ResultCode' has an incorrect error code name: " +
          _errorCode.getName(), "AlreadySet", _errorCode.getName());
    }
 
    /**
-    * Tests that the {@link ErrorCode#getDescription() getDescription()} returns 
+    * Tests that the {@link ErrorCodeSpec#getDescription() getDescription()} returns
     * the correct description of the error code of a function of the API.
     */
    public void testErrorCodeGetDescription() {
@@ -89,14 +88,14 @@ public class ErrorCodeTests extends TestCase {
    }
 
    /**
-    * Tests that the {@link ErrorCode#getOutputParameters() getOutputParameters()}
-    * returns the correct output parameters of the error code of a function of 
+    * Tests that the {@link ErrorCodeSpec#getOutputParameters() getOutputParameters()}
+    * returns the correct output parameters of the error code of a function of
     * the API.
     */
    public void testErrorCodeGetOutputParameters() throws Exception {
       Map outputParams = _errorCode.getOutputParameters();
       ParameterSpec outputParam = _errorCode.getOutputParameter("count");
-      
+
       assertEquals("The error code in the function 'ResultCode' has an incorrect " +
          "number of the parameters: " + outputParams.size(), 1, outputParams.size());
       assertEquals("The output parameter of the error code in the function " +
@@ -104,7 +103,7 @@ public class ErrorCodeTests extends TestCase {
          "count", outputParam.getName());
       assertEquals("The output parameter of the error code in the function " +
          "'ResultCode' has an incorrect description: " + outputParam.getDescription(),
-         "The number of times that the parameter was already passed.", 
+         "The number of times that the parameter was already passed.",
          outputParam.getDescription());
       assertTrue("The output parameter of the error code in the function " +
          "'ResultCode' has an 'is required' value: ",
@@ -115,13 +114,13 @@ public class ErrorCodeTests extends TestCase {
    }
 
    /**
-    * Tests that the  {@link ErrorCode#getOutputParameter(String) getOutputParameter(String)}
-    * returns the correct output parameters of the error code of a function of 
+    * Tests that the  {@link ErrorCodeSpec#getOutputParameter(String) getOutputParameter(String)}
+    * returns the correct output parameters of the error code of a function of
     * the API when given an output parameter name.
     */
    public void testErrorCodeGetOutputParameter() {
       try {
-         _errorCode.getOutputParameter("NoName"); 
+         _errorCode.getOutputParameter("NoName");
          fail("The erorr code in the function 'ResultCode' contains an output " +
             "paramter which is not specified.");
       } catch (EntityNotFoundException e) {
@@ -137,10 +136,10 @@ public class ErrorCodeTests extends TestCase {
            "output paramter 'count' which was specified.");
       }
    }
-   
+
    /**
     * Tests the {@link ErrorCode#getOutputDataSectionElements() getOutputDataSection()}
-    * return the correct output datasection of the error code of a function of 
+    * return the correct output datasection of the error code of a function of
     * the API.
     */
 /*
@@ -148,10 +147,10 @@ public class ErrorCodeTests extends TestCase {
       //TODO an example has to be added in allinone, then the test shall be written
    }
 */
-   
+
    /**
     * Tests the {@link ErrorCodeSpec#getOutputDataSectionElement(String) getOutputDataSection()}
-    * return the correct output datasection of the error code of a function of 
+    * return the correct output datasection of the error code of a function of
     * the API when specified with a name.
     */
 /*

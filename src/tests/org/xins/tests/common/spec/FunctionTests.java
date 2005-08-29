@@ -15,19 +15,16 @@ import junit.framework.TestCase;
 
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
-import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
-import org.xins.common.spec.ErrorCodeSpec;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.ParamComboSpec;
-import org.xins.common.spec.ParameterSpec;
 
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * Function spec TestCase. The testcases use the <i>allinone</i> API 
+ * Function spec TestCase. The testcases use the <i>allinone</i> API
  * to test the API specification.
- * 
+ *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
@@ -72,19 +69,19 @@ public class FunctionTests extends TestCase {
 
 
    /**
-    * Tests that the {@link Function#getName() getName()} returns the correct name
+    * Tests that the {@link FunctionSpec#getName() getName()} returns the correct name
     * of a function of the API.
     */
    public void testFunctionsGetName() throws Exception {
 
       String functionName = "DataSection";
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'DataSection' has an incorrect name: " + 
+      assertEquals("Function 'DataSection' has an incorrect name: " +
          function.getName(), functionName, function.getName());
    }
 
    /**
-    * Tests that the {@link Function#getDescription() getDescription()} returns 
+    * Tests that the {@link FunctionSpec#getDescription() getDescription()} returns
     * the correct description of a function of the API.
     */
    public void testFunctionsGetDescription() throws Exception {
@@ -98,7 +95,7 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that {@link Function#getInputParameters() getInputParameters()} returns
+    * Tests that {@link FunctionSpec#getInputParameters() getInputParameters()} returns
     * correct input parameters of a function of the API
     */
    public void testFunctionsGetInputParameters() throws Exception {
@@ -125,17 +122,17 @@ public class FunctionTests extends TestCase {
       Iterator itFunctionParameters = functionParameters.keySet().iterator();
       while (itFunctionParameters.hasNext()) {
          String functionParameter = (String) itFunctionParameters.next();
-         assertTrue("Function 'DefinedTypes' does not contain the input parameter: " + 
-            functionParameter,  
+         assertTrue("Function 'DefinedTypes' does not contain the input parameter: " +
+            functionParameter,
             parameters.contains(functionParameter));
       }
    }
-   
+
    /**
-    * Tests that getInputParameter(String) returns correct input parameters 
+    * Tests that getInputParameter(String) returns correct input parameters
     * for a function of the API when given an input parameter name.
     *
-    * @see org.xins.common.spec.Function#getInputParameter(String)
+    * @see org.xins.common.spec.FunctionSpec#getInputParameter(String)
     */
    public void testFunctionsGetInputParameter() throws Exception {
 
@@ -143,13 +140,13 @@ public class FunctionTests extends TestCase {
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
       try {
          function.getInputParameter("NoName");
-         fail("Function 'SimpleOutput' contains an input parameter 'NoName' " + 
+         fail("Function 'SimpleOutput' contains an input parameter 'NoName' " +
             "which was not specified.");
       } catch (EntityNotFoundException e) {
-          
+
          // Expected exception
       }
-      
+
       String functionName1 = "DefinedTypes";
       List parameters = new ArrayList();
       parameters.add("inputIP");
@@ -167,7 +164,7 @@ public class FunctionTests extends TestCase {
                " an incorrect name: " +
                function1.getInputParameter(parameter).getName(),
                parameter, function1.getInputParameter(parameter).getName());
-            
+
          } catch (IllegalArgumentException e) {
             fail("The input parameter" + parameter + " of the function " +
                "'DefinedTypes' not found.");
@@ -176,10 +173,10 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputParameters() returns correct output parameters of a 
+    * Tests that getOutputParameters() returns correct output parameters of a
     * function of the API.
     *
-    * @see org.xins.common.spec.Function#getOutputParameters()
+    * @see org.xins.common.spec.FunctionSpec#getOutputParameters()
     */
    public void testFunctionsGetOutputParameters() throws Exception {
 
@@ -207,7 +204,7 @@ public class FunctionTests extends TestCase {
 
       while (itFunctionParameters.hasNext()) {
          String functionParameter = (String) itFunctionParameters.next();
-         assertTrue("Function 'DefinedTypes' does not contain the output parameter: " + 
+         assertTrue("Function 'DefinedTypes' does not contain the output parameter: " +
             functionParameter,
             parameters.contains(functionParameter));
       }
@@ -215,10 +212,10 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputParameter(String) returns correct output parameters 
+    * Tests that getOutputParameter(String) returns correct output parameters
     * for a function of the API when given an output parameter name.
     *
-    * @see org.xins.common.spec.Function#getOutputParameter(String)
+    * @see org.xins.common.spec.FunctionSpec#getOutputParameter(String)
     */
    public void testFunctionsGetOutputParameter() throws Exception {
 
@@ -226,12 +223,12 @@ public class FunctionTests extends TestCase {
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
       try {
          function.getOutputParameter("NoName");
-         fail("Function 'DataSection' contains an output parameter 'NoName' " + 
+         fail("Function 'DataSection' contains an output parameter 'NoName' " +
             "which was not specified.");
       } catch (EntityNotFoundException e) {
          // Expected exception
       }
-      
+
       String functionName1 = "DefinedTypes";
       List parameters = new ArrayList();
       parameters.add("outputIP");
@@ -250,19 +247,19 @@ public class FunctionTests extends TestCase {
                     " an incorrect name: " +
                     function1.getOutputParameter(parameter).getName(),
                     parameter, function1.getOutputParameter(parameter).getName());
-            
+
          } catch (EntityNotFoundException e) {
             fail("The output parameter" + parameter + " of the function " +
                "'DefinedTypes' not found.");
          }
       }
    }
-   
+
    /**
-    * Tests that getErrorCodes() return correct errorcodes for a function 
+    * Tests that getErrorCodes() return correct errorcodes for a function
     * of the API.
     *
-    * @see org.xins.common.spec.Function#getErrorCodes()
+    * @see org.xins.common.spec.FunctionSpec#getErrorCodes()
     */
    public void testFunctionsGetErrorCodes() throws Exception {
 
@@ -291,10 +288,10 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getErrorCode(String) returns correct errorcode for a function 
+    * Tests that getErrorCode(String) returns correct errorcode for a function
     * of the API when specified with a errorcode name.
     *
-    * @see org.xins.common.spec.Function#getErrorCodes()
+    * @see org.xins.common.spec.FunctionSpec#getErrorCodes()
     */
    public void testFunctionsGetErrorCode() throws Exception {
 
@@ -305,13 +302,13 @@ public class FunctionTests extends TestCase {
          fail("Could not find the errorocode 'AlreadySet' in of 'ResultCode'" +
             " function of allinone API.");
       }
-      
+
       try {
          function.getErrorCode("RubbishName");
          fail("Expected getErrorCode(String) to throw an EntityNotFoundException" +
          " for an errorcode which does not exist.");
       } catch (EntityNotFoundException e) {
-        
+
          // Consume, as it was expected.
       }
    }
@@ -320,7 +317,7 @@ public class FunctionTests extends TestCase {
     * Tests that getInputDataSectionElements() returns the correct input data
     * section of a funtion of the API.
     *
-    * @see org.xins.common.spec.Function#getInputDataSectionElements()
+    * @see org.xins.common.spec.FunctionSpec#getInputDataSectionElements()
     */
    public void testFunctionsGetInputDataSectionElements() throws Exception {
 
@@ -351,17 +348,17 @@ public class FunctionTests extends TestCase {
    }
 
    /**
-    * Tests that getOutputDataSectionElements() returns  the correct output data 
+    * Tests that getOutputDataSectionElements() returns  the correct output data
     * section for a funtion of the API.
     *
-    * @see org.xins.common.spec.Function#getOutputDataSectionElements()
+    * @see org.xins.common.spec.FunctionSpec#getOutputDataSectionElements()
     */
    public void testFunctionsGetOutputDataSectionElements() throws Exception {
 
       String functionName = "InvalidResponse";
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
       assertEquals("Function 'Invalidresponse' has an incorrect number of " +
-         "output data section elements: " + 
+         "output data section elements: " +
          function.getOutputDataSectionElements().size(),
          0, function.getOutputDataSectionElements().size());
 
@@ -372,7 +369,7 @@ public class FunctionTests extends TestCase {
 
       FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'DataSection3' has an incorrect number of output " +
-         "data section elements: " + 
+         "data section elements: " +
          function1.getOutputDataSectionElements().size(),
          2, function1.getOutputDataSectionElements().size());
 
@@ -389,10 +386,10 @@ public class FunctionTests extends TestCase {
 
    /**
     * Tests that getOutputDataSectionElements() returns the correct output data
-    * section for a funtion of the API. This test case tests a function which has 
+    * section for a funtion of the API. This test case tests a function which has
     * one data section element and one sub-element for output.
     *
-    * @see org.xins.common.spec.Function#getOutputDataSectionElements()
+    * @see org.xins.common.spec.FunctionSpec#getOutputDataSectionElements()
     */
    public void testFunctionsGetOutputDataSecElementsWithOneElementAndSubElements() throws Exception {
 
@@ -403,13 +400,13 @@ public class FunctionTests extends TestCase {
          1, function.getOutputDataSectionElements().size());
    }
 
-   
-   
+
+
    /**
     * Tests that getInputParamCombos() returns the correct input param combo
     * of a function of the API.
     *
-    * @see org.xins.common.spec.Function#getInputParamCombos()
+    * @see org.xins.common.spec.FunctionSpec#getInputParamCombos()
     */
    public void testFunctionsInputParamCombos() throws Exception {
 
@@ -452,7 +449,7 @@ public class FunctionTests extends TestCase {
     * Tests that getOutputParamCombos() returns the correct output param combo
     * of a function of the API.
     *
-    * @see org.xins.common.spec.Function#getOutputParamCombos()
+    * @see org.xins.common.spec.FunctionSpec#getOutputParamCombos()
     */
    public void testFunctionsOutputParamCombos() throws Exception {
 
@@ -483,7 +480,7 @@ public class FunctionTests extends TestCase {
             allCount++;
          }
       }
-      
+
       assertEquals("Function 'ParamCombo' has an incorrect number of exclusive " +
          "output paramter combos: " + exclusiveCount, 1, exclusiveCount);
       assertEquals("Function 'ParamCombo' has an incorrect number of inclusive " +

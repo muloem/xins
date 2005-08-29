@@ -6,9 +6,7 @@
  */
 package org.xins.tests.common.spec;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -17,12 +15,11 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.ParamComboSpec;
-import org.xins.common.spec.ParameterSpec;
 
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * ParamCombo spec TestCase. The testcases use the <i>allinone</i> API 
+ * ParamCombo spec TestCase. The testcases use the <i>allinone</i> API
  * to test the API specification.
  *
  * @version $Revision$ $Date$
@@ -48,25 +45,25 @@ public class ParamComboTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * The exclusive input param combo specification of the 
+    * The exclusive input param combo specification of the
     * <i>ParamCombo</i> function.
     */
    private ParamComboSpec _exclusiveCombo;
 
    /**
-    * The inclusive input param combo specification of the 
+    * The inclusive input param combo specification of the
     * <i>ParamCombo</i> function.
     */
    private ParamComboSpec _inclusiveCombo;
 
    /**
-    * The all-or-none input param combo specification of the 
+    * The all-or-none input param combo specification of the
     * <i>ParamCombo</i> function.
     */
    private ParamComboSpec _allOrNoneCombo;
-   
+
    /**
-    * The not-all input param combo specification of the 
+    * The not-all input param combo specification of the
     * <i>ParamComboNotAll</i> function.
     */
    private ParamComboSpec _notAll;
@@ -97,12 +94,12 @@ public class ParamComboTests extends TestCase {
             _allOrNoneCombo = combo;
          }
       }
-      
+
       _notAll = (ParamComboSpec) allInOneAPI.getFunction("ParamComboNotAll").getInputParamCombos().get(0);
    }
 
    /**
-    * Tests that {@link ParamCombo#isExclusiveOr() isExclusiveOr()} returns 
+    * Tests that {@link ParamComboSpec#isExclusiveOr() isExclusiveOr()} returns
     * the correct exclusive flag for a param combo.
     */
    public void testErrorCodeIsExclusiveOr() {
@@ -115,7 +112,7 @@ public class ParamComboTests extends TestCase {
    }
 
    /**
-    * Tests that {@link ParamCombo#isInclusiveOr() isInclusiveOr()} returns 
+    * Tests that {@link ParamComboSpec#isInclusiveOr() isInclusiveOr()} returns
     * the correct inclusive flag for a param combo.
     */
    public void testErrorCodeIsInclusiveOr() {
@@ -126,9 +123,9 @@ public class ParamComboTests extends TestCase {
       assertFalse("Function 'ParamCombo' has an incorrect all-or-none param combo: ",
          _allOrNoneCombo.isInclusiveOr());
    }
-   
+
    /**
-    * Tests that {@link ParamCombo#notAll()} returns the correct not-all
+    * Tests that {@link ParamComboSpec#isNotAll()} returns the correct not-all
     * flag for a param combo.
     */
    public void testErrorCodeNotAll() {
@@ -143,7 +140,7 @@ public class ParamComboTests extends TestCase {
    }
 
    /**
-    * Tests that {@link ParamCombo#isAllOrNone() isAllOrNone()} returns 
+    * Tests that {@link ParamComboSpec#isAllOrNone() isAllOrNone()} returns
     * the correct all-or-none flag for a param combo.
     */
    public void testErrorCodeIsAllOrNode() {
@@ -156,13 +153,13 @@ public class ParamComboTests extends TestCase {
    }
 
    /**
-    * Tests that {@link ParamCombo#getParameters() getParameters()} returns 
+    * Tests that {@link ParamComboSpec#getParameters() getParameters()} returns
     * the correct parameters for a param combo.
     */
    public void testErrorCodeGetParameters() {
       assertEquals(3, _exclusiveCombo.getParameters().size());
       Set paramNames = _exclusiveCombo.getParameters().keySet();
-      
+
       assertTrue("The exclusive input param combo of the function 'ParamCombo'" +
          " does not contain the paramter 'birthDate'",
          paramNames.contains("birthDate"));

@@ -15,13 +15,12 @@ import junit.framework.TestCase;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.EntityNotFoundException;
-import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * API spec TestCase. The testcases use the <i>allinone</i> API to test 
+ * API spec TestCase. The testcases use the <i>allinone</i> API to test
  * the API specification.
  *
  * @version $Revision$ $Date$
@@ -68,37 +67,37 @@ public class APITests extends TestCase {
 
 
    /**
-    * Tests that {@link API#getName() getName()} returns the correct 
+    * Tests that {@link APISpec#getName() getName()} returns the correct
     * name of the API.
     */
    public void testAPIGetName() {
-      assertEquals("The API has an incorrect name: " + _allInOneAPI.getName(), 
+      assertEquals("The API has an incorrect name: " + _allInOneAPI.getName(),
          "allinone", _allInOneAPI.getName());
    }
 
    /**
-    * Tests that {@link API#getOwner()() getOwner()} returns the correct 
+    * Tests that {@link APISpec#getOwner()} returns the correct
     * owner of the API.
     */
    public void testAPIGetOwner() {
-      assertEquals("The API has an incorrect owner: " + _allInOneAPI.getOwner(), 
+      assertEquals("The API has an incorrect owner: " + _allInOneAPI.getOwner(),
          "johnd", _allInOneAPI.getOwner());
    }
 
    /**
-    * Tests that {@link API#getDescription() getDescription()} returns the 
+    * Tests that {@link APISpec#getDescription() getDescription()} returns the
     * correct description of the API.
     */
    public void testAPIGetDescription() {
-      assertEquals("The API has an incorrect description: " + 
-         _allInOneAPI.getDescription(), 
-         "API that uses all the features included in XINS.", 
+      assertEquals("The API has an incorrect description: "
+         + _allInOneAPI.getDescription(),
+         "API that uses all the features included in XINS.",
          _allInOneAPI.getDescription());
    }
 
    /**
-    * Tests that {@link API#getFunctions() getFunctions()} and the 
-    * {@link API#getFunction(String) getFunction(String)} return the 
+    * Tests that {@link APISpec#getFunctions() getFunctions()} and the
+    * {@link APISpec#getFunction(String) getFunction(String)} return the
     * correct functions of the API.
     */
    public void testAPIGetFunctions() {
@@ -131,8 +130,8 @@ public class APITests extends TestCase {
          // consume, this is valid
       }
 
-      assertEquals("The API has an incorrect number of functions: " + 
-         _allInOneAPI.getFunctions().size(), 
+      assertEquals("The API has an incorrect number of functions: " +
+         _allInOneAPI.getFunctions().size(),
          _allInOneAPI.getFunctions().size(), list.size());
       int i = 0;
       try {
@@ -146,7 +145,7 @@ public class APITests extends TestCase {
          fail("Could not find the function " + list.get(i) + " in allinone API.");
       }
    }
-   
+
    /**
     * Tests the backward compatibility with older version of xins.
     * The system is actualy not backward compatible so it throws an exception.
@@ -155,7 +154,7 @@ public class APITests extends TestCase {
 
       try {
          TargetDescriptor target = new TargetDescriptor("http://www.xins.org");
-         com.mycompany.myproject.capi.CAPI capi = 
+         com.mycompany.myproject.capi.CAPI capi =
             new com.mycompany.myproject.capi.CAPI(target);
          APISpec myProjectAPI = capi.getAPISpecification();
          fail("Calling an older version of CAPI should throw an exception.");
@@ -166,7 +165,7 @@ public class APITests extends TestCase {
          fail("Unexpected exception occurs: " + e.getMessage());
       }
    }
-   
+
 }
 
 

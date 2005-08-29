@@ -22,7 +22,7 @@ import org.xins.common.types.standard.Text;
 import com.mycompany.allinone.capi.CAPI;
 
 /**
- * DataSectionElement spec TestCase. The testcases use the <i>allinone</i> API 
+ * DataSectionElement spec TestCase. The testcases use the <i>allinone</i> API
  * to test the API specification.
  *
  * @version $Revision$ $Date$
@@ -34,7 +34,7 @@ public class DataSectionElementTests extends TestCase {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that {@link DataSectionElement#getName() getName()} returns 
+    * Tests that {@link DataSectionElementSpec#getName() getName()} returns
     * the correct name for a data section element for a function of the API.
     */
    public void testDataSectionGetName() throws Exception {
@@ -89,9 +89,9 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that {@link DataSectionElement#getDescription() getDescription()} 
-    * returns the correct description for a data section element for a function of 
-    * the API. 
+    * Tests that {@link DataSectionElementSpec#getDescription() getDescription()}
+    * returns the correct description for a data section element for a function of
+    * the API.
     */
    public void testDataSectionGetDescription() {
       assertEquals("Function 'DataSection' has an incorrect " +
@@ -100,80 +100,80 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that {@link DataSectionElement#getSubElements() getSubElements()} 
-    * returns the correct sub-elements of a data section for a function of the API. 
+    * Tests that {@link DataSectionElementSpec#getSubElements() getSubElements()}
+    * returns the correct sub-elements of a data section for a function of the API.
     */
    public void testDataSectionGetSubElements() throws Exception {
       assertEquals("Data Element 'packet' in the function 'DataSection2' has an " +
-         "incorrect number of the sub-elements: " + _packetElement.getSubElements().size(), 
+         "incorrect number of the sub-elements: " + _packetElement.getSubElements().size(),
          1, _packetElement.getSubElements().size());
       assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(), 
+         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(),
          "product", _packetElement.getSubElement("product").getName());
    }
-   
+
    /**
-    * Tests that {@link DataSectionElementSpec#getSubElement(String)
-    * returns the correct sub-elements of a data section for a function of the 
-    * API when specified with a name. 
+    * Tests that {@link DataSectionElementSpec#getSubElement(String)}
+    * returns the correct sub-elements of a data section for a function of the
+    * API when specified with a name.
     */
    public void testDataSectionGetSubElement() throws Exception {
       assertEquals("Data Element 'product' in the function 'DataSection2' has an " +
-         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(), 
+         "incorrect name of the sub-element: " + _packetElement.getSubElement("product").getName(),
          "product", _packetElement.getSubElement("product").getName());
-      
+
       try {
          _packetElement.getSubElement("RubbishName");
          fail("Expected getSubElementString) to throw an EntityNotFoundException" +
          " for a element which does not exist.");
       } catch (EntityNotFoundException e) {
-         // Consume, as it was expected. 
+         // Consume, as it was expected.
       }
    }
 
    /**
-    * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
+    * Tests that {@link DataSectionElementSpec#getAttributes() getAttributes()}
     * returns the correct attributes for a data section of a function of the API.
     */
    public void testDataSectionGetAttributes() throws Exception {
       assertEquals(1, _packetElement.getAttributes().size());
       ParameterSpec attribute = _packetElement.getAttribute("destination");
       assertEquals("The attribute in the output data section element for the " +
-         "function 'DataSection2' has an incorrect name: " + attribute.getName(), 
+         "function 'DataSection2' has an incorrect name: " + attribute.getName(),
          "destination", attribute.getName());
       assertEquals("The attribute in the output data section element for the " +
-         "function 'DataSection2' has an incorrect description: "  
+         "function 'DataSection2' has an incorrect description: "
          + attribute.getDescription(),
          "The destination of the packet.", attribute.getDescription());
       assertTrue("The attribute in the output data section element for the " +
-         "function 'DataSection2' has an incorrect 'is required' value: " , 
+         "function 'DataSection2' has an incorrect 'is required' value: " ,
          attribute.isRequired());
       assertTrue("The attribute in the output data section element for the " +
-         "function 'DataSection2' has an incorrect type: "  + attribute.getType(), 
+         "function 'DataSection2' has an incorrect type: "  + attribute.getType(),
          attribute.getType() instanceof Text);
 
       assertEquals("The output data section element for the function 'DataSection2'" +
-         " has an incorrect number of the sub-elements: " + 
+         " has an incorrect number of the sub-elements: " +
          _packetElement.getSubElements().size(), 1, _packetElement.getSubElements().size());
    }
-   
+
    /**
-    * Tests that {@link DataSectionElementSpec#getAttribute(String)} 
+    * Tests that {@link DataSectionElementSpec#getAttribute(String)}
     * returns the correct attributes for a data section of a function of the API
     * when specified with a name.
     */
-   public void testDataSectionGetAttribute() throws Exception {
-    
+   public void testDataSectionGetAttribute() {
+
       try {
          ParameterSpec attribute = _packetElement.getAttribute("destination");
          assertEquals("The attribute in the output data section element for the " +
-            "function 'DataSection2' has an incorrect name: " + attribute.getName(), 
+            "function 'DataSection2' has an incorrect name: " + attribute.getName(),
             "destination", attribute.getName());
       } catch (EntityNotFoundException e) {
          fail("Could not find the attribute 'destination' in datasection" +
             " of 'DataSection2' function of allinone API.");
       }
-      
+
       try {
          _packetElement.getAttribute("RubbishName");
          fail("Expected getAttribute(String) to throw an EntityNotFoundException" +
@@ -184,7 +184,7 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that {@link DataSectionElement#getAttributes() getAttributes()} 
+    * Tests that {@link DataSectionElementSpec#getAttributes() getAttributes()}
     * returns correct attributes for the sub-element in a data section
     * of the API.
     */
@@ -198,7 +198,7 @@ public class DataSectionElementTests extends TestCase {
          if ("id".equals(attribute.getName())) {
             assertEquals("Attribute 'id' in the sub-element of the output data " +
                "section element of the function 'DataSection2' has an incorrect " +
-               "description: " + attribute.getDescription(), 
+               "description: " + attribute.getDescription(),
                "The id of the product.", attribute.getDescription());
             assertTrue("Attribute 'id' in the sub-element of the output data " +
                "section element of the function 'DataSection2' has an incorrect " +
@@ -209,7 +209,7 @@ public class DataSectionElementTests extends TestCase {
          } else if ("price".equals(attribute.getName())) {
             assertEquals("Attribute 'price' in the sub-element of the output data " +
                "section element of the function 'DataSection2' has an incorrect " +
-               "description: " + attribute.getDescription(), 
+               "description: " + attribute.getDescription(),
                "The description of the product.", attribute.getDescription());
             assertFalse("Attribute 'price' in the sub-element of the output data " +
                "section element of the function 'DataSection2' has an incorrect " +
@@ -226,8 +226,8 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Tests that {@link DataSectionElement#isPCDataAllowed() isPCDataAllowed()} 
-    * returns the correct PC data allowed in a data section for a function of 
+    * Tests that {@link DataSectionElementSpec#isPCDataAllowed() isPCDataAllowed()}
+    * returns the correct PC data allowed in a data section for a function of
     * the API.
     */
    public void testDataSectionIsPCDataAllowed() {
