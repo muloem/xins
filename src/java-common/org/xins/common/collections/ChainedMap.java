@@ -68,6 +68,16 @@ public class ChainedMap extends AbstractMap {
       return new ChainedSet(_entries);
    }
    
+   public Collection values() {
+      List values = new ArrayList();
+      Iterator itEntries = _entries.iterator();
+      while (itEntries.hasNext()) {
+         EntryMap entry = (EntryMap) itEntries.next();
+         values.add(entry.getValue());
+      }
+      return values;
+   }
+   
    public Object put(Object key, Object value) {
       int oldKeyPos = _keys.indexOf(key);
       if (oldKeyPos == -1) {
