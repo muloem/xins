@@ -120,21 +120,21 @@ extends HttpServlet {
     * The name of the system property that specifies the location of the
     * configuration file.
     */
-   static final String CONFIG_FILE_SYSTEM_PROPERTY =
+   public static final String CONFIG_FILE_SYSTEM_PROPERTY =
       "org.xins.server.config";
 
    /**
     * The name of the runtime property that specifies the interval
     * for the configuration file modification checks, in seconds.
     */
-   static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
+   public static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
       "org.xins.server.config.reload";
 
    /**
     * The name of the runtime property that hostname for the server
     * running the API.
     */
-   static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
+   public static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
 
    /**
     * The default configuration file modification check interval, in seconds.
@@ -145,70 +145,70 @@ extends HttpServlet {
     * The name of the build property that specifies the name of the
     * API class to load.
     */
-   static final String API_CLASS_PROPERTY = "org.xins.api.class";
+   public static final String API_CLASS_PROPERTY = "org.xins.api.class";
 
    /**
     * The name of the build property that specifies the name of the
     * API.
     */
-   static final String API_NAME_PROPERTY = "org.xins.api.name";
+   public static final String API_NAME_PROPERTY = "org.xins.api.name";
 
    /**
     * The name of the build property that specifies the version with which the
     * API was built.
     */
-   static final String API_BUILD_VERSION_PROPERTY =
+   public static final String API_BUILD_VERSION_PROPERTY =
       "org.xins.api.build.version";
 
    /**
     * The name of the build property that specifies the name of the default
     * calling convention.
     */
-   static final String API_CALLING_CONVENTION_PROPERTY =
+   public static final String API_CALLING_CONVENTION_PROPERTY =
       "org.xins.api.calling.convention";
 
    /**
     * The name of the build property that specifies the class of the default
     * calling convention.
     */
-   static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
+   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
       "org.xins.api.calling.convention.class";
 
    /**
     * The name of the request parameter that specifies the name of the calling
     * convention to use.
     */
-   static final String CALLING_CONVENTION_PARAMETER = "_convention";
+   public static final String CALLING_CONVENTION_PARAMETER = "_convention";
 
    /**
     * The name of the XINS standard calling convention.
     */
-   static final String STANDARD_CALLING_CONVENTION = "_xins-std";
+   public static final String STANDARD_CALLING_CONVENTION = "_xins-std";
 
    /**
     * The old-style XINS calling convention.
     */
-   static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
+   public static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
 
    /**
     * The XINS XML calling convention.
     */
-   static final String XML_CALLING_CONVENTION = "_xins-xml";
+   public static final String XML_CALLING_CONVENTION = "_xins-xml";
 
    /**
     * The XINS XSLT calling convention.
     */
-   static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
+   public static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
 
    /**
     * The XINS SOAP calling convention.
     */
-   static final String SOAP_CALLING_CONVENTION = "_xins-soap";
+   public static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
    /**
     * The XINS XMLRPC calling convention.
     */
-   static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
+   public static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
 
    /**
     * The name of the runtime property that specifies the locale for the log
@@ -217,7 +217,7 @@ extends HttpServlet {
     * @deprecated
     *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
     */
-   static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
+   public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
 
    //-------------------------------------------------------------------------

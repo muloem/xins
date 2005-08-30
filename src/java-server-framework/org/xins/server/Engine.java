@@ -118,9 +118,6 @@ final class Engine extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("config", config);
 
-      // Prepare the calling conventions cache
-      _conventionCache = new HashMap();
-
       // Construct the EngineStarter
       _starter = new EngineStarter(config);
 
@@ -166,10 +163,6 @@ final class Engine extends Object {
          throw Utils.logProgrammingError("_apiName == null");
       } else if (_runtimeProperties == null) {
          throw Utils.logProgrammingError("_runtimeProperties == null");
-      } else if (_defaultConventionName == null) {
-         throw Utils.logProgrammingError("_defaultConventionName == null");
-      } else if (_defaultConvention == null) {
-         throw Utils.logProgrammingError("_defaultConvention == null");
       }
    }
 
@@ -209,42 +202,21 @@ final class Engine extends Object {
    private String _apiName;
 
    /**
-    * Manager for the runtime configuration file. Never <code>null</code>.
+    * The manager for the runtime configuration file. Never <code>null</code>.
     */
    private final ConfigManager _configManager;
 
+   /**
+    * The manager for the calling conventions. Initially this
+    * field is indeed <code>null</code>.
+    */
+   private CallingConventionManager _conventionManager;
+   
    /**
     * The set of properties read from the runtime configuration file. Never
     * <code>null</code>.
     */
    private PropertyReader _runtimeProperties;
-
-   /**
-    * The name of the default calling convention for this engine. This field
-    * can never be <code>null</code> and must always be in sync with
-    * {@link #_defaultConvention}.
-    *
-    * <p>If no calling convention is specified in a request, then the default
-    * calling convention is used.
-    */
-   private String _defaultConventionName;
-
-   /**
-    * The default calling convention for this engine. <p>This field can never
-    * be <code>null</code> and must always be in sync with
-    * {@link #_defaultConventionName}.
-    *
-    * <p>If no calling convention is specified in a request, then the default
-    * calling convention is used.
-    */
-   private CallingConvention _defaultConvention;
-
-   /**
-    * The cache for the calling conventions other than the default one.
-    * The key is the name of the calling convention, the value is the calling
-    * convention object. This field is never <code>null</code>.
-    */
-   private final Map _conventionCache;
 
    /**
     * Pattern which incoming diagnostic context identifiers must match. Can be
@@ -288,85 +260,6 @@ final class Engine extends Object {
     */
    String getAPIName() {
       return _apiName;
-   }
-
-   /**
-    * Determines the default calling convention name from the config object
-    * and uses this to create a calling convention. If this does not work out,
-    * a default XINS standard calling convention is constructed.
-    *
-    * @param config
-    *    the {@link ServletConfig} object which contains build properties for
-    *    this servlet, as specified by the <em>assembler</em>, cannot be
-    *    <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the calling convention can not be created.
-    */
-   void initCallingConvention(ServletConfig config)
-   throws ServletException {
-
-      try {
-         // Determine the name of the default calling convention, as specified
-         // in the build-time propertie
-         String ccName = config.getInitParameter(
-            APIServlet.API_CALLING_CONVENTION_PROPERTY);
-
-         // If the name is specified, attempt to construct an instance
-         CallingConvention cc;
-         if (! TextUtils.isEmpty(ccName)) {
-            cc = CallingConventionFactory.create(ccName,
-                                                 _servletConfig,
-                                                 _api);
-
-            // If the factory method returned null, then the specified name
-            // does not identify a known calling convention
-            if (cc == null) {
-               Log.log_3210(APIServlet.API_CALLING_CONVENTION_PROPERTY,
-                            ccName,
-                            "No such calling convention.");
-               _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-               throw new ServletException();
-            }
-
-            // On success, store the calling convention name and object
-            _defaultConventionName = ccName;
-            _defaultConvention     = cc;
-
-            // TODO: Log that we use the specified calling convention
-            // TODO: Log.log_3xxx(_defaultConventionName);
-
-         // No calling convention is specified in the build-time properties,
-         // so use the standard calling convention
-         } else {
-            // TODO: Put "_xins-std" in a constant
-            _defaultConventionName = "_xins-std";
-            _defaultConvention     = new StandardCallingConvention();
-            _defaultConvention.bootstrap(
-               new ServletConfigPropertyReader(_servletConfig));
-
-            // TODO: Log that we use the standard calling convention
-            // TODO: Log.log_3xxx("_xins-std");
-         }
-
-      } catch (Throwable t) {
-
-         // TODO: Consider catching the exception one level up so we do not
-         //       have to generate a ServletException here
-
-         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-
-         // Throw a ServletException
-         ServletException se;
-         if (t instanceof ServletException) {
-            se = (ServletException) t;
-         } else {
-            se = new ServletException(
-               "Calling convention construction failed.");
-            ExceptionUtils.setCause(se, t);
-         }
-         throw se;
-      }
    }
 
    /**
@@ -455,8 +348,8 @@ final class Engine extends Object {
          // Actually bootstrap the API
          _starter.bootstrap(_api);
 
-         // Configure the calling convention
-         initCallingConvention(_servletConfig);
+         // Initialize the calling convention manager
+         _conventionManager = new CallingConventionManager(_servletConfig, _api);
       } catch (ServletException se) {
          _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          throw se;
@@ -504,12 +397,7 @@ final class Engine extends Object {
          _api.init(properties);
 
          // Initialize the default calling convention for this API
-         if (_defaultConvention != null) {
-            _defaultConvention.init(properties);
-         }
-
-         // Clear the cache for the other calling convention
-         _conventionCache.clear();
+         _conventionManager.init(properties);
 
          succeeded = true;
 
@@ -728,55 +616,17 @@ final class Engine extends Object {
       String ccParam = (String) request.getParameter(
          APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
+      
+      try {
+         cc= _conventionManager.getCallingConvention(ccParam);
 
-      // A convention is indeed specified in the request
-      if (! (TextUtils.isEmpty(ccParam)
-             || ccParam.equals(_defaultConventionName))) {
+      // The calling convention could not be created or initialized
+      } catch (Exception ex) {
 
-         // Get the calling convention by name
-         cc = (CallingConvention) _conventionCache.get(ccParam);
-
-         // If not found, try to create it
-         if (cc == null) {
-            try {
-
-               // Have the factory create a CallingConvention instance...
-               cc = CallingConventionFactory.create(ccParam,
-                                                    _servletConfig,
-                                                    _api);
-
-               // ...initialize it...
-               if (cc != null) {
-
-                  // Determine the current runtime properties
-                  PropertyReader properties;
-                  synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
-                     properties = _runtimeProperties;
-                  }
-
-                  // Initialize the created CallingConvention
-                  cc.init(properties);
-               }
-
-               // ...and finally store it in our cache
-               _conventionCache.put(ccParam, cc);
-
-            // The calling convention could not be created or initialized
-            } catch (Exception ex) {
-
-               Log.log_3560(ex, ccParam);
-               // TODO: Is this behaviour described?
-               response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-               return;
-            }
-         }
-      }
-
-      // No convention is specified in the request, so use the default calling
-      // convention for this engine
-      if (cc == null) {
-         cc = _defaultConvention;
-         // TODO: Log that no calling convention was specified in the request?
+         Log.log_3560(ex, ccParam);
+         // TODO: Is this behaviour described?
+         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+         return;
       }
 
       // Call the API if the state is READY
