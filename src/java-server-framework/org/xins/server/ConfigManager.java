@@ -392,8 +392,6 @@ final class ConfigManager extends Object {
          throw new IllegalStateException("Name of runtime configuration file not set.");
       }
 
-      _engine.setState(EngineState.DETERMINE_INTERVAL);
-
       // Get the runtime property
       final String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
       final String s = _engine.getRuntimeProperties().get(prop);
@@ -407,7 +405,6 @@ final class ConfigManager extends Object {
             // Negative value
             if (interval < 0) {
                Log.log_3409(_configFile, prop, s);
-               _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
                throw new InvalidPropertyValueException(
                   prop, s, "Negative value.");
 
@@ -419,7 +416,6 @@ final class ConfigManager extends Object {
          // Not a valid number string
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, prop, s);
-            _engine.setState(EngineState.DETERMINE_INTERVAL_FAILED);
             throw new InvalidPropertyValueException(
                prop, s, "Not a 32-bit integer number.");
          }
@@ -435,8 +431,12 @@ final class ConfigManager extends Object {
 
    /**
     * Determines the log locale.
+    *
+    * @return
+    *    <code>false</code> if the specified locale is not supported,
+    *    <code>true</code> otherwise.
     */
-   void determineLogLocale() {
+   boolean determineLogLocale() {
 
       String newLocale = _engine.getRuntimeProperties().get(
       LogCentral.LOG_LOCALE_PROPERTY);
@@ -455,12 +455,11 @@ final class ConfigManager extends Object {
                Log.log_3307(currentLocale, newLocale);
             } catch (UnsupportedLocaleException exception) {
                Log.log_3308(currentLocale, newLocale);
-               _engine.setState(EngineState.API_INITIALIZATION_FAILED);
-               return;
+               return false;
             }
          }
       }
-
+      return true;
    }
 
    /**

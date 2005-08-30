@@ -122,10 +122,7 @@ final class Engine extends Object {
       _conventionCache = new HashMap();
 
       // Construct the EngineStarter
-      EngineStarter starter = new EngineStarter(this, config, _state);
-
-      // Log some initial boot messages
-      starter.logBootMessages(config);
+      _starter = new EngineStarter(config);
 
       // Construct a configuration manager and store the servlet configuration
       _configManager = new ConfigManager(this, config);
@@ -139,14 +136,20 @@ final class Engine extends Object {
       _configManager.readRuntimeProperties();
 
       // Log version of XINS/Java Server Framework
-      starter.checkAndLogVersionNumber();
+      _starter.checkAndLogVersionNumber();
 
       // Construct and bootstrap the API
-      _api = starter.constructAPI();
-      starter.bootstrapAPI(_api);
+      _state.setState(EngineState.CONSTRUCTING_API);
+      try {
+         _api = _starter.constructAPI();
+      } catch (ServletException se) {
+         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
+         throw se;
+      }
+      bootstrapAPI();
 
       // Construct a generator for diagnostic context IDs
-      _contextIDGenerator = new ContextIDGenerator(this);
+      _contextIDGenerator = new ContextIDGenerator(_api.getName());
       try {
          _contextIDGenerator.bootstrap(new ServletConfigPropertyReader(config));
       } catch (Exception exception) {
@@ -179,6 +182,11 @@ final class Engine extends Object {
     * The state machine for this engine. Never <code>null</code>.
     */
    private final EngineStateMachine _state = new EngineStateMachine();
+   
+   /**
+    * The starter of this engine. Never <code>null</code>.
+    */
+   private final EngineStarter _starter;
 
    /**
     * The stored servlet configuration object. Never <code>null</code>.
@@ -273,32 +281,6 @@ final class Engine extends Object {
    }
 
    /**
-    * Initializes the API name. This is a callback method for the
-    * {@link EngineStarter}.
-    *
-    * @param name
-    *    the name for the API, cannot be <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the API name is already set.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    */
-   void initAPIName(final String name)
-   throws IllegalStateException, IllegalArgumentException {
-
-      // Check preconditions
-      if (_apiName != null) {
-         throw new IllegalStateException("API name is already initialized.");
-      }
-      MandatoryArgumentChecker.check("name", name);
-
-      // Store the API name
-      _apiName = name;
-   }
-
-   /**
     * Retrieves the API name.
     *
     * @return
@@ -321,7 +303,7 @@ final class Engine extends Object {
     * @throws ServletException
     *    if the calling convention can not be created.
     */
-   void initCallingConvention(final ServletConfig config)
+   void initCallingConvention(ServletConfig config)
    throws ServletException {
 
       try {
@@ -445,6 +427,46 @@ final class Engine extends Object {
    }
 
    /**
+    * Bootstraps the API. The following steps will be performed:
+    * <ul>
+    *   <li>Determine API name
+    *   <li>Load the Logdoc if available
+    *   <li>Bootstrap the API itself
+    *   <li>Determine the calling convention
+    *   <li>Link the engine to the API
+    * </ul>
+    *
+    * @throws ServletException
+    *    if bootstrap fails.
+    */
+   private void bootstrapAPI() throws ServletException {
+
+      // Proceed to next stage
+      _state.setState(EngineState.BOOTSTRAPPING_API);
+
+      try {
+         
+         // Determine the name of the API
+         _apiName = _starter.determineAPIName();
+
+         // Load the Logdoc if available
+         _starter.loadLogDoc();
+
+         // Actually bootstrap the API
+         _starter.bootstrap(_api);
+
+         // Configure the calling convention
+         initCallingConvention(_servletConfig);
+      } catch (ServletException se) {
+         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
+         throw se;
+      }
+
+      // Make the API have a link to this Engine
+      _api.setEngine(this);
+   }
+
+   /**
     * Initializes the API using the current runtime settings. This method
     * should be called whenever the runtime properties changed.
     *
@@ -464,7 +486,11 @@ final class Engine extends Object {
 
       boolean succeeded = false;
 
-      _configManager.determineLogLocale();
+      boolean localeInitialized = _configManager.determineLogLocale();
+      if (!localeInitialized) {
+         _state.setState(EngineState.API_INITIALIZATION_FAILED);
+         return false;
+      }
 
       try {
 
@@ -911,25 +937,5 @@ final class Engine extends Object {
       }
 
       return _runtimeProperties;
-   }
-
-   /**
-    * Returns the current state.
-    *
-    * @return
-    *    the state, never <code>null</code>.
-    */
-   EngineState getState() {
-      return _state.getState();
-   }
-
-   /**
-    * Changes the current state.
-    *
-    * @param newState
-    *    the new state, never <code>null</code>.
-    */
-   void setState(EngineState newState) {
-      _state.setState(newState);
    }
 }

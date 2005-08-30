@@ -62,18 +62,6 @@ final class EngineState extends Object {
       new EngineState("API_BOOTSTRAP_FAILED", true);
 
    /**
-    * The <em>DETERMINE_INTERVAL</em> state.
-    */
-   static final EngineState DETERMINE_INTERVAL =
-      new EngineState("DETERMINE_INTERVAL", false);
-
-   /**
-    * The <em>DETERMINE_INTERVAL_FAILED</em> state.
-    */
-   static final EngineState DETERMINE_INTERVAL_FAILED =
-      new EngineState("DETERMINE_INTERVAL_FAILED", true);
-
-   /**
     * The <em>INITIALIZING_API</em> state.
     */
    static final EngineState INITIALIZING_API =

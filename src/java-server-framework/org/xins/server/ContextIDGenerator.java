@@ -60,21 +60,20 @@ final class ContextIDGenerator extends Manageable {
    /**
     * Constructs a new <code>ContextIDGenerator</code>.
     *
-    * @param engine
-    *    the {@link Engine} that owns this <code>ContextIDGenerator</code>,
-    *    cannot be <code>null</code>.
+    * @param apiName
+    *    the name of the API, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>engine == null</code>.
+    *    if <code>apiName == null</code>.
     */
-   ContextIDGenerator(Engine engine)
+   ContextIDGenerator(String apiName)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("engine", engine);
+      MandatoryArgumentChecker.check("apiName", apiName);
 
       // Initialize the fields
-      _engine   = engine;
+      _apiName  = apiName;
       _format   = new SimpleDateFormat("yyMMdd-HHmmssSSS");
       _random   = new Random();
       _hostname = IPAddressUtils.getLocalHost();;
@@ -86,10 +85,9 @@ final class ContextIDGenerator extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * The <code>Engine</code> that owns this <code>ContextIDGenerator</code>.
-    * Never <code>null</code>.
+    * The name of the API. Never <code>null</code>.
     */
-   private final Engine _engine;
+   private final String _apiName;
 
    /**
     * The date formatter used for generating the context identifier. Never
@@ -107,11 +105,6 @@ final class ContextIDGenerator extends Manageable {
     * The name for the local host. Never <code>null</code>.
     */
    private String _hostname;
-
-   /**
-    * The name for the API. Never <code>null</code>.
-    */
-   private String _apiName;
 
    /**
     * The fixed prefix for generated context identifiers.
@@ -136,9 +129,6 @@ final class ContextIDGenerator extends Manageable {
          Log.log_3310(_hostname, hostname);
          _hostname = hostname;
       }
-
-      // Get API name
-      _apiName = _engine.getAPIName();
 
       // Determine prefix and total context ID length
       _prefix = _apiName + '@' + _hostname + ':';

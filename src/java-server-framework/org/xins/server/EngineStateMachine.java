@@ -155,19 +155,6 @@ final class EngineStateMachine extends Object {
 
          // ...or to skip that and start initializing the API
          } else if (oldState == EngineState.BOOTSTRAPPING_API
-                 && newState == EngineState.DETERMINE_INTERVAL) {
-
-         // Determination of the watch interval may change
-         } else if (oldState == EngineState.DETERMINE_INTERVAL
-                 && newState == EngineState.DETERMINE_INTERVAL_FAILED) {
-
-         // Determination of the watch interval may be retried
-         } else if (oldState == EngineState.DETERMINE_INTERVAL_FAILED
-                 && newState == EngineState.DETERMINE_INTERVAL) {
-
-         // If determination of the watch interval succeeds, then the next
-         // step is to initialize the API
-         } else if (oldState == EngineState.DETERMINE_INTERVAL
                  && newState == EngineState.INITIALIZING_API) {
 
          // API initialization may fail
@@ -177,7 +164,7 @@ final class EngineStateMachine extends Object {
          // API initialization may be retried, but then the interval is
          // determined first
          } else if (oldState == EngineState.API_INITIALIZATION_FAILED
-                 && newState == EngineState.DETERMINE_INTERVAL) {
+                 && newState == EngineState.INITIALIZING_API) {
 
          // API initialization may succeed, in which case the engine is ready
          } else if (oldState == EngineState.INITIALIZING_API
@@ -186,7 +173,7 @@ final class EngineStateMachine extends Object {
          // While the servet is ready, the watch interval may be redetermined,
          // which is the first step in reinitialization
          } else if (oldState == EngineState.READY
-                 && newState == EngineState.DETERMINE_INTERVAL) {
+                 && newState == EngineState.INITIALIZING_API) {
 
          // After disposal the state changes to the final disposed state
          } else if (oldState == EngineState.DISPOSING

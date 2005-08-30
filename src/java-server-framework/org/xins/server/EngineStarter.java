@@ -80,48 +80,28 @@ final class EngineStarter extends Object {
    /**
     * Constructor for the <code>EngineStarter</code> class.
     *
-    * @param engine
-    *    a XINS server engine, cannot be <code>null</code>.
-    *
     * @param config
     *    servlet configuration, cannot be <code>null</code>.
     *
-    * @param state
-    *    the state machine for the engine, cannot be <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>engine == null || config == null || state == null</code>.
+    *    if <code>config == null</code>.
     */
-   EngineStarter(Engine             engine,
-                 ServletConfig      config,
-                 EngineStateMachine state)
-   throws IllegalArgumentException {
+   EngineStarter(ServletConfig config) throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("engine", engine,
-                                     "config", config,
-                                     "state",  state);
+      MandatoryArgumentChecker.check("config", config);
 
       // Store data
-      _engine = engine;
       _config = config;
-      _state  = state;
+      
+      // Log some initial boot messages
+      logBootMessages();
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The associated XINS server engine. Never <code>null</code>.
-    */
-   private Engine _engine;
-
-   /**
-    * The state machine for the engine. Never <code>null</code>.
-    */
-   private EngineStateMachine _state;
 
    /**
     * The servlet config. Never <code>null</code>.
@@ -136,21 +116,11 @@ final class EngineStarter extends Object {
    /**
     * Logs server version, warns if server version differs from common version
     * and warns if the server version is not a production release.
-    *
-    * @param config
-    *    the servlet configuration object, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>config == null</code>.
     */
-   void logBootMessages(ServletConfig config)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("config", config);
+   private void logBootMessages() throws IllegalArgumentException {
 
       // Determine the ServletContext
-      ServletContext context = config.getServletContext();
+      ServletContext context = _config.getServletContext();
       if (context == null) {
          throw Utils.logProgrammingError(
             "ServletConfig.getServletContext() returned null.");
@@ -212,9 +182,6 @@ final class EngineStarter extends Object {
    API constructAPI()
    throws ServletException {
 
-      // Proceed to next stage
-      _state.setState(EngineState.CONSTRUCTING_API);
-
       String apiClassName = determineAPIClassName();
       Class  apiClass     = loadAPIClass(apiClassName);
       API    api          = getAPIFromSingletonField(apiClassName, apiClass);
@@ -251,7 +218,6 @@ final class EngineStarter extends Object {
             + apiClassName
             + " is null.";
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
 
@@ -261,7 +227,6 @@ final class EngineStarter extends Object {
             + apiClassName
             + " is not an instance of that class.";
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
    }
@@ -303,7 +268,6 @@ final class EngineStarter extends Object {
                                    detail,
                                    exception);
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw servletExceptionFor(exception);
       }
       return api;
@@ -343,7 +307,6 @@ final class EngineStarter extends Object {
             + apiClassName
             + '.';
          Log.log_3207(exception, APIServlet.API_CLASS_PROPERTY, apiClassName);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw servletExceptionFor(exception);
       }
 
@@ -355,7 +318,6 @@ final class EngineStarter extends Object {
             + API.class.getName()
             + '.';
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
       return apiClass;
@@ -377,60 +339,21 @@ final class EngineStarter extends Object {
             : apiClassName.trim();
       if (apiClassName == null) {
          Log.log_3206(APIServlet.API_CLASS_PROPERTY);
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw new ServletException();
       }
       return apiClassName;
    }
 
    /**
-    * Bootstraps the API. The following steps will be performed:
-    * <ul>
-    *   <li>Determine API name
-    *   <li>Load the Logdoc if available
-    *   <li>Bootstrap the API itself
-    *   <li>Determine the calling convention
-    *   <li>Link the engine to the API
-    * </ul>
-    *
-    * @param api The API to bootstrap.
-    *
-    * @throws ServletException
-    *    if bootstrap fails
-    */
-   void bootstrapAPI(API api)
-   throws ServletException {
-
-      // Proceed to next stage
-      _state.setState(EngineState.BOOTSTRAPPING_API);
-
-      // Determine the name of the API
-      _engine.initAPIName(determineAPIName());
-
-      // Load the Logdoc if available
-      String logdocClassName = determineLogDocName();
-      loadLogDoc(logdocClassName, _state);
-
-      // Actually bootstrap the API
-      bootstrap(api);
-
-      // Configure the calling convention
-      _engine.initCallingConvention(_config);
-
-      // Make the API have a link to this Engine
-      api.setEngine(_engine);
-   }
-
-
-   /**
     * Calls the bootstrap on the API and logs exceptions in case of an error.
     *
-    * @param api The API to bootstrap.
+    * @param api
+    *    The API to bootstrap, never <code>null</code>.
     *
-    * @throws ServletException if the bootstrap of the api fails.
+    * @throws ServletException 
+    *    If the bootstrap of the api fails.
     */
-   private void bootstrap(API api)
-   throws ServletException {
+   void bootstrap(API api) throws ServletException {
 
       // Bootstrap the API self
       Throwable caught;
@@ -458,7 +381,6 @@ final class EngineStarter extends Object {
 
       // Throw a ServletException if the bootstrap failed
       if (caught != null) {
-         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          ServletException se = new ServletException("API bootstrap failed.");
          ExceptionUtils.setCause(se, caught);
          throw se;
@@ -468,16 +390,12 @@ final class EngineStarter extends Object {
    /**
     * Attempts to load the logdoc class and performs checks on the class.
     *
-    * @param logdocClassName The Log doc class to load.
-    *
-    * @param state The state of the engine.
-    *
-    * @throws ServletException If the log doc class can not be loaded.
-    *
+    * @throws ServletException 
+    *    If the log doc class can not be loaded.
     */
-   private void loadLogDoc(String logdocClassName, EngineStateMachine state)
-   throws ServletException {
+   void loadLogDoc() throws ServletException {
 
+      String logdocClassName = determineLogDocName();
 
       try {
          // Attempt to load the Logdoc 'Log' class. This should execute the
@@ -502,7 +420,6 @@ final class EngineStarter extends Object {
       // The locale is not supported
       } catch (UnsupportedLocaleError exception) {
          Log.log_3309(exception.getLocale());
-         state.setState(EngineState.API_BOOTSTRAP_FAILED);
          throw servletExceptionFor(exception);
 
       // Other unexpected exception
@@ -555,7 +472,7 @@ final class EngineStarter extends Object {
     *    the API name, or <code>"-"</code> if unknown, never
     *    <code>null</code>.
     */
-   private String determineAPIName() {
+   String determineAPIName() {
 
       // Determine the name of the API
       String apiName = _config.getInitParameter(APIServlet.API_NAME_PROPERTY);
@@ -569,7 +486,6 @@ final class EngineStarter extends Object {
          apiName = "-";
          /* TODO for XINS 2.0.0: Fail if API name is not set.
           Log.log_3209(API_NAME_PROPERTY);
-          _state.setState(EngineState.API_BOOTSTRAP_FAILED);
           throw new ServletException();
           */
       } else {
