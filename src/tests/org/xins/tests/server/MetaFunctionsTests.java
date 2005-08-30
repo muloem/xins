@@ -412,7 +412,7 @@ public class MetaFunctionsTests extends TestCase {
    /**
     * Tests the _CheckLinks.
     */
-   /*public void testCheckLinks() throws Throwable {
+   public void testCheckLinks() throws Throwable {
       XINSCallRequest request = new XINSCallRequest("_CheckLinks", null);
       TargetDescriptor descriptor = 
          new TargetDescriptor("http://127.0.0.1:8080/", 20000);
@@ -458,8 +458,7 @@ public class MetaFunctionsTests extends TestCase {
                ", which was not specified in the xins.properties");
          }
       }
-      
-   }*/
+   }
    
    /**
     * Tests that multiple calls to the server in parallel works.
