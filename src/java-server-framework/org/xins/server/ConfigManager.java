@@ -38,6 +38,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 final class ConfigManager extends Object {
 
@@ -49,7 +50,7 @@ final class ConfigManager extends Object {
     * The object to synchronize on when reading and initializing from the
     * runtime configuration file.
     */
-   static final Object RUNTIME_PROPERTIES_LOCK = new Object();
+   private static final Object RUNTIME_PROPERTIES_LOCK = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -149,6 +150,12 @@ final class ConfigManager extends Object {
     */
    private FileWatcher _configFileWatcher;
 
+   /**
+    * The set of properties read from the runtime configuration file. Never
+    * <code>null</code>.
+    */
+   private PropertyReader _runtimeProperties;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -201,14 +208,12 @@ final class ConfigManager extends Object {
 
       // TODO: Check state
 
-      PropertyReader pr;
-
       // If the value is not set only localhost can access the API.
       // NOTE: Don't trim the configuration file name, since it may start
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         pr = PropertyReaderUtils.EMPTY_PROPERTY_READER;
+         _runtimeProperties = PropertyReaderUtils.EMPTY_PROPERTY_READER;
       } else {
 
          // Unify the file separator character
@@ -247,14 +252,21 @@ final class ConfigManager extends Object {
             configureLogger(properties);
 
             // Convert to a PropertyReader
-            pr = new PropertiesPropertyReader(properties);
+            _runtimeProperties = new PropertiesPropertyReader(properties);
          }
       }
-
-      // Assign the runtime properties to the Engine
-      _engine.setRuntimeProperties(pr);
    }
 
+   /**
+    * Gets the runtime properties.
+    *
+    * @return
+    *    the runtime properties, never <code>null</code>.
+    */
+   PropertyReader getRuntimeProperties() {
+      return _runtimeProperties;
+   }
+   
    /**
     * Determines the reload interval for the config file, initializes the API
     * if the interval has changed and starts the config file watcher.
@@ -394,7 +406,7 @@ final class ConfigManager extends Object {
 
       // Get the runtime property
       final String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
-      final String s = _engine.getRuntimeProperties().get(prop);
+      final String s = _runtimeProperties.get(prop);
       int interval = -1;
 
       // If the property is set, parse it
@@ -405,8 +417,7 @@ final class ConfigManager extends Object {
             // Negative value
             if (interval < 0) {
                Log.log_3409(_configFile, prop, s);
-               throw new InvalidPropertyValueException(
-                  prop, s, "Negative value.");
+               throw new InvalidPropertyValueException(prop, s, "Negative value.");
 
             // Non-negative value
             } else {
@@ -416,8 +427,7 @@ final class ConfigManager extends Object {
          // Not a valid number string
          } catch (NumberFormatException nfe) {
             Log.log_3409(_configFile, prop, s);
-            throw new InvalidPropertyValueException(
-               prop, s, "Not a 32-bit integer number.");
+            throw new InvalidPropertyValueException(prop, s, "Not a 32-bit integer number.");
          }
 
       // Property not set, use the default
@@ -438,11 +448,10 @@ final class ConfigManager extends Object {
     */
    boolean determineLogLocale() {
 
-      String newLocale = _engine.getRuntimeProperties().get(
-      LogCentral.LOG_LOCALE_PROPERTY);
+      String newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
 
       if (TextUtils.isEmpty(newLocale)) {
-         newLocale = _engine.getRuntimeProperties().get(APIServlet.LOG_LOCALE_PROPERTY);
+         newLocale = _runtimeProperties.get(APIServlet.LOG_LOCALE_PROPERTY);
       }
 
       // If the log locale is set, apply it

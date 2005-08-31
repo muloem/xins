@@ -161,8 +161,6 @@ final class Engine extends Object {
          throw Utils.logProgrammingError("_api == null");
       } else if (_apiName == null) {
          throw Utils.logProgrammingError("_apiName == null");
-      } else if (_runtimeProperties == null) {
-         throw Utils.logProgrammingError("_runtimeProperties == null");
       }
    }
 
@@ -213,12 +211,6 @@ final class Engine extends Object {
    private CallingConventionManager _conventionManager;
    
    /**
-    * The set of properties read from the runtime configuration file. Never
-    * <code>null</code>.
-    */
-   private PropertyReader _runtimeProperties;
-
-   /**
     * Pattern which incoming diagnostic context identifiers must match. Can be
     * <code>null</code> in case no pattern has been specified. Initially this
     * field is indeed <code>null</code>.
@@ -229,28 +221,6 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Initializes or re-initializes the runtime properties. This is a callback
-    * method for the {@link ConfigManager}.
-    *
-    * @param newProperties
-    *    the new runtime properties, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null</code>.
-    */
-   void setRuntimeProperties(final PropertyReader newProperties)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("newProperties", newProperties);
-
-      // Store the runtime properties
-      synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
-         _runtimeProperties = newProperties;
-      }
-   }
 
    /**
     * Retrieves the API name.
@@ -372,10 +342,7 @@ final class Engine extends Object {
       _state.setState(EngineState.INITIALIZING_API);
 
       // Determine the current runtime properties
-      PropertyReader properties;
-      synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
-         properties = _runtimeProperties;
-      }
+      PropertyReader properties = _configManager.getRuntimeProperties();
 
       boolean succeeded = false;
 
@@ -767,25 +734,5 @@ final class Engine extends Object {
     */
    ServletConfig getServletConfig() {
       return _servletConfig;
-   }
-
-   /**
-    * Returns the runtime properties.
-    *
-    * @return
-    *    the property reader containing the runtime properties, never
-    *    <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this engine has been disposed, see {@link #destroy()}.
-    */
-   PropertyReader getRuntimeProperties() throws IllegalStateException {
-
-      // Check preconditions
-      if (_state.getState() == EngineState.DISPOSED) {
-         throw new IllegalStateException("Engine has been disposed.");
-      }
-
-      return _runtimeProperties;
    }
 }
