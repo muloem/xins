@@ -17,6 +17,7 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.methods.OptionsMethod;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.service.Descriptor;
@@ -551,9 +552,9 @@ class CheckLinks extends Object {
       private int _statusCode;
 
       
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Methods
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * Runs this thread. It tries to connect to the URL provided in the 
@@ -569,18 +570,16 @@ class CheckLinks extends Object {
 
          // Check preconditions
          if (hasRun()) {
-            throw new IllegalStateException("This URLChecker for URL: " + _url +
-                        "has already run.");
+            throw new IllegalStateException("This URLChecker for URL: "
+               + _url + "has already run.");
          }
 
          // Register current time, to compute total duration later
          long startTime = System.currentTimeMillis();
-         HttpMethodBase optionsMethod = null;
 
+         HttpMethodBase optionsMethod = null;
          try {
             HttpClient client = new HttpClient();
-//            client.getParams().setConnectionManagerTimeout(
-//                               _targetDescriptor.getConnectionTimeOut());
             client.getParams().setSoTimeout(
                               _targetDescriptor.getSocketTimeOut());
             
@@ -596,7 +595,16 @@ class CheckLinks extends Object {
             _success = false;
          } finally {
             if (optionsMethod != null) {
-               optionsMethod.releaseConnection();
+               try {
+                  optionsMethod.releaseConnection();
+               } catch (Throwable ignorable) {
+                  Utils.logIgnoredException(
+                     ignorable,
+                     CheckLinks.URLChecker.class.getName(),
+                     "run()",
+                     optionsMethod.getClass().getName(),
+                     "releaseConnection()");
+               }
             }
          }
          
