@@ -58,6 +58,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.collections.PropertyReaderUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.ProtectedListTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.ProtectedPropertyReaderTests.class);
+      suite.addTestSuite(org.xins.tests.common.collections.StatsPropertyReaderTests.class);
 
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryFolderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryStrategyTests.class);
