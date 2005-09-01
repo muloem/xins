@@ -72,9 +72,10 @@ public class BasicPropertyReaderTests extends TestCase {
    /*
     * @see TestCase#setUp()
     */
-   protected void setUp()
-      throws Exception {
+   protected void setUp() throws Exception {
       super.setUp();
+
+      // TODO: Move this somewhere else
       Properties settings = new Properties();
       settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
       settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
@@ -174,7 +175,8 @@ public class BasicPropertyReaderTests extends TestCase {
       assertFalse(it.hasNext());
 
       // check the values returned
-      assertTrue( (n3 == testName && n4 == testName2) || (n4 == testName && n3 == testName2) );
+      assertTrue( (n3 == testName && n4 == testName2)
+               || (n4 == testName && n3 == testName2) );
       if (n3.equals(testName)) {
          assertEquals(v3, testVal);
          assertEquals(v4, testVal2);
