@@ -114,11 +114,10 @@ public final class ]]></xsl:text>
     * @return
     *    the result of the function call, should never be <code>null</code>.
     *
-    * @throws java.lang.Throwable
+    * @throws Throwable
     *    if anything went wrong.
     */
-   public Result call(Request request)
-   throws java.lang.Throwable {]]></xsl:text>
+   public Result call(Request request) throws Throwable {]]></xsl:text>
 		<xsl:call-template name="callcontent" />
 		<xsl:text>
    }</xsl:text>
