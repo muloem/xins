@@ -196,6 +196,7 @@ public class TimestampTests extends TestCase {
       Calendar c2 = Calendar.getInstance();
       c1.set(2005, 5, 9, 20, 57, 42);
       c2.set(2005, 5, 9, 20, 57, 42);
+      c1.set(Calendar.MILLISECOND, 0);
       c2.set(Calendar.MILLISECOND, 1);
       assertFalse(c1.equals(c2));
       assertFalse(c2.equals(c1));
