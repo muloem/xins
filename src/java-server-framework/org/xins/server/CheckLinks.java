@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -50,7 +51,43 @@ class CheckLinks extends Object {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
+    
+   /**
+    * The exception name identifying the <code>UnknownHostException</code>.
+    */
+   private final static String UNKNOWN_HOST = "UnknownHost";
+   
+   /**
+    * The exception name identifying the <code>ConnectException</code>.
+    */
+   private final static String CONNECTION_REFUSAL = "ConnectionRefusal";
+   
+   /**
+    * The exception name identifying the <code>ConnectTimeoutException</code>.
+    */
+   private final static String CONNECTION_TIMEOUT = "ConnectionTimeout";
+   
+   /**
+    * The exception name identifying the <code>SocketTimeoutException</code>.
+    */
+   private final static String SOCKET_TIMEOUT = "SocketTimeout";
+   
+   /**
+    * The exception name identifying the <code>IOException</code>.
+    */
+   private final static String OTHER_IO_ERROR = "OtherIOError";
+   
+   /**
+    * The exception name identifying the an unknown <code>Exception</code>.
+    */
+   private final static String OTHER_FAILURE = "OtherFailure";
+   
+   /**
+    * The success message to displayed to the user..
+    */
+   private final static String SUCCESS = "Success";
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -367,7 +404,7 @@ class CheckLinks extends Object {
       }
 
       if (urlThread.getSuccess()) {
-         return "Success";
+         return SUCCESS;
       } else {
          return getResult(urlThread.getException());
       }
@@ -398,21 +435,34 @@ class CheckLinks extends Object {
       MandatoryArgumentChecker.check("exception", exception);
       
       if (exception instanceof UnknownHostException) {
-         return "UnknownHost";
+         return UNKNOWN_HOST;
       } else if (exception instanceof ConnectException) {
-         return "ConnectionRefusal";
+         return CONNECTION_REFUSAL;
       } else if (exception instanceof ConnectTimeoutException) {
-         return "ConnectionTimeout";
+         return CONNECTION_TIMEOUT;
          
       // SocketTimeoutException is not available in older java versions,
       // so we do not refer to the class to avoid a NoClassDefFoundError.
       } else if (exception.getClass().getName().equals(
                                          "java.net.SocketTimeoutException")) {
-         return "SocketTimeout";
+         return SOCKET_TIMEOUT;
+
+      } else if (exception instanceof InterruptedIOException) {
+         String exMessage = exception.getMessage();
+
+         // XXX: Only tested on Sun JVM
+         // TODO: Test on non-Sun JVM
+         if (exMessage.startsWith("Read timed out")) {
+            return SOCKET_TIMEOUT;
+            
+         // Unspecific I/O error
+         } else {
+            return OTHER_IO_ERROR;
+         }
       } else if (exception instanceof IOException) {
-         return "OtherIOError";
+         return OTHER_IO_ERROR;
       } else {
-         return "OtherFailure";
+         return OTHER_FAILURE;
       }
    }
 
@@ -580,24 +630,46 @@ class CheckLinks extends Object {
          HttpMethodBase optionsMethod = null;
          try {
             HttpClient client = new HttpClient();
+            
+            // Set the socket timeout for the URL.
             client.getParams().setSoTimeout(
                               _targetDescriptor.getSocketTimeOut());
             
+            // Set the connection timeout for the URL.
             client.getHttpConnectionManager().getParams(
                               ).setConnectionTimeout(
                               _targetDescriptor.getConnectionTimeOut());
             
+            // Create a new OptionsMethod with the URL, this will represents
+            // a request for information about the communication options 
+            // available on the request/response chain identified by the url.
+            // This method allows the client to determine the options and/or
+            // requirements associated with a resource, or the capabilities 
+            // of a server, without implying a resource action or initiating
+            // a resource retrieval.
             optionsMethod = new OptionsMethod(_url);
+            
+            // Execute the OptionsMethod.
             _statusCode = client.executeMethod(optionsMethod);
+            
+            // Successfully executed, so set the success as true.
             _success = true;
          } catch (Throwable exception) {
+            
+            // Save the exception and set the success as false as the 
+            // execution was failed.
             _exception = exception;
             _success = false;
          } finally {
             if (optionsMethod != null) {
                try {
+                
+                  // Release the connection from OptionsMethod.
                   optionsMethod.releaseConnection();
                } catch (Throwable ignorable) {
+                
+                  // Just ignore the exception and log it as we do not care
+                  // if the connection is not properly released.
                   Utils.logIgnoredException(
                      ignorable,
                      CheckLinks.URLChecker.class.getName(),
