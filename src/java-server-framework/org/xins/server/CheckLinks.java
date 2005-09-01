@@ -620,7 +620,10 @@ class CheckLinks {
 		 */
 		private void assertHasRun() throws IllegalStateException {
 			if (!hasRun()) {
-				throw new IllegalStateException("This URLChecker has not run yet.");
+				String message = "This URLChecker has not run yet. URL: \""
+                           + _url
+                           + "\".";
+				throw new IllegalStateException(message);
 			}
 		}
       
