@@ -437,6 +437,10 @@
 			<description>Invalid filter specified for incoming diagnostic context identifiers.</description>
 			<param name="pattern" />
 		</entry>
+		<entry id="3434" level="INFO">
+			<description>Unused runtime property.</description>
+			<param name="propertyName" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">

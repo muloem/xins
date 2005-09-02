@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -20,12 +21,14 @@ import javax.servlet.ServletException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.collections.StatsPropertyReader;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.LogCentral;
@@ -39,6 +42,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 final class ConfigManager extends Object {
 
@@ -154,7 +158,7 @@ final class ConfigManager extends Object {
     * The set of properties read from the runtime configuration file. Never
     * <code>null</code>.
     */
-   private PropertyReader _runtimeProperties;
+   private StatsPropertyReader _runtimeProperties;
 
 
    //-------------------------------------------------------------------------
@@ -213,7 +217,7 @@ final class ConfigManager extends Object {
       //       with a space or other whitespace character.
       if (_configFile == null || _configFile.length() < 1) {
          Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         _runtimeProperties = PropertyReaderUtils.EMPTY_PROPERTY_READER;
+         _runtimeProperties = null;
       } else {
 
          // Unify the file separator character
@@ -252,7 +256,8 @@ final class ConfigManager extends Object {
             configureLogger(properties);
 
             // Convert to a PropertyReader
-            _runtimeProperties = new PropertiesPropertyReader(properties);
+            PropertyReader pr = new PropertiesPropertyReader(properties);
+            _runtimeProperties = new StatsPropertyReader(pr);
          }
       }
    }
@@ -264,7 +269,11 @@ final class ConfigManager extends Object {
     *    the runtime properties, never <code>null</code>.
     */
    PropertyReader getRuntimeProperties() {
-      return _runtimeProperties;
+      if (_runtimeProperties == null) {
+         return PropertyReaderUtils.EMPTY_PROPERTY_READER;
+      } else {
+         return _runtimeProperties;
+      }
    }
    
    /**
@@ -294,6 +303,27 @@ final class ConfigManager extends Object {
       // file is set
       if (_configFile != null) {
          startConfigFileWatcher(interval);
+      }
+
+      // Log each unused runtime property
+      logUnusedRuntimeProperties();
+   }
+
+   /**
+    * Logs the unused runtime properties. Properties for Log4J (those starting
+    * with <code>"log4j."</code> are ignored.
+    */
+   private void logUnusedRuntimeProperties() {
+      if (_runtimeProperties != null) {
+         Iterator unused = _runtimeProperties.getUnused().getNames();
+         while (unused.hasNext()) {
+            String name = (String) unused.next();
+            if (name != null) {
+               if (! name.startsWith("log4j.")) {
+                  Log.log_3434(name);
+               }
+            }
+         }
       }
    }
 
@@ -391,6 +421,9 @@ final class ConfigManager extends Object {
     *
     * @return
     *    the interval to use, always &gt;= 1.
+    *
+    * @throws IllegalStateException
+    *    if there is no current configuration file.
     *
     * @throws InvalidPropertyValueException
     *    if the interval cannot be determined because it does not qualify as a
@@ -550,6 +583,9 @@ final class ConfigManager extends Object {
 
             updateFileWatcher(newInterval);
          }
+
+         // Log each unused runtime property
+         logUnusedRuntimeProperties();
       }
 
       /**

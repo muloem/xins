@@ -100,6 +100,7 @@
 	<translation entry="3431">No filter specified for incoming diagnostic context identifiers.</translation>
 	<translation entry="3432">Valid filter <value-of-param name="pattern" format="quoted" /> specified for incoming diagnostic context identifiers.</translation>
 	<translation entry="3433">Invalid filter <value-of-param name="pattern" format="quoted" /> specified for incoming diagnostic context identifiers.</translation>
+	<translation entry="3434">Property <value-of-param name="propertyName" format="quoted" /> is specified in the runtime configuration file, but it appears to be unused.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>

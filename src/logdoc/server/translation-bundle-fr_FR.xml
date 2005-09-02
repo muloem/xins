@@ -100,6 +100,7 @@
 	<translation entry="3431">Pas de filtre specifié pour les "diagnostic context identifiers" entrant.</translation>
 	<translation entry="3432">Filtre valide <value-of-param name="pattern" /> spécifié pour les "diagnostic context identifiers" entrant.</translation>
 	<translation entry="3433">Filtre invalide <value-of-param name="pattern" /> spécifié pour les "diagnostic context identifiers" entrant.</translation>
+<!-- FIXME TODO <translation entry="3434">Property <value-of-param name="propertyName" format="quoted" /> is specified in the runtime configuration file, but it appears to be unused.</translation> -->
 
 	<translation entry="3500">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exception attrapée.</translation>
 	<translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: la fonction a retouné une réponse invalide.</translation>
