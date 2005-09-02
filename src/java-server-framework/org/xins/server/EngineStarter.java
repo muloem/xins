@@ -133,9 +133,21 @@ final class EngineStarter extends Object {
             "ServletContext.getServerInfo() returned null.");
       }
 
+      // Determine Java VM info
+      String jvmVendor  = System.getProperty("java.vm.vendor");
+      String jvmName    = System.getProperty("java.vm.name");
+      String jvmVersion = System.getProperty("java.vm.version");
+      String jvmInfo    = jvmVendor + " " + jvmName + " " + jvmVersion;
+
+      // Determine operating system info
+      String osName    = System.getProperty("os.name");
+      String osVersion = System.getProperty("os.version");
+      String osArch    = System.getProperty("os.arch");
+      String osInfo    = osName + " " + osVersion + "/" + osArch;
+
       // Log: Bootstrapping XINS/Java Server Framework
       String serverVersion = Library.getVersion();
-      Log.log_3200(serverVersion, containerInfo);
+      Log.log_3200(serverVersion, containerInfo, jvmInfo, osInfo);
 
       // Warn if Server version differs from Common version
       String commonVersion = org.xins.common.Library.getVersion();

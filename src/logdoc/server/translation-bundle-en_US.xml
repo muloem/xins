@@ -16,7 +16,7 @@
 	<translation entry="3100">Changing APIServlet state from <value-of-param name="oldState" />	to <value-of-param name="newState" />.</translation>
 	<translation entry="3101">Changing state failed. The state <value-of-param name="newState" /> cannot follow the state <value-of-param name="oldState" />.</translation>
 
-	<translation entry="3200">Bootstrapping XINS/Java Server Framework <value-of-param name="version" />. Running on <value-of-param name="containerInfo" />.</translation>
+	<translation entry="3200">Bootstrapping XINS/Java Server Framework <value-of-param name="version" />. Servlet container: <value-of-param name="container" />. JVM: <value-of-param name="jvm" />. OS: <value-of-param name="os" />.</translation>
 	<translation entry="3201">XINS/Java Server Framework cannot be bootstrapped. State <value-of-param name="state" /> is unexpected.</translation>
 	<translation entry="3202">XINS/Java Server Framework cannot be bootstrapped. Application server is behaving unexpectedly. Reason: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="3203">Application server implements unexpected version of Java Servlet API Specification. Expected version: <value-of-param name="expected_version" />. Actual version: <value-of-param name="actual_version" />.</translation>

@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
     1.3.
   - Implemented SF.net RFE #1189417: Message 3434 is now logged if a runtime
     property appears to be unused.
+  - Implemented SF.net RFE #1263773. JVM and OS-info have been added to log
+    message 3200.
   - Refactored the classes related to the Engine in order to reduce the 
     dependencies between classes.
   - Renamed CallingConventionFactory to CallingConventionManager. The code 

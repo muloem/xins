@@ -42,8 +42,10 @@
 	<group id="lifespan.bootstrap" name="Bootstrapping">
 		<entry id="3200" level="NOTICE">
 			<description>Bootstrapping XINS/Java Server Framework.</description>
-			<param name="version" />
-			<param name="containerInfo" />
+			<param name="version"   />
+			<param name="container" />
+			<param name="jvm"       />
+			<param name="os"        />
 		</entry>
 		<entry id="3201" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
