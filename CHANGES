@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 5:
     CallingConventionManager class.
   - Moved the Object containing the runtime properties from the Engine class
     to the ConfigManager class.
+  - Fixed bug#1259976: OtherIOError iso SocketTimeout on Java 1.3
 
 * Build- and release-process:
   - Added images associated with the primer.
