@@ -540,13 +540,13 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
-			<xsl:for-each select="document($api_file)/api/environment">
+			<xsl:if test="document($api_file)/api/environment or not(environments)">
 				<style
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 				includes="{$functionIncludes}"
-				extension="-testform-{@id}.html">
+				extension="-testform.html">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -554,33 +554,28 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
-					<param name="environment"  expression="{@id}"           />
-					<param name="env_url"      expression="{@url}"          />
 				</style>
-			</xsl:for-each>
+			</xsl:if>
 			<xsl:if test="environments">
 				<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 				<xmlvalidate file="{$env_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<xsl:for-each select="document($env_file)/environments/environment">
-					<style
-					basedir="{$api_specsdir}"
-					destdir="{$project_home}/build/specdocs/{$api}"
-					style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
-					includes="{$functionIncludes}"
-					extension="-testform-{@id}.html">
-						<xmlcatalog refid="all-dtds" />
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$api_specsdir}" />
-						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
-						<param name="environment"  expression="{@id}"           />
-						<param name="env_url"      expression="{@url}"          />
-					</style>
-				</xsl:for-each>
+				<style
+				basedir="{$api_specsdir}"
+				destdir="{$project_home}/build/specdocs/{$api}"
+				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
+				includes="{$functionIncludes}"
+				extension="-testform.html">
+					<xmlcatalog refid="all-dtds" />
+					<param name="xins_version" expression="{$xins_version}" />
+					<param name="project_home" expression="{$project_home}" />
+					<param name="project_file" expression="{$project_file}" />
+					<param name="specsdir"     expression="{$api_specsdir}" />
+					<param name="api"          expression="{$api}"          />
+					<param name="api_file"     expression="{$api_file}"     />
+					<param name="env_file"     expression="{$env_file}"     />
+				</style>
 			</xsl:if>
 			<xsl:for-each select="impl">
 				<xsl:variable name="implName" select="@name" />

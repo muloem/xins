@@ -24,6 +24,16 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
     exception if a thread is active after the timeout. Also added some log
     messages.
 
+* Generated specification documentation:
+  - The link to the test form on the function page is now at the top of the
+    page.
+
+* Generated test forms:
+  - Refactored the layout so that the request and the result is visible on the
+    same page.
+  - Added the possibility to choose the environment on the test form page.
+    This means that only one test form is generated per function.
+
 * Build- and release-process:
   - Added images associated with the primer.
   - Removed the private javadoc.

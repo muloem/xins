@@ -65,6 +65,7 @@
 			<body>
 				<xsl:call-template name="header">
 					<xsl:with-param name="active">function</xsl:with-param>
+					<xsl:with-param name="name" select="$function_name" />
 				</xsl:call-template>
 
 				<h1>
@@ -102,9 +103,6 @@
 
 				<xsl:call-template name="input_section" />
 				<xsl:call-template name="output_section" />
-				<xsl:call-template name="testforms_section">
-					<xsl:with-param name="function_name" select="$function_name" />
-				</xsl:call-template>
 				<xsl:call-template name="examples_section">
 					<xsl:with-param name="function_name" select="$function_name" />
 				</xsl:call-template>
@@ -142,45 +140,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</blockquote>
-	</xsl:template>
-
-	<xsl:template name="testforms_section">
-		<xsl:param name="function_name" />
-
-		<xsl:if test="boolean(document($api_file)/api/environment) or document($project_file)/project/api[@name = $api]/environments">
-			<h2>Test forms</h2>
-			<ul>
-				<xsl:for-each select="document($api_file)/api/environment">
-					<li>
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="$function_name" />
-								<xsl:text>-testform-</xsl:text>
-								<xsl:value-of select="@id" />
-								<xsl:text>.html</xsl:text>
-							</xsl:attribute>
-							<xsl:value-of select="@id" />
-						</a>
-					</li>
-				</xsl:for-each>
-				<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
-					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
-					<xsl:for-each select="document($env_file)/environments/environment">
-						<li>
-							<a>
-								<xsl:attribute name="href">
-									<xsl:value-of select="$function_name" />
-									<xsl:text>-testform-</xsl:text>
-									<xsl:value-of select="@id" />
-									<xsl:text>.html</xsl:text>
-								</xsl:attribute>
-								<xsl:value-of select="@id" />
-							</a>
-						</li>
-					</xsl:for-each>
-				</xsl:if>
-			</ul>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="examples_section">
