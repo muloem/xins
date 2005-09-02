@@ -206,7 +206,7 @@ class CallingConventionManager extends Object {
     * @return
     *    the calling convention, never <code>null</code>
     *
-    * @throw Exception
+    * @throws Exception
     *    If the calling convention could not be created, bootstrapped or
     *    initialized.
     */

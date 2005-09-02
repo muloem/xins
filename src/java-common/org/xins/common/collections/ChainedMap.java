@@ -17,10 +17,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class provides an Map that stores the key/value pair in the order
+ * This class provides a Map that stores the key/value pairs in the order
  * that they were added to the Map.
- * If an entry already exists, the key/pair entry will be inserted at the
- * position of the old one.
+ * If an entry already exists, the key/pair entry will be put at the same
+ * position as the old one.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -40,7 +40,7 @@ public class ChainedMap extends AbstractMap {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of ChainedMap
+    * Creates a new instance of <code>ChainedMap</code>.
     */
    public ChainedMap() {
    }
@@ -55,7 +55,7 @@ public class ChainedMap extends AbstractMap {
    private List _keys = new ArrayList();
    
    /**
-    * The key/pair entry of the Map.
+    * The key/pair entries of the Map.
     */
    private List _entries = new ArrayList();
    
@@ -108,7 +108,7 @@ public class ChainedMap extends AbstractMap {
       //-------------------------------------------------------------------------
 
       /**
-       * Creates a new instance of EntryMap
+       * Creates a new instance of <code>EntryMap</code>.
        */
       public EntryMap(Object key, Object value) {
          _key = key;
@@ -169,16 +169,16 @@ public class ChainedMap extends AbstractMap {
       //-------------------------------------------------------------------------
 
       /**
-       * Creates a new instance of ChainedSet.
+       * Creates a new instance of <code>ChainedSet</code>.
        */
       public ChainedSet() {
       }
 
       /**
-       * Creates a new instance of ChainedSet.
+       * Creates a new instance of <code>ChainedSet</code>.
        *
-       * @param c
-       *    the collection that contain the values of the set, never <code>null</code>.
+       * @param collection
+       *    the collection that contains the values of the set, cannot be <code>null</code>.
        */
       public ChainedSet(Collection collection) {
          Iterator itCollection = collection.iterator();
