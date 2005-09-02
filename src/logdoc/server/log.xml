@@ -450,6 +450,27 @@
 			<param name="function" type="text"  nullable="false" />
 			<param name="callID"   type="int32" nullable="false" />
 		</entry>
+		<entry id="3502" level="DEBUG" exception="true">
+			<description>Exception result message while checking a URL.</description>
+			<param name="url"      type="text"  nullable="false" />
+			<param name="result"   type="text"  nullable="false" />
+		</entry>
+		<entry id="3503" level="DEBUG">
+			<description>Thread to check a URL has started.</description>
+			<param name="url"                type="text"   nullable="false" />
+			<param name="totalTimeout"      type="int32"  nullable="false" />
+			<param name="connectionTimeout" type="int32"  nullable="false" />
+			<param name="socketTimeout"     type="int32"  nullable="false" />
+		</entry>
+		<entry id="3504" level="DEBUG">
+			<description>Thread to check a URL has stoped.</description>
+			<param name="url"      type="text"   nullable="false" />
+			<param name="duration" type="int64"  nullable="false" />
+		</entry>
+		<entry id="3505" level="DEBUG">
+			<description>Thread to check a URL is still active.</description>
+			<param name="url"      type="text"   nullable="false" />
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">

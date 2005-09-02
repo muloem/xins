@@ -36,12 +36,12 @@ import org.xins.common.xml.ElementBuilder;
  * The following example uses a {@link CheckLinks} object to get the 
  * {@link FunctionResult}.
  * 
- * <pre>
+ * <blockquote><pre>
  * FunctionResult result = CheckLinks.checkLinks(descriptorList);
  * 
  * // Returns parameters
  * result.getParameters(); 
- * </pre>
+ * </pre></blockquote>
  *  
  * @version $Revision$ $Date$
  * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
@@ -83,7 +83,7 @@ class CheckLinks extends Object {
    private final static String OTHER_FAILURE = "OtherFailure";
    
    /**
-    * The success message to displayed to the user..
+    * The success message to be displayed to the user..
     */
    private final static String SUCCESS = "Success";
    
@@ -119,21 +119,30 @@ class CheckLinks extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptors", descriptors);
       
-      // Get all the targets from the descriptor list
-      List targetDescriptors = getTargetDescriptors(descriptors);
+      List threads =  new ArrayList();
+      if (descriptors.size() > 0) {
+        
+         // Get all the targets from the descriptor list
+         List targetDescriptors = getTargetDescriptors(descriptors);
 
-      // Create the thread for each target and run them
-      List threads = createAndRunUrlCheckers(targetDescriptors);
+         // Create the thread for each target and run them
+         threads = createAndRunUrlCheckers(targetDescriptors);
       
-      // Get the biggest timeout from all the targets
-      int timeout = getBiggestTimeout(targetDescriptors);
+         // Get the biggest timeout from all the targets
+         int timeout = getBiggestTimeout(targetDescriptors);
 
-      // Wait till all the threads finish their execution or timedout.
-      waitTillThreadsRunning(threads, timeout);
-
+         // Wait till all the threads finish their execution or timedout.
+         waitTillThreadsRunning(threads, timeout);
+         
+         // Confirm all threads have finished their execution.
+         confirmThreadsStopped(threads);
+      }
+      
       // Start building the result
       FunctionResult builder = new FunctionResult();
-      int errorCount = addCheckElements(builder, threads);
+      int errorCount = (descriptors.size() > 0)  
+                          ? addCheckElements(builder, threads) 
+                          : 0;
       builder.param("linkCount", String.valueOf(threads.size()));
       builder.param("errorCount", String.valueOf(errorCount));
       
@@ -327,6 +336,39 @@ class CheckLinks extends Object {
    }
 
    /**
+    * Confimrs that each <code>URLChecker</code> has finished its execution.
+    * If some threads are still running, inforce a connection timeout and let
+    * it run and ignore.
+    *
+    * @param threads
+    *    the list of {@link URLChecker} threads, cannot be <code>null</code>.
+    * 
+    * @throws IllegalArgumentException
+    *    if <code>threads == null</code>.
+    */
+   private static void confirmThreadsStopped(List threads)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("threads", threads);
+      
+      Iterator threadIterator = threads.iterator();
+      
+      // Iterate over all the threads
+      while (threadIterator.hasNext()) {
+      	URLChecker urlThread = (URLChecker) threadIterator.next();
+      	
+      	// Check if thread is still alive.
+      	if (urlThread.isAlive()) {
+      		
+      		// Enforce a timeout for the thread and log it.
+      		urlThread.enforceTimeout();
+            Log.log_3505(urlThread.getURL());
+      	}
+      }
+   }
+   
+   /**
     * Builds the <code>FunctionResult</code> for all the URLs checked. It 
     * iterates over the list of all {@link URLChecker} threads and gets the
     * information like the total time each thread took to execute and the 
@@ -406,7 +448,7 @@ class CheckLinks extends Object {
       if (urlThread.getSuccess()) {
          return SUCCESS;
       } else {
-         return getResult(urlThread.getException());
+         return getResult(urlThread.getException(), urlThread.getURL());
       }
    }
    
@@ -422,30 +464,34 @@ class CheckLinks extends Object {
     *    the {@link Throwable} exception occured in the {@link URLChecker}
     *    thread, cannot be <code>null</code>.
     *
+    * @param exception
+    *    the url which threw the exception, cannot be <code>null</code>.
+    * 
     * @return 
     *    the result message, never <code>null</code>.
     * 
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.
     */
-   private static String getResult(Throwable exception)
+   private static String getResult(Throwable exception, String url)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
+      // Check preconditions.
+      MandatoryArgumentChecker.check("exception", exception, "url", url);
       
+      String result;
       if (exception instanceof UnknownHostException) {
-         return UNKNOWN_HOST;
+         result =  UNKNOWN_HOST;
       } else if (exception instanceof ConnectException) {
-         return CONNECTION_REFUSAL;
+         result =  CONNECTION_REFUSAL;
       } else if (exception instanceof ConnectTimeoutException) {
-         return CONNECTION_TIMEOUT;
+         result =  CONNECTION_TIMEOUT;
          
       // SocketTimeoutException is not available in older java versions,
       // so we do not refer to the class to avoid a NoClassDefFoundError.
       } else if (exception.getClass().getName().equals(
                                          "java.net.SocketTimeoutException")) {
-         return SOCKET_TIMEOUT;
+         result =  SOCKET_TIMEOUT;
 
       } else if (exception instanceof InterruptedIOException) {
          String exMessage = exception.getMessage();
@@ -453,17 +499,22 @@ class CheckLinks extends Object {
          // XXX: Only tested on Sun JVM
          // TODO: Test on non-Sun JVM
          if (exMessage.startsWith("Read timed out")) {
-            return SOCKET_TIMEOUT;
+            result =  SOCKET_TIMEOUT;
             
          // Unspecific I/O error
          } else {
-            return OTHER_IO_ERROR;
+            result =  OTHER_IO_ERROR;
          }
       } else if (exception instanceof IOException) {
-         return OTHER_IO_ERROR;
+         result =  OTHER_IO_ERROR;
       } else {
-         return OTHER_FAILURE;
+         result =  OTHER_FAILURE;
       }
+     
+      // Log the result and exception.
+      Log.log_3502(exception, url, result);
+      
+      return result;
    }
 
    
@@ -623,6 +674,12 @@ class CheckLinks extends Object {
             throw new IllegalStateException("This URLChecker for URL: "
                + _url + "has already run.");
          }
+         
+         // Logging the start of this thread.
+         Log.log_3503(_url, 
+            _targetDescriptor.getTotalTimeOut(), 
+            _targetDescriptor.getConnectionTimeOut(), 
+            _targetDescriptor.getSocketTimeOut());
 
          // Register current time, to compute total duration later
          long startTime = System.currentTimeMillis();
@@ -640,7 +697,7 @@ class CheckLinks extends Object {
                               ).setConnectionTimeout(
                               _targetDescriptor.getConnectionTimeOut());
             
-            // Create a new OptionsMethod with the URL, this will represents
+            // Create a new OptionsMethod with the URL, this will represent
             // a request for information about the communication options 
             // available on the request/response chain identified by the url.
             // This method allows the client to determine the options and/or
@@ -661,27 +718,44 @@ class CheckLinks extends Object {
             _exception = exception;
             _success = false;
          } finally {
-            if (optionsMethod != null) {
-               try {
-                
-                  // Release the connection from OptionsMethod.
-                  optionsMethod.releaseConnection();
-               } catch (Throwable ignorable) {
-                
-                  // Just ignore the exception and log it as we do not care
-                  // if the connection is not properly released.
-                  Utils.logIgnoredException(
-                     ignorable,
-                     CheckLinks.URLChecker.class.getName(),
-                     "run()",
-                     optionsMethod.getClass().getName(),
-                     "releaseConnection()");
-               }
-            }
+            releaseConnection(optionsMethod);
          }
          
          // Calculate the total time taken to check the URL.
          _duration = System.currentTimeMillis() - startTime;
+         
+         // Logging the stopping of this thread.
+         Log.log_3504(_url, _duration);
+      }
+      
+      /**
+       * Releases the connection used by the passed 
+       * <code>HttpMethodBase</code>. If the connection is not released 
+       * successfully and a {@link Throwable} is thrown by the method, it is
+       * logged and ignored. 
+       *
+       * @param optionsMethod
+       *    the {@link HttpMethodBase} containing a connection, 
+       *    can be <code>null</code>.
+       */
+      private void releaseConnection(HttpMethodBase optionsMethod) {
+         if (optionsMethod != null) {
+            try {
+
+               // Release the connection from OptionsMethod.
+               optionsMethod.releaseConnection();
+            } catch (Throwable ignorable) {
+
+               // Just ignore the exception and log it as we do not care
+               // if the connection is not properly released.
+               Utils.logIgnoredException(
+                  ignorable,
+                  CheckLinks.URLChecker.class.getName(),
+                  "releaseConnection(HttpMethodBase)",
+                  optionsMethod.getClass().getName(),
+                  "releaseConnection()");
+            }
+         }
       }
 
       /**
@@ -784,5 +858,27 @@ class CheckLinks extends Object {
          assertHasRun();
          return _exception;
       }
+      
+      /**
+       * Enforce a timeout on the <code>URLChecker</code> thread. Actualy the
+       * thread is allowed to run and ignored. So set the duration as the 
+       * initial connection timeout value and create a new 
+       * {@link ConnectTimeoutException}. 
+       */
+      public void enforceTimeout() {
+         if (!hasRun()) {
+            
+            // Set the duration as was defined for connection timeout
+            _duration = _targetDescriptor.getConnectionTimeOut();
+            
+            // Create a new ConnectTimeoutException.
+            // TODO: Currently it is observed that mostly the URLs which are 
+            // expected to throw a ConnectTimeoutException keeps on running
+            // but we need to take care of the situation when because of some
+            // other reason the thread is still active. 
+            _exception = new ConnectTimeoutException("connect timed out");
+         }
+      }
+      
    }
 }
