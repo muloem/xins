@@ -42,8 +42,17 @@ implements PropertyReader {
     * @param map
     *    the map containing the data of this <code>PropertyReader</code>,
     *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>map == null</code>.
     */
-   AbstractPropertyReader(Map map) {
+   AbstractPropertyReader(Map map)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("map", map);
+
+      // Initialize fields
       _properties = map;
    }
 
@@ -53,7 +62,7 @@ implements PropertyReader {
    //-------------------------------------------------------------------------
 
    /**
-    * The mappings from property keys to values.
+    * The mappings from property keys to values. Never <code>null</code>.
     */
    private final Map _properties;
 
@@ -75,7 +84,11 @@ implements PropertyReader {
     *    if <code>name == null</code>.
     */
    public String get(String name) throws IllegalArgumentException {
+
+      // Check preconditions
       MandatoryArgumentChecker.check("name", name);
+
+      // Retrieve the value
       Object value = _properties.get(name);
       return (String) value;
    }
