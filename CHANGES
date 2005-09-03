@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
 
+* XINS/Java Common Library:
+  - Added the StatsPropertyReader with a corresponding test.
+
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1259976: OtherIOError instead of SocketTimeout on Java
     1.3.
