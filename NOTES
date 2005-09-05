@@ -1,4 +1,4 @@
-This file contains the XINS 1.3.0-alpha4 release notes.
+This file contains the XINS 1.3.0-beta1 release notes.
 
 Contents:
 - Introduction
@@ -9,8 +9,8 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is an unstable release. New features have not been tested extensively and
-they may undergo major changes.
+This is a beta release. Although new features have mostly been tested, it is
+recommended a stable release is used for production deployments.
 
 This release should be compatible with previous stable releases.
 
