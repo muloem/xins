@@ -446,7 +446,7 @@ public class MetaFunctionsTests extends TestCase {
          } else if ("http://www.paypal.com:8080/".equals(url)) {
             assertEquals("ConnectionTimeout", element.getAttribute("result"));
          } else if ("http://127.0.0.1:7/".equals(url)) {
-            assertEquals(element.getAttribute("result"), "ConnectionRefusal");
+            assertEquals("ConnectionRefusal", element.getAttribute("result")); 
          } else if ("http://tauseef.xins.org/".equals(url)) {
             assertEquals("UnknownHost", element.getAttribute("result"));
          } else if ("http://www.sourceforge.com/".equals(url)) {
