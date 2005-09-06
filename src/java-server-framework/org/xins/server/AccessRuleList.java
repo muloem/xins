@@ -84,8 +84,11 @@ extends Object implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if there was a parsing error.
+    *
+    * @since XINS 1.1.0
     */
-   public static final AccessRuleList parseAccessRuleList(String descriptor, int interval)
+   public static final AccessRuleList parseAccessRuleList(String descriptor,
+                                                          int    interval)
    throws IllegalArgumentException, ParseException {
 
       // Check preconditions
