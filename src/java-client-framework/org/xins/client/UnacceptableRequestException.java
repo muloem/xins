@@ -51,11 +51,7 @@ extends RuntimeException {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     */
-   public UnacceptableRequestException(AbstractCAPICallRequest request)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request", request);
+   public UnacceptableRequestException(AbstractCAPICallRequest request) {
 
       // Store the information
       _request    = request;
