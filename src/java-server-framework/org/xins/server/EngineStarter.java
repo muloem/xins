@@ -117,7 +117,7 @@ final class EngineStarter extends Object {
     * Logs server version, warns if server version differs from common version
     * and warns if the server version is not a production release.
     */
-   private void logBootMessages() throws IllegalArgumentException {
+   private void logBootMessages() {
 
       // Determine the ServletContext
       ServletContext context = _config.getServletContext();
