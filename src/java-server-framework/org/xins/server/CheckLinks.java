@@ -464,7 +464,7 @@ class CheckLinks extends Object {
     *    the {@link Throwable} exception occured in the {@link URLChecker}
     *    thread, cannot be <code>null</code>.
     *
-    * @param exception
+    * @param url
     *    the url which threw the exception, cannot be <code>null</code>.
     * 
     * @return 
