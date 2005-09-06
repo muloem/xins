@@ -60,6 +60,12 @@ extends Object implements AccessRuleContainer {
     */
    static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
 
+   /**
+    * Default watch interval for referenced files, in seconds. Equals one
+    * minute (60 seconds).
+    */
+   static final int DEFAULT_INTERVAL = 60;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -67,20 +73,49 @@ extends Object implements AccessRuleContainer {
 
    /**
     * Parses the specified character string to construct a new
-    * <code>AccessRuleList</code> object.
+    * <code>AccessRuleList</code> object, using the default watch interval
+    * for referenced files.
     *
     * @param descriptor
     *    the access rule list descriptor, the character string to parse,
     *    cannot be <code>null</code>.
-    *
-    * @param interval
-    *    the interval used to check the ACL files for modification.
     *
     * @return
     *    an {@link AccessRuleList} instance, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>descriptor == null</code>.
+    *
+    * @throws ParseException
+    *    if there was a parsing error.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.3.0.
+    *    Use {@link #parseAccessRuleList(String,int)} instead.
+    */
+   public static final AccessRuleList parseAccessRuleList(String descriptor)
+   throws IllegalArgumentException, ParseException {
+      return parseAccessRuleList(descriptor, DEFAULT_INTERVAL);
+   }
+
+   /**
+    * Parses the specified character string to construct a new
+    * <code>AccessRuleList</code> object, with the specified watch interval
+    * for referenced files.
+    *
+    * @param descriptor
+    *    the access rule list descriptor, the character string to parse,
+    *    cannot be <code>null</code>.
+    *
+    * @param interval
+    *    the interval used to check the ACL files for modification, in
+    *    seconds, at least 1.
+    *
+    * @return
+    *    an {@link AccessRuleList} instance, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null || interval &lt; 1</code>.
     *
     * @throws ParseException
     *    if there was a parsing error.
@@ -93,6 +128,11 @@ extends Object implements AccessRuleContainer {
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
+      if (interval < 1) {
+         throw new IllegalArgumentException("interval ("
+                                          + interval
+                                          + ") < 1");
+      }
 
       // Tokenize the descriptor
       descriptor = descriptor.trim();
