@@ -72,10 +72,12 @@ extends StandardErrorCodeException {
     * Creates the message containing the details of the error.
     *
     * @param element
-    *    The {@link DataElement} containing the details of the error.
+    *    the {@link DataElement} containing the details of the error, can be
+    *    <code>null</code>.
     *
-    * @return the message or <code>null</code> if the element is 
-    *         <code>null</code> or empty.
+    * @return
+    *    the message or <code>null</code> if <code>element == null</code>
+    *    or empty.
     */
    static String createMessage(DataElement element) {
       
@@ -132,7 +134,7 @@ extends StandardErrorCodeException {
                            + typeName
                            + "\". ");
             }
-            // XXX: actual value is not specified in message
+            // XXX: Actual value is not specified in the message
          }
       }
 
