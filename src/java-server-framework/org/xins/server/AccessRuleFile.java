@@ -49,15 +49,20 @@ public class AccessRuleFile implements AccessRuleContainer {
     *   the next token, never <code>null</code>.
     *
     * @throws ParseException
-    *   if <code>tokenizer.</code>{@link StringTokenizer#hasMoreTokens() hasMoreTokens}()<code> == false</code>.
+    *   if <code>tokenizer.{@link StringTokenizer#hasMoreTokens() hasMoreTokens}() == false</code>.
     */
-   private static String nextToken(String descriptor, StringTokenizer tokenizer)
+   private static String nextToken(String          descriptor,
+                                   StringTokenizer tokenizer)
    throws ParseException {
 
       if (tokenizer.hasMoreTokens()) {
          return tokenizer.nextToken();
       } else {
-         throw new ParseException("The string \"" + descriptor + "\" is invalid as an access rule descriptor. Too few tokens retrieved from the descriptor.");
+         throw new ParseException("The string \""
+                                + descriptor
+                                + "\" is invalid as an access rule"
+                                + " descriptor. Too few tokens retrieved"
+                                + " from the descriptor.");
       }
    }
 
@@ -74,24 +79,33 @@ public class AccessRuleFile implements AccessRuleContainer {
     *    It also cannot be empty <code>(" ")</code>.
     *
     * @param interval
-    *    the interval used to check the ACL file for modification.
+    *    the interval to check the ACL file for modifications, in seconds,
+    *    must be &gt;= 1.
     *
     * @throws ParseException
     *    If the token is incorrectly formatted.
     *
     * @throws IllegalArgumentException
-    *    if <code>token == null</code>.
+    *    if <code>descriptor == null || interval &lt; 1</code>.
     */
-   public AccessRuleFile(String descriptor, int interval) throws IllegalArgumentException, ParseException {
+   public AccessRuleFile(String descriptor, int interval)
+   throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
+      if (interval < 1) {
+         throw new IllegalArgumentException("interval ("
+                                          + interval
+                                          + ") < 1");
+      }
 
       StringTokenizer tokenizer = new StringTokenizer(descriptor," \t\n\r");
 
       String token = nextToken(descriptor, tokenizer);
       if (!"file".equals(token)) {
-         throw new ParseException("First token of descriptor is \"" + token + "\", instead of 'file'.");
+         throw new ParseException("First token of descriptor is \""
+                                + token
+                                + "\", instead of 'file'.");
       }
 
       String file = nextToken(descriptor, tokenizer);
@@ -105,7 +119,10 @@ public class AccessRuleFile implements AccessRuleContainer {
       try {
          parseAccessRuleFile(file, interval);
       } catch (IOException ioe) {
-         throw new ParseException("Cannot parse the file " + file + " due to an IO exception: " + ioe.getMessage());
+         throw new ParseException("Cannot parse the file "
+                                + file
+                                + " due to an IO exception: "
+                                + ioe.getMessage());
       }
    }
 
@@ -172,7 +189,8 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address is malformed.
     */
-   public Boolean isAllowed(String ip, String functionName) throws IllegalArgumentException, ParseException {
+   public Boolean isAllowed(String ip, String functionName)
+   throws IllegalArgumentException, ParseException {
 
       // TODO: If disposed, then throw a ProgrammingError
 
