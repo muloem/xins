@@ -978,9 +978,9 @@ implements DefaultResultCodes {
          } catch (NoSuchFunctionException exception) {
             throw exception;
          } catch (Throwable exception) {
-            final int callID = 0; // TODO
-            return handleFunctionException(start, functionRequest, ip, callID,
-                                           exception);
+            final int CALL_ID = 0; // TODO
+            return handleFunctionException(start, functionRequest, ip,
+                                           CALL_ID, exception);
          }
       }
 
@@ -1145,9 +1145,6 @@ implements DefaultResultCodes {
     *
     * @return
     *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this object is currently not initialized.
     */
    FunctionResult handleFunctionException(long            start,
                                           FunctionRequest functionRequest,

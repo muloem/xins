@@ -257,7 +257,7 @@ final class Engine extends Object {
 
       // Determine pattern string
       // TODO: Store "org.xins.server.contextID.filter" in a constant
-      final String propName  = "org.xins.server.contextID.filter";
+      String propName  = "org.xins.server.contextID.filter";
       String propValue = properties.get(propName);
 
       // If the property value is empty, then there is no pattern
@@ -271,9 +271,9 @@ final class Engine extends Object {
 
          // Convert the string to a Pattern
          try {
-            final int mask = Perl5Compiler.READ_ONLY_MASK
-                           | Perl5Compiler.CASE_INSENSITIVE_MASK;
-            pattern = PATTERN_COMPILER.compile(propValue, mask);
+            int mask = Perl5Compiler.READ_ONLY_MASK
+                     | Perl5Compiler.CASE_INSENSITIVE_MASK;
+            pattern  = PATTERN_COMPILER.compile(propValue, mask);
             Log.log_3432(propValue);
 
          // Malformed pattern indicates an invalid value
