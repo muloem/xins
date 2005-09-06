@@ -112,6 +112,12 @@ extends HttpServlet {
    //-------------------------------------------------------------------------
 
    /**
+    * Serial version UID. Used for serialization. The assigned value is for
+    * compatibility with XINS 1.2.5.
+    */
+   private static final long serialVersionUID = -1117062458458353841L;
+
+   /**
     * The fully-qualified name of this class.
     */
    private static final String CLASSNAME = APIServlet.class.getName();
@@ -139,7 +145,7 @@ extends HttpServlet {
    /**
     * The default configuration file modification check interval, in seconds.
     */
-   static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
+   public static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
 
    /**
     * The name of the build property that specifies the name of the
@@ -273,8 +279,7 @@ extends HttpServlet {
    }
 
    /**
-    * Initializes this servlet using the specified configuration (wrapper
-    * method).
+    * Initializes this servlet using the specified configuration.
     *
     * @param config
     *    the {@link ServletConfig} object which contains build properties for
@@ -343,6 +348,28 @@ extends HttpServlet {
    }
 
    /**
+    * Initializes this servlet using the specified configuration. This is a
+    * alias for {@link #init(ServletConfig)}. That method should be used
+    * instead.
+    *
+    * @param config
+    *    the {@link ServletConfig} object which contains build properties for
+    *    this servlet, as specified by the <em>assembler</em>, cannot be
+    *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the servlet could not be initialized.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.3.0. Use {@link #init(ServletConfig)}
+    *    instead.
+    */
+   public void initImpl(ServletConfig config)
+   throws ServletException {
+      init(config);
+   }
+
+   /**
     * Returns the <code>ServletConfig</code> object which contains the
     * build properties for this servlet. The returned {@link ServletConfig}
     * object is the one passed to the {@link #init(ServletConfig)} method.
@@ -373,6 +400,9 @@ extends HttpServlet {
     *    if <code>! (request instanceof {@link HttpServletRequest}
     *    &amp;&amp; response instanceof {@link HttpServletResponse})</code>.
     *
+    * @throws ServletException
+    *    if this servlet failed for some other reason that an I/O error.
+    *
     * @throws IOException
     *    if there is an error error writing to the response output stream.
     */
@@ -380,10 +410,35 @@ extends HttpServlet {
                        ServletResponse response)
    throws NullPointerException,
           ClassCastException,
+          ServletException,
           IOException {
 
       _engine.service((HttpServletRequest)  request,
                       (HttpServletResponse) response);
+   }
+
+   /**
+    * Handles an HTTP request to this servlet. If any of the arguments is
+    * <code>null</code>, then the behaviour of this method is undefined.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if this servlet is yet uninitialized. 
+    *
+    * @throws IOException
+    *    if there is an error error writing to the response output stream.
+    */
+   public void service(HttpServletRequest  request,
+                       HttpServletResponse response)
+   throws NullPointerException,
+          IOException {
+
+      _engine.service(request, response);
    }
 
    /**
