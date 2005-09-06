@@ -26,7 +26,14 @@ The following are prerequisites for using the XINS framework:
 
 Binary backwards compatibility of the JAR files (logdoc.jar, xins-common.jar,
 xins-client.jar and xins-server.jar) with XINS 1.2.5 has been validated using
-Japitools. For more information on Japitools, see:
+Japitools.
+
+Also, compatibility with XINS 1.0 has been improved. In XINS 1.1.0, some
+public methods were removed from the XINS/Java Server Framework. These have
+been re-added and marked as deprecated. Again, Japitools was used for
+validation.
+
+For more information on Japitools, see:
 
    http://www.kaffe.org/~stuart/japi/
 
