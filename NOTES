@@ -42,11 +42,8 @@ version 1.6.5 on different operating systems, including Windows 2000 and Linux
 2.6. Most likely, it will also work correctly with earlier versions of Ant.
 For more information on Ant, visit:
 
-   http://ant.apache.org/
-
-To download it, visit:
-
-   http://ant.apache.org/bindownload.cgi
+   Homepage:      http://ant.apache.org/
+   Download page: http://ant.apache.org/bindownload.cgi
 
 The 'xins' shell script in this release has been tested with bash 2.0x on
 Linux 2.4/x86, Linux 2.6/x86, Mac OS/X, Solaris 8 and Cygwin 1.5.12 (on
