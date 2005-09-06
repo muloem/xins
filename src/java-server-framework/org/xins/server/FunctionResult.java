@@ -8,7 +8,6 @@ package org.xins.server;
 
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 /**
@@ -168,12 +167,14 @@ public class FunctionResult extends Object {
    }
 
    /**
-    * Add a new Element to the data element.
+    * Adds a new <code>org.xins.common.xml.Element</code> to the data element.
     *
     * @param element
     *    the new element to add to the result, cannot be <code>null</code>.
+    *
+    * @since XINS 1.1.0
     */
-   protected void add(Element element) {
+   protected void add(org.xins.common.xml.Element element) {
       if (_dataElementBuilder == null) {
          _dataElementBuilder = new ElementBuilder("data");
       }
@@ -181,12 +182,27 @@ public class FunctionResult extends Object {
    }
 
    /**
-    * Gets the Data element from this result.
+    * Adds a new <code>org.xins.server.Element</code> to the data element.
+    *
+    * @param element
+    *    the new element to add to the result, cannot be <code>null</code>.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.3.0.
+    *    Use {@link #add(org.xins.common.xml.Element)} instead.
+    */
+   protected void add(org.xins.server.Element element) {
+      // FIXME TODO: Convert to an org.xins.common.xml.Element and then call
+      // the other method.
+   }
+
+   /**
+    * Gets the data element from this result.
     *
     * @return
     *    the data element of the result, can be <code>null</code>.
     */
-   public Element getDataElement() {
+   public org.xins.common.xml.Element getDataElement() {
       if (_dataElementBuilder == null) {
          return null;
       } else {
