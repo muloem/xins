@@ -251,6 +251,9 @@ class CallingConventionManager extends Object {
     *    a bootstrapped {@link CallingConvention} that matches the specified
     *    calling convention name, or <code>null</code> if no match is found.
     *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
+    *
     * @throws MissingRequiredPropertyException
     *    if the created calling convention requires a bootstrap property that
     *    is missing.

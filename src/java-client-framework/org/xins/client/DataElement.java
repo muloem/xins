@@ -553,7 +553,7 @@ public class DataElement implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>dataElement == null</code>.
     */
-   private Element toXMLElement(DataElement dataElement) {
+   private Element toXMLElement(DataElement dataElement) throws IllegalArgumentException {
       
       MandatoryArgumentChecker.check("dataElement", dataElement);
       

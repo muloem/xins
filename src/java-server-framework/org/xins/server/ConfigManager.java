@@ -177,7 +177,7 @@ final class ConfigManager extends Object {
 
       // TODO: What if the name cannot be determined?
 
-      final String prop = APIServlet.CONFIG_FILE_SYSTEM_PROPERTY;
+      String prop = APIServlet.CONFIG_FILE_SYSTEM_PROPERTY;
       String configFile = null;
       try {
          configFile = System.getProperty(prop);
@@ -333,10 +333,6 @@ final class ConfigManager extends Object {
     * @param interval
     *    the interval in seconds, must be greater than or equal to 1.
     *
-    * @throws IllegalStateException
-    *    if the configuration file has not been determined yet or if a
-    *    watcher has been created already.
-    *
     * @throws IllegalArgumentException
     *    if <code>interval &lt; 1</code>.
     */
@@ -422,9 +418,6 @@ final class ConfigManager extends Object {
     * @return
     *    the interval to use, always &gt;= 1.
     *
-    * @throws IllegalStateException
-    *    if there is no current configuration file.
-    *
     * @throws InvalidPropertyValueException
     *    if the interval cannot be determined because it does not qualify as a
     *    positive 32-bit unsigned integer number.
@@ -438,8 +431,8 @@ final class ConfigManager extends Object {
       }
 
       // Get the runtime property
-      final String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
-      final String s = _runtimeProperties.get(prop);
+      String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
+      String s = _runtimeProperties.get(prop);
       int interval = -1;
 
       // If the property is set, parse it

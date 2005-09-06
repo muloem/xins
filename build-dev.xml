@@ -665,6 +665,7 @@ ${sf.file}</fail>
 		<gunzip src="build/${name}-${exe.version}.tgz" dest="../${name}-${exe.version}.tar" />
 		<untar src="../${name}-${exe.version}.tar" dest=".." />
 		<delete file="../${name}-${exe.version}.tar" />
+		<!--property name="exe.version" value="1.2.5" /-->
 		<replace file="src/tools/installer/${name}.iss"
 		         token="%%VERSION%%"
 				   value="${exe.version}" />

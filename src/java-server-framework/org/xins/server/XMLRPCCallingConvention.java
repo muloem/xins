@@ -415,6 +415,9 @@ final class XMLRPCCallingConvention extends CallingConvention {
     *    the name of the child element to get, or <code>null</code> if the
     *    parent have a unique child.
     *
+    * @return
+    *    The sub-element of this element.
+    *
     * @throws InvalidRequestException
     *    if no child was found or more than one child was found.
     */

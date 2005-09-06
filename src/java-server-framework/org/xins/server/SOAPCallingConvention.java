@@ -424,9 +424,6 @@ final class SOAPCallingConvention extends CallingConvention {
     *
     * @return
     *    the converted value, never <code>null</code>.
-    *
-    * @throws InvalidSpecificationException
-    *    if the specification is incorrect.
     */
    private Element soapElementTransformation(Map dataSection, boolean input, Element element, boolean top) {
       String elementName = element.getLocalName();
