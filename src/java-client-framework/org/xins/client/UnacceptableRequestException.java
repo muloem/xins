@@ -47,9 +47,15 @@ extends RuntimeException {
     * @param request
     *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
     *    may be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
     */
    public UnacceptableRequestException(AbstractCAPICallRequest request)
    throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request", request);
 
       // Store the information
       _request    = request;
@@ -80,6 +86,12 @@ extends RuntimeException {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Returns the message for this exception.
+    *
+    * @return
+    *    the exception message, can be <code>null</code>.
+    */
    public String getMessage() {
       if (_message == null) {
          _message = InvalidRequestException.createMessage(_errors);
