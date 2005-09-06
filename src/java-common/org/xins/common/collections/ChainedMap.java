@@ -22,7 +22,7 @@ import java.util.Set;
  * If an entry already exists, the key/pair entry will be put at the same
  * position as the old one.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ChainedMap extends AbstractMap {
@@ -108,20 +108,34 @@ public class ChainedMap extends AbstractMap {
       //-------------------------------------------------------------------------
 
       /**
-       * Creates a new instance of <code>EntryMap</code>.
+       * Creates a new <code>EntryMap</code> instance.
+       *
+       * @param key
+       *    the key for the entry, can be <code>null</code>.
+       *
+       * @param value
+       *    the value for the entry, can be <code>null</code>.
        */
       public EntryMap(Object key, Object value) {
          _key = key;
          _value = value;
       }
 
+
       //-------------------------------------------------------------------------
       // Fields
       //-------------------------------------------------------------------------
 
+      /**
+       * The key. Can be <code>null</code>.
+       */
       private Object _key;
 
+      /**
+       * The value. Can be <code>null</code>.
+       */
       private Object _value;
+
       
       //-------------------------------------------------------------------------
       // Methods
@@ -157,9 +171,10 @@ public class ChainedMap extends AbstractMap {
    }
    
    /**
-    * The <code>ChainedSet</code> used for the {@link #entrySet} method of this ChainedMap.
+    * The <code>ChainedSet</code> used for the {@link #entrySet} method of this
+    * <code>ChainedMap</code>.
     *
-    * @version $Revision$
+    * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
    private class ChainedSet extends AbstractSet {
