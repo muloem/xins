@@ -112,10 +112,11 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.XINSServiceCallerTests.class);
       suite.addTestSuite(org.xins.tests.client.InvalidResponseTests.class);
 
-      suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
+      suite.addTestSuite(org.xins.tests.server.APIServletTests.class);
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
       
 
