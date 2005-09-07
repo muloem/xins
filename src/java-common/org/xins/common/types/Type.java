@@ -132,15 +132,15 @@ public abstract class Type extends Object {
    }
 
    /**
-    * Determines if the specified value is valid for this type (wrapper
-    * method).
+    * Determines if the specified <code>String</code> value is considered
+    * valid for this type (wrapper method).
     *
-    * <p />This method first checks if <code>value == null</code> and if it is
-    * not, then it returns the result of a call to
-    * {@link #isValidValueImpl(String)}. Note that <code>null</code> values are
-    * <em>always</em> considered to be valid.
+    * <p />This method first checks if <code>string == null</code> and if it
+    * is not, then it returns the result of a call to
+    * {@link #isValidValueImpl(String)}. Note that <code>null</code> values
+    * are <em>always</em> considered to be valid.
     *
-    * @param value
+    * @param string
     *    the value that should be checked for validity, can be
     *    <code>null</code>.
     *
@@ -148,32 +148,34 @@ public abstract class Type extends Object {
     *    <code>true</code> if and only if the specified value is valid,
     *    <code>false</code> otherwise.
     */
-   public final boolean isValidValue(String value) {
-      if (value == null) {
+   public final boolean isValidValue(String string) {
+      if (string == null) {
          return true;
       } else {
-         return isValidValueImpl(value);
+         return isValidValueImpl(string);
       }
    }
 
    /**
-    * Determines if the specified value is valid for this type (implementation
-    * method). This method is called from {@link #isValidValue(String)}. When
+    * Determines if the specified <code>String</code> value is considered
+    * valid for this type (implementation method).
+    *
+    * <p>This method is called from {@link #isValidValue(String)}. When
     * called from that method, it is guaranteed that the argument is not
     * <code>null</code>.
     *
     * <p />The implementation of this method in class {@link Type} returns
     * <code>true</code>.
     *
-    * @param value
-    *    the value that should be checked for validity, never
-    *    <code>null</code>.
+    * @param string
+    *    the <code>String</code> value that should be checked for validity,
+    *    never <code>null</code>.
     *
     * @return
-    *    <code>true</code> if and only if the specified value is valid,
-    *    <code>false</code> otherwise.
+    *    <code>true</code> if and only if the specified <code>String</code>
+    *    value is valid, <code>false</code> otherwise.
     */
-   protected boolean isValidValueImpl(String value) {
+   protected boolean isValidValueImpl(String string) {
       return true;
    }
 

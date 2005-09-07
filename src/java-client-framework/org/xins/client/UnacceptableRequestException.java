@@ -47,9 +47,6 @@ extends RuntimeException {
     * @param request
     *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
     *    may be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
     */
    public UnacceptableRequestException(AbstractCAPICallRequest request) {
 

@@ -329,8 +329,8 @@ public abstract class Manageable extends Object {
 
    /**
     * Performs the initialization procedure (actual implementation). When this
-    * method is called from {@link #bootstrap(PropertyReader)}, the state and
-    * the argument will have been checked and the state will have been set to
+    * method is called from {@link #init(PropertyReader)}, the state and the
+    * argument will have been checked and the state will have been set to
     * {@link #INITIALIZING}.
     *
     * <p>The implementation of this method in class {@link Manageable} is

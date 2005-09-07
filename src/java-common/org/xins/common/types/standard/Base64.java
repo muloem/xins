@@ -183,9 +183,25 @@ public class Base64 extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected boolean isValidValueImpl(String value) {
+   /**
+    * Determines if the specified <code>String</code> value is considered
+    * valid for this type (implementation method).
+    *
+    * <p>This method is called from {@link #isValidValue(String)}. When
+    * called from that method, it is guaranteed that the argument is not
+    * <code>null</code>.
+    *
+    * @param string
+    *    the <code>String</code> value that should be checked for validity,
+    *    never <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if and only if the specified <code>String</code>
+    *    value is valid, <code>false</code> otherwise.
+    */
+   protected boolean isValidValueImpl(String string) {
       try {
-         byte[] encoded = value.getBytes(STRING_ENCODING);
+         byte[] encoded = string.getBytes(STRING_ENCODING);
          if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
             return false;
          }
@@ -195,11 +211,31 @@ public class Base64 extends Type {
          }
          return true;
       } catch (Exception ex) {
-         // XXX: Log?
+         // TODO: Log
          return false;
       }
    }
 
+   /**
+    * Converts from a <code>String</code> to an instance of the value class
+    * for this type (implementation method).
+    *
+    * <p>This method is not required to check the validity of the specified
+    * value (since {@link #isValidValueImpl(String)} should have been called
+    * before) but if it does, then it may throw a {@link TypeValueException}.
+    *
+    * @param string
+    *    the string to convert to an instance of the value class, guaranteed
+    *    to be not <code>null</code> and guaranteed to have been passed to
+    *    {@link #isValidValueImpl(String)} without getting an exception.
+    *
+    * @return
+    *    an instance of the value class, cannot be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if <code>string</code> is considered to be an invalid value for this
+    *    type.
+    */
    protected Object fromStringImpl(String string) throws TypeValueException {
       try {
          byte[] encoded = string.getBytes(STRING_ENCODING);
@@ -209,14 +245,43 @@ public class Base64 extends Type {
       }
    }
 
+   /**
+    * Generates a string representation of the specified value for this type.
+    * The specified value must be an instance of the value class for this type
+    * (see {@link #getValueClass()}). Also, it may have to fall within a
+    * certain range of valid values, depending on the type.
+    *
+    * @param value
+    *    the value, cannot be <code>null</code>.
+    *
+    * @return
+    *    the string representation of the specified value for this type,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>getValueClass().isInstance(value) == false</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value is not in the allowed range.
+    */
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
+
+      // Check preconditions
       MandatoryArgumentChecker.check("value", value);
+
+      // Convert the argument to a byte array (may throw ClassCastException)
       byte[] b = (byte[]) value;
+
+      // Try encoding the byte array as a Base64 string
       try {
          return new String(org.apache.commons.codec.binary.Base64.encodeBase64(b), STRING_ENCODING);
       } catch (UnsupportedEncodingException uee) {
-         throw new TypeValueException(SINGLETON, new String(b), "Encoding " + STRING_ENCODING + " not supported.");
+         String message = "Encoding " + STRING_ENCODING + " not supported.";
+         throw new TypeValueException(SINGLETON, b.toString(), message);
       }
    }
 }

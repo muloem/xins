@@ -12,7 +12,9 @@ import java.util.Random;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.manageable.InvalidPropertyValueException;
 import org.xins.common.manageable.Manageable;
+import org.xins.common.manageable.MissingRequiredPropertyException;
 import org.xins.common.net.IPAddressUtils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
@@ -121,7 +123,28 @@ final class ContextIDGenerator extends Manageable {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected void initImpl(PropertyReader properties) {
+   /**
+    * Performs the initialization procedure (actual implementation). When this
+    * method is called from {@link #init(PropertyReader)}, the state and the
+    * argument will have been checked and the state will have been set to
+    * {@link #INITIALIZING}.
+    *
+    * @param properties
+    *    the initialization properties, not <code>null</code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is not given.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value of a certain property is invalid.
+    *
+    * @throws InitializationException
+    *    if the initialization failed, for any other reason.
+    */
+   protected void initImpl(PropertyReader properties)
+   throws MissingRequiredPropertyException,
+          InvalidPropertyValueException,
+          InitializationException {
 
       // Determine if the hostname has changed
       String hostname = properties.get(APIServlet.HOSTNAME_PROPERTY);

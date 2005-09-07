@@ -67,18 +67,20 @@ public class List extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines if the specified value is valid for this type (implementation
-    * method). This method is called from {@link #isValidValue(String)}. When
+    * Determines if the specified <code>String</code> value is considered
+    * valid for this type (implementation method).
+    *
+    * <p>This method is called from {@link #isValidValue(String)}. When
     * called from that method, it is guaranteed that the argument is not
     * <code>null</code>.
     *
-    * @param value
-    *    the value that should be checked for validity, never
-    *    <code>null</code>.
+    * @param string
+    *    the <code>String</code> value that should be checked for validity,
+    *    never <code>null</code>.
     *
     * @return
-    *    <code>true</code> if and only if the specified value is valid,
-    *    <code>false</code> otherwise.
+    *    <code>true</code> if and only if the specified <code>String</code>
+    *    value is valid, <code>false</code> otherwise.
     */
    protected final boolean isValidValueImpl(String string) {
 
@@ -121,6 +123,8 @@ public class List extends Type {
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
+      // TODO: Unit test this method!
+
       // Construct a ItemList to store the values in
       ItemList list = createList();
 
@@ -143,6 +147,9 @@ public class List extends Type {
     *    the new list created, never <code>null</code>.
     */
    public ItemList createList() {
+
+      // TODO: Unit test this method!
+
       return null;
    }
 
@@ -188,6 +195,28 @@ public class List extends Type {
       return buffer.toString();
    }
 
+   /**
+    * Generates a string representation of the specified value for this type.
+    * The specified value must be an instance of the value class for this type
+    * (see {@link #getValueClass()}). Also, it may have to fall within a
+    * certain range of valid values, depending on the type.
+    *
+    * @param value
+    *    the value, cannot be <code>null</code>.
+    *
+    * @return
+    *    the string representation of the specified value for this type,
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>value == null</code>.
+    *
+    * @throws ClassCastException
+    *    if <code>getValueClass().isInstance(value) == false</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified value is not in the allowed range.
+    */
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
 
