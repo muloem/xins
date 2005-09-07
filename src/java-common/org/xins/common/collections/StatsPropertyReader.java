@@ -157,7 +157,13 @@ implements PropertyReader {
       return _properties.size();
    }
 
-   // TODO
+   /**
+    * Retrieves the set of unused properties.
+    *
+    * @return
+    *    a {@link PropertyReader} containing which were not queried, never
+    *    <code>null</code>.
+    */
    public PropertyReader getUnused() {
       if (_unused != null) {
          return _unused;
