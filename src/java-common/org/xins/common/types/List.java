@@ -66,6 +66,20 @@ public class List extends Type {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Determines if the specified value is valid for this type (implementation
+    * method). This method is called from {@link #isValidValue(String)}. When
+    * called from that method, it is guaranteed that the argument is not
+    * <code>null</code>.
+    *
+    * @param value
+    *    the value that should be checked for validity, never
+    *    <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if and only if the specified value is valid,
+    *    <code>false</code> otherwise.
+    */
    protected final boolean isValidValueImpl(String string) {
 
       if (string == null) {
@@ -84,6 +98,26 @@ public class List extends Type {
       return true;
    }
 
+   /**
+    * Converts from a <code>String</code> to an instance of the value class
+    * for this type (implementation method).
+    *
+    * <p>This method is not required to check the validity of the specified
+    * value (since {@link #isValidValueImpl(String)} should have been called
+    * before) but if it does, then it may throw a {@link TypeValueException}.
+    *
+    * @param string
+    *    the string to convert to an instance of the value class, guaranteed
+    *    to be not <code>null</code> and guaranteed to have been passed to
+    *    {@link #isValidValueImpl(String)} without getting an exception.
+    *
+    * @return
+    *    an instance of the value class, cannot be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if <code>string</code> is considered to be an invalid value for this
+    *    type.
+    */
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
@@ -103,7 +137,7 @@ public class List extends Type {
    }
 
    /**
-    * Creates a new ItemList.
+    * Creates a new <code>ItemList</code>.
     *
     * @return
     *    the new list created, never <code>null</code>.

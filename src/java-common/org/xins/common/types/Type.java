@@ -132,7 +132,8 @@ public abstract class Type extends Object {
    }
 
    /**
-    * Determines if the specified value is valid for this type.
+    * Determines if the specified value is valid for this type (wrapper
+    * method).
     *
     * <p />This method first checks if <code>value == null</code> and if it is
     * not, then it returns the result of a call to
@@ -156,9 +157,10 @@ public abstract class Type extends Object {
    }
 
    /**
-    * Actually checks if the specified value is valid for this type. This
-    * method is called from {@link #isValidValue(String)}. It is guaranteed that
-    * the argument is not <code>null</code>.
+    * Determines if the specified value is valid for this type (implementation
+    * method). This method is called from {@link #isValidValue(String)}. When
+    * called from that method, it is guaranteed that the argument is not
+    * <code>null</code>.
     *
     * <p />The implementation of this method in class {@link Type} returns
     * <code>true</code>.
@@ -177,7 +179,7 @@ public abstract class Type extends Object {
 
    /**
     * Converts from a <code>String</code> to an instance of the value class
-    * for this type.
+    * for this type (wrapper method).
     *
     * <p />This method returns <code>null</code> if <code>string ==
     * null</code>. Otherwise it first calls {@link #isValidValueImpl(String)}
@@ -213,6 +215,10 @@ public abstract class Type extends Object {
 
       Object value = fromStringImpl(string);
 
+      // TODO: Create a unit test to check that a null returned from
+      //       fromStringImpl(String) is actually causing a
+      //       ProgrammingException to be thrown
+
       if (!_valueClass.isInstance(value)) {
          final String THIS_METHOD    = "fromString(java.lang.String)";
          final String SUBJECT_CLASS  = getClass().getName();
@@ -226,10 +232,11 @@ public abstract class Type extends Object {
 
    /**
     * Converts from a <code>String</code> to an instance of the value class
-    * for this type (actual implementation method).
+    * for this type (implementation method).
     *
-    * <p>This method does not need to check the validity of the specified
-    * value, but if it does, then it may throw a {@link TypeValueException}.
+    * <p>This method is not required to check the validity of the specified
+    * value (since {@link #isValidValueImpl(String)} should have been called
+    * before) but if it does, then it may throw a {@link TypeValueException}.
     *
     * @param string
     *    the string to convert to an instance of the value class, guaranteed
