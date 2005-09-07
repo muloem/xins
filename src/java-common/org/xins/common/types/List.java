@@ -8,6 +8,7 @@ package org.xins.common.types;
 
 import java.util.StringTokenizer;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.text.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.types.standard.Text;
@@ -148,9 +149,8 @@ public class List extends Type {
     */
    public ItemList createList() {
 
-      // TODO: Unit test this method!
-
-      return null;
+      throw Utils.logProgrammingError("This method should not be called."
+            + " Only overriden methods should be used.");
    }
 
    /**
