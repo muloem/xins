@@ -12,9 +12,10 @@ import java.util.Random;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.manageable.InvalidPropertyValueException;
+import org.xins.common.collections.InvalidPropertyValueException;
+import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.manageable.Manageable;
-import org.xins.common.manageable.MissingRequiredPropertyException;
+import org.xins.common.manageable.InitializationException;
 import org.xins.common.net.IPAddressUtils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
