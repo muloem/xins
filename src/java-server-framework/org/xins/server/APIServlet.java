@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
 
@@ -286,17 +287,25 @@ extends HttpServlet {
     *    this servlet, as specified by the <em>assembler</em>, cannot be
     *    <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>config == null
+    *          || config.{@link ServletConfig#getServletContext()} == null</code>.
+    *
     * @throws ServletException
     *    if the servlet could not be initialized.
     */
    public void init(ServletConfig config)
-   throws ServletException {
+   throws IllegalArgumentException, ServletException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("config", config);
 
       // Get the ServletContext
       ServletContext context = config.getServletContext();
       if (context == null) {
-         Log.log_3202("config.getServletContext() == null");
-         throw new ServletException();
+         String message = "config.getServletContext() == null";
+         Log.log_3202(message);
+         throw new IllegalArgumentException(message);
       }
 
       // Compare the expected with the implemented Java Servlet API version;
