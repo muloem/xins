@@ -223,16 +223,6 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Retrieves the API name.
-    *
-    * @return
-    *    the API name, never <code>null</code>.
-    */
-   String getAPIName() {
-      return _apiName;
-   }
-
-   /**
     * Determines the filter for diagnostic context identifiers.
     *
     * @param properties
