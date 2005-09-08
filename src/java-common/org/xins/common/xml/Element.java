@@ -28,6 +28,10 @@ import org.xins.common.text.TextUtils;
  * <p>Note that the namespace URIs and local names are not checked for
  * validity in this class.
  *
+ * <p>Instances of this class cannot be created directly, using a constructor.
+ * Instead, use {@link ElementBuilder} to build an XML element, or
+ * {@link ElementParser} to parse an XML string.
+ *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
