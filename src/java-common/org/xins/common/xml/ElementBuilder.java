@@ -15,8 +15,8 @@ import org.xins.common.text.ParseException;
 /**
  * Builder for <code>Element</code> instances.
  *
- * <p>Note that this class is not thread-safe. It should not be used from
- * different threads at the same time. This applies even to read operations.
+ * <p>This class is not thread-safe; it should not be used from different
+ * threads at the same time.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -28,6 +28,8 @@ public class ElementBuilder extends Object {
    // TODO: Document the states. A user of this class should be aware of the
    //       fact that addChild(...) cannot be called if startElement(...) was
    //       just called, for example.
+
+   // TODO: Add one or more examples in the class comment.
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -155,10 +157,10 @@ public class ElementBuilder extends Object {
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
     */
-   public void setAttribute(String namespaceURI, String localName, String value)
+   public void setAttribute(String namespaceURI,
+                            String localName,
+                            String value)
    throws IllegalArgumentException {
-
-      // TODO: TRACE: Enter method
 
       // Check state
       if (_state == INITIAL) {
@@ -169,8 +171,6 @@ public class ElementBuilder extends Object {
 
       // Really set the attribute
       _element.setAttribute(namespaceURI, localName, value);
-
-      // TODO: TRACE: Leave method
    }
 
    /**
@@ -185,19 +185,17 @@ public class ElementBuilder extends Object {
    public void addChild(Element child)
    throws IllegalArgumentException {
 
-      // TODO: TRACE: Enter method
-
       // Check state
       if (_state == INITIAL) {
          String methodName = "addChild(" + Element.class.getName() + ')';
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         String detail     = "Unexpected state " + _state;
+         throw Utils.logProgrammingError(CLASSNAME, methodName,
+                                         CLASSNAME, methodName,
+                                         detail);
       }
 
       // Really add the child element
       _element.addChild(child);
-
-      // TODO: TRACE: Leave method
    }
 
    /**
@@ -221,8 +219,10 @@ public class ElementBuilder extends Object {
       // Check state
       if (_state == INITIAL) {
          String methodName = "addXMLChild(String)";
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         String detail     = "Unexpected state " + _state;
+         throw Utils.logProgrammingError(CLASSNAME, methodName,
+                                         CLASSNAME, methodName,
+                                         detail);
       }
 
       ElementParser parser = new ElementParser();
@@ -245,8 +245,6 @@ public class ElementBuilder extends Object {
     */
    public void setText(String text) {
 
-      // TODO: TRACE: Enter method
-
       // Check state
       if (_state == INITIAL) {
          String methodName = "setText(java.lang.String)";
@@ -256,8 +254,6 @@ public class ElementBuilder extends Object {
 
       // Really set the character content
       _element.setText(text);
-
-      // TODO: TRACE: Leave method
    }
 
    /**
@@ -290,8 +286,6 @@ public class ElementBuilder extends Object {
    public void startElement(String namespaceURI, String localName)
    throws IllegalArgumentException {
 
-      // TODO: TRACE: Enter method
-
       // Check state
       if (_state != INITIAL) {
          String methodName = "startElement(java.lang.String,java.lang.String)";
@@ -302,8 +296,6 @@ public class ElementBuilder extends Object {
       // Really start the element
       _element = new Element(namespaceURI, localName);
       _state   = STARTED;
-
-      // TODO: TRACE: Leave method
    }
 
    /**
@@ -317,16 +309,12 @@ public class ElementBuilder extends Object {
     */
    public Element createElement() {
 
-      // TODO: TRACE: Enter method
-
       // Check state
       if (_state != STARTED) {
          String methodName = "createElement()";
          String detail = "Unexpected state " + _state;
          throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
       }
-
-      // TODO: TRACE: Leave method
 
       return _element;
    }
