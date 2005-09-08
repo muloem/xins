@@ -151,16 +151,16 @@ public class HTTPServiceCallerTests extends TestCase {
 
    public void testHTTPServiceCaller_W3URL() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
-      Descriptor descriptor = new TargetDescriptor("hTTp://www.w3.org/TR/2004/REC-xml-20040204/", TOTAL_TO, CONN_TO, SOCKET_TO);
+      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/Consortium/Legal/2002/copyright-documents-20021231", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
       assertEquals("Incorrect succeeded descriptor.", descriptor, result.getSucceededTarget());
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
       String text = result.getString();
-      boolean correctStart = text.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html lang=\"EN\" xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" /><title>Extensible Markup Language (XML) 1.0 (Third Edition)</title>");
+      boolean correctStart = text.startsWith("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n      \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <title>W3C Document License</title>");
       assertTrue("Unexpected HTML received.", correctStart);
-      assertEquals(2840783247L, checksum(text));
+      assertEquals(456039016L, checksum(text));
    }
 
    public void testHTTPServiceCaller_PostParameters() throws Exception {
