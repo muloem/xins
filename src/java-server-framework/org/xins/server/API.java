@@ -135,6 +135,7 @@ implements DefaultResultCodes {
       // Initialize fields
       _name                = name;
       _startupTimestamp    = System.currentTimeMillis();
+      _timeZone            = TimeZone.getDefault();
       _lastStatisticsReset = _startupTimestamp;
       _manageableObjects   = new ArrayList();
       _functionsByName     = new HashMap();
@@ -244,7 +245,7 @@ implements DefaultResultCodes {
    /**
     * The time zone used when generating dates for output.
     */
-   private TimeZone _timeZone;
+   private final TimeZone _timeZone;
 
    /**
     * Version of the API.
@@ -314,7 +315,7 @@ implements DefaultResultCodes {
     * Returns the applicable time zone.
     *
     * @return
-    *    the time zone, not <code>null</code>.
+    *    the time zone, never <code>null</code>.
     */
    public final TimeZone getTimeZone() {
       return _timeZone;
@@ -358,7 +359,6 @@ implements DefaultResultCodes {
       }
 
       // Log the time zone
-      _timeZone = TimeZone.getDefault();
       String tzShortName = _timeZone.getDisplayName(false, TimeZone.SHORT);
       String tzLongName  = _timeZone.getDisplayName(false, TimeZone.LONG);
       Log.log_3404(tzShortName, tzLongName);
