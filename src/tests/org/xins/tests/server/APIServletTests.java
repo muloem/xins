@@ -16,6 +16,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -82,7 +83,7 @@ public class APIServletTests extends TestCase {
       // empty
    }
 
-   public void testAPIServletTests() throws Throwable {
+   public void testAPIServlet() throws Throwable {
 
       APIServlet servlet = new APIServlet();
 
@@ -143,7 +144,11 @@ public class APIServletTests extends TestCase {
       }
 
       context._serverInfo = getClass().getName();
-      servlet.init(config);
+      try {
+         servlet.init(config);
+      } catch (ServletException exception) {
+         // as expected
+      }
    }
 
 
