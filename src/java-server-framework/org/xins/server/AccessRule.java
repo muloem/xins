@@ -156,10 +156,13 @@ public final class AccessRule implements AccessRuleContainer {
     *    <code>null</code>.
     *
     * @param functionNamePattern
-    *    regular expression used for matching (or not) a function name; cannot be <code>null</code>.
+    *    regular expression used for matching (or not) a function name; cannot
+    *    be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>ipFilter == null || functionNamePattern == null || asString == null</code>.
+    *    if <code>ipFilter            == null
+    *          || functionNamePattern == null
+    *          || asString            == null</code>.
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
