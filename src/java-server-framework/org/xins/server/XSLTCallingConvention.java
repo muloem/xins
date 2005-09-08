@@ -46,7 +46,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The runtime property name that define if the templates should be cached.
+    * The runtime property name that defines if the templates should be cached.
     */
    public final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
@@ -57,7 +57,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
-    * The input parameter that specify the location of the XSLT template tot
+    * The input parameter that specifies the location of the XSLT template to
     * use.
     */
    public final static String TEMPLATE_PARAMETER = "_template";
