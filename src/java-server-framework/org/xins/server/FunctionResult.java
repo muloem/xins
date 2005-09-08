@@ -192,8 +192,10 @@ public class FunctionResult extends Object {
     *    Use {@link #add(org.xins.common.xml.Element)} instead.
     */
    protected void add(org.xins.server.Element element) {
-      // FIXME TODO: Convert to an org.xins.common.xml.Element and then call
-      // the other method.
+
+      // Convert to a Common Element and then delegate to the method that
+      // accepts a Common Element
+      add(element.convert());
    }
 
    /**
