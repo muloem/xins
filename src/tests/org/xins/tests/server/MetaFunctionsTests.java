@@ -505,6 +505,23 @@ public class MetaFunctionsTests extends TestCase {
       }
    }
 
+   /**
+    * Tests the <code>_ResetStatistics</code> method.
+    */
+   public void testResetStatistics() throws Throwable {
+
+      TargetDescriptor descriptor = 
+         new TargetDescriptor("http://127.0.0.1:8080/", 20000);
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      
+      XINSCallRequest request = new XINSCallRequest("_ResetStatistics", null);
+      caller.call(request);
+
+      // TODO: Test output
+      // TODO: Make sure _GetStatistics indicates no calls were done
+      // TODO: Make sure _GetStatistics returns proper _lastReset value
+   }
+
    
    //-------------------------------------------------------------------------
    // Inner classes
