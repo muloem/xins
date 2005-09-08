@@ -135,14 +135,14 @@ implements DefaultResultCodes {
       // Initialize fields
       _name                = name;
       _startupTimestamp    = System.currentTimeMillis();
-      _timeZone            = TimeZone.getDefault();
       _lastStatisticsReset = _startupTimestamp;
-      _manageableObjects   = new ArrayList();
-      _functionsByName     = new HashMap();
-      _functionList        = new ArrayList();
-      _resultCodesByName   = new HashMap();
-      _resultCodeList      = new ArrayList();
+      _manageableObjects   = new ArrayList(20);
+      _functionsByName     = new HashMap(89);
+      _functionList        = new ArrayList(80);
+      _resultCodesByName   = new HashMap(89);
+      _resultCodeList      = new ArrayList(80);
       _emptyProperties     = new RuntimeProperties();
+      _timeZone            = TimeZone.getDefault();
       _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
    }
 
@@ -733,6 +733,9 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("m", m);
       String className = m.getClass().getName();
 
+      // TODO: Do not log both 3218 and 3219, since there is nothing in
+      //       between which actually takes time to execute or can easily
+      //       fail. It's just adding the object to a collection.
       Log.log_3218(_name, className);
 
       // Store the manageable object in the list
