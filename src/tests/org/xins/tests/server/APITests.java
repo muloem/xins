@@ -73,17 +73,29 @@ public class APITests extends TestCase {
    public void testAPI() throws Throwable {
 
       try {
-         new API(null);
+         new TestAPI(null);
          fail("Expected API(null) to throw an IllegalArgumentException.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
       try {
-         new API("");
+         new TestAPI("");
       } catch (IllegalArgumentException exception) {
          fail("Expected API(\"\") to throw an IllegalArgumentException.");
       }
 
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   private class TestAPI extends API {
+
+      TestAPI(String name) {
+         super(name);
+      }
    }
 }
