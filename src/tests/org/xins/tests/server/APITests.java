@@ -81,10 +81,10 @@ public class APITests extends TestCase {
 
       try {
          new TestAPI("");
-      } catch (IllegalArgumentException exception) {
          fail("Expected API(\"\") to throw an IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) {
+         // as expected
       }
-
    }
 
 
