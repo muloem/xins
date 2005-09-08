@@ -6,24 +6,11 @@
  */
 package org.xins.tests.server;
 
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Set;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.ProgrammingException;
-import org.xins.server.APIServlet;
+import org.xins.server.API;
 
 /**
  * Tests for class <code>API</code>.
