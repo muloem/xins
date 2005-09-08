@@ -210,6 +210,8 @@ public class ElementBuilder extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>child == null</code>.
+    *
+    * @since XINS 1.3.0
     */
    public void addXMLChild(String xmlChild)
    throws ParseException, IllegalArgumentException {
