@@ -13,6 +13,7 @@ import java.util.List;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Simple representation of an XML element.
@@ -24,7 +25,8 @@ import org.xins.common.collections.ProtectedPropertyReader;
  *
  * @deprecated
  *    Deprecated since XINS 1.1.0.
- *    Use class {@link org.xins.common.xml.Element} instead.
+ *    Use class
+ *    {@link org.xins.common.xml.Element org.xins.common.xml.Element} instead.
  */
 public final class Element implements Cloneable {
 
@@ -270,4 +272,38 @@ public final class Element implements Cloneable {
 
       return clone;
    }
+
+   /**
+    * Converts this <code>org.xins.server.Element</code> to an
+    * instance of <code>org.xins.common.xml.Element</code>.
+    *
+    * @return
+    *    the converted {@link org.xins.common.xml.Element}, never
+    *    <code>null</code>.
+    */
+   org.xins.common.xml.Element convert() {
+
+      ElementBuilder builder = new ElementBuilder(getType());
+
+      // Process all attributes
+      PropertyReader attributes = getAttributes();
+      Iterator it = attributes.getNames();
+      while (it.hasNext()) {
+         String name  = (String) it.next();
+         String value = attributes.get(name);
+         builder.setAttribute(name, value);
+      }
+
+      // Process all child elements
+      List children = getChildren();
+      int count = (children == null) ? 0 : children.size();
+      for (int i = 0; i < count; i++) {
+         org.xins.server.Element child;
+         child = (org.xins.server.Element) children.get(i);
+         builder.addChild(child.convert());
+      }
+
+      return builder.createElement();
+   }
+
 }
