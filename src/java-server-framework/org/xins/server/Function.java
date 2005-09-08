@@ -196,9 +196,11 @@ implements DefaultResultCodes {
     *    the assigned call ID, &gt;= 0.
     */
    final int assignCallID() {
+      int callID;
       synchronized (_callCountLock) {
-         return _callCount++;
+         callID = _callCount++;
       }
+      return callID;
    }
 
    /**
