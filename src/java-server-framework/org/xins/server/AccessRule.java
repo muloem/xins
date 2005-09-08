@@ -306,6 +306,10 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * <p>Once disposed, the {@link #isAllowed} method should no longer be
     * called.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.3.0. This method is unused and the
+    *    implementation is empty.
     */
    public void dispose() {
       // empty
