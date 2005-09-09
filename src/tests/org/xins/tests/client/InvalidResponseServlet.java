@@ -79,6 +79,8 @@ public class InvalidResponseServlet extends HttpServlet {
          xmlResponse = getInvalidDataSectionResult();
       } else if (function.equals("DataSection2")) {
          xmlResponse = getInvalidDataSection2Result();
+      } else if (function.equals("RuntimeProps")) {
+         xmlResponse = getValidRuntimePropsResult();
       }
       
       if (xmlResponse != null) {
@@ -167,5 +169,16 @@ public class InvalidResponseServlet extends HttpServlet {
              "</packet>" +
              "</data>" +
              "</result>";
+   }
+   
+   /**
+    * Returns an valid result for the RuntimeProps function.
+    *
+    * @returns
+    *    the valid result as XML String.
+    */
+   private String getValidRuntimePropsResult() {
+      return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+             "<result code=\"_InvalidRequest\" />";
    }
 }

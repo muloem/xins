@@ -33,7 +33,7 @@ public class MyProjectServlet extends HttpServlet {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of InvalidResponseServlet
+    * Creates a new instance of MyProjectServlet
     */
    public MyProjectServlet() {
    }

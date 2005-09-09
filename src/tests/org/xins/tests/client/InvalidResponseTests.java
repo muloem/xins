@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.xins.client.UnacceptableResultXINSCallException;
 import org.xins.client.UnacceptableErrorCodeXINSCallException;
+import org.xins.client.UnsuccessfulXINSCallException;
 
 import org.xins.common.service.*;
 
@@ -105,6 +106,16 @@ public class InvalidResponseTests extends TestCase {
       } catch (Exception exception) {
          exception.printStackTrace();
          fail("Expected UnacceptableResultXINSCallException instead of " + exception.getClass().getName() + '.');
+      }
+      try {
+         RuntimePropsResult result = _capi.callRuntimeProps(0.0f);
+         fail("Expected UnsuccessfulXINSCallException.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         // as expected
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+      } catch (Exception exception) {
+         exception.printStackTrace();
+         fail("Expected UnsuccessfulXINSCallException instead of " + exception.getClass().getName() + '.');
       }
    }
    
