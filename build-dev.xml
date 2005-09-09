@@ -555,8 +555,8 @@ ${sf.file}</fail>
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/perftests.xslt"  />
-			<include name="docs/javadoc-private/**/*.html" />
-			<include name="docs/javadoc-private/**/*.css"  />
+			<exclude name="docs/javadoc-private/**/*.html" />
+			<exclude name="docs/javadoc-private/**/*.css"  />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
