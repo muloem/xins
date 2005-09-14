@@ -7,7 +7,6 @@
 package org.xins.server;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -18,21 +17,22 @@ import org.xins.common.xml.ElementBuilder;
 /**
  * Statistics of a function.
  *
+ * <p>The implementation of this class is thread-safe.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
-class FunctionStatistics {
+class FunctionStatistics extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
    /**
-    * String returned by the function <code>_GetStatistics</code> when certain
-    * information is not available.
+    * String to insert instead of a figure when the figure is unavailable.
     */
    private static final String NOT_AVAILABLE = "N/A";
 
@@ -50,26 +50,36 @@ class FunctionStatistics {
    // Constructors
    //-------------------------------------------------------------------------
 
+   /**
+    * Constructs a new <code>FunctionStatistics</code> instance.
+    */
+   FunctionStatistics() {
+      _successful          = new Statistic();
+      _unsuccessful        = new Statistic();
+      _errorCodeStatistics = new TreeMap();
+   }
+
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 
    /**
-    * Statistic over the successful calls.
+    * Statistics for the successful calls. Never <code>null</code>.
     */
-   private Statistic _successful = new Statistic();
+   private final Statistic _successful;
 
    /**
-    * Statistic over the unsuccessful calls.
+    * Statistic over the unsuccessful calls. Never <code>null</code>.
     */
-   private Statistic _unsuccessful = new Statistic();
+   private final Statistic _unsuccessful;
 
    /**
     * Statistics over the unsuccessful calls sorted by error code.
     * The key of the map is the error code and the Statistic object
-    * corresponding to the error code.
+    * corresponding to the error code. Never <code>null</code>.
     */
-   private Map _errorCodeStatistics = new TreeMap();
+   private final TreeMap _errorCodeStatistics;
 
 
    //-------------------------------------------------------------------------
@@ -100,7 +110,9 @@ class FunctionStatistics {
     *    The duration is computed as the difference in between
     *    the start time and the time that this method has been invoked.
     */
-   final long recordCall(long start, boolean success, String errorCode) {
+   final synchronized long recordCall(long    start,
+                                      boolean success,
+                                      String  errorCode) {
 
       long duration = System.currentTimeMillis() - start;
 
@@ -127,7 +139,7 @@ class FunctionStatistics {
    /**
     * Resets the statistics for this function.
     */
-   final void resetStatistics() {
+   final synchronized void resetStatistics() {
       _successful.reset();
       _unsuccessful.reset();
       _errorCodeStatistics.clear();
@@ -139,7 +151,7 @@ class FunctionStatistics {
     * @return
     *    the successful element, cannot be <code>null</code>
     */
-   public Element getSuccessfulElement() {
+   public synchronized Element getSuccessfulElement() {
       return _successful.getElement(true, null);
    }
 
@@ -155,7 +167,7 @@ class FunctionStatistics {
     * @return
     *    the successful element, cannot be empty.
     */
-   public Element[] getUnsuccessfulElement(boolean detailed) {
+   public synchronized Element[] getUnsuccessfulElement(boolean detailed) {
       if (!detailed || _errorCodeStatistics.size() == 0) {
          Element[] result = new Element[1];
          result[0] = _unsuccessful.getElement(false, null);
@@ -174,12 +186,15 @@ class FunctionStatistics {
       }
    }
 
+
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
 
    /**
-    * A <code>Statistic</code>.
+    * Group of statistics data.
+    *
+    * <p>The implementation of this class is thread-safe.
     *
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     *
@@ -188,51 +203,64 @@ class FunctionStatistics {
    private static final class Statistic extends Object {
 
       //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Statistic</code> object.
+       */
+      private Statistic() {
+         _min = Long.MAX_VALUE;
+      }
+
+
+      //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
 
       /**
-       * Lock object for a call.
-       */
-      private final Object _callLock = new Object();
-
-      /**
-       * The number of successful calls executed up until now.
+       * The number of successful calls executed up until now. Initially
+       * <code>0L</code>.
        */
       private int _calls;
 
       /**
-       * The start time of the most recent call.
+       * The start time of the most recent call. Initially <code>0L</code>.
        */
       private long _lastStart;
 
       /**
-       * The duration of the most recent call.
+       * The duration of the most recent call. Initially <code>0L</code>.
        */
       private long _lastDuration;
 
       /**
-       * The total duration of all calls up until now.
+       * The total duration of all calls up until now. Initially
+       * <code>0L</code>.
        */
       private long _duration;
 
       /**
-       * The minimum time a call took.
+       * The minimum time a call took. Initially set to
+       * {@link Long#MAX_VALUE}.
        */
       private long _min = Long.MAX_VALUE;
 
       /**
-       * The start time of the call that took the shortest.
+       * The start time of the call that took the shortest. Initially
+       * <code>0L</code>.
        */
       private long _minStart;
 
       /**
-       * The duration of the call that took the longest.
+       * The duration of the call that took the longest. Initially
+       * <code>0L</code>.
        */
       private long _max;
 
       /**
-       * The start time of the call that took the longest.
+       * The start time of the call that took the longest. Initially
+       * <code>0L</code>.
        */
       private long _maxStart;
 
@@ -251,17 +279,15 @@ class FunctionStatistics {
        *    duration of the call, in milliseconds since January 1, 1970, not
        *    <code>null</code>.
        */
-      public void recordCall(long start, long duration) {
-         synchronized(_callLock) {
-            _lastStart    = start;
-            _lastDuration = duration;
-            _calls++;
-            _duration += duration;
-            _min      = _min > duration ? duration : _min;
-            _max      = _max < duration ? duration : _max;
-            _minStart = (_min == duration) ? start : _minStart;
-            _maxStart = (_max == duration) ? start : _maxStart;
-         }
+      public synchronized void recordCall(long start, long duration) {
+         _lastStart    = start;
+         _lastDuration = duration;
+         _calls++;
+         _duration += duration;
+         _min      = _min > duration ? duration : _min;
+         _max      = _max < duration ? duration : _max;
+         _minStart = (_min == duration) ? start : _minStart;
+         _maxStart = (_max == duration) ? start : _maxStart;
       }
 
       /**
@@ -276,7 +302,8 @@ class FunctionStatistics {
        * @return
        *    the statistic, cannot be <code>null</code>
        */
-      public Element getElement(boolean successful, String errorCode) {
+      public synchronized Element getElement(boolean successful, String errorCode) {
+
          String average;
          String min;
          String minStart;
@@ -333,17 +360,15 @@ class FunctionStatistics {
       /**
        * Resets this statistic.
        */
-      public void reset() {
-         synchronized (_callLock) {
-            _calls = 0;
-            _lastStart = 0L;
-            _lastDuration = 0L;
-            _duration = 0L;
-            _min = Long.MAX_VALUE;
-            _minStart = 0L;
-            _max = 0L;
-            _maxStart = 0L;
-         }
+      public synchronized void reset() {
+         _calls        = 0;
+         _lastStart    = 0L;
+         _lastDuration = 0L;
+         _duration     = 0L;
+         _min          = Long.MAX_VALUE;
+         _minStart     = 0L;
+         _max          = 0L;
+         _maxStart     = 0L;
       }
    }
 }

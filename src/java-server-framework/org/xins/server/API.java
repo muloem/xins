@@ -258,12 +258,6 @@ implements DefaultResultCodes {
    private AccessRuleList _accessRuleList;
 
    /**
-    * Indicates whether the API should wait for the statistic to be unlocked
-    * before continuing. This field is initially set to <code>false</code>.
-    */
-   private boolean _statisticsLocked;
-
-   /**
     * The API specification.
     */
    private APISpec _apiSpecification;
@@ -956,18 +950,6 @@ implements DefaultResultCodes {
          throw new AccessDeniedException(ip, functionName);
       }
 
-      // Wait until the statistics are returned. This is indicated by
-      // interrupt()-ing this thread.
-      while (_statisticsLocked) {
-         synchronized (this) {
-            try {
-               wait();
-            } catch (InterruptedException iex) {
-               // as expected
-            }
-         }
-      }
-
       // Short-circuit if we are shutting down
       if (getState().equals(DEINITIALIZING)) {
          Log.log_3611(_name, functionName);
@@ -1051,20 +1033,14 @@ implements DefaultResultCodes {
          String detailedArg = functionRequest.getParameters().get("detailed");
          boolean detailed   = "true".equals(detailedArg);
 
+         // Get the statistics
+         result = doGetStatistics(detailed);
+
          // Determine value of 'reset' argument
          String resetArg = functionRequest.getParameters().get("reset");
          boolean reset   = "true".equals(resetArg);
-
          if (reset) {
-            _statisticsLocked = true;
-            result = doGetStatistics(detailed);
             doResetStatistics();
-            _statisticsLocked = false;
-            synchronized (this) {
-               notifyAll();
-            }
-         } else {
-            result = doGetStatistics(detailed);
          }
 
       // Get version information
