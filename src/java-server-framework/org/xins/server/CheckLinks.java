@@ -53,37 +53,43 @@ class CheckLinks extends Object {
    //-------------------------------------------------------------------------
     
    /**
-    * The exception name identifying the <code>UnknownHostException</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is <code>UnknownHostException</code>.
     */
    private final static String UNKNOWN_HOST = "UnknownHost";
    
    /**
-    * The exception name identifying the <code>ConnectException</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is <code>ConnectException</code>.
     */
    private final static String CONNECTION_REFUSAL = "ConnectionRefusal";
    
    /**
-    * The exception name identifying the <code>ConnectTimeoutException</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is <code>ConnectTimeoutException</code>.
     */
    private final static String CONNECTION_TIMEOUT = "ConnectionTimeout";
    
    /**
-    * The exception name identifying the <code>SocketTimeoutException</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is <code>SocketTimeoutException</code>.
     */
    private final static String SOCKET_TIMEOUT = "SocketTimeout";
    
    /**
-    * The exception name identifying the <code>IOException</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is <code>IOException</code>.
     */
    private final static String OTHER_IO_ERROR = "OtherIOError";
    
    /**
-    * The exception name identifying the an unknown <code>Exception</code>.
+    * The failure message to be added in the <code>FunctionResult</code> when
+    * the exception is an unknown <code>Exception</code>.
     */
    private final static String OTHER_FAILURE = "OtherFailure";
    
    /**
-    * The success message to be displayed to the user..
+    * The success message to be added in the <code>FunctionResult</code>.
     */
    private final static String SUCCESS = "Success";
    
@@ -356,15 +362,15 @@ class CheckLinks extends Object {
       
       // Iterate over all the threads
       while (threadIterator.hasNext()) {
-      	URLChecker urlThread = (URLChecker) threadIterator.next();
-      	
-      	// Check if thread is still alive.
-      	if (urlThread.isAlive()) {
-      		
-      		// Enforce a timeout for the thread and log it.
-      		urlThread.enforceTimeout();
+         URLChecker urlThread = (URLChecker) threadIterator.next();
+         
+         // Check if thread is still alive.
+         if (urlThread.isAlive()) {
+            
+            // Enforce a timeout for the thread and log it.
+            urlThread.enforceTimeout();
             Log.log_3505(urlThread.getURL());
-      	}
+         }
       }
    }
    
@@ -817,7 +823,7 @@ class CheckLinks extends Object {
       }
       
       /**
-       * Return the status code of the method execution.
+       * Returns the status code of the method execution.
        *
        * @return 
        *    the status code returned when the URL was called. <code>-1</code>,
@@ -860,7 +866,7 @@ class CheckLinks extends Object {
       }
       
       /**
-       * Enforce a timeout on the <code>URLChecker</code> thread. Actualy the
+       * Enforces a timeout on the <code>URLChecker</code> thread. Actualy the
        * thread is allowed to run and ignored. So set the duration as the 
        * initial connection timeout value and create a new 
        * {@link ConnectTimeoutException}. 
