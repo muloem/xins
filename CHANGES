@@ -11,6 +11,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
     re-init. This problem was introduced in 1.3.0 beta 1.
   - Improved logging for the FileWatcher. Added instance ID in all log
     messages.
+  - Improved the HostnameTask (for Apache Ant) so it now attempts calling the
+    'hostname' command on UNIX/Linux systems, if no information can be
+    retrieved from the JDK.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1290992: NPE if runtime config file is not specified.
