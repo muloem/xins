@@ -11,7 +11,7 @@
 	<!-- import the extra build file that contains targets that does not
 	     work in the release -->
 	<import file="build-dev.xml" optional="true" />
-	
+
 	<!--
 	Determines the current XINS version by reading this information from
 	the version file.
