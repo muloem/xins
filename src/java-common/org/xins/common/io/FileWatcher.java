@@ -36,6 +36,11 @@ public final class FileWatcher extends Thread {
    private static final String CLASSNAME = FileWatcher.class.getName();
 
    /**
+    * Instance counter. Used to generate a unique ID for each instance.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
     * State in which this file watcher thread is not running.
     */
    private static final int NOT_RUNNING = 1;
@@ -87,6 +92,7 @@ public final class FileWatcher extends Thread {
       }
 
       // Initialize the fields
+      _instanceID    = INSTANCE_COUNT++;
       _file          = new File(file);
       _interval      = interval;
       _listener      = listener;
@@ -123,6 +129,7 @@ public final class FileWatcher extends Thread {
       MandatoryArgumentChecker.check("file", file, "listener", listener);
 
       // Initialize the fields
+      _instanceID    = INSTANCE_COUNT++;
       _file          = new File(file);
       _interval      = 0;
       _listener      = listener;
@@ -140,6 +147,11 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Unique instance identifier.
+    */
+   private final int _instanceID;
 
    /**
     * The file to watch. Not <code>null</code>.
@@ -239,7 +251,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("The interval has not been set yet.");
       }
 
-      Log.log_1200(_file.getPath(), _interval);
+      Log.log_1200(_instanceID, _file.getPath(), _interval);
 
       boolean shouldStop = false;
       while (! shouldStop) {
@@ -265,6 +277,9 @@ public final class FileWatcher extends Thread {
             // that caused the InterruptedException here)
          }
       }
+
+      // Thread stopped
+      Log.log_1203(_instanceID);
    }
 
    /**
@@ -298,7 +313,7 @@ public final class FileWatcher extends Thread {
 
       // Change the interval
       if (newInterval != _interval) {
-         Log.log_1201(_file.getPath(), _interval, newInterval);
+         Log.log_1201(_instanceID, _file.getPath(), _interval, newInterval);
          _interval = newInterval;
       }
 
@@ -320,7 +335,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("The thread is already stopping.");
       }
 
-      Log.log_1202(_file.getPath());
+      Log.log_1202(_instanceID, _file.getPath());
 
       // Change the state and interrupt the thread
       _state = SHOULD_STOP;

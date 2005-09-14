@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
 
+* XINS/Java Common Library:
+  - Improved logging for the FileWatcher. Added instance ID in all log
+    messages.
+
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1290992: NPE if runtime config file is not specified.
   - Applied some minor changes to make this class binary backwards compatible
