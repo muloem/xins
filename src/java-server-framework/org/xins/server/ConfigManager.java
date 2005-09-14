@@ -474,10 +474,15 @@ final class ConfigManager extends Object {
     */
    boolean determineLogLocale() {
 
-      String newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
+      String newLocale = null;
+      
+      // If we have runtime properties, then get the log locale
+      if (_runtimeProperties != null) {
+         newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
 
-      if (TextUtils.isEmpty(newLocale)) {
-         newLocale = _runtimeProperties.get(APIServlet.LOG_LOCALE_PROPERTY);
+         if (TextUtils.isEmpty(newLocale)) {
+            newLocale = _runtimeProperties.get(APIServlet.LOG_LOCALE_PROPERTY);
+         }
       }
 
       // If the log locale is set, apply it
@@ -494,6 +499,7 @@ final class ConfigManager extends Object {
             }
          }
       }
+
       return true;
    }
 
