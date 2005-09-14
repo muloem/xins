@@ -253,6 +253,12 @@ public final class FileWatcher extends Thread {
 
       Log.log_1200(_instanceID, _file.getPath(), _interval);
 
+      // Move to the RUNNING state
+      synchronized (this) {
+         _state = RUNNING;
+      }
+
+      // Loop while we should keep running
       boolean shouldStop = false;
       while (! shouldStop) {
          try {
