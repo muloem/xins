@@ -106,7 +106,7 @@
 	<translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: la fonction a retouné une réponse invalide.</translation>
 	<translation entry="3502">Result message <value-of-param name="result" format="quoted" /> was returned by the URL: <value-of-param name="url" />: Caught exception.</translation>
 	<translation entry="3503">Started the thread to check URL: <value-of-param name="url" format="quoted" /> with total-timeout: <value-of-param name="totalTimeout" />, connection-timeout: <value-of-param name="connectionTimeout" /> and socketTimeout: <value-of-param name="socketTimeout" />.</translation>
-	<translation entry="3504">Stoped the thread checking URL: <value-of-param name="url" format="quoted" /> in <value-of-param name="duration" /> seconds.</translation>
+	<translation entry="3504">The thread checking the URL: <value-of-param name="url" format="quoted" /> finished execution in <value-of-param name="duration" /> ms.</translation>
 	<translation entry="3505">Thread to check URL: <value-of-param name="url" format="quoted" /> is still active.</translation>
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>

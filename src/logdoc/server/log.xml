@@ -469,7 +469,7 @@
 			<param name="socketTimeout"     type="int32"  nullable="false" />
 		</entry>
 		<entry id="3504" level="DEBUG">
-			<description>Thread to check a URL has stoped.</description>
+			<description>Thread to check a URL has finished its execution.</description>
 			<param name="url"      type="text"   nullable="false" />
 			<param name="duration" type="int64"  nullable="false" />
 		</entry>
