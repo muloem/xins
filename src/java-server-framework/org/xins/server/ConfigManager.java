@@ -474,6 +474,9 @@ final class ConfigManager extends Object {
     */
    boolean determineLogLocale() {
 
+      // TODO: Determine what happens/should happen when there was a log
+      //       locale specified and then it was removed.
+
       String newLocale = null;
       
       // If we have runtime properties, then get the log locale
