@@ -108,7 +108,12 @@
 	<translation entry="3503">Started the thread to check URL: <value-of-param name="url" format="quoted" /> with total-timeout: <value-of-param name="totalTimeout" />, connection-timeout: <value-of-param name="connectionTimeout" /> and socketTimeout: <value-of-param name="socketTimeout" />.</translation>
 	<translation entry="3504">The thread checking the URL: <value-of-param name="url" format="quoted" /> finished execution in <value-of-param name="duration" /> ms.</translation>
 	<translation entry="3505">Thread to check URL: <value-of-param name="url" format="quoted" /> is still active.</translation>
-
+<!-- TODO FIXME: Update 3502/3503/3504/3505
+	<translation entry="3502">Result message <value-of-param name="result" format="quoted" /> was returned by the URL: <value-of-param name="url" />: Caught exception.</translation>
+	<translation entry="3503">Started the thread to check URL: <value-of-param name="url" format="quoted" /> with total-timeout: <value-of-param name="totalTimeout" />, connection-timeout: <value-of-param name="connectionTimeout" /> and socketTimeout: <value-of-param name="socketTimeout" />.</translation>
+	<translation entry="3504">The thread checking the URL: <value-of-param name="url" format="quoted" /> finished execution in <value-of-param name="duration" /> ms.</translation>
+	<translation entry="3505">Thread to check URL: <value-of-param name="url" format="quoted" /> is still active.</translation>
+-->
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3522">La requête reçue ne peut pas être décodée correctement. Le code HTTP <value-of-param name="errorCode" /> est retourné au client.</translation>
