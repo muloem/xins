@@ -96,8 +96,12 @@ public final class ]]></xsl:text>
 
    //-------------------------------------------------------------------------
    // Class fields
-   //-------------------------------------------------------------------------
-
+   //-------------------------------------------------------------------------]]></xsl:text>
+	 
+		<xsl:if test="$kind = 'enum'">
+			<xsl:apply-templates select="enum/item" mode="field" />
+		</xsl:if>
+		<xsl:text><![CDATA[
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -106,9 +110,6 @@ public final class ]]></xsl:text>
 		<xsl:text> SINGLETON = new </xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text>();</xsl:text>
-		<xsl:if test="$kind = 'enum'">
-			<xsl:apply-templates select="enum/item" mode="field" />
-		</xsl:if>
 		<xsl:text><![CDATA[
 
 
@@ -287,7 +288,20 @@ public final class ]]></xsl:text>
 				<xsl:text>new org.xins.common.types.EnumItem[] {</xsl:text>
 				<xsl:for-each select="enum/item">
 					<xsl:if test="position() &gt; 1">,</xsl:if>
-					<xsl:text>
+					<xsl:variable name="itemName">
+						<xsl:choose>
+							<xsl:when test="@name">
+								<xsl:value-of select="@name" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@value" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:call-template name="name_for_itemfield">
+						<xsl:with-param name="itemName" select="$itemName" />
+					</xsl:call-template>
+					<!--xsl:text>
          new Item("</xsl:text>
 					<xsl:choose>
 						<xsl:when test="@name">
@@ -299,7 +313,7 @@ public final class ]]></xsl:text>
 					</xsl:choose>
 					<xsl:text>", "</xsl:text>
 					<xsl:value-of select="@value" />
-					<xsl:text>")</xsl:text>
+					<xsl:text>")</xsl:text-->
 				</xsl:for-each>
 				<xsl:text>}</xsl:text>
 			</xsl:when>

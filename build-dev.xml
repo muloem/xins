@@ -469,6 +469,7 @@ ${sf.file}</fail>
 				<include name="capis/perl/*.pl" />
 				<include name="capis/php/*.php" />
 				<include name="capis/javascript/*.html" />
+				<include name="capis/javascript/*.js" />
 				<include name="xins-project/.version.properties" />
 				<include name="xins-project/build.properties" />
 				<include name="xins-project/**/*.xml" />
