@@ -33,7 +33,6 @@ public final class Library extends Object {
    private static final String CLASSNAME = Library.class.getName();
 
    /**
-   /**
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
