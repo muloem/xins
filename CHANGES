@@ -28,6 +28,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
   - Deprecated dispose() method in class AccessRule. The method is unused and
     has an empty implementation.
   - Improved test coverage by adding new tests and extending existing ones.
+  - Explicitly supporting the upcoming Java Servlet 2.5 specification in the
+    APIServlet class. See:
+    http://jcp.org/aboutJava/communityprocess/maintenance/jsr154/index3.html
 
 * Build- and release-process:
   - No longer including the private Javadoc in the package.
