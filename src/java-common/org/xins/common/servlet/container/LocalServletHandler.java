@@ -103,7 +103,6 @@ public class LocalServletHandler {
          Log.log_1508(exception);
          throw (ServletException)exception;
       } catch (Exception exception) {
-         exception.printStackTrace();
          Log.log_1509(exception);
          throw new ServletException(exception);
       }
@@ -128,7 +127,6 @@ public class LocalServletHandler {
          Log.log_1508(exception);
          throw (ServletException)exception;
       } catch (Exception exception) {
-         exception.printStackTrace();
          Log.log_1509(exception);
          throw new ServletException(exception);
       }

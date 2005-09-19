@@ -139,11 +139,6 @@
 			<param name="api" />
 			<param name="className" />
 		</entry>
-		<entry id="3219" level="DEBUG">
-			<description>Manageable object added to API.</description>
-			<param name="api" />
-			<param name="className" />
-		</entry>
 		<entry id="3220" level="DEBUG">
 			<description>Bootstrapping function.</description>
 			<param name="api" />

@@ -59,9 +59,7 @@ public class XINSServletContext implements ServletContext {
          try {
             _rootURL = "jar:" + config.getWarFile().toURL().toString() + "!";
          } catch (MalformedURLException muex) {
-            
-            // TODO Log
-            muex.printStackTrace();
+            Log.log_1513(config.getWarFile().toString());
          }
       } else {
          _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
@@ -133,8 +131,8 @@ public class XINSServletContext implements ServletContext {
       }
       try {
          return new URL(_rootURL + str);
-      } catch (IOException ioe) {
-         ioe.printStackTrace();
+      } catch (MalformedURLException muex) {
+         Log.log_1513(_rootURL + str);
          return null;
       }
    }
@@ -144,7 +142,7 @@ public class XINSServletContext implements ServletContext {
          JarFile warFile = new JarFile(_config.getWarFile());
          return warFile.getInputStream(warFile.getJarEntry(str));
       } catch (IOException ioe) {
-         ioe.printStackTrace();
+         Log.log_1514(ioe, str);
          return null;
       }
    }

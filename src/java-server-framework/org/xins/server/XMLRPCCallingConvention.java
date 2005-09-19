@@ -266,7 +266,6 @@ final class XMLRPCCallingConvention extends CallingConvention {
       
       // Send the XML output to the stream and flush
       PrintWriter out = httpResponse.getWriter();
-      // TODO: OutputStream out = httpResponse.getOutputStream();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
       httpResponse.setStatus(HttpServletResponse.SC_OK);
       httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());

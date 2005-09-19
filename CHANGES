@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
   - Improved the HostnameTask (for Apache Ant) so it now attempts calling the
     'hostname' command on UNIX/Linux systems, if no information can be
     retrieved from the JDK.
+  - Added log messages for the Servlet container.
 
 * XINS/Java Server Framework:
   - Fixed the statistics locking. This resolves SF.net bug #1263827.
@@ -31,6 +32,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
   - Explicitly supporting the upcoming Java Servlet 2.5 specification in the
     APIServlet class. See:
     http://jcp.org/aboutJava/communityprocess/maintenance/jsr154/index3.html
+  - Removed log #3219 which is similar to log #3218.
 
 * Build- and release-process:
   - No longer including the private Javadoc in the package.

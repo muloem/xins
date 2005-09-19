@@ -35,7 +35,6 @@
 	<translation entry="3216">Le démarrage du manageable <value-of-param name="className" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur invalide: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3217">Le démarrage du manageable <value-of-param name="className" /> a échoué. Raison: <value-of-param name="message" format="quoted" />.</translation>
 	<translation entry="3218">Ajout du manageable <value-of-param name="className" /> à l'API.</translation>
-	<translation entry="3219">Le manageable <value-of-param name="className" /> est ajouté à l'API.</translation>
 	<translation entry="3220">Démarrage de la fonction <value-of-param name="function" />.</translation>
 	<translation entry="3221">La fonction <value-of-param name="function" /> est démarrée.</translation>
 	<translation entry="3222">Le démarrage de la fonction <value-of-param name="function" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> est manquante.</translation>

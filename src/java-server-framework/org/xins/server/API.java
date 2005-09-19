@@ -727,15 +727,10 @@ implements DefaultResultCodes {
       MandatoryArgumentChecker.check("m", m);
       String className = m.getClass().getName();
 
-      // TODO: Do not log both 3218 and 3219, since there is nothing in
-      //       between which actually takes time to execute or can easily
-      //       fail. It's just adding the object to a collection.
       Log.log_3218(_name, className);
 
       // Store the manageable object in the list
       _manageableObjects.add(m);
-
-      Log.log_3219(_name, className);
    }
 
    /**

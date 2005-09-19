@@ -68,4 +68,7 @@
 	<translation entry="1509">Failed to load the Servlet due to a generic exception.</translation>
 	<translation entry="1510"><value-of-param name="message" /></translation>
 	<translation entry="1511"><value-of-param name="message" /></translation>
+	<translation entry="1512">Failed to load or parse the WEB_INF/web.xml file.</translation>
+	<translation entry="1513">Incorrect URL: <value-of-param name="url" format="quoted" />.</translation>
+	<translation entry="1514">No resource found in the WAR file at the location <value-of-param name="location" format="quoted" />.</translation>
 </translation-bundle>

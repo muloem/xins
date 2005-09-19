@@ -244,7 +244,6 @@ public class ErrorCodeSpec extends Object {
          List dataSections = outputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            // TODO String contains = dataSection.getAttribute("contains");
             _outputDataSectionElements = FunctionSpec.parseDataSectionElements(_reference, dataSection, dataSection);
          }
       }

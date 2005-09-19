@@ -467,7 +467,6 @@ final class Engine extends Object {
 
       // If we have no (acceptable) context ID yet, then generate one now
       if (contextID == null) {
-         // TODO: Support custom format (SF.net RFE #1078846)
          contextID = _contextIDGenerator.generate();
          Log.log_3583(contextID);
       }

@@ -81,8 +81,6 @@
          throw new IllegalArgumentException("name == null");
       }
 
-      // TODO: Check the name
-
       // Store information
       _name = name;
    }

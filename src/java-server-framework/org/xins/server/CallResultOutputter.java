@@ -95,7 +95,6 @@ final class CallResultOutputter extends Object {
          }
       }
 
-      // TODO: Only print the 'errorcode' attribute if not oldStyle?
       if (code != null) {
          xmlout.attribute("errorcode", code);
       }

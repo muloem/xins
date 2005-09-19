@@ -17,7 +17,10 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.xins.common.Log;
 import org.xins.common.text.FastStringBuffer;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -77,9 +80,7 @@ public class LocalServletConfig implements ServletConfig {
             ByteArrayInputStream baisWebXML = new ByteArrayInputStream(webXMLWithoutDTD.getBytes("UTF-8"));
             parseWebXML(baisWebXML);
          } catch (Exception ex2) {
-            
-            // TODO log
-            ex2.printStackTrace();
+            Log.log_1512(ex2);
          }
       }
    }

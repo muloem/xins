@@ -376,7 +376,6 @@ public abstract class AbstractCAPI extends Object {
     *    the {@link XINSServiceCaller} to use, never <code>null</code>.
     */
    protected XINSServiceCaller getCaller() {
-      // TODO for XINS 2.0.0: Mark this method as final
       return _caller;
    }
 

@@ -296,6 +296,17 @@
 			<description>Exception logged using the Servlet context.</description>
 			<param name="message" type="text" nullable="true" />
 		</entry>
+		<entry id="1512" level="ERROR" exception="true">
+			<description>Failed to load or parse the WEB_INF/web.xml file.</description>
+		</entry>
+		<entry id="1513" level="WARNING">
+			<description>Incorrect URL.</description>
+			<param name="url" type="text" nullable="false" />
+		</entry>
+		<entry id="1514" level="WARNING" exception="true">
+			<description>Resource not found.</description>
+			<param name="location" type="text" nullable="false" />
+		</entry>
 	</group>
 	
 	<group id="threads" name="Threading" />
