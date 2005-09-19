@@ -361,6 +361,30 @@ public class CallingConventionTests extends TestCase {
    }
    
    /**
+    * Tests the SOAP calling convention with a data section.
+    */
+   public void testSOAPCallingConvention3() throws Throwable {
+      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+              "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
+              "  <soap:Body>" +
+              "    <ns0:DataSection3Request>" +
+              "      <data>" +
+              "        <address company=\"McDo\" postcode=\"1234\" />" +
+              "        <address company=\"Drill\" postcode=\"4567\" />" +
+              "      </data>" +
+              "    </ns0:DataSection3Request>" +
+              "  </soap:Body>" +
+              "</soap:Envelope>";
+      Element result = postXML(destination, data);
+      assertEquals("Envelope", result.getLocalName());
+      assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
+      assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
+      Element bodyElem = (Element) result.getChildElements("Body").get(0);
+      assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("DataSection3Response").size());
+   }
+   
+   /**
     * Tests the XML-RPC calling convention with an incomplete request.
     */
    public void testXMLRPCCallingConvention() throws Exception {

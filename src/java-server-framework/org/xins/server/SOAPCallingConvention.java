@@ -157,6 +157,10 @@ final class SOAPCallingConvention extends CallingConvention {
       }
       Element functionElem = (Element) functionsElem.get(0);
       String requestName = functionElem.getLocalName();
+      if (!requestName.endsWith("Request")) {
+         throw new InvalidRequestException("Function names should always end " +
+               "\"Request\" for the SOAP calling convention.");
+      }
       String functionName = requestName.substring(0, requestName.lastIndexOf("Request"));
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
       httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
@@ -301,7 +305,7 @@ final class SOAPCallingConvention extends CallingConvention {
             Element transformedDataElement = null;
             try {
                FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-               Map dataSectionSpec = functionSpec.getInputDataSectionElements();
+               Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
                transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
             } catch (InvalidSpecificationException ise) {
                
