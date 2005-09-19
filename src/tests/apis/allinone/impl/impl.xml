@@ -18,14 +18,14 @@
 		</property>
 		<property name="capis.checkLinks3" type="_descriptor" required="false">
 			<description>A property with a link to test which should generate an UnknownHost error.</description>
-		</property> 
+		</property>
 		<property name="capis.checkLinks4" type="_descriptor" required="false">
 			<description>A property with a link to test which should generate a SocketTimeOut error.</description>
 		</property>
 		<property name="capis.checkLinks5" type="_descriptor" required="false">
 			<description>A property with a link to test with should succeed.</description>
-		</property> 
-		
+		</property>
 	</runtime-properties>
+	<!--calling-convention name="xins-tests" class="org.xins.tests.server.CustomTestConvention" /-->
 	<instance name="_sharedInstance" getter="getSharedInstance" class="SharedInstance" />
 </impl>
