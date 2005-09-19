@@ -246,6 +246,10 @@ abstract class CallingConvention extends Manageable {
                                      "httpResponse", httpResponse,
                                      "httpRequest",  httpRequest);
 
+      // By default, all calling convention return the same Server header.
+      // This can be overridden in the convertResultImpl() method.
+      httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());
+
       // Delegate to the implementation method
       try {
          convertResultImpl(xinsResult, httpResponse, httpRequest);
