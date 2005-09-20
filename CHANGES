@@ -34,6 +34,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
     APIServlet class. See:
     http://jcp.org/aboutJava/communityprocess/maintenance/jsr154/index3.html
   - Removed log #3219 which is similar to log #3218.
+  - All calling conventions return the same "Server" HTTP header.
 
 * Build- and release-process:
   - No longer including the private Javadoc in the package.
@@ -86,6 +87,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
     same page.
   - Added the possibility to choose the environment on the test form page.
     This means that only one test form is generated per function.
+
+* Generated build file:
+  - If no impl.xml exists when the stub files are create, the build will
+    create a default one.
 
 * Build- and release-process:
   - Added images associated with the primer.

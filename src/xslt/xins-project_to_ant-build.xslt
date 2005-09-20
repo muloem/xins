@@ -1125,12 +1125,22 @@ APIs in this project are:
 				overwrite="true" />
 			</target>
 
+			<target name="create-impl-{$api}{$implName2}" unless="impl.exists">
+				<echo file="{$api_specsdir}/../impl{$implName2}/impl.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.2//EN" "http://xins.sourceforge.net/dtd/impl_1_2.dtd">
+
+<impl>
+</impl>]]></echo>
+			</target>
+			
 			<target name="stub-{$api}{$implName2}">
 				<xsl:variable name="javaImplDir"    select="concat($javaImplDir, '/', $packageAsDir)" />
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="*.fnc" />
 				</xmlvalidate>
+				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
+				<antcall target="create-impl-{$api}{$implName2}" />
 				<style basedir="{$api_specsdir}" 
 				includes="*.fnc" 
 				destdir="{$javaImplDir}"
