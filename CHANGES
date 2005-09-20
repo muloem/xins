@@ -36,6 +36,17 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
   - Removed log #3219 which is similar to log #3218.
   - All calling conventions return the same "Server" HTTP header.
 
+* Generated types:
+  - Fixed SF.net bug #1292025:  The == operator does not always work for
+    EnumItem.
+
+* Generated test forms:
+  - The content of the iframe is removed before any request.
+
+* Generated build file:
+  - If no impl.xml exists when the stub files are create, the build will
+    create a default one.
+
 * Build- and release-process:
   - No longer including the private Javadoc in the package.
 
@@ -74,10 +85,6 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
     exception if a thread is active after the timeout. Also added some log
     messages.
 
-* Generated types:
-  - Fixed SF.net bug #1292025:  The == operator does not always work for
-    EnumItem.
-
 * Generated specification documentation:
   - The link to the test form on the function page is now at the top of the
     page.
@@ -87,10 +94,6 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 1:
     same page.
   - Added the possibility to choose the environment on the test form page.
     This means that only one test form is generated per function.
-
-* Generated build file:
-  - If no impl.xml exists when the stub files are create, the build will
-    create a default one.
 
 * Build- and release-process:
   - Added images associated with the primer.

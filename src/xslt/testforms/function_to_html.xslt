@@ -284,6 +284,7 @@
 				var formattedRequestString = '';
 				var value, name, requestString;
 
+				iframe.src = "about:blank";
 				for (var i = 0; i != elems.length; i++) {
 					if (!(name = elems[i].name)) {
 						continue;
