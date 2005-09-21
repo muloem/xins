@@ -27,12 +27,6 @@ extends RuntimeException {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = UnsupportedProtocolException.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

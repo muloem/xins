@@ -178,7 +178,7 @@ final class EngineStarter extends Object {
          if (buildVersion == null) {
             // TODO: Log, unless this is already done in API or APIServlet
          } else if (Library.isProductionRelease(buildVersion)
-                    && Library.isMoreRecent(buildVersion))) {
+                    && Library.isMoreRecent(buildVersion)) {
             Log.log_3229(buildVersion, serverVersion);
          }
       }

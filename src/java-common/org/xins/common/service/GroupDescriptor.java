@@ -38,22 +38,6 @@ public final class GroupDescriptor extends Descriptor {
    private static final String CLASSNAME = GroupDescriptor.class.getName();
 
    /**
-    * The fully-qualified name of this inner class <code>Type</code>.
-    */
-   private static final String TYPE_CLASSNAME = GroupDescriptor.Type.class.getName();
-
-   /**
-    * The fully-qualified name of the inner class <code>RandomIterator</code>.
-    */
-   private static final String RANDOM_ITERATOR_CLASSNAME = GroupDescriptor.RandomIterator.class.getName();
-
-   /**
-    * The fully-qualified name of this inner class
-    * <code>OrderedIterator</code>.
-    */
-   private static final String ORDERED_ITERATOR_CLASSNAME = GroupDescriptor.OrderedIterator.class.getName();
-
-   /**
     * The identifier of the <em>random</em> group type.
     */
    public static final String RANDOM_TYPE_ID = "random";

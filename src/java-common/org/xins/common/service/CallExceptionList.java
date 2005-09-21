@@ -25,12 +25,6 @@ public final class CallExceptionList extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = CallExceptionList.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

@@ -917,12 +917,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // Class fields
       //-------------------------------------------------------------------------
 
-      /**
-       * The number of constructed call executors.
-       */
-      private static int CALL_EXECUTOR_COUNT;
-
-
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
@@ -961,9 +955,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                            String           context)
       throws IllegalArgumentException {
 
-         // Create textual representation of this object
-         _asString = "HTTP call executor #" + (++CALL_EXECUTOR_COUNT);
-
          // Check preconditions
          MandatoryArgumentChecker.check("request",    request,
                                         "callConfig", callConfig,
@@ -980,11 +971,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
-
-      /**
-       * Textual representation of this object. Never <code>null</code>.
-       */
-      private String _asString;
 
       /**
        * The call request to execute. Never <code>null</code>.
@@ -1058,7 +1044,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Construct new HttpClient object
          HttpClient client = new HttpClient();
-         
+
          // Add support for proxies
          int proxyPort = 80;
          if ("true".equals(System.getProperty("proxySet")) && System.getProperty("proxyHost") != null) {
@@ -1086,7 +1072,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Construct the method object
          HttpMethodBase method = createMethod(url, _request, _callConfig);
-         
+
          // Set the user agent, if specified.
          if (_callConfig.getUserAgent() != null) {
             method.setRequestHeader("User-Agent", _callConfig.getUserAgent());
@@ -1171,7 +1157,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          NDC.remove();
 
          // Set objects to null for garbage collection
-         _asString = null;
          _callConfig = null;
          _context = null;
          _request = null;

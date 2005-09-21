@@ -27,7 +27,7 @@ public interface HTTPCallResultData {
     * @return
     *    the HTTP status code.
     */
-   public int getStatusCode();
+   int getStatusCode();
 
    /**
     * Returns the result data as a byte array. Note that this is not a copy or
@@ -37,5 +37,5 @@ public interface HTTPCallResultData {
     * @return
     *    a byte array of the result data, never <code>null</code>.
     */
-   public byte[] getData();
+   byte[] getData();
 }

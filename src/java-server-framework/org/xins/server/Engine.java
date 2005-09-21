@@ -7,8 +7,6 @@
 package org.xins.server;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -173,7 +171,7 @@ final class Engine extends Object {
     * The state machine for this engine. Never <code>null</code>.
     */
    private final EngineStateMachine _state = new EngineStateMachine();
-   
+
    /**
     * The starter of this engine. Never <code>null</code>.
     */
@@ -209,7 +207,7 @@ final class Engine extends Object {
     * field is indeed <code>null</code>.
     */
    private CallingConventionManager _conventionManager;
-   
+
    /**
     * Pattern which incoming diagnostic context identifiers must match. Can be
     * <code>null</code> in case no pattern has been specified. Initially this
@@ -298,7 +296,7 @@ final class Engine extends Object {
       _state.setState(EngineState.BOOTSTRAPPING_API);
 
       try {
-         
+
          // Determine the name of the API
          _apiName = _starter.determineAPIName();
 
@@ -572,7 +570,7 @@ final class Engine extends Object {
       String ccParam = (String) request.getParameter(
          APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
-      
+
       try {
          cc= _conventionManager.getCallingConvention(ccParam);
 

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -316,13 +315,13 @@ abstract class CallingConvention extends Manageable {
     *
     * @return
     *    the parsed element, never <code>null</code>.
-    * 
+    *
     * @throws InvalidRequestException
     *    if the HTTP request cannot be read or cannot be parsed correctly.
     */
    protected Element parseXMLRequest(HttpServletRequest httpRequest, boolean checkType)
    throws InvalidRequestException {
-      
+
       // Check content type
       String contentType = httpRequest.getContentType();
       if (checkType && (contentType == null || !contentType.startsWith("text/xml"))) {
@@ -344,7 +343,7 @@ abstract class CallingConvention extends Manageable {
          ElementParser parser = new ElementParser();
          Element parsedElem = parser.parse(new StringReader(contentString));
          return parsedElem;
-         
+
       // I/O error
       } catch (IOException ex) {
          throw new InvalidRequestException("Cannot read the XML request.", ex);
@@ -353,5 +352,5 @@ abstract class CallingConvention extends Manageable {
       } catch (ParseException ex) {
          throw new InvalidRequestException("Cannot parse the XML request.", ex);
       }
-   }   
+   }
 }

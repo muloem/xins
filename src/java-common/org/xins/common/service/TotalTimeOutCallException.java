@@ -22,12 +22,6 @@ extends GenericCallException {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = TotalTimeOutCallException.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

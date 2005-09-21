@@ -61,11 +61,6 @@ public final class TargetDescriptor extends Descriptor {
    private static int INSTANCE_COUNT;
 
    /**
-    * The fully-qualified name of the inner class <code>Iterator</code>.
-    */
-   private static final String ITERATOR_CLASSNAME = TargetDescriptor.Iterator.class.getName();
-
-   /**
     * The default time-out when no time-out is specified.
     */
    private static final int DEFAULT_TIMEOUT = 5000;
@@ -290,7 +285,7 @@ public final class TargetDescriptor extends Descriptor {
 
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
-      
+
       Perl5Matcher patternMatcher = new Perl5Matcher();
       if (! patternMatcher.matches(url, PATTERN)) {
          throw new MalformedURLException(url);
@@ -557,7 +552,7 @@ public final class TargetDescriptor extends Descriptor {
        * Constructs a new <code>Iterator</code>.
        */
       private Iterator() {
-         
+
          // empty
       }
 

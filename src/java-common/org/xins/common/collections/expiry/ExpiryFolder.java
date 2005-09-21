@@ -229,7 +229,7 @@ extends Object {
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private HashMap _recentlyAccessed;
+   private Map _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -248,7 +248,7 @@ extends Object {
     * accessed. The further back in the array, the sooner the entries will
     * expire.
     */
-   private HashMap[] _slots;
+   private Map[] _slots;
 
    /**
     * The set of listeners. May be empty, but never is <code>null</code>.
@@ -319,8 +319,8 @@ extends Object {
       // Check state
       assertStrategyNotStopped();
 
-      HashMap toBeExpired;
-      HashMap refMap = null;
+      Map toBeExpired;
+      Map refMap = null;
       synchronized (_lock) {
 
          // Shift the slots
@@ -345,7 +345,7 @@ extends Object {
                }
             }
          }
-         
+
          // Copy all references from the wrapping Entry objects
          if (!toBeExpired.isEmpty()) {
             Iterator keyIterator = toBeExpired.keySet().iterator();
@@ -371,7 +371,7 @@ extends Object {
                }
             }
          }
-         
+
          // Recycle the old HashMap
          toBeExpired.clear();
          _recentlyAccessed = toBeExpired;
@@ -477,7 +477,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>map == null</code>.
     */
-   private int sizeOf(HashMap map)
+   private int sizeOf(Map map)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state

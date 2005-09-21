@@ -6,10 +6,8 @@
  */
 package org.xins.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,12 +27,9 @@ import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.spec.ParameterSpec;
-import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
-import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.ElementSerializer;
 
 import org.znerd.xmlenc.XMLOutputter;
@@ -46,15 +41,10 @@ import org.znerd.xmlenc.XMLOutputter;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 final class SOAPCallingConvention extends CallingConvention {
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
-   /**
-    * The request encoding format.
-    */
-   private static final String REQUEST_ENCODING = "UTF-8";
 
    /**
     * The response encoding format.
@@ -80,31 +70,31 @@ final class SOAPCallingConvention extends CallingConvention {
     * The formatter for XINS Date type.
     */
    private static final DateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
-   
+
    /**
     * The formatter for SOAP Date type.
     */
    private static final DateFormat SOAP_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
-   
+
    /**
     * The formatter for XINS Timestamp type.
     */
    private static final DateFormat XINS_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
-   
+
    /**
     * The formatter for SOAP dateType type.
     */
    private static final DateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new <code>SOAPCallingConvention</code>
     *
@@ -114,23 +104,23 @@ final class SOAPCallingConvention extends CallingConvention {
    SOAPCallingConvention(API api) {
       _api = api;
    }
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The API, never <code>null</code>.
     */
    private final API _api;
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
-   
+
+
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
@@ -138,7 +128,7 @@ final class SOAPCallingConvention extends CallingConvention {
       Element envelopElem = parseXMLRequest(httpRequest, true);
 
       if (!envelopElem.getLocalName().equals("Envelope")) {
-         throw new InvalidRequestException("Root element is not a SOAP envelop but \"" + 
+         throw new InvalidRequestException("Root element is not a SOAP envelop but \"" +
                envelopElem.getLocalName() + "\".");
       }
 
@@ -218,9 +208,9 @@ final class SOAPCallingConvention extends CallingConvention {
          throw new InvalidRequestException("Only one data section is allowed.");
       }
 
-      return new FunctionRequest(functionName, parameters, dataSection);
+      return new FunctionRequest(functionName, parameters, transformedDataSection);
    }
-   
+
    protected void convertResultImpl(FunctionResult      xinsResult,
                                     HttpServletResponse httpResponse,
                                     HttpServletRequest  httpRequest)
@@ -234,7 +224,7 @@ final class SOAPCallingConvention extends CallingConvention {
       } else {
          httpResponse.setStatus(HttpServletResponse.SC_OK);
       }
-      
+
       // Store the result in a StringWriter before sending it.
       Writer buffer = new FastStringWriter(1024);
 
@@ -248,12 +238,12 @@ final class SOAPCallingConvention extends CallingConvention {
       // Write the envelop start tag
       xmlout.startTag("soap:Envelope");
       xmlout.attribute("xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/");
-      
+
       // Write the body start tag
       xmlout.startTag("soap:Body");
-      
+
       if (xinsResult.getErrorCode() != null) {
-         
+
          // Write the false start tag
          xmlout.startTag("soap:Fault");
          xmlout.startTag("faultcode");
@@ -268,7 +258,7 @@ final class SOAPCallingConvention extends CallingConvention {
          xmlout.endTag(); // faultstring
          xmlout.endTag(); // fault
       } else {
-         
+
          // Write the response start tag
          String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
          String namespaceURI = (String) httpRequest.getAttribute(REQUEST_NAMESPACE);
@@ -285,10 +275,10 @@ final class SOAPCallingConvention extends CallingConvention {
                Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
                parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
             } catch (InvalidSpecificationException ise) {
-               
+
                // keep the old value
             } catch (EntityNotFoundException enfe) {
-               
+
                // keep the old value
             }
             xmlout.startTag(parameterName);
@@ -299,38 +289,38 @@ final class SOAPCallingConvention extends CallingConvention {
          // Write the data element
          Element dataElement = xinsResult.getDataElement();
          if (dataElement != null) {
-            
+
             Element transformedDataElement = null;
             try {
                FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
                transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
             } catch (InvalidSpecificationException ise) {
-               
+
                // keep the old value
                transformedDataElement = dataElement;
             } catch (EntityNotFoundException enfe) {
-               
+
                // keep the old value
                transformedDataElement = dataElement;
             }
-            
+
             ElementSerializer serializer = new ElementSerializer();
             serializer.output(xmlout, transformedDataElement);
          }
 
          xmlout.endTag(); // response
       }
-      
+
       xmlout.endTag(); // body
       xmlout.endTag(); // envelop
 
       // Write the result to the servlet response
       out.write(buffer.toString());
-      
+
       out.close();
    }
-   
+
    /**
     * Transforms the value of a input SOAP parameter to the XINS equivalent.
     *
@@ -372,7 +362,7 @@ final class SOAPCallingConvention extends CallingConvention {
       }
       return value;
    }
-   
+
    /**
     * Transforms the value of a output XINS parameter to the SOAP equivalent.
     *
@@ -407,7 +397,7 @@ final class SOAPCallingConvention extends CallingConvention {
       }
       return value;
    }
-   
+
    /**
     * Convert the values of element to the required format.
     *
@@ -434,9 +424,9 @@ final class SOAPCallingConvention extends CallingConvention {
       String elementText = element.getText();
       List elementChildren = element.getChildElements();
       Map childrenSpec = dataSection;
-      
+
       ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
-      
+
       if (!top) {
          builder.setText(elementText);
 
@@ -451,7 +441,7 @@ final class SOAPCallingConvention extends CallingConvention {
             String attributeName = attributeQName.getLocalName();
             String attributeValue = (String) elementAttributes.get(attributeQName);
             try {
-               
+
                // Convert the value if needed
                ParameterSpec attributeSpec = elementSpec.getAttribute(attributeName);
                Type attributeType = attributeSpec.getType();
@@ -471,7 +461,7 @@ final class SOAPCallingConvention extends CallingConvention {
             builder.setAttribute(attributeName, attributeValue);
          }
       }
-      
+
       // Add the children of this element
       Iterator itChildren = elementChildren.iterator();
       while (itChildren.hasNext()) {
@@ -479,7 +469,7 @@ final class SOAPCallingConvention extends CallingConvention {
          Element transformedChild = soapElementTransformation(childrenSpec , input, nextChild, false);
          builder.addChild(transformedChild);
       }
-      
+
       return builder.createElement();
    }
 }

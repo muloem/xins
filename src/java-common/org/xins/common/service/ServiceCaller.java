@@ -556,10 +556,6 @@ public abstract class ServiceCaller extends Object {
    public final void setDescriptor(Descriptor descriptor)
    throws UnsupportedProtocolException {
 
-      final String THIS_METHOD = "setDescriptor("
-                               + Descriptor.class.getName()
-                               + ')';
-
       // Test the protocol for all TargetDescriptors
       if (descriptor != null) {
          Iterator targets = descriptor.iterateTargets();
@@ -1298,12 +1294,6 @@ public abstract class ServiceCaller extends Object {
       if (_newStyle) {
          throw new MethodNotImplementedError();
       }
-
-      final String THIS_METHOD = "shouldFailOver("
-                               + CallRequest.class.getName()
-                               + ','
-                               + Throwable.class.getName()
-                               + ')';
 
       // Determine if fail-over is applicable
       boolean should = (exception instanceof ConnectionCallException);

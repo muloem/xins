@@ -22,13 +22,6 @@ extends ConnectionCallException {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME =
-      NoRouteToHostCallException.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

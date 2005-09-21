@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
     'hostname' command on UNIX/Linux systems, if no information can be
     retrieved from the JDK.
   - Added log messages for the Servlet container.
+  - Removed unused imports and unused variables.
 
 * XINS/Java Server Framework:
   - Fixed the statistics locking. This resolves SF.net bug #1263827.
@@ -35,6 +36,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
     http://jcp.org/aboutJava/communityprocess/maintenance/jsr154/index3.html
   - Removed log #3219 which is similar to log #3218.
   - All calling conventions return the same "Server" HTTP header.
+  - Removed unused imports and unused variables.
+
+* XINS/Java Client Framework:
+  - Removed unused imports and unused variables.
 
 * Generated types:
   - Fixed SF.net bug #1292025:  The == operator does not always work for

@@ -10,7 +10,6 @@ import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,40 +25,40 @@ import java.util.Set;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ChainedMap extends AbstractMap {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of <code>ChainedMap</code>.
     */
    public ChainedMap() {
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The keys of the Map.
     */
    private List _keys = new ArrayList();
-   
+
    /**
     * The key/pair entries of the Map.
     */
    private List _entries = new ArrayList();
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -67,7 +66,7 @@ public class ChainedMap extends AbstractMap {
    public Set entrySet() {
       return new ChainedSet(_entries);
    }
-   
+
    public Collection values() {
       List values = new ArrayList();
       Iterator itEntries = _entries.iterator();
@@ -77,7 +76,7 @@ public class ChainedMap extends AbstractMap {
       }
       return values;
    }
-   
+
    public Object put(Object key, Object value) {
       int oldKeyPos = _keys.indexOf(key);
       if (oldKeyPos == -1) {
@@ -90,7 +89,7 @@ public class ChainedMap extends AbstractMap {
          return oldValue;
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
@@ -136,11 +135,11 @@ public class ChainedMap extends AbstractMap {
        */
       private Object _value;
 
-      
+
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
-   
+
        public Object getKey() {
           return _key;
        }
@@ -169,7 +168,7 @@ public class ChainedMap extends AbstractMap {
                  (_value == null ? e2.getValue() == null : _value.equals(e2.getValue()));
        }
    }
-   
+
    /**
     * The <code>ChainedSet</code> used for the {@link #entrySet} method of this
     * <code>ChainedMap</code>.
@@ -178,7 +177,7 @@ public class ChainedMap extends AbstractMap {
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
    private class ChainedSet extends AbstractSet {
-      
+
       //-------------------------------------------------------------------------
       // Constructor
       //-------------------------------------------------------------------------
@@ -201,8 +200,8 @@ public class ChainedMap extends AbstractMap {
             _values.add(itCollection.next());
          }
       }
-      
-      
+
+
       //-------------------------------------------------------------------------
       // Fields
       //-------------------------------------------------------------------------
@@ -215,11 +214,11 @@ public class ChainedMap extends AbstractMap {
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
-   
+
       public int size() {
          return _values.size();
       }
-      
+
       public Iterator iterator() {
          return _values.iterator();
       }

@@ -23,12 +23,6 @@ public abstract class HTTPCallException extends CallException {
    // Class fields
    //-------------------------------------------------------------------------
 
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = HTTPCallException.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

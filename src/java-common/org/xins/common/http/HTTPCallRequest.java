@@ -35,11 +35,6 @@ public final class HTTPCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = HTTPCallRequest.class.getName();
-
-   /**
     * The number of instances of this class. Initially zero.
     */
    private static int INSTANCE_COUNT;

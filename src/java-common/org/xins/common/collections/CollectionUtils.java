@@ -4,7 +4,6 @@
 package org.xins.common.collections;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 
 import org.xins.common.MandatoryArgumentChecker;

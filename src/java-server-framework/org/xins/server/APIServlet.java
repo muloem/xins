@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.logdoc.ExceptionUtils;
-import org.xins.logdoc.LogCentral;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
@@ -117,11 +116,6 @@ extends HttpServlet {
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -1117062458458353841L;
-
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = APIServlet.class.getName();
 
    /**
     * The name of the system property that specifies the location of the
@@ -403,7 +397,7 @@ extends HttpServlet {
     *    the servlet response, should not be <code>null</code>.
     *
     * @throws NullPointerException
-    *    if this servlet is yet uninitialized. 
+    *    if this servlet is yet uninitialized.
     *
     * @throws ClassCastException
     *    if <code>! (request instanceof {@link HttpServletRequest}
@@ -437,7 +431,7 @@ extends HttpServlet {
     *    the servlet response, should not be <code>null</code>.
     *
     * @throws NullPointerException
-    *    if this servlet is yet uninitialized. 
+    *    if this servlet is yet uninitialized.
     *
     * @throws IOException
     *    if there is an error error writing to the response output stream.

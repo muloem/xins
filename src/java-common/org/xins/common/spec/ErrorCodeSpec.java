@@ -24,19 +24,19 @@ import org.xins.common.xml.ElementParser;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ErrorCodeSpec extends Object {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of ErrorCode
     *
@@ -55,8 +55,7 @@ public class ErrorCodeSpec extends Object {
    public ErrorCodeSpec(String name, Class reference, String baseURL) throws InvalidSpecificationException {
       _errorCodeName = name;
       _reference = reference;
-      _baseURL = baseURL;
-      
+
       try {
          Reader reader = APISpec.getReader(baseURL, name + ".rcd");
          parseErrorCode(reader);
@@ -65,31 +64,26 @@ public class ErrorCodeSpec extends Object {
       }
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The class used as reference.
     */
    private final Class _reference;
-   
-   /**
-    * The base URL used to locate the specifications.
-    */
-   private final String _baseURL;
-   
+
    /**
     * Name of the function.
     */
    private final String _errorCodeName;
-   
+
    /**
     * Description of the function.
     */
    private String _description;
-   
+
    /**
     * The output parameters of the function.
     */
@@ -100,11 +94,11 @@ public class ErrorCodeSpec extends Object {
     */
    private Map _outputDataSectionElements;
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Gets the name of the error code.
     *
@@ -112,10 +106,10 @@ public class ErrorCodeSpec extends Object {
     *    The name of the error code, never <code>null</code>.
     */
    public String getName() {
-      
+
       return _errorCodeName;
    }
-   
+
    /**
     * Gets the description of the error code.
     *
@@ -123,7 +117,7 @@ public class ErrorCodeSpec extends Object {
     *    The description of the error code, never <code>null</code>.
     */
    public String getDescription() {
-      
+
       return _description;
    }
 
@@ -144,18 +138,18 @@ public class ErrorCodeSpec extends Object {
     */
    public ParameterSpec getOutputParameter(String parameterName)
    throws EntityNotFoundException, IllegalArgumentException {
-      
+
       MandatoryArgumentChecker.check("parameterName", parameterName);
       ParameterSpec parameter = (ParameterSpec) _outputParameters.get(parameterName);
-      
+
       if (parameter == null) {
-         throw new EntityNotFoundException("Output parameter \"" + parameterName 
+         throw new EntityNotFoundException("Output parameter \"" + parameterName
                + "\" not found in the error code \"" + _errorCodeName +"\".");
       }
-      
+
       return parameter;
    }
-   
+
    /**
     * Gets the output parameter specifications defined in the error code.
     * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
@@ -167,7 +161,7 @@ public class ErrorCodeSpec extends Object {
 
       return _outputParameters;
    }
-   
+
    /**
     * Gets the specification of the element of the output data section with the
     * specified name.
@@ -184,18 +178,18 @@ public class ErrorCodeSpec extends Object {
     * @throws IllegalArgumentException
     *    if <code>elementName == null</code>.
     */
-   public DataSectionElementSpec getOutputDataSectionElement(String elementName) 
+   public DataSectionElementSpec getOutputDataSectionElement(String elementName)
    throws EntityNotFoundException, IllegalArgumentException {
-      
+
       MandatoryArgumentChecker.check("elementName", elementName);
-      
+
       DataSectionElementSpec element = (DataSectionElementSpec) _outputDataSectionElements.get(elementName);
-      
+
       if (element == null) {
          throw new EntityNotFoundException("Output data section element \"" + elementName
                + "\" not found in the error code \"" + _errorCodeName +"\".");
       }
-      
+
       return element;
    }
 
@@ -207,10 +201,10 @@ public class ErrorCodeSpec extends Object {
     *   The specification of the output data section, never <code>null</code>.
     */
    public Map getOutputDataSectionElements() {
-      
+
       return _outputDataSectionElements;
    }
-   
+
    /**
     * Parses the result code file.
     *
@@ -235,7 +229,7 @@ public class ErrorCodeSpec extends Object {
       _description = descriptionElement.getText();
       List output = errorCode.getChildElements("output");
       if (output.size() > 0) {
-         
+
          // Output parameters
          Element outputElement = (Element) output.get(0);
          _outputParameters = FunctionSpec.parseParameters(_reference, outputElement);

@@ -8,6 +8,7 @@ package org.xins.client;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -58,7 +59,7 @@ public abstract class AbstractCAPICallRequest {
     * to an exception if the conversion to a string failed. This field is
     * lazily initialized and initially <code>null</code>.
     */
-   private HashMap _parameterValues;
+   private Map _parameterValues;
 
    /**
     * The data section of the function if any, can be <code>null</code>.
@@ -151,12 +152,12 @@ public abstract class AbstractCAPICallRequest {
             request.setParameter(name, value);
          }
       }
-      
+
       Element dataSection = getDataElement();
       if (dataSection != null) {
          request.setDataSection(dataSection);
       }
-      
+
       if (_callConfig != null) {
          request.setXINSCallConfig(_callConfig);
       }
@@ -223,7 +224,7 @@ public abstract class AbstractCAPICallRequest {
 
    /**
     * Add a new Element to the data element.
-    * Any previous value was entered with the method {@link #putDataSection}, 
+    * Any previous value was entered with the method {@link #putDataSection},
     * will be removed.
     *
     * @param element

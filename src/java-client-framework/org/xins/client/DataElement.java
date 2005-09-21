@@ -539,9 +539,9 @@ public class DataElement implements Cloneable {
    public Element toXMLElement() {
       return toXMLElement(this);
    }
-   
+
    /**
-    * Converts the given DataElement to a 
+    * Converts the given DataElement to a
     * {@link org.xins.common.xml.Element} object.
     *
     * @param dataElement
@@ -555,18 +555,18 @@ public class DataElement implements Cloneable {
     */
    private Element toXMLElement(DataElement dataElement)
    throws IllegalArgumentException {
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("dataElement", dataElement);
-      
+
       String elementName = dataElement.getLocalName();
       String elementNameSpaceURI = dataElement.getNamespaceURI();
       Map elementAttributes = dataElement.getAttributeMap();
       String elementText = dataElement.getText();
       List elementChildren = dataElement.getChildElements();
-      
+
       ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
-      
+
       builder.setText(elementText);
 
       // Go through the attributes
@@ -576,7 +576,7 @@ public class DataElement implements Cloneable {
          String attributeValue = (String) elementAttributes.get(attributeName);
          builder.setAttribute(attributeName.getNamespaceURI(), attributeName.getLocalName(), attributeValue);
       }
-      
+
       // Add the children of this element
       Iterator itChildren = elementChildren.iterator();
       while (itChildren.hasNext()) {
@@ -584,7 +584,7 @@ public class DataElement implements Cloneable {
          Element transformedChild = toXMLElement(nextChild);
          builder.addChild(transformedChild);
       }
-      
+
       return builder.createElement();
    }
 

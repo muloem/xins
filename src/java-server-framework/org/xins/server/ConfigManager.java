@@ -15,8 +15,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
@@ -26,7 +24,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.StatsPropertyReader;
 import org.xins.common.io.FileWatcher;
@@ -275,7 +272,7 @@ final class ConfigManager extends Object {
          return _runtimeProperties;
       }
    }
-   
+
    /**
     * Determines the reload interval for the config file, initializes the API
     * if the interval has changed and starts the config file watcher.
@@ -478,7 +475,7 @@ final class ConfigManager extends Object {
       //       locale specified and then it was removed.
 
       String newLocale = null;
-      
+
       // If we have runtime properties, then get the log locale
       if (_runtimeProperties != null) {
          newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);

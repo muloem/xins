@@ -1052,13 +1052,13 @@ implements DefaultResultCodes {
 
       // Disable a function
       } else if ("_DisableFunction".equals(functionName)) {
-         functionName = functionRequest.getParameters().get("functionName");
-         result       = doDisableFunction(functionName);
+         String disabledFunction = functionRequest.getParameters().get("functionName");
+         result = doDisableFunction(disabledFunction);
 
       // Enable a function
       } else if ("_EnableFunction".equals(functionName)) {
-         functionName = functionRequest.getParameters().get("functionName");
-         result       = doEnableFunction(functionName);
+         String enabledFunction = functionRequest.getParameters().get("functionName");
+         result = doEnableFunction(enabledFunction);
 
       // Reset the statistics
       } else if ("_ResetStatistics".equals(functionName)) {
@@ -1294,9 +1294,9 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Returns the links in linked system components. It uses the 
-    * {@link CheckLinks} to connect to each link and builds a 
-    * {@link FunctionResult} which will have the total link count and total 
+    * Returns the links in linked system components. It uses the
+    * {@link CheckLinks} to connect to each link and builds a
+    * {@link FunctionResult} which will have the total link count and total
     * link failures.
     *
     * @return

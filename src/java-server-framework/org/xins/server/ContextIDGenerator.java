@@ -79,7 +79,7 @@ final class ContextIDGenerator extends Manageable {
       _apiName  = apiName;
       _format   = new SimpleDateFormat("yyMMdd-HHmmssSSS");
       _random   = new Random();
-      _hostname = IPAddressUtils.getLocalHost();;
+      _hostname = IPAddressUtils.getLocalHost();
    }
 
 
@@ -182,7 +182,7 @@ final class ContextIDGenerator extends Manageable {
       buffer.append(':');
 
       // Append 5 random hex digits
-      // 
+      //
       // NOTE: We assume that java.util.Random is thread-safe, although this
       //       is not officially documented.
       HexConverter.toHexString(buffer, _random.nextInt());

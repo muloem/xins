@@ -70,33 +70,6 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Converts a <code>java.util.Date</code> object to a
-    * <code>java.util.Calendar</code> object.
-    *
-    * @param date
-    *    the {@link java.util.Date} object to convert, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    an equivalent {@link java.util.Calendar} object, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>date == null</code>.
-    */
-   private static Calendar createCalendar(java.util.Date date)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("date", date);
-
-      // Create and adjust a Calendar object
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(date);
-
-      return calendar;
-   }
-
-   /**
     * Constructs a <code>Date.Value</code> with the value of the current date.
     *
     * @return
@@ -237,7 +210,7 @@ public class Date extends Type {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -347,7 +320,7 @@ public class Date extends Type {
        * @since XINS 1.2.0
        */
       public Value(Calendar calendar)
-      throws IllegalArgumentException { 
+      throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("calendar", calendar);
@@ -369,7 +342,7 @@ public class Date extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(java.util.Date date) throws IllegalArgumentException { 
+      public Value(java.util.Date date) throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("date", date);
@@ -377,7 +350,7 @@ public class Date extends Type {
          // Construct the Calendar
          _calendar = Calendar.getInstance();
          _calendar.setTime(date);
-      } 
+      }
 
       /**
        * Constructs a new date value based on the specified number of
@@ -393,7 +366,7 @@ public class Date extends Type {
        *
        * @since XINS 1.2.0
        */
-      public Value(long millis) throws IllegalArgumentException { 
+      public Value(long millis) throws IllegalArgumentException {
 
          // Check preconditions
          if (millis < 0L) {
@@ -408,7 +381,7 @@ public class Date extends Type {
          _calendar.setTime(date);
       }
 
-          
+
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
@@ -418,7 +391,7 @@ public class Date extends Type {
        */
       private Calendar _calendar;
 
-      
+
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
@@ -492,7 +465,7 @@ public class Date extends Type {
       public java.util.Date toDate() {
          return _calendar.getTime();
       }
-      
+
       /**
        * Returns a textual representation of this object.
        *

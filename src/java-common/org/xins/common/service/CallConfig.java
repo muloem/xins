@@ -53,11 +53,6 @@ public class CallConfig extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = CallConfig.class.getName();
-
-   /**
     * The number of instances of this class. Initially zero.
     */
    private static int INSTANCE_COUNT;

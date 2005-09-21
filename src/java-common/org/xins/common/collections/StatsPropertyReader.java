@@ -8,6 +8,7 @@ package org.xins.common.collections;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -88,7 +89,7 @@ implements PropertyReader {
    /**
     * The set of properties to retrieve values from. Never <code>null</code>.
     */
-   private final HashMap _properties;
+   private final Map _properties;
 
    /**
     * The set of unused properties. Initially contains all properties. Becomes

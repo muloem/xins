@@ -27,11 +27,11 @@ public class HTTPServletStarter {
 
    /**
     * Starts the Servlet container for the specific API.
-    * 
+    *
     * @param args
     *    The command line arguments, the first argument should be the location
-    *    of the WAR file or the name of the class of the servlet to load, 
-    *    the optional second argument is the port number. 
+    *    of the WAR file or the name of the class of the servlet to load,
+    *    the optional second argument is the port number.
     *    If no port number is specified, 8080 is used as default.
     */
    public static void main(String[] args) {
@@ -39,17 +39,16 @@ public class HTTPServletStarter {
          System.err.println("Please, pass the location of the WAR file as argument.");
          System.exit(-1);
       }
-      boolean isWar = args[0].toLowerCase().endsWith(".war");
       int port = DEFAULT_PORT_NUMBER;
       if (args.length > 1) {
          try {
             port = Integer.parseInt(args[1]);
          } catch (NumberFormatException nfe) {
-            System.err.println("Warning: Incorrect port number \"" + args[1] + 
+            System.err.println("Warning: Incorrect port number \"" + args[1] +
                   "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
          }
       }
-      
+
       File warFile = new File(args[0]);
       if (!warFile.exists()) {
          System.err.println("WAR file \"" + args[0] + "\" not found.");
@@ -62,7 +61,7 @@ public class HTTPServletStarter {
          ioe.printStackTrace();
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -127,7 +126,7 @@ public class HTTPServletStarter {
     *    The port of the web server, cannot be <code>null</code>.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws ServletException
@@ -141,7 +140,7 @@ public class HTTPServletStarter {
 
       // Create the servlet
       ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
-      
+
       Class[] constClasses = {File.class, Integer.TYPE, Boolean.TYPE};
       Object[] constArgs = {warFile, new Integer(port), Boolean.valueOf(deamon)};
       try {
@@ -164,7 +163,7 @@ public class HTTPServletStarter {
     *    The port of the web server, cannot be <code>null</code>.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws ServletException

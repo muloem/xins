@@ -15,19 +15,19 @@ import org.xins.common.types.Type;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ParameterSpec extends Object {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of Parameter.
     *
@@ -63,40 +63,40 @@ public class ParameterSpec extends Object {
       _description   = description;
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The reference class.
     */
    private final Class _reference;
-   
+
    /**
     * Name of the parameter.
     */
    private final String _parameterName;
-   
+
    /**
     * Type of the parameter.
     */
    private final Type _parameterType;
-   
+
    /**
     * Flags indicating if this parameter is required.
     */
    private final boolean _required;
-   
+
    /**
     * Description of the parameter.
     */
    private String _description;
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Gets the name of the parameter.
     *
@@ -104,10 +104,10 @@ public class ParameterSpec extends Object {
     *    The name of the parameter, never <code>null</code>.
     */
    public String getName() {
-      
+
       return _parameterName;
    }
-   
+
    /**
     * Gets the description of the parameter.
     *
@@ -115,7 +115,7 @@ public class ParameterSpec extends Object {
     *    The description of the parameter, never <code>null</code>.
     */
    public String getDescription() {
-      
+
       return _description;
    }
 
@@ -126,7 +126,7 @@ public class ParameterSpec extends Object {
     *    <code>true</code> if the parameter is requierd, <code>false</code> otherwise.
     */
    public boolean isRequired() {
-      
+
       return _required;
    }
 
@@ -139,7 +139,7 @@ public class ParameterSpec extends Object {
    public Type getType() {
       return _parameterType;
    }
-   
+
    /**
     * Gets the type of the parameter.
     *
@@ -153,7 +153,7 @@ public class ParameterSpec extends Object {
     *    If the type is not recognized.
     */
    private Type getType(String typeName) throws InvalidSpecificationException {
-      
+
       if (typeName == null || typeName.equals("") || typeName.equals("_text")) {
          return org.xins.common.types.standard.Text.SINGLETON;
       } else if (typeName.equals("_int8")) {
@@ -189,10 +189,10 @@ public class ParameterSpec extends Object {
             truncatePos = className.lastIndexOf(".api.APIImpl");
          }
          try {
-            Character firstChar = new Character(typeName.charAt(0));
-            if (Character.isLowerCase(typeName.charAt(0)) && typeName.length() > 1) {
-               typeName = Character.toUpperCase(typeName.charAt(0)) + typeName.substring(1);
-            } else if (Character.isLowerCase(typeName.charAt(0))) {
+            char firstChar = typeName.charAt(0);
+            if (Character.isLowerCase(firstChar) && typeName.length() > 1) {
+               typeName = Character.toUpperCase(firstChar) + typeName.substring(1);
+            } else if (Character.isLowerCase(firstChar)) {
                typeName = typeName.toUpperCase();
             }
             String typeClassName = className.substring(0, truncatePos) + ".types." + typeName;

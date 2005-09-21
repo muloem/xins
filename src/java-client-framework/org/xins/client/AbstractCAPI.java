@@ -8,6 +8,7 @@ package org.xins.client;
 
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -63,7 +64,7 @@ public abstract class AbstractCAPI extends Object {
     * already been checked against the XINS version at run-time. Never
     * <code>null</code>.
     */
-   private final static HashSet VERSION_COMPARISIONS_DONE = new HashSet();
+   private final static Set VERSION_COMPARISIONS_DONE = new HashSet();
 
 
    //-------------------------------------------------------------------------
@@ -106,10 +107,10 @@ public abstract class AbstractCAPI extends Object {
       // Create and store service caller
       _caller = new XINSServiceCaller(descriptor, callConfig);
       _caller.setCAPI(this);
-      
+
       // Determine the API name
       _apiName = determineAPIName();
-      
+
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
 
@@ -199,7 +200,7 @@ public abstract class AbstractCAPI extends Object {
 
       // Determine the API name
       _apiName = determineAPIName();
-      
+
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
    }
@@ -218,7 +219,7 @@ public abstract class AbstractCAPI extends Object {
     * The XINS service caller to use. This field cannot be <code>null</code>.
     */
    private final XINSServiceCaller _caller;
-   
+
    /**
     * The API specification. This field is lazily initialized by
     * {@link #getAPISpecification()}.
@@ -494,7 +495,7 @@ public abstract class AbstractCAPI extends Object {
     *
     * @throws UnacceptableErrorCodeXINSCallException
     *    if the specified error code is recognized but is considered
-    *    unacceptable for the function specified in the request. 
+    *    unacceptable for the function specified in the request.
     *
     * @since XINS 1.2.0
     */

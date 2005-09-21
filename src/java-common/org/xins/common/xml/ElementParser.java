@@ -337,9 +337,6 @@ extends Object {
          // Make sure namespaceURI is either null or non-empty
          namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
 
-         // Cache quoted version of namespaceURI
-         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName, "atts", atts);
 
@@ -406,9 +403,6 @@ extends Object {
          // Make sure namespaceURI is either null or non-empty
          namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
 
-         // Cache quoted version of namespaceURI
-         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName);
 
@@ -466,8 +460,6 @@ extends Object {
        */
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException, SAXException {
-
-         final String THIS_METHOD = "characters(char[],int,int)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;

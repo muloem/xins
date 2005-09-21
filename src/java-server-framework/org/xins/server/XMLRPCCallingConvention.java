@@ -38,11 +38,11 @@ import org.znerd.xmlenc.XMLOutputter;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 final class XMLRPCCallingConvention extends CallingConvention {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    /**
     * Returns the XML-RPC equivalent for the XINS type.
     *
@@ -55,14 +55,14 @@ final class XMLRPCCallingConvention extends CallingConvention {
    private static String convertType(Type parameterType) {
       if (parameterType instanceof org.xins.common.types.standard.Boolean) {
          return "boolean";
-      } else if (parameterType instanceof org.xins.common.types.standard.Int8 
+      } else if (parameterType instanceof org.xins.common.types.standard.Int8
             || parameterType instanceof org.xins.common.types.standard.Int16
             || parameterType instanceof org.xins.common.types.standard.Int32) {
          return "int";
-      } else if (parameterType instanceof org.xins.common.types.standard.Float32 
+      } else if (parameterType instanceof org.xins.common.types.standard.Float32
             || parameterType instanceof org.xins.common.types.standard.Float64) {
          return "double";
-      } else if (parameterType instanceof org.xins.common.types.standard.Date 
+      } else if (parameterType instanceof org.xins.common.types.standard.Date
             || parameterType instanceof org.xins.common.types.standard.Timestamp) {
          return "dateTime.iso8601";
       } else if (parameterType instanceof org.xins.common.types.standard.Base64) {
@@ -71,7 +71,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
          return "string";
       }
    }
-   
+
    /**
     * Attribute a number for the error code.
     *
@@ -91,8 +91,8 @@ final class XMLRPCCallingConvention extends CallingConvention {
       } else if (errorCode.equals("_InvalidResponse")) {
          return 4;
       } else {
-         
-         // Defined error code returned. For more information, see the 
+
+         // Defined error code returned. For more information, see the
          // faultString element.
          return 99;
       }
@@ -102,7 +102,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
     * objects.
@@ -113,12 +113,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
     * The formatter for XINS Date type.
     */
    private static final DateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
-   
+
    /**
     * The formatter for XINS Timestamp type.
     */
    private static final DateFormat XINS_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
-   
+
    /**
     * The formatter for XML-RPC dateTime.iso8601 type.
     */
@@ -143,7 +143,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new <code>XMLRPCCallingConvention</code>
     *
@@ -154,11 +154,11 @@ final class XMLRPCCallingConvention extends CallingConvention {
       _api = api;
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The API, never <code>null</code>.
     */
@@ -168,25 +168,25 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
-      
+
       Element xmlRequest = parseXMLRequest(httpRequest, true);
       if (!xmlRequest.getLocalName().equals("methodCall")) {
-         throw new InvalidRequestException("Root element is not \"methodCall\" but \"" + 
+         throw new InvalidRequestException("Root element is not \"methodCall\" but \"" +
                xmlRequest.getLocalName() + "\".");
       }
 
       Element methodNameElem = getUniqueChild(xmlRequest, "methodName");
       String functionName = methodNameElem.getText();
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
-      
+
       // Determine function parameters and the data section
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
       Element dataSection = null;
-      
+
       List params = xmlRequest.getChildElements("params");
       if (params.size() == 0) {
          return new FunctionRequest(functionName, functionParams, null);
@@ -200,7 +200,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
          Element valueElem = getUniqueChild(nextParam, "value");
          Element structElem = getUniqueChild(valueElem, null);
          if (structElem.getLocalName().equals("struct")) {
-            
+
             // Parse the input parameter
             Element memberElem = getUniqueChild(structElem, "member");
             Element memberNameElem = getUniqueChild(memberElem, "name");
@@ -225,10 +225,10 @@ final class XMLRPCCallingConvention extends CallingConvention {
             }
             functionParams.set(SECRET_KEY, parameterName, parameterValue);
          } else if (structElem.getLocalName().equals("array")) {
-            
+
             // Parse the input data section
             Element arrayElem = getUniqueChild(valueElem, "array");
-            Element dataElem = getUniqueChild(valueElem, "data");
+            Element dataElem = getUniqueChild(arrayElem, "data");
             if (dataSection != null) {
                throw new InvalidRequestException("Only one data section is allowed per request");
             }
@@ -237,10 +237,10 @@ final class XMLRPCCallingConvention extends CallingConvention {
                FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                dataSectionSpec = functionSpec.getInputDataSectionElements();
             } catch (InvalidSpecificationException ise) {
-               
+
                // keep the old value
             } catch (EntityNotFoundException enfe) {
-               
+
                // keep the old value
             }
             ElementBuilder builder = new ElementBuilder("data");
@@ -255,7 +255,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
             throw new InvalidRequestException("Only \"struct\" and \"array\" are valid as parameter type.");
          }
       }
-      
+
       return new FunctionRequest(functionName, functionParams, null);
    }
 
@@ -263,12 +263,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
                                     HttpServletResponse httpResponse,
                                     HttpServletRequest  httpRequest)
    throws IOException {
-      
+
       // Send the XML output to the stream and flush
       PrintWriter out = httpResponse.getWriter();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
       httpResponse.setStatus(HttpServletResponse.SC_OK);
-      
+
       // Store the result in a StringWriter before sending it.
       Writer buffer = new FastStringWriter(1024);
 
@@ -279,13 +279,13 @@ final class XMLRPCCallingConvention extends CallingConvention {
       xmlout.declaration();
 
       xmlout.startTag("methodResponse");
-      
+
       String errorCode = xinsResult.getErrorCode();
       if (errorCode != null) {
          xmlout.startTag("fault");
          xmlout.startTag("value");
          xmlout.startTag("struct");
-         
+
          xmlout.startTag("member");
          xmlout.startTag("name");
          xmlout.pcdata("faultCode");
@@ -296,7 +296,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
          xmlout.endTag(); // int
          xmlout.endTag(); // value
          xmlout.endTag(); // member
-         
+
          xmlout.startTag("member");
          xmlout.startTag("name");
          xmlout.pcdata("faultString");
@@ -307,19 +307,19 @@ final class XMLRPCCallingConvention extends CallingConvention {
          xmlout.endTag(); // string
          xmlout.endTag(); // value
          xmlout.endTag(); // member
-         
+
          xmlout.endTag(); // struct
          xmlout.endTag(); // value
          xmlout.endTag(); // fault
       } else {
-         
+
          String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
-         
+
          xmlout.startTag("params");
          xmlout.startTag("param");
          xmlout.startTag("value");
          xmlout.startTag("struct");
-         
+
          // Write the output parameters
          Iterator outputParameterNames = xinsResult.getParameters().getNames();
          while (outputParameterNames.hasNext()) {
@@ -332,16 +332,16 @@ final class XMLRPCCallingConvention extends CallingConvention {
                parameterValue = convertOutput(parameterType, parameterValue);
                parameterTag = convertType(parameterType);
             } catch (InvalidSpecificationException ise) {
-               
+
                // keep the old value
             } catch (EntityNotFoundException enfe) {
-               
+
                // keep the old value
             } catch (java.text.ParseException pex) {
 
                throw new IOException("Invalid value for parameter \"" + parameterName + "\".");
             }
-            
+
             // Write the member element
             xmlout.startTag("member");
             xmlout.startTag("name");
@@ -354,7 +354,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
             xmlout.endTag(); // value
             xmlout.endTag(); // member
          }
-         
+
          // Write the data section if needed
          Element dataSection = xinsResult.getDataElement();
          if (dataSection != null) {
@@ -364,13 +364,13 @@ final class XMLRPCCallingConvention extends CallingConvention {
                FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                dataSectionSpec = functionSpec.getOutputDataSectionElements();
             } catch (InvalidSpecificationException ise) {
-               
+
                // keep the old value
             } catch (EntityNotFoundException enfe) {
-               
+
                // keep the old value
             }
-            
+
             xmlout.startTag("member");
             xmlout.startTag("name");
             xmlout.pcdata("data");
@@ -388,13 +388,13 @@ final class XMLRPCCallingConvention extends CallingConvention {
             xmlout.endTag(); // value
             xmlout.endTag(); // member
          }
-         
+
          xmlout.endTag(); // struct
          xmlout.endTag(); // value
          xmlout.endTag(); // param
          xmlout.endTag(); // params
       }
-      
+
       xmlout.endTag(); // methodResponse
 
       // Write the result to the servlet response
@@ -402,7 +402,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
 
       out.close();
    }
-   
+
    /**
     * Gets the unique child of the element.
     *
@@ -428,17 +428,17 @@ final class XMLRPCCallingConvention extends CallingConvention {
          childList = parentElement.getChildElements(elementName);
       }
       if (childList.size() == 0) {
-         throw new InvalidRequestException("No \"" + elementName + 
-               "\" children found in the \"" + parentElement.getLocalName() + 
+         throw new InvalidRequestException("No \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
       } else if (childList.size() > 1) {
-         throw new InvalidRequestException("More than one \"" + elementName + 
-               "\" children found in the \"" + parentElement.getLocalName() + 
+         throw new InvalidRequestException("More than one \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
       }
       return (Element) childList.get(0);
    }
-   
+
    /**
     * Parses the data section element.
     *
@@ -484,7 +484,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       } else {
          throw new InvalidRequestException("The \"struct\" element should at least have one member");
       }
-      
+
       // Fill in the attributes
       while (itMemberElems.hasNext()) {
          Element memberElem = (Element) itMemberElems.next();
@@ -503,12 +503,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
          } catch (java.text.ParseException pex) {
             throw new InvalidRequestException("Invalid value for parameter \"" + parameterName + "\".");
          }
-         
+
          builder.setAttribute(parameterName, parameterValue);
       }
       return builder.createElement();
    }
-   
+
    /**
     * Write the given data section element to the output.
     *
@@ -553,7 +553,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       }
       xmlout.endTag(); // value
       xmlout.endTag(); // member
-      
+
       // Write the attributes
       Map attributesMap = dataElement.getAttributeMap();
       Iterator itAttributes = attributesMap.keySet().iterator();
@@ -562,18 +562,18 @@ final class XMLRPCCallingConvention extends CallingConvention {
          String attributeName = attributeQName.getLocalName();
          String attributeValue = (String) attributesMap.get(attributeQName);
          String attributeTag = "string";
-         
+
          try {
             Type attributeType = elementSpec.getAttribute(attributeName).getType();
             attributeValue = convertOutput(attributeType, attributeValue);
             attributeTag = convertType(attributeType);
          } catch (EntityNotFoundException enfe) {
-               
+
             // keep the old value
          } catch (java.text.ParseException pex) {
             throw new IOException("Invalid value for parameter \"" + attributeName + "\".");
          }
-         
+
          xmlout.startTag("member");
          xmlout.startTag("name");
          xmlout.pcdata(attributeName);
@@ -587,7 +587,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       }
       xmlout.endTag(); // value
    }
-   
+
    /**
     * Converts the XML-RPC input values to XINS input values.
     *
@@ -626,7 +626,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       }
       return parameterValue;
    }
-   
+
    /**
     * Converts the XINS output values to XML-RPC output values.
     *
