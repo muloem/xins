@@ -261,7 +261,7 @@ implements DefaultResultCodes {
       } catch (Throwable exception) {
          result = _api.handleFunctionException(start, functionRequest, ip,
                                                callID, exception);
-		}
+      }
 
       // Update function statistics
       // We assume that this method will never throw any exception
