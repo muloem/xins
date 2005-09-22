@@ -95,13 +95,15 @@ extends Object {
     * State for the SAX event handler at any depth within an ignorable
     * element.
     */
-   private static final State IN_IGNORABLE_ELEMENT = new State("IN_IGNORABLE_ELEMENT");
+   private static final State IN_IGNORABLE_ELEMENT =
+      new State("IN_IGNORABLE_ELEMENT");
 
    /**
     * State for the SAX event handler within the output parameter element
     * (<code>param</code>).
     */
-   private static final State IN_PARAM_ELEMENT = new State("IN_PARAM_ELEMENT");
+   private static final State IN_PARAM_ELEMENT =
+      new State("IN_PARAM_ELEMENT");
 
    /**
     * State for the SAX event handler in the data section (at any depth within
@@ -143,7 +145,6 @@ extends Object {
     * Constructs a new <code>XINSCallResultParser</code>.
     */
    public XINSCallResultParser() {
-
       // empty
    }
 
@@ -202,31 +203,33 @@ extends Object {
          String detail = exception.getMessage();
          Log.log_2205(exception, detail);
 
-         // Construct a buffer for the error message
-         FastStringBuffer buffer = new FastStringBuffer(182, "Unable to convert the specified character string to XML");
-
          // Include the exception message in our error message, if any
-         if (detail != null && detail.length() > 0) {
-            buffer.append(": ");
-            buffer.append(detail);
-         } else {
-            buffer.append('.');
+         String message = "Unable to convert the specified string to XML.";
+
+         if (detail != null) {
+            detail = detail.trim();
+            if (detail.length() > 0) {
+               FastStringBuffer buffer = new FastStringBuffer(182,
+                  "Unable to convert the specified string to XML: ");
+               buffer.append(detail);
+               message = buffer.toString();
+            }
          }
 
          // Throw exception with message, and register cause exception
-         throw new ParseException(buffer.toString(), exception, detail);
+         throw new ParseException(message, exception, detail);
 
       // Always dispose the ByteArrayInputStream
       } finally {
          if (stream != null) {
             try {
                stream.close();
-            } catch (IOException ioException) {
+            } catch (Throwable exception) {
                final String SUBJECT_CLASS  = stream.getClass().getName();
                final String SUBJECT_METHOD = "close()";
                Utils.logProgrammingError(CLASSNAME,    THIS_METHOD,
                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                        null,          ioException);
+                                        null,          exception);
             }
          }
       }
@@ -246,8 +249,6 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
     */
    private class Handler
    extends DefaultHandler
@@ -261,7 +262,6 @@ extends Object {
        * Constructs a new <code>Handler</code> instance.
        */
       private Handler() {
-
          _state            = INITIAL;
          _level            = -1;
          _characters       = new FastStringBuffer(145);
@@ -378,7 +378,10 @@ extends Object {
          _level++;
 
          if (currentState == ERROR) {
-            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            final String DETAIL = "_state="
+                                + currentState
+                                + "; _level="
+                                + _level;
             throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
                                             HANDLER_CLASSNAME, THIS_METHOD,
                                             DETAIL);
@@ -387,7 +390,10 @@ extends Object {
 
             // Level and state must comply
             if (_level != 0) {
-               final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+               final String DETAIL = "_state="
+                                   + currentState
+                                   + "; _level="
+                                   + _level;
                throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
                                                HANDLER_CLASSNAME, THIS_METHOD,
                                                DETAIL);
@@ -400,7 +406,8 @@ extends Object {
                                    + localName
                                    + "\" with namespace "
                                    + quotedNamespaceURI
-                                   + " instead of \"result\" with namespace (null).";
+                                   + " instead of \"result\" with namespace"
+                                   + " (null).";
                throw new SAXException(DETAIL);
             }
 
@@ -430,8 +437,15 @@ extends Object {
 
             // Conflicting error codes
             } else {
-               // NOTE: No need to log here. This will be logged already (message 2205)
-               throw new SAXException("Found conflicting duplicate value for error code, since errorcode=\"" + code1 + "\", while code=\"" + code2 + "\".");
+               // NOTE: No need to log here. This will be logged already in
+               //       Logdoc log message 2205.
+               String detail = "Found conflicting duplicate value for the "
+                             + "error code, since attribute errorcode=\""
+                             + code1
+                             + "\", while attribute code=\""
+                             + code2
+                             + "\".";
+               throw new SAXException(detail);
             }
 
             // Change state
@@ -442,8 +456,8 @@ extends Object {
             // Output parameter
             if (namespaceURI == null && "param".equals(localName)) {
 
-               // Store the name of the parameter. It may be null, but that will
-               // be checked only after the element end tag is processed.
+               // Store the name of the parameter. It may be null, but that
+               // will be checked only after the element end tag is processed.
                _parameterName = atts.getValue("name");
 
                // TODO: Check parameter name here (null and pattern)
@@ -477,7 +491,12 @@ extends Object {
          // Within output parameter element, no elements are allowed
          } else if (currentState == IN_PARAM_ELEMENT) {
             // NOTE: No need to log here. This will be logged already (message 2205)
-            throw new SAXException("Found \"" + localName + "\" element with namespace " + quotedNamespaceURI + " within \"param\" element.");
+            String detail = "Found \""
+                          + localName
+                          + "\" element with namespace "
+                          + quotedNamespaceURI
+                          + " within \"param\" element.";
+            throw new SAXException(detail);
 
          // Within the data section
          } else if (currentState == IN_DATA_SECTION) {
@@ -491,7 +510,9 @@ extends Object {
                String attrLocalName    = atts.getLocalName(i);
                String attrValue        = atts.getValue(i);
 
-               element.setAttribute(attrNamespaceURI, attrLocalName, attrValue);
+               element.setAttribute(attrNamespaceURI,
+                                    attrLocalName,
+                                    attrValue);
             }
 
             // Push the element on the stack
@@ -509,7 +530,10 @@ extends Object {
 
          // Unrecognized state
          } else {
-            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            final String DETAIL = "_state="
+                                + currentState
+                                + "; _level="
+                                + _level;
             throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
                                             HANDLER_CLASSNAME, THIS_METHOD,
                                             DETAIL);
@@ -550,7 +574,9 @@ extends Object {
          _state = ERROR;
 
          // Make sure namespaceURI is either null or non-empty
-         namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
+         namespaceURI = "".equals(namespaceURI.trim())
+                      ? null
+                      : namespaceURI;
 
          // Cache quoted version of namespaceURI
          String quotedNamespaceURI = TextUtils.quote(namespaceURI);
@@ -559,7 +585,10 @@ extends Object {
          MandatoryArgumentChecker.check("localName", localName);
 
          if (currentState == ERROR) {
-            final String DETAIL = "_state=" + currentState + "; _level=" + _level;
+            final String DETAIL = "_state="
+                                + currentState
+                                + "; _level="
+                                + _level;
             throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
                                             HANDLER_CLASSNAME, THIS_METHOD,
                                             DETAIL);
@@ -568,7 +597,9 @@ extends Object {
          } else if (currentState == AT_ROOT_LEVEL) {
 
             if (! (namespaceURI == null && "result".equals(localName))) {
-               final String DETAIL = "Expected end of element of type \"result\" with namespace (null) instead of \""
+               final String DETAIL = "Expected end of element of type "
+                                   + "\"result\" with namespace (null) "
+                                   + "instead of \""
                                    + localName
                                    + "\" with namespace "
                                    + quotedNamespaceURI
@@ -596,13 +627,17 @@ extends Object {
             // If at the <data/> element level, then return to AT_ROOT_LEVEL
             if (_dataElementStack.size() == 0) {
                if (! (namespaceURI == null && "data".equals(localName))) {
-                  final String DETAIL = "Expected end of element of type \"data\" with namespace (null) instead of \""
+                  final String DETAIL = "Expected end of element of type "
+                                      + "\"data\" with namespace (null) "
+                                      + "instead of \""
                                       + localName
                                       + "\" with namespace "
                                       + quotedNamespaceURI
                                       + '.';
-                  throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
-                                                  HANDLER_CLASSNAME, THIS_METHOD,
+                  throw Utils.logProgrammingError(HANDLER_CLASSNAME,
+                                                  THIS_METHOD,
+                                                  HANDLER_CLASSNAME,
+                                                  THIS_METHOD,
                                                   DETAIL);
                }
 
@@ -632,7 +667,9 @@ extends Object {
          } else if (currentState == IN_PARAM_ELEMENT) {
 
             if (! (namespaceURI == null && "param".equals(localName))) {
-               final String DETAIL = "Expected end of element of type \"param\" with namespace (null) instead of \""
+               final String DETAIL = "Expected end of element of type "
+                                   + "\"param\" with namespace (null) "
+                                   + "instead of \""
                                    + localName
                                    + "\" with namespace "
                                    + quotedNamespaceURI
@@ -670,7 +707,8 @@ extends Object {
                   if (existingValue != null) {
                      if (!existingValue.equals(value)) {
                         // NOTE: This will be logged already (message 2205)
-                        final String DETAIL = "Found conflicting duplicate value for output parameter \""
+                        final String DETAIL = "Found conflicting duplicate "
+                                            + "value for output parameter \""
                                             + name
                                             + "\". Initial value is \""
                                             + existingValue
@@ -740,7 +778,12 @@ extends Object {
             String text = new String(ch, start, length);
             if (text.trim().length() > 0) {
                // NOTE: This will be logged already (message 2205)
-               throw new SAXException("Found character content \"" + text + "\" in state " + currentState + '.');
+               String detail = "Found character content \""
+                             + text
+                             + "\" in state "
+                             + currentState
+                             + '.';
+               throw new SAXException(detail);
             }
          }
 
@@ -852,8 +895,6 @@ extends Object {
     *
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.0.0
     */
    private static final class State extends Object {
 
