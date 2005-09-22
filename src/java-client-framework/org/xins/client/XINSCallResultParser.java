@@ -935,16 +935,6 @@ extends Object {
       //----------------------------------------------------------------------
 
       /**
-       * Returns the name of this state.
-       *
-       * @return
-       *    the name of this state, cannot be <code>null</code>.
-       */
-      public String getName() {
-         return _name;
-      }
-
-      /**
        * Returns a textual representation of this object.
        *
        * @return
