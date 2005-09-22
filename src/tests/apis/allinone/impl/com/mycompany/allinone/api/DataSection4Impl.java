@@ -3,6 +3,8 @@
  */
 package com.mycompany.allinone.api;
 
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation of the <code>DataSection3</code> function.
@@ -58,8 +60,36 @@ public final class DataSection4Impl extends DataSection4 {
     *    if anything went wrong.
     */
    public Result call(Request request) throws Throwable {
+      
+      // List the person and address data and fails if 
+      // the input is not as excepted.
+      List persons = request.listPerson();
+      if (persons.size() == 0) {
+         throw new Exception("Nobody received");
+      }
+      Iterator itPersons = persons.iterator();
+      while (itPersons.hasNext()) {
+         Request.Person nextPerson = (Request.Person) itPersons.next();
+         String name = nextPerson.getName();
+         if (name.length() < 1) {
+            throw new Exception("Incorrect name");
+         }
+         int age = nextPerson.getAge();
+         if (age < 1) {
+            throw new Exception("Incorrect age");
+         }
+      }
+      List addresses = request.listAddress();
+      if (addresses.size() == 0) {
+         throw new Exception("No address received");
+      }
+      Request.Address address = (Request.Address) addresses.iterator().next();
+      String postAddress = address.pcdata();
+      if (postAddress.length() == 0) {
+         throw new Exception("No address given");
+      }
+      
       SuccessfulResult result = new SuccessfulResult();
-      // TODO
       return result;
    }
 }
