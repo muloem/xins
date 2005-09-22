@@ -305,29 +305,21 @@
 				<xsl:text>");
          }</xsl:text>
 		</xsl:if>
+		<xsl:if test="name()='attribute'">
+			<xsl:text>
+         try {</xsl:text>
+		</xsl:if>
 		<xsl:text>
          return </xsl:text>
 		<xsl:choose>
 			<xsl:when test="name()='attribute'">
-				<xsl:if test="$typeIsPrimary = 'true'">
-					<xsl:choose>
-						<xsl:when test="$javaobjecttype = 'Int'">
-							<xsl:text>Integer</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$javaobjecttype" />
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>.parse</xsl:text>
-					<xsl:value-of select="$javaobjecttype" />
-					<xsl:text>(</xsl:text>
-				</xsl:if>
-				<xsl:text>_element.getAttribute("</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>")</xsl:text>
-				<xsl:if test="$typeIsPrimary = 'true'">
-					<xsl:text>)</xsl:text>
-				</xsl:if>
+				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="required" select="'true'" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>_</xsl:text>
@@ -339,7 +331,16 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>;
+		<xsl:text>;</xsl:text>
+		<xsl:if test="name()='attribute'">
+			<xsl:text>
+         } catch (org.xins.common.types.TypeValueException tve) {
+
+            // Should never happen as it was already checked.
+            throw org.xins.common.Utils.logProgrammingError(tve);
+         }</xsl:text>
+		</xsl:if>
+		<xsl:text>
       }</xsl:text>
 	</xsl:template>
 

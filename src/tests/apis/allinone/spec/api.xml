@@ -10,6 +10,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="DataSection"     />
 	<function name="DataSection2" freeze="1.1" />
 	<function name="DataSection3"    />
+	<function name="DataSection4"    />
 	<function name="DefinedTypes"    />
 	<function name="InvalidResponse" />
 	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->

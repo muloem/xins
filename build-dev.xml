@@ -250,7 +250,7 @@ ${sf.file}</fail>
 		<delete dir="build/coverage-src" />
 	</target>
 
-	<target name="-prepare-coverage">
+	<target name="-prepare-coverage" depends="clean-coverage">
 		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties"/>
 		<cobertura-instrument todir="build/instrumented-classes/java-client">
 			<fileset dir="build/classes/java-client" includes="**/*.class" />
@@ -553,6 +553,7 @@ ${sf.file}</fail>
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
 			<include name="COPYRIGHT"                      />
+			<include name="NOTES"                          />
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/perftests.xslt"  />

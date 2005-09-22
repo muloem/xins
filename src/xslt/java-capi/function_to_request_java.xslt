@@ -100,7 +100,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<xsl:apply-templates select="input/param" mode="methods" />
 
-		<xsl:apply-templates select="input/data/element" mode="methods" />
+		<xsl:apply-templates select="input/data" mode="methods" />
 
 		<xsl:if test="input/data/@contains">
 			<xsl:variable name="elementName" select="input/data/@contains" />
@@ -313,7 +313,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 	</xsl:template>
 
-	<xsl:template match="input/data/element" mode="methods">
+	<xsl:template match="input/data" mode="methods">
 	
 		<xsl:text><![CDATA[
 

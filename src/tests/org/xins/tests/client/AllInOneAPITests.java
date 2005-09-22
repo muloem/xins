@@ -494,6 +494,40 @@ public class AllInOneAPITests extends TestCase {
    }
    
   /**
+   * Tests a function that passes a data section with multiple elements as 
+   * input.
+   */
+   public void testDataSection4() throws Exception {
+      ElementBuilder builder1 = new ElementBuilder();
+      builder1.startElement("person");
+      builder1.setAttribute("gender", "Mister");
+      builder1.setAttribute("name", "Doe");
+      builder1.setAttribute("age", "55");
+      builder1.setAttribute("birthdate", "19551206");
+      Element person1 = builder1.createElement();
+      ElementBuilder builder2 = new ElementBuilder();
+      builder2.startElement("person");
+      builder2.setAttribute("gender", "Miss");
+      builder2.setAttribute("name", "Doe");
+      builder2.setAttribute("age", "54");
+      builder2.setAttribute("size", "154");
+      builder2.setAttribute("birthdate", "19561206");
+      Element person2 = builder2.createElement();
+      ElementBuilder builder3 = new ElementBuilder();
+      builder3.startElement("address");
+      builder3.setText("22 Washintong square, 22111 London, UK");
+      Element address = builder3.createElement();
+      ElementBuilder builder4 = new ElementBuilder();
+      builder4.startElement("data");
+      builder4.addChild(person1);
+      builder4.addChild(person2);
+      builder4.addChild(address);
+      Element dataSection = builder4.createElement();
+
+      _capi.callDataSection4(dataSection);
+   }
+
+  /**
    * Tests the param-combos using the old-style (XINS 1.0/1.1) call methods.
    */
    public void testParamCombo1() throws Exception {
