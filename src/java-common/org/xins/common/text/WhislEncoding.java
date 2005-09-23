@@ -9,8 +9,8 @@ package org.xins.common.text;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Whisl encoding utility functions. This class supports both encoding and
- * decoding.
+ * Whisl encoding utility functions. This class currently only supports
+ * encoding.
  *
  * <p>The Whisl encoding is similar to URL encoding, but specifically meant to
  * support the complete Unicode character set.
@@ -51,19 +51,35 @@ public final class WhislEncoding extends Object {
    //-------------------------------------------------------------------------
 
    static {
+
+      // Fill 128 array elements
       UNENCODED_TO_ENCODED = new String[128];
       for (int i = 0; i < 128; i++) {
          char c = (char) i;
-         if ((c >= 'a' && c <= 'z')   || (c >= 'A' && c <= 'Z')   || (c >= '0' && c <= '9')
-          || (c == '-') || (c == '_') || (c == '.') || (c == '*')) {
+
+         // Some characters can be output unmodified
+         if ((c >= 'a' && c <= 'z')   || (c >= 'A' && c <= 'Z')
+          || (c >= '0' && c <= '9')
+          || (c == '-')
+          || (c == '_')
+          || (c == '.')
+          || (c == '*')) {
             UNENCODED_TO_ENCODED[i] = String.valueOf(c);
+
+         // A space is converted to a plus-sign
          } else if (c == ' ') {
             UNENCODED_TO_ENCODED[i] = "+";
+
+         // All other characters are URL-encoded in the form "%hex", where
+         // "hex" is the hexadecimal value of the character
          } else {
             char[] data = new char[3];
+            int toUpper = (int) 'A' - (int) 'a';
             data[0] = '%';
-            data[1] = Character.toUpperCase(Character.forDigit((i >> 4) & 0xF, 16));
-            data[2] = Character.toUpperCase(Character.forDigit( i       & 0xF, 16));
+            data[1] = Character.forDigit((i >> 4) & 0xF, 16);
+            data[2] = Character.forDigit( i       & 0xF, 16);
+            data[1] = Character.toUpperCase(data[1]);
+            data[2] = Character.toUpperCase(data[2]);
             UNENCODED_TO_ENCODED[i] = new String(data);
          }
       }
@@ -73,10 +89,10 @@ public final class WhislEncoding extends Object {
     * Whisl encodes the specified character string.
     *
     * @param s
-    *    the string to Whisl encode, not <code>null</code>.
+    *    the string to Whisl-encode, not <code>null</code>.
     *
     * @return
-    *    Whisl encoded version of the specified character string, never
+    *    Whisl-encoded version of the specified character string, never
     *    <code>null</code>.
     *
     * @throws IllegalArgumentException
@@ -100,7 +116,7 @@ public final class WhislEncoding extends Object {
       // Loop through the string. If the character is less than 128 then get
       // from the cache array, otherwise convert escape with a dollar sign
       for (int i = 0; i < length; i++) {
-         int c = (int) s.charAt(i);
+         short c = (short) s.charAt(i);
          if (c < 128) {
             buffer.append(UNENCODED_TO_ENCODED[c]);
          } else {

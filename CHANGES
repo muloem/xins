@@ -7,8 +7,12 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 
 * XINS/Java Common Library:
-  - Configure the Log4j fallback only when no Log4j settings are already set.
+  - Fixed SF.net bug #1301078: WhislEncoding encodes as "$0000xxxx" instead of
+    "$xxxx".
+  - Added unit tests for class WhislEncoding.
+  - Configure the Log4J fallback only when no Log4J settings are already set.
   - Added unit tests for class DateConverter.
+  - Added toHexString(FastStringBuffer,short) to class HexConverter.
 
 * XINS/Java Server Framework:
   - Set the default level for logs starting with "org.xins." to INFO.

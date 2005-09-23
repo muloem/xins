@@ -79,11 +79,11 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.service.UnsupportedProtocolExceptionTests.class);
 
       suite.addTestSuite(org.xins.tests.common.text.DateConverterTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
       suite.addTestSuite(org.xins.tests.common.text.HexConverterTests.class);
       suite.addTestSuite(org.xins.tests.common.text.PatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.text.SimplePatternParserTests.class);
-
-      suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
+      suite.addTestSuite(org.xins.tests.common.text.WhislEncodingTests.class);
 
       suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.DateTests.class);

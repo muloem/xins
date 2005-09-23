@@ -71,31 +71,33 @@ public class HexConverter extends Object {
    private static final long LONG_MASK = RADIX - 1L;
 
    /**
+    * Array of 4 zero characters.
+    */
+   private static final char[] FOUR_ZEROES = {
+      '0', '0', '0', '0',
+   };
+
+   /**
     * Array of 8 zero characters.
     */
    private static final char[] EIGHT_ZEROES = {
-      '0', '0', '0', '0',
-      '0', '0', '0', '0',
+      '0', '0', '0', '0', '0', '0', '0', '0',
    };
 
    /**
     * Array of 16 zero characters.
     */
    private static final char[] SIXTEEN_ZEROES = {
-      '0', '0', '0', '0',
-      '0', '0', '0', '0',
-      '0', '0', '0', '0',
-      '0', '0', '0', '0'
+      '0', '0', '0', '0', '0', '0', '0', '0',
+      '0', '0', '0', '0', '0', '0', '0', '0'
    };
 
    /**
     * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
     */
    private static final char[] DIGITS = {
-      '0' , '1' , '2' , '3' ,
-      '4' , '5' , '6' , '7' ,
-      '8' , '9' , 'a' , 'b' ,
-      'c' , 'd' , 'e' , 'f'
+      '0' , '1' , '2' , '3' , '4' , '5' , '6' , '7' ,
+      '8' , '9' , 'a' , 'b' , 'c' , 'd' , 'e' , 'f'
    };
 
    /**
@@ -354,6 +356,46 @@ public class HexConverter extends Object {
       }
 
       return new String(chars, 0, LONG_LENGTH);
+   }
+
+   /**
+    * Converts the specified <code>short</code> to unsigned number and appends
+    * it to the specified string buffer. Exactly 4 characters will be
+    * appended, all between <code>'0'</code> to <code>'9'</code> or between
+    * <code>'a'</code> and <code>'f'</code>.
+    *
+    * @param buffer
+    *    the string buffer to append to, cannot be <code>null</code>.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>buffer == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static void toHexString(FastStringBuffer buffer, short n)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (buffer == null) {
+         throw new IllegalArgumentException("buffer == null");
+      }
+
+      // Store the starting position where the buffer should write the value.
+      int initPos = buffer.getLength();
+
+      // Append 8 zero characters to the buffer
+      buffer.append(FOUR_ZEROES);
+
+      int pos = initPos + SHORT_LENGTH - 1;
+
+      // Convert the short to a hex string until the remainder is 0
+      int x = (int) n;
+      for (; x != 0; x >>>= 4) {
+         buffer.setChar(pos--, DIGITS[x & INT_MASK]);
+      }
    }
 
    /**
