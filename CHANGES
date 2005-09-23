@@ -8,13 +8,15 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 
 * XINS/Java Common Library:
   - Configure the Log4j fallback only when no Log4j settings are already set.
+  - Added unit tests for class DateConverter.
 
 * XINS/Java Server Framework:
   - Set the default level for logs starting with "org.xins." to INFO.
+  - Quoting servlet container, JVM and OS info in log message 3200.
 
 * Tests:
   - Removed unused imports and unused variables.
-  - Removed underscore in method names.
+  - Removed underscores from method names.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
