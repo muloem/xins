@@ -7,7 +7,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Date;
 
 /**
@@ -89,7 +88,7 @@ public class DateTests extends TestCase {
     * Tests the <code>Date$Value</code> constructor that accepts a
     * <code>Date</code> instance.
     */
-   public void testDateValue_Date() throws Exception {
+   public void testDateValueWithDate() throws Exception {
 
       java.util.Date d = null;
       Date.Value v;
@@ -112,7 +111,7 @@ public class DateTests extends TestCase {
     * Tests the <code>Date$Value</code> constructor that accepts a
     * <code>long</code>.
     */
-   public void testDateValue_long() throws Exception {
+   public void testDateValueWithLong() throws Exception {
 
       long n = -1L;
       Date.Value v;
@@ -145,7 +144,7 @@ public class DateTests extends TestCase {
     * Tests the <code>Date$Value</code> constructor that accepts a number
     * of <code>int</code> values.
     */
-   public void testDateValue_ints() throws Exception {
+   public void testDateValueWithInts() throws Exception {
 
       int year=2005, month=12, day=31;
       String asString = ""+year+month+day;
@@ -162,7 +161,7 @@ public class DateTests extends TestCase {
     * Tests the <code>equals</code> method in the <code>Date$Value</code>
     * class.
     */
-   public void testDateValue_equals() throws Exception {
+   public void testDateValueEquals() throws Exception {
 
       Date.Value v1 = new Date.Value(2005, 5, 9);
       Date.Value v2 = new Date.Value(2005, 5, 9);

@@ -24,11 +24,11 @@ import org.xins.common.service.TargetDescriptor;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class InvalidRequestTests extends TestCase {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -39,15 +39,15 @@ public class InvalidRequestTests extends TestCase {
       return new TestSuite(InvalidRequestTests.class);
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Constructs a new <code>InvalidRequestTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -63,7 +63,7 @@ public class InvalidRequestTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The <code>XINSServiceCaller</code> used to call the API. This field is
     * initialized by {@link #setUp()}.
@@ -81,7 +81,7 @@ public class InvalidRequestTests extends TestCase {
       _caller = new XINSServiceCaller(target);
    }
 
-   public void testInvalidRequest_RequiredParams() throws Exception {
+   public void testRequiredParams() throws Exception {
 
       // Make a call to the SimpleTypes function
       XINSCallRequest request = new XINSCallRequest("SimpleTypes");
@@ -117,7 +117,7 @@ public class InvalidRequestTests extends TestCase {
       }
    }
 
-   public void testInvalidRequest_TypedParams() throws Exception {
+   public void testTypedParams() throws Exception {
 
       // Make a call to the ParamComboNotAll function
       XINSCallRequest request = new XINSCallRequest("ParamComboNotAll");
@@ -153,7 +153,7 @@ public class InvalidRequestTests extends TestCase {
       }
    }
 
-   public void testInvalidRequest_ParamCombo() throws Exception {
+   public void testParamCombo() throws Exception {
 
       // Make a call to the ParamComboNotAll function
       XINSCallRequest request = new XINSCallRequest("ParamComboNotAll");

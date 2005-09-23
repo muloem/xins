@@ -6,13 +6,9 @@
  */
 package org.xins.tests;
 
-import java.io.File;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.xins.common.servlet.container.HTTPServletHandler;
 
 /**
  * Stops the web server.

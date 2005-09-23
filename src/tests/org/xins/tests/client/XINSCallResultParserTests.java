@@ -240,7 +240,7 @@ public class XINSCallResultParserTests extends TestCase {
                     "\t</data>\n</result>";
       XINSCallResultData result2 = parser.parse(xml2.getBytes(ENCODING));
       verifyCorrectResult(result2);
-      
+
       // Parse the same XML with spaces between parameters
       String xml3 = "<?xml version=\"1.0\" encoding='" + ENCODING + "' ?>" +
                     " <result>\n\t\n" +
@@ -389,12 +389,10 @@ public class XINSCallResultParserTests extends TestCase {
       // Prepare the string to parse
       final String ENCODING = "UTF-8";
       String xml;
-      XINSCallResultData result;
-      PropertyReader params;
 
       // Unknown elements under 'result' root element should be ignored
       xml = "<result>  <result/><result /><result errorcode='none' /></result>";
-      result = parser.parse(xml.getBytes(ENCODING));
+      parser.parse(xml.getBytes(ENCODING));
    }
 
    /**
@@ -413,7 +411,6 @@ public class XINSCallResultParserTests extends TestCase {
       final String ENCODING = "UTF-8";
       String xml;
       XINSCallResultData result;
-      PropertyReader params;
 
       xml = "<result>  <data><result /><data /></data></result>";
       result = parser.parse(xml.getBytes(ENCODING));
@@ -440,7 +437,6 @@ public class XINSCallResultParserTests extends TestCase {
       final String ENCODING = "UTF-8";
       String xml;
       XINSCallResultData result;
-      PropertyReader params;
 
       // Result element with namespace should not be accepted
       xml = "<rs:result xmlns:rs='http://somenamespace/' />";
@@ -485,8 +481,6 @@ public class XINSCallResultParserTests extends TestCase {
       // Prepare the string to parse
       final String ENCODING = "UTF-8";
       String xml;
-      XINSCallResultData result;
-      PropertyReader params;
 
       // Both data sections empty
       xml = "<result><data/><data/></result>";
@@ -539,8 +533,6 @@ public class XINSCallResultParserTests extends TestCase {
       // Prepare the string to parse
       final String ENCODING = "UTF-8";
       String xml;
-      XINSCallResultData result;
-      PropertyReader params;
 
       // Ignorable element, 1 level
       xml = "<result><a/></result>";
@@ -560,7 +552,7 @@ public class XINSCallResultParserTests extends TestCase {
     * @throws Exception
     *    if an unexpected exception is thrown.
     */
-   public void testParseXINSCallResult9() throws Exception {
+   /*public void testParseXINSCallResult9() throws Exception {
 
       XINSCallResultParser parser = new XINSCallResultParser();
 
@@ -571,5 +563,5 @@ public class XINSCallResultParserTests extends TestCase {
       PropertyReader params;
 
       // TODO
-   }
+   }*/
 }

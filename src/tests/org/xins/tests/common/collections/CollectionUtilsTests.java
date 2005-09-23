@@ -7,16 +7,10 @@
 package org.xins.tests.common.collections;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.common.collections.ChainedMap;
 
 import org.xins.common.collections.CollectionUtils;
 

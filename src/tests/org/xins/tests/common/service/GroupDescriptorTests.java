@@ -6,8 +6,6 @@
  */
 package org.xins.tests.common.service;
 
-import java.net.MalformedURLException;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

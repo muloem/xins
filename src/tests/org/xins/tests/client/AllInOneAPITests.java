@@ -9,15 +9,8 @@ package org.xins.tests.client;
 import com.mycompany.allinone.capi.*;
 import com.mycompany.allinone.types.*;
 
-import java.io.File;
-import java.io.IOException;
-
-import java.text.ParseException;
-
 import java.util.Iterator;
 import java.util.List;
-
-import javax.servlet.ServletException;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -32,9 +25,6 @@ import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
 
-import org.xins.common.collections.PropertyReader;
-
-import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.StatusCodeHTTPCallException;
 
 import org.xins.common.service.TargetDescriptor;
@@ -454,10 +444,10 @@ public class AllInOneAPITests extends TestCase {
       DataElement envelope3 = (DataElement) packets.get(3);
       assertEquals("Incorrect elements.", "envelope", envelope3.getLocalName());
       assertNotNull("No destination specified.", envelope3.getAttribute("destination"));
-      
+
       // Call with no data section
       _capi.callDataSection3("hello", null);
-      
+
       // Call with an empty data section
       ElementBuilder builder4 = new ElementBuilder();
       builder4.startElement("data");
@@ -474,10 +464,10 @@ public class AllInOneAPITests extends TestCase {
       address1.setCompany("MyCompany");
       DataSection3Request request = new DataSection3Request();
       request.addAddress(address1);
-      
+
       // Make the call
       DataSection3Result result = _capi.callDataSection3(request);
-      
+
       List envelopes = result.listEnvelope();
       assertEquals("Incorrect number of envelopes returned.", 2, envelopes.size());
       boolean postCodeDone = false;
@@ -492,9 +482,9 @@ public class AllInOneAPITests extends TestCase {
       assertTrue("No postcode returned.", postCodeDone);
       assertTrue("No address returned.", washintonDone);
    }
-   
+
   /**
-   * Tests a function that passes a data section with multiple elements as 
+   * Tests a function that passes a data section with multiple elements as
    * input.
    */
    public void testDataSection4() throws Exception {
@@ -791,7 +781,7 @@ public class AllInOneAPITests extends TestCase {
          assertEquals(_target,          exception.getTarget());
       }
    }
-   
+
    /**
     * Tests the function 'DefinedTypes' that should return an _InvalidResponse error code.
     */

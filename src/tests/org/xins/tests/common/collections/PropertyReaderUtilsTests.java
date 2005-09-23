@@ -9,9 +9,6 @@ package org.xins.tests.common.collections;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import java.util.Iterator;
-import java.util.Properties;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -74,13 +71,13 @@ public class PropertyReaderUtilsTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testPropertyReaderUtils_EMPTY_PROPERTY_READER() {
+   public void testEmptyReader() {
       PropertyReader r = PropertyReaderUtils.EMPTY_PROPERTY_READER;
       assertNotNull(r);
       assertEquals(0, r.size());
    }
 
-   public void testPropertyReaderUtils_getBooleanProperty()
+   public void testGetBooleanProperty()
    throws Exception {
 
       BasicPropertyReader r1 = new BasicPropertyReader();
@@ -171,7 +168,7 @@ public class PropertyReaderUtilsTests extends TestCase {
       }
    }
 
-   public void testPropertyReaderUtils_getIntProperty()
+   public void testGetIntProperty()
    throws Exception {
 
       BasicPropertyReader r1 = new BasicPropertyReader();
@@ -263,7 +260,7 @@ public class PropertyReaderUtilsTests extends TestCase {
       }
    }
 
-   public void testPropertyReaderUtils_getRequiredProperty()
+   public void testGetRequiredProperty()
    throws Exception {
 
       BasicPropertyReader r1 = new BasicPropertyReader();
@@ -318,7 +315,7 @@ public class PropertyReaderUtilsTests extends TestCase {
       assertEquals("value", PropertyReaderUtils.getRequiredProperty(r0, "c"));
    }
 
-   public void testPropertyReaderUtils_createPropertyReader()
+   public void testCreatePropertyReader()
    throws Exception {
 
       try {
@@ -349,7 +346,7 @@ public class PropertyReaderUtilsTests extends TestCase {
     * Tests the method
     * {PropertyReaderUtils#serialize(PropertyReader,LogdocStringBuffer)}.
     */
-   public void testPropertyReaderUtils_serialize1()
+   public void testSerialize1()
    throws Exception {
 
       BasicPropertyReader r1 = new BasicPropertyReader();

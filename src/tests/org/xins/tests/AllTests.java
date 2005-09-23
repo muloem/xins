@@ -6,8 +6,6 @@
  */
 package org.xins.tests;
 
-import java.io.File;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -74,7 +72,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.spec.FunctionTests.class);
       suite.addTestSuite(org.xins.tests.common.spec.ParamComboTests.class);
       suite.addTestSuite(org.xins.tests.common.spec.ParameterTests.class);
-      
+
       suite.addTestSuite(org.xins.tests.common.service.DescriptorBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.service.TargetDescriptorTests.class);
       suite.addTestSuite(org.xins.tests.common.service.GroupDescriptorTests.class);
@@ -120,7 +118,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.ElementTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
-      
+
 
       // XXX: Perform just a single test
       suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention2"));

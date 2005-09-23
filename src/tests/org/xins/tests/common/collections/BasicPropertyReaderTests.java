@@ -6,7 +6,6 @@
  */
 package org.xins.tests.common.collections;
 
-import java.lang.Exception;
 import java.util.Iterator;
 import java.util.Properties;
 

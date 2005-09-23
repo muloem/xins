@@ -6,8 +6,6 @@
  */
 package org.xins.tests.common.net;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

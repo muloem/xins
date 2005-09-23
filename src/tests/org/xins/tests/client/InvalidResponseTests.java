@@ -18,8 +18,6 @@ import org.xins.client.UnsuccessfulXINSCallException;
 
 import org.xins.common.service.*;
 
-
-import org.xins.common.servlet.container.HTTPServletHandler;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 import org.xins.tests.AllTests;
@@ -31,11 +29,11 @@ import org.xins.tests.AllTests;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class InvalidResponseTests extends TestCase {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -46,15 +44,15 @@ public class InvalidResponseTests extends TestCase {
       return new TestSuite(InvalidResponseTests.class);
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Constructs a new <code>InvalidResponseTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -70,7 +68,7 @@ public class InvalidResponseTests extends TestCase {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The <code>CAPI</code> object used to call the API. This field is
     * initialized by {@link #setUp()}.
@@ -118,7 +116,7 @@ public class InvalidResponseTests extends TestCase {
          fail("Expected UnsuccessfulXINSCallException instead of " + exception.getClass().getName() + '.');
       }
    }
-   
+
    public void testInvalidErrorCode() throws Exception {
       try {
          _capi.callResultCode("hello");
@@ -130,7 +128,7 @@ public class InvalidResponseTests extends TestCase {
          fail("The result is invalid, the function should throw an UnacceptableErrorCodeXINSCallException exception");
       }
    }
-   
+
    /**
     * Tests that the required returned attribute are checked.
     */
@@ -145,7 +143,7 @@ public class InvalidResponseTests extends TestCase {
          fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
       }
    }
-   
+
    /**
     * Tests that the returned attribute types are checked.
     */
@@ -160,7 +158,7 @@ public class InvalidResponseTests extends TestCase {
          fail("The result is invalid, the function should throw an UnacceptableResultXINSCallException exception");
       }
    }
-   
+
    public void tearDown() throws Exception {
       AllTests.HTTP_SERVER.removeServlet("/invalid");
    }

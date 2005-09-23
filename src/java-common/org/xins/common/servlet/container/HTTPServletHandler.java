@@ -15,18 +15,23 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+
 import javax.servlet.ServletException;
 
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.helpers.NullEnumeration;
 
+import org.xins.common.Log;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.Log;
+
 
 /**
  * HTTP Server used to invoke the XINS Servlet.
@@ -49,6 +54,7 @@ public class HTTPServletHandler {
       settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
       settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
       settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
+      settings.setProperty("log4j.logger.org.xins.",                          "INFO");
       PropertyConfigurator.configure(settings);
    }
 
@@ -82,8 +88,13 @@ public class HTTPServletHandler {
     *    if the servlet container cannot be started.
     */
    public HTTPServletHandler(int port, boolean deamon) throws IOException {
-      // Configure log4j
-      configureLoggerFallback();
+      
+      // Configure log4j if not already done.
+      Enumeration appenders =
+         LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+      if (appenders instanceof NullEnumeration) {
+         configureLoggerFallback();
+      }
       
       // Start the HTTP server.
       startServer(port, deamon);

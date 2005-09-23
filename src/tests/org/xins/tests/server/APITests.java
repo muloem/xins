@@ -11,7 +11,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.server.API;
 
 /**

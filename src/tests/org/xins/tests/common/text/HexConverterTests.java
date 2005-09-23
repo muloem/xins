@@ -6,10 +6,10 @@
  */
 package org.xins.tests.common.text;
 
-import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.common.text.HexConverter;
 import org.xins.common.text.FastStringBuffer;
 

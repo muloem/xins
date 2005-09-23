@@ -110,8 +110,6 @@ public class CAPITests extends TestCase {
 
    public void testCAPIConstruction_XINS_1_1() throws Exception {
 
-      TargetDescriptor td;
-      CAPI capi;
       String url;
 
       BasicPropertyReader properties;
@@ -235,7 +233,7 @@ public class CAPITests extends TestCase {
          assertEquals(url, upe.getTargetDescriptor().getURL());
       }
    }
-   
+
    public void testCompatibility() throws Exception {
 
       // This test does not work on Java 1.3, because XINS 1.1.0 generates
@@ -247,7 +245,7 @@ public class CAPITests extends TestCase {
 
       // Add the servlet
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.MyProjectServlet", "/myproject");
-      
+
       try {
          TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/myproject");
          com.mycompany.myproject.capi.CAPI capi = new com.mycompany.myproject.capi.CAPI(descriptor);
@@ -256,7 +254,7 @@ public class CAPITests extends TestCase {
       } catch (UnsuccessfulXINSCallException ex) {
          assertEquals("NoVowel", ex.getErrorCode());
       }
-      
+
       // Remove the servlet
       AllTests.HTTP_SERVER.removeServlet("/myproject");
    }

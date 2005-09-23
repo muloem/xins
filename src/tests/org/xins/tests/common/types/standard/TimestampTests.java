@@ -8,7 +8,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.types.TypeValueException;
 import org.xins.common.types.standard.Timestamp;
 
 /**
@@ -66,7 +65,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
     * <code>Calendar</code> instance.
     */
-   public void testTimestampValue_Calendar() throws Exception {
+   public void testTimestampValueWithCalendar() throws Exception {
 
       Calendar cal = null;
       Timestamp.Value v;
@@ -93,7 +92,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
     * <code>Date</code> instance.
     */
-   public void testTimestampValue_Date() throws Exception {
+   public void testTimestampValueWithDate() throws Exception {
 
       Date d = null;
       Timestamp.Value v;
@@ -119,7 +118,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>Timestamp$Value</code> constructor that accepts a
     * <code>long</code>.
     */
-   public void testTimestampValue_long() throws Exception {
+   public void testTimestampValueWithLong() throws Exception {
 
       long n = -1L;
       Timestamp.Value v;
@@ -155,7 +154,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>Timestamp$Value</code> constructor that accepts a number
     * of <code>int</code> values.
     */
-   public void testTimestampValue_ints() throws Exception {
+   public void testTimestampValueWithInts() throws Exception {
 
       int year=2005, month=12, day=31, hour=12, minute=59, second=59;
       String asString = ""+year+month+day+hour+minute+second;
@@ -175,7 +174,7 @@ public class TimestampTests extends TestCase {
     * Tests the <code>equals</code> method in the <code>Timestamp$Value</code>
     * class.
     */
-   public void testTimestampValue_equals() throws Exception {
+   public void testTimestampValueEquals() throws Exception {
 
       Timestamp.Value v1 = new Timestamp.Value(2005, 5, 9, 20, 52, 21);
       Timestamp.Value v2 = new Timestamp.Value(2005, 5, 9, 20, 52, 21);

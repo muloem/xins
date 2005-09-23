@@ -210,7 +210,6 @@ public class ExpiryFolderTests extends TestCase {
       assertNull(folder.get(KEY_2));
       assertEquals(0, folder.size());
       long after = System.currentTimeMillis();
-      long passed = after - before;
 
       // Listener should have been called exactly once
       assertEquals(1, listener._callbacks.size());

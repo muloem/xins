@@ -6,12 +6,7 @@
  */
 package org.xins.tests.common.collections;
 
-import java.lang.Exception;
-
 import java.util.Iterator;
-import java.util.Properties;
-
-import org.apache.log4j.PropertyConfigurator;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

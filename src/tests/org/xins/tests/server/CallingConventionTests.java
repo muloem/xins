@@ -8,8 +8,6 @@ package org.xins.tests.server;
 
 import java.io.File;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import java.util.List;
 import java.util.Random;
@@ -243,7 +241,7 @@ public class CallingConventionTests extends TestCase {
          assertEquals("1", param.getText());
       }
    }
-   
+
    /**
     * Tests the XSLT calling convention.
     */
@@ -251,12 +249,12 @@ public class CallingConventionTests extends TestCase {
       String html = getHTMLVersion(false);
       assertTrue("The returned data is not an HTML file.", html.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html.indexOf("XINS version") != -1);
-      
+
       String html2 = getHTMLVersion(true);
       assertTrue("The returned data is not an HTML file.", html2.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html2.indexOf("API version") != -1);
    }
-   
+
    private String getHTMLVersion(boolean useTemplateParam) throws Exception {
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
@@ -272,7 +270,7 @@ public class CallingConventionTests extends TestCase {
       HTTPCallResult result = caller.call(request);
       return result.getString();
    }
-   
+
    /**
     * Tests the SOAP calling convention.
     */
@@ -287,7 +285,7 @@ public class CallingConventionTests extends TestCase {
       // Unsuccessful call
       postSOAPRequest(randomFive, false);
    }
-   
+
    /**
     * Posts SOAP request.
     *
@@ -332,7 +330,7 @@ public class CallingConventionTests extends TestCase {
          assertEquals("Incorrect faultstring text", "AlreadySet", faultStringElem.getText());
       }
    }
-   
+
    /**
     * Tests the SOAP calling convention for the type convertion.
     */
@@ -358,7 +356,7 @@ public class CallingConventionTests extends TestCase {
       Element bodyElem = (Element) result.getChildElements("Body").get(0);
       assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("SimpleTypesResponse").size());
    }
-   
+
    /**
     * Tests the SOAP calling convention with a data section.
     */
@@ -382,17 +380,17 @@ public class CallingConventionTests extends TestCase {
       Element bodyElem = (Element) result.getChildElements("Body").get(0);
       assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("DataSection3Response").size());
    }
-   
+
    /**
     * Tests the XML-RPC calling convention with an incomplete request.
     */
    public void testXMLRPCCallingConvention() throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
-      
+
       // Send an incorrect request
       String data = "<?xml version=\"1.0\"?>" +
               "<methodCall>" +
-              "  <methodName>SimpleTypes</methodName>" + 
+              "  <methodName>SimpleTypes</methodName>" +
               "  <params>" +
               "    <param><value><struct><member>" +
               "    <name>inputBoolean</name>" +
@@ -418,17 +416,17 @@ public class CallingConventionTests extends TestCase {
       Element member2StringValue = getUniqueChild(member2Value, "string");
       assertEquals("_InvalidRequest", member2StringValue.getText());
    }
-      
+
    /**
     * Tests the XML-RPC calling convention for a successful result.
     */
    public void testXMLRPCCallingConvention2() throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
-      
+
       // Send a correct request
       String data = "<?xml version=\"1.0\"?>" +
               "<methodCall>" +
-              "  <methodName>SimpleTypes</methodName>" + 
+              "  <methodName>SimpleTypes</methodName>" +
               "  <params>" +
               "    <param><value><struct><member>" +
               "    <name>inputBoolean</name>" +
@@ -477,11 +475,11 @@ public class CallingConventionTests extends TestCase {
     */
    public void testXMLRPCCallingConvention3() throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
-      
+
       // Send a correct request
       String data = "<?xml version=\"1.0\"?>" +
               "<methodCall>" +
-              "  <methodName>DataSection3</methodName>" + 
+              "  <methodName>DataSection3</methodName>" +
               "  <params>" +
               "    <param><value><struct><member>" +
               "    <name>inputText</name>" +
@@ -527,7 +525,7 @@ public class CallingConventionTests extends TestCase {
       connection2.connect();
       assertEquals(400, connection2.getResponseCode());
    }*/
-   
+
    /**
     * Posts the XML data the the given destination.
     *
@@ -558,7 +556,7 @@ public class CallingConventionTests extends TestCase {
          Element result = parser.parse(new StringReader(content));
          return result;
       } finally {
-         
+
          // Release current connection to the connection pool once you are done
          post.releaseConnection();
       }
@@ -586,12 +584,12 @@ public class CallingConventionTests extends TestCase {
          childList = parentElement.getChildElements(elementName);
       }
       if (childList.size() == 0) {
-         throw new ParseException("No \"" + elementName + 
-               "\" children found in the \"" + parentElement.getLocalName() + 
+         throw new ParseException("No \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
       } else if (childList.size() > 1) {
-         throw new ParseException("More than one \"" + elementName + 
-               "\" children found in the \"" + parentElement.getLocalName() + 
+         throw new ParseException("More than one \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
       }
       return (Element) childList.get(0);
