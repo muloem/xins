@@ -136,31 +136,123 @@ public class HexConverterTests extends TestCase {
       }
    }
 
-   public void testToHexString() throws Throwable {
+   public void testToHexString_byteArray() throws Throwable {
+
+      // Test with null
+      byte[] input1 = null;
+      try {
+         HexConverter.toHexString(input1);
+         fail("Expected HexConverter.toHexString(null) to throw IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      // Test with zero-size byte array
+      input1 = new byte[0];
+      try {
+         HexConverter.toHexString(input1);
+         fail("Expected HexConverter.toHexString(new byte[0]) to throw IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      // Test with other data
+      input1 = new byte[] { (byte) 56, (byte) 10, (byte) 230};
+      assertEquals("380ae6", HexConverter.toHexString(input1));
+      input1 = new byte[] { (byte) 0, (byte) 10, (byte) 0};
+      assertEquals("000a00", HexConverter.toHexString(input1));
+   }
+
+   public void testToHexString_byte() throws Throwable {
+      /* TODO
+      doTestToHexString((byte) 0x00, "0000000000000001");
+      doTestToHexString(0x1234567890123456L, "1234567890123456");
+      doTestToHexString(0x1234567890ABCDEFL, "1234567890abcdef");
+      */
+
+      assertEquals("00", HexConverter.toHexString((byte) 0x00));
+      assertEquals("01", HexConverter.toHexString((byte) 0x01));
+      assertEquals("0a", HexConverter.toHexString((byte) 0x0a));
+      assertEquals("10", HexConverter.toHexString((byte) 0x10));
+      assertEquals("34", HexConverter.toHexString((byte) 0x34));
+      assertEquals("ff", HexConverter.toHexString((byte) 0xff));
+
+      FastStringBuffer buffer = new FastStringBuffer("Testing ");
+      HexConverter.toHexString(buffer, (byte) 0xa0);
+      assertEquals("Testing a0", buffer.toString());
+   }
+
+   public void testToHexString_short() throws Throwable {
+      /* TODO
       doTestToHexString("", 1L, "0000000000000001");
       doTestToHexString("", 0x1234567890123456L, "1234567890123456");
-      doTestToHexString("Testing ", 1L, "Testing 0000000000000001");
-      doTestToHexString("Testing ", 0x1234567890123456L, "Testing 1234567890123456");
+      doTestToHexString("", 0x1234567890ABCDEFL, "1234567890abcdef");
+      */
 
-      byte[] input1 = { (byte)56, (byte)10, (byte) 230};
-      String output1 = HexConverter.toHexString(input1);
-      assertEquals("380ae6", output1);
-      assertEquals("e2", HexConverter.toHexString((byte)226));
-      assertEquals("1234", HexConverter.toHexString((short)0x1234));
-      assertEquals("00e9", HexConverter.toHexString('\u00e9'));
-      assertEquals("0020", HexConverter.toHexString(' '));
-      assertEquals("000000e2", HexConverter.toHexString(226));
-      assertEquals("1234567890123456", HexConverter.toHexString(0x1234567890123456L));
+      assertEquals("0000", HexConverter.toHexString((short) 0x0000));
+      assertEquals("0001", HexConverter.toHexString((short) 0x0001));
+      assertEquals("000a", HexConverter.toHexString((short) 0x000a));
+      assertEquals("1234", HexConverter.toHexString((short) 0x1234));
+      assertEquals("1000", HexConverter.toHexString((short) 0x1000));
+      assertEquals("ffff", HexConverter.toHexString((short) 0xffff));
+
+      FastStringBuffer buffer = new FastStringBuffer("Testing ");
+      HexConverter.toHexString(buffer, (short) 0x0fa0);
+      assertEquals("Testing 0fa0", buffer.toString());
+   }
+
+   public void testToHexString_int() throws Throwable {
+      /* TODO
+      doTestToHexString("", 1L, "0000000000000001");
+      doTestToHexString("", 0x1234567890123456L, "1234567890123456");
+      doTestToHexString("", 0x1234567890ABCDEFL, "1234567890abcdef");
+      doTestToHexString("Testing ", 0x1234567890ABCDEFL, "Testing 1234567890abcdef");
+      */
+
+      assertEquals("00000000",         HexConverter.toHexString(0x00000000));
+      assertEquals("00000001",         HexConverter.toHexString(0x00000001));
+      assertEquals("0000000a",         HexConverter.toHexString(0x0000000a));
+      assertEquals("00001234",         HexConverter.toHexString(0x00001234));
+      assertEquals("00123456",         HexConverter.toHexString(0x00123456));
+      assertEquals("10000000",         HexConverter.toHexString(0x10000000));
+      assertEquals("12345678",         HexConverter.toHexString(0x12345678));
+      assertEquals("ffffffff",         HexConverter.toHexString(0xffffffff));
 
       FastStringBuffer buffer = new FastStringBuffer("Testing ");
       HexConverter.toHexString(buffer, 0x123456);
       assertEquals("Testing 00123456", buffer.toString());
    }
 
-   private void doTestToHexString(String arg, long value, String expectedResult) {
-      FastStringBuffer buffer = new FastStringBuffer(arg);
+   public void testToHexString_long() throws Throwable {
+      doTestToHexString(0x0000000000000001L, "0000000000000001");
+      doTestToHexString(0x1234567890123456L, "1234567890123456");
+      doTestToHexString(0x1234567890ABCDEFL, "1234567890abcdef");
+
+      assertEquals("0000000000000000", HexConverter.toHexString(0x0000000000000000L));
+      assertEquals("0000000000000001", HexConverter.toHexString(0x0000000000000001L));
+      assertEquals("000000000000000a", HexConverter.toHexString(0x000000000000000aL));
+      assertEquals("0000000000001234", HexConverter.toHexString(0x0000000000001234L));
+      assertEquals("0000000000123456", HexConverter.toHexString(0x0000000000123456L));
+      assertEquals("1000000000000000", HexConverter.toHexString(0x1000000000000000L));
+      assertEquals("1234567890abcdef", HexConverter.toHexString(0x1234567890ABCDEFL));
+      assertEquals("ffffffffffffffff", HexConverter.toHexString(0xffffffffffffffffL));
+
+      FastStringBuffer buffer = new FastStringBuffer("Testing ");
+      HexConverter.toHexString(buffer, 0x1234567890abcdefL);
+      assertEquals("Testing 1234567890abcdef", buffer.toString());
+   }
+
+   private void doTestToHexString(long value, String expectedResult) {
+      FastStringBuffer buffer = new FastStringBuffer(80);
+      HexConverter.toHexString(buffer, value);
+      assertEquals(expectedResult, buffer.toString());
+
+      String prefix = "Testing ";
+      expectedResult = prefix + expectedResult;
+      buffer = new FastStringBuffer(prefix);
       HexConverter.toHexString(buffer, value);
       assertEquals(expectedResult, buffer.toString());
    }
-
 }

@@ -59,6 +59,12 @@ public class HexConverter extends Object {
    private static final byte RADIX = 16;
 
    /**
+    * The radix mask as a <code>short</code>. Equal to {@link #RADIX}<code> -
+    * 1</code>.
+    */
+   private static final int SHORT_MASK = (short) (RADIX - 1);
+
+   /**
     * The radix mask as an <code>int</code>. Equal to {@link #RADIX}<code> -
     * 1</code>.
     */
@@ -71,17 +77,24 @@ public class HexConverter extends Object {
    private static final long LONG_MASK = RADIX - 1L;
 
    /**
+    * Array of 2 zero characters.
+    */
+   private static final char[] TWO_ZEROES = {
+      '0', '0'
+   };
+
+   /**
     * Array of 4 zero characters.
     */
    private static final char[] FOUR_ZEROES = {
-      '0', '0', '0', '0',
+      '0', '0', '0', '0'
    };
 
    /**
     * Array of 8 zero characters.
     */
    private static final char[] EIGHT_ZEROES = {
-      '0', '0', '0', '0', '0', '0', '0', '0',
+      '0', '0', '0', '0', '0', '0', '0', '0'
    };
 
    /**
@@ -96,8 +109,8 @@ public class HexConverter extends Object {
     * Array that contains the hexadecimal digits, from 0 to 9 and from a to z.
     */
    private static final char[] DIGITS = {
-      '0' , '1' , '2' , '3' , '4' , '5' , '6' , '7' ,
-      '8' , '9' , 'a' , 'b' , 'c' , 'd' , 'e' , 'f'
+      '0', '1', '2', '3', '4', '5', '6', '7' ,
+      '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
    };
 
    /**
@@ -247,7 +260,7 @@ public class HexConverter extends Object {
    public static String toHexString(short n) {
 
       // First convert to int, since there are no Java opcodes for shorts
-      int i = (int) n;
+      int i = ((int) n) & 0x0000ffff;
 
       char[] chars = new char[SHORT_LENGTH];
       int pos      = SHORT_LENGTH - 1;
@@ -359,6 +372,46 @@ public class HexConverter extends Object {
    }
 
    /**
+    * Converts the specified <code>byte</code> to unsigned number and appends
+    * it to the specified string buffer. Exactly 2 characters will be
+    * appended, both between <code>'0'</code> to <code>'9'</code> or between
+    * <code>'a'</code> and <code>'f'</code>.
+    *
+    * @param buffer
+    *    the string buffer to append to, cannot be <code>null</code>.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>buffer == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static void toHexString(FastStringBuffer buffer, byte n)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (buffer == null) {
+         throw new IllegalArgumentException("buffer == null");
+      }
+
+      // Store the starting position where the buffer should write the value.
+      int initPos = buffer.getLength();
+
+      // Append 2 zero characters to the buffer
+      buffer.append(TWO_ZEROES);
+
+      int pos = initPos + BYTE_LENGTH - 1;
+
+      // Convert the short to a hex string until the remainder is 0
+      int x = ((int) n) & 0x000000ff;
+      for (; x != 0; x >>>= 4) {
+         buffer.setChar(pos--, DIGITS[x & INT_MASK]);
+      }
+   }
+
+   /**
     * Converts the specified <code>short</code> to unsigned number and appends
     * it to the specified string buffer. Exactly 4 characters will be
     * appended, all between <code>'0'</code> to <code>'9'</code> or between
@@ -386,13 +439,13 @@ public class HexConverter extends Object {
       // Store the starting position where the buffer should write the value.
       int initPos = buffer.getLength();
 
-      // Append 8 zero characters to the buffer
+      // Append 4 zero characters to the buffer
       buffer.append(FOUR_ZEROES);
 
       int pos = initPos + SHORT_LENGTH - 1;
 
       // Convert the short to a hex string until the remainder is 0
-      int x = (int) n;
+      int x = ((int) n) & 0x0000ffff;
       for (; x != 0; x >>>= 4) {
          buffer.setChar(pos--, DIGITS[x & INT_MASK]);
       }

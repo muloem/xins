@@ -8,11 +8,15 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 
 * XINS/Java Common Library:
   - Fixed SF.net bug #1301078: WhislEncoding encodes as "$0000xxxx" instead of
-    "$xxxx".
-  - Added unit tests for class WhislEncoding.
+    "$xxxx". This bug was probably in XINS since release 1.0.0.
+  - Fixed SF.net bug #1301221: HexConverter.toHexString(short) fails on
+    negative values. This bug was probably in XINS since release 1.0.0.
+  - Added extensive unit tests for class WhislEncoding.
   - Configure the Log4J fallback only when no Log4J settings are already set.
-  - Added unit tests for class DateConverter.
-  - Added toHexString(FastStringBuffer,short) to class HexConverter.
+  - Added extensive unit tests for class DateConverter.
+  - Added toHexString(FastStringBuffer,short) and
+    toHexString(FastStringBuffer,byte) to class HexConverter.
+  - Extended unit tests for class HexConverter.
 
 * XINS/Java Server Framework:
   - Set the default level for logs starting with "org.xins." to INFO.
