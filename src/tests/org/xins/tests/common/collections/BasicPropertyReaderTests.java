@@ -9,8 +9,6 @@ package org.xins.tests.common.collections;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.log4j.PropertyConfigurator;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -67,31 +65,6 @@ public class BasicPropertyReaderTests extends TestCase {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /*
-    * @see TestCase#setUp()
-    */
-   protected void setUp() throws Exception {
-      super.setUp();
-
-      // TODO: Move this somewhere else
-      Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
-      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %t %-5p [%c] %m%n");
-      settings.setProperty("log4j.logger.httpclient.wire",                    "WARN");
-      settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
-      PropertyConfigurator.configure(settings);
-   }
-
-   /*
-    * @see TestCase#tearDown()
-    */
-   protected void tearDown()
-      throws Exception {
-      super.tearDown();
-   }
 
    public void testSet() {
       BasicPropertyReader reader = new BasicPropertyReader();

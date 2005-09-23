@@ -8,7 +8,6 @@ package org.xins.tests.common.text;
 
 import java.util.Properties;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.xins.common.text.FastStringBuffer;
 
 import junit.framework.TestCase;
@@ -41,23 +40,6 @@ public class FastStringBufferTest extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * @see junit.framework.TestCase#setUp()
-    */
-   protected void setUp()
-   throws Exception {
-      super.setUp();
-      Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",                                "DEBUG, console");
-      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%d %t %-5p [%c] %m%n");
-      settings.setProperty("log4j.logger.httpclient.wire",                    "WARN");
-      settings.setProperty("log4j.logger.org.apache.commons.httpclient",      "WARN");
-      PropertyConfigurator.configure(settings);
-   }
-
-
    /*
     * test for void FastStringBuffer(int)
     */
@@ -86,7 +68,6 @@ public class FastStringBufferTest extends TestCase {
       FastStringBuffer fsb = new FastStringBuffer(testString);
       assertEquals(testString.length(), fsb.getLength());
       assertEquals(testString, fsb.toString());
-
    }
 
    /*
@@ -225,7 +206,6 @@ public class FastStringBufferTest extends TestCase {
       fsb.append(i);
       assertEquals("345", fsb.toString());
       assertEquals(3, fsb.getLength());
-
    }
 
    /*
@@ -285,7 +265,4 @@ public class FastStringBufferTest extends TestCase {
          fail("Excpected to get an IndexOutOfBoundsException");
       } catch (IndexOutOfBoundsException ioobe) {/* as expected */}
    }
-
 }
-
-

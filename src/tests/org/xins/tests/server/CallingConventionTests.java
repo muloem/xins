@@ -100,10 +100,19 @@ public class CallingConventionTests extends TestCase {
    }
 
    /**
-    * Tests the standard calling convention by passing an unknown calling convention.
+    * Tests with an unknown calling convention.
     */
-   public void testStandardCallingConvention3() throws Throwable {
-      callResultCodeStandard("_xins-bla");
+   public void testInvalidCallingConvention() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("_function",  "ResultCode");
+      params.set("inputText",  "blablabla");
+      params.set("_convention", "_xins-bla");
+      HTTPCallRequest request = new HTTPCallRequest(params);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+
+      HTTPCallResult result = caller.call(request);
+      assertEquals(400, result.getStatusCode());
    }
 
    /**
@@ -169,7 +178,7 @@ public class CallingConventionTests extends TestCase {
     *    if anything goes wrong.
     */
    private Element callResultCode(String convention, String inputText) throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/allinone/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "ResultCode");
       params.set("inputText",  inputText);

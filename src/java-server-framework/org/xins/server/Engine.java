@@ -567,30 +567,22 @@ final class Engine extends Object {
       // Determine the calling convention; if an existing calling convention
       // is specified in the request, then use that, otherwise use the default
       // calling convention for this engine
-      String ccParam = (String) request.getParameter(
-         APIServlet.CALLING_CONVENTION_PARAMETER);
+      String ccParam = (String) request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
-
-      try {
-         cc= _conventionManager.getCallingConvention(ccParam);
-
-      // The calling convention could not be created or initialized
-      } catch (Exception ex) {
-
-         Log.log_3560(ex, ccParam);
-         // TODO: Is this behaviour described?
-         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-         return;
-      }
 
       // Call the API if the state is READY
       FunctionResult result;
       EngineState state = _state.getState();
       if (state == EngineState.READY) {
 
-         String subjectClass  = cc.getClass().getName();
-         String subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
+         String subjectClass  = _conventionManager.getClass().getName();
+         String subjectMethod = "getCallingConvention(String)";
          try {
+            
+            cc = _conventionManager.getCallingConvention(ccParam);
+            
+            subjectClass  = cc.getClass().getName();
+            subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
 
             // Convert the HTTP request to a XINS request
             FunctionRequest xinsRequest = cc.convertRequest(request);

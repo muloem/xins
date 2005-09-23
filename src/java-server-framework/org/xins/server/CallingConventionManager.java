@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -29,16 +30,28 @@ import org.xins.logdoc.ExceptionUtils;
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
-class CallingConventionManager extends Object {
+class CallingConventionManager {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The list of the calling convention included in XINS.
+    */
+   private final static String[] CONVENTIONS = {
+      APIServlet.STANDARD_CALLING_CONVENTION, 
+      APIServlet.OLD_STYLE_CALLING_CONVENTION,
+      APIServlet.XML_CALLING_CONVENTION,
+      APIServlet.XSLT_CALLING_CONVENTION,
+      APIServlet.SOAP_CALLING_CONVENTION,
+      APIServlet.XML_RPC_CALLING_CONVENTION,
+   };
+   
+   
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -60,7 +73,7 @@ class CallingConventionManager extends Object {
       
       _servletConfig = servletConfig;
       _api = api;
-      _conventionCache = new HashMap();
+      _otherConventions = new HashMap();
       
       // Initialize the default calling convention
       initCallingConvention();
@@ -106,11 +119,11 @@ class CallingConventionManager extends Object {
    private CallingConvention _defaultConvention;
 
    /**
-    * The cache for the calling conventions other than the default one.
+    * The map containing the calling conventions other than the default one.
     * The key is the name of the calling convention, the value is the calling
     * convention object. This field is never <code>null</code>.
     */
-   private final Map _conventionCache;
+   private final Map _otherConventions;
 
 
    //-------------------------------------------------------------------------
@@ -152,8 +165,7 @@ class CallingConventionManager extends Object {
          // No calling convention is specified in the build-time properties,
          // so use the standard calling convention
          } else {
-            // TODO: Put "_xins-std" in a constant
-            _defaultConventionName = "_xins-std";
+            _defaultConventionName = APIServlet.STANDARD_CALLING_CONVENTION;
             _defaultConvention = create(_defaultConventionName);
 
             // TODO: Log that we use the standard calling convention
@@ -175,6 +187,21 @@ class CallingConventionManager extends Object {
          }
          throw se;
       }
+      
+      // Initialize the other calling conventions.
+      for (int i = 0; i < CONVENTIONS.length; i++) {
+         String nextConventionName = CONVENTIONS[i];
+         if (!nextConventionName.equals(_defaultConventionName)) {
+            try {
+               CallingConvention nextConvention = create(nextConventionName);
+               _otherConventions.put(nextConventionName, nextConvention);
+            } catch (Exception ex) {
+               
+               // Just log a warning.
+               Log.log_3560(ex, nextConventionName);
+            }
+         }
+      }
    }
 
    /**
@@ -190,7 +217,17 @@ class CallingConventionManager extends Object {
    void init(PropertyReader runtimeProperties) throws Exception {
       _runtimeProperties = runtimeProperties;
       _defaultConvention.init(runtimeProperties);
-      _conventionCache.clear();
+      Iterator itConventions = _otherConventions.keySet().iterator();
+      while (itConventions.hasNext()) {
+         String nextConventionName = (String) itConventions.next();
+         CallingConvention nextConvention = (CallingConvention) _otherConventions.get(nextConventionName);
+         try {
+            nextConvention.init(runtimeProperties);
+         } catch (Exception ex) {
+            Log.log_3561(ex, nextConventionName);
+            _otherConventions.remove(nextConventionName);
+         }
+      }
    }
 
    /**
@@ -206,29 +243,30 @@ class CallingConventionManager extends Object {
     * @return
     *    the calling convention, never <code>null</code>
     *
-    * @throws Exception
-    *    If the calling convention could not be created, bootstrapped or
-    *    initialized.
+    * @throws InvalidRequestException
+    *    if the calling convention name is unknown.
+    *
+    * @throws 
     */
-   CallingConvention getCallingConvention(String name) throws Exception {
+   CallingConvention getCallingConvention(String name) 
+   throws InvalidRequestException {
       
       if (TextUtils.isEmpty(name) || name.equals(_defaultConventionName)) {
          return _defaultConvention;
       }
 
-      CallingConvention cc = (CallingConvention) _conventionCache.get(name);
+      CallingConvention cc = (CallingConvention) _otherConventions.get(name);
       if (cc != null) {
          return cc;
       }
-      cc = create(name);
-      
-      if (cc != null) {
-         cc.init(_runtimeProperties);
-         _conventionCache.put(name, cc);
-         return cc;
-      } else {
-         return _defaultConvention;
+
+      for (int i = 0; i < CONVENTIONS.length; i++) {
+         if (name.equals(CONVENTIONS[i])) {
+            throw new InvalidRequestException("The calling convention \"" + 
+                  name + "\" was not created or initialized correctly.");
+         }
       }
+      throw new InvalidRequestException("Unknown calling convention: \"" + name + "\".");
    }
    
    /**
@@ -266,7 +304,7 @@ class CallingConventionManager extends Object {
     *    if an error occured during the bootstraping of the calling
     *    convention.
     */
-   CallingConvention create(String name)
+   private CallingConvention create(String name)
    throws IllegalArgumentException,
           MissingRequiredPropertyException,
           InvalidPropertyValueException,
@@ -317,16 +355,14 @@ class CallingConventionManager extends Object {
             // with the empty constructor
             try {
                Class[]  constructorClasses = { API.class };
-               Object[] constructorArgs    = { _api       };
+               Object[] constructorArgs    = { _api      };
                Constructor customConstructor = Class.forName(conventionClass).getConstructor(constructorClasses);
                created = (CustomCallingConvention) customConstructor.newInstance(constructorArgs);
             } catch (NoSuchMethodException nsmex) {
                created = (CustomCallingConvention) Class.forName(conventionClass).newInstance();
             }
          } catch (Exception ex) {
-
-            // TODO: Log
-            ex.printStackTrace();
+            Log.log_3562(ex, name, conventionClass);
             return null;
          }
 

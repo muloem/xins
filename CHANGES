@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 
 * XINS/Java Server Framework:
   - Set the default level for logs starting with "org.xins." to INFO.
+  - All calling conventions are initilized when the API is started.
   - Quoting servlet container, JVM and OS info in log message 3200.
 
 * Tests:
