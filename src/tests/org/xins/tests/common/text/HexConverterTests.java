@@ -184,6 +184,27 @@ public class HexConverterTests extends TestCase {
       assertEquals("Testing a0", buffer.toString());
    }
 
+   public void testToHexString_char() throws Throwable {
+      /* TODO
+      doTestToHexString("", 1L, "0000000000000001");
+      doTestToHexString("", 0x1234567890123456L, "1234567890123456");
+      doTestToHexString("", 0x1234567890ABCDEFL, "1234567890abcdef");
+      */
+
+      assertEquals("0000", HexConverter.toHexString((char) 0x0000));
+      assertEquals("0001", HexConverter.toHexString((char) 0x0001));
+      assertEquals("000a", HexConverter.toHexString((char) 0x000a));
+      assertEquals("1234", HexConverter.toHexString((char) 0x1234));
+      assertEquals("1000", HexConverter.toHexString((char) 0x1000));
+      assertEquals("ffff", HexConverter.toHexString((char) 0xffff));
+
+      /* FIXME
+      FastStringBuffer buffer = new FastStringBuffer("Testing ");
+      HexConverter.toHexString(buffer, (char) 0x0fa0);
+      assertEquals("Testing 0fa0", buffer.toString());
+      */
+   }
+
    public void testToHexString_short() throws Throwable {
       /* TODO
       doTestToHexString("", 1L, "0000000000000001");
