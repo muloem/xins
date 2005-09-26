@@ -82,6 +82,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.text.FastStringBufferTest.class);
       suite.addTestSuite(org.xins.tests.common.text.FormatExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.text.HexConverterTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.NonASCIIExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.text.PatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.text.ParseExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.text.SimplePatternParserTests.class);
