@@ -115,8 +115,7 @@ public class SimplePatternParser extends Object {
          } else {
             parseError = true;
          }
-      } catch (
-         MalformedPatternException mpe) {
+      } catch (MalformedPatternException mpe) {
          parseError = true;
       }
 
