@@ -69,7 +69,7 @@ extends RuntimeException {
     * Constructs a <code>NonASCIIException</code>.
     *
     * @param c
-    *    The found character, must be &gt; 127.
+    *    the found character, must be &gt; 127.
     *
     * @throws IllegalArgumentException
     *    if <code>c &lt;= 127</code>.
