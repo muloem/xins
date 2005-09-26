@@ -38,7 +38,7 @@ extends RuntimeException {
     *    description of the problem, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>s == null</code>.
+    *    if <code>string == null</code>.
     *
     * @return
     *    the message the constructor can pass up to the superclass
