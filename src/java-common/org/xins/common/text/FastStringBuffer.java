@@ -413,7 +413,7 @@ public class FastStringBuffer extends Object {
     * untouched.
     *
     * @param newLength
-    *    the new length, must be less than the existing length (see
+    *    the new length, must be less than or equal to the current length (see
     *    {@link #getLength()}).
     *
     * @throws IllegalArgumentException
