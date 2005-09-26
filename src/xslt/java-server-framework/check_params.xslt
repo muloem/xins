@@ -18,7 +18,7 @@
 	<xsl:output method="text" />
 
 	<xsl:template match="input | output | element" mode="checkParams">
-		<xsl:param name="side" select="'server'" />
+		<xsl:param name="side" />
 
 		<xsl:variable name="errorclass">
 			<xsl:choose>
@@ -396,7 +396,7 @@
 
 	<xsl:template match="contains/contained" mode="checkParams">
 		<xsl:param name="parentelement" />
-		<xsl:param name="side" select="'server'" />
+		<xsl:param name="side" />
 
 		<xsl:variable name="elementname" select="@element" />
 		<xsl:text>
@@ -442,7 +442,7 @@
 	</xsl:template>
 
 	<xsl:template name="create-error">
-		<xsl:param name="side" select="'server'" />
+		<xsl:param name="side" />
 		<xsl:param name="errorclass" />
 
 		<xsl:text>

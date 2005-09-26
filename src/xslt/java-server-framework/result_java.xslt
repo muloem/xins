@@ -111,7 +111,9 @@ implements Result {
 
    protected org.xins.server.InvalidResponseResult checkOutputParameters() {
 </xsl:text>
-		<xsl:apply-templates select="." mode="checkParams" />
+		<xsl:apply-templates select="." mode="checkParams">
+			<xsl:with-param name="side" select="'server'" />
+		</xsl:apply-templates>
 		<xsl:text>
    }
 </xsl:text>

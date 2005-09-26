@@ -23,6 +23,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - All calling conventions are initilized when the API is started.
   - Quoting servlet container, JVM and OS info in log message 3200.
 
+* Generation of server-side Java code:
+  - Fixed the generation of the function files failed with a 
+    NullPointerException was thrown with Java 1.4.1.
+
 * Tests:
   - Removed unused imports and unused variables.
   - Removed underscores from method names.

@@ -23,7 +23,7 @@
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
-	<xsl:param name="impl_file"     />
+	<xsl:param name="impl_file"    />
 
 	<!-- Perform includes -->
 	<xsl:include href="../java.xslt" />
@@ -33,16 +33,15 @@
 	<xsl:include href="result_java.xslt" />
 	<xsl:include href="check_params.xslt" />
 
-	<xsl:variable name="functionName" select="//function/@name" />
-	<xsl:variable name="className"    select="$functionName"    />
-	<xsl:variable name="fqcn">
-		<xsl:value-of select="$package" />
-		<xsl:text>.</xsl:text>
-		<xsl:value-of select="$className" />
-	</xsl:variable>
-
 	<xsl:template match="function">
 
+		<xsl:variable name="functionName" select="//function/@name" />
+		<xsl:variable name="className"    select="$functionName"    />
+		<xsl:variable name="fqcn">
+			<xsl:value-of select="$package" />
+			<xsl:text>.</xsl:text>
+			<xsl:value-of select="$className" />
+		</xsl:variable>
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision" select="@rcsversion" />
