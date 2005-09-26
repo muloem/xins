@@ -265,6 +265,192 @@ public class HexConverterTests extends TestCase {
       assertEquals("Testing 1234567890abcdef", buffer.toString());
    }
 
+   public void testToHexString_null() throws Throwable {
+      try {
+         HexConverter.toHexString(null, (byte) 0);
+         fail("Expected HexConverter.toHexString(null,<byte>) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.toHexString(null, (short) 0);
+         fail("Expected HexConverter.toHexString(null,<short>) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.toHexString(null, (int) 0);
+         fail("Expected HexConverter.toHexString(null,<byte>) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.toHexString(null, (long) 0);
+         fail("Expected HexConverter.toHexString(null,<byte>) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+   }
+
+   public void testParseHexBytes() throws Exception {
+
+      try {
+         HexConverter.parseHexBytes(null, 0, 1);
+         fail("Expected parseHexBytes(null,0,1) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.parseHexBytes("000000", -1, 1);
+         fail("Expected parseHexBytes(<string>,-1,1) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.parseHexBytes("00000", 1, -1);
+         fail("Expected parseHexBytes(<string>,1,-1) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      try {
+         HexConverter.parseHexBytes("00000", 5, 1);
+         fail("Expected parseHexBytes(<string>,<stringlength>,-1) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      // TODO: byte[] bytes = HexConverter.parseHexBytes("
+   }
+
+   public void testParseHexInt() throws Exception {
+
+      try {
+         HexConverter.parseHexInt(null);
+         fail("Expected parseHexInt(null) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      String input = "";
+      try {
+         HexConverter.parseHexInt("");
+         fail("Expected parseHexInt(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input = "1234567";
+      try {
+         HexConverter.parseHexInt(input);
+         fail("Expected parseHexInt(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input = "123456789";
+      try {
+         HexConverter.parseHexInt(input);
+         fail("Expected parseHexInt(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input        = "2468abcd";
+      int expected = 0x2468abcd;
+      int actual   = HexConverter.parseHexInt(input);
+      assertEquals(expected, actual);
+
+      input    = "00000001";
+      expected = 0x00000001;
+      actual   = HexConverter.parseHexInt(input);
+      assertEquals(expected, actual);
+
+      input    = "aAaAaAa0";
+      expected = 0xaaaaaaa0;
+      actual   = HexConverter.parseHexInt(input);
+      assertEquals(expected, actual);
+   }
+
+   public void testParseHexLong() throws Exception {
+
+      try {
+         HexConverter.parseHexLong(null);
+         fail("Expected parseHexLong(null) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      String input = "";
+      try {
+         HexConverter.parseHexLong("");
+         fail("Expected parseHexLong(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input = "12345678";
+      try {
+         HexConverter.parseHexLong(input);
+         fail("Expected parseHexLong(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input = "123456789012345";
+      try {
+         HexConverter.parseHexLong(input);
+         fail("Expected parseHexLong(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input = "12345678901234567";
+      try {
+         HexConverter.parseHexLong(input);
+         fail("Expected parseHexLong(\"" + input + "\") to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      input         = "2468abcd12345678";
+      long expected = 0x2468abcd12345678L;
+      long actual   = HexConverter.parseHexLong(input);
+      assertEquals(expected, actual);
+
+      input    = "0000000000000001";
+      expected = 0x0000000000000001L;
+      actual   = HexConverter.parseHexLong(input);
+      assertEquals(expected, actual);
+
+      input    = "aAaAaAa0bbbbbbbb";
+      expected = 0xaaaaaaa0bbbbbbbbL;
+      actual   = HexConverter.parseHexLong(input);
+      assertEquals(expected, actual);
+   }
+
    private void doTestToHexString(long value, String expectedResult) {
       FastStringBuffer buffer = new FastStringBuffer(80);
       HexConverter.toHexString(buffer, value);
