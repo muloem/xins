@@ -59,12 +59,6 @@ public class HexConverter extends Object {
    private static final byte RADIX = 16;
 
    /**
-    * The radix mask as a <code>short</code>. Equal to {@link #RADIX}<code> -
-    * 1</code>.
-    */
-   private static final int SHORT_MASK = (short) (RADIX - 1);
-
-   /**
     * The radix mask as an <code>int</code>. Equal to {@link #RADIX}<code> -
     * 1</code>.
     */

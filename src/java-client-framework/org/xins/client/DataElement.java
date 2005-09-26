@@ -490,7 +490,7 @@ public class DataElement implements Cloneable {
          Iterator it = _children.iterator();
          while (it.hasNext()) {
             DataElement child = (DataElement) it.next();
-            if (name.equals(child.getName())) {
+            if (name.equals(child.getLocalName())) {
                matches.add(child);
             }
          }
@@ -641,7 +641,7 @@ public class DataElement implements Cloneable {
        *
        * @param namespaceURI
        *    the namespace URI for the element, can be <code>null</code>; an
-       *    empty string is equivalent to <code>null<code>.
+       *    empty string is equivalent to <code>null</code>.
        *
        * @param localName
        *    the local name of the element, cannot be <code>null</code>.

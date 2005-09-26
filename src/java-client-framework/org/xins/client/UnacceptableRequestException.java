@@ -9,8 +9,6 @@ package org.xins.client;
 import java.util.Iterator;
 import java.util.List;
 
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Exception that indicates that a request for an API call is considered
  * unacceptable on the application-level. For example, a mandatory input

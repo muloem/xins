@@ -139,7 +139,7 @@ ${version.file}</fail>
 			</section>
 		</manifest>
 		<jar
-		jarfile="build/logdoc.jar"
+		destfile="build/logdoc.jar"
 		basedir="build/classes/logdoc"
 		manifest="build/MANIFEST.MF" />
 	</target>
@@ -228,7 +228,7 @@ ${version.file}</fail>
 			</section>
 		</manifest>
 		<jar
-		jarfile="build/xins-${side}.jar"
+		destfile="build/xins-${side}.jar"
 		basedir="build/classes/java-${side}"
 		manifest="build/MANIFEST.MF" />
 	</target>

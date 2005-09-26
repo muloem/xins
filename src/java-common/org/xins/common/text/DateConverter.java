@@ -61,7 +61,7 @@ public class DateConverter extends Object {
     *    the converted character string, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>n == <code>{@link Long#MIN_VALUE}<code> || n == </code>{@link Long#MAX_VALUE}<code> || timeZone == null</code>.
+    *    if <code>n == {@link Long#MIN_VALUE} || n == {@link Long#MAX_VALUE} || timeZone == null</code>.
     */
    public static String toDateString(TimeZone timeZone, long n)
    throws IllegalArgumentException {

@@ -567,7 +567,7 @@ final class Engine extends Object {
       // Determine the calling convention; if an existing calling convention
       // is specified in the request, then use that, otherwise use the default
       // calling convention for this engine
-      String ccParam = (String) request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
+      String ccParam = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
 
       // Call the API if the state is READY

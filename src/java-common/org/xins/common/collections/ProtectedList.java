@@ -23,7 +23,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * 
  * <p>Note that the secret key equality is always checked before the other
  * preconditions. This means that if the secret key is incorrect, then the
- * other preconditions will not even be checked. For example, if
+ * other preconditions will not even be checked. For example, if <code>
  * {@link #remove(Object,int) remove}(null, -1)</code> is called, then an
  * {@link IncorrectSecretKeyException} is thrown for the mismatching secret
  * key, and not an {@link IndexOutOfBoundsException}, for the negative index.

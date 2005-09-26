@@ -74,7 +74,6 @@ public final class WhislEncoding extends Object {
          // "hex" is the hexadecimal value of the character
          } else {
             char[] data = new char[3];
-            int toUpper = (int) 'A' - (int) 'a';
             data[0] = '%';
             data[1] = Character.forDigit((i >> 4) & 0xF, 16);
             data[2] = Character.forDigit( i       & 0xF, 16);

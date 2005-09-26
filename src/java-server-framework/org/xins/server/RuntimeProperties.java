@@ -46,7 +46,7 @@ public class RuntimeProperties {
     * impl.xml file.
     *
     * @param runtimeSettings
-    *    the initialization properties, not <code>null<code>.
+    *    the initialization properties, not <code>null</code>.
     *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.

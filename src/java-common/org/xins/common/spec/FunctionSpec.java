@@ -421,7 +421,7 @@ public class FunctionSpec extends Object {
          _inputParameters = parseParameters(_reference, inputElement);
 
          // Param combos
-         _inputParamCombos = parseParamCombos(_reference, inputElement, _inputParameters);
+         _inputParamCombos = parseParamCombos(inputElement, _inputParameters);
          
          // Data section
          List dataSections = inputElement.getChildElements("data");
@@ -449,7 +449,7 @@ public class FunctionSpec extends Object {
          _outputParameters = parseParameters(_reference, outputElement);
 
          // Param combos
-         _outputParamCombos = parseParamCombos(_reference, outputElement, _outputParameters);
+         _outputParamCombos = parseParamCombos(outputElement, _outputParameters);
          
          // Data section
          List dataSections = outputElement.getChildElements("data");
@@ -616,9 +616,6 @@ public class FunctionSpec extends Object {
    /**
     * Parses the param-combo element.
     *
-    * @param reference
-    *    the reference class used to locate the files, cannot be <code>null</code>.
-    *
     * @param topElement
     *    the input or output element, cannot be <code>null</code>.
     *
@@ -628,8 +625,7 @@ public class FunctionSpec extends Object {
     * @return
     *    the param-combo elements or an empty array if no param-combo is defined.
     */
-   static List parseParamCombos(Class   reference,
-                                Element topElement,
+   static List parseParamCombos(Element topElement,
                                 Map     parameters) {
       
       List paramCombosList = topElement.getChildElements("param-combo");

@@ -187,7 +187,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @throws UnsupportedProtocolException
     *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
-    *    with an unsupported protocol (<em>since XINS 1.1.0</em).
+    *    with an unsupported protocol (<em>since XINS 1.1.0</em>).
     */
    public XINSServiceCaller(Descriptor descriptor)
    throws IllegalArgumentException, UnsupportedProtocolException {

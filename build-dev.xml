@@ -87,7 +87,7 @@ ${sf.file}</fail>
 			<tarfileset dir="build/logdoc/client/html" mode="664" prefix="${version}/client" />
 			<tarfileset dir="build/logdoc/server/html" mode="664" prefix="${version}/server" />
 		</tar>
-		<gzip src="build/logdoc.tar" zipfile="build/logdoc.tgz" />
+		<gzip src="build/logdoc.tar" destfile="build/logdoc.tgz" />
 		<delete file="build/logdoc.tar" />
 
 		<!-- Copy to remote host -->
@@ -333,7 +333,7 @@ ${sf.file}</fail>
 			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
 			<tarfileset dir="docs/javadoc-private" mode="664" dirmode="775" prefix="javadoc-private/${version}" />
 		</tar>
-		<gzip src="build/javadoc.tar" zipfile="build/javadoc.tgz" />
+		<gzip src="build/javadoc.tar" destfile="build/javadoc.tgz" />
 		<delete file="build/javadoc.tar" />
 
 		<!-- Copy to remote host -->
@@ -429,7 +429,7 @@ ${sf.file}</fail>
 		<tar tarfile="build/j2h.tar" longfile="gnu">
 			<tarfileset dir="build/j2h" mode="664" dirmode="775" prefix="j2h/${version}" />
 		</tar>
-		<gzip src="build/j2h.tar" zipfile="build/j2h.tgz" />
+		<gzip src="build/j2h.tar" destfile="build/j2h.tgz" />
 		<delete file="build/j2h.tar" />
 
 		<!-- Copy to remote host -->
@@ -614,7 +614,7 @@ ${sf.file}</fail>
 				<include name="demo/rundemo" />
 			</tarfileset>
 		</tar>
-		<gzip src="build/${package-basename}.tar" zipfile="build/${package-basename}.tgz" />
+		<gzip src="build/${package-basename}.tar" destfile="build/${package-basename}.tgz" />
 		<delete file="build/${package-basename}.tar" />
 		<delete dir="build/lf" />
 	</target>
@@ -670,10 +670,10 @@ ${sf.file}</fail>
 		<!--property name="exe.version" value="1.2.5" /-->
 		<replace file="src/tools/installer/${name}.iss"
 		         token="%%VERSION%%"
-				   value="${exe.version}" />
-      <replaceregexp file="src/tools/installer/${name}.iss"
+		         value="${exe.version}" />
+                <replaceregexp file="src/tools/installer/${name}.iss"
 		               match="VersionInfoVersion=([.\d]+)([^\s]*)"
-				         replace="VersionInfoVersion=\1" />
+		               replace="VersionInfoVersion=\1" />
 		<exec executable="C:\Program Files\Inno Setup 5\Compil32.exe">
 			<arg value="/cc" />
 			<arg path="src/tools/installer/${name}.iss" />

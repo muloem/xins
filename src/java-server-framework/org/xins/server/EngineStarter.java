@@ -314,11 +314,6 @@ final class EngineStarter extends Object {
       try {
          apiClass = Class.forName(apiClassName);
       } catch (Throwable exception) {
-         String detail = "Caught unexpected "
-            + exception.getClass().getName()
-            + " while loading class "
-            + apiClassName
-            + '.';
          Log.log_3207(exception, APIServlet.API_CLASS_PROPERTY, apiClassName);
          throw servletExceptionFor(exception);
       }
