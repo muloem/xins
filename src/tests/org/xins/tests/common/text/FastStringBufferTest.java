@@ -265,4 +265,49 @@ public class FastStringBufferTest extends TestCase {
          fail("Excpected to get an IndexOutOfBoundsException");
       } catch (IndexOutOfBoundsException ioobe) {/* as expected */}
    }
+
+   public void testFastStringBufferCrop() {
+      String original = "Hello there";
+      FastStringBuffer buffer = new FastStringBuffer(original);
+      assertEquals(original, buffer.toString());
+      try {
+         buffer.crop(-1);
+         fail("Expected IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      assertEquals(original, buffer.toString());
+
+      try {
+         buffer.crop(original.length() + 1);
+         fail("Expected IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      assertEquals(original, buffer.toString());
+
+      buffer.crop(original.length());
+      assertEquals(original, buffer.toString());
+
+      buffer.crop(original.length() - 1);
+      assertEquals("Hello ther", buffer.toString());
+      buffer.crop(original.length() - 1);
+      assertEquals("Hello ther", buffer.toString());
+
+      buffer.crop(0);
+      assertEquals("", buffer.toString());
+      buffer.crop(0);
+      assertEquals("", buffer.toString());
+
+      try {
+         buffer.crop(1);
+         fail("Expected IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+      assertEquals("", buffer.toString());
+   }
 }
