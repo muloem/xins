@@ -76,7 +76,8 @@
 					<xsl:text> test form</xsl:text>
 				</h1>
 
-				<form method="GET" action="{$init_environment}" target="xmlOutputFrame" onsubmit="return doRequest(this)">
+				<form method="GET" action="{$init_environment}" target="xmlOutputFrame" 
+				onsubmit="this.action=this._environment.value;return doRequest(this)">
 					<p>
 						<input name="_function" type="hidden">
 							<xsl:attribute name="value">
@@ -85,7 +86,7 @@
 						</input>
 						<input name="_convention" value="_xins-std" type="hidden" />
 						<xsl:text>Execution environment: </xsl:text>
-						<select class="required" onChange="this.form.action=this.value">
+						<select name="_environment" class="required">
 							<xsl:choose>
 								<xsl:when test="string-length($env_file) > 0">
 									<xsl:for-each select="document($env_file)/environments/environment">
@@ -115,7 +116,7 @@
 				<div class="url" style="padding-bottom: 5pt" id="query">
 					<xsl:text> </xsl:text>
 				</div>
-				<iframe height="500" id="xmlOutputFrame" name="xmlOutputFrame" src="about:blank" style="" width="100%"></iframe>
+				<iframe height="500" id="xmlOutputFrame" name="xmlOutputFrame" src="about:blank" width="100%"></iframe>
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
@@ -286,7 +287,7 @@
 
 				iframe.src = "about:blank";
 				for (var i = 0; i != elems.length; i++) {
-					if (!(name = elems[i].name)) {
+					if (!(name = elems[i].name) || name == '_environment') {
 						continue;
 					}
 
