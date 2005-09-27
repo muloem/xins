@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Implemented SF.net RFE #1282935. All calling conventions are initialized
     when the API is started.
   - Quoting servlet container, JVM and OS info in log message 3200.
+  - Optimized the Engine by getting the error information only when the
+    exception is thrown.
 
 * Generation of server-side Java code:
   - Fixed bug which caused the generation of function files to fail with a

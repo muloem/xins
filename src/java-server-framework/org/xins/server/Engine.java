@@ -569,33 +569,39 @@ final class Engine extends Object {
       // calling convention for this engine
       String ccParam = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
-
+      FunctionRequest xinsRequest = null;
+      FunctionResult result = null;
+      
       // Call the API if the state is READY
-      FunctionResult result;
       EngineState state = _state.getState();
       if (state == EngineState.READY) {
 
-         String subjectClass  = _conventionManager.getClass().getName();
-         String subjectMethod = "getCallingConvention(String)";
          try {
             
             cc = _conventionManager.getCallingConvention(ccParam);
             
-            subjectClass  = cc.getClass().getName();
-            subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
-
             // Convert the HTTP request to a XINS request
-            FunctionRequest xinsRequest = cc.convertRequest(request);
+            xinsRequest = cc.convertRequest(request);
 
             // Call the function
-            subjectClass  = _api.getClass().getName();
-            subjectMethod = "handleCall(long,"
-                          + FunctionRequest.class.getName()
-                          + ",java.lang.String)";
             result = _api.handleCall(start, xinsRequest, remoteIP);
 
          } catch (Throwable exception) {
 
+            String subjectClass  = null;
+            String subjectMethod = null;
+            if (cc == null) {
+               subjectClass  = _conventionManager.getClass().getName();
+               subjectMethod = "getCallingConvention(String)";
+            } else if (xinsRequest == null) {
+               subjectClass  = cc.getClass().getName();
+               subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
+            } else if (result == null) {
+               subjectClass  = _api.getClass().getName();
+               subjectMethod = "handleCall(long,"
+                             + FunctionRequest.class.getName()
+                             + ",java.lang.String)";
+            }
             int error;
 
             // If the function is not specified, then return '404 Not Found'
