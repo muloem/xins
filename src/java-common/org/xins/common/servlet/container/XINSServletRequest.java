@@ -37,13 +37,38 @@ import org.xins.common.text.URLEncoding;
 public class XINSServletRequest implements HttpServletRequest {
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The localhost name.
+    */
+   private static String LOCALHOST_NAME;
+   
+   /**
+    * The localhost address.
+    */
+   private static String LOCALHOST_ADDRESS;
+
+
+   //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   static {
+      try {
+         LOCALHOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+      } catch (UnknownHostException exception) {
+         LOCALHOST_ADDRESS = "127.0.0.1";
+      }
+      try {
+         LOCALHOST_NAME = InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException exception) {
+         LOCALHOST_NAME = "localhost";
+      }
+   }
+   
+   
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -133,7 +158,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * The content of the HTTP POST.
     */
    private char[] _postData;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -292,19 +317,11 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getRemoteAddr() {
-      try {
-         return InetAddress.getLocalHost().getHostAddress();
-      } catch (UnknownHostException exception) {
-         return "127.0.0.1";
-      }
+      return LOCALHOST_ADDRESS;
    }
 
    public String getRemoteHost() {
-      try {
-         return InetAddress.getLocalHost().getHostName();
-      } catch (UnknownHostException exception) {
-         return "localhost";
-      }
+      return LOCALHOST_NAME;
    }
 
    public String getRemoteUser() {

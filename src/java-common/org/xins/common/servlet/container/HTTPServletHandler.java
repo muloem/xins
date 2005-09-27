@@ -378,14 +378,11 @@ public class HTTPServletHandler {
          // POST method
          if (inputLine.startsWith("POST ")) {
             url = inputLine.substring(5);
-         }
-         if (inputLine.toLowerCase().startsWith("content-type: ")) {
+         } else if (inputLine.startsWith("Content-Type: ")) {
             contentType = inputLine.substring(14);
-         }
-         if (inputLine.toLowerCase().startsWith("content-length: ")) {
+         } else if (inputLine.startsWith("Content-Length: ")) {
             contentLength = Integer.parseInt(inputLine.substring(16));
-         }
-         if (contentLength != -1 && inputLine.trim().equals("")) {
+         } else if (contentLength != -1 && inputLine.trim().equals("")) {
             if (contentType == null) {
                input.readLine();
             }
@@ -425,7 +422,7 @@ public class HTTPServletHandler {
          PropertyReader headers = response.getHeaders();
          Iterator itHeaderNames = headers.getNames();
          String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
-         httpResult += "Content-type: " + response.getContentType() + "\r\n";
+         httpResult += "Content-Type: " + response.getContentType() + "\r\n";
          while (itHeaderNames.hasNext()) {
             String nextHeader = (String) itHeaderNames.next();
             String headerValue = headers.get(nextHeader);

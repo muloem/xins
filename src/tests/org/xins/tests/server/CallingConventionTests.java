@@ -551,7 +551,7 @@ public class CallingConventionTests extends TestCase {
     */
    private Element postXML(String destination, String data) throws Exception {
       PostMethod post = new PostMethod(destination);
-      post.setRequestHeader("Content-type", "text/xml; charset=UTF-8");
+      post.setRequestHeader("Content-Type", "text/xml; charset=UTF-8");
       post.setRequestBody(data);
       HttpClient client = new HttpClient();
       client.setConnectionTimeout(5000);
