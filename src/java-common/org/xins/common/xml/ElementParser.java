@@ -6,6 +6,7 @@
  */
 package org.xins.common.xml;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -23,7 +24,6 @@ import org.xins.common.Utils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-import org.xins.common.xml.SAXParserProvider;
 
 /**
  * XML element parser. XML is parsed to produce {@link Element} objects.
@@ -433,6 +433,10 @@ extends Object {
          }
 
          return _element;
+      }
+
+      public InputSource resolveEntity(String publicId, String systemId) {
+         return new InputSource(new ByteArrayInputStream(new byte[0]));
       }
    }
 

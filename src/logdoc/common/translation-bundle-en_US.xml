@@ -71,4 +71,6 @@
 	<translation entry="1512">Failed to load or parse the WEB_INF/web.xml file.</translation>
 	<translation entry="1513">Incorrect URL: <value-of-param name="url" format="quoted" />.</translation>
 	<translation entry="1514">No resource found in the WAR file at the location <value-of-param name="location" format="quoted" />.</translation>
+
+	<translation entry="1550">The system was unable to create a SAX parser.</translation>
 </translation-bundle>

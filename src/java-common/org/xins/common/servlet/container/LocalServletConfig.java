@@ -20,8 +20,10 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xins.common.Log;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.xml.SAXParserProvider;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -65,23 +67,7 @@ public class LocalServletConfig implements ServletConfig {
          parseWebXML(webxmlInputStream);
       } catch (Exception ex) {
          
-         // try again without the DTD
-         try {
-            JarFile warFile = new JarFile(warFileLocation);
-            JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
-            InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
-            byte[] webXMLContent = new byte[webxmlInputStream.available()];
-            webxmlInputStream.read(webXMLContent);
-            String webXMLContentString = new String(webXMLContent, "UTF-8");
-            int beginDTD = webXMLContentString.indexOf("<!DOCTYPE web-app");
-            int endDTD = webXMLContentString.indexOf(".dtd\">", beginDTD) + 6;
-            String webXMLWithoutDTD = webXMLContentString.substring(0, beginDTD) +
-                  webXMLContentString.substring(endDTD);
-            ByteArrayInputStream baisWebXML = new ByteArrayInputStream(webXMLWithoutDTD.getBytes("UTF-8"));
-            parseWebXML(baisWebXML);
-         } catch (Exception ex2) {
-            Log.log_1512(ex2);
-         }
+         Log.log_1512(ex);
       }
    }
 
@@ -130,10 +116,7 @@ public class LocalServletConfig implements ServletConfig {
     */
    private void parseWebXML(InputStream webxmlInputStream) throws Exception {
       DefaultHandler handler = new WebInfoParser();
-      SAXParserFactory factory = SAXParserFactory.newInstance();
-      factory.setValidating(false);
-      SAXParser saxParser = factory.newSAXParser();
-      saxParser.parse(webxmlInputStream, handler);
+      SAXParserProvider.get().parse(webxmlInputStream, handler);
       webxmlInputStream.close();
    }
    
@@ -239,6 +222,10 @@ public class LocalServletConfig implements ServletConfig {
          if (_pcdata != null) {
             _pcdata.append(ch, start, length);
          }
+      }
+      
+      public InputSource resolveEntity(String publicId, String systemId) {
+         return new InputSource(new ByteArrayInputStream(new byte[0]));
       }
    }
 }

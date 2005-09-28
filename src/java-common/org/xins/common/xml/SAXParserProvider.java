@@ -6,10 +6,15 @@
  */
 package org.xins.common.xml;
 
+import java.io.ByteArrayInputStream;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
+import org.xins.common.Log;
 import org.xins.common.Utils;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /**
  * Provider for <code>SAXParser</code> instances. This class will cache one
@@ -52,14 +57,15 @@ public class SAXParserProvider extends Object {
    static {
       SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
       SAX_PARSER_FACTORY.setNamespaceAware(true);
-      SAX_PARSER_FACTORY.setValidating(true);
+      SAX_PARSER_FACTORY.setValidating(false);
 
-      CACHE = new ThreadLocal();;
+      CACHE = new ThreadLocal();
    }
 
    /**
     * Returns a <code>SAXParser</code> instance that can be used in the
-    * current thread.
+    * current thread. The <code>SAXParser</code> won't perform the validation
+    * of the XML.
     *
     * @return
     *    a {@link SAXParser} instance, never <code>null</code>.
@@ -86,46 +92,21 @@ public class SAXParserProvider extends Object {
     */
    private static SAXParser create() {
 
-      final String CLASSNAME      = SAXParserProvider.class.getName();
-      final String THIS_METHOD    = "create()";
-      final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-      final String SUBJECT_METHOD = "newSAXParser()";
-
       SAXParser parser;
 
       try {
          parser = SAX_PARSER_FACTORY.newSAXParser();
+         parser.getXMLReader().setEntityResolver(new EntityResolver(){ 
+            public InputSource resolveEntity(String publicId, String systemId) {
+               return new InputSource(new ByteArrayInputStream(new byte[0]));
+            }
+         });
       } catch (Exception exception) {
-         final String DETAIL = null;
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        exception);
-      }
 
-      // Make sure the returned reference is not null
-      if (parser == null) {
-         final String DETAIL = "Method returned null";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
+         Log.log_1550(exception);
+         throw new RuntimeException("Error when creating a SAX parser: \"" 
+               + exception.getMessage() + "\".");
       }
-
-      // Make sure the parser validates XML documents
-      if (! parser.isValidating()) {
-         final String DETAIL = "Returned parser does not validate XML documents.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
-      }
-
-      // Make sure the parser supports XML Namespaces
-      if (! parser.isNamespaceAware()) {
-         final String DETAIL = "Returned parser does not support XML Namespaces.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
-      }
-
       return parser;
    }
 

@@ -309,6 +309,12 @@
 		</entry>
 	</group>
 	
+	<group id="xml" name="XML">
+		<entry id="1550" level="ERROR" exception="true">
+			<description>Unable to create a SAX parser.</description>
+		</entry>
+	</group>
+
 	<group id="threads" name="Threading" />
 
 	<group id="types" name="Types" />

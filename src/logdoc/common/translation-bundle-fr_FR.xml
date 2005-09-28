@@ -71,4 +71,6 @@
 	<translation entry="1512">Echec lors du chargement ou de la lecture du fichier WEB_INF/web.xml.</translation>
 	<translation entry="1513">URL incorrecte: <value-of-param name="url" format="quoted" />.</translation>
 	<translation entry="1514">Pas de resource trouvée dans le fichier WAR à <value-of-param name="location" format="quoted" />.</translation>
+	
+	<translation entry="1550">Le système n'a pas pu créé un parseur SAX.</translation>
 </translation-bundle>

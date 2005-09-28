@@ -62,23 +62,7 @@ public class APISpec extends Object {
          throw new InvalidSpecificationException("File \"" + fileName +"\" not found in the specifications.");
       }
       
-      // Return the XML file without the DTD declaration
-      BufferedReader contentReader = new BufferedReader(new InputStreamReader(in));
-      FastStringBuffer content = new FastStringBuffer(1024);
-      String nextLine = "";
-      while (nextLine != null) {
-         nextLine = contentReader.readLine();
-         if (nextLine != null) {
-            content.append(nextLine);
-            content.append("\n");
-         }
-      }
-      String xmlContentString = content.toString();
-      int beginDTD = xmlContentString.indexOf("<!DOCTYPE ");
-      int endDTD = xmlContentString.indexOf(".dtd\">", beginDTD) + 6;
-      String xmlWithoutDTD = xmlContentString.substring(0, beginDTD) +
-            xmlContentString.substring(endDTD);
-      StringReader reader = new StringReader(xmlWithoutDTD.trim());
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       return reader;
    }
    
