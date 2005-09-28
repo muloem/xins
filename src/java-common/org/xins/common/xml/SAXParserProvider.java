@@ -15,6 +15,9 @@ import org.xins.common.Utils;
  * Provider for <code>SAXParser</code> instances. This class will cache one
  * instance of a <code>SAXParser</code> per thread.
  *
+ * <p>The returned <code>SAXParser</code> is guaranteed to be validating and
+ * namespace-aware.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -49,6 +52,7 @@ public class SAXParserProvider extends Object {
    static {
       SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
       SAX_PARSER_FACTORY.setNamespaceAware(true);
+      SAX_PARSER_FACTORY.setValidating(true);
 
       CACHE = new ThreadLocal();;
    }
@@ -65,19 +69,7 @@ public class SAXParserProvider extends Object {
 
       SAXParser parser;
       if (o == null) {
-         try {
-            parser = SAX_PARSER_FACTORY.newSAXParser();
-         } catch (Exception exception) {
-            final String CLASSNAME      = SAXParserProvider.class.getName();
-            final String THIS_METHOD    = "get()";
-            final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-            final String SUBJECT_METHOD = "newSAXParser()";
-            final String DETAIL         = null;
-            throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                            SUBJECT_CLASS, SUBJECT_METHOD,
-                                            DETAIL,        exception);
-         }
-
+         parser = create();
          CACHE.set(parser);
       } else {
          parser = (SAXParser) o;
@@ -86,6 +78,50 @@ public class SAXParserProvider extends Object {
       return parser;
    }
 
+   private static SAXParser create() {
+
+      final String CLASSNAME      = SAXParserProvider.class.getName();
+      final String THIS_METHOD    = "create()";
+      final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
+      final String SUBJECT_METHOD = "newSAXParser()";
+
+      SAXParser parser;
+
+      try {
+         parser = SAX_PARSER_FACTORY.newSAXParser();
+      } catch (Exception exception) {
+         final String DETAIL = null;
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        exception);
+      }
+
+      // Make sure the returned reference is not null
+      if (parser == null) {
+         final String DETAIL = "Method returned null";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
+
+      // Make sure the parser validates XML documents
+      if (! parser.isValidating()) {
+         final String DETAIL = "Returned parser does not validate XML documents.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
+
+      // Make sure the parser supports XML Namespaces
+      if (! parser.isNamespaceAware()) {
+         final String DETAIL = "Returned parser does not support XML Namespaces.";
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        null);
+      }
+
+      return parser;
+   }
 
    //-------------------------------------------------------------------------
    // Constructors
