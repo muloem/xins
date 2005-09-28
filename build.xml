@@ -398,9 +398,9 @@ ${version.file}</fail>
 		windowtitle="${javadoc.title}"
 		doctitle="${javadoc.title}"
 		bottom="${javadoc.footer}">
-			<packageset dir="src/java-common"           />
-			<packageset dir="src/java-server-framework" />
-			<packageset dir="src/java-client-framework" />
+			<packageset dir="src/java-common"           includes="org/xins/**" />
+			<packageset dir="src/java-server-framework" includes="org/xins/**" />
+			<packageset dir="src/java-client-framework" includes="org/xins/**" />
 
 			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
 			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
