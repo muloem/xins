@@ -65,6 +65,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.net.URLEncodingTests.class);
 
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.SAXParserProviderTests.class);
 
       suite.addTestSuite(org.xins.tests.common.spec.APITests.class);
       suite.addTestSuite(org.xins.tests.common.spec.DataSectionElementTests.class);
