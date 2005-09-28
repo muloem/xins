@@ -78,6 +78,12 @@ public class SAXParserProvider extends Object {
       return parser;
    }
 
+   /**
+    * Creates a new <code>SAXParser</code> instance.
+    *
+    * @return
+    *    a new {@link SAXParser} instance, never <code>null</code>.
+    */
    private static SAXParser create() {
 
       final String CLASSNAME      = SAXParserProvider.class.getName();
