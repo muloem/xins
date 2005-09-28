@@ -43,7 +43,7 @@ public final class WhislEncoding extends Object {
     * elements) for characters that can be encoded using the percent sign. The
     * size of this array is 128.
     */
-   private static final String[] UNENCODED_TO_ENCODED;
+   private static final char[][] UNENCODED_TO_ENCODED;
 
 
    //-------------------------------------------------------------------------
@@ -53,9 +53,8 @@ public final class WhislEncoding extends Object {
    static {
 
       // Fill 128 array elements
-      UNENCODED_TO_ENCODED = new String[128];
-      for (int i = 0; i < 128; i++) {
-         char c = (char) i;
+      UNENCODED_TO_ENCODED = new char[128][];
+      for (char c = 0; c < 128; c++) {
 
          // Some characters can be output unmodified
          if ((c >= 'a' && c <= 'z')   || (c >= 'A' && c <= 'Z')
@@ -64,22 +63,23 @@ public final class WhislEncoding extends Object {
           || (c == '_')
           || (c == '.')
           || (c == '*')) {
-            UNENCODED_TO_ENCODED[i] = String.valueOf(c);
+            UNENCODED_TO_ENCODED[c] = null;
 
          // A space is converted to a plus-sign
          } else if (c == ' ') {
-            UNENCODED_TO_ENCODED[i] = "+";
+            char[] plus = {'+'};
+            UNENCODED_TO_ENCODED[c] = plus;
 
          // All other characters are URL-encoded in the form "%hex", where
          // "hex" is the hexadecimal value of the character
          } else {
             char[] data = new char[3];
             data[0] = '%';
-            data[1] = Character.forDigit((i >> 4) & 0xF, 16);
-            data[2] = Character.forDigit( i       & 0xF, 16);
+            data[1] = Character.forDigit((c >> 4) & 0xF, 16);
+            data[2] = Character.forDigit( c       & 0xF, 16);
             data[1] = Character.toUpperCase(data[1]);
             data[2] = Character.toUpperCase(data[2]);
-            UNENCODED_TO_ENCODED[i] = new String(data);
+            UNENCODED_TO_ENCODED[c] = data;
          }
       }
 
@@ -111,25 +111,44 @@ public final class WhislEncoding extends Object {
       if (length < 1) {
          return "";
       }
+      char[] string = s.toCharArray();
 
       // Construct a buffer
-      FastStringBuffer buffer = new FastStringBuffer(length * 2);
+      FastStringBuffer buffer = null;
 
       // Loop through the string. If the character is less than 128 then get
       // from the cache array, otherwise convert escape with a dollar sign
+      int lastAppendPos = 0;
       for (int i = 0; i < length; i++) {
-         short c = (short) s.charAt(i);
+         int c = (int) string[i];
          if (c < 128) {
-            buffer.append(UNENCODED_TO_ENCODED[c]);
+            char[] encoded = UNENCODED_TO_ENCODED[c];
+            if (encoded != null) {
+               if (buffer == null) {
+                  buffer = new FastStringBuffer(length * 2);
+               }
+               buffer.append(string, lastAppendPos, i - lastAppendPos);
+               buffer.append(encoded);
+               lastAppendPos = i + 1;
+            }
          } else {
+            if (buffer == null) {
+               buffer = new FastStringBuffer(length * 2);
+            }
+            buffer.append(string, lastAppendPos, i - lastAppendPos);
             buffer.append('$');
-            HexConverter.toHexString(buffer, c);
+            HexConverter.toHexString(buffer, (short) c);
+            lastAppendPos = i + 1;
          }
+      }
+      if (buffer == null) {
+         return s;
+      } else if (lastAppendPos != length) {
+         buffer.append(string, lastAppendPos, length - lastAppendPos);
       }
 
       return buffer.toString();
    }
-
 
    //-------------------------------------------------------------------------
    // Constructors

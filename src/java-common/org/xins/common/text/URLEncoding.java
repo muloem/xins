@@ -177,14 +177,17 @@ public final class URLEncoding extends Object {
          return s;
       }
 
+      // Avoid calls to charAt() method.
+      char[] string = s.toCharArray();
+
       // Last character cannot be a percentage sign
-      if (s.charAt(length - 1) == '%') {
+      if (string[length - 1] == '%') {
          throw new FormatException(s, "Last character is a percentage sign.");
       }
 
       // If the string is only one character, return the original string
       if (length == 1) {
-         int c = (int) s.charAt(0);
+         int c =  (int) string[0];
          if (c > 127) {
             throw new FormatException(s, "Character at position 0 has value " + c + '.');
          } else if (c == '+') {
@@ -195,7 +198,7 @@ public final class URLEncoding extends Object {
       }
 
       // Before-last character cannot be a percentage sign
-      if (s.charAt(length - 2) == '%') {
+      if (string[length - 2] == '%') {
          throw new FormatException(s, "Before-last character is a percentage sign.");
       }
 
@@ -206,7 +209,7 @@ public final class URLEncoding extends Object {
       while (index <= last) {
 
          // Get the character
-         char c = s.charAt(index);
+         char c = string[index];
          int charAsInt = (int) c;
 
          // Encoded character must be ASCII
@@ -221,7 +224,7 @@ public final class URLEncoding extends Object {
          } else if (c == '%') {
             int decodedValue;
 
-            charAsInt = (int) s.charAt(++index);
+            charAsInt = (int) string[++index];
             if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
                decodedValue = charAsInt - CHAR_ZERO;
             } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {
@@ -234,7 +237,7 @@ public final class URLEncoding extends Object {
 
             decodedValue *= 16;
 
-            charAsInt = (int) s.charAt(++index);
+            charAsInt = (int) string[++index];
             if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
                decodedValue += charAsInt - CHAR_ZERO;
             } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {
@@ -262,7 +265,7 @@ public final class URLEncoding extends Object {
 
       // Check and append before-last character
       if (index == length - 2) {
-         char c        = s.charAt(index);
+         char c        = string[index];
          int charAsInt = (int) c;
          if (charAsInt > 127) {
             throw new FormatException(s, "Character at position " + index + " has value " + charAsInt + '.');
@@ -275,7 +278,7 @@ public final class URLEncoding extends Object {
 
       // Check and append last character
       if (index == length - 1) {
-         char c         = s.charAt(index);
+         char c         = string[index];
          int charAsInt = (int) c;
          if (charAsInt > 127) {
             throw new FormatException(s, "Character at position " + index + " has value " + charAsInt + '.');

@@ -245,6 +245,10 @@ public class FastStringBuffer extends Object {
          throw new IllegalArgumentException("off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
       }
 
+      if (len == 0) {
+         return;
+      }
+
       int newLength = _length + len;
 
       // Ensure there is enough capacity

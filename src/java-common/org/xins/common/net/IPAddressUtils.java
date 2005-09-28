@@ -123,26 +123,27 @@ public final class IPAddressUtils extends Object {
    private static int ipPartToInt(String ip, String part)
    throws ParseException {
 
-      int length = part.length();
+      char[] partString = part.toCharArray();
+      int length = partString.length;
 
       if (length == 1) {
-         char c0 = part.charAt(0);
+         char c0 = partString[0];
          if (c0 >= '0' && c0 <= '9') {
             return (c0 - '0');
          }
 
       } else if (length == 2) {
-         char c0 = part.charAt(0);
-         char c1 = part.charAt(1);
+         char c0 = partString[0];
+         char c1 = partString[1];
 
          if (c0 >= '1' && c0 <= '9' && c1 >= '0' && c1 <= '9') {
             return ((c0 - '0') * 10) + (c1 - '0');
          }
 
       } else if (length == 3) {
-         char c0 = part.charAt(0);
-         char c1 = part.charAt(1);
-         char c2 = part.charAt(2);
+         char c0 = partString[0];
+         char c1 = partString[1];
+         char c2 = partString[2];
 
          if (c0 >= '1' && c0 <= '2' && c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9') {
             int value = ((c0 - '0') * 100) + ((c1 - '0') * 10) + (c2 - '0');
