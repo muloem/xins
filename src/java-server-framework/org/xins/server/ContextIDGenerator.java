@@ -6,9 +6,7 @@
  */
 package org.xins.server;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import org.apache.commons.lang.time.FastDateFormat;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
@@ -52,6 +50,17 @@ final class ContextIDGenerator extends Manageable {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Sequence counter. Initially <code>0</code>.
+    */
+   private static int SEQUENCE_COUNTER;
+
+   /**
+    * Lock object for <code>SEQUENCE_COUNTER</code>. Never <code>null</code>.
+    */
+   private static final Object SEQUENCE_COUNTER_LOCK = new Object();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -75,10 +84,11 @@ final class ContextIDGenerator extends Manageable {
       // Check preconditions
       MandatoryArgumentChecker.check("apiName", apiName);
 
-      // Initialize the fields
+      // Construct the date formatter
+      _format = FastDateFormat.getInstance("yyMMdd-HHmmssSSS");
+
+      // Initialize the other fields
       _apiName  = apiName;
-      _format   = new SimpleDateFormat("yyMMdd-HHmmssSSS");
-      _random   = new Random();
       _hostname = IPAddressUtils.getLocalHost();
    }
 
@@ -96,13 +106,7 @@ final class ContextIDGenerator extends Manageable {
     * The date formatter used for generating the context identifier. Never
     * <code>null</code>.
     */
-   private final SimpleDateFormat _format;
-
-   /**
-    * Pseudo-random number generator. Used for the last 5 hex digits in the
-    * generated context identifier. Never <code>null</code>.
-    */
-   private final Random _random;
+   private final FastDateFormat _format;
 
    /**
     * The name for the local host. Never <code>null</code>.
@@ -178,18 +182,18 @@ final class ContextIDGenerator extends Manageable {
       FastStringBuffer buffer = new FastStringBuffer(_length + 3, _prefix);
 
       // Append the time stamp
-      buffer.append(_format.format(new Date()));
+      buffer.append(_format.format(System.currentTimeMillis()));
       buffer.append(':');
 
-      // Append 5 random hex digits
-      //
-      // NOTE: We assume that java.util.Random is thread-safe, although this
-      //       is not officially documented.
-      HexConverter.toHexString(buffer, _random.nextInt());
-      buffer.crop(_length);
+      // Append 5 'random' hex digits
+      buffer.append('0');
+      int i;
+      synchronized (SEQUENCE_COUNTER_LOCK) {
+         i = SEQUENCE_COUNTER++;
+      }
+      HexConverter.toHexString(buffer, (short) i);
 
       // Log and return the context ID
-      String contextID = buffer.toString();
-      return contextID;
+      return buffer.toString();
    }
 }

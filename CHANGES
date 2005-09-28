@@ -35,6 +35,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Quoting servlet container, JVM and OS info in log message 3200.
   - Optimized the Engine by getting the error information only when the
     exception is thrown.
+  - Changed ContextIDGenerator to use FastDateFormat instead of
+    SimpleDateFormat, and also to use a sequence number to generate the last 5
+    hex digits instead of using a random number generator. This improves the
+    performance and fixes SF.net bug #1307026: Context ID generation not
+    thread-safe.
 
 * Generation of server-side Java code:
   - Fixed bug which caused the generation of function files to fail with a
