@@ -87,8 +87,6 @@ public final class FileWatcher extends Thread {
    public FileWatcher(String file, int interval, Listener listener)
    throws IllegalArgumentException {
 
-      super(determineName(file, interval));
-
       // Check preconditions
       MandatoryArgumentChecker.check("file", file, "listener", listener);
       if (interval < 1) {
@@ -107,7 +105,7 @@ public final class FileWatcher extends Thread {
       setDaemon(true);
 
       // Set the name of this thread
-      FastStringBuffer name = new FastStringBuffer(CLASSNAME, 40);
+      FastStringBuffer name = new FastStringBuffer(47, CLASSNAME);
       name.append(' ');
       name.append(_instanceID);
       name.append(" [file=\"");
