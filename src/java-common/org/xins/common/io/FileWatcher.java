@@ -7,9 +7,11 @@
 package org.xins.common.io;
 
 import java.io.File;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * File watcher thread. This thread checks if a file changed and if it has, it
