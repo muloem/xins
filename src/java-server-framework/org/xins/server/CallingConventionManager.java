@@ -245,8 +245,6 @@ class CallingConventionManager {
     *
     * @throws InvalidRequestException
     *    if the calling convention name is unknown.
-    *
-    * @throws 
     */
    CallingConvention getCallingConvention(String name) 
    throws InvalidRequestException {

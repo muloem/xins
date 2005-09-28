@@ -119,8 +119,9 @@ extends Object {
     * Returns the list of <code>CallException</code>s.
     *
     * @return
-    *    the {@link CallException}s, collected in a {@link CallExceptionList}
-    *    object, or <code>null</code> if the first call attempt succeeded.
+    *    the {@link org.xins.common.service.CallException}s, 
+    *    collected in a {@link CallExceptionList} object, 
+    *    or <code>null</code> if the first call attempt succeeded.
     *
     * @since XINS 1.1.0
     */

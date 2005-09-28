@@ -278,7 +278,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * <p>The implementation of this method in class {@link XINSServiceCaller}
     * returns a standard {@link XINSCallConfig} object which has unconditional
     * fail-over disabled and the HTTP method set to
-    * {@link HTTPMethod#POST POST}.
+    * {@link org.xins.common.http.HTTPMethod#POST POST}.
     *
     * @return
     *    a new {@link XINSCallConfig} instance with default settings, never

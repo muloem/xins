@@ -216,7 +216,7 @@ extends HttpServlet {
     * messages.
     *
     * @deprecated
-    *    Use {@link LogCentral#LOG_LOCALE_PROPERTY}.
+    *    Use {@link org.xins.logdoc.LogCentral#LOG_LOCALE_PROPERTY}.
     */
    public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
 
