@@ -85,6 +85,8 @@ public final class FileWatcher extends Thread {
    public FileWatcher(String file, int interval, Listener listener)
    throws IllegalArgumentException {
 
+      super(determineName(file, interval));
+
       // Check preconditions
       MandatoryArgumentChecker.check("file", file, "listener", listener);
       if (interval < 1) {
@@ -101,6 +103,17 @@ public final class FileWatcher extends Thread {
 
       // Configure thread as daemon
       setDaemon(true);
+
+      // Set the name of this thread
+      FastStringBuffer name = new FastStringBuffer(CLASSNAME, 40);
+      name.append(' ');
+      name.append(_instanceID);
+      name.append(" [file=\"");
+      name.append(file);
+      name.append("\"; interval=");
+      name.append(interval);
+      name.append(']');
+      setName(name.toString());
 
       // Immediately check if the file can be read from
       firstCheck();
