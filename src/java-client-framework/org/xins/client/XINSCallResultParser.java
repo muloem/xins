@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 
 import java.util.Stack;
 
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.Attributes;
@@ -16,13 +15,12 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+import org.xins.common.xml.SAXParserProvider;
 
 /**
  * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
@@ -116,25 +114,10 @@ extends Object {
     */
    private static final State FINISHED = new State("FINISHED");
 
-   /**
-    * The factory for SAX parsers. This field is never <code>null</code>, it
-    * is initialized by a class initializer.
-    */
-   private static final SAXParserFactory SAX_PARSER_FACTORY;
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Initializes this class.
-    */
-   static {
-      SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
-      SAX_PARSER_FACTORY.setNamespaceAware(true);
-   }
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -187,14 +170,11 @@ extends Object {
       ByteArrayInputStream stream = null;
       try {
 
-         // Construct a SAX parser
-         SAXParser saxParser = SAX_PARSER_FACTORY.newSAXParser();
-
          // Convert the byte array to an input stream
          stream = new ByteArrayInputStream(xml);
 
          // Let SAX parse the XML, using our handler
-         saxParser.parse(stream, handler);
+         SAXParserProvider.get().parse(stream, handler);
 
       } catch (Throwable exception) {
 

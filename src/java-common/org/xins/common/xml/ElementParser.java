@@ -11,7 +11,6 @@ import java.io.Reader;
 
 import java.util.Stack;
 
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.Attributes;
@@ -21,10 +20,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+import org.xins.common.xml.SAXParserProvider;
 
 /**
  * XML element parser. XML is parsed to produce {@link Element} objects.
@@ -74,26 +73,10 @@ extends Object {
     */
    private static final State FINISHED = new State("FINISHED");
 
-   /**
-    * The factory for SAX parsers. This field is never <code>null</code>, it
-    * is initialized by a class initializer.
-    */
-   private static final SAXParserFactory SAX_PARSER_FACTORY;
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Initializes this class.
-    */
-   static {
-      SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
-      SAX_PARSER_FACTORY.setValidating(true);
-      SAX_PARSER_FACTORY.setNamespaceAware(true);
-   }
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -152,57 +135,12 @@ extends Object {
       // Initialize our SAX event handler
       Handler handler = new Handler();
 
-      // Construct a SAX parser
-      SAXParser saxParser;
-      try {
-         saxParser = SAX_PARSER_FACTORY.newSAXParser();
-
-      // Factory method may fail with an exception
-      } catch (Exception exception) {
-         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-         final String SUBJECT_METHOD = "newSAXParser()";
-         final String DETAIL         = null;
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        exception);
-      }
-
-      // Make sure the returned reference is not null
-      if (saxParser == null) {
-         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-         final String SUBJECT_METHOD = "newSAXParser()";
-         final String DETAIL         = "Method returned null";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
-      }
-
-      // Make sure the parser validates XML documents
-      if (! saxParser.isValidating()) {
-         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-         final String SUBJECT_METHOD = "newSAXParser()";
-         final String DETAIL         = "Returned parser does not validate XML documents.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
-      }
-
-      // Make sure the parser supports XML Namespaces
-      if (! saxParser.isNamespaceAware()) {
-         final String SUBJECT_CLASS  = SAX_PARSER_FACTORY.getClass().getName();
-         final String SUBJECT_METHOD = "newSAXParser()";
-         final String DETAIL         = "Returned parser does not support XML Namespaces.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        null);
-      }
-
       // Wrap the Reader in a SAX InputSource object
       InputSource source = new InputSource(in);
 
       try {
          // Let SAX parse the XML, using our handler
-         saxParser.parse(source, handler);
+         SAXParserProvider.get().parse(source, handler);
 
       } catch (SAXException exception) {
 
