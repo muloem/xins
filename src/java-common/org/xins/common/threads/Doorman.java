@@ -99,7 +99,6 @@ public final class Doorman extends Object {
                   long    maxQueueWaitTime)
    throws IllegalArgumentException {
 
-      // TRACE: Enter constructor
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
       if (queueSize < 0 || maxQueueWaitTime <= 0L) {
