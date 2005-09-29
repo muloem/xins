@@ -54,6 +54,7 @@ import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.LogdocSerializable;
@@ -162,7 +163,19 @@ public final class HTTPServiceCaller extends ServiceCaller {
    /**
     * Fully-qualified name of the inner class <code>CallExecutor</code>.
     */
-   private static final String EXECUTOR_CLASSNAME = HTTPServiceCaller.CallExecutor.class.getName();
+   private static final String EXECUTOR_CLASSNAME =
+      HTTPServiceCaller.CallExecutor.class.getName();
+
+   /**
+    * The number of constructed call executors.
+    */
+   private static int CALL_EXECUTOR_COUNT;
+
+   /**
+    * Lock object for <code>CALL_EXECUTOR_COUNT</code>. Never
+    * <code>null</code>.
+    */
+   private static final Object CALL_EXECUTOR_COUNT_LOCK = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -311,7 +324,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                             HTTPCallConfig callConfig)
    throws IllegalArgumentException, UnsupportedProtocolException {
 
-      // Trace first and then call superclass constructor
+      // Call superclass constructor
       super(descriptor, callConfig);
    }
 
@@ -965,6 +978,18 @@ public final class HTTPServiceCaller extends ServiceCaller {
          _callConfig = callConfig;
          _target     = target;
          _context    = context;
+
+         // Determine the unique ID of this instance
+         int instanceID;
+         synchronized (CALL_EXECUTOR_COUNT_LOCK) {
+            instanceID = CALL_EXECUTOR_COUNT++;
+         }
+
+         // Set the name of this thread
+         FastStringBuffer name = new FastStringBuffer(69, EXECUTOR_CLASSNAME);
+         name.append(" #");
+         name.append(instanceID);
+         setName(name.toString());
       }
 
 
@@ -1074,8 +1099,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
          HttpMethodBase method = createMethod(url, _request, _callConfig);
 
          // Set the user agent, if specified.
-         if (_callConfig.getUserAgent() != null) {
-            method.setRequestHeader("User-Agent", _callConfig.getUserAgent());
+         String userAgent = _callConfig.getUserAgent();
+         if (! TextUtils.isEmpty(userAgent)) {
+            method.setRequestHeader("User-Agent", userAgent);
          }
 
          // Perform the HTTP call
