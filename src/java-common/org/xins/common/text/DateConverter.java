@@ -167,7 +167,7 @@ public class DateConverter extends Object {
       // Convert the millis to a GregorianCalendar instance
       GregorianCalendar calendar = new GregorianCalendar();
       Date date = new Date(millis);
-      calendar.setDate(date);
+      calendar.setTime(date);
       
       // Get all individual fields from the calendar
       int year  = calendar.get(Calendar.YEAR);
