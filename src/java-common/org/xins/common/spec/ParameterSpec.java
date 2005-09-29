@@ -13,6 +13,8 @@ import org.xins.common.types.Type;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.3.0
  */
 public class ParameterSpec extends Object {
 
