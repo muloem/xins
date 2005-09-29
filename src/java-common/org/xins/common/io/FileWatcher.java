@@ -107,6 +107,7 @@ public final class FileWatcher extends Thread {
       // Initialize the fields
       _instanceID    = instanceID;
       _file          = new File(file);
+      _filePath      = _file.getPath();
       _interval      = interval;
       _listener      = listener;
       _listenerClass = listener.getClass().getName();
@@ -116,15 +117,7 @@ public final class FileWatcher extends Thread {
       setDaemon(true);
 
       // Set the name of this thread
-      FastStringBuffer name = new FastStringBuffer(47, CLASSNAME);
-      name.append(" #");
-      name.append(_instanceID);
-      name.append(" [file=\"");
-      name.append(file);
-      name.append("\"; interval=");
-      name.append(interval);
-      name.append(']');
-      setName(name.toString());
+      configureThreadName();
 
       // Immediately check if the file can be read from
       firstCheck();
@@ -155,6 +148,7 @@ public final class FileWatcher extends Thread {
       // Initialize the fields
       _instanceID    = INSTANCE_COUNT++;
       _file          = new File(file);
+      _filePath      = _file.getPath();
       _interval      = 0;
       _listener      = listener;
       _listenerClass = listener.getClass().getName();
@@ -162,6 +156,9 @@ public final class FileWatcher extends Thread {
 
       // Configure thread as daemon
       setDaemon(true);
+
+      // Set the name of this thread
+      configureThreadName();
 
       // Immediately check if the file can be read from
       firstCheck();
@@ -181,6 +178,11 @@ public final class FileWatcher extends Thread {
     * The file to watch. Not <code>null</code>.
     */
    private final File _file;
+
+   /**
+    * The path of the file to watch. Not <code>null</code>.
+    */
+   private final String _filePath;
 
    /**
     * Delay in seconds, at least 1. When the interval is uninitialized, the
@@ -226,6 +228,21 @@ public final class FileWatcher extends Thread {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Configures the name of this thread.
+    */
+   private void configureThreadName() {
+      FastStringBuffer name = new FastStringBuffer(47, CLASSNAME);
+      name.append(" #");
+      name.append(_instanceID);
+      name.append(" [file=\"");
+      name.append(_filePath);
+      name.append("\"; interval=");
+      name.append(_interval);
+      name.append(']');
+      setName(name.toString());
+   }
 
    /**
     * Performs the first check on the file to determine the date the file was
@@ -275,7 +292,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("The interval has not been set yet.");
       }
 
-      Log.log_1200(_instanceID, _file.getPath(), _interval);
+      Log.log_1200(_instanceID, _filePath, _interval);
 
       // Move to the RUNNING state
       synchronized (this) {
@@ -343,9 +360,12 @@ public final class FileWatcher extends Thread {
 
       // Change the interval
       if (newInterval != _interval) {
-         Log.log_1201(_instanceID, _file.getPath(), _interval, newInterval);
+         Log.log_1201(_instanceID, _filePath, _interval, newInterval);
          _interval = newInterval;
       }
+
+      // Update the thread name
+      configureThreadName();
 
       // TODO: Interrupt the thread (see #HERE#)
    }
@@ -365,7 +385,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("The thread is already stopping.");
       }
 
-      Log.log_1202(_instanceID, _file.getPath());
+      Log.log_1202(_instanceID, _filePath);
 
       // Change the state and interrupt the thread
       _state = SHOULD_STOP;
