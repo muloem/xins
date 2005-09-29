@@ -146,6 +146,8 @@ public class DateConverter extends Object {
     *
     * @return
     *    the converted character string, cannot be <code>null</code>.
+    *
+    * @since XINS 1.3.0
     */
    public static String toDateString(boolean century, String separator) {
       Calendar calendar = GregorianCalendar.getInstance();
