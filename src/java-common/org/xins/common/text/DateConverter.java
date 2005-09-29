@@ -33,18 +33,7 @@ public class DateConverter extends Object {
    /**
     * Two-length string representations of the digits 0 to 99.
     */
-   private static final String[] VALUES = new String[] {
-      "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
-      "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-      "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
-      "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-      "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
-      "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",
-      "60", "61", "62", "63", "64", "65", "66", "67", "68", "69",
-      "70", "71", "72", "73", "74", "75", "76", "77", "78", "79",
-      "80", "81", "82", "83", "84", "85", "86", "87", "88", "89",
-      "90", "91", "92", "93", "94", "95", "96", "97", "98", "99",
-   };
+   private static final char[][] VALUES;
 
 
    //-------------------------------------------------------------------------
@@ -54,6 +43,17 @@ public class DateConverter extends Object {
    static {
       // XXX: Allow test coverage analysis tools to report 100% coverage
       new DateConverter();
+
+      // Fill the VALUES array
+      VALUES = new char[100][];
+
+      int zero = (int) '0';
+
+      for (int i = 0; i < 100; i++) {
+         int first  = zero + (i / 10);
+         int second = zero + (i % 10);
+         VALUES[i] = new char[] { (char) first, (char) second };
+      }
    }
 
    /**
@@ -163,10 +163,10 @@ public class DateConverter extends Object {
 
       // Check preconditions
       MandatoryArgumentChecker.check("separator", separator);
+      int separatorLength = separator.length();
 
       // Convert the millis to a GregorianCalendar instance
-      TimeZone tz = TimeZone.getDefault();
-      GregorianCalendar calendar = new GregorianCalendar(tz);
+      GregorianCalendar calendar = new GregorianCalendar();
       Date date = new Date(millis);
       calendar.setTime(date);
       
@@ -180,38 +180,62 @@ public class DateConverter extends Object {
       int ms    = calendar.get(Calendar.MILLISECOND);
       
       // Add century and year or both
-      FastStringBuffer buffer = new FastStringBuffer(23);
+      int length = withCentury ? 17 : 15;
+      length += separatorLength;
+      char[] buffer = new char[length];
       int century  = year / 100;
       int yearOnly = year % 100;
+      int pos      = 0;
+      char[] c;
       if (withCentury) {
-         buffer.append(VALUES[century]);
+         c = VALUES[century];
+         buffer[pos++] = c[0];
+         buffer[pos++] = c[1];
       }
-      buffer.append(VALUES[yearOnly]);
+      c = VALUES[yearOnly];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
 
       // Add month (which is 0-based, so we need to add 1)
-      buffer.append(VALUES[month + 1]);
+      c = VALUES[month + 1];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
 
       // Add day
-      buffer.append(VALUES[day]);
+      c = VALUES[day];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
 
       // Add separator between date and time
-      buffer.append(separator);
+      for (int i = 0; i < separatorLength; i++) {
+         buffer[pos++] = separator.charAt(i);
+      }
 
-      // Add hours, minutes and seconds
-      buffer.append(VALUES[hour]);
-      buffer.append(VALUES[min]);
-      buffer.append(VALUES[sec]);
+      // Add hours
+      c = VALUES[hour];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add minutes
+      c = VALUES[min];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add seconds
+      c = VALUES[sec];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
          
       // Add milliseconds
-      if (ms < 10) {
-         buffer.append("00");
-      } else if (ms < 100) {
-         buffer.append('0');
-      }
-      buffer.append(String.valueOf(ms));
+      int zero = (int) '0';
+      c = VALUES[ms / 10];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+      buffer[pos++] = (char) (zero + (ms % 10));
 
-      return buffer.toString();
+      return new String(buffer);
    }
+
    
    //-------------------------------------------------------------------------
    // Constructors
