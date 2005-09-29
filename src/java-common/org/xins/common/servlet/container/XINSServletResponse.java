@@ -214,7 +214,7 @@ public class XINSServletResponse implements HttpServletResponse {
     * Gets the status of the returned message.
     *
     * @return
-    *    The HTTP status returned.
+    *    the HTTP status returned.
     */
    public int getStatus() {
       return _status;
@@ -224,7 +224,7 @@ public class XINSServletResponse implements HttpServletResponse {
     * Gets the context type of the returned text.
     *
     * @return
-    *    The content type, cannot be <code>null</code>.
+    *    the content type, cannot be <code>null</code>.
     */
    public String getContentType() {
       return _contentType;
@@ -234,7 +234,9 @@ public class XINSServletResponse implements HttpServletResponse {
     * Gets the headers to return to the client.
     *
     * @return
-    *    The headers, cannot be <code>null</code>.
+    *    the headers, cannot be <code>null</code>.
+    *
+    * @since XINS 1.3.0
     */
    public PropertyReader getHeaders() {
       return _headers;

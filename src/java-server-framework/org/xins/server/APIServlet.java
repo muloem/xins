@@ -202,12 +202,16 @@ extends HttpServlet {
    public static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
 
    /**
-    * The XINS SOAP calling convention.
+    * The name of the SOAP calling convention.
+    *
+    * @since XINS 1.3.0
     */
    public static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
    /**
-    * The XINS XMLRPC calling convention.
+    * The name of the XML-RPC calling convention.
+    *
+    * @since XINS 1.3.0
     */
    public static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
 

@@ -229,6 +229,8 @@ public abstract class AbstractCAPICallRequest {
     *
     * @param element
     *    the new element to add to the result, cannot be <code>null</code>.
+    *
+    * @since XINS 1.3.0
     */
    protected void add(Element element) {
       if (_dataElementBuilder == null) {

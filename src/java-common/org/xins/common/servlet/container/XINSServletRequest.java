@@ -96,6 +96,8 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @param contentType
     *    the content type of the request.
+    *
+    * @since XINS 1.3.0
     */
    public XINSServletRequest(String url, char[] data, String contentType) {
       _date = System.currentTimeMillis();
@@ -124,6 +126,7 @@ public class XINSServletRequest implements HttpServletRequest {
          }
       }
    }
+
 
    //-------------------------------------------------------------------------
    // Fields

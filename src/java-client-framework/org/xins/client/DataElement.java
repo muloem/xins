@@ -535,6 +535,8 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    the converted object, never <code>null</code>.
+    *
+    * @since XINS 1.3.0
     */
    public Element toXMLElement() {
       return toXMLElement(this);

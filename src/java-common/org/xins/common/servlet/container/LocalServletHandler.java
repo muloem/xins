@@ -177,8 +177,14 @@ public class LocalServletHandler {
     *
     * @throws IOException
     *    If the query is not handled correctly by the servlet.
+    *
+    * @since XINS 1.3.0
     */
-   public XINSServletResponse query(String url, char[] data, String contentType) throws IOException {
+   public XINSServletResponse query(String url,
+                                    char[] data,
+                                    String contentType)
+   throws IOException {
+
       Log.log_1504(url);
 
       XINSServletRequest request = new XINSServletRequest(url, data, contentType);

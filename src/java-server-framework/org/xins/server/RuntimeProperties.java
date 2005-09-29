@@ -65,6 +65,8 @@ public class RuntimeProperties {
     *
     * @return
     *    the list of all descriptors, may not be <code>null</code>.
+    *
+    * @since XINS 1.3.0
     */
    protected java.util.List descriptors() {
       return new java.util.ArrayList();
