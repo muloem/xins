@@ -66,6 +66,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Removed unused imports and unused variables.
   - Removed underscores from method names.
 
+* Libraries:
+  - Added joda-time.jar for fast date- and time-computations.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
 
