@@ -6,7 +6,9 @@
  */
 package org.xins.tests.common.text;
 
+import java.util.Date;
 import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -66,7 +68,7 @@ public class DateConverterTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testParseDateString_String() throws Throwable {
+   public void testToDateString1() throws Exception {
       try {
          DateConverter.toDateString(null, 0);
          fail("Expected DateConverter.toDateString(null, <irrelevant>) to throw an IllegalArgumentException.");
@@ -99,5 +101,39 @@ public class DateConverterTests extends TestCase {
       expected = "1970.01.01 00:00:00.001";
       actual = DateConverter.toDateString(tz, 1L);
       assertEquals("Expected data converter to return " + expected + " instead of " + actual + '.', expected, actual);
+   }
+
+   public void testToDateString2() throws Exception {
+
+      try {
+         DateConverter.toDateString(0L, true, null);
+         fail("Expected DateConverter.toDateString(<long>,<boolean>,null) to throw an IllegalArgumentException.");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      String separator = " ";
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd" + separator + "HHmmssSSS");
+
+      long   millis    = 0L;
+      String expected  = formatter.format(new Date(millis));
+      String actual    = DateConverter.toDateString(millis, true, separator);
+      String message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+      assertEquals(message, expected, actual);
+
+      millis = System.currentTimeMillis();
+      expected  = formatter.format(new Date(millis));
+      actual    = DateConverter.toDateString(millis, true, separator);
+      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+      assertEquals(message, expected, actual);
+
+      for (int i = 0; i < 50; i++) {
+         millis   += 123456L;
+         expected  = formatter.format(new Date(millis));
+         actual    = DateConverter.toDateString(millis, true, separator);
+         message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+         assertEquals(message, expected, actual);
+      }
    }
 }
