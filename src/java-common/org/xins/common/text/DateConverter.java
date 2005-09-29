@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.time.FastDateFormat;
+import org.joda.time.DateTime;
 
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -43,8 +43,6 @@ public class DateConverter extends Object {
     */
    private static final int ZERO = (int) '0';
 
-   private static final FastDateFormat FORMATTER;
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -62,8 +60,6 @@ public class DateConverter extends Object {
          int second = ZERO + (i % 10);
          VALUES[i] = new char[] { (char) first, (char) second };
       }
-
-      FORMATTER = FastDateFormat.getInstance("yyyyMMdd HHmmssSSS");
    }
 
    /**
@@ -176,11 +172,69 @@ public class DateConverter extends Object {
       int separatorLength = separator.length();
 
       // Convert the millis to a GregorianCalendar instance
-      GregorianCalendar calendar = new GregorianCalendar();
-      calendar.setTimeInMillis(millis);
+      DateTime calendar = new DateTime(millis);
+      
+      // Get all individual fields from the calendar
+      int year  = calendar.getYear();
+      int month = calendar.getMonthOfYear();
+      int day   = calendar.getDayOfMonth();
+      int hour  = calendar.getHourOfDay();
+      int min   = calendar.getMinuteOfHour();
+      int sec   = calendar.getSecondOfMinute();
+      int ms    = calendar.getMillisOfSecond();
+      
+      // Add century and year or both
+      int length = withCentury ? 17 : 15;
+      length += separatorLength;
+      char[] buffer = new char[length];
+      int pos      = 0;
+      char[] c;
+      if (withCentury) {
+         c = VALUES[year / 100];
+         buffer[pos++] = c[0];
+         buffer[pos++] = c[1];
+      }
+      c = VALUES[year % 100];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
 
-      // FIXME: Take separator into account
-      return FORMATTER.format(calendar);
+      // Add month (which is 0-based, so we need to add 1)
+      c = VALUES[month + 1];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add day
+      c = VALUES[day];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add separator between date and time
+      for (int i = 0; i < separatorLength; i++) {
+         buffer[pos++] = separator.charAt(i);
+      }
+
+      // Add hours
+      c = VALUES[hour];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add minutes
+      c = VALUES[min];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+
+      // Add seconds
+      c = VALUES[sec];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+         
+      // Add milliseconds
+      c = VALUES[ms / 10];
+      buffer[pos++] = c[0];
+      buffer[pos++] = c[1];
+      buffer[pos++] = (char) (ZERO + (ms % 10));
+
+      return new String(buffer);
    }
 
    
