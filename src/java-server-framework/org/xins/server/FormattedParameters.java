@@ -66,7 +66,7 @@ extends AbstractLogdocSerializable {
     * Initializes this <code>AbstractLogdocSerializable</code>.
     *
     * @return
-    *    the serialized form of this <code>FormattedDate</code>, never
+    *    the serialized form of this <code>FormattedParameters</code>, never
     *    <code>null</code>.
     */
    protected String initialize() {
