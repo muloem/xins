@@ -162,6 +162,8 @@ public final class IPAddressUtils extends Object {
     * @return
     *    if possible the IP address for localhost, otherwise 
     *    the string <code>"127.0.0.1"</code>.
+    *
+    * @since XINS 1.3.0
     */
    public static String getLocalHostIPAddress() {
       try {
@@ -215,42 +217,22 @@ public final class IPAddressUtils extends Object {
     *    the string <code>"localhost"</code>.
     */
    public static String getLocalHostJava14() {
-      try {
-         return InetAddress.getLocalHost().getCanonicalHostName();
-      } catch (UnknownHostException unknownHostException) {
-         try {
-            Enumeration enuNetworks = NetworkInterface.getNetworkInterfaces();
-            while (enuNetworks.hasMoreElements()) {
-               NetworkInterface network = (NetworkInterface) enuNetworks.nextElement();
-               Enumeration addresses = network.getInetAddresses();
-               while (addresses.hasMoreElements()) {
-                  InetAddress address = (InetAddress) addresses.nextElement();
-                  try {
-                     return address.getLocalHost().getCanonicalHostName();
-                  } catch (UnknownHostException unknownHostException2) {
-                     // Ignore; perhaps another network interface will find it
 
-                  // Catch NPE. This works around SF.net bug #1113862
-                  // ("IPAddressUtils.getLocalHost gets NPE on Blackdown JVM
-                  // 1.4.1")
-                  } catch (NullPointerException unknownHostException2) {
-                     // Ignore; perhaps another network interface will find it
-                  }
-               }
-            }
-            String unknownMessage = unknownHostException.getMessage();
-            int twoDotPos = unknownMessage.indexOf(':');
-            if (twoDotPos != -1) {
-               return unknownMessage.substring(0, twoDotPos);
-            } else {
-               return "localhost";
-            }
-         } catch (SocketException socketException) {
-            return "localhost";
+      String hostname = "localhost";
+
+      try {
+         hostname = InetAddress.getLocalHost().getCanonicalHostName();
+      } catch (UnknownHostException unknownHostException) {
+         String unknownMessage = unknownHostException.getMessage();
+         int twoDotPos = unknownMessage.indexOf(':');
+         if (twoDotPos != -1) {
+            hostname = unknownMessage.substring(0, twoDotPos);
          }
       } catch (SecurityException securityException) {
-         return "localhost";
+         // fall through
       }
+
+      return hostname;
    }
 
    /**
