@@ -25,6 +25,13 @@ extends GenericCallException {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Serial version UID. Used for serialization. The assigned value is for
+    * compatibility with XINS 1.2.5.
+    */
+   private static final long serialVersionUID = -1118963769763850776L;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------

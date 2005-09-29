@@ -37,6 +37,13 @@ public abstract class CallException extends Exception {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Serial version UID. Used for serialization. The assigned value is for
+    * compatibility with XINS 1.2.5.
+    */
+   private static final long serialVersionUID = -7359880685027521685L;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
