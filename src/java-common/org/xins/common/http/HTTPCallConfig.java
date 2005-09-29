@@ -88,8 +88,10 @@ public final class HTTPCallConfig extends CallConfig {
     * Sets the user agent associated with the HTTP call.
     *
     * @param agent
-    *    the HTTP user agent, can be <code>null</code> if you don't want any
-    *    user agent to be specified.
+    *    the HTTP user agent, or <code>null</code> if no user-agent header
+    *    should be sent.
+    *
+    * @since XINS 1.3.0
     */
    public void setUserAgent(String agent) {
       synchronized (getLock()) {
@@ -101,7 +103,10 @@ public final class HTTPCallConfig extends CallConfig {
     * Returns the HTTP user agent associated with the HTTP call.
     *
     * @return
-    *    the HTTP user agent or <code>null</code> no user agent has been specified.
+    *    the HTTP user agent or <code>null</code> no user agent has been
+    *    specified.
+    *
+    * @since XINS 1.3.0
     */
    public String getUserAgent() {
       synchronized (getLock()) {
