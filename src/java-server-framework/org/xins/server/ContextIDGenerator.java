@@ -15,6 +15,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.net.IPAddressUtils;
+import org.xins.common.text.DateConverter;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
 import org.xins.common.text.TextUtils;
@@ -182,7 +183,8 @@ final class ContextIDGenerator extends Manageable {
       FastStringBuffer buffer = new FastStringBuffer(_length + 3, _prefix);
 
       // Append the time stamp
-      buffer.append(_format.format(System.currentTimeMillis()));
+      // FIXME buffer.append(_format.format(System.currentTimeMillis()));
+      buffer.append(DateConverter.toDateString(false, "-"));
       buffer.append(':');
 
       // Append 5 'random' hex digits

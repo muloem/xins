@@ -32,6 +32,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Disabled the validation of the SAX parser created by the SAXParserProvider.
   - Including class org.apache.commons.lang.time.FastDateFormat from Apache
     Jakarta Commons Lang 2.1 under src/java-common.
+  - Added a method to get the current time as a String in the DateConverter.
+  - Set a proper name for the Thread of the servlet container.
   - Setting the name for the HTTP call executor thread to something
     meaningful.
   - If an empty HTTP user-agent string is specified, then it is not sent in

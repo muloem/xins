@@ -8,6 +8,7 @@ package org.xins.common.text;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -132,7 +133,57 @@ public class DateConverter extends Object {
       return buffer.toString();
    }
 
+   /**
+    * Convert the current time to a <code>String</code>.
+    *
+    * @param century
+    *    <code>true</code> if the century should be in the result, 
+    *    <code>false</code> otherwise.
+    *
+    * @param separator
+    *    the separator between the date and the hours, or <code>null</code>
+    *    if no separator should be set.
+    *
+    * @return
+    *    the converted character string, cannot be <code>null</code>.
+    */
+   public static String toDateString(boolean century, String separator) {
+      Calendar calendar = GregorianCalendar.getInstance();
+      
+      FastStringBuffer buffer = new FastStringBuffer(23);
+      
+      int year  = calendar.get(Calendar.YEAR);
+      int month = calendar.get(Calendar.MONTH);
+      int day   = calendar.get(Calendar.DAY_OF_MONTH);
+      int hour  = calendar.get(Calendar.HOUR_OF_DAY);
+      int min   = calendar.get(Calendar.MINUTE);
+      int sec   = calendar.get(Calendar.SECOND);
+      int ms    = calendar.get(Calendar.MILLISECOND);
+      
+      if (century) {
+         buffer.append(String.valueOf(year));
+      } else {
+         buffer.append(String.valueOf(year).substring(2));
+      }
+      buffer.append(VALUES[month + 1]); // Month is 0-based
+      buffer.append(VALUES[day]);
+      if (separator != null) {
+         buffer.append(separator);
+      }
+      buffer.append(VALUES[hour]);
+      buffer.append(VALUES[min]);
+      buffer.append(VALUES[sec]);
+         
+      if (ms < 10) {
+         buffer.append("00");
+      } else if (ms < 100) {
+         buffer.append('0');
+      }
+      buffer.append(String.valueOf(ms));
 
+      return buffer.toString();
+   }
+   
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------

@@ -27,6 +27,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
+import org.xins.common.Library;
 
 import org.xins.common.Log;
 import org.xins.common.Utils;
@@ -455,6 +456,7 @@ public class HTTPServletHandler {
        */
       public SocketAcceptor(boolean deamon) {
          setDaemon(deamon);
+         setName("XINS " + Library.getVersion() + " Servlet container.");
       }
 
       /**

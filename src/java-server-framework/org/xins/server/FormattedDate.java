@@ -6,6 +6,7 @@
  */
 package org.xins.server;
 
+import org.xins.common.text.DateConverter;
 import org.xins.logdoc.AbstractLogdocSerializable;
 
 import org.apache.commons.lang.time.FastDateFormat;
@@ -82,6 +83,7 @@ extends AbstractLogdocSerializable {
     *    <code>null</code>.
     */
    protected String initialize() {
-      return DATE_FORMATTER.format(_epochDate);
+      // FIXME return DATE_FORMATTER.format(_epochDate);
+      return DateConverter.toDateString(true, "-");
    }
 }
