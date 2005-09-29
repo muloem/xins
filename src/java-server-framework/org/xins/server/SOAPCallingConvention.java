@@ -9,7 +9,6 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -69,22 +68,22 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * The formatter for XINS Date type.
     */
-   private static final DateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
+   private static final SimpleDateFormat XINS_DATE_FORMATTER = new SimpleDateFormat("yyyyMMdd");
 
    /**
     * The formatter for SOAP Date type.
     */
-   private static final DateFormat SOAP_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+   private static final SimpleDateFormat SOAP_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
    /**
     * The formatter for XINS Timestamp type.
     */
-   private static final DateFormat XINS_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
+   private static final SimpleDateFormat XINS_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyyMMddHHmmss");
 
    /**
     * The formatter for SOAP dateType type.
     */
-   private static final DateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+   private static final SimpleDateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 
    //-------------------------------------------------------------------------
