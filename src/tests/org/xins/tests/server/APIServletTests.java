@@ -87,6 +87,8 @@ public class APIServletTests extends TestCase {
 
       APIServlet servlet = new APIServlet();
 
+      assertTrue("Expected getServletConfig() to return null, initially.", servlet.getServletConfig() == null);
+
       String servletInfo = servlet.getServletInfo();
       assertNotNull(servletInfo);
       assertTrue(servletInfo.indexOf("XINS") > -1);
@@ -149,6 +151,8 @@ public class APIServletTests extends TestCase {
       } catch (ServletException exception) {
          // as expected
       }
+
+      // TODO
    }
 
 
