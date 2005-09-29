@@ -6,12 +6,9 @@
  */
 package org.xins.server;
 
-import java.util.Date;
-
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
-
 import org.xins.logdoc.AbstractLogdocSerializable;
+
+import org.apache.commons.lang.time.FastDateFormat;
 
 /**
  * Logdoc-serializable for a date.
@@ -36,12 +33,17 @@ extends AbstractLogdocSerializable {
    /**
     * The date formatter.
     */
-   private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT);
+   private static final FastDateFormat DATE_FORMATTER;
 
 
    //------------------------------------------------------------------------
    // Class functions
    //------------------------------------------------------------------------
+
+   static {
+      DATE_FORMATTER = FastDateFormat.getInstance(DATE_FORMAT);
+   }
+
 
    //------------------------------------------------------------------------
    // Constructors
@@ -80,6 +82,6 @@ extends AbstractLogdocSerializable {
     *    <code>null</code>.
     */
    protected String initialize() {
-      return DATE_FORMATTER.format(new Date(_epochDate));
+      return DATE_FORMATTER.format(_epochDate);
    }
 }
