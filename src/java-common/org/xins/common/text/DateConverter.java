@@ -10,6 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
+import org.joda.time.DateTime;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -35,6 +38,11 @@ public class DateConverter extends Object {
     */
    private static final char[][] VALUES;
 
+   /**
+    * The character zero (<code>'0'</code>) as an <code>int</code>.
+    */
+   private static final int ZERO = (int) '0';
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -47,11 +55,9 @@ public class DateConverter extends Object {
       // Fill the VALUES array
       VALUES = new char[100][];
 
-      int zero = (int) '0';
-
       for (int i = 0; i < 100; i++) {
-         int first  = zero + (i / 10);
-         int second = zero + (i % 10);
+         int first  = ZERO + (i / 10);
+         int second = ZERO + (i % 10);
          VALUES[i] = new char[] { (char) first, (char) second };
       }
    }
@@ -166,33 +172,29 @@ public class DateConverter extends Object {
       int separatorLength = separator.length();
 
       // Convert the millis to a GregorianCalendar instance
-      GregorianCalendar calendar = new GregorianCalendar();
-      Date date = new Date(millis);
-      calendar.setTime(date);
+      DateTime calendar = new DateTime(millis);
       
       // Get all individual fields from the calendar
-      int year  = calendar.get(Calendar.YEAR);
-      int month = calendar.get(Calendar.MONTH);
-      int day   = calendar.get(Calendar.DAY_OF_MONTH);
-      int hour  = calendar.get(Calendar.HOUR_OF_DAY);
-      int min   = calendar.get(Calendar.MINUTE);
-      int sec   = calendar.get(Calendar.SECOND);
-      int ms    = calendar.get(Calendar.MILLISECOND);
+      int year  = calendar.getYear();
+      int month = calendar.getMonthOfYear();
+      int day   = calendar.getDayOfMonth();
+      int hour  = calendar.getHourOfDay();
+      int min   = calendar.getMinuteOfHour();
+      int sec   = calendar.getSecondOfMinute();
+      int ms    = calendar.getMillisOfSecond();
       
       // Add century and year or both
       int length = withCentury ? 17 : 15;
       length += separatorLength;
       char[] buffer = new char[length];
-      int century  = year / 100;
-      int yearOnly = year % 100;
       int pos      = 0;
       char[] c;
       if (withCentury) {
-         c = VALUES[century];
+         c = VALUES[year / 100];
          buffer[pos++] = c[0];
          buffer[pos++] = c[1];
       }
-      c = VALUES[yearOnly];
+      c = VALUES[year % 100];
       buffer[pos++] = c[0];
       buffer[pos++] = c[1];
 
@@ -227,11 +229,10 @@ public class DateConverter extends Object {
       buffer[pos++] = c[1];
          
       // Add milliseconds
-      int zero = (int) '0';
       c = VALUES[ms / 10];
       buffer[pos++] = c[0];
       buffer[pos++] = c[1];
-      buffer[pos++] = (char) (zero + (ms % 10));
+      buffer[pos++] = (char) (ZERO + (ms % 10));
 
       return new String(buffer);
    }
