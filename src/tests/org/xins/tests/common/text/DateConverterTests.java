@@ -105,33 +105,25 @@ public class DateConverterTests extends TestCase {
 
    public void testToDateString2() throws Exception {
 
-      try {
-         DateConverter.toDateString(0L, true, null);
-         fail("Expected DateConverter.toDateString(<long>,<boolean>,null) to throw an IllegalArgumentException.");
-         return;
-      } catch (IllegalArgumentException exception) {
-         // as expected
-      }
-
-      String separator = " ";
+      String separator = "-";
       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd" + separator + "HHmmssSSS");
 
       long   millis    = 0L;
       String expected  = formatter.format(new Date(millis));
-      String actual    = DateConverter.toDateString(millis, true, separator);
+      String actual    = DateConverter.toDateString(millis, true);
       String message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
       assertEquals(message, expected, actual);
 
       millis = System.currentTimeMillis();
       expected  = formatter.format(new Date(millis));
-      actual    = DateConverter.toDateString(millis, true, separator);
+      actual    = DateConverter.toDateString(millis, true);
       message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
       assertEquals(message, expected, actual);
 
       for (int i = 0; i < 50; i++) {
          millis   += 123456L;
          expected  = formatter.format(new Date(millis));
-         actual    = DateConverter.toDateString(millis, true, separator);
+         actual    = DateConverter.toDateString(millis, true);
          message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
          assertEquals(message, expected, actual);
       }

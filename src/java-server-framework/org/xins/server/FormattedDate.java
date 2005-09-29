@@ -26,25 +26,9 @@ extends AbstractLogdocSerializable {
    // Class fields
    //----------------------------------------------------------------------------
 
-   /**
-    * The format for a date, as a character string.
-    */
-   private static final String DATE_FORMAT = "yyyyMMdd-HHmmssSSS";
-
-   /**
-    * The date formatter.
-    */
-   private static final FastDateFormat DATE_FORMATTER;
-
-
    //------------------------------------------------------------------------
    // Class functions
    //------------------------------------------------------------------------
-
-   static {
-      DATE_FORMATTER = FastDateFormat.getInstance(DATE_FORMAT);
-   }
-
 
    //------------------------------------------------------------------------
    // Constructors
@@ -83,7 +67,6 @@ extends AbstractLogdocSerializable {
     *    <code>null</code>.
     */
    protected String initialize() {
-      // FIXME return DATE_FORMATTER.format(_epochDate);
-      return DateConverter.toDateString(_epochDate, true, "-");
+      return DateConverter.toDateString(_epochDate, true);
    }
 }

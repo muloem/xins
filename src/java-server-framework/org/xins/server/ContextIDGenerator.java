@@ -6,8 +6,6 @@
  */
 package org.xins.server;
 
-import org.apache.commons.lang.time.FastDateFormat;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -85,9 +83,6 @@ final class ContextIDGenerator extends Manageable {
       // Check preconditions
       MandatoryArgumentChecker.check("apiName", apiName);
 
-      // Construct the date formatter
-      _format = FastDateFormat.getInstance("yyMMdd-HHmmssSSS");
-
       // Initialize the other fields
       _apiName  = apiName;
       _hostname = IPAddressUtils.getLocalHost();
@@ -102,12 +97,6 @@ final class ContextIDGenerator extends Manageable {
     * The name of the API. Never <code>null</code>.
     */
    private final String _apiName;
-
-   /**
-    * The date formatter used for generating the context identifier. Never
-    * <code>null</code>.
-    */
-   private final FastDateFormat _format;
 
    /**
     * The name for the local host. Never <code>null</code>.
@@ -183,9 +172,8 @@ final class ContextIDGenerator extends Manageable {
       FastStringBuffer buffer = new FastStringBuffer(_length + 3, _prefix);
 
       // Append the time stamp
-      // FIXME buffer.append(_format.format(System.currentTimeMillis()));
       long millis = System.currentTimeMillis();
-      buffer.append(DateConverter.toDateString(millis, false, "-"));
+      buffer.append(DateConverter.toDateString(millis, false));
       buffer.append(':');
 
       // Append 5 'random' hex digits

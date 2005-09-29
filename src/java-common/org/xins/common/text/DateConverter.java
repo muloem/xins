@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.joda.time.DateTime;
-
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -43,6 +41,20 @@ public class DateConverter extends Object {
     */
    private static final int ZERO = (int) '0';
 
+   /**
+    * The time zone for this host.
+    */
+   private final static TimeZone TIME_ZONE = TimeZone.getDefault();
+
+   /**
+    * The cached time for the pattern yyMMdd-HHmmssSSS.
+    */
+   private final static DateCache CACHE_TIME1 = new DateCache();
+
+   /**
+    * The cached time for the pattern yyyyMMdd-HHmmssSSS.
+    */
+   private final static DateCache CACHE_TIME2 = new DateCache();
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -145,6 +157,46 @@ public class DateConverter extends Object {
    }
 
    /**
+    * Formats the timestamp as a <code>String</code> with the pattern 
+    * yyMMdd-hhmmssSSS.
+    *
+    * @param millis
+    *    the timestamp, as a number of milliseconds since the Epoch.
+    *
+    * @param withCentury
+    *    <code>true</code> if the century should be in the result, 
+    *    <code>false</code> otherwise.
+    *
+    * @return
+    *    the converted character string, cannot be <code>null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String toDateString(long millis, boolean withCentury) {
+      
+      long millisOnly = millis % 1000L;
+      DateCache cache = withCentury ? CACHE_TIME1 : CACHE_TIME2;
+      
+      synchronized (cache.getLock()) {
+         if (millis - cache.getTime() < 1000L && 
+               millisOnly < cache.getTimeMillis()) {
+            FastStringBuffer buffer = new FastStringBuffer(16, cache.getTimeString());
+            appendMillis(buffer, millisOnly);
+            return buffer.toString();
+         }
+      }
+      String date = toDateString(millis, withCentury, "-");
+      synchronized (cache.getLock()) {
+         cache.setTime(millis);
+         cache.setTimeString(date);
+         cache.setTimeMillis(millis % 1000L);
+      }
+      FastStringBuffer buffer = new FastStringBuffer(16, date);
+      appendMillis(buffer, millisOnly);
+      return buffer.toString();
+   }
+
+   /**
     * Formats a timestamp as a <code>String</code>.
     *
     * @param millis
@@ -155,89 +207,77 @@ public class DateConverter extends Object {
     *    <code>false</code> otherwise.
     *
     * @param separator
-    *    the separator between the date and the hours, never <code>null</code>
-    *    (can be an empty string though).
+    *    the separator between the date and the hours, or <code>null</code>
+    *    if no separator should be set.
     *
     * @return
-    *    the converted character string, cannot be <code>null</code>.
-    *
-    * @since XINS 1.3.0
+    *    the converted character string without the milliseconds, 
+    *    cannot be <code>null</code>.
     */
-   public static String toDateString(long    millis,
+   private static String toDateString(long    millis,
                                      boolean withCentury,
                                      String  separator) {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("separator", separator);
-      int separatorLength = separator.length();
-
       // Convert the millis to a GregorianCalendar instance
-      DateTime calendar = new DateTime(millis);
+      GregorianCalendar calendar = new GregorianCalendar(TIME_ZONE);
+      Date date = new Date(millis);
+      calendar.setTime(date);
       
       // Get all individual fields from the calendar
-      int year  = calendar.getYear();
-      int month = calendar.getMonthOfYear();
-      int day   = calendar.getDayOfMonth();
-      int hour  = calendar.getHourOfDay();
-      int min   = calendar.getMinuteOfHour();
-      int sec   = calendar.getSecondOfMinute();
-      int ms    = calendar.getMillisOfSecond();
+      int year  = calendar.get(Calendar.YEAR);
+      int month = calendar.get(Calendar.MONTH);
+      int day   = calendar.get(Calendar.DAY_OF_MONTH);
+      int hour  = calendar.get(Calendar.HOUR_OF_DAY);
+      int min   = calendar.get(Calendar.MINUTE);
+      int sec   = calendar.get(Calendar.SECOND);
+      int ms    = calendar.get(Calendar.MILLISECOND);
       
       // Add century and year or both
-      int length = withCentury ? 17 : 15;
-      length += separatorLength;
-      char[] buffer = new char[length];
-      int pos      = 0;
-      char[] c;
+      FastStringBuffer buffer = new FastStringBuffer(23);
       if (withCentury) {
-         c = VALUES[year / 100];
-         buffer[pos++] = c[0];
-         buffer[pos++] = c[1];
+         int century  = year / 100;
+         buffer.append(VALUES[century]);
       }
-      c = VALUES[year % 100];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
+      int yearOnly = year % 100;
+      buffer.append(VALUES[yearOnly]);
 
       // Add month (which is 0-based, so we need to add 1)
-      c = VALUES[month + 1];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
+      buffer.append(VALUES[month + 1]);
 
       // Add day
-      c = VALUES[day];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
+      buffer.append(VALUES[day]);
 
       // Add separator between date and time
-      for (int i = 0; i < separatorLength; i++) {
-         buffer[pos++] = separator.charAt(i);
+      if (separator != null) {
+         buffer.append(separator);
       }
 
-      // Add hours
-      c = VALUES[hour];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
+      // Add hours, minutes and seconds
+      buffer.append(VALUES[hour]);
+      buffer.append(VALUES[min]);
+      buffer.append(VALUES[sec]);
 
-      // Add minutes
-      c = VALUES[min];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
-
-      // Add seconds
-      c = VALUES[sec];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
-         
-      // Add milliseconds
-      c = VALUES[ms / 10];
-      buffer[pos++] = c[0];
-      buffer[pos++] = c[1];
-      buffer[pos++] = (char) (ZERO + (ms % 10));
-
-      return new String(buffer);
+      return buffer.toString();
    }
 
-   
+   /**
+    * Appends the millis to the <code>FastStringBuffer</code>.
+    *
+    * @param buffer
+    *    the buffer, cannot be <code>null</code>.
+    *
+    * @param millis
+    *    the millis to add.
+    */
+   private static void appendMillis(FastStringBuffer buffer, long millis) {
+      if (millis < 10) {
+         buffer.append(VALUES[0]);
+      } else if (millis < 100) {
+         buffer.append('0');
+      }
+      buffer.append(String.valueOf(millis));
+   }
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -257,4 +297,123 @@ public class DateConverter extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+   
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+   
+   /**
+    * This class caches the formatting of the date.
+    */
+   private static class DateCache {
+      
+      //-------------------------------------------------------------------------
+      // Constructors
+      //-------------------------------------------------------------------------
+
+      /**
+       * Creates a new <code>DateCache</code> object.
+       */
+      DateCache() {
+      }
+
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
+
+      /**
+       * The cached time.
+       */
+      private long _time = -1000L;
+
+      /**
+       * The millis of the cached time.
+       */
+      private long _timeMillis = 0L;
+
+      /**
+       * The <code>String</code> representation of the cached time.
+       */
+      private String _timeString;
+
+      /**
+       * The lock for the cached time.
+       */
+      private final Object _timeLock = new Object();
+
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+
+      /**
+       * Gets the cached time.
+       *
+       * @return
+       *    the cached time.
+       */
+      long getTime() {
+         return _time;
+      }
+      
+      /**
+       * Set the time to cache.
+       *
+       * @param time
+       *    the number of milliseconds since January 1st, 1970.
+       */
+      void setTime(long time) {
+         _time = time;
+      }
+      
+      /**
+       * Gets the milis of the cached time.
+       *
+       * @return
+       *    the millis of the cached time.
+       */
+      long getTimeMillis() {
+         return _timeMillis;
+      }
+      
+      /**
+       * Set the milis of the time to cache.
+       *
+       * @param timeMillis
+       *    the milliseconds only of the time.
+       */
+      void setTimeMillis(long timeMillis) {
+         _timeMillis = timeMillis;
+      }
+      
+      /**
+       * Gets the <code>String</code> representation of the cached time.
+       *
+       * @return
+       *    the cached time as a <code>String</code>.
+       */
+      String getTimeString() {
+         return _timeString;
+      }
+      
+      /**
+       * Set the <code>String</code> representation of the time to cache.
+       *
+       * @param timeString
+       *    the <code>String</code> representation of the date without the
+       *    milliseconds, cannot be <code>null</code>.
+       */
+      void setTimeString(String timeString) {
+         _timeString = timeString;
+      }
+      
+      /**
+       * Gets the lock.
+       *
+       * @return
+       *    the lock.
+       */
+      Object getLock() {
+         return _timeLock;
+      }
+   }
 }
