@@ -43,6 +43,11 @@ public final class FileWatcher extends Thread {
    private static int INSTANCE_COUNT;
 
    /**
+    * Lock object for <code>INSTANCE_COUNT</code>. Never <code>null</code>.
+    */
+   private static final Object INSTANCE_COUNT_LOCK = new Object();
+
+   /**
     * State in which this file watcher thread is not running.
     */
    private static final int NOT_RUNNING = 1;
@@ -93,8 +98,14 @@ public final class FileWatcher extends Thread {
          throw new IllegalArgumentException("interval (" + interval + ") < 1");
       }
 
+      // Determine the unique instance ID
+      int instanceID;
+      synchronized (INSTANCE_COUNT_LOCK) {
+         instanceID = INSTANCE_COUNT++;
+      }
+
       // Initialize the fields
-      _instanceID    = INSTANCE_COUNT++;
+      _instanceID    = instanceID;
       _file          = new File(file);
       _interval      = interval;
       _listener      = listener;
