@@ -165,7 +165,8 @@ public class DateConverter extends Object {
       MandatoryArgumentChecker.check("separator", separator);
 
       // Convert the millis to a GregorianCalendar instance
-      GregorianCalendar calendar = new GregorianCalendar();
+      TimeZone tz = TimeZone.getDefault();
+      GregorianCalendar calendar = new GregorianCalendar(tz);
       Date date = new Date(millis);
       calendar.setTime(date);
       
