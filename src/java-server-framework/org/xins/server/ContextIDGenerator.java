@@ -184,7 +184,8 @@ final class ContextIDGenerator extends Manageable {
 
       // Append the time stamp
       // FIXME buffer.append(_format.format(System.currentTimeMillis()));
-      buffer.append(DateConverter.toDateString(false, "-"));
+      long millis = System.currentTimeMillis();
+      buffer.append(DateConverter.toDateString(millis, false, "-"));
       buffer.append(':');
 
       // Append 5 'random' hex digits

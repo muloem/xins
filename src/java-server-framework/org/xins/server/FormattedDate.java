@@ -84,6 +84,6 @@ extends AbstractLogdocSerializable {
     */
    protected String initialize() {
       // FIXME return DATE_FORMATTER.format(_epochDate);
-      return DateConverter.toDateString(true, "-");
+      return DateConverter.toDateString(_epochDate, true, "-");
    }
 }
