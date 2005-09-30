@@ -55,7 +55,7 @@ public class AllInOneTests extends TestCase {
    // Class fields
    //-------------------------------------------------------------------------
 
-   private static final int ROUNDS = 400;
+   private static final int ROUNDS = 40;
 
 
    //-------------------------------------------------------------------------

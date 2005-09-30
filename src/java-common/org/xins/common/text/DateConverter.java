@@ -47,14 +47,21 @@ public class DateConverter extends Object {
    private final static TimeZone TIME_ZONE = TimeZone.getDefault();
 
    /**
-    * The cached time for the pattern yyMMdd-HHmmssSSS.
+    * The cached time.
     */
-   private final static DateCache CACHE_TIME1 = new DateCache();
+   private static long CACHED_TIME = -1000L;
 
    /**
-    * The cached time for the pattern yyyyMMdd-HHmmssSSS.
+    * The <code>String</code> representation of the cached time as 
+    * yyyyMMdd-HHmmss.
     */
-   private final static DateCache CACHE_TIME2 = new DateCache();
+   private static String CACHED_TIME_STRING;
+
+   /**
+    * The lock for the cached time.
+    */
+   private final static Object TIME_LOCK = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -157,8 +164,7 @@ public class DateConverter extends Object {
    }
 
    /**
-    * Formats the timestamp as a <code>String</code> with the pattern 
-    * yyMMdd-hhmmssSSS.
+    * Formats the timestamp as a <code>String</code>.
     *
     * @param millis
     *    the timestamp, as a number of milliseconds since the Epoch.
@@ -175,24 +181,54 @@ public class DateConverter extends Object {
    public static String toDateString(long millis, boolean withCentury) {
       
       long millisOnly = millis % 1000L;
-      DateCache cache = withCentury ? CACHE_TIME1 : CACHE_TIME2;
+      long delta = millis - CACHED_TIME;
       
-      synchronized (cache.getLock()) {
-         if (millis - cache.getTime() < 1000L && 
-               millisOnly < cache.getTimeMillis()) {
-            FastStringBuffer buffer = new FastStringBuffer(16, cache.getTimeString());
-            appendMillis(buffer, millisOnly);
-            return buffer.toString();
+      synchronized (TIME_LOCK) {
+         if (delta < 1000L && 
+               millisOnly < CACHED_TIME % 1000L) {
+            FastStringBuffer buffer = new FastStringBuffer(18, CACHED_TIME_STRING);
+            appendMillis(buffer, (int) millisOnly);
+            String date = buffer.toString();
+            if (withCentury) {
+               return date;
+            } else {
+               return date.substring(2);
+            }
+         } else if (CACHED_TIME_STRING != null) {
+            int secondsOnly = Integer.parseInt(CACHED_TIME_STRING.substring(13));
+            long secondsDiff = delta / 1000L;
+            if (secondsDiff < (60 - secondsOnly)) {
+               FastStringBuffer buffer = new FastStringBuffer(18);
+               buffer.append(CACHED_TIME_STRING.substring(0, 13));
+               int newSeconds = secondsOnly + (int) secondsDiff;
+               if (newSeconds < 10) {
+                  buffer.append('0');
+               }
+               buffer.append(newSeconds);
+               CACHED_TIME = millis;
+               CACHED_TIME_STRING = buffer.toString();
+               appendMillis(buffer, (int) millisOnly);
+               String date = buffer.toString();
+               if (withCentury) {
+                  return date;
+               } else {
+                  return date.substring(2);
+               }
+            }
          }
       }
-      String date = toDateString(millis, withCentury, "-");
-      synchronized (cache.getLock()) {
-         cache.setTime(millis);
-         cache.setTimeString(date);
-         cache.setTimeMillis(millis % 1000L);
+      String date = toDateString(millis, true, "-");
+      synchronized (TIME_LOCK) {
+         CACHED_TIME = millis;
+         CACHED_TIME_STRING = date;
       }
-      FastStringBuffer buffer = new FastStringBuffer(16, date);
-      appendMillis(buffer, millisOnly);
+      FastStringBuffer buffer = new FastStringBuffer(18);
+      if (withCentury) {
+         buffer.append(date);
+      } else {
+         buffer.append(date.substring(2));
+      }
+      appendMillis(buffer, (int) millisOnly);
       return buffer.toString();
    }
 
@@ -215,8 +251,8 @@ public class DateConverter extends Object {
     *    cannot be <code>null</code>.
     */
    private static String toDateString(long    millis,
-                                     boolean withCentury,
-                                     String  separator) {
+                                      boolean withCentury,
+                                      String  separator) {
 
       // Convert the millis to a GregorianCalendar instance
       GregorianCalendar calendar = new GregorianCalendar(TIME_ZONE);
@@ -269,13 +305,13 @@ public class DateConverter extends Object {
     * @param millis
     *    the millis to add.
     */
-   private static void appendMillis(FastStringBuffer buffer, long millis) {
+   private static void appendMillis(FastStringBuffer buffer, int millis) {
       if (millis < 10) {
          buffer.append(VALUES[0]);
       } else if (millis < 100) {
          buffer.append('0');
       }
-      buffer.append(String.valueOf(millis));
+      buffer.append(millis);
    }
 
    //-------------------------------------------------------------------------
@@ -298,122 +334,4 @@ public class DateConverter extends Object {
    // Methods
    //-------------------------------------------------------------------------
    
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-   
-   /**
-    * This class caches the formatting of the date.
-    */
-   private static class DateCache {
-      
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
-      /**
-       * Creates a new <code>DateCache</code> object.
-       */
-      DateCache() {
-      }
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
-      /**
-       * The cached time.
-       */
-      private long _time = -1000L;
-
-      /**
-       * The millis of the cached time.
-       */
-      private long _timeMillis = 0L;
-
-      /**
-       * The <code>String</code> representation of the cached time.
-       */
-      private String _timeString;
-
-      /**
-       * The lock for the cached time.
-       */
-      private final Object _timeLock = new Object();
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
-
-      /**
-       * Gets the cached time.
-       *
-       * @return
-       *    the cached time.
-       */
-      long getTime() {
-         return _time;
-      }
-      
-      /**
-       * Set the time to cache.
-       *
-       * @param time
-       *    the number of milliseconds since January 1st, 1970.
-       */
-      void setTime(long time) {
-         _time = time;
-      }
-      
-      /**
-       * Gets the milis of the cached time.
-       *
-       * @return
-       *    the millis of the cached time.
-       */
-      long getTimeMillis() {
-         return _timeMillis;
-      }
-      
-      /**
-       * Set the milis of the time to cache.
-       *
-       * @param timeMillis
-       *    the milliseconds only of the time.
-       */
-      void setTimeMillis(long timeMillis) {
-         _timeMillis = timeMillis;
-      }
-      
-      /**
-       * Gets the <code>String</code> representation of the cached time.
-       *
-       * @return
-       *    the cached time as a <code>String</code>.
-       */
-      String getTimeString() {
-         return _timeString;
-      }
-      
-      /**
-       * Set the <code>String</code> representation of the time to cache.
-       *
-       * @param timeString
-       *    the <code>String</code> representation of the date without the
-       *    milliseconds, cannot be <code>null</code>.
-       */
-      void setTimeString(String timeString) {
-         _timeString = timeString;
-      }
-      
-      /**
-       * Gets the lock.
-       *
-       * @return
-       *    the lock.
-       */
-      Object getLock() {
-         return _timeLock;
-      }
-   }
 }
