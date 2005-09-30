@@ -184,6 +184,8 @@ public class DateConverter extends Object {
       long delta = millis - CACHED_TIME;
       
       synchronized (TIME_LOCK) {
+         
+         // If we are in the same second, just append the milli seconds.
          if (delta < 1000L && 
                millisOnly < CACHED_TIME % 1000L) {
             FastStringBuffer buffer = new FastStringBuffer(18, CACHED_TIME_STRING);
@@ -194,6 +196,8 @@ public class DateConverter extends Object {
             } else {
                return date.substring(2);
             }
+            
+         // If we are in the same minute, just change the seconds and append the milli seconds.
          } else if (CACHED_TIME_STRING != null) {
             int secondsOnly = Integer.parseInt(CACHED_TIME_STRING.substring(13));
             long secondsDiff = delta / 1000L;
