@@ -300,8 +300,8 @@ final class ConfigManager extends Object {
       _engine.initAPI();
 
       // Start the configuration file watch interval, if the location of the
-      // file is set
-      if (_configFile != null) {
+      // file is set and the interval is greater than 0
+      if (_configFile != null && interval > 0) {
          startConfigFileWatcher(interval);
       }
 

@@ -331,7 +331,7 @@
 			<param name="propertyValue" />
 			<param name="reason" />
 		</entry>
-		<entry id="3413" level="FATAL">
+		<entry id="3413" level="FATAL" exception="true">
 			<description>API could not be initialized.</description>
 			<param name="message" />
 		</entry>

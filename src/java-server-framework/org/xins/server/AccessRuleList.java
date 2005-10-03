@@ -103,19 +103,22 @@ extends Object implements AccessRuleContainer {
     * <code>AccessRuleList</code> object, with the specified watch interval
     * for referenced files.
     *
+    * <p>If the specified interval is <code>0</code>, then no watching will be
+    * performed.
+    *
     * @param descriptor
     *    the access rule list descriptor, the character string to parse,
     *    cannot be <code>null</code>.
     *
     * @param interval
     *    the interval used to check the ACL files for modification, in
-    *    seconds, at least 1.
+    *    seconds, must be &gt;= 0.
     *
     * @return
     *    an {@link AccessRuleList} instance, never <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null || interval &lt; 1</code>.
+    *    if <code>descriptor == null || interval &lt; 0</code>.
     *
     * @throws ParseException
     *    if there was a parsing error.
@@ -128,10 +131,10 @@ extends Object implements AccessRuleContainer {
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
-      if (interval < 1) {
+      if (interval < 0) {
          throw new IllegalArgumentException("interval ("
                                           + interval
-                                          + ") < 1");
+                                          + ") < 0");
       }
 
       // Tokenize the descriptor

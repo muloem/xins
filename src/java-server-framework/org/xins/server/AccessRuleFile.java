@@ -74,19 +74,22 @@ public class AccessRuleFile implements AccessRuleContainer {
    /**
     * Constructs a new <code>AccessRuleFile</code>.
     *
+    * <p>If the specified interval is <code>0</code>, then no watching will be
+    * performed.
+    *
     * @param descriptor
     *    the access rule descriptor, the character string to parse, cannot be <code>null</code>.
     *    It also cannot be empty <code>(" ")</code>.
     *
     * @param interval
     *    the interval to check the ACL file for modifications, in seconds,
-    *    must be &gt;= 1.
+    *    must be &gt;= 0.
     *
     * @throws ParseException
     *    If the token is incorrectly formatted.
     *
     * @throws IllegalArgumentException
-    *    if <code>descriptor == null || interval &lt; 1</code>.
+    *    if <code>descriptor == null || interval &lt; 0</code>.
     */
    public AccessRuleFile(String descriptor, int interval)
    throws IllegalArgumentException, ParseException {
@@ -96,13 +99,13 @@ public class AccessRuleFile implements AccessRuleContainer {
       if (interval < 1) {
          throw new IllegalArgumentException("interval ("
                                           + interval
-                                          + ") < 1");
+                                          + ") < 0");
       }
 
       StringTokenizer tokenizer = new StringTokenizer(descriptor," \t\n\r");
 
       String token = nextToken(descriptor, tokenizer);
-      if (!"file".equals(token)) {
+      if (! "file".equals(token)) {
          throw new ParseException("First token of descriptor is \""
                                 + token
                                 + "\", instead of 'file'.");
@@ -110,12 +113,9 @@ public class AccessRuleFile implements AccessRuleContainer {
 
       String file = nextToken(descriptor, tokenizer);
 
-      // Create and start a file watch thread
-      ACLFileListener aclFileListener = new ACLFileListener();
-      if (interval > 0) {
-         _aclFileWatcher = new FileWatcher(file, interval, aclFileListener);
-         _aclFileWatcher.start();
-      }
+      // First try parsing the file as it is
+      // XXX: Should we really throw an exception from here?!
+      IOException exception;
       try {
          parseAccessRuleFile(file, interval);
       } catch (IOException ioe) {
@@ -123,6 +123,13 @@ public class AccessRuleFile implements AccessRuleContainer {
                                 + file
                                 + " due to an IO exception: "
                                 + ioe.getMessage());
+      }
+
+      // Create and start a file watch thread, if the interval is not zero
+      if (interval > 0) {
+         ACLFileListener aclFileListener = new ACLFileListener();
+         _aclFileWatcher = new FileWatcher(file, interval, aclFileListener);
+         _aclFileWatcher.start();
       }
    }
 
