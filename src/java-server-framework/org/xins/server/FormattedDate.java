@@ -9,8 +9,6 @@ package org.xins.server;
 import org.xins.common.text.DateConverter;
 import org.xins.logdoc.AbstractLogdocSerializable;
 
-import org.apache.commons.lang.time.FastDateFormat;
-
 /**
  * Logdoc-serializable for a date.
  *
