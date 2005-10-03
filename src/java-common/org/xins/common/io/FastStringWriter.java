@@ -94,19 +94,6 @@ public class FastStringWriter extends Writer {
    //-------------------------------------------------------------------------
 
    /**
-    * Asserts that this character stream is open. If it is not, then an
-    * <code>IOException</code> is thrown.
-    *
-    * @throws IOException
-    *    if this character stream is closed.
-    */
-   private void assertOpen() throws IOException {
-      if (_closed) {
-         throw new IOException("This character stream is closed.");
-      }
-   }
-
-   /**
     * Writes a single character.
     *
     * @param c
@@ -116,7 +103,9 @@ public class FastStringWriter extends Writer {
     *    if this writer has been closed (see {@link #close()}).
     */
    public void write(int c) throws IOException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
       _buffer.append((char) c);
    }
 
@@ -134,7 +123,9 @@ public class FastStringWriter extends Writer {
     */
    public void write(char cbuf[])
    throws IOException, IllegalArgumentException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
       MandatoryArgumentChecker.check("cbuf", cbuf);
       _buffer.append(cbuf);
    }
@@ -164,7 +155,9 @@ public class FastStringWriter extends Writer {
     */
    public void write(char cbuf[], int off, int len)
    throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
       MandatoryArgumentChecker.check("cbuf", cbuf);
       _buffer.append(cbuf, off, len);
    }
@@ -183,7 +176,9 @@ public class FastStringWriter extends Writer {
     */
    public void write(String str)
    throws IOException, IllegalArgumentException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
       MandatoryArgumentChecker.check("str", str);
       _buffer.append(str);
    }
@@ -213,7 +208,9 @@ public class FastStringWriter extends Writer {
     */
    public void write(String str, int off, int len)
    throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
       MandatoryArgumentChecker.check("str", str);
       _buffer.append(str.substring(off, off + len));
    }
@@ -228,7 +225,9 @@ public class FastStringWriter extends Writer {
     *    if this writer has been closed (see {@link #close()}).
     */
    public void flush() throws IOException {
-      assertOpen();
+      if (_closed) {
+         throw new IOException("This character stream is closed.");
+      }
    }
 
    /**
