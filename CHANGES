@@ -62,11 +62,12 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Fixed the environment did not match the destination when the back 
     and forward button was used.
 
-* Tests:
+* Unit tests:
   - Removed unused imports and unused variables.
   - Removed underscores from method names.
 
-* Build- and release-process:
+* Performance tests:
+  - Added performance tests for DateConverter.
   - Allowing performance test class to be set in variable 'perftestclass'.
 
 ______________________________________________________________________________

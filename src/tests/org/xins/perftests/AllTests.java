@@ -27,6 +27,7 @@ public class AllTests extends TestSuite {
    public static Test suite() {
       TestSuite suite = new TestSuite();
       suite.addTestSuite(AllInOneTests.class);
+      suite.addTestSuite(DateConverterTests.class);
       return suite;
    }
 
