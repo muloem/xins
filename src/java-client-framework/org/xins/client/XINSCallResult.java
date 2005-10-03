@@ -173,11 +173,12 @@ implements XINSCallResultData {
    }
 
    /**
-    * Returns the optional extra data. The data is an XML {@link DataElement}, or
-    * <code>null</code>.
+    * Returns the optional extra data. The data is an XML {@link DataElement},
+    * or <code>null</code>.
     *
     * @return
-    *    the extra data as an XML {@link DataElement}, can be <code>null</code>;
+    *    the extra data as an XML {@link DataElement}, can be
+    *    <code>null</code>.
     */
    public DataElement getDataElement() {
       return _data.getDataElement();
