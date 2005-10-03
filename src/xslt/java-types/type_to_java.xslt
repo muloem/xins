@@ -847,7 +847,9 @@ public final class ]]></xsl:text>
 		<xsl:text> = new Item("</xsl:text>
 		<xsl:value-of select="$itemName" />
 		<xsl:text>", "</xsl:text>
-		<xsl:value-of select="@value" />
+		<xsl:call-template name="xml_to_java_string">
+			<xsl:with-param name="text" select="@value" />
+		</xsl:call-template>
 		<xsl:text>");
 </xsl:text>
 	</xsl:template>
@@ -855,7 +857,7 @@ public final class ]]></xsl:text>
 	<xsl:template name="name_for_itemfield">
 		<xsl:param name="itemName" />
 		<xsl:call-template name="toupper">
-			<xsl:with-param name="text" select="translate($itemName, ' .-/', '____')" />
+			<xsl:with-param name="text" select="translate($itemName, ' .-/,;:!?*+=%#(){}[]&amp;&quot;&lt;&gt;', '________________________')" />
 		</xsl:call-template>
 	</xsl:template>
 </xsl:stylesheet>
