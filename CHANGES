@@ -36,7 +36,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Set serialVersionUID on some classes to fix serialization-compatibility
     with XINS 1.2.5.
   - Slightly improved performance of FastStringWriter by inlining the private
-    assertOpen() method.
+    assertOpen() method and by inlining the calls to MandatoryArgumentChecker.
 
 * XINS/Java Server Framework:
   - Set the default level for logs starting with "org.xins." to INFO.

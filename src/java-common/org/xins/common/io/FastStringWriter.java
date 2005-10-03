@@ -8,7 +8,6 @@ package org.xins.common.io;
 
 import java.io.IOException;
 import java.io.Writer;
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
 
 /**
@@ -125,8 +124,9 @@ public class FastStringWriter extends Writer {
    throws IOException, IllegalArgumentException {
       if (_closed) {
          throw new IOException("This character stream is closed.");
+      } else if (cbuf == null) {
+         throw new IllegalArgumentException("cbuf == null");
       }
-      MandatoryArgumentChecker.check("cbuf", cbuf);
       _buffer.append(cbuf);
    }
 
@@ -157,8 +157,9 @@ public class FastStringWriter extends Writer {
    throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
       if (_closed) {
          throw new IOException("This character stream is closed.");
+      } else if (cbuf == null) {
+         throw new IllegalArgumentException("cbuf == null");
       }
-      MandatoryArgumentChecker.check("cbuf", cbuf);
       _buffer.append(cbuf, off, len);
    }
 
@@ -178,8 +179,9 @@ public class FastStringWriter extends Writer {
    throws IOException, IllegalArgumentException {
       if (_closed) {
          throw new IOException("This character stream is closed.");
+      } else if (str == null) {
+         throw new IllegalArgumentException("str == null");
       }
-      MandatoryArgumentChecker.check("str", str);
       _buffer.append(str);
    }
 
@@ -210,8 +212,9 @@ public class FastStringWriter extends Writer {
    throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
       if (_closed) {
          throw new IOException("This character stream is closed.");
+      } else if (str == null) {
+         throw new IllegalArgumentException("str == null");
       }
-      MandatoryArgumentChecker.check("str", str);
       _buffer.append(str.substring(off, off + len));
    }
 
