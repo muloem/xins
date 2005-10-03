@@ -17,8 +17,8 @@ import org.xins.common.MandatoryArgumentChecker;
  * Utility class for converting an Epoch date to a human-readable time stamp.
  *
  * <p>For example, the date 26 July 2003, time 17:03, 59 seconds and 653
- * milliseconds will convert to the string <code>"2003.07.26
- * 17:03:59.653"</code>.
+ * milliseconds will convert to the string
+ * <code>"2003.07.26 17:03:59.653"</code>.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
