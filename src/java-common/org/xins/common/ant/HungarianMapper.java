@@ -91,7 +91,7 @@ public class HungarianMapper implements FileNameMapper {
       // that
       } else {
          int index = sourceFileName.lastIndexOf(filename);
-         result = sourceFileName.substring(0, index);
+         result = sourceFileName.substring(0, index)
                 + fileName.substring(0,1).toUpperCase()
                 + fileName.substring(1);
       }
