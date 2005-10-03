@@ -214,7 +214,7 @@ ${sf.file}</fail>
 		<junit printsummary="true" failureproperty="perftests.failed">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
-			<test name="org.xins.perftests.AllTests" todir="build/perftestresults/xml" outfile="perftestresults"/>
+			<test name="${perftestclass}" todir="build/perftestresults/xml" outfile="perftestresults"/>
 			<classpath>
 				<pathelement location="build/classes/tests" />
 				<pathelement location="build/xins-common.jar" />
