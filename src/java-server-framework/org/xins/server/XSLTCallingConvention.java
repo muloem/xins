@@ -153,7 +153,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       // Send the XML output to the stream and flush
       FastStringWriter xmlOutput = new FastStringWriter();
-      CallResultOutputter.output(xmlOutput, RESPONSE_ENCODING, xinsResult, false);
+      CallResultOutputter.output(xmlOutput, xinsResult, false);
       xmlOutput.close();
 
       String xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);

@@ -190,7 +190,7 @@ extends CallingConvention {
       PrintWriter out = httpResponse.getWriter();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
       httpResponse.setStatus(HttpServletResponse.SC_OK);
-      CallResultOutputter.output(out, RESPONSE_ENCODING, xinsResult, false);
+      CallResultOutputter.output(out, xinsResult, false);
       out.close();
    }
 }
