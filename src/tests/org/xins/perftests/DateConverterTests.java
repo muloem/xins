@@ -76,8 +76,8 @@ public class DateConverterTests extends TestCase {
       long millis = System.currentTimeMillis();
 
       for (int i = 0; i < ROUNDS; i++) {
-         millis   += 123456L;
-         DateConverter.toDateString(millis, true, " ");
+         millis += (i % 1000);
+         DateConverter.toDateString(millis, true);
       }
    }
 }
