@@ -28,6 +28,7 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
       suite.addTestSuite(AllInOneTests.class);
       suite.addTestSuite(DateConverterTests.class);
+      suite.addTestSuite(MandatoryArgumentCheckerTests.class);
       return suite;
    }
 
