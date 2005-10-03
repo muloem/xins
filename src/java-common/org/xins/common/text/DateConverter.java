@@ -187,7 +187,7 @@ public class DateConverter extends Object {
          
          // If we are in the same second, just append the milli seconds.
          if (delta < 1000L && 
-               millisOnly < CACHED_TIME % 1000L) {
+               millisOnly < CACHED_TIME % 1000L && delta > 0L) {
             FastStringBuffer buffer = new FastStringBuffer(18, CACHED_TIME_STRING);
             appendMillis(buffer, (int) millisOnly);
             String date = buffer.toString();
@@ -198,7 +198,7 @@ public class DateConverter extends Object {
             }
             
          // If we are in the same minute, just change the seconds and append the milli seconds.
-         } else if (CACHED_TIME_STRING != null) {
+         } else if (CACHED_TIME_STRING != null && delta > 0L) {
             int secondsOnly = Integer.parseInt(CACHED_TIME_STRING.substring(13));
             long secondsDiff = delta / 1000L;
             if (secondsDiff < (60 - secondsOnly)) {
@@ -270,7 +270,6 @@ public class DateConverter extends Object {
       int hour  = calendar.get(Calendar.HOUR_OF_DAY);
       int min   = calendar.get(Calendar.MINUTE);
       int sec   = calendar.get(Calendar.SECOND);
-      int ms    = calendar.get(Calendar.MILLISECOND);
       
       // Add century and year or both
       FastStringBuffer buffer = new FastStringBuffer(23);
