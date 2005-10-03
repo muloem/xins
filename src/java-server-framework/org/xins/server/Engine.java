@@ -381,7 +381,6 @@ final class Engine extends Object {
       } finally {
          if (succeeded) {
             _state.setState(EngineState.READY);
-            Log.log_3415();
          } else {
             _state.setState(EngineState.API_INITIALIZATION_FAILED);
          }

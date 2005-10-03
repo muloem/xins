@@ -588,6 +588,9 @@ final class ConfigManager extends Object {
 
          // Log each unused runtime property
          logUnusedRuntimeProperties();
+
+         // Re-initialized the framework
+         Log.log_3415();
       }
 
       /**

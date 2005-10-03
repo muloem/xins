@@ -52,6 +52,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
     to be at least 1. Changed these to allow 0, in case no automatic reloading
     should be performed.
   - Added exception to log message 3413.
+  - Logging 3415 ("XINS/Java Server Framework has been (re-)initialized") only
+    after the other related log messages, such as 3434.
 
 * Generation of server-side Java code:
   - Fixed bug which caused the generation of function files to fail with a
