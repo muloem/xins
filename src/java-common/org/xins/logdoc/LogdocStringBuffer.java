@@ -67,7 +67,9 @@ public class LogdocStringBuffer extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("s", s);
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      }
 
       // Initialize fields
       _buffer = s.toCharArray();
@@ -92,7 +94,9 @@ public class LogdocStringBuffer extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("s", s);
+      if (s == null) {
+         throw new IllegalArgumentException("s == null");
+      }
       if (capacity < s.length()) {
          throw new IllegalArgumentException("capacity (" + capacity + ") < s.length() (" + s.length() + ')');
       }
@@ -191,7 +195,9 @@ public class LogdocStringBuffer extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("cbuf", cbuf);
+      if (cbuf == null) {
+         throw new IllegalArgumentException("cbuf == null");
+      }
 
       int newLength = _length + cbuf.length;
 
@@ -230,7 +236,9 @@ public class LogdocStringBuffer extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("cbuf", cbuf);
+      if (cbuf == null) {
+         throw new IllegalArgumentException("cbuf == null");
+      }
       if (off < 0) {
          throw new IllegalArgumentException("off (" + off + ") < 0");
       } else if (off >= cbuf.length) {
@@ -266,7 +274,9 @@ public class LogdocStringBuffer extends Object {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("str", str);
+      if (str == null) {
+         throw new IllegalArgumentException("str == null");
+      }
 
       int strLength = str.length();
       int newLength = _length + strLength;
