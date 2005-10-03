@@ -176,10 +176,10 @@ public class XINSServletContext implements ServletContext {
    }
 
    public String getServerInfo() {
-		String osName    = System.getProperty("os.name"   );
-		String osVersion = System.getProperty("os.version");
-		String osArch    = System.getProperty("os.arch"   );
-		String os = osName + " " + osVersion + "/" + osArch;
+      String osName    = System.getProperty("os.name"   );
+      String osVersion = System.getProperty("os.version");
+      String osArch    = System.getProperty("os.arch"   );
+      String os = osName + " " + osVersion + "/" + osArch;
       return "XINS Servlet Test Container (" + os + ')';
    }
 
