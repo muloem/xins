@@ -90,9 +90,10 @@ public class HungarianMapper implements FileNameMapper {
       // Otherwise convert the first filename letter to uppercase and return
       // that
       } else {
-         String dir = sourceFileName.substring(0, sourceFileName.lastIndexOf(fileName));
-         fileName = fileName.substring(0,1).toUpperCase() + fileName.substring(1);
-         result = dir + fileName;
+         int index = sourceFileName.lastIndexOf(filename);
+         result = sourceFileName.substring(0, index);
+                + fileName.substring(0,1).toUpperCase()
+                + fileName.substring(1);
       }
 
       return new String[] { result };

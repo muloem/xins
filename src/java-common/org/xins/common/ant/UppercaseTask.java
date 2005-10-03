@@ -89,7 +89,10 @@ public class UppercaseTask extends Task {
       }
 
       if (getProject().getUserProperty(_propertyName) != null) {
-         log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
+         String message = "Override ignored for property \""
+                        + _propertyName
+                        + "\".";
+         log(message, Project.MSG_VERBOSE);
          return;
       }
 
