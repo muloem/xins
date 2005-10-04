@@ -35,6 +35,13 @@ public class DateConverter extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * All decimal digit characters, <code>'0'</code> to <code>'9'</code>.
+    */
+   private static final char[] DEC_DIGITS = {
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+   };
+
+   /**
     * Two-length string representations of the digits 0 to 99.
     */
    private static final char[][] VALUES;
@@ -436,11 +443,15 @@ public class DateConverter extends Object {
     * 
     * <blockquote><em>YYMMDD-hhmmssSSS</em> (length is 16)</blockquote>
     *
+    * <p>The timestamp is a number of milliseconds since the Epoch (midnight
+    * at the start of January 1, 1970, GMT). See
+    * {@link System#currentTimeMillis()}.
+    *
     * <p>Note: This method is <em>not</em> thread-safe.
     *
     * @param date
-    *    the timestamp, in milliseconds since the Epoch (midnight at the start
-    *    of January 1, 1970, GMT); must be &gt;= <code>0L</code>.
+    *    the timestamp, in milliseconds since the Epoch, must be &gt;=
+    *    <code>0L</code>.
     *
     * @param buffer
     *    the character buffer to put the formatted timestamp in, cannot be
@@ -496,15 +507,19 @@ public class DateConverter extends Object {
          System.arraycopy(_cachedDateBuffer, 0, buffer, offset, length);
 
          // If we are not in the same second, correct the seconds
+         int pos = (length + offset) - 5;
          if (justSeconds != _cachedJustSeconds) {
-            buffer[length - 5] = (char) (ZERO + (justSeconds / 10));
-            buffer[length - 4] = (char) (ZERO + (justSeconds % 10));
+            buffer[pos++] = DEC_DIGITS[justSeconds / 10];
+            buffer[pos++] = DEC_DIGITS[justSeconds % 10];
+         } else {
+            pos++;
+            pos++;
          }
 
          // Correct the milliseconds
-         buffer[length - 3] = (char) (ZERO + ( justMillis / 100)      );
-         buffer[length - 2] = (char) (ZERO + ((justMillis % 100) / 10));
-         buffer[length - 1] = (char) (ZERO + ( justMillis %  10)      );
+         buffer[pos++] = DEC_DIGITS[ justMillis / 100      ];
+         buffer[pos++] = DEC_DIGITS[(justMillis % 100) / 10];
+         buffer[pos  ] = DEC_DIGITS[ justMillis %  10      ];
 
       // We are not in the same minute, so recompute
       } else {
