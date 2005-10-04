@@ -7,6 +7,7 @@
 package org.xins.tests.common.text;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 import java.text.SimpleDateFormat;
 
@@ -120,11 +121,25 @@ public class DateConverterTests extends TestCase {
       message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
       assertEquals(message, expected, actual);
 
+      Random random = new Random();
+      DateConverter dc = new DateConverter(true);
+      char[] buffer = new char[18];
       for (int i = 0; i < 50; i++) {
-         millis   += 123456L;
+         if ((i % 2) == 0) {
+            millis += random.nextInt();
+            millis += random.nextInt();
+         } else {
+            millis += random.nextInt(5);
+         }
+
          expected  = formatter.format(new Date(millis));
          actual    = DateConverter.toDateString(millis, true);
          message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+         assertEquals(message, expected, actual);
+
+         dc.format(millis, buffer, 0);
+         actual    = new String(buffer);
+         message   = "Expected DateConverter.format(long,char[],int) to return \"" + expected + "\" instead of \"" + actual + "\".";
          assertEquals(message, expected, actual);
       }
    }
