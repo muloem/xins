@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import java.util.Random;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -50,14 +52,12 @@ final class ContextIDGenerator extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * Sequence counter. Initially <code>0</code>.
+    * The hexadecimal digits.
     */
-   private static int SEQUENCE_COUNTER;
-
-   /**
-    * Lock object for <code>SEQUENCE_COUNTER</code>. Never <code>null</code>.
-    */
-   private static final Object SEQUENCE_COUNTER_LOCK = new Object();
+   private static final char[] HEX_DIGITS = new char[] {
+      '0', '1', '2', '3', '4', '5', '6', '7',
+      '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+   };
 
 
    //-------------------------------------------------------------------------
@@ -83,9 +83,15 @@ final class ContextIDGenerator extends Manageable {
       // Check preconditions
       MandatoryArgumentChecker.check("apiName", apiName);
 
-      // Initialize the other fields
+      // Store API name and determine host name
       _apiName  = apiName;
       _hostname = IPAddressUtils.getLocalHost();
+
+      // Create a DateConverter that will not prepend the century
+      _dateConverter = new DateConverter(false);
+
+      // Initialize a pseudo-random number generator
+      _random = new Random();
    }
 
 
@@ -104,14 +110,26 @@ final class ContextIDGenerator extends Manageable {
    private String _hostname;
 
    /**
-    * The fixed prefix for generated context identifiers.
+    * The fixed prefix for generated context identifiers, as a character
+    * buffer. Never <code>null</code> when this instance is initialized.
     */
-   private String _prefix;
+   private char[] _prefixBuffer;
 
    /**
-    * The length of a generated diagnostic context identifier.
+    * The length of the prefix.
     */
-   private int _length;
+   private int _prefixLength;
+
+   /**
+    * A date converter. Never <code>null</code>. Needs to be locked before
+    * usage.
+    */
+   private final DateConverter _dateConverter;
+
+   /**
+    * A pseudo-random number generator. Never <code>null</code>
+    */
+   private final Random _random;
 
 
    //-------------------------------------------------------------------------
@@ -149,8 +167,9 @@ final class ContextIDGenerator extends Manageable {
       }
 
       // Determine prefix and total context ID length
-      _prefix = _apiName + '@' + _hostname + ':';
-      _length = _prefix.length() + 22;
+      String prefix = _apiName + '@' + _hostname + ':';
+      _prefixBuffer = prefix.toCharArray();
+      _prefixLength = prefix.length();
    }
 
    /**
@@ -169,22 +188,30 @@ final class ContextIDGenerator extends Manageable {
       assertUsable();
 
       // Construct a new string buffer with the exact needed capacity
-      FastStringBuffer buffer = new FastStringBuffer(_length + 3, _prefix);
+      int    prefixLength = _prefixLength;
+      int    length       = prefixLength + 22;
+      char[] buffer       = new char[length];
 
-      // Append the time stamp
-      long millis = System.currentTimeMillis();
-      buffer.append(DateConverter.toDateString(millis, false));
-      buffer.append(':');
+      // Copy the template into the buffer
+      System.arraycopy(_prefixBuffer, 0, buffer, 0, prefixLength);
 
-      // Append 5 'random' hex digits
-      buffer.append('0');
-      int i;
-      synchronized (SEQUENCE_COUNTER_LOCK) {
-         i = SEQUENCE_COUNTER++;
+      // Determine the current time and append the timestamp
+      long date = System.currentTimeMillis();
+      synchronized (_dateConverter) {
+         _dateConverter.format(date, buffer, prefixLength);
       }
-      HexConverter.toHexString(buffer, (short) i);
+
+      // Append 5 pseudo-random hex digits
+      int random = _random.nextInt() & 0x0fffffff;
+      int pos = prefixLength + 16;
+      buffer[pos++] = ':';
+      buffer[pos++] = HEX_DIGITS[ random        & 15];
+      buffer[pos++] = HEX_DIGITS[(random >>  4) & 15];
+      buffer[pos++] = HEX_DIGITS[(random >>  8) & 15];
+      buffer[pos++] = HEX_DIGITS[(random >> 12) & 15];
+      buffer[pos  ] = HEX_DIGITS[(random >> 16) & 15];
 
       // Log and return the context ID
-      return buffer.toString();
+      return new String(buffer);
    }
 }
