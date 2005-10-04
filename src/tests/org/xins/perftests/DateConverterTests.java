@@ -71,13 +71,31 @@ public class DateConverterTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testDateConverter() throws Exception {
+   public void testDateConverter1() throws Exception {
 
       long millis = System.currentTimeMillis();
 
       for (int i = 0; i < ROUNDS; i++) {
-         millis += (i % 1000);
+         millis += i & 0xff;
          DateConverter.toDateString(millis, true);
+         DateConverter.toDateString(millis, true);
+         millis++;
+         DateConverter.toDateString(millis, true);
+      }
+   }
+
+   public void testDateConverter2() throws Exception {
+
+      long millis = System.currentTimeMillis();
+      DateConverter dc = new DateConverter(true);
+
+      char[] buffer = new char[30];
+      for (int i = 0; i < ROUNDS; i++) {
+         millis += i & 0xff;
+         dc.format(millis, buffer, 0);
+         dc.format(millis, buffer, 0);
+         millis++;
+         dc.format(millis, buffer, 0);
       }
    }
 }
