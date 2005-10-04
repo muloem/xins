@@ -6,6 +6,7 @@
  */
 package org.xins.common.spec;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.types.Type;
 
 /**
@@ -16,7 +17,7 @@ import org.xins.common.types.Type;
  *
  * @since XINS 1.3.0
  */
-public class ParameterSpec extends Object {
+public final class ParameterSpec extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -31,7 +32,7 @@ public class ParameterSpec extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of Parameter.
+    * Creates a new instance of <code>ParameterSpec</code>.
     *
     * @param reference
     *    the reference class, cannot be <code>null</code>.
@@ -48,16 +49,15 @@ public class ParameterSpec extends Object {
     * @param description
     *    the description of the parameter, cannot be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || name == null || type == null || description == null</code>.
+    *
     * @throws InvalidSpecificationException
     *    if the type is not recognized.
     */
-   ParameterSpec(Class   reference,
-                 String  name,
-                 String  type,
-                 boolean required,
-                 String  description)
-   throws InvalidSpecificationException {
-
+   ParameterSpec(Class reference, String name, String type, boolean required, String description)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("reference", reference, "name", name, "description", description);
       _reference     = reference;
       _parameterName = name;
       _parameterType = getType(type);
@@ -71,19 +71,19 @@ public class ParameterSpec extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The reference class.
+    * The reference class, never <code>null</code>.
     */
    private final Class _reference;
 
    /**
-    * Name of the parameter.
+    * Name of the parameter, never <code>null</code>.
     */
    private final String _parameterName;
 
    /**
-    * Type of the parameter.
+    * Type of the parameter, can be <code>null</code>.
     */
-   private final Type _parameterType;
+   private Type _parameterType;
 
    /**
     * Flags indicating if this parameter is required.
@@ -91,9 +91,10 @@ public class ParameterSpec extends Object {
    private final boolean _required;
 
    /**
-    * Description of the parameter.
+    * Description of the parameter, never <code>null</code>.
     */
-   private String _description;
+   private final String _description;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -103,7 +104,7 @@ public class ParameterSpec extends Object {
     * Gets the name of the parameter.
     *
     * @return
-    *    The name of the parameter, never <code>null</code>.
+    *    the name of the parameter, never <code>null</code>.
     */
    public String getName() {
 
@@ -114,7 +115,7 @@ public class ParameterSpec extends Object {
     * Gets the description of the parameter.
     *
     * @return
-    *    The description of the parameter, never <code>null</code>.
+    *    the description of the parameter, never <code>null</code>.
     */
    public String getDescription() {
 
@@ -125,7 +126,7 @@ public class ParameterSpec extends Object {
     * Returns whether the parameter is mandatory.
     *
     * @return
-    *    <code>true</code> if the parameter is requierd, <code>false</code> otherwise.
+    *    <code>true</code> if the parameter is required, <code>false</code> otherwise.
     */
    public boolean isRequired() {
 
@@ -136,9 +137,10 @@ public class ParameterSpec extends Object {
     * Gets the type of the parameter.
     *
     * @return
-    *    The type of the parameter, never <code>null</code>.
+    *    the type of the parameter, never <code>null</code>.
     */
    public Type getType() {
+
       return _parameterType;
    }
 
@@ -146,13 +148,13 @@ public class ParameterSpec extends Object {
     * Gets the type of the parameter.
     *
     * @param typeName
-    *    The name of the type, can be <code>null</code>.
+    *    the name of the type, can be <code>null</code>.
     *
     * @return
-    *    The type of the parameter, never <code>null</code>.
+    *    the type of the parameter, never <code>null</code>.
     *
     * @throws InvalidSpecificationException
-    *    If the type is not recognized.
+    *    if the type is not recognized.
     */
    private Type getType(String typeName) throws InvalidSpecificationException {
 
@@ -202,7 +204,7 @@ public class ParameterSpec extends Object {
             Type type = (Type) typeClass.getField("SINGLETON").get(null);
             return type;
          } catch (Exception ex) {
-            throw new InvalidSpecificationException("Invalid type: " + typeName + " ; " + ex.getMessage());
+            throw new InvalidSpecificationException("Invalid type: " + typeName + ".", ex);
          }
       }
       throw new InvalidSpecificationException("Invalid type: " + typeName + ".");

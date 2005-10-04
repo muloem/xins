@@ -18,7 +18,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.3.0
  */
-public class DataSectionElementSpec {
+public final class DataSectionElementSpec {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -33,7 +33,7 @@ public class DataSectionElementSpec {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of DataSectionElement.
+    * Creates a new instance of <code>DataSectionElementSpec</code>.
     *
     * @param name
     *    the name of the data section element, cannot be <code>null</code>.
@@ -49,8 +49,13 @@ public class DataSectionElementSpec {
     *
     * @param attributes
     *    the possible attributes for this element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || description == null || subElements == null || attributes == null</code>.
     */
    DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, Map subElements, Map attributes) {
+      MandatoryArgumentChecker.check("name", name, "description", description, 
+            "subElements", subElements, "attributes", attributes);
       _name = name;
       _description = description;
       _isPCDataAllowed = isPCDataAllowed;
@@ -63,29 +68,29 @@ public class DataSectionElementSpec {
    //-------------------------------------------------------------------------
    
    /**
-    * Name of the element.
+    * Name of the element, cannot be <code>null</code>.
     */
    private final String _name;
    
    /**
-    * Description of the element.
+    * Description of the element, cannot be <code>null</code>.
     */
-   private String _description;
+   private final String _description;
    
-   /**
-    * The attributes of the element.
-    */
-   private Map _attributes;
-
    /**
     * Flag indicating that the element can have PCDATA.
     */
-   private boolean _isPCDataAllowed;
+   private final boolean _isPCDataAllowed;
    
    /**
-    * The sub elements of the element.
+    * The sub elements of the element, cannot be <code>null</code>.
     */
-   private Map _subElements;
+   private final Map _subElements;
+
+   /**
+    * The attributes of the element, cannot be <code>null</code>.
+    */
+   private final Map _attributes;
 
    
    //-------------------------------------------------------------------------
@@ -123,14 +128,14 @@ public class DataSectionElementSpec {
     * @return
     *    The specification of the sub element, never <code>null</code>.
     *
-    * @throws EntityNotFoundException
-    *    if the element does not have any sub element with the specified name.
-    *
     * @throws IllegalArgumentException
     *    if <code>elementName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the element does not have any sub element with the specified name.
     */
    public DataSectionElementSpec getSubElement(String elementName)
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
       
       MandatoryArgumentChecker.check("elementName", elementName);
       
@@ -149,7 +154,7 @@ public class DataSectionElementSpec {
     * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
-    *    The specification of the sub elements, never <code>null</code>.
+    *    the specification of the sub elements, never <code>null</code>.
     */
    public Map getSubElements() {
       

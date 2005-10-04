@@ -25,7 +25,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.3.0
  */
-public class ErrorCodeSpec extends Object {
+public final class ErrorCodeSpec extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -48,21 +48,20 @@ public class ErrorCodeSpec extends Object {
     * @param reference
     *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
     *
-    * @param baseURL
-    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    * @throws IllegalArgumentException
+    *    if <code>name == null || reference == null || baseURL == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
    public ErrorCodeSpec(String name, Class reference, String baseURL) throws InvalidSpecificationException {
+      MandatoryArgumentChecker.check("name", name, "reference", reference, "baseURL", baseURL);
       _errorCodeName = name;
-      _reference = reference;
-
       try {
          Reader reader = APISpec.getReader(baseURL, name + ".rcd");
-         parseErrorCode(reader);
+         parseErrorCode(reader, reference);
       } catch (IOException ioe) {
-         throw new InvalidSpecificationException(ioe.getMessage());
+         throw new InvalidSpecificationException("[ErrorCode: " + name + "] Cannot read error code.", ioe);
       }
    }
 
@@ -70,11 +69,6 @@ public class ErrorCodeSpec extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The class used as reference.
-    */
-   private final Class _reference;
 
    /**
     * Name of the function.
@@ -213,34 +207,54 @@ public class ErrorCodeSpec extends Object {
     * @param reader
     *    the reader that contains the content of the result code file, cannot be <code>null</code>.
     *
+    * @param reference
+    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reader == null || reference == null</code>.
+    *
     * @throws IOException
     *    if the parser cannot read the content.
     *
     * @throws InvalidSpecificationException
     *    if the result code file is incorrect.
     */
-   private void parseErrorCode(Reader reader) throws IOException, InvalidSpecificationException {
+   private void parseErrorCode(Reader reader, Class reference)
+   throws IllegalArgumentException, IOException, InvalidSpecificationException {
+      
+      MandatoryArgumentChecker.check("reader", reader, "reference", reference);
       ElementParser parser = new ElementParser();
       Element errorCode = null;
       try {
          errorCode = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException("[ErrorCode:" + _errorCodeName + "] " + pe.getMessage());
+         throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName + "] Cannot parse error code.",  pe);
+      }
+      
+      // Get the result from the parsed error code specification.
+      List descriptionElementList = errorCode.getChildElements("description");
+      if (descriptionElementList.isEmpty() || descriptionElementList.get(0) == null) {
+         throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName 
+               + "] No definition specified.");
       }
       Element descriptionElement = (Element) errorCode.getChildElements("description").get(0);
       _description = descriptionElement.getText();
+      
       List output = errorCode.getChildElements("output");
       if (output.size() > 0) {
 
          // Output parameters
          Element outputElement = (Element) output.get(0);
-         _outputParameters = FunctionSpec.parseParameters(_reference, outputElement);
+         _outputParameters = FunctionSpec.parseParameters(reference, outputElement);
 
          // Data section
          List dataSections = outputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            _outputDataSectionElements = FunctionSpec.parseDataSectionElements(_reference, dataSection, dataSection);
+            _outputDataSectionElements = FunctionSpec.parseDataSectionElements(reference, dataSection, dataSection);
          }
       }
    }

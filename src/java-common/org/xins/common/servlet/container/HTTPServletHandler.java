@@ -401,6 +401,9 @@ public class HTTPServletHandler {
             url += '?' + new String(contentData);
             contentData = null;
          }
+         if (url.equals("/favicon.ico")) {
+            return "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+         }
          String virtualPath = url;
          if (virtualPath.indexOf('?') != -1) {
             virtualPath = virtualPath.substring(0, url.indexOf('?'));
@@ -418,7 +421,8 @@ public class HTTPServletHandler {
          XINSServletResponse response = servlet.query(url, contentData, contentType);
          String result = response.getResult();
          if (result == null) {
-            return "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
+            return "HTTP/1.1 " + response.getStatus() + " " + 
+                  HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
          }
          PropertyReader headers = response.getHeaders();
          Iterator itHeaderNames = headers.getNames();

@@ -29,19 +29,13 @@ public class EntityNotFoundException extends Exception {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new <code>InvalidSpecificationException</code>.
-    */
-   public EntityNotFoundException() {
-   }
-   
-   /**
     * Creates a new <code>InvalidSpecificationException</code> with the reason
     * of the problem.
     *
     * @param message
     *    the reason why this exception has been thrown, can be <code>null</code>.
     */
-   public EntityNotFoundException(String message) {
+   EntityNotFoundException(String message) {
       super(message);
    }
    

@@ -6,6 +6,8 @@
  */
 package org.xins.common.spec;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Thrown when the specification of the API is incorrect or cannot be found.
  *
@@ -29,9 +31,14 @@ public class InvalidSpecificationException extends Exception {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new <code>InvalidSpecificationException</code>.
+    * Creates a new <code>InvalidSpecificationException</code> with the reason
+    * of the problem.
+    *
+    * @param message
+    *    the reason why this exception has been thrown, can be <code>null</code>.
     */
-   public InvalidSpecificationException() {
+   InvalidSpecificationException(String message) {
+      this(message, null);
    }
    
    /**
@@ -40,10 +47,17 @@ public class InvalidSpecificationException extends Exception {
     *
     * @param message
     *    the reason why this exception has been thrown, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause of the exception, can be <code>null</code>.
     */
-   public InvalidSpecificationException(String message) {
+   InvalidSpecificationException(String message, Throwable cause) {
       super(message);
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
    }
+
    
    //-------------------------------------------------------------------------
    // Fields

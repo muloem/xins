@@ -44,6 +44,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Methods in class Manageable (for bootstrapping and initialization) allow
     passing null as a PropertyReader. In this case an empty PropertyReader
     will be used.
+  - The classes of the spec package now check the mandatory parameters.
+  - Added more details in some exception thrown by classes in the spec
+    package.
+  - The internal Servlet container returns 404 for the /favicon.ico request.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1307026: Context ID generation not thread-safe.
@@ -81,6 +85,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 * Performance tests:
   - Added performance tests for DateConverter.
   - Allowing performance test class to be set in variable 'perftestclass'.
+
+* DTD:
+  - Added 1.3 DTD's for author, environment, impl, resultcode and type XML
+    files.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:

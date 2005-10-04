@@ -27,7 +27,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.3.0
  */
-public class FunctionSpec extends Object {
+public final class FunctionSpec extends Object {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -42,34 +42,32 @@ public class FunctionSpec extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>Function</code> by parsing the .fnc file.
+    * Creates a new <code>Function</code> by parsing the function specification file.
     *
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
     * @param reference
-    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *    the reference class used to get the defined type class, cannot be <code>null</code>.
     *
     * @param baseURL
-    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null || reference == null || baseURL == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect or cannot be found.
     */
-   FunctionSpec(String functionName,
-            Class  reference,
-            String baseURL)
-   throws InvalidSpecificationException {
-
-      _reference    = reference;
-      _baseURL      = baseURL;
+   FunctionSpec(String functionName, Class  reference, String baseURL)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("functionName", functionName, "reference", reference, "baseURL", baseURL);
       _functionName = functionName;
-
       try {
          Reader reader = APISpec.getReader(baseURL, functionName + ".fnc");
-         parseFunction(reader);
+         parseFunction(reader, reference, baseURL);
       } catch (IOException ioe) {
-         throw new InvalidSpecificationException(ioe.getMessage());
+         throw new InvalidSpecificationException("[Function: " + functionName + "] Cannot read function.", ioe);
       }
    }
 
@@ -79,22 +77,12 @@ public class FunctionSpec extends Object {
    //-------------------------------------------------------------------------
    
    /**
-    * The class used as reference.
-    */
-   private final Class _reference;
-   
-   /**
-    * The base URL used to locate the specifications.
-    */
-   private final String _baseURL;
-   
-   /**
-    * Name of the function.
+    * Name of the function, cannot be <code>null</code>.
     */
    private final String _functionName;
    
    /**
-    * Description of the function.
+    * Description of the function, cannot be <code>null</code>.
     */
    private String _description;
    
@@ -144,7 +132,7 @@ public class FunctionSpec extends Object {
     * Gets the name of the function.
     *
     * @return
-    *    The name of the function, never <code>null</code>.
+    *    the name of the function, never <code>null</code>.
     */
    public String getName() {
 
@@ -155,7 +143,7 @@ public class FunctionSpec extends Object {
     * Gets the description of the function.
     *
     * @return
-    *    The description of the function, never <code>null</code>.
+    *    the description of the function, never <code>null</code>.
     */
    public String getDescription() {
       
@@ -196,7 +184,7 @@ public class FunctionSpec extends Object {
     * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
     *
     * @return
-    *    The input parameters, never <code>null</code>.
+    *    the input parameters, never <code>null</code>.
     */
    public Map getInputParameters() {
       
@@ -204,7 +192,7 @@ public class FunctionSpec extends Object {
    }
 
    /**
-    * Gets the output parameter for the specified name.
+    * Gets the output parameter of the specified name.
     *
     * @param parameterName
     *    the name of the parameter, cannot be <code>null</code>.
@@ -212,14 +200,14 @@ public class FunctionSpec extends Object {
     * @return
     *    the parameter, never <code>null</code>.
     *
-    * @throws EntityNotFoundException
-    *    if the function does not contain any output parameter with the specified name.
-    *
     * @throws IllegalArgumentException
     *    if <code>parameterName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the function does not contain any output parameter with the specified name.
     */
    public ParameterSpec getOutputParameter(String parameterName)
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
        
       MandatoryArgumentChecker.check("parameterName", parameterName);
       
@@ -237,7 +225,7 @@ public class FunctionSpec extends Object {
     * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
     *
     * @return
-    *    The output parameters, never <code>null</code>.
+    *    the output parameters, never <code>null</code>.
     */
    public Map getOutputParameters() {
       
@@ -251,16 +239,16 @@ public class FunctionSpec extends Object {
     *    the name of the error code, cannot be <code>null</code>.
     *
     * @return
-    *    The error code specifications, never <code>null</code>.
-    *
-    * @throws EntityNotFoundException
-    *    if the function does not define any error code with the specified name.
+    *    the error code specifications, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>errorCodeName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the function does not define any error code with the specified name.
     */
    public ErrorCodeSpec getErrorCode(String errorCodeName)
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
       
       MandatoryArgumentChecker.check("errorCodeName", errorCodeName);
       ErrorCodeSpec errorCode = (ErrorCodeSpec) _errorCodes.get(errorCodeName);
@@ -274,7 +262,7 @@ public class FunctionSpec extends Object {
 
    /**
     * Gets the error code specifications defined in the function.
-    * The standard error code are not included.
+    * The standard error codes are not included.
     * The key is the name of the error code, the value is the {@link ErrorCodeSpec} object.
     *
     * @return
@@ -293,16 +281,16 @@ public class FunctionSpec extends Object {
     *    the name of the element, cannot be <code>null</code>.
     *
     * @return
-    *   The specification of the input data section element, never <code>null</code>.
-    *
-    * @throws EntityNotFoundException
-    *    if the function does not define any input data element with the specified name.
+    *    the specification of the input data section element, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>elementName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the function does not define any input data element with the specified name.
     */
    public DataSectionElementSpec getInputDataSectionElement(String elementName)
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
       
       MandatoryArgumentChecker.check("elementName", elementName);
       
@@ -320,7 +308,7 @@ public class FunctionSpec extends Object {
     * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
-    *   The input data section elements, never <code>null</code>.
+    *    the input data section elements, never <code>null</code>.
     */
    public Map getInputDataSectionElements() {
       
@@ -337,14 +325,14 @@ public class FunctionSpec extends Object {
     * @return
     *   The specification of the output data section element, never <code>null</code>.
     *
-    * @throws EntityNotFoundException
-    *    if the function does not define any output data element with the specified name.
-    *
     * @throws IllegalArgumentException
     *    if <code>elementName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    if the function does not define any output data element with the specified name.
     */
    public DataSectionElementSpec getOutputDataSectionElement(String elementName) 
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
       
       MandatoryArgumentChecker.check("elementName", elementName);
       
@@ -362,7 +350,7 @@ public class FunctionSpec extends Object {
     * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
-    *   The output data section elements, never <code>null</code>.
+    *    the output data section elements, never <code>null</code>.
     */
    public Map getOutputDataSectionElements() {
       
@@ -373,7 +361,7 @@ public class FunctionSpec extends Object {
     * Gets the input param combo specifications.
     *
     * @return
-    *    The list of the input param combos specification 
+    *    the list of the input param combos specification 
     *    ({@link ParamComboSpec}), never <code>null</code>.
     */
    public List getInputParamCombos() {
@@ -385,7 +373,7 @@ public class FunctionSpec extends Object {
     * Gets the output param combo specifications.
     *
     * @return
-    *    The list of the output param combos specification 
+    *    the list of the output param combos specification 
     *    ({@link ParamComboSpec}), never <code>null</code>.
     */
    public List getOutputParamCombos() {
@@ -399,19 +387,23 @@ public class FunctionSpec extends Object {
     * @param reader
     *    the reader that contains the content of the result code file, cannot be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>reader == null || reference == null || baseURL == null</code>.
+    *
     * @throws IOException
     *    if the parser cannot read the content.
     *
     * @throws InvalidSpecificationException
     *    if the result code file is incorrect.
     */
-   private void parseFunction(Reader reader) throws IOException, InvalidSpecificationException {
+   private void parseFunction(Reader reader, Class reference, String baseURL)
+   throws IllegalArgumentException, IOException, InvalidSpecificationException {
       ElementParser parser = new ElementParser();
       Element function = null;
       try {
          function = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException("[Function:" + _functionName + "] " + pe.getMessage());
+         throw new InvalidSpecificationException("[Function: " + _functionName + "] Cannot parse function.", pe);
       }
       Element descriptionElement = (Element) function.getChildElements("description").get(0);
       _description = descriptionElement.getText();
@@ -420,7 +412,7 @@ public class FunctionSpec extends Object {
          
          // Input parameters
          Element inputElement = (Element) input.get(0);
-         _inputParameters = parseParameters(_reference, inputElement);
+         _inputParameters = parseParameters(reference, inputElement);
 
          // Param combos
          _inputParamCombos = parseParamCombos(inputElement, _inputParameters);
@@ -429,7 +421,7 @@ public class FunctionSpec extends Object {
          List dataSections = inputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            _inputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
+            _inputDataSectionElements = parseDataSectionElements(reference, dataSection, dataSection);
          }
       }
       
@@ -443,12 +435,12 @@ public class FunctionSpec extends Object {
          while (itErrorCodes.hasNext()) {
             Element nextErrorCode = (Element) itErrorCodes.next();
             String errorCodeName = nextErrorCode.getAttribute("name");
-            ErrorCodeSpec errorCodeSpec = new ErrorCodeSpec(errorCodeName, _reference, _baseURL);
+            ErrorCodeSpec errorCodeSpec = new ErrorCodeSpec(errorCodeName, reference, baseURL);
             _errorCodes.put(errorCodeName, errorCodeSpec);
          }
          
          // Output parameters
-         _outputParameters = parseParameters(_reference, outputElement);
+         _outputParameters = parseParameters(reference, outputElement);
 
          // Param combos
          _outputParamCombos = parseParamCombos(outputElement, _outputParameters);
@@ -457,7 +449,7 @@ public class FunctionSpec extends Object {
          List dataSections = outputElement.getChildElements("data");
          if (dataSections.size() > 0) {
             Element dataSection = (Element) dataSections.get(0);
-            _outputDataSectionElements = parseDataSectionElements(_reference, dataSection, dataSection);
+            _outputDataSectionElements = parseDataSectionElements(reference, dataSection, dataSection);
          }
       }
    }
@@ -466,7 +458,7 @@ public class FunctionSpec extends Object {
     * Parse an element in the data section.
     *
     * @param reference
-    *    the reference class used to locate the files.
+    *    the reference class used to locate the files, cannot be <code>null</code>.
     *
     * @param topElement
     *    the element to parse, cannot be <code>null</code>.
@@ -478,12 +470,16 @@ public class FunctionSpec extends Object {
     *    the top elements of the data section, or an empty array there is no
     *    data section.
     *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || topElement == null || dataSection == null</code>.
+    *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
    static Map parseDataSectionElements(Class reference, Element topElement, Element dataSection)
-   throws InvalidSpecificationException {
+   throws IllegalArgumentException, InvalidSpecificationException {
 
+      MandatoryArgumentChecker.check("reference", reference, "topElement", topElement, "dataSection", dataSection);
       Map dataSectionElements = new ChainedMap();
       
       // The <data> may have a "contains" attribute.
@@ -522,12 +518,18 @@ public class FunctionSpec extends Object {
     *    the data section, cannot be <code>null</code>.
     *
     * @return
-    *    the data section element.
+    *    the data section element or <code>null</code> if there is no element 
+    *    with the specified name.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || name == null || dataSection == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static DataSectionElementSpec getDataSectionElement(Class reference, String name, Element dataSection) throws InvalidSpecificationException {
+   static DataSectionElementSpec getDataSectionElement(Class reference, String name, Element dataSection)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("reference", reference, "name", name, "dataSection", dataSection);
       Iterator itElements = dataSection.getChildElements("element").iterator();
       while (itElements.hasNext()) {
          Element nextElement = (Element) itElements.next();
@@ -556,7 +558,8 @@ public class FunctionSpec extends Object {
                attributes.put(attribute.getName(), attribute);
             }
             
-            DataSectionElementSpec result = new DataSectionElementSpec(nextName, description, isPcdataEnable, subElements, attributes);
+            DataSectionElementSpec result = new DataSectionElementSpec(nextName,
+                  description, isPcdataEnable, subElements, attributes);
             return result;
          }
       }
@@ -573,17 +576,23 @@ public class FunctionSpec extends Object {
     *    the element that contains the specification of the parameter, cannot be <code>null</code>.
     *
     * @return
-    *    the parameter.
+    *    the parameter, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || paramElement == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static ParameterSpec parseParameter(Class reference, Element paramElement) throws InvalidSpecificationException {
+   static ParameterSpec parseParameter(Class reference, Element paramElement)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("reference", reference, "paramElement", paramElement);
       String parameterName = paramElement.getAttribute("name");
       String parameterTypeName = paramElement.getAttribute("type");
       boolean requiredParameter = "true".equals(paramElement.getAttribute("required"));
       String parameterDescription = ((Element) paramElement.getChildElements("description").get(0)).getText();
-      ParameterSpec parameter = new ParameterSpec(reference ,parameterName, parameterTypeName, requiredParameter, parameterDescription);
+      ParameterSpec parameter = new ParameterSpec(reference ,parameterName, 
+            parameterTypeName, requiredParameter, parameterDescription);
       return parameter;
    }
    
@@ -598,12 +607,17 @@ public class FunctionSpec extends Object {
     *
     * @return
     *    a map containing the parameter names as keys, and the 
-    *    <code>Parameter</code> objects as value.
+    *    <code>Parameter</code> objects as value, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || topElement == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   static Map parseParameters(Class reference, Element topElement) throws InvalidSpecificationException {
+   static Map parseParameters(Class reference, Element topElement)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("reference", reference, "topElement", topElement);
       List parametersList = topElement.getChildElements("param");
       Map parameters = new ChainedMap();
       Iterator itParameters = parametersList.iterator();
@@ -625,11 +639,14 @@ public class FunctionSpec extends Object {
     *    the list of the input or output parameters, cannot be <code>null</code>.
     *
     * @return
-    *    the param-combo elements or an empty array if no param-combo is defined.
+    *    the list of the param-combo elements or an empty array if no 
+    *    param-combo is defined, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>topElement == null || parameters == null</code>.
     */
-   static List parseParamCombos(Element topElement,
-                                Map     parameters) {
-      
+   static List parseParamCombos(Element topElement, Map parameters) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("topElement", topElement, "parameters", parameters);
       List paramCombosList = topElement.getChildElements("param-combo");
       List paramCombos = new ArrayList(paramCombosList.size());
       Iterator itParamCombos = paramCombosList.iterator();

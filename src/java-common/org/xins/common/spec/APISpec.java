@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -25,13 +26,14 @@ import org.xins.common.xml.ElementParser;
 
 /**
  * Specification of an API.
+ * This class gets the specification of the API as defined in the api.xml file.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.3.0
  */
-public class APISpec extends Object {
+public final class APISpec extends Object {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -78,25 +80,28 @@ public class APISpec extends Object {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of API
+    * Creates a new instance of <code>APISpec</code>.
     *
     * @param reference
     *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
     *
     * @param baseURL
-    *    the reference class used to located the specifications, cannot be <code>null</code>.
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reference == null || baseURL == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public APISpec(Class reference, String baseURL) throws InvalidSpecificationException {
-      _reference = reference;
-      _baseURL = baseURL;
+   public APISpec(Class reference, String baseURL) 
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("reference", reference, "baseURL", baseURL);
       try {
          Reader reader = getReader(baseURL, "api.xml");
-         parseApi(reader);
+         parseApi(reader, reference, baseURL);
       } catch (IOException ioe) {
-         throw new InvalidSpecificationException("I/O Exception:" + ioe.getMessage());
+         throw new InvalidSpecificationException("Cannot read API specification files.", ioe);
       }
    }
    
@@ -106,32 +111,22 @@ public class APISpec extends Object {
    //-------------------------------------------------------------------------
    
    /**
-    * The refence class.
-    */
-   private final Class _reference;
-   
-   /**
-    * The base URL used to locate the specifications.
-    */
-   private final String _baseURL;
-   
-   /**
-    * Name of the API.
+    * Name of the API, cannot be <code>null</code>.
     */
    private String _apiName;
    
    /**
-    * Owner of the API.
+    * Owner of the API, can be <code>null</code>.
     */
    private String _owner;
    
    /**
-    * Description of the API.
+    * Description of the API, cannot be <code>null</code>.
     */
    private String _description;
    
    /**
-    * The functions of the API.
+    * The functions of the API, cannot be <code>null</code>.
     */
    private Map _functions = new ChainedMap();
 
@@ -144,7 +139,7 @@ public class APISpec extends Object {
     * Gets the name of the API.
     *
     * @return
-    *    The name of the API, never <code>null</code>.
+    *    the name of the API, never <code>null</code>.
     */
    public String getName() {
 
@@ -155,7 +150,7 @@ public class APISpec extends Object {
     * Gets the owner of the API.
     *
     * @return
-    *    The owner of the API or <code>null</code> if no owner is defined.
+    *    the owner of the API or <code>null</code> if no owner is defined.
     */
    public String getOwner() {
       
@@ -163,10 +158,11 @@ public class APISpec extends Object {
    }
    
    /**
-    * Gets the description of the API.
+    * Gets the description of the API. The description will be the text
+    * specified in the <i>description</i> element of the API specification file.
     *
     * @return
-    *    The description of the API, never <code>null</code>.
+    *    the description of the API, never <code>null</code>.
     */
    public String getDescription() {
       
@@ -175,11 +171,12 @@ public class APISpec extends Object {
 
    /**
     * Gets the function specifications defined in the API.
-    * The key of the returned Map is the name of the function and the value
-    * is the {@link FunctionSpec} object.
+    * The key of the returned {@link Map} is the name of the function and the 
+    * value is the {@link FunctionSpec} object. The values in the {@link Map}
+    * are never <code>null</code>.
     *
     * @return
-    *    The function specifications, never <code>null</code>.
+    *    the function specifications, never <code>null</code>.
     */
    public Map getFunctions() {
       
@@ -187,22 +184,22 @@ public class APISpec extends Object {
    }
 
    /**
-    * Get the specification of the given function.
+    * Gets the specification of the given function.
     *
     * @param functionName
     *    The name of the function, can not be <code>null</code>
     *
     * @return
-    *    The function specification.
-    *
-    * @throws EntityNotFoundException
-    *    If the API does not define any function for the given name.
+    *    The function specification, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
+    *
+    * @throws EntityNotFoundException
+    *    If the API does not define any function for the given name.
     */
    public FunctionSpec getFunction(String functionName)
-   throws EntityNotFoundException, IllegalArgumentException {
+   throws IllegalArgumentException, EntityNotFoundException {
 
       MandatoryArgumentChecker.check("functionName", functionName);
       
@@ -216,34 +213,57 @@ public class APISpec extends Object {
    }
 
    /**
-    * Parses the api.xml file.
+    * Parses the API specification file.
     *
     * @param reader
-    *    the reader that contain the content of the api.xml file, cannot be <code>null</code>.
+    *    the reader that contains the content of the API specification file, cannot be <code>null</code>.
+    *
+    * @param reference
+    *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>reader == null || reference == null || baseURL == null</code>.
     *
     * @throws IOException
-    *    if one of the specification file cannot be read correctly.
+    *    if one of the specification files cannot be read correctly.
     *
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private void parseApi(Reader reader) throws IOException, InvalidSpecificationException {
+   private void parseApi(Reader reader, Class reference, String baseURL)
+   throws IllegalArgumentException, IOException, InvalidSpecificationException {
+     
+      MandatoryArgumentChecker.check("reader", reader, "reference", reference, "baseURL", baseURL);
       ElementParser parser = new ElementParser();
       Element api = null;
       try {
          api = parser.parse(reader);
       } catch (ParseException pe) {
-         throw new InvalidSpecificationException("[API] " + pe.getMessage());
+         throw new InvalidSpecificationException("[API] Cannot parse.", pe);
       }
+      
+      // Get the result from the parsed API specification.
       _apiName = api.getAttribute("name");
+      if (_apiName == null) {
+         throw new InvalidSpecificationException("[API] No name defined.");
+      }
       _owner = api.getAttribute("owner");
-      Element descriptionElement = (Element) api.getChildElements("description").get(0);
+      List descriptionElementList = api.getChildElements("description");
+      if (descriptionElementList.isEmpty() || descriptionElementList.get(0) == null) {
+         throw new InvalidSpecificationException("[API] No definition specified.");
+      }
+      Element descriptionElement = (Element) descriptionElementList.get(0);
       _description = descriptionElement.getText();
+      
+      // Get the specification of the functions.
       Iterator functions = api.getChildElements("function").iterator();
       while (functions.hasNext()) {
          Element nextFunction = (Element) functions.next();
          String functionName = nextFunction.getAttribute("name");
-         FunctionSpec function = new FunctionSpec(functionName, _reference, _baseURL);
+         FunctionSpec function = new FunctionSpec(functionName, reference, baseURL);
          _functions.put(functionName, function);
       }
    }

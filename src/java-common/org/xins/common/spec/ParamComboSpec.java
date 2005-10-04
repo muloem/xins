@@ -7,6 +7,7 @@
 package org.xins.common.spec;
 
 import java.util.Map;
+import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Specification of a param combo.
@@ -16,7 +17,7 @@ import java.util.Map;
  *
  * @since XINS 1.3.0
  */
-public class ParamComboSpec {
+public final class ParamComboSpec {
    
    //-------------------------------------------------------------------------
    // Class functions
@@ -31,15 +32,19 @@ public class ParamComboSpec {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new <code>ParamCombo</code>.
+    * Creates a new <code>ParamComboSpec</code>.
     *
     * @param type
-    *    The type of the param-combo, cannot be <code>null</code>.
+    *    the type of the param-combo, cannot be <code>null</code>.
     *
     * @param parameters
-    *    The parameters this param-combo refers to, cannot be <code>null</code>.
+    *    the parameters this param-combo refers to, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || parameters == null</code>.
     */
-   public ParamComboSpec(String type, Map parameters) {
+   ParamComboSpec(String type, Map parameters) {
+      MandatoryArgumentChecker.check("type", type, "parameters", parameters);
       _type = type;
       _parameters = parameters;
    }
@@ -49,12 +54,12 @@ public class ParamComboSpec {
    //-------------------------------------------------------------------------
    
    /**
-    * The type of the param-combo.
+    * The type of the param-combo, never <code>null</code>.
     */
    private final String _type;
    
    /**
-    * The parameters of this param-combo.
+    * The parameters of this param-combo, never <code>null</code>.
     */
    private final Map _parameters;
    
