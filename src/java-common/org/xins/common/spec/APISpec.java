@@ -252,7 +252,7 @@ public final class APISpec extends Object {
       }
       _owner = api.getAttribute("owner");
       List descriptionElementList = api.getChildElements("description");
-      if (descriptionElementList.isEmpty() || descriptionElementList.get(0) == null) {
+      if (descriptionElementList.isEmpty()) {
          throw new InvalidSpecificationException("[API] No definition specified.");
       }
       Element descriptionElement = (Element) descriptionElementList.get(0);

@@ -405,7 +405,12 @@ public final class FunctionSpec extends Object {
       } catch (ParseException pe) {
          throw new InvalidSpecificationException("[Function: " + _functionName + "] Cannot parse function.", pe);
       }
-      Element descriptionElement = (Element) function.getChildElements("description").get(0);
+      List descriptionElementList = function.getChildElements("description");
+      if (descriptionElementList.isEmpty()) {
+         throw new InvalidSpecificationException("[Function: " + _functionName 
+               + "] No definition specified.");
+      }
+      Element descriptionElement = (Element) descriptionElementList.get(0);
       _description = descriptionElement.getText();
       List input = function.getChildElements("input");
       if (input.size() > 0) {
@@ -435,6 +440,10 @@ public final class FunctionSpec extends Object {
          while (itErrorCodes.hasNext()) {
             Element nextErrorCode = (Element) itErrorCodes.next();
             String errorCodeName = nextErrorCode.getAttribute("name");
+            if (errorCodeName == null) {
+               throw new InvalidSpecificationException("[Function: " + _functionName 
+                     + "] Missing name attribute for a error code.");
+            }
             ErrorCodeSpec errorCodeSpec = new ErrorCodeSpec(errorCodeName, reference, baseURL);
             _errorCodes.put(errorCodeName, errorCodeSpec);
          }
@@ -534,7 +543,7 @@ public final class FunctionSpec extends Object {
       while (itElements.hasNext()) {
          Element nextElement = (Element) itElements.next();
          String nextName = nextElement.getAttribute("name");
-         if (nextName.equals(name)) {
+         if (name.equals(nextName)) {
             
             String description = ((Element) nextElement.getChildElements("description").get(0)).getText();
             
@@ -588,9 +597,16 @@ public final class FunctionSpec extends Object {
    throws IllegalArgumentException, InvalidSpecificationException {
       MandatoryArgumentChecker.check("reference", reference, "paramElement", paramElement);
       String parameterName = paramElement.getAttribute("name");
+      if (parameterName == null) {
+         throw new InvalidSpecificationException("Missing name for a parameter.");
+      }
       String parameterTypeName = paramElement.getAttribute("type");
       boolean requiredParameter = "true".equals(paramElement.getAttribute("required"));
-      String parameterDescription = ((Element) paramElement.getChildElements("description").get(0)).getText();
+      List descriptionElementList = paramElement.getChildElements("description");
+      if (descriptionElementList.isEmpty()) {
+         throw new InvalidSpecificationException("No definition specified for a parameter.");
+      }
+      String parameterDescription = ((Element) descriptionElementList.get(0)).getText();
       ParameterSpec parameter = new ParameterSpec(reference ,parameterName, 
             parameterTypeName, requiredParameter, parameterDescription);
       return parameter;
@@ -644,8 +660,12 @@ public final class FunctionSpec extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>topElement == null || parameters == null</code>.
+    *
+    * @throws InvalidSpecificationException
+    *    if the format of the param-combo is incorrect.
     */
-   static List parseParamCombos(Element topElement, Map parameters) throws IllegalArgumentException {
+   static List parseParamCombos(Element topElement, Map parameters) 
+   throws IllegalArgumentException, InvalidSpecificationException {
       MandatoryArgumentChecker.check("topElement", topElement, "parameters", parameters);
       List paramCombosList = topElement.getChildElements("param-combo");
       List paramCombos = new ArrayList(paramCombosList.size());
@@ -653,13 +673,23 @@ public final class FunctionSpec extends Object {
       while (itParamCombos.hasNext()) {
          Element nextParamCombo = (Element) itParamCombos.next();
          String type = nextParamCombo.getAttribute("type");
+         if (type == null) {
+            throw new InvalidSpecificationException("No type defined for a param-combo.");
+         }
          List paramDefs = nextParamCombo.getChildElements("param-ref");
          Iterator itParamDefs = paramDefs.iterator();
          Map paramComboParameters = new ChainedMap();
          while (itParamDefs.hasNext()) {
             Element paramDef = (Element) itParamDefs.next();
             String parameterName = paramDef.getAttribute("name");
+            if (parameterName == null) {
+               throw new InvalidSpecificationException("Missing name for a parameter in a param-combo.");
+            }
             ParameterSpec parameter = (ParameterSpec) parameters.get(parameterName);
+            if (parameterName == null) {
+               throw new InvalidSpecificationException("Incorrect parameter name \"" + 
+                     parameterName + "\" in a param-combo.");
+            }
             paramComboParameters.put(parameterName, parameter);
          }
          ParamComboSpec paramCombo = new ParamComboSpec(type, paramComboParameters);

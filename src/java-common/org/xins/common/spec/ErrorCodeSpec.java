@@ -236,7 +236,7 @@ public final class ErrorCodeSpec extends Object {
       
       // Get the result from the parsed error code specification.
       List descriptionElementList = errorCode.getChildElements("description");
-      if (descriptionElementList.isEmpty() || descriptionElementList.get(0) == null) {
+      if (descriptionElementList.isEmpty()) {
          throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName 
                + "] No definition specified.");
       }
