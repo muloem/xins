@@ -10,6 +10,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 
 /**
  * Abstraction of a manageable object. Abstract base class for classes that
@@ -133,13 +134,10 @@ public abstract class Manageable extends Object {
     * the latter is thrown instead.
     *
     * @param properties
-    *    the bootstrap properties, not <code>null</code>.
+    *    the bootstrap properties, can be <code>null</code>.
     *
     * @throws IllegalStateException
     *    if the current state is not {@link #UNUSABLE}.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null</code>.
     *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.
@@ -152,7 +150,6 @@ public abstract class Manageable extends Object {
     */
    public final void bootstrap(PropertyReader properties)
    throws IllegalStateException,
-          IllegalArgumentException,
           MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
@@ -178,8 +175,10 @@ public abstract class Manageable extends Object {
          throw new IllegalStateException(MESSAGE);
       }
 
-      // Check arguments
-      MandatoryArgumentChecker.check("properties", properties);
+      // If no properties are passed, then use an empty set
+      if (properties == null) {
+         properties = PropertyReaderUtils.EMPTY_PROPERTY_READER;
+      }
 
       // Delegate to subclass
       boolean done = false;
@@ -254,13 +253,10 @@ public abstract class Manageable extends Object {
     * then the latter is thrown instead.
     *
     * @param properties
-    *    the initialization properties, not <code>null</code>.
+    *    the initialization properties, can be <code>null</code>.
     *
     * @throws IllegalStateException
     *    if the current state is not {@link #BOOTSTRAPPED} or {@link #USABLE}.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null</code>.
     *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.
@@ -273,7 +269,6 @@ public abstract class Manageable extends Object {
     */
    public final void init(PropertyReader properties)
    throws IllegalStateException,
-          IllegalArgumentException,
           MissingRequiredPropertyException,
           InvalidPropertyValueException,
           InitializationException {
@@ -294,8 +289,10 @@ public abstract class Manageable extends Object {
          throw new IllegalStateException("The current state is " + erroneousState + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
       }
 
-      // Check arguments
-      MandatoryArgumentChecker.check("properties", properties);
+      // If no properties are passed, then use an empty set
+      if (properties == null) {
+         properties = PropertyReaderUtils.EMPTY_PROPERTY_READER;
+      }
 
       // Delegate to subclass
       boolean done = false;
