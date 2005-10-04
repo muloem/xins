@@ -123,7 +123,10 @@ public class DateConverterTests extends TestCase {
 
       Random random = new Random();
       DateConverter dc = new DateConverter(true);
-      char[] buffer = new char[18];
+      String s1 = "The date is: ";
+      String s2 = "YYYYMMDDxHHMMSSNNN";
+      String s3 = s1 + s2;
+      char[] buffer = s3.toCharArray();
       for (int i = 0; i < 50; i++) {
          if ((i % 2) == 0) {
             millis += random.nextInt();
@@ -137,7 +140,8 @@ public class DateConverterTests extends TestCase {
          message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
          assertEquals(message, expected, actual);
 
-         dc.format(millis, buffer, 0);
+         expected  = s1 + formatter.format(new Date(millis));
+         dc.format(millis, buffer, 13);
          actual    = new String(buffer);
          message   = "Expected DateConverter.format(long,char[],int) to return \"" + expected + "\" instead of \"" + actual + "\".";
          assertEquals(message, expected, actual);
