@@ -90,6 +90,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Added 1.3 DTD's for author, environment, impl, resultcode and type XML
     files.
 
+* Other:
+  - The script xins.bat no longer creates a __XINS_HOME environment variable.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
 
