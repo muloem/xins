@@ -11,6 +11,8 @@
 -->
 
 <module name="Checker">
+
+    <module name="PackageHtml" />
 	
 	<module name="TreeWalker">
 		
@@ -82,9 +84,32 @@
 			<property name="option" value="text" />
 		</module>
 
+        <!-- Maximum file length is 1500 -->
+        <module name="FileLength">
+            <property name="max" value="1500" />
+        </module>
+
+        <!-- Maximum line length is 78 -->
         <module name="LineLength">
             <property name="max" value="78" />
             <property name="ignorePattern" value="(@author)|(\$Id:)" />
+        </module>
+
+        <!-- Maximum 100 lines per method, excluding spaces and comments -->
+        <module name="MethodLength">
+           <property name="max" value="100" />
+           <property name="countEmpty" value="false" />
+        </module>
+
+        <!-- Maximum 8 parameters per method/constructor -->
+        <module name="ParameterNumber">
+           <property name="max" value="8" />
+        </module>
+
+        <!-- Check some Javadoc comments -->
+        <module name="JavadocType">
+            <property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
+            <property name="versionFormat" value="\$Revision$ \$Date: "/>
         </module>
 	</module>
 </module>

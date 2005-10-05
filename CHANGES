@@ -11,6 +11,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     passed argument name is null, then a programming error is logged and a
     ProgrammingException is thrown. Improved the unit tests.
 
+* Other:
+  - Improved the Checkstyle config. Now also checking things like a maximum
+    method line count (100), @author tag format, @version tag format, etc.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
 
