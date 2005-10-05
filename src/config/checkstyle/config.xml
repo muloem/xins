@@ -95,9 +95,9 @@
             <property name="ignorePattern" value="(@author)|(\$Id:)" />
         </module>
 
-        <!-- Maximum 100 lines per method, excluding spaces and comments -->
+        <!-- Maximum 80 lines per method, excluding spaces and comments -->
         <module name="MethodLength">
-           <property name="max" value="100" />
+           <property name="max" value="80" />
            <property name="countEmpty" value="false" />
         </module>
 
@@ -110,6 +110,9 @@
         <module name="JavadocType">
             <property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
             <property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: "/>
+        </module>
+        <module name="JavadocStyle">
+            <property name="checkEmptyJavadoc" value="true" />
         </module>
 	</module>
 </module>
