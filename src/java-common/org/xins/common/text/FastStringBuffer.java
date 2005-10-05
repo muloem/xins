@@ -90,7 +90,8 @@ public class FastStringBuffer extends Object {
     *    the initial content, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>s == null || capacity &lt; <code>s.</code>{@link String#length()}.
+    *    if <code>s == null
+    *          || capacity &lt; s.</code>{@link String#length()}.
     */
    public FastStringBuffer(int capacity, String s)
    throws IllegalArgumentException {

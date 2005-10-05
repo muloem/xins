@@ -111,7 +111,7 @@ public abstract class Manageable extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Gets the current state of this object
+    * Gets the current state of this object.
     *
     * @return
     *    the current state, never <code>null</code>.

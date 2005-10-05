@@ -621,7 +621,9 @@ public class HexConverter extends Object {
     *    the value of the parsed unsigned hexadecimal string.
     *
     * @throws IllegalArgumentException
-    *    if <code>s == null || index &lt; 0 || <code>s.</code>{@link String#length() length()}<code> &lt; index + 8</code>).
+    *    if <code>s == null
+    *          || index &lt; 0
+    *          || s.{@link String#length() length()} &lt; index + 8</code>).
     *
     * @throws NumberFormatException
     *    if any of the characters in the specified range of the string is not
@@ -704,7 +706,9 @@ public class HexConverter extends Object {
     *    the value of the parsed unsigned hexadecimal string.
     *
     * @throws IllegalArgumentException
-    *    if <code>s == null || index &lt; 0 || <code>s.</code>{@link String#length() length()}<code> &lt; index + 16</code>).
+    *    if <code>s == null
+    *          || index &lt; 0
+    *          || s.{@link String#length() length()} &lt; index + 16</code>).
     *
     * @throws NumberFormatException
     *    if any of the characters in the specified range of the string is not
