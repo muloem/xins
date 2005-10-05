@@ -45,7 +45,7 @@ extends CallingConvention {
    static final String CLASSNAME = StandardCallingConvention.class.getName();
 
    /**
-    * The enconding for the data section
+    * The enconding for the data section.
     */
    static final String DATA_ENCODING = "UTF-8";
 
