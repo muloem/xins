@@ -62,8 +62,8 @@ public class DateConverter extends Object {
    private static long CACHED_TIME = -1000L;
 
    /**
-    * The <code>String</code> representation of the cached time as 
-    * yyyyMMdd-HHmmss.
+    * The <code>String</code> representation of the cached time in the format
+    * <em>yyyyMMdd-HHmmss</em>.
     */
    private static String CACHED_TIME_STRING;
 
@@ -178,7 +178,7 @@ public class DateConverter extends Object {
     *    the timestamp, as a number of milliseconds since the Epoch.
     *
     * @param withCentury
-    *    <code>true</code> if the century should be in the result, 
+    *    <code>true</code> if the century should be in the result,
     *    <code>false</code> otherwise.
     *
     * @return
@@ -187,14 +187,14 @@ public class DateConverter extends Object {
     * @since XINS 1.3.0
     */
    public static String toDateString(long millis, boolean withCentury) {
-      
+
       long millisOnly = millis % 1000L;
       long delta = millis - CACHED_TIME;
-      
+
       synchronized (TIME_LOCK) {
-         
+
          // If we are in the same second, just append the milli seconds.
-         if (delta < 1000L && 
+         if (delta < 1000L &&
                millisOnly < CACHED_TIME % 1000L && delta > 0L) {
             FastStringBuffer buffer = new FastStringBuffer(18, CACHED_TIME_STRING);
             appendMillis(buffer, (int) millisOnly);
@@ -204,7 +204,7 @@ public class DateConverter extends Object {
             } else {
                return date.substring(2);
             }
-            
+
          // If we are in the same minute, just change the seconds and append the milli seconds.
          } else if (CACHED_TIME_STRING != null && delta > 0L) {
             int secondsOnly = Integer.parseInt(CACHED_TIME_STRING.substring(13));
@@ -251,7 +251,7 @@ public class DateConverter extends Object {
     *    the timestamp, as a number of milliseconds since the Epoch.
     *
     * @param withCentury
-    *    <code>true</code> if the century should be in the result, 
+    *    <code>true</code> if the century should be in the result,
     *    <code>false</code> otherwise.
     *
     * @param separator
@@ -259,7 +259,7 @@ public class DateConverter extends Object {
     *    if no separator should be set.
     *
     * @return
-    *    the converted character string without the milliseconds, 
+    *    the converted character string without the milliseconds,
     *    cannot be <code>null</code>.
     */
    private static String toDateString(long    millis,
@@ -270,7 +270,7 @@ public class DateConverter extends Object {
       GregorianCalendar calendar = new GregorianCalendar(TIME_ZONE);
       Date date = new Date(millis);
       calendar.setTime(date);
-      
+
       // Get all individual fields from the calendar
       int year  = calendar.get(Calendar.YEAR);
       int month = calendar.get(Calendar.MONTH);
@@ -278,7 +278,7 @@ public class DateConverter extends Object {
       int hour  = calendar.get(Calendar.HOUR_OF_DAY);
       int min   = calendar.get(Calendar.MINUTE);
       int sec   = calendar.get(Calendar.SECOND);
-      
+
       // Add century and year or both
       FastStringBuffer buffer = new FastStringBuffer(23);
       if (withCentury) {
@@ -334,7 +334,7 @@ public class DateConverter extends Object {
     * Creates a new <code>DateConverter</code>.
     *
     * @param withCentury
-    *    <code>true</code> if the century should be in the result, 
+    *    <code>true</code> if the century should be in the result,
     *    <code>false</code> otherwise.
     *
     * @since XINS 1.3.0
@@ -440,7 +440,7 @@ public class DateConverter extends Object {
     *
     * Otherwise, if <em>withCentury</em> is not set, then the format is
     * without the century:
-    * 
+    *
     * <blockquote><em>YYMMDD-hhmmssSSS</em> (length is 16)</blockquote>
     *
     * <p>The timestamp is a number of milliseconds since the Epoch (midnight

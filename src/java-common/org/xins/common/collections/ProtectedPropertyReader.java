@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * <code>ProtectedPropertyReader</code> instance. All modification methods on
  * this object then require this same secret key to be passed, otherwise they
  * fail with an {@link IncorrectSecretKeyException}.
- * 
+ *
  * <p>Note that the secret key equality is always checked before the other
  * preconditions. This means that if the secret key is incorrect, then the
  * other preconditions will not even be checked. For example, if <code>
@@ -215,7 +215,7 @@ extends AbstractPropertyReader {
     *    the constructor, cannot be <code>null</code>.
     *
     * @param source
-    *    the {@link PropertyReader} containing the key/value pairs to copy to 
+    *    the {@link PropertyReader} containing the key/value pairs to copy to
     *    this object, cannot be <code>null</code>.
     *
     * @throws IncorrectSecretKeyException
@@ -242,7 +242,7 @@ extends AbstractPropertyReader {
       // Copy all entries
       Iterator names = source.getNames();
       while (names.hasNext()) {
-         String name = (String) names.next(); 
+         String name = (String) names.next();
          set(secretKey, name, source.get(name));
       }
    }

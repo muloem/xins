@@ -48,7 +48,7 @@ public final class Text extends Type {
     * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
-    * @throws TypeValueException   
+    * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.
     */
@@ -71,7 +71,7 @@ public final class Text extends Type {
     * @return
     *    the original {@link String}, can be <code>null</code>.
     *
-    * @throws TypeValueException   
+    * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.
     */
