@@ -7,7 +7,6 @@
 package org.xins.common.text;
 
 import org.xins.common.Log;
-import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * Fast, unsynchronized string buffer implementation.

@@ -11,7 +11,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xins.common.Log;
-import org.xins.common.Utils;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;

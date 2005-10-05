@@ -7,8 +7,6 @@ import java.io.ByteArrayInputStream;
 
 import java.util.Stack;
 
-import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
