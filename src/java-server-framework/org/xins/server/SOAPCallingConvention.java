@@ -36,7 +36,7 @@ import org.znerd.xmlenc.XMLOutputter;
 /**
  * The SOAP calling convention.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 final class SOAPCallingConvention extends CallingConvention {
