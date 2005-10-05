@@ -92,7 +92,7 @@ import org.xins.logdoc.ExceptionUtils;
  *       <td>Disposed</td>
  *       <td><code>500 Internal Server Error</code></td>
  *    </tr>
- * <table>
+ * </table>
  *
  * <p>If the state is <em>ready</em> then the HTTP status code
  * <code>200 OK</code> is returned.
