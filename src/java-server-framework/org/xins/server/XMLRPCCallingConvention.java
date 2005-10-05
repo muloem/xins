@@ -34,7 +34,7 @@ import org.znerd.xmlenc.XMLOutputter;
 /**
  * The XML-RPC calling convention.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 final class XMLRPCCallingConvention extends CallingConvention {
