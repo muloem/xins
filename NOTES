@@ -1,4 +1,4 @@
-This file contains the XINS 1.3.0-beta3 release notes.
+This file contains the XINS 1.3.0-rc1 release notes.
 
 Contents:
 - Introduction
@@ -9,8 +9,8 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is a beta release. Although new features have mostly been tested, it is
-recommended a stable release is used for production deployments.
+This is a release candidate. It is expected to be stable and should not
+undergo any major changes.
 
 This release should be compatible with previous stable releases.
 
@@ -18,8 +18,8 @@ This release should be compatible with previous stable releases.
 *** PREREQUISITES ***
 
 The following are prerequisites for using the XINS framework:
-- Apache Ant 1.6.2 or higher (1.6.5 recommended)
-- Java SDK 1.3.1 or higher (1.4.2 recommended)
+- Apache Ant: 1.6.2 or higher (1.6.5 recommended)
+- Java SDK:   1.3.1 or higher (1.4.2 recommended)
 
 
 *** COMPATIBILITY ***
@@ -38,8 +38,10 @@ For more information on Japitools, see:
    http://www.kaffe.org/~stuart/japi/
 
 This release has been tested successfully in combination with Apache Ant
-version 1.6.5 on different operating systems, including Windows 2000 and Linux
-2.6. Most likely, it will also work correctly with earlier versions of Ant.
+version 1.6.5 on different operating systems, including Solaris 8, Linux 2.6,
+Windows ME, Windows 2000 and Windows XP.
+
+Most likely, it will also work correctly with earlier versions of Ant.
 For more information on Ant, visit:
 
    Homepage:      http://ant.apache.org/
