@@ -36,7 +36,7 @@ public class AccessRuleFile implements AccessRuleContainer {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the next token in the descriptor
+    * Returns the next token in the descriptor.
     *
     * @param descriptor
     *   the original descriptor, for use in the {@link ParseException}, if
