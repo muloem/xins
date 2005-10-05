@@ -84,7 +84,7 @@ public class DateConverterTests extends TestCase {
       }
    }
 
-   public void testDateConverter2() throws Exception {
+   public void testDateConverterFormat() throws Exception {
 
       long millis = System.currentTimeMillis();
       DateConverter dc = new DateConverter(true);
