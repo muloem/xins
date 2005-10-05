@@ -18,7 +18,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * a defined set of values.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  *

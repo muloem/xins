@@ -13,7 +13,7 @@ import org.xins.common.types.TypeValueException;
  * Standard type <em>_text</em>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<A href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</A>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
