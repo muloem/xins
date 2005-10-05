@@ -114,5 +114,10 @@
         <module name="JavadocStyle">
             <property name="checkEmptyJavadoc" value="true" />
         </module>
+
+        <!-- Check imports -->
+        <module name="AvoidStarImport" />
+        <module name="RedundantImport" />
+        <module name="UnusedImports" />
 	</module>
 </module>
