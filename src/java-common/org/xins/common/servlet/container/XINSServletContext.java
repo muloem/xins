@@ -42,16 +42,18 @@ public class XINSServletContext implements ServletContext {
    //-------------------------------------------------------------------------
 
    /** 
-    * Creates a new instance of <code>XINSServletContext</code>
+    * Creates a new <code>XINSServletContext</code> instance.
     */
    public XINSServletContext() {
+      // empty
    }
 
    /** 
-    * Creates a new instance of <code>XINSServletContext</code>
+    * Creates a new <code>XINSServletContext</code> with the specified
+    * configuration.
     *
     * @param config
-    *    the config of the servlet.
+    *    the config of the servlet, can be <code>null</code>.
     */
    XINSServletContext(LocalServletConfig config) {
       _config = config;
