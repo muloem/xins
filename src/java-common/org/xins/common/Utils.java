@@ -42,7 +42,8 @@ public final class Utils extends Object {
     * @since XINS 1.2.0
     */
    public static double getJavaVersion() {
-      return Double.parseDouble(System.getProperty("java.version").substring(0, 3));
+      String s = System.getProperty("java.version").substring(0, 3);
+      return Double.parseDouble(s);
    }
 
    /**
