@@ -50,10 +50,10 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when test="$side='server' and local-name() = 'input'">
-					<xsl:text>context.</xsl:text>
+					<xsl:text>_context.</xsl:text>
 				</xsl:when>
 				<xsl:when test="$side='client' and local-name() = 'output'">
-					<xsl:text>result.</xsl:text>
+					<xsl:text>_result.</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'element'">
 					<xsl:value-of select="@name" />
@@ -69,7 +69,7 @@
 
 			<xsl:for-each select="param | attribute">
 				<xsl:text>
-      java.lang.String </xsl:text>
+      String </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:if test="local-name() = 'attribute'">
 					<xsl:text>Attribute</xsl:text>
@@ -243,7 +243,7 @@
 					<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="$active" />
-					<xsl:text>!= null &amp;&amp; (</xsl:text>
+					<xsl:text> != null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
 						<xsl:value-of select="@name" />

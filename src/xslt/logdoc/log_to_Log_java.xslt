@@ -229,7 +229,7 @@
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<xsl:if test="$exception">
-			<xsl:text>java.lang.Throwable __exception__</xsl:text>
+			<xsl:text>java.lang.Throwable _exception</xsl:text>
 			<xsl:if test="count(param) &gt; 0">
 				<xsl:text>, </xsl:text>
 			</xsl:if>
@@ -252,11 +252,11 @@
 		<xsl:text>.isEnabledFor(</xsl:text>
 		<xsl:value-of select="@level" />
 		<xsl:text>)) {
-         String __translation__ = TRANSLATION_BUNDLE.translation_</xsl:text>
+         String _translation = TRANSLATION_BUNDLE.translation_</xsl:text>
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<xsl:if test="$exception">
-			<xsl:text>__exception__</xsl:text>
+			<xsl:text>_exception</xsl:text>
 		</xsl:if>
 		<xsl:for-each select="param">
 			<xsl:if test="$exception or (position() &gt; 1)">
@@ -269,10 +269,10 @@
 		<xsl:value-of select="@id" />
 		<xsl:text>.log(FQCN, </xsl:text>
 		<xsl:value-of select="@level" />
-		<xsl:text>, __translation__, </xsl:text>
+		<xsl:text>, _translation, </xsl:text>
 		<xsl:choose>
 			<xsl:when test="$exception and @level = 'DEBUG'">
-				<xsl:text>org.xins.logdoc.ExceptionUtils.getRootCause(__exception__));</xsl:text>
+				<xsl:text>org.xins.logdoc.ExceptionUtils.getRootCause(_exception));</xsl:text>
 			</xsl:when>
 			<xsl:when test="$exception">
 				<xsl:text>null);
@@ -281,7 +281,7 @@
 				<xsl:text>.isEnabledFor(DEBUG)) {
             LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />
-				<xsl:text>.log(FQCN, DEBUG, __translation__, org.xins.logdoc.ExceptionUtils.getRootCause(__exception__));
+				<xsl:text>.log(FQCN, DEBUG, _translation, org.xins.logdoc.ExceptionUtils.getRootCause(_exception));
          }</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

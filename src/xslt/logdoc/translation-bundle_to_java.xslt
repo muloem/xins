@@ -117,7 +117,7 @@ import org.xins.logdoc.LogdocStringBuffer;
 			<xsl:value-of select="$entry" />
 			<xsl:text>(</xsl:text>
 			<xsl:if test="$exception">
-				<xsl:text>java.lang.Throwable __exception__</xsl:text>
+				<xsl:text>java.lang.Throwable _exception</xsl:text>
 			</xsl:if>
 			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
 				<xsl:with-param name="exception" select="$exception" />
@@ -152,24 +152,24 @@ import org.xins.logdoc.LogdocStringBuffer;
 		<xsl:choose>
 			<xsl:when test="@name = 'class'">
 				<xsl:text>
-         buffer.append(__exception__.getClass().getName());</xsl:text>
+         buffer.append(_exception.getClass().getName());</xsl:text>
 			</xsl:when>
 			<xsl:when test="@name = 'message'">
 				<xsl:text>
-         if (__exception__.getMessage() == null) {
+         if (_exception.getMessage() == null) {
             buffer.append("(null)");
          } else {</xsl:text>
 				<xsl:choose>
 					<xsl:when test="@format = 'quoted'">
 						<xsl:text>
             buffer.append('"');
-            buffer.append(__exception__.getMessage());
+            buffer.append(_exception.getMessage());
             buffer.append('"');
          }</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>
-            buffer.append(__exception__.getMessage());</xsl:text>
+            buffer.append(_exception.getMessage());</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>

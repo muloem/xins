@@ -134,7 +134,7 @@ extends org.xins.client.AbstractCAPICallResult {
     *    instance if this result is considered unacceptable, otherwise
     *    <code>null</code>.
     */
-   private org.xins.client.UnacceptableRequestException checkParameters(org.xins.client.XINSCallResult result) {
+   private org.xins.client.UnacceptableRequestException checkParameters(org.xins.client.XINSCallResult _result) {
 ]]></xsl:text>
 		<xsl:apply-templates select="output" mode="checkParams">
 			<xsl:with-param name="side" select="'client'" />

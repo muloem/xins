@@ -346,7 +346,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       }
 
       // Determine the error code
-      java.lang.String __errorCode__ = resultData.getErrorCode();
+      java.lang.String errorCode = resultData.getErrorCode();
       if (resultData.getErrorCode() == null) {
          throw new java.lang.IllegalArgumentException(
             "resultData.getErrorCode() == null");
@@ -368,10 +368,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                   </xsl:otherwise>
                </xsl:choose>
                <xsl:value-of select="@name" />
-               <xsl:text>".equals(__errorCode__)) {
-         java.lang.String    __function__  = request.getFunctionName();
-         java.util.ArrayList __supported__ = (java.util.ArrayList) _errorCodesPerFunction.get(__function__);
-         if (__supported__ == null || !__supported__.contains("</xsl:text>
+               <xsl:text>".equals(errorCode)) {
+         java.lang.String    function  = request.getFunctionName();
+         java.util.ArrayList supported = (java.util.ArrayList) _errorCodesPerFunction.get(function);
+         if (supported == null || !supported.contains("</xsl:text>
                <xsl:value-of select="@name" />
                <xsl:text>")) {
             throw new org.xins.client.UnacceptableErrorCodeXINSCallException(
