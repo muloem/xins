@@ -109,7 +109,7 @@
         <!-- Check some Javadoc comments -->
         <module name="JavadocType">
             <property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
-            <property name="versionFormat" value="\$Revision$ \$Date: "/>
+            <property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: "/>
         </module>
 	</module>
 </module>
