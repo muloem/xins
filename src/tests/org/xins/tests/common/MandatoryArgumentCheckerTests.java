@@ -11,6 +11,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingException;
 
 /**
  * Tests for class <code>MandatoryArgumentChecker</code>
@@ -64,41 +65,40 @@ public class MandatoryArgumentCheckerTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Tests the simple check.
+    * Tests the check method that checks 1 argument.
     */
-   public void testOneArgument() throws Throwable {
+   public void testMandatoryArgumentChecker1() throws Throwable {
       MandatoryArgumentChecker.check("hello", "world");
       try {
          MandatoryArgumentChecker.check("hello", null);
-         fail("The MandatoryArgumentChecker did not throw an exception when a null value was passed.");
+         fail("The MandatoryArgumentChecker did not throw an IllegalArgumentException when a null value was passed.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          MandatoryArgumentChecker.check(null, "world");
-         fail("The MandatoryArgumentChecker did not throw an exception when a null name was passed.");
-      } catch (IllegalArgumentException exception) {
+         fail("The MandatoryArgumentChecker did not throw a ProgrammingException when a null name was passed.");
+      } catch (ProgrammingException exception) {
          // as expected
       }
       try {
          MandatoryArgumentChecker.check(null, null);
-         fail("The MandatoryArgumentChecker did not throw an exception when a null name and value were passed.");
-      } catch (IllegalArgumentException exception) {
+         fail("The MandatoryArgumentChecker did not throw a ProgrammingException when a null name and value were passed.");
+      } catch (ProgrammingException exception) {
          // as expected
       }
    }
 
    /**
-    * Tests the check method that accept multiple parameters.
+    * Tests the check method that checks 2 arguments.
     */
-   public void testMultiArguments() throws Throwable {
+   public void testMandatoryArgumentChecker2() throws Throwable {
 
-      // Two parameters
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!");
        try {
          MandatoryArgumentChecker.check("hello", "world", null, "you!");
-         fail("The MandatoryArgumentChecker did not throw an exception when a null name was passed.");
-      } catch (IllegalArgumentException exception) {
+         fail("The MandatoryArgumentChecker did not throw a ProgrammingException when a null name was passed.");
+      } catch (ProgrammingException exception) {
          // as expected
       }
       try {
@@ -115,12 +115,17 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       }
       try {
          MandatoryArgumentChecker.check(null, null, null, null);
-         fail("The MandatoryArgumentChecker did not throw an exception when a null name and value were passed.");
-      } catch (IllegalArgumentException exception) {
+         fail("The MandatoryArgumentChecker did not throw a ProgrammingException when a null name and value were passed.");
+      } catch (ProgrammingException exception) {
          // as expected
       }
+   }
 
-      // Three parameters
+   /**
+    * Tests the check method that checks 3 arguments.
+    */
+   public void testMandatoryArgumentChecker3() throws Throwable {
+
       MandatoryArgumentChecker.check("hello", "world", "hello", "you!", "hi", "me");
       try {
          MandatoryArgumentChecker.check("hello", "world", "hello", null, "hi", "me");
@@ -146,9 +151,20 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
+   }
 
-      // Four parameters
-      MandatoryArgumentChecker.check("hello", "world", "hello", "you!", "hi", "me", "bonjour", "tout le monde");
+   /**
+    * Tests the check method that checks 4 arguments.
+    */
+   public void testMandatoryArgumentChecker4() throws Throwable {
+
+      MandatoryArgumentChecker.check("a", "1", "b", "2", "c", "3", "d", "4");
+      try {
+         MandatoryArgumentChecker.check(null, "1", "b", "2", "c", "3", "d", "4");
+         fail("The MandatoryArgumentChecker did not throw a ProgrammingException when a null name was passed.");
+      } catch (ProgrammingException exception) {
+         // as expected
+      }
       try {
          MandatoryArgumentChecker.check("hello", null, "hello", "you!", "hi", "me", "bonjour", "tout le monde");
          fail("The MandatoryArgumentChecker did not throw an exception when a null value was passed.");

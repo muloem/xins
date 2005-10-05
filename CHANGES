@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 
+* XINS/Java Common Library:
+  - Rewrote the MandatoryArgumentChecker class in org.xins.common. If the
+    passed argument name is null, then a programming error is logged and a
+    ProgrammingException is thrown. Improved the unit tests.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:

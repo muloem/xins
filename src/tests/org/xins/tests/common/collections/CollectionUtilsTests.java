@@ -12,6 +12,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.common.ProgrammingException;
 import org.xins.common.collections.CollectionUtils;
 
 /**
@@ -81,20 +82,30 @@ public class CollectionUtilsTests extends TestCase {
       // Test list(String, Object[], int)
       try {
          CollectionUtils.list(null, null, 0);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {}
+         fail("Expected ProgrammingException.");
+      } catch (ProgrammingException exception) {
+         // as expected
+      }
       try {
          CollectionUtils.list(ARG_NAME, null, 0);
          fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {}
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
       try {
          CollectionUtils.list(null, new Object[0], 0);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {}
+         fail("Expected ProgrammingException.");
+      } catch (ProgrammingException exception) {
+         // as expected
+      }
+
       try {
          CollectionUtils.list(ARG_NAME, new Object[0], 1);
          fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {}
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
 
       // Empty array
       ArrayList list = CollectionUtils.list(ARG_NAME, new Object[0], 0);

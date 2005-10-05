@@ -6,8 +6,6 @@
  */
 package org.xins.common;
 
-import org.xins.common.text.FastStringBuffer;
-
 /**
  * Utility class used to check mandatory method arguments.
  *
@@ -25,329 +23,360 @@ public final class MandatoryArgumentChecker extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The name of this class.
+    */
+   private static final String CLASSNAME =
+      MandatoryArgumentChecker.class.getName();
+
+   /**
+    * The name of the method that checks 1 argument. Used in exception
+    * handling and/or logging.
+    */
+   private static final String METHOD_1_NAME;
+
+   /**
+    * The name of the method that checks 2 arguments. Used in exception
+    * handling and/or logging.
+    */
+   private static final String METHOD_2_NAME;
+
+   /**
+    * The name of the method that checks 3 arguments. Used in exception
+    * handling and/or logging.
+    */
+   private static final String METHOD_3_NAME;
+
+   /**
+    * The name of the method that checks 4 arguments. Used in exception
+    * handling and/or logging.
+    */
+   private static final String METHOD_4_NAME;
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
+   static {
+      String start = "check(";
+      String arg = "java.lang.String,java.lang.String";
+      String end = ")";
+
+      METHOD_1_NAME = start + arg                                     + end;
+      METHOD_2_NAME = start + arg + ',' + arg                         + end;
+      METHOD_3_NAME = start + arg + ',' + arg + ',' + arg             + end;
+      METHOD_4_NAME = start + arg + ',' + arg + ',' + arg + ',' + arg + end;
+   }
+
    /**
-    * Checks that the specified argument is not <code>null</code>.
+    * Checks if the specified argument value is <code>null</code>. If it is
+    * <code>null</code>, then an {@link IllegalArgumentException} is thrown.
     *
-    * @param argumentName
-    *    the name of the argument that cannot be <code>null</code>.
+    * @param argName
+    *    the name of the argument, cannot be <code>null</code>.
     *
-    * @param argumentValue
-    *    the value of the argument that cannot be <code>null</code>.
+    * @param argValue
+    *    the value of the argument.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentName == null</code> or <code>argumentValue == null</code>.
+    *    if <code>argValue == null</code>.
     */
-   public static void check(String argumentName, Object argumentValue)
+   public static void check(String argName, Object argValue)
    throws IllegalArgumentException {
 
-      if (argumentName == null) {
-         check("argumentName", argumentName);
+      // If both are non-null everything is okay, just short-circuit
+      if (argName != null && argValue != null) {
+         return;
       }
 
-      if (argumentValue == null) {
-         FastStringBuffer buffer = new FastStringBuffer(argumentName.length() + 8, argumentName);
-         buffer.append(" == null");
-         throw new IllegalArgumentException(buffer.toString());
+      // Check if the name is null
+      if (argName == null) {
+         throw Utils.logProgrammingError(
+            CLASSNAME,               METHOD_1_NAME,
+            Utils.getCallingClass(), Utils.getCallingMethod(),
+            "argName == null"
+         );
+      }
+
+      // Otherwise the value is null
+      if (argValue == null) {
+         throw new IllegalArgumentException(argName + " == null");
       }
    }
 
    /**
-    * Checks that the specified two arguments are not <code>null</code>.
+    * Checks if any of the two specified argument values is <code>null</code>.
+    * If at least one value is <code>null</code>, then an
+    * {@link IllegalArgumentException} is thrown.
     *
-    * @param argumentName1
-    *    the name of the first argument that cannot be <code>null</code>.
+    * @param argName1
+    *    the name of the first argument, cannot be <code>null</code>.
     *
-    * @param argumentValue1
-    *    the value of the first argument that cannot be <code>null</code>.
+    * @param argValue1
+    *    the value of the first argument.
     *
-    * @param argumentName2
-    *    the name of the second argument that cannot be <code>null</code>.
+    * @param argName2
+    *    the name of the second argument, cannot be <code>null</code>.
     *
-    * @param argumentValue2
-    *    the value of the second argument that cannot be <code>null</code>.
+    * @param argValue2
+    *    the value of the second argument.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentName1 == null || argumentName2 == null</code>
-    *    or if <code>argumentValue1 == null || argumentValue2 == null</code>.
+    *    if <code>argValue1 == null || argValue2 == null</code>.
     */
-   public static void check(String argumentName1, Object argumentValue1,
-                            String argumentName2, Object argumentValue2)
+   public static void check(String argName1, Object argValue1,
+                            String argName2, Object argValue2)
    throws IllegalArgumentException {
 
-      if (argumentName1 == null || argumentName2 == null) {
-         check("argumentName1", argumentName1, "argumentName2", argumentName2);
+      // If all are non-null everything is okay, just short-circuit
+      if (argName1 != null && argValue1 != null &&
+          argName2 != null && argValue2 != null) {
+         return;
       }
 
-      if (argumentValue1 == null || argumentValue2 == null) {
-         if (argumentValue1 == null && argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(20 + argumentName1.length() + argumentName2.length(), argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(8 + argumentName1.length(), argumentName1);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(8 + argumentName2.length(), argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
+      String message;
+
+      // Check if any of the names is null
+      if (argName1 == null || argName2 == null) {
+         if (argName1 == null && argName2 == null) {
+            message = "argName1 == null && argName2 == null";
+         } else if (argName1 == null) {
+            message = "argName1 == null";
+         } else {
+            message = "argName2 == null";
          }
+         throw Utils.logProgrammingError(
+            CLASSNAME,               METHOD_2_NAME,
+            Utils.getCallingClass(), Utils.getCallingMethod(),
+            message
+         );
       }
+
+      // Otherwise (at least) one of the values must be null
+      if (argValue1 == null && argValue2 == null) {
+         message = argName1 + " == null && "
+                 + argName2 + " == null";
+      } else if (argValue1 == null) {
+         message = argName1 + " == null";
+      } else {
+         message = argName2 + " == null";
+      }
+      throw new IllegalArgumentException(message);
    }
 
    /**
-    * Checks that the specified three arguments are not <code>null</code>.
+    * Checks if any of the three specified argument values is
+    * <code>null</code>. If at least one value is <code>null</code>, then an
+    * {@link IllegalArgumentException} is thrown.
     *
-    * @param argumentName1
-    *    the name of the first argument that cannot be <code>null</code>.
+    * @param argName1
+    *    the name of the first argument, cannot be <code>null</code>.
     *
-    * @param argumentValue1
-    *    the value of the first argument that cannot be <code>null</code>.
+    * @param argValue1
+    *    the value of the first argument.
     *
-    * @param argumentName2
-    *    the name of the second argument that cannot be <code>null</code>.
+    * @param argName2
+    *    the name of the second argument, cannot be <code>null</code>.
     *
-    * @param argumentValue2
-    *    the value of the second argument that cannot be <code>null</code>.
+    * @param argValue2
+    *    the value of the second argument.
     *
-    * @param argumentName3
-    *    the name of the third argument that cannot be <code>null</code>.
+    * @param argName3
+    *    the name of the third argument, cannot be <code>null</code>.
     *
-    * @param argumentValue3
-    *    the value of the third argument that cannot be <code>null</code>.
+    * @param argValue3
+    *    the value of the third argument.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentName1 == null
-    *           || argumentName2 == null
-    *           || argumentName3 == null</code>
-    *    or if <code>argumentValue1 == null
-    *           || argumentValue2 == null
-    *           || argumentValue3 == null</code>.
+    *    if <code>argValue1 == null
+    *          || argValue2 == null
+    *          || argValue3 == null</code>.
     */
-   public static void check(String argumentName1, Object argumentValue1,
-                            String argumentName2, Object argumentValue2,
-                            String argumentName3, Object argumentValue3)
+   public static void check(String argName1, Object argValue1,
+                            String argName2, Object argValue2,
+                            String argName3, Object argValue3)
    throws IllegalArgumentException {
 
-      if (argumentName1 == null || argumentName2 == null || argumentName3 == null) {
-         check("argumentName1", argumentName1, "argumentName2", argumentName2, "argumentName3", argumentName3);
+      // If all are non-null everything is okay, just short-circuit
+      if (argName1 != null && argValue1 != null &&
+          argName2 != null && argValue2 != null &&
+          argName3 != null && argValue3 != null) {
+         return;
       }
 
-      if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null) {
-         if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(120);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName1);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
+      // Check if any of the names is null
+      String message;
+      if (argName1 == null || argName2 == null || argName3 == null) {
+         if (argName1 == null && argName2 == null && argName3 == null) {
+            message = "argName1 == null && "
+                    + "argName2 == null && "
+                    + "argName3 == null";
+         } else if (argName1 == null && argName2 == null) {
+            message = "argName1 == null && argName2 == null";
+         } else if (argName1 == null && argName3 == null) {
+            message = "argName1 == null && argName3 == null";
+         } else if (argName2 == null && argName3 == null) {
+            message = "argName2 == null && argName3 == null";
+         } else if (argName1 == null) {
+            message = "argName1 == null";
+         } else if (argName2 == null) {
+            message = "argName2 == null";
+         } else {
+            message = "argName3 == null";
          }
+         throw Utils.logProgrammingError(
+            CLASSNAME,               METHOD_3_NAME,
+            Utils.getCallingClass(), Utils.getCallingMethod(),
+            message
+         );
       }
+
+      // Otherwise (at least) one of the values must be null
+      if (argValue1 == null && argValue2 == null && argValue3 == null) {
+         message = argName1 + " == null && "
+                 + argName2 + " == null && "
+                 + argName3 + " == null";
+      } else if (argValue1 == null && argValue2 == null) {
+         message = argName1 + " == null &&"
+                 + argName2 + " == null";
+      } else if (argValue1 == null && argValue3 == null) {
+         message = argName1 + " == null &&"
+                 + argName3 + " == null";
+      } else if (argValue2 == null && argValue3 == null) {
+         message = argName2 + " == null &&"
+                 + argName3 + " == null";
+      } else if (argValue1 == null) {
+         message = argName1 + " == null";
+      } else if (argValue2 == null) {
+         message = argName2 + " == null";
+      } else {
+         message = argName3 + " == null";
+      }
+      throw new IllegalArgumentException(message);
    }
 
    /**
-    * Checks that the specified four arguments are not <code>null</code>.
+    * Checks if any of the four specified argument values is
+    * <code>null</code>. If at least one value is <code>null</code>, then an
+    * {@link IllegalArgumentException} is thrown.
     *
-    * @param argumentName1
-    *    the name of the first argument that cannot be <code>null</code>.
+    * @param argName1
+    *    the name of the first argument, cannot be <code>null</code>.
     *
-    * @param argumentValue1
-    *    the value of the first argument that cannot be <code>null</code>.
+    * @param argValue1
+    *    the value of the first argument.
     *
-    * @param argumentName2
-    *    the name of the second argument that cannot be <code>null</code>.
+    * @param argName2
+    *    the name of the second argument, cannot be <code>null</code>.
     *
-    * @param argumentValue2
-    *    the value of the second argument that cannot be <code>null</code>.
+    * @param argValue2
+    *    the value of the second argument.
     *
-    * @param argumentName3
-    *    the name of the third argument that cannot be <code>null</code>.
+    * @param argName3
+    *    the name of the third argument, cannot be <code>null</code>.
     *
-    * @param argumentValue3
-    *    the value of the third argument that cannot be <code>null</code>.
+    * @param argValue3
+    *    the value of the third argument.
     *
-    * @param argumentName4
-    *    the name of the fourth argument that cannot be <code>null</code>.
+    * @param argName4
+    *    the name of the fourth argument, cannot be <code>null</code>.
     *
-    * @param argumentValue4
-    *    the value of the fourth argument that cannot be <code>null</code>.
+    * @param argValue4
+    *    the value of the fourth argument.
     *
     * @throws IllegalArgumentException
-    *    if <code>argumentName1 == null
-    *           || argumentName2 == null
-    *           || argumentName3 == null
-    *           || argumentName4 == null</code>
-    *    or if <code>argumentValue1 == null
-    *           || argumentValue2 == null
-    *           || argumentValue3 == null
-    *           || argumentValue4 == null</code>.
+    *    if <code>argValue1 == null || argValue2 == null
+    *          || argValue3 == null || argValue4 == null</code>.
     */
-   public static void check(String argumentName1, Object argumentValue1,
-                            String argumentName2, Object argumentValue2,
-                            String argumentName3, Object argumentValue3,
-                            String argumentName4, Object argumentValue4)
+   public static void check(String argName1, Object argValue1,
+                            String argName2, Object argValue2,
+                            String argName3, Object argValue3,
+                            String argName4, Object argValue4)
    throws IllegalArgumentException {
 
-      if (argumentName1 == null || argumentName2 == null || argumentName3 == null || argumentName4 == null) {
-         check("argumentName1", argumentName1, "argumentName2", argumentName2, "argumentName3", argumentName3, "argumentName4", argumentName4);
+      // If all are non-null everything is okay, just short-circuit
+      if (argName1 != null && argValue1 != null &&
+          argName2 != null && argValue2 != null &&
+          argName3 != null && argValue3 != null &&
+          argName4 != null && argValue4 != null) {
+         return;
       }
 
-      if (argumentValue1 == null || argumentValue2 == null || argumentValue3 == null || argumentValue4 == null) {
-         if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(160);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue2 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(120);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue2 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(120);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue3 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(120);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName1);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue1 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName1);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null && argumentValue3 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(120);
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null && argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName2);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue2 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName2);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue3 == null && argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(80);
-            buffer.append(argumentName3);
-            buffer.append(" == null && ");
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue3 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName3);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
-         } else if (argumentValue4 == null) {
-            FastStringBuffer buffer = new FastStringBuffer(40);
-            buffer.append(argumentName4);
-            buffer.append(" == null");
-            throw new IllegalArgumentException(buffer.toString());
+      // Check if any of the names is null
+      String message;
+      if (argName1 == null || argName2 == null ||
+          argName3 == null || argName4 == null) {
+         if (argName1 == null && argName2 == null &&
+             argName3 == null && argName4 == null) {
+            message = "argName1 == null && argName2 == null && "
+                    + "argName3 == null && argName4 == null";
+         } else if (argName1 == null && argName2 == null &&
+                    argName3 == null) {
+            message = "argName1 == null && argName2 == null && "
+                    + "argName3 == null";
+         } else if (argName1 == null && argName2 == null &&
+                    argName4 == null) {
+            message = "argName1 == null && argName2 == null && "
+                    + "argName4 == null";
+         } else if (argName1 == null && argName3 == null &&
+                    argName4 == null) {
+            message = "argName1 == null && argName3 == null && "
+                    + "argName4 == null";
+         } else if (argName2 == null && argName3 == null &&
+                    argName4 == null) {
+            message = "argName2 == null && argName3 == null && "
+                    + "argName4 == null";
+         } else if (argName1 == null && argName2 == null) {
+            message = "argName1 == null && argName2 == null";
+         } else if (argName1 == null && argName3 == null) {
+            message = "argName1 == null && argName3 == null";
+         } else if (argName1 == null && argName4 == null) {
+            message = "argName1 == null && argName4 == null";
+         } else if (argName2 == null && argName3 == null) {
+            message = "argName2 == null && argName3 == null";
+         } else if (argName2 == null && argName4 == null) {
+            message = "argName2 == null && argName4 == null";
+         } else if (argName3 == null && argName4 == null) {
+            message = "argName3 == null && argName4 == null";
+         } else if (argName1 == null) {
+            message = "argName1 == null";
+         } else if (argName2 == null) {
+            message = "argName2 == null";
+         } else if (argName3 == null) {
+            message = "argName3 == null";
+         } else {
+            message = "argName4 == null";
          }
+         throw Utils.logProgrammingError(
+            CLASSNAME,               METHOD_3_NAME,
+            Utils.getCallingClass(), Utils.getCallingMethod(),
+            message
+         );
       }
+
+      // Otherwise (at least) one of the values must be null
+      if (argValue1 == null && argValue2 == null && argValue3 == null) {
+         message = argName1 + " == null && "
+                 + argName2 + " == null && "
+                 + argName3 + " == null";
+      } else if (argValue1 == null && argValue2 == null) {
+         message = argName1 + " == null &&"
+                 + argName2 + " == null";
+      } else if (argValue1 == null && argValue3 == null) {
+         message = argName1 + " == null &&"
+                 + argName3 + " == null";
+      } else if (argValue2 == null && argValue3 == null) {
+         message = argName2 + " == null &&"
+                 + argName3 + " == null";
+      } else if (argValue1 == null) {
+         message = argName1 + " == null";
+      } else if (argValue2 == null) {
+         message = argName2 + " == null";
+      } else {
+         message = argName3 + " == null";
+      }
+      throw new IllegalArgumentException(message);
    }
 
 
