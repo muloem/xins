@@ -91,7 +91,8 @@ public abstract class CallException extends Exception {
                                      "request",     request,
                                      "target",      target);
       if (duration < 0) {
-         throw new IllegalArgumentException("duration (" + duration + ") < 0");
+         throw new IllegalArgumentException(
+            "duration (" + duration + ") < 0");
       }
 
       FastStringBuffer buffer = new FastStringBuffer(495, shortReason);
@@ -302,10 +303,12 @@ public abstract class CallException extends Exception {
 
       // Check preconditions
       if (_next != null) {
-         throw new IllegalStateException("Next linked CallException already set.");
+         throw new IllegalStateException(
+            "Next linked CallException already set.");
       }
       MandatoryArgumentChecker.check("next", next);
 
+      // Store the reference
       _next = next;
    }
 

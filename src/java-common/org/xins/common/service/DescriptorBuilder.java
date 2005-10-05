@@ -25,13 +25,13 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * <h3>Examples</h3>
  *
- * <p>The following example is the definition of a single backend at
+ * <p>The following example is the definition of a single back-end at
  * <code>http://somehost/</code>, identified by the property name
- * <code>"backend"</code>, the time-out is set to 20 seconds:
+ * <code>"s1"</code>, the time-out is set to 20 seconds:
  *
- * <blockquote><code>backend=service, http://somehost/, 20000</code></blockquote>
+ * <blockquote><code>s1=service, http://somehost/, 20000</code></blockquote>
  *
- * <p>The next example is the definition of 4 backends, of which one will be
+ * <p>The next example is the definition of 4 back-ends, of which one will be
  * chosen randomly. This setting is identified by the property name
  * <code>"capi.sso"</code>:
  *
@@ -52,13 +52,14 @@ import org.xins.logdoc.ExceptionUtils;
  * <br>
  * <br># Total time-out is not set, connection time-out is not set and socket
  * <br># time-out is 2 seconds
- * <br>capi.sso.target4=service, http://othrhost:2002/, 0, 0, 2000</code></blockquote>
+ * <br>capi.sso.target4=service, http://othrhost:2002/, 0, 0,
+ * 2000</code></blockquote>
  *
- * <p>The last example defines 2 backends at a more preferred location and 1
- * at a less-preferred location. Normally one of the 2 backends at the
+ * <p>The last example defines 2 back-ends at a more preferred location and 1
+ * at a less-preferred location. Normally one of the 2 back-ends at the
  * preferred location will be chosen randomly, but if none is available, then
- * the backend at the less preferred location will be tried. The time-out for
- * all backends in 8 seconds. The name of the property is <code>"ldap"</code>:
+ * the back-end at the less preferred location will be tried. The time-out for
+ * all back-ends in 8 seconds. The name of the property is <code>"ldap"</code>:
  *
  * <blockquote><code>ldap=group, ordered, loc1, host2a
  * <br>ldap.loc1=group, random, host1a, host1b
@@ -92,7 +93,8 @@ public final class DescriptorBuilder extends Object {
    /**
     * Delimiters between tokens within a property value.
     */
-   private static final String DELIMITER_AS_STRING = String.valueOf(DELIMITER);
+   private static final String DELIMITER_AS_STRING =
+      String.valueOf(DELIMITER);
 
    /**
     * Name identifying an actual target descriptor.
@@ -262,11 +264,15 @@ public final class DescriptorBuilder extends Object {
       int equalsPos = descriptorValue.indexOf('=');
       int crPos = descriptorValue.indexOf(LINE_DELIMITER);
       if (equalsPos <= 0 || (crPos > 0 && equalsPos > crPos)) {
-         throw new IllegalArgumentException("No property name found in the text: " + descriptorValue);
+         throw new IllegalArgumentException(
+            "No property name found in \"" + descriptorValue + "\".");
       }
       String propertyName = descriptorValue.substring(0, equalsPos);
+
+      final String ENCODING = "ISO-8859-1";
       try {
-         ByteArrayInputStream bais = new ByteArrayInputStream(descriptorValue.getBytes("ISO-8859-1"));
+         byte[] bytes = descriptorValue.getBytes(ENCODING);
+         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
          PropertyReader properties = PropertyReaderUtils.createPropertyReader(bais);
          bais.close();
          return build((ServiceCaller) null, properties, propertyName);

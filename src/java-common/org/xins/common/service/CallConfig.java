@@ -120,9 +120,9 @@ public class CallConfig extends Object {
    /**
     * Describes this configuration. The description should be trimmed and
     * should fit in a sentence. Good examples include
-    * <code>"HTTP call config #1592 [failOverAllowed=true, method=\"POST\"]"</code>
-    * and
-    * <code>"HTTP call config #12 [failOverAllowed=false, method=(null)]"</code>
+    * <code>"HTTP call config #1592 [failOverAllowed=true,
+    * method=\"POST\"]"</code> and <code>"HTTP call config #12
+    * [failOverAllowed=false, method=(null)]"</code>
     *
     * <p>The implementation of this method in class {@link CallConfig} returns
     * a descriptive string that contains an instance number and the

@@ -67,7 +67,8 @@ public abstract class CallResult extends Object {
       MandatoryArgumentChecker.check("request",         request,
                                      "succeededTarget", succeededTarget);
       if (duration < 0L) {
-         throw new IllegalArgumentException("duration (" + duration + "L) < 0L");
+         throw new IllegalArgumentException(
+            "duration (" + duration + "L) < 0L");
       }
 
       // Set fields
