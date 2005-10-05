@@ -210,9 +210,6 @@ public final class ErrorCodeSpec extends Object {
     * @param reference
     *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
     *
-    * @param baseURL
-    *    the base URL path where are located the specifications, cannot be <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>reader == null || reference == null</code>.
     *
