@@ -11,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xins.common.Log;
+import org.xins.logdoc.ExceptionUtils;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -95,7 +96,7 @@ public class SAXParserProvider extends Object {
 
       try {
          parser = SAX_PARSER_FACTORY.newSAXParser();
-         parser.getXMLReader().setEntityResolver(new EntityResolver(){ 
+         parser.getXMLReader().setEntityResolver(new EntityResolver() {
             public InputSource resolveEntity(String publicId, String systemId) {
                return new InputSource(new ByteArrayInputStream(new byte[0]));
             }
@@ -103,11 +104,22 @@ public class SAXParserProvider extends Object {
       } catch (Exception exception) {
 
          Log.log_1550(exception);
-         throw new RuntimeException("Error when creating a SAX parser: \"" 
-               + exception.getMessage() + "\".");
+         String exceptionMessage = exception.getMessage();
+         String message;
+         if (exception == null) {
+            message = "Error when creating a SAX parser.";
+         } else {
+            message = "Error when creating a SAX parser: \""
+                    + exceptionMessage
+                    + "\".";
+         }
+         RuntimeException e = new RuntimeException(message);
+         ExceptionUtils.setCause(e, exception);
+         throw e;
       }
       return parser;
    }
+
 
    //-------------------------------------------------------------------------
    // Constructors

@@ -202,8 +202,8 @@ public class ElementBuilder extends Object {
     * Adds a new child element.
     *
     * @param xmlChild
-    *    the String XML representation of the new child to add to this element, 
-    *    cannot be <code>null</code>.
+    *    the character string that contains the XML that defines the new
+    *    child to add to this element, cannot be <code>null</code>.
     *
     * @throws ParseException
     *    if the <code>String</code> passed as argument cannot be parsed.
@@ -216,8 +216,9 @@ public class ElementBuilder extends Object {
    public void addXMLChild(String xmlChild)
    throws ParseException, IllegalArgumentException {
 
+      // Check preconditions
       MandatoryArgumentChecker.check("xmlChild", xmlChild);
-      
+
       // Check state
       if (_state == INITIAL) {
          String methodName = "addXMLChild(String)";
@@ -233,7 +234,7 @@ public class ElementBuilder extends Object {
          Element parsedElement = parser.parse(new StringReader(xmlChild));
          _element.addChild(parsedElement);
       } catch (IOException ioe) {
-         
+
          // Never happens.
       }
    }
