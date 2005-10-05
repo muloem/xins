@@ -460,7 +460,7 @@ class CheckLinks extends Object {
    
    /**
     * Returns the value for the result parameter which is added in the 
-    * <code>FunctionBuilder</code> when the <code>URLChecker<code> thread 
+    * <code>FunctionBuilder</code> when the <code>URLChecker</code> thread 
     * failed to connect the URL. The value for the result parameter depends
     * on the exception occured in the {@link URLChecker} thread. The 
     * exception is passed to this method. Based on the type of exception, an
@@ -777,7 +777,7 @@ class CheckLinks extends Object {
       
       /**
        * Checks if this <code>URLChecker</code> has already run and if not,
-       * throws an exception
+       * throws an exception.
        *
        * @throws IllegalStateException
        *    if this <code>URLChecker</code> has not run yet.
