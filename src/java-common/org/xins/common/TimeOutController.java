@@ -86,10 +86,6 @@ public final class TimeOutController extends Object {
       } else {
          // XXX: To improve performance and manageability, we could use a
          //      thread pool like the one that is available in J2SE 5.0.
-         //      See:
-         //      http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html
-         //      and
-         //      http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/package-summary.html
          thread = new Thread(task);
       }
 
@@ -100,8 +96,11 @@ public final class TimeOutController extends Object {
       try {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
-         Log.log_1051(exception, CLASSNAME, THIS_METHOD, thread.getClass().getName(), "join(long)", null);
-         // ignore
+         Utils.logIgnoredException(
+            exception,
+            CLASSNAME,                   THIS_METHOD,
+            thread.getClass().getName(), "join(long)"
+         );
       }
 
       // If the thread is still running at this point, it should stop
