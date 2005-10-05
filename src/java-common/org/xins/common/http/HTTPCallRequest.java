@@ -235,7 +235,8 @@ public final class HTTPCallRequest extends CallRequest {
 
       // Lazily initialize the description of this call request object
       if (_asString == null) {
-         FastStringBuffer buffer = new FastStringBuffer(193, "HTTP request #");
+         FastStringBuffer buffer =
+            new FastStringBuffer(193, "HTTP request #");
 
          // Request number
          buffer.append(_instanceNumber);

@@ -95,7 +95,8 @@ public final class FileWatcher extends Thread {
       // Check preconditions
       MandatoryArgumentChecker.check("file", file, "listener", listener);
       if (interval < 1) {
-         throw new IllegalArgumentException("interval (" + interval + ") < 1");
+         throw new IllegalArgumentException(
+            "interval (" + interval + ") < 1");
       }
 
       // Determine the unique instance ID
@@ -277,7 +278,8 @@ public final class FileWatcher extends Thread {
     *
     * @throws IllegalStateException
     *    if <code>{@link Thread#currentThread()} != this</code>, if the thread
-    *    is already running or should stop, or if the interval was not set yet.
+    *    is already running or should stop, or if the interval was not set
+    *    yet.
     */
    public void run() throws IllegalStateException {
 
@@ -285,11 +287,11 @@ public final class FileWatcher extends Thread {
       if (Thread.currentThread() != this) {
          throw new IllegalStateException("Thread.currentThread() != this");
       } else if (_state == RUNNING) {
-         throw new IllegalStateException("The thread is already running.");
+         throw new IllegalStateException("Thread already running.");
       } else if (_state == SHOULD_STOP) {
-         throw new IllegalStateException("The thread should stop running.");
+         throw new IllegalStateException("Thread should stop running.");
       } else if (_interval < 1) {
-         throw new IllegalStateException("The interval has not been set yet.");
+         throw new IllegalStateException("Interval has not been set yet.");
       }
 
       Log.log_1200(_instanceID, _filePath, _interval);
@@ -355,7 +357,8 @@ public final class FileWatcher extends Thread {
 
       // Check preconditions
       if (newInterval < 1) {
-         throw new IllegalArgumentException("newInterval (" + newInterval + ") < 1");
+         throw new IllegalArgumentException(
+            "newInterval (" + newInterval + ") < 1");
       }
 
       // Change the interval
@@ -380,9 +383,9 @@ public final class FileWatcher extends Thread {
 
       // Check state
       if (_state == NOT_RUNNING) {
-         throw new IllegalStateException("The thread is currently not running.");
+         throw new IllegalStateException("Thread currently not running.");
       } else if (_state == SHOULD_STOP) {
-         throw new IllegalStateException("The thread is already stopping.");
+         throw new IllegalStateException("Thread already stopping.");
       }
 
       Log.log_1202(_instanceID, _filePath);
@@ -407,8 +410,8 @@ public final class FileWatcher extends Thread {
     *    <li>otherwise if the file is readable, but previously was not,
     *        then {@link Listener#fileFound()} is called and the method
     *        returns;
-    *    <li>otherwise if the file was modified, then {@link Listener#fileModified()} is
-    *        called and the method returns;
+    *    <li>otherwise if the file was modified, then
+    *        {@link Listener#fileModified()} is called and the method returns;
     *    <li>otherwise the file was not modified, then
     *        {@link Listener#fileNotModified()} is called and the method
     *        returns.
@@ -443,7 +446,8 @@ public final class FileWatcher extends Thread {
 
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
-            String subjectMethod = "securityException(java.lang.SecurityException)";
+            String subjectMethod =
+               "securityException(java.lang.SecurityException)";
             Utils.logIgnoredException(exception,
                                       CLASSNAME,      thisMethod,
                                       _listenerClass, subjectMethod);

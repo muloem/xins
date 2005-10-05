@@ -106,10 +106,10 @@ public class CallTargetsTask extends Task {
    }
 
    /**
-    * Sets the working directory during the execution of the Ant buildfile.
+    * Sets the working directory during the execution of the Ant build file.
     *
     * @param dir
-    *    the directory for the Ant buildfile.
+    *    the directory for the Ant build file.
     */
    public void setDir(String dir) {
       _dir = (dir != null && dir.length() > 0)
@@ -163,7 +163,10 @@ public class CallTargetsTask extends Task {
          String key = e.nextElement().toString();
 
          // Set the property if we should
-         if (!"basedir".equals(key) && !"ant.file".equals(key) && tempProject.getProperty(key) == null) {
+         if (!"basedir".equals(key)  &&
+             !"ant.file".equals(key) &&
+             tempProject.getProperty(key) == null) {
+
             String value = properties.get(key).toString();
             tempProject.setNewProperty(key, value);
          }
@@ -173,7 +176,13 @@ public class CallTargetsTask extends Task {
       tempProject.setBaseDir(_dir);
       tempProject.setInheritedProperty("basedir", _dir.getAbsolutePath());
 
-      log("Calling target \"" + _targets + "\" in build file \"" + _antFile + '"', Project.MSG_VERBOSE);
+      // Log it
+      String logMessage = "Calling target \""
+                        + _targets
+                        + "\" in buildfile \""
+                        + _antFile
+                        + '"';
+      log(logMessage, Project.MSG_VERBOSE);
 
       // Set the ant.file property
       tempProject.setUserProperty("ant.file", _antFile);
@@ -188,13 +197,13 @@ public class CallTargetsTask extends Task {
       // Really execute the build file
       Throwable t = null;
       try {
-         log("Entering build file \"" + _antFile + "\".", Project.MSG_VERBOSE);
+         log("Entering buildfile \"" + _antFile + "\".", Project.MSG_VERBOSE);
          tempProject.executeTargets(_targets);
       } catch (BuildException ex) {
          t = ProjectHelper.addLocationToBuildException(ex, getLocation());
          throw (BuildException) t;
       } finally {
-         log("Exiting build file \"" + _antFile + "\".", Project.MSG_VERBOSE);
+         log("Exiting buildfile \"" + _antFile + "\".", Project.MSG_VERBOSE);
       }
    }
 }

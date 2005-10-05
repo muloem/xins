@@ -43,10 +43,22 @@ public class HungarianMapper implements FileNameMapper {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Sets the <em>from</em> part of the transformation rule.
+    *
+    * @param from
+    *    the <em>from</em> part of the transformation rule.
+    */
    public void setFrom(String from) {
       // empty
    }
 
+   /**
+    * Sets the <em>to</em> part of the transformation rule.
+    *
+    * @param to
+    *    the <em>to</em> part of the transformation rule.
+    */
    public void setTo(String to) {
       // empty
    }

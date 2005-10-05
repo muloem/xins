@@ -362,7 +362,8 @@ extends Object {
                   // Store the entry that needs expiring in the refMap
                   refMap.put(key, entry.getReference());
                } else {
-                  final String DETAIL = "Entry marked for expiry should have expired. Key as string is \""
+                  final String DETAIL = "Entry marked for expiry should "
+                                      + "have expired. Key as string is \""
                                       + entry.getReference().toString()
                                       + "\".";
                   Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
@@ -782,7 +783,7 @@ extends Object {
                                    DETAIL);
          throw new IllegalArgumentException(DETAIL);
       }
-      if (newFolder.getStrategy().getPrecision() != getStrategy().getPrecision()) {
+      if (newFolder._strategy.getPrecision() != _strategy.getPrecision()) {
          final String DETAIL = "Folders must have the same precision.";
          Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
                                    Utils.getCallingClass(),

@@ -65,7 +65,8 @@ public class FastStringWriter extends Writer {
 
       // Check preconditions
       if (initialSize < 0) {
-         throw new IllegalArgumentException("initialSize (" + initialSize + ") < 0");
+         throw new IllegalArgumentException(
+            "initialSize (" + initialSize + ") < 0");
       }
 
       // Initialize internal buffer

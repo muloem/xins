@@ -46,7 +46,8 @@ extends Object {
     *
     * @since XINS 1.1.0
     */
-   public static final PropertyReader EMPTY_PROPERTY_READER = new ProtectedPropertyReader(new Object());
+   public static final PropertyReader EMPTY_PROPERTY_READER =
+      new ProtectedPropertyReader(new Object());
 
    /**
     * Secret key object used when dealing with
@@ -91,7 +92,8 @@ extends Object {
           InvalidPropertyValueException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+      MandatoryArgumentChecker.check("properties",   properties,
+                                     "propertyName", propertyName);
 
       // Query the PropertyReader
       String value = properties.get(propertyName);
@@ -141,7 +143,8 @@ extends Object {
           InvalidPropertyValueException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "propertyName", propertyName);
+      MandatoryArgumentChecker.check("properties",   properties,
+                                     "propertyName", propertyName);
 
       // Query the PropertyReader
       String value = properties.get(propertyName);

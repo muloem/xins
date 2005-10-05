@@ -286,7 +286,14 @@ public abstract class Manageable extends Object {
 
       // If the state was invalid, then fail
       if (erroneousState != null) {
-         throw new IllegalStateException("The current state is " + erroneousState + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+         String message = "The current state is "
+                        + erroneousState
+                        + " instead of either "
+                        + BOOTSTRAPPED
+                        + " or "
+                        + USABLE
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       // If no properties are passed, then use an empty set
@@ -389,7 +396,14 @@ public abstract class Manageable extends Object {
 
       // If the state was invalid, then fail
       if (erroneousState != null) {
-         throw new IllegalStateException("The current state is " + erroneousState + " instead of either " + BOOTSTRAPPED + " or " + USABLE + '.');
+         String message = "The current state is "
+                        + erroneousState
+                        + " instead of either "
+                        + BOOTSTRAPPED
+                        + " or "
+                        + USABLE
+                        + '.';
+         throw new IllegalStateException(message);
       }
 
       // Delegate to subclass
@@ -447,7 +461,12 @@ public abstract class Manageable extends Object {
 
       // Construct and throw an exception, if appropriate
       if (!usable) {
-         throw new IllegalStateException("The current state is " + _state + " instead of " + USABLE + '.');
+         String message = "The current state is "
+                        + _state
+                        + " instead of "
+                        + USABLE
+                        + '.';
+         throw new IllegalStateException(message);
       }
    }
 

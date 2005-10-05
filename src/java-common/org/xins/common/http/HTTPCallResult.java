@@ -25,7 +25,9 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 1.0.0
  */
-public final class HTTPCallResult extends CallResult implements HTTPCallResultData {
+public final class HTTPCallResult
+extends CallResult
+implements HTTPCallResultData {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -59,8 +61,8 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
     *    the call duration in milliseconds, must be a non-negative number.
     *
     * @param exceptions
-    *    the list of {@link CallExceptionList}s, or <code>null</code> if the first
-    *    call attempt succeeded.
+    *    the list of {@link CallExceptionList}s, or <code>null</code> if the
+    *    first call attempt succeeded.
     *
     * @param data
     *    the {@link HTTPCallResultData} object returned from the call, cannot
@@ -137,17 +139,22 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
     */
    public String getString() {
 
-      final String THIS_METHOD = "getString()";
-
+      // Get as ASCII
       final String ENCODING = "US-ASCII";
-
       try {
          return getString(ENCODING);
+
+      // This should never happen: ASCII encoding is not supported
       } catch (UnsupportedEncodingException exception) {
-         final String DETAIL         = "Default encoding \"" + ENCODING + "\" is unsupported.";
+         final String THIS_METHOD    = "getString()";
+         final String DETAIL         = "Default encoding \""
+                                     + ENCODING
+                                     + "\" is unsupported.";
          final String SUBJECT_CLASS  = CLASSNAME;
          final String SUBJECT_METHOD = "getString(java.lang.String)";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL, exception);
+         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
+                                         SUBJECT_CLASS, SUBJECT_METHOD,
+                                         DETAIL,        exception);
       }
    }
 

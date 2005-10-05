@@ -161,7 +161,10 @@ public class HostnameTask extends Task {
 
       // Do not override the property value
       if (getProject().getUserProperty(_propertyName) != null) {
-         log("Override ignored for property \"" + _propertyName + "\".", Project.MSG_VERBOSE);
+         String logMessage = "Override ignored for property \""
+                           + _propertyName
+                           + "\".";
+         log(logMessage, Project.MSG_VERBOSE);
          return;
       }
 
