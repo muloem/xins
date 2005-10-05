@@ -141,7 +141,10 @@ public final class IPAddressUtils extends Object {
          char c1 = partString[1];
          char c2 = partString[2];
 
-         if (c0 >= '1' && c0 <= '2' && c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9') {
+         if (c0 >= '1' && c0 <= '2' &&
+             c1 >= '0' && c1 <= '9' &&
+             c2 >= '0' && c2 <= '9') {
+
             int value = ((c0 - '0') * 100) + ((c1 - '0') * 10) + (c2 - '0');
             if (value <= 255) {
                return value;
@@ -156,7 +159,7 @@ public final class IPAddressUtils extends Object {
     * Retrieves the localhost IP address.
     *
     * @return
-    *    if possible the IP address for localhost, otherwise 
+    *    if possible the IP address for localhost, otherwise
     *    the string <code>"127.0.0.1"</code>.
     *
     * @since XINS 1.3.0
