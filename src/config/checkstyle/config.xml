@@ -119,5 +119,21 @@
         <module name="AvoidStarImport" />
         <module name="RedundantImport" />
         <module name="UnusedImports" />
+
+        <!-- Avoid tab characters -->
+        <module name="TabCharacter" />
+
+        <!-- No whitespace at end of line -->
+        <module name="GenericIllegalRegexp">
+           <property name="format" value="\s$" />
+        </module>
+
+        <!-- No System.out or System.err calls -->
+        <module name="GenericIllegalRegexp">
+           <property name="format" value="System.out" />
+        </module>
+        <module name="GenericIllegalRegexp">
+           <property name="format" value="System.err" />
+        </module>
 	</module>
 </module>
