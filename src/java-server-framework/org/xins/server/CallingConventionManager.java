@@ -26,7 +26,7 @@ import org.xins.logdoc.ExceptionUtils;
 /**
  * Manages the <code>CallingConvention</code> instances for the API.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
