@@ -807,7 +807,7 @@ extends Object {
    }
 
    /**
-    * Returns the strategy associated with this folder
+    * Returns the strategy associated with this folder.
     *
     * @return
     *    the strategy, never <code>null</code>.

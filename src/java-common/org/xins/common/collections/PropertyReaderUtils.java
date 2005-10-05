@@ -496,7 +496,7 @@ extends Object {
       //----------------------------------------------------------------------
 
       /**
-       * The <code>PropertyReader<code> to serialize. Can be
+       * The <code>PropertyReader</code> to serialize. Can be
        * <code>null</code>.
        */
       private final PropertyReader _propertyReader;
