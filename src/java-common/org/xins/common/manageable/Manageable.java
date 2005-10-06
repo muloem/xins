@@ -154,8 +154,6 @@ public abstract class Manageable extends Object {
           InvalidPropertyValueException,
           BootstrapException {
 
-      // TODO: Log
-
       State erroneousState = null;
 
       // Get the current state and change to BOOTSTRAPPING if it is valid
