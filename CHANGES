@@ -25,6 +25,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Improved the Checkstyle config. Now also checking things like a maximum
     method line count (100), @author tag format, @version tag format, etc.
   - Improved Javadoc comments and formatting here and there.
+  - The script xins.bat displays an error when XINS_HOME is not set and it is
+    not run from bin directory.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:

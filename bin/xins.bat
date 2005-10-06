@@ -17,6 +17,8 @@ for %%x in (%0) do set XINS_HOME=%%~dpsx
 for %%x in (%XINS_HOME%) do set XINS_HOME=%%~dpsx
 set XINS_HOME=%XINS_HOME%..\
 
+IF NOT EXIST %XINS_HOME%\build.xml GOTO show_error
+
 ECHO XINS_HOME not set, Setting the scripts directory as XINS_HOME=%XINS_HOME%
 
 :: Recognize version option
@@ -35,6 +37,12 @@ IF ERRORLEVEL 1 GOTO end
 
 :: Execute the Ant build file
 CALL ant -f build\build.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
+GOTO end
+
+:: Displays the error message
+:show_error
+ECHO Please set XINS_HOME enviornment vairable.
+GOTO end
 
 :end
 if "%OS%" == "Windows_NT" endlocal
