@@ -48,14 +48,21 @@ public class HostnameTask extends Task {
     */
    private static String runHostnameCommand() {
 
+      final String CMD = "hostname";
+
       String hostname;
       try {
-         Process process = Runtime.getRuntime().exec("hostname");
+         Process process = Runtime.getRuntime().exec(CMD);
          process.waitFor();
 
          int exitValue = process.exitValue();
          if (exitValue != 0) {
-            // TODO: Log
+            String message = "Executing command \""
+                           + CMD
+                           + "\" failed with exit code "
+                           + exitValue
+                           + '.';
+            log(message, Project.MSG_VERBOSE);
             return null;
          }
 
@@ -72,11 +79,11 @@ public class HostnameTask extends Task {
             return null;
          }
 
-         // TODO: Check all characters in the hostname
-
+         // Convert the bytes to a String
          final String ENCODING = "US-ASCII";
          hostname = new String(bytes, 0, read, ENCODING);
 
+         // Check all characters in the hostname
          for (int i = 0; i < read; i++) {
             char ch = hostname.charAt(i);
             if (ch >= 'a' && ch <= 'z') {
@@ -90,11 +97,24 @@ public class HostnameTask extends Task {
             } else if (ch == '\n' || ch == '\r') {
                hostname = hostname.substring(0, i);
                i = read;
+            } else {
+               String message = "Found invalid character "
+                              + (int) ch
+                              + " in output of command \""
+                              + CMD
+                              + "\".";
+               log(message, Project.MSG_VERBOSE);
+               return null;
             }
          }
 
       } catch (Exception exception) {
-         // TODO: Log
+         String message = "Caught unexpected "
+                        + exception.getClass().getName()
+                        + " while attempting to execute command \""
+                        + CMD
+                        + "\".";
+         log(message, Project.MSG_VERBOSE);
          hostname = null;
       }
 
