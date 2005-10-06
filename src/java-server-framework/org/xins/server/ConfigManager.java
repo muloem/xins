@@ -297,7 +297,7 @@ final class ConfigManager extends Object {
       }
 
       // Initialize the API
-      boolean reinitialized = _engine.initAPI();
+      boolean initialized = _engine.initAPI();
 
       // Start the configuration file watch interval, if the location of the
       // file is set and the interval is greater than 0
@@ -305,11 +305,11 @@ final class ConfigManager extends Object {
          startConfigFileWatcher(interval);
       }
 
-      // Log each unused runtime property
-      logUnusedRuntimeProperties();
+      // API initialized successfully, so log each unused property...
+      if (initialized) {
+         logUnusedRuntimeProperties();
 
-      // Re-initialized the framework
-      if (reinitialized) {
+         // ...and log that the framework was reinitialized
          Log.log_3415();
       }
    }
@@ -590,14 +590,15 @@ final class ConfigManager extends Object {
             // Re-initialize the API
             reinitialized = _engine.initAPI();
 
+            // Update the file watch interval
             updateFileWatcher(newInterval);
          }
 
-         // Log each unused runtime property
-         logUnusedRuntimeProperties();
-
-         // Re-initialized the framework
+         // API re-initialized successfully, so log each unused property...
          if (reinitialized) {
+            logUnusedRuntimeProperties();
+
+            // ...and log that the framework was reinitialized
             Log.log_3415();
          }
       }
