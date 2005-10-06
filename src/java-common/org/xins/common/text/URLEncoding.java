@@ -69,8 +69,13 @@ public final class URLEncoding extends Object {
       UNENCODED_TO_ENCODED = new String[127];
       for (int i = 0; i < 127; i++) {
          char c = (char) i;
-         if ((c >= 'a' && c <= 'z')   || (c >= 'A' && c <= 'Z')   || (c >= '0' && c <= '9')
-          || (c == '-') || (c == '_') || (c == '.') || (c == '*')) {
+         if ((c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             (c == '-')             ||
+             (c == '_')             ||
+             (c == '.')             ||
+             (c == '*')) {
             UNENCODED_TO_ENCODED[i] = String.valueOf(c);
          } else if (c == ' ') {
             UNENCODED_TO_ENCODED[i] = "+";

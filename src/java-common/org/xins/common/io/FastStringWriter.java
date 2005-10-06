@@ -121,7 +121,7 @@ public class FastStringWriter extends Writer {
     * @throws IllegalArgumentException
     *    if <code>cbuf == null</code>.
     */
-   public void write(char cbuf[])
+   public void write(char[] cbuf)
    throws IOException, IllegalArgumentException {
       if (_closed) {
          throw new IOException("This character stream is closed.");
@@ -154,7 +154,7 @@ public class FastStringWriter extends Writer {
     * @throws IndexOutOfBoundsException
     *    if the offset and/or the length is invalid.
     */
-   public void write(char cbuf[], int off, int len)
+   public void write(char[] cbuf, int off, int len)
    throws IllegalArgumentException, IOException, IndexOutOfBoundsException {
       if (_closed) {
          throw new IOException("This character stream is closed.");

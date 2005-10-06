@@ -57,12 +57,13 @@ public final class WhislEncoding extends Object {
       for (char c = 0; c < 128; c++) {
 
          // Some characters can be output unmodified
-         if ((c >= 'a' && c <= 'z')   || (c >= 'A' && c <= 'Z')
-          || (c >= '0' && c <= '9')
-          || (c == '-')
-          || (c == '_')
-          || (c == '.')
-          || (c == '*')) {
+         if ((c >= 'a' && c <= 'z') ||
+             (c >= 'A' && c <= 'Z') ||
+             (c >= '0' && c <= '9') ||
+             (c == '-')             ||
+             (c == '_')             ||
+             (c == '.')             ||
+             (c == '*')) {
             UNENCODED_TO_ENCODED[c] = null;
 
          // A space is converted to a plus-sign
