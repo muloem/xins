@@ -53,13 +53,14 @@ extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("result", result);
 
+      // Store field
       _result = result;
 
       // Check preconditions
       if (result.getErrorCode() != null) {
-         throw new java.lang.IllegalArgumentException("result.getErrorCode() != null");
+         throw new java.lang.IllegalArgumentException(
+            "result.getErrorCode() != null");
       }
-
    }
 
 
@@ -119,8 +120,8 @@ extends Object {
     * Returns the list of <code>CallException</code>s.
     *
     * @return
-    *    the {@link org.xins.common.service.CallException}s, 
-    *    collected in a {@link CallExceptionList} object, 
+    *    the {@link org.xins.common.service.CallException}s,
+    *    collected in a {@link CallExceptionList} object,
     *    or <code>null</code> if the first call attempt succeeded.
     *
     * @since XINS 1.1.0
