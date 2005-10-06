@@ -139,7 +139,7 @@ public abstract class CallResult extends Object {
     *    be a non-negative number.
     */
    public final long getDuration() {
-      // TODO: Duration of succeeded call or of the complete attempt?
+      // XXX: Duration of succeeded call or of the complete attempt?
       return _duration;
    }
 
