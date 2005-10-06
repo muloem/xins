@@ -51,31 +51,31 @@
 		<!-- Adhere to generally accepted naming conventions -->
 		<module name="PackageName">
 			<!-- no uppercase letters, between 2 and 12 characters -->
-			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,11})*$"/>
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,11})*$" />
 		</module>
 		<module name="TypeName">
-			<property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+			<property name="format" value="^[A-Z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="ConstantName">
-			<property name="format" value="^[A-Z]*[A-Z0-9_]*$"/>
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
 		</module>
 		<module name="LocalFinalVariableName">
-			<property name="format" value="^[A-Z]*[A-Z0-9_]*$"/>
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
 		</module>
 		<module name="LocalVariableName">
-			<property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="MemberName">
-			<property name="format" value="^_[a-z][a-zA-Z0-9]*$"/>
+			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="MethodName">
-			<property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="ParameterName">
-			<property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="StaticVariableName">
-			<property name="format" value="^[A-Z]*[A-Z0-9_]*$"/>
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
 		</module>
 		
 		<!-- Don't ignore exceptions, require a comment -->
@@ -109,7 +109,7 @@
         <!-- Check some Javadoc comments -->
         <module name="JavadocType">
             <property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
-            <property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: "/>
+            <property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: " />
         </module>
         <module name="JavadocStyle">
             <property name="checkEmptyJavadoc" value="true" />
@@ -136,9 +136,41 @@
            <property name="format" value="System.err" />
         </module>
 
-        <!-- No FIXME comments allowed -->
-        <module name="GenericIllegalRegexp">
+        <!-- Find FIXME and TODO comments -->
+        <module name="TodoComment">
            <property name="format" value="FIXME" />
         </module>
+        <module name="TodoComment">
+           <property name="format" value="TODO" />
+        </module>
+
+        <!-- Long values should have suffix 'L' and not 'l' -->
+        <module name="UpperEll" />
+
+        <!-- Enforce Java-style array definitions -->
+        <module name="ArrayTypeStyle" />
+
+        <!-- TODO: Enforce correct indentation
+        <module name="Indentation">
+           <property name="basicOffset" value="3" />
+           <property name="caseIndent"  value="3" />
+        </module>
+
+        This does not work correctly. It expects 'throws' clauses, for
+        example, to be indented 3 spaces. 
+        -->
+
+        <!-- No trailing comments, please -->
+        <module name="TrailingComment" />
+
+        <!-- TODO: Require legal notices
+        <module name="RequiredRegexp">
+           <property name="format" value="Copyright 2003-2005 Wanadoo Nederland B.V." />
+        </module>
+        <module name="RequiredRegexp">
+           <property name="format" value="See the COPYRIGHT file for redistribution and use restrictions." />
+        </module>
+        -->
+
 	</module>
 </module>
