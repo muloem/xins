@@ -47,6 +47,9 @@ extends RuntimeException {
     *
     * @param cause
     *    the cause exception, can be <code>null</code>.
+    *
+    * @return
+    *    the exception message, can be <code>null</code>.
     */
    private static String createMessage(String    detectingClass,
                                        String    detectingMethod,
