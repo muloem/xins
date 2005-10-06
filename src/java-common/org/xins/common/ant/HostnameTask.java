@@ -38,97 +38,6 @@ public class HostnameTask extends Task {
    // Class functions
    //-------------------------------------------------------------------------
 
-   /**
-    * Tries running the POSIX <code>hostname</code> command to determine the
-    * name of the local host. If this does not succeed, then <code>null</code>
-    * is returned instead of the hostname.
-    *
-    * @return
-    *    the name of the local host, or <code>null</code>.
-    */
-   private static String runHostnameCommand() {
-
-      final String CMD = "hostname";
-
-      String hostname;
-      try {
-         Process process = Runtime.getRuntime().exec(CMD);
-         process.waitFor();
-
-         int exitValue = process.exitValue();
-         if (exitValue != 0) {
-            String message = "Executing command \""
-                           + CMD
-                           + "\" failed with exit code "
-                           + exitValue
-                           + '.';
-            log(message, Project.MSG_VERBOSE);
-            return null;
-         }
-
-         // Get the stdout output from the process
-         InputStream in = process.getInputStream();
-
-         // Configure max expected hostname length
-         final int MAX = 500;
-
-         // Read the whole output
-         byte[] bytes = new byte[MAX];
-         int read = in.read(bytes);
-         if (read < 0) {
-            return null;
-         }
-
-         // Convert the bytes to a String
-         final String ENCODING = "US-ASCII";
-         hostname = new String(bytes, 0, read, ENCODING);
-
-         // Check all characters in the hostname
-         for (int i = 0; i < read; i++) {
-            char ch = hostname.charAt(i);
-            if (ch >= 'a' && ch <= 'z') {
-               // OK: fall through
-            } else if (ch > 'A' && ch <= 'Z') {
-               // OK: fall through
-            } else if (ch > '0' && ch <= '9') {
-               // OK: fall through
-            } else if (ch == '-' || ch == '_' || ch == '.') {
-               // OK: fall through
-            } else if (ch == '\n' || ch == '\r') {
-               hostname = hostname.substring(0, i);
-               i = read;
-            } else {
-               String message = "Found invalid character "
-                              + (int) ch
-                              + " in output of command \""
-                              + CMD
-                              + "\".";
-               log(message, Project.MSG_VERBOSE);
-               return null;
-            }
-         }
-
-      } catch (Exception exception) {
-         String message = "Caught unexpected "
-                        + exception.getClass().getName()
-                        + " while attempting to execute command \""
-                        + CMD
-                        + "\".";
-         log(message, Project.MSG_VERBOSE);
-         hostname = null;
-      }
-
-      if (hostname != null) {
-         hostname = hostname.trim();
-         if (hostname.length() < 1) {
-            hostname = null;
-         }
-      }
-
-      return hostname;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -217,5 +126,95 @@ public class HostnameTask extends Task {
 
       // Actually set the property
       getProject().setUserProperty(_propertyName, hostname);
+   }
+
+   /**
+    * Tries running the POSIX <code>hostname</code> command to determine the
+    * name of the local host. If this does not succeed, then <code>null</code>
+    * is returned instead of the hostname.
+    *
+    * @return
+    *    the name of the local host, or <code>null</code>.
+    */
+   private String runHostnameCommand() {
+
+      final String CMD = "hostname";
+
+      String hostname;
+      try {
+         Process process = Runtime.getRuntime().exec(CMD);
+         process.waitFor();
+
+         int exitValue = process.exitValue();
+         if (exitValue != 0) {
+            String message = "Executing command \""
+                           + CMD
+                           + "\" failed with exit code "
+                           + exitValue
+                           + '.';
+            log(message, Project.MSG_VERBOSE);
+            return null;
+         }
+
+         // Get the stdout output from the process
+         InputStream in = process.getInputStream();
+
+         // Configure max expected hostname length
+         final int MAX = 500;
+
+         // Read the whole output
+         byte[] bytes = new byte[MAX];
+         int read = in.read(bytes);
+         if (read < 0) {
+            return null;
+         }
+
+         // Convert the bytes to a String
+         final String ENCODING = "US-ASCII";
+         hostname = new String(bytes, 0, read, ENCODING);
+
+         // Check all characters in the hostname
+         for (int i = 0; i < read; i++) {
+            char ch = hostname.charAt(i);
+            if (ch >= 'a' && ch <= 'z') {
+               // OK: fall through
+            } else if (ch > 'A' && ch <= 'Z') {
+               // OK: fall through
+            } else if (ch > '0' && ch <= '9') {
+               // OK: fall through
+            } else if (ch == '-' || ch == '_' || ch == '.') {
+               // OK: fall through
+            } else if (ch == '\n' || ch == '\r') {
+               hostname = hostname.substring(0, i);
+               i = read;
+            } else {
+               String message = "Found invalid character "
+                              + (int) ch
+                              + " in output of command \""
+                              + CMD
+                              + "\".";
+               log(message, Project.MSG_VERBOSE);
+               return null;
+            }
+         }
+
+      } catch (Exception exception) {
+         String message = "Caught unexpected "
+                        + exception.getClass().getName()
+                        + " while attempting to execute command \""
+                        + CMD
+                        + "\".";
+         log(message, Project.MSG_VERBOSE);
+         hostname = null;
+      }
+
+      if (hostname != null) {
+         hostname = hostname.trim();
+         if (hostname.length() < 1) {
+            hostname = null;
+         }
+      }
+
+      return hostname;
    }
 }
