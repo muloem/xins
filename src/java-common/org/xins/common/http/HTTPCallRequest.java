@@ -241,7 +241,7 @@ public final class HTTPCallRequest extends CallRequest {
          // Request number
          buffer.append(_instanceNumber);
 
-         // HTTP method
+         // HTTP config
          buffer.append(" [config=");
          buffer.append(TextUtils.quote(getCallConfig()));
 
