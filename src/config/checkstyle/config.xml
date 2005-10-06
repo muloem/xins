@@ -135,5 +135,10 @@
         <module name="GenericIllegalRegexp">
            <property name="format" value="System.err" />
         </module>
+
+        <!-- No FIXME comments allowed -->
+        <module name="GenericIllegalRegexp">
+           <property name="format" value="FIXME" />
+        </module>
 	</module>
 </module>
