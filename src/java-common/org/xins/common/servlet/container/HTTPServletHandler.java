@@ -59,7 +59,7 @@ public class HTTPServletHandler {
       PropertyConfigurator.configure(settings);
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -69,34 +69,34 @@ public class HTTPServletHandler {
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
 
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet 
+    * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet
     * methods to add the WAR files or the Servlets.
     *
     * @param port
     *    The port of the servlet server.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws IOException
     *    if the servlet container cannot be started.
     */
    public HTTPServletHandler(int port, boolean deamon) throws IOException {
-      
+
       // Configure log4j if not already done.
       Enumeration appenders =
          LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
       if (appenders instanceof NullEnumeration) {
          configureLoggerFallback();
       }
-      
+
       // Start the HTTP server.
       startServer(port, deamon);
    }
@@ -135,7 +135,7 @@ public class HTTPServletHandler {
     *    The port of the servlet server.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws ServletException
@@ -179,7 +179,7 @@ public class HTTPServletHandler {
     *    The port of the servlet server.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws ServletException
@@ -217,8 +217,8 @@ public class HTTPServletHandler {
     * Mapping between the path and the servlet.
     */
    private Map _servlets = new HashMap();
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -260,7 +260,7 @@ public class HTTPServletHandler {
       LocalServletHandler servlet = new LocalServletHandler(servletClassName);
       _servlets.put(virtualPath, servlet);
    }
-   
+
    /**
     * Remove a servlet from the server.
     *
@@ -272,7 +272,7 @@ public class HTTPServletHandler {
       servlet.close();
       _servlets.remove(virtualPath);
    }
-   
+
    /**
     * Starts the web server.
     *
@@ -280,7 +280,7 @@ public class HTTPServletHandler {
     *    The port of the servlet server.
     *
     * @param deamon
-    *    <code>true</code> if the thread listening to connection should be a 
+    *    <code>true</code> if the thread listening to connection should be a
     *    deamon thread, <code>false</code> otherwise.
     *
     * @throws IOException
@@ -348,7 +348,7 @@ public class HTTPServletHandler {
     * This method parses the data sent from the client to get the input
     * parameters and format the result as a compatible HTTP result.
     * This method will used the servlet associated with the passed virtual
-    * path. If no servlet is associated with the virtual path, the servlet with 
+    * path. If no servlet is associated with the virtual path, the servlet with
     * the virtual path "/" is used as default. If there is no servlet then with
     * the virtual path "/" is found then HTTP 404 is returned.
     *
@@ -421,7 +421,7 @@ public class HTTPServletHandler {
          XINSServletResponse response = servlet.query(url, contentData, contentType);
          String result = response.getResult();
          if (result == null) {
-            return "HTTP/1.1 " + response.getStatus() + " " + 
+            return "HTTP/1.1 " + response.getStatus() + " " +
                   HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
          }
          PropertyReader headers = response.getHeaders();
@@ -453,7 +453,7 @@ public class HTTPServletHandler {
 
       /**
        * Create the thread.
-       * 
+       *
        * @param deamon
        *    <code>true</code> if the server should be a deamon thread,$
        *    <code>false</code> otherwise.

@@ -93,7 +93,7 @@ final class EngineStarter extends Object {
 
       // Store data
       _config = config;
-      
+
       // Log some initial boot messages
       logBootMessages();
    }
@@ -358,7 +358,7 @@ final class EngineStarter extends Object {
     * @param api
     *    The API to bootstrap, never <code>null</code>.
     *
-    * @throws ServletException 
+    * @throws ServletException
     *    If the bootstrap of the api fails.
     */
    void bootstrap(API api) throws ServletException {
@@ -398,7 +398,7 @@ final class EngineStarter extends Object {
    /**
     * Attempts to load the logdoc class and performs checks on the class.
     *
-    * @throws ServletException 
+    * @throws ServletException
     *    If the log doc class can not be loaded.
     */
    void loadLogDoc() throws ServletException {

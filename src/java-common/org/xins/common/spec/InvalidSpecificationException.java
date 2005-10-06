@@ -11,25 +11,25 @@ import org.xins.logdoc.ExceptionUtils;
 /**
  * Thrown when the specification of the API is incorrect or cannot be found.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.3.0
  */
 public class InvalidSpecificationException extends Exception {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new <code>InvalidSpecificationException</code> with the reason
     * of the problem.
@@ -40,7 +40,7 @@ public class InvalidSpecificationException extends Exception {
    InvalidSpecificationException(String message) {
       this(message, null);
    }
-   
+
    /**
     * Creates a new <code>InvalidSpecificationException</code> with the reason
     * of the problem.
@@ -58,13 +58,13 @@ public class InvalidSpecificationException extends Exception {
       }
    }
 
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
 }

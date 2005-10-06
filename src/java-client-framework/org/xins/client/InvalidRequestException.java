@@ -80,7 +80,7 @@ extends StandardErrorCodeException {
     *    or empty.
     */
    static String createMessage(DataElement element) {
-      
+
       // Parse the data element
       if (element == null) {
          return null;
@@ -188,7 +188,7 @@ extends StandardErrorCodeException {
             }
          }
       }
-      
+
       // Remove the last space from the string, if there is any
       if (detail.getLength() >= 1) {
          detail.crop(detail.getLength() - 1);

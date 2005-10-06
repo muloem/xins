@@ -85,7 +85,7 @@ final class ConfigManager extends Object {
          "log4j.appender.console.layout.ConversionPattern",
          "%16x %6c{1} %-6p %m%n");
 
-      // Do not show the debug logs produced by XINS. 
+      // Do not show the debug logs produced by XINS.
       settings.setProperty("log4j.logger.org.xins.", "INFO");
 
       // Perform Log4J configuration

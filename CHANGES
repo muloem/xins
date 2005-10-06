@@ -10,11 +10,16 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Rewrote the MandatoryArgumentChecker class in org.xins.common. If the
     passed argument name is null, then a programming error is logged and a
     ProgrammingException is thrown. Improved the unit tests.
+  - Fixed Javadoc.
   - Improved logging in HostnameTask.
 
 * XINS/Java Server Framework:
   - Only logging unused properties (message 3434) if the framework
     (re-)initialized successfully.
+  - Fixed Javadoc.
+
+* XINS/Java Client Framework:
+  - Fixed Javadoc.
 
 * Generation of server-side Java code:
   - Fixed possibility of conflict in generated code between variables.

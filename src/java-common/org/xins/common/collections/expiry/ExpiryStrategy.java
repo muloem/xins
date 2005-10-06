@@ -376,7 +376,7 @@ public final class ExpiryStrategy extends Object {
 
          while (! _stop) {
             boolean interrupted;
-            long sleep = (next - now);
+            long sleep = next - now;
             if (sleep > 0) {
                Log.log_1404(sleep);
                try {

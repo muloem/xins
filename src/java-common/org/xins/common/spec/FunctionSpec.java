@@ -75,17 +75,17 @@ public final class FunctionSpec extends Object {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * Name of the function, cannot be <code>null</code>.
     */
    private final String _functionName;
-   
+
    /**
     * Description of the function, cannot be <code>null</code>.
     */
    private String _description;
-   
+
    /**
     * The input parameters of the function.
     * The key is the name of the parameter, the value is the {@link FunctionSpec} object.
@@ -123,7 +123,7 @@ public final class FunctionSpec extends Object {
     */
    private Map _outputDataSectionElements = new ChainedMap();
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -146,7 +146,7 @@ public final class FunctionSpec extends Object {
     *    the description of the function, never <code>null</code>.
     */
    public String getDescription() {
-      
+
       return _description;
    }
 
@@ -167,18 +167,18 @@ public final class FunctionSpec extends Object {
     */
    public ParameterSpec getInputParameter(String parameterName)
    throws EntityNotFoundException, IllegalArgumentException {
-       
+
       MandatoryArgumentChecker.check("parameterName", parameterName);
-      
+
       ParameterSpec parameter = (ParameterSpec) _inputParameters.get(parameterName);
-      
+
       if (parameter == null) {
          throw new EntityNotFoundException("Input parameter \"" + parameterName + "\" not found.");
       }
-      
+
       return parameter;
    }
-   
+
    /**
     * Gets the input parameter specifications defined in the function.
     * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
@@ -187,7 +187,7 @@ public final class FunctionSpec extends Object {
     *    the input parameters, never <code>null</code>.
     */
    public Map getInputParameters() {
-      
+
       return _inputParameters;
    }
 
@@ -208,18 +208,18 @@ public final class FunctionSpec extends Object {
     */
    public ParameterSpec getOutputParameter(String parameterName)
    throws IllegalArgumentException, EntityNotFoundException {
-       
+
       MandatoryArgumentChecker.check("parameterName", parameterName);
-      
+
       ParameterSpec parameter = (ParameterSpec) _outputParameters.get(parameterName);
-      
+
       if (parameter == null) {
          throw new EntityNotFoundException("Output parameter \"" + parameterName + "\" not found.");
       }
-      
+
       return parameter;
    }
-   
+
    /**
     * Gets the output parameter specifications defined in the function.
     * The key is the name of the parameter, the value is the {@link ParameterSpec} object.
@@ -228,7 +228,7 @@ public final class FunctionSpec extends Object {
     *    the output parameters, never <code>null</code>.
     */
    public Map getOutputParameters() {
-      
+
       return _outputParameters;
    }
 
@@ -249,14 +249,14 @@ public final class FunctionSpec extends Object {
     */
    public ErrorCodeSpec getErrorCode(String errorCodeName)
    throws IllegalArgumentException, EntityNotFoundException {
-      
+
       MandatoryArgumentChecker.check("errorCodeName", errorCodeName);
       ErrorCodeSpec errorCode = (ErrorCodeSpec) _errorCodes.get(errorCodeName);
-      
+
       if (errorCode == null) {
          throw new EntityNotFoundException("Error code \"" + errorCodeName + "\" not found.");
       }
-      
+
       return errorCode;
    }
 
@@ -269,7 +269,7 @@ public final class FunctionSpec extends Object {
     *    The error code specifications, never <code>null</code>.
     */
    public Map getErrorCodes() {
-      
+
       return _errorCodes;
    }
 
@@ -291,15 +291,15 @@ public final class FunctionSpec extends Object {
     */
    public DataSectionElementSpec getInputDataSectionElement(String elementName)
    throws IllegalArgumentException, EntityNotFoundException {
-      
+
       MandatoryArgumentChecker.check("elementName", elementName);
-      
+
       DataSectionElementSpec element = (DataSectionElementSpec) _inputDataSectionElements.get(elementName);
-      
+
       if (element == null) {
          throw new EntityNotFoundException("Input data section element \"" + elementName + "\" not found.");
       }
-      
+
       return element;
    }
 
@@ -311,7 +311,7 @@ public final class FunctionSpec extends Object {
     *    the input data section elements, never <code>null</code>.
     */
    public Map getInputDataSectionElements() {
-      
+
       return _inputDataSectionElements;
    }
 
@@ -331,17 +331,17 @@ public final class FunctionSpec extends Object {
     * @throws EntityNotFoundException
     *    if the function does not define any output data element with the specified name.
     */
-   public DataSectionElementSpec getOutputDataSectionElement(String elementName) 
+   public DataSectionElementSpec getOutputDataSectionElement(String elementName)
    throws IllegalArgumentException, EntityNotFoundException {
-      
+
       MandatoryArgumentChecker.check("elementName", elementName);
-      
+
       DataSectionElementSpec element = (DataSectionElementSpec) _outputDataSectionElements.get(elementName);
-      
+
       if (element == null) {
          throw new EntityNotFoundException("Output data section element \"" + elementName + "\" not found.");
       }
-      
+
       return element;
    }
 
@@ -353,7 +353,7 @@ public final class FunctionSpec extends Object {
     *    the output data section elements, never <code>null</code>.
     */
    public Map getOutputDataSectionElements() {
-      
+
       return _outputDataSectionElements;
    }
 
@@ -361,11 +361,11 @@ public final class FunctionSpec extends Object {
     * Gets the input param combo specifications.
     *
     * @return
-    *    the list of the input param combos specification 
+    *    the list of the input param combos specification
     *    ({@link ParamComboSpec}), never <code>null</code>.
     */
    public List getInputParamCombos() {
-      
+
       return _inputParamCombos;
    }
 
@@ -373,19 +373,25 @@ public final class FunctionSpec extends Object {
     * Gets the output param combo specifications.
     *
     * @return
-    *    the list of the output param combos specification 
+    *    the list of the output param combos specification
     *    ({@link ParamComboSpec}), never <code>null</code>.
     */
    public List getOutputParamCombos() {
-      
+
       return _outputParamCombos;
    }
-   
+
    /**
     * Parses the function specification file.
     *
     * @param reader
     *    the reader that contains the content of the result code file, cannot be <code>null</code>.
+    *
+    * @param reference
+    *    the reference class used to get the defined type class, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>reader == null || reference == null || baseURL == null</code>.
@@ -398,6 +404,9 @@ public final class FunctionSpec extends Object {
     */
    private void parseFunction(Reader reader, Class reference, String baseURL)
    throws IllegalArgumentException, IOException, InvalidSpecificationException {
+
+      MandatoryArgumentChecker.check("reader", reader, "reference", reference, "baseURL", baseURL);
+
       ElementParser parser = new ElementParser();
       Element function = null;
       try {
@@ -407,21 +416,21 @@ public final class FunctionSpec extends Object {
       }
       List descriptionElementList = function.getChildElements("description");
       if (descriptionElementList.isEmpty()) {
-         throw new InvalidSpecificationException("[Function: " + _functionName 
+         throw new InvalidSpecificationException("[Function: " + _functionName
                + "] No definition specified.");
       }
       Element descriptionElement = (Element) descriptionElementList.get(0);
       _description = descriptionElement.getText();
       List input = function.getChildElements("input");
       if (input.size() > 0) {
-         
+
          // Input parameters
          Element inputElement = (Element) input.get(0);
          _inputParameters = parseParameters(reference, inputElement);
 
          // Param combos
          _inputParamCombos = parseParamCombos(inputElement, _inputParameters);
-         
+
          // Data section
          List dataSections = inputElement.getChildElements("data");
          if (dataSections.size() > 0) {
@@ -429,11 +438,11 @@ public final class FunctionSpec extends Object {
             _inputDataSectionElements = parseDataSectionElements(reference, dataSection, dataSection);
          }
       }
-      
+
       List output = function.getChildElements("output");
       if (output.size() > 0) {
          Element outputElement = (Element) output.get(0);
-         
+
          // Error codes
          List errorCodesList = outputElement.getChildElements("resultcode-ref");
          Iterator itErrorCodes = errorCodesList.iterator();
@@ -441,19 +450,19 @@ public final class FunctionSpec extends Object {
             Element nextErrorCode = (Element) itErrorCodes.next();
             String errorCodeName = nextErrorCode.getAttribute("name");
             if (errorCodeName == null) {
-               throw new InvalidSpecificationException("[Function: " + _functionName 
+               throw new InvalidSpecificationException("[Function: " + _functionName
                      + "] Missing name attribute for a error code.");
             }
             ErrorCodeSpec errorCodeSpec = new ErrorCodeSpec(errorCodeName, reference, baseURL);
             _errorCodes.put(errorCodeName, errorCodeSpec);
          }
-         
+
          // Output parameters
          _outputParameters = parseParameters(reference, outputElement);
 
          // Param combos
          _outputParamCombos = parseParamCombos(outputElement, _outputParameters);
-         
+
          // Data section
          List dataSections = outputElement.getChildElements("data");
          if (dataSections.size() > 0) {
@@ -462,7 +471,7 @@ public final class FunctionSpec extends Object {
          }
       }
    }
-   
+
    /**
     * Parse an element in the data section.
     *
@@ -490,14 +499,14 @@ public final class FunctionSpec extends Object {
 
       MandatoryArgumentChecker.check("reference", reference, "topElement", topElement, "dataSection", dataSection);
       Map dataSectionElements = new ChainedMap();
-      
+
       // The <data> may have a "contains" attribute.
       String dataContainsAttr = topElement.getAttribute("contains");
       if (dataContainsAttr != null) {
          DataSectionElementSpec dataSectionElement = getDataSectionElement(reference, dataContainsAttr, dataSection);
          dataSectionElements.put(dataContainsAttr, dataSectionElement);
       }
-      
+
       // Gets the sub elements of this element
       List dataSectionContains = topElement.getChildElements("contains");
       if (!dataSectionContains.isEmpty()) {
@@ -527,7 +536,7 @@ public final class FunctionSpec extends Object {
     *    the data section, cannot be <code>null</code>.
     *
     * @return
-    *    the data section element or <code>null</code> if there is no element 
+    *    the data section element or <code>null</code> if there is no element
     *    with the specified name.
     *
     * @throws IllegalArgumentException
@@ -544,11 +553,11 @@ public final class FunctionSpec extends Object {
          Element nextElement = (Element) itElements.next();
          String nextName = nextElement.getAttribute("name");
          if (name.equals(nextName)) {
-            
+
             String description = ((Element) nextElement.getChildElements("description").get(0)).getText();
-            
+
             Map subElements = parseDataSectionElements(reference, nextElement, dataSection);
-            
+
             boolean isPcdataEnable = false;
             List dataSectionContains = nextElement.getChildElements("contains");
             if (!dataSectionContains.isEmpty()) {
@@ -558,7 +567,7 @@ public final class FunctionSpec extends Object {
                   isPcdataEnable = true;
                }
             }
-            
+
             List attributesList = nextElement.getChildElements("attribute");
             Map attributes = new ChainedMap();
             Iterator itAttributes = attributesList.iterator();
@@ -566,7 +575,7 @@ public final class FunctionSpec extends Object {
                ParameterSpec attribute = parseParameter(reference, (Element) itAttributes.next());
                attributes.put(attribute.getName(), attribute);
             }
-            
+
             DataSectionElementSpec result = new DataSectionElementSpec(nextName,
                   description, isPcdataEnable, subElements, attributes);
             return result;
@@ -574,7 +583,7 @@ public final class FunctionSpec extends Object {
       }
       return null;
    }
-   
+
    /**
     * Parses a function parameter or an attribute of a data section element.
     *
@@ -607,11 +616,11 @@ public final class FunctionSpec extends Object {
          throw new InvalidSpecificationException("No definition specified for a parameter.");
       }
       String parameterDescription = ((Element) descriptionElementList.get(0)).getText();
-      ParameterSpec parameter = new ParameterSpec(reference ,parameterName, 
+      ParameterSpec parameter = new ParameterSpec(reference ,parameterName,
             parameterTypeName, requiredParameter, parameterDescription);
       return parameter;
    }
-   
+
    /**
     * Parses the input or output parameters.
     *
@@ -622,7 +631,7 @@ public final class FunctionSpec extends Object {
     *    the input or output element, cannot be <code>null</code>.
     *
     * @return
-    *    a map containing the parameter names as keys, and the 
+    *    a map containing the parameter names as keys, and the
     *    <code>Parameter</code> objects as value, never <code>null</code>.
     *
     * @throws IllegalArgumentException
@@ -644,7 +653,7 @@ public final class FunctionSpec extends Object {
       }
       return parameters;
    }
-   
+
    /**
     * Parses the param-combo element.
     *
@@ -655,7 +664,7 @@ public final class FunctionSpec extends Object {
     *    the list of the input or output parameters, cannot be <code>null</code>.
     *
     * @return
-    *    the list of the param-combo elements or an empty array if no 
+    *    the list of the param-combo elements or an empty array if no
     *    param-combo is defined, never <code>null</code>.
     *
     * @throws IllegalArgumentException
@@ -664,7 +673,7 @@ public final class FunctionSpec extends Object {
     * @throws InvalidSpecificationException
     *    if the format of the param-combo is incorrect.
     */
-   static List parseParamCombos(Element topElement, Map parameters) 
+   static List parseParamCombos(Element topElement, Map parameters)
    throws IllegalArgumentException, InvalidSpecificationException {
       MandatoryArgumentChecker.check("topElement", topElement, "parameters", parameters);
       List paramCombosList = topElement.getChildElements("param-combo");
@@ -687,7 +696,7 @@ public final class FunctionSpec extends Object {
             }
             ParameterSpec parameter = (ParameterSpec) parameters.get(parameterName);
             if (parameterName == null) {
-               throw new InvalidSpecificationException("Incorrect parameter name \"" + 
+               throw new InvalidSpecificationException("Incorrect parameter name \"" +
                      parameterName + "\" in a param-combo.");
             }
             paramComboParameters.put(parameterName, parameter);

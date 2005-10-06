@@ -421,8 +421,8 @@ public class DateConverter extends Object {
 
       // Store the cached date
       _cachedDate        = date;
-      _cachedMinutes     = (date / 60000L);
-      long seconds       = (date /  1000L);
+      _cachedMinutes     = date / 60000L;
+      long seconds       = date /  1000L;
       _cachedJustSeconds = (int) (seconds %    60L);
 
       // Format the date
@@ -495,8 +495,8 @@ public class DateConverter extends Object {
       }
 
       // Determine the number of seconds and milliseconds
-      long minutes     =       (date    / 60000L);
-      long seconds     =       (date    /  1000L);
+      long minutes     =        date    / 60000L;
+      long seconds     =        date    /  1000L;
       int  justSeconds = (int) (seconds %    60L);
       int  justMillis  = (int) (date    %  1000L);
 

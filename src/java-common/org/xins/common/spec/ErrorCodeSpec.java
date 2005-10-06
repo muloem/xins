@@ -40,13 +40,16 @@ public final class ErrorCodeSpec extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of ErrorCode
+    * Creates a new instance of <code>ErrorCodeSpec</code>.
     *
     * @param name
     *    the name of the error code, cannot be <code>null</code>.
     *
     * @param reference
     *    the reference class used to get the type of the parameters, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the base URL used to located the specifications, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || reference == null || baseURL == null</code>.
@@ -221,7 +224,7 @@ public final class ErrorCodeSpec extends Object {
     */
    private void parseErrorCode(Reader reader, Class reference)
    throws IllegalArgumentException, IOException, InvalidSpecificationException {
-      
+
       MandatoryArgumentChecker.check("reader", reader, "reference", reference);
       ElementParser parser = new ElementParser();
       Element errorCode = null;
@@ -230,16 +233,16 @@ public final class ErrorCodeSpec extends Object {
       } catch (ParseException pe) {
          throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName + "] Cannot parse error code.",  pe);
       }
-      
+
       // Get the result from the parsed error code specification.
       List descriptionElementList = errorCode.getChildElements("description");
       if (descriptionElementList.isEmpty()) {
-         throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName 
+         throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName
                + "] No definition specified.");
       }
       Element descriptionElement = (Element) errorCode.getChildElements("description").get(0);
       _description = descriptionElement.getText();
-      
+
       List output = errorCode.getChildElements("output");
       if (output.size() > 0) {
 

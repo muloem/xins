@@ -18,24 +18,24 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-//import org.apache.tools.ant.loader.AntClassLoader2;
-//import org.apache.tools.ant.BuildException;
-
 /**
+ * Class used to get the Servlet Class loader.
+ * The class loader returned is a child first class loader.
  *
- * @author anthonyg
+ * @version $Revision$ $Date$
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class ServletClassLoader {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
    /**
-    * Get the class loader that will loader the servlet.
+    * Gest the class loader that will loader the servlet.
     *
     * @param warFile
-    *    The WAR file containing the Servlet.
+    *    the WAR file containing the Servlet.
     *
     * @param mode
     *    the mode in which the servlet should be loaded. The possible values are
@@ -44,7 +44,7 @@ public class ServletClassLoader {
     *    <code>USE_WAR_EXTERNAL_LIB</code>.
     *
     * @return
-    *    The Class loader to use to load the Servlet.
+    *    the Class loader to use to load the Servlet.
     *
     * @throws IOException
     *    if the file cannot be read or is incorrect.
@@ -58,20 +58,20 @@ public class ServletClassLoader {
          URL classesURL = new URL("jar:file:" + warFile.getAbsolutePath().replace(File.separatorChar, '/') + "!/WEB-INF/classes/");
          urlList.add(classesURL);
       }
-      
+
       List standardLibs = new ArrayList();
       if (mode == USE_XINS_LIB) {
          String classLocation = ServletClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toString();
          String commonJar = classLocation.substring(6).replace('/', File.separatorChar);
          File baseDir = new File(commonJar).getParentFile();
-         File[] xinsFiles = baseDir.listFiles(); 
+         File[] xinsFiles = baseDir.listFiles();
          for (int i = 0; i < xinsFiles.length; i++) {
             if (xinsFiles[i].getName().endsWith(".jar")) {
                urlList.add(xinsFiles[i].toURL());
             }
          }
          File libDir = new File(baseDir, ".." + File.separator + "lib");
-         File[] libFiles = libDir.listFiles(); 
+         File[] libFiles = libDir.listFiles();
          for (int i = 0; i < libFiles.length; i++) {
             if (libFiles[i].getName().endsWith(".jar")) {
                urlList.add(libFiles[i].toURL());
@@ -102,16 +102,6 @@ public class ServletClassLoader {
          }
          jarStream.close();
       }
-      /*AntClassLoader2 loader = new AntClassLoader2();
-      loader.setParentFirst(false);
-      loader.setParent(null);
-      for (int i=0; i<urlList.size(); i++) {
-         try {
-            loader.addPathElement((String) urlList.get(i));
-         } catch (BuildException bex) {
-            bex.printStackTrace();
-         }
-      }*/
       URL[] urls = new URL[urlList.size()];
       for (int i=0; i<urlList.size(); i++) {
          urls[i] = (URL) urlList.get(i);
@@ -130,7 +120,7 @@ public class ServletClassLoader {
     *    The name of the entry to extract.
     *
     * @return
-    *    The extracted file. The created file is a temporary file in the 
+    *    The extracted file. The created file is a temporary file in the
     *    temporary directory.
     *
     * @throws IOException
@@ -140,7 +130,7 @@ public class ServletClassLoader {
       String libName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.length() - 4);
       File tempJarFile = File.createTempFile(libName, ".jar");
       FileOutputStream out = new FileOutputStream(tempJarFile);
-    
+
       // Transfer bytes from the JAR file to the output file
       byte[] buf = new byte[8192];
       int len;
@@ -150,7 +140,7 @@ public class ServletClassLoader {
       out.close();
       return tempJarFile;
    }
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -159,7 +149,7 @@ public class ServletClassLoader {
     * Use the current class loader to load the servlet and the libraries.
     */
    public final static int USE_CURRENT_CLASSPATH = 1;
-   
+
    /**
     * Load the Servlet code from the WAR file and use the current
     * classpath for the libraries.
@@ -175,7 +165,7 @@ public class ServletClassLoader {
 
    /**
     * Load the servlet code and the libraries from the WAR file.
-    * This may take some time as the libraries need to be extracted from the 
+    * This may take some time as the libraries need to be extracted from the
     * WAR file.
     */
    public final static int USE_WAR_LIB = 4;
@@ -185,16 +175,16 @@ public class ServletClassLoader {
     * Load the included external libraries from the WAR file.
     */
    public final static int USE_WAR_EXTERNAL_LIB = 5;
-   
+
 
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
 
    /**
-    * An almost trivial no-fuss implementation of a class loader 
+    * An almost trivial no-fuss implementation of a class loader
     * following the child-first delegation model.
-    * 
+    *
     * @author <a href="http://www.qos.ch/log4j/">Ceki Gulcu</a>
     */
    private static class ChildFirstClassLoader extends URLClassLoader {
@@ -216,7 +206,7 @@ public class ServletClassLoader {
       }
 
       /**
-       * We override the parent-first behavior established by 
+       * We override the parent-first behavior established by
        * java.land.Classloader.
        * <p>
        * The implementation is surprisingly straightforward.
@@ -235,8 +225,6 @@ public class ServletClassLoader {
        */
       protected Class loadClass(String name, boolean resolve)
       throws ClassNotFoundException {
-
-         //System.out.println("ChildFirstClassLoader("+name+", "+resolve+")");
 
          // First, check if the class has already been loaded
          Class c = findLoadedClass(name);

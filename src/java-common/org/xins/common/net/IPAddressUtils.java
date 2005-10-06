@@ -125,7 +125,7 @@ public final class IPAddressUtils extends Object {
       if (length == 1) {
          char c0 = partString[0];
          if (c0 >= '0' && c0 <= '9') {
-            return (c0 - '0');
+            return c0 - '0';
          }
 
       } else if (length == 2) {

@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * Specification of a data section element.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.3.0
@@ -53,8 +53,10 @@ public final class DataSectionElementSpec {
     * @throws IllegalArgumentException
     *    if <code>name == null || description == null || subElements == null || attributes == null</code>.
     */
-   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, Map subElements, Map attributes) {
-      MandatoryArgumentChecker.check("name", name, "description", description, 
+   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, Map subElements, Map attributes)
+   throws IllegalArgumentException {
+
+      MandatoryArgumentChecker.check("name", name, "description", description,
             "subElements", subElements, "attributes", attributes);
       _name = name;
       _description = description;
@@ -66,22 +68,22 @@ public final class DataSectionElementSpec {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * Name of the element, cannot be <code>null</code>.
     */
    private final String _name;
-   
+
    /**
     * Description of the element, cannot be <code>null</code>.
     */
    private final String _description;
-   
+
    /**
     * Flag indicating that the element can have PCDATA.
     */
    private final boolean _isPCDataAllowed;
-   
+
    /**
     * The sub elements of the element, cannot be <code>null</code>.
     */
@@ -92,7 +94,7 @@ public final class DataSectionElementSpec {
     */
    private final Map _attributes;
 
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -104,7 +106,7 @@ public final class DataSectionElementSpec {
     *    The name of the data element, never <code>null</code>.
     */
    public String getName() {
-      
+
       return _name;
    }
 
@@ -115,7 +117,7 @@ public final class DataSectionElementSpec {
     *    The description of the data element, never <code>null</code>.
     */
    public String getDescription() {
-      
+
       return _description;
    }
 
@@ -136,16 +138,16 @@ public final class DataSectionElementSpec {
     */
    public DataSectionElementSpec getSubElement(String elementName)
    throws IllegalArgumentException, EntityNotFoundException {
-      
+
       MandatoryArgumentChecker.check("elementName", elementName);
-      
+
       DataSectionElementSpec element = (DataSectionElementSpec) _subElements.get(elementName);
-      
+
       if (element == null) {
-         throw new EntityNotFoundException("Sub element \"" + elementName 
+         throw new EntityNotFoundException("Sub element \"" + elementName
                  + "\" not found in the element \"" + _name +"\".");
       }
-      
+
       return element;
    }
 
@@ -157,7 +159,7 @@ public final class DataSectionElementSpec {
     *    the specification of the sub elements, never <code>null</code>.
     */
    public Map getSubElements() {
-      
+
       return _subElements;
    }
 
@@ -178,16 +180,16 @@ public final class DataSectionElementSpec {
     */
    public ParameterSpec getAttribute(String attributeName)
    throws EntityNotFoundException, IllegalArgumentException {
-      
+
       MandatoryArgumentChecker.check("attributeName", attributeName);
-      
+
       ParameterSpec attribute = (ParameterSpec) _attributes.get(attributeName);
-      
+
       if (attribute == null) {
          throw new EntityNotFoundException("Attribute \"" + attributeName
                  + "\" not found in the element \"" + _name +"\".");
       }
-      
+
       return attribute;
    }
 
@@ -199,7 +201,7 @@ public final class DataSectionElementSpec {
     *    The specification of the attributes, never <code>null</code>.
     */
    public Map getAttributes() {
-      
+
       return _attributes;
    }
 
@@ -210,7 +212,7 @@ public final class DataSectionElementSpec {
     *    <code>true</code> if the element can contain text, <code>false</code> otherwise.
     */
    public boolean isPCDataAllowed() {
-      
+
       return _isPCDataAllowed;
    }
 }

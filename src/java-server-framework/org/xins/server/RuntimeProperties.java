@@ -59,7 +59,7 @@ public class RuntimeProperties {
    }
 
    /**
-    * Gets the descriptor list. The list is created by getting all the 
+    * Gets the descriptor list. The list is created by getting all the
     * properties which are marked as <i>_descriptor</i> in the run time
     * properties file.
     *

@@ -41,14 +41,14 @@ public class XINSServletContext implements ServletContext {
    // Constructor
    //-------------------------------------------------------------------------
 
-   /** 
+   /**
     * Creates a new <code>XINSServletContext</code> instance.
     */
    public XINSServletContext() {
       // empty
    }
 
-   /** 
+   /**
     * Creates a new <code>XINSServletContext</code> with the specified
     * configuration.
     *
@@ -67,7 +67,7 @@ public class XINSServletContext implements ServletContext {
          _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -81,8 +81,8 @@ public class XINSServletContext implements ServletContext {
     * The root URL for the servlet
     */
    private String _rootURL;
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------

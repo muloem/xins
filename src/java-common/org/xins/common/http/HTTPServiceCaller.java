@@ -905,7 +905,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // A non-2xx HTTP status code indicates the request was not handled
       } else if (last instanceof StatusCodeHTTPCallException) {
          int code = ((StatusCodeHTTPCallException) last).getStatusCode();
-         return (code < 200 || code > 299);
+         return code < 200 || code > 299;
 
       // Otherwise do not fail over
       } else {

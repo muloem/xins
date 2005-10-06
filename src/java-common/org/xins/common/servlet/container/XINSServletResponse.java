@@ -16,7 +16,7 @@ import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * This class is an implementation of the HTTPServletResponse that can be
+ * This class is an implementation of the HttpServletResponse that can be
  * invoked locally.
  *
  * @version $Revision$ $Date$
@@ -37,7 +37,7 @@ public class XINSServletResponse implements HttpServletResponse {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new instance of LocalHTTPServletResponse
+    * Creates a new instance of <code>XINSServletResponse</code>.
     */
    public XINSServletResponse() {
    }

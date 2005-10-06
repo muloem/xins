@@ -40,15 +40,15 @@ class CallingConventionManager {
     * The list of the calling convention included in XINS.
     */
    private final static String[] CONVENTIONS = {
-      APIServlet.STANDARD_CALLING_CONVENTION, 
+      APIServlet.STANDARD_CALLING_CONVENTION,
       APIServlet.OLD_STYLE_CALLING_CONVENTION,
       APIServlet.XML_CALLING_CONVENTION,
       APIServlet.XSLT_CALLING_CONVENTION,
       APIServlet.SOAP_CALLING_CONVENTION,
       APIServlet.XML_RPC_CALLING_CONVENTION,
    };
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -68,17 +68,17 @@ class CallingConventionManager {
     * @throws ServletException
     *    if the default calling convention cannot be created.
     */
-   CallingConventionManager(ServletConfig servletConfig, API api) 
+   CallingConventionManager(ServletConfig servletConfig, API api)
    throws ServletException {
-      
+
       _servletConfig = servletConfig;
       _api = api;
       _otherConventions = new HashMap();
-      
+
       // Initialize the default calling convention
       initCallingConvention();
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
@@ -97,7 +97,7 @@ class CallingConventionManager {
     * The API. Never <code>null</code>.
     */
    private final API _api;
-   
+
    /**
     * The name of the default calling convention for this engine. This field
     * can never be <code>null</code> and must always be in sync with
@@ -187,7 +187,7 @@ class CallingConventionManager {
          }
          throw se;
       }
-      
+
       // Initialize the other calling conventions.
       for (int i = 0; i < CONVENTIONS.length; i++) {
          String nextConventionName = CONVENTIONS[i];
@@ -196,7 +196,7 @@ class CallingConventionManager {
                CallingConvention nextConvention = create(nextConventionName);
                _otherConventions.put(nextConventionName, nextConvention);
             } catch (Exception ex) {
-               
+
                // Just log a warning.
                Log.log_3560(ex, nextConventionName);
             }
@@ -246,9 +246,9 @@ class CallingConventionManager {
     * @throws InvalidRequestException
     *    if the calling convention name is unknown.
     */
-   CallingConvention getCallingConvention(String name) 
+   CallingConvention getCallingConvention(String name)
    throws InvalidRequestException {
-      
+
       if (TextUtils.isEmpty(name) || name.equals(_defaultConventionName)) {
          return _defaultConvention;
       }
@@ -260,13 +260,13 @@ class CallingConventionManager {
 
       for (int i = 0; i < CONVENTIONS.length; i++) {
          if (name.equals(CONVENTIONS[i])) {
-            throw new InvalidRequestException("The calling convention \"" + 
+            throw new InvalidRequestException("The calling convention \"" +
                   name + "\" was not created or initialized correctly.");
          }
       }
       throw new InvalidRequestException("Unknown calling convention: \"" + name + "\".");
    }
-   
+
    /**
     * Creates a calling convention based on a name. If the name does not
     * identify a recognized calling convention, then <code>null</code> is

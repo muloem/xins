@@ -570,15 +570,15 @@ final class Engine extends Object {
       CallingConvention cc = null;
       FunctionRequest xinsRequest = null;
       FunctionResult result = null;
-      
+
       // Call the API if the state is READY
       EngineState state = _state.getState();
       if (state == EngineState.READY) {
 
          try {
-            
+
             cc = _conventionManager.getCallingConvention(ccParam);
-            
+
             // Convert the HTTP request to a XINS request
             xinsRequest = cc.convertRequest(request);
 

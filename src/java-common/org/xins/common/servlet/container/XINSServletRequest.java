@@ -44,7 +44,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * The localhost name.
     */
    private static String LOCALHOST_NAME;
-   
+
    /**
     * The localhost address.
     */
@@ -67,8 +67,8 @@ public class XINSServletRequest implements HttpServletRequest {
          LOCALHOST_NAME = "localhost";
       }
    }
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -83,7 +83,7 @@ public class XINSServletRequest implements HttpServletRequest {
    public XINSServletRequest(String url) {
       this(url, null, null);
    }
-   
+
    /**
     * Creates a new Servlet request.
     *

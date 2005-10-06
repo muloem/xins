@@ -15,8 +15,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.xins.common.Log;
 import org.xins.common.text.FastStringBuffer;
@@ -66,7 +64,7 @@ public class LocalServletConfig implements ServletConfig {
          InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
          parseWebXML(webxmlInputStream);
       } catch (Exception ex) {
-         
+
          Log.log_1512(ex);
       }
    }
@@ -94,12 +92,12 @@ public class LocalServletConfig implements ServletConfig {
     * The servlet context.
     */
    private ServletContext _context;
-   
+
    /**
     * The WAR file.
     */
    private File _warFile;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -119,7 +117,7 @@ public class LocalServletConfig implements ServletConfig {
       SAXParserProvider.get().parse(webxmlInputStream, handler);
       webxmlInputStream.close();
    }
-   
+
    public String getInitParameter(String param) {
       return _initParameters.getProperty(param);
    }
@@ -155,7 +153,7 @@ public class LocalServletConfig implements ServletConfig {
    File getWarFile() {
       return _warFile;
    }
-   
+
    /**
     * Parser for the web.xml containing the information about the Servlet.
     */
@@ -223,7 +221,7 @@ public class LocalServletConfig implements ServletConfig {
             _pcdata.append(ch, start, length);
          }
       }
-      
+
       public InputSource resolveEntity(String publicId, String systemId) {
          return new InputSource(new ByteArrayInputStream(new byte[0]));
       }

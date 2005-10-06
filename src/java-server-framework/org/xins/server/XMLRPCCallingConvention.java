@@ -145,7 +145,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>XMLRPCCallingConvention</code>
+    * Creates a new <code>XMLRPCCallingConvention</code>.
     *
     * @param api
     *    the API, needed for the XML-RPC messages.

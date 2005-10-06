@@ -445,7 +445,7 @@ public final class GroupDescriptor extends Descriptor {
        *    if there is not.
        */
       public boolean hasNext() {
-         return (_currentIterator != null);
+         return _currentIterator != null;
       }
 
       /**
