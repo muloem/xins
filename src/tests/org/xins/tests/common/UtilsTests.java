@@ -10,7 +10,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Tests for class <code>Utils</code>
@@ -117,6 +119,37 @@ public class UtilsTests extends TestCase {
    }
    
    public void testGetJavaVersion() {
-      assertTrue("Incorrect Java version.", Utils.getJavaVersion() > 1.2);
+      double version = Utils.getJavaVersion();
+      String message = "Incorrect Java version: " + version;
+      assertTrue(message, version == 1.3 || version == 1.4 ||
+                          version == 1.5 || version == 1.6);
+   }
+
+   public void testLogProgrammingError() {
+
+      String c1     = ThreadLocal.class.getName();
+      String m1     = "toString()";
+      String c2     = getClass().getName();
+      String m2     = "testLogProgrammingError()";
+      String detail = "blah";
+      Exception e = new SecurityException();
+      ProgrammingException pe =
+         Utils.logProgrammingError(c1, m1, c2, m2, detail, e);
+      assertNotNull("Expected logProgrammingError to return a ProgrammingException instance, not null.", pe);
+
+      assertTrue("Incorrect cause for ProgrammingException.", ExceptionUtils.getCause(pe) == e);
+
+      String[] s = new String[] { c1, m1, c2, m2, detail };
+      String peMessage = pe.getMessage();
+      for (int i = 0; i < s.length; i++) {
+         String message = "Expected exception message (\""
+                        + peMessage
+                        + "\") to contain \""
+                        + s[i]
+                        + "\".";
+         assertTrue(message, pe.getMessage().contains(s[i]));
+      }
+
+      // TODO: Test actual logging, too
    }
 }
