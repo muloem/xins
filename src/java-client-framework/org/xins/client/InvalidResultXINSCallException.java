@@ -67,7 +67,8 @@ public final class InvalidResultXINSCallException extends XINSCallException {
                                   String           detail,
                                   Throwable        cause)
    throws IllegalArgumentException {
-      super("Invalid XINS call result", request, target, duration, detail, cause);
+      super("Invalid XINS call result",
+            request, target, duration, detail, cause);
    }
 
 

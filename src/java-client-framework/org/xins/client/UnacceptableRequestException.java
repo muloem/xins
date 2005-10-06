@@ -128,7 +128,8 @@ extends RuntimeException {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      DataElement invalidValue = new DataElement(null, "invalid-value-for-type");
+      DataElement invalidValue = new DataElement(null,
+                                                 "invalid-value-for-type");
       invalidValue.setAttribute(null, "param", parameter);
       invalidValue.setAttribute(null, "type", type);
       _errors.addChild(invalidValue);
@@ -146,8 +147,12 @@ extends RuntimeException {
     * @param element
     *    the element in which the attribute is missing.
     */
-   public void addInvalidValueForType(String attribute, String type, String element) {
-      DataElement invalidValue = new DataElement(null, "invalid-value-for-type");
+   public void addInvalidValueForType(String attribute,
+                                      String type,
+                                      String element) {
+
+      DataElement invalidValue = new DataElement(null,
+                                                 "invalid-value-for-type");
       invalidValue.setAttribute(null, "param", attribute);
       invalidValue.setAttribute(null, "type", type);
       invalidValue.setAttribute(null, "element", element);

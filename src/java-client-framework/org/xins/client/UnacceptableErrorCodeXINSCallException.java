@@ -43,7 +43,8 @@ extends UnacceptableResultXINSCallException {
     *
     * @throws IllegalArgumentException
     *    if <code>result == null
-    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
+    *          || result.{@link XINSCallResultData#getErrorCode()
+    *             getErrorCode()} == null</code>.
     */
    private static final String getDetail(XINSCallResultData result)
    throws IllegalArgumentException {
@@ -87,7 +88,8 @@ extends UnacceptableResultXINSCallException {
     *          || target      == null
     *          || duration  &lt; 0
     *          || resultData  == null
-    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
+    *          || resultData.{@link XINSCallResult#getErrorCode()
+    *             getErrorCode()} == null</code>.
     */
    public UnacceptableErrorCodeXINSCallException(
       XINSCallRequest    request,

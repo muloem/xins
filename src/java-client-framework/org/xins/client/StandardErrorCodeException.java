@@ -57,7 +57,8 @@ extends UnsuccessfulXINSCallException {
     *          || target      == null
     *          || duration  &lt; 0
     *          || resultData  == null
-    *          || resultData.{@link XINSCallResult#getErrorCode() getErrorCode()} == null</code>.
+    *          || resultData.{@link XINSCallResult#getErrorCode()
+    *             getErrorCode()} == null</code>.
     */
    StandardErrorCodeException(XINSCallRequest    request,
                               TargetDescriptor   target,
