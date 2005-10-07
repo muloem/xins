@@ -7,9 +7,11 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.service.CallConfig;
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPMethod;
+import org.xins.common.service.CallConfig;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 /**
  * Call configuration for the XINS service caller. The HTTP method and the
@@ -26,6 +28,17 @@ public final class XINSCallConfig extends CallConfig {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * The number of instances of this class. Initially zero.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * Lock object for field <code>INSTANCE_COUNT</code>.
+    */
+   private static Object INSTANCE_COUNT_LOCK = new Object();
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -38,6 +51,11 @@ public final class XINSCallConfig extends CallConfig {
     * Constructs a new <code>XINSCallConfig</code> object.
     */
    public XINSCallConfig() {
+
+      // First determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNumber = ++INSTANCE_COUNT;
+      }
 
       // Construct an underlying HTTPCallConfig
       _httpCallConfig = new HTTPCallConfig();
@@ -55,6 +73,13 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
 
    /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
+
+   /**
     * The underlying HTTP call config. Cannot be <code>null</code>.
     */
    private HTTPCallConfig _httpCallConfig;
@@ -63,8 +88,6 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   // TODO: Override describe()
 
    /**
     * Returns an <code>HTTPCallConfig</code> object that corresponds with this
@@ -105,5 +128,34 @@ public final class XINSCallConfig extends CallConfig {
 
       // Store the setting in the HTTP call configuration
       _httpCallConfig.setMethod(method);
+   }
+
+   /**
+    * Describes this configuration.
+    *
+    * @return
+    *    the description of this configuration, should never be
+    *    <code>null</code>, should never be empty and should never start or
+    *    end with whitespace characters.
+    */
+   public String describe() {
+
+      boolean    failOverAllowed;
+      HTTPMethod method;
+      synchronized (getLock()) {
+         failOverAllowed = isFailOverAllowed();
+         method          = _httpCallConfig.getMethod();
+      }
+
+      FastStringBuffer buffer = new FastStringBuffer(51);
+      buffer.append("XINS call config #");
+      buffer.append(_instanceNumber);
+      buffer.append(" [failOverAllowed=");
+      buffer.append(failOverAllowed);
+      buffer.append("; method=");
+      buffer.append(TextUtils.quote(method.toString()));
+      buffer.append(']');
+
+      return buffer.toString();
    }
 }

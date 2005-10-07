@@ -23,9 +23,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     the strategy is stopped.
 
 * XINS/Java Client Framework:
-  - In class XINSCallConfig, method setHTTPMethod: No longer allowing the
-    specified HTTP method to be null. This solves an inconsistency in the
-    Javadoc comments.
+  - Improved the implementation of the XINSCallConfig class. Implemented the
+    describe() method and made the HTTP method required in setHTTPMethod. This
+    solves an inconsistency in the Javadoc comments.
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Server Framework:
