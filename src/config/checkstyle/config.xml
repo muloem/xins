@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.0//EN" "http://www.puppycrawl.com/dtds/configuration_1_0.dtd">
-<!--
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.0//EN" "http://www.puppycrawl.com/dtds/configuration_1_0.dtd"><!--
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
@@ -13,175 +12,175 @@
 <module name="Checker">
 
 	<module name="PackageHtml" />
-	
+
 	<module name="TreeWalker">
-		
-	<!-- Avoid creating duplicate objects -->
-	<module name="IllegalInstantiation">
-		<property name="classes" value="java.lang.Boolean, java.lang.String" />
-	</module>
 
-	<!-- Avoid finalizers -->
-	<module name="GenericIllegalRegexp">
-		<property name="format" value="((public)|(protected))\s+void\s+finalize\(\s*\)" />
-	</module>
+		<!-- Avoid creating duplicate objects -->
+		<module name="IllegalInstantiation">
+			<property name="classes" value="java.lang.Boolean, java.lang.String" />
+		</module>
 
-	<!-- Always override hashCode when you override equals -->
-	<module name="EqualsHashCode" />
+		<!-- Avoid finalizers -->
+		<module name="GenericIllegalRegexp">
+			<property name="format" value="((public)|(protected))\s+void\s+finalize\(\s*\)" />
+		</module>
 
-	<!-- Make all fields private -->
-	<module name="VisibilityModifier" />
+		<!-- Always override hashCode when you override equals -->
+		<module name="EqualsHashCode" />
 
-	<!-- Avoid long parameter lists -->
-	<module name="ParameterNumber">
-		<property name="max" value="8" />
-	</module>
+		<!-- Make all fields private -->
+		<module name="VisibilityModifier" />
 
-	<!-- Write Javadoc comments for all API elements -->
-	<module name="JavadocType">
-		<property name="scope" value="private" />
-	</module>
-	<module name="JavadocMethod">
-		<property name="scope" value="private" />
-	</module>
-	<module name="JavadocVariable">
-		<property name="scope" value="private" />
-	</module>
+		<!-- Avoid long parameter lists -->
+		<module name="ParameterNumber">
+			<property name="max" value="8" />
+		</module>
 
-	<!-- Adhere to generally accepted naming conventions -->
-	<module name="PackageName">
-		<!-- no uppercase letters, between 2 and 12 characters -->
-		<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,11})*$" />
-	</module>
-	<module name="TypeName">
-		<property name="format" value="^[A-Z][a-zA-Z0-9]*$" />
-	</module>
-	<module name="ConstantName">
-		<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
-	</module>
-	<module name="LocalFinalVariableName">
-		<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
-	</module>
-	<module name="LocalVariableName">
-		<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-	</module>
-	<module name="MemberName">
-		<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
-	</module>
-	<module name="MethodName">
-		<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-	</module>
-	<module name="ParameterName">
-		<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
-	</module>
-	<module name="StaticVariableName">
-		<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
-	</module>
+		<!-- Write Javadoc comments for all API elements -->
+		<module name="JavadocType">
+			<property name="scope" value="private" />
+		</module>
+		<module name="JavadocMethod">
+			<property name="scope" value="private" />
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="private" />
+		</module>
 
-	<!-- Don't ignore exceptions, require a comment -->
-	<module name="EmptyBlock">
-		<property name="tokens" value="LITERAL_CATCH" />
-		<property name="option" value="text" />
-	</module>
+		<!-- Adhere to generally accepted naming conventions -->
+		<module name="PackageName">
+			<!-- no uppercase letters, between 2 and 12 characters -->
+			<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]{1,11})*$" />
+		</module>
+		<module name="TypeName">
+			<property name="format" value="^[A-Z][a-zA-Z0-9]*$" />
+		</module>
+		<module name="ConstantName">
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
+		</module>
+		<module name="LocalFinalVariableName">
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
+		</module>
+		<module name="LocalVariableName">
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
+		</module>
+		<module name="MemberName">
+			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
+		</module>
+		<module name="MethodName">
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
+		</module>
+		<module name="ParameterName">
+			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
+		</module>
+		<module name="StaticVariableName">
+			<property name="format" value="^[A-Z]*[A-Z0-9_]*$" />
+		</module>
 
-	<!-- Maximum file length is 1500 -->
-	<module name="FileLength">
-		<property name="max" value="1500" />
-	</module>
+		<!-- Don't ignore exceptions, require a comment -->
+		<module name="EmptyBlock">
+			<property name="tokens" value="LITERAL_CATCH" />
+			<property name="option" value="text" />
+		</module>
 
-	<!-- Maximum line length is 78 -->
-	<module name="LineLength">
-		<property name="max" value="78" />
-		<property name="ignorePattern" value="(@author)|(\$Id:)" />
-	</module>
+		<!-- Maximum file length is 1500 -->
+		<module name="FileLength">
+			<property name="max" value="1500" />
+		</module>
 
-	<!-- Maximum 80 lines per method, excluding spaces and comments -->
-	<module name="MethodLength">
-	 <property name="max" value="80" />
-	 <property name="countEmpty" value="false" />
-	</module>
+		<!-- Maximum line length is 78 -->
+		<module name="LineLength">
+			<property name="max" value="78" />
+			<property name="ignorePattern" value="(@author)|(\$Id:)" />
+		</module>
 
-	<!-- Maximum 8 parameters per method/constructor -->
-	<module name="ParameterNumber">
-	 <property name="max" value="8" />
-	</module>
+		<!-- Maximum 80 lines per method, excluding spaces and comments -->
+		<module name="MethodLength">
+			<property name="max" value="80" />
+			<property name="countEmpty" value="false" />
+		</module>
 
-	<!-- Check some Javadoc comments -->
-	<module name="JavadocType">
-		<property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
-		<property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: "/>
-	</module>
-	<module name="JavadocStyle">
-		<property name="checkEmptyJavadoc" value="true" />
-	</module>
+		<!-- Maximum 8 parameters per method/constructor -->
+		<module name="ParameterNumber">
+			<property name="max" value="8" />
+		</module>
 
-	<!-- Check imports -->
-	<module name="AvoidStarImport" />
-	<module name="RedundantImport" />
-	<module name="UnusedImports" />
+		<!-- Check some Javadoc comments -->
+		<module name="JavadocType">
+			<property name="authorFormat" value="^[A-Z][a-z][A-Za-z0-9. ]*\(&lt;a href=&quot;mailto:" />
+			<property name="versionFormat" value="^\$[R]evision: [0-9]+(\.[0-9]+)+ \$ \$[D]ate: "/>
+		</module>
+		<module name="JavadocStyle">
+			<property name="checkEmptyJavadoc" value="true" />
+		</module>
 
-	<!-- Avoid tab characters -->
-	<module name="TabCharacter" />
+		<!-- Check imports -->
+		<module name="AvoidStarImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
 
-	<!-- No whitespace at end of line -->
-	<module name="GenericIllegalRegexp">
-	 <property name="format" value="\s$" />
-	</module>
+		<!-- Avoid tab characters -->
+		<module name="TabCharacter" />
 
-	<!-- No System.out or System.err calls -->
-	<module name="GenericIllegalRegexp">
-	 <property name="format" value="System.out" />
-	</module>
-	<module name="GenericIllegalRegexp">
-	 <property name="format" value="System.err" />
-	</module>
+		<!-- No whitespace at end of line -->
+		<module name="GenericIllegalRegexp">
+			<property name="format" value="\s$" />
+		</module>
 
-	<!-- Find FIXME and TODO comments -->
-	<module name="GenericIllegalRegexp">
-		 <property name="format" value="FIXME" />
-	</module>
-	<module name="TodoComment">
-	 <property name="format" value="TODO" />
-	</module>
+		<!-- No System.out or System.err calls -->
+		<module name="GenericIllegalRegexp">
+			<property name="format" value="System.out" />
+		</module>
+		<module name="GenericIllegalRegexp">
+			<property name="format" value="System.err" />
+		</module>
 
-	<!-- Do not shadow parameter -->
-	<module name="HiddenField" />
+		<!-- Find FIXME and TODO comments -->
+		<module name="TodoComment">
+			<property name="format" value="FIXME" />
+		</module>
+		<module name="TodoComment">
+			<property name="format" value="TODO" />
+		</module>
 
-	<!-- No String == AnotherString -->
-	<module name="StringLiteralEquality" />
+		<!-- Do not shadow parameter -->
+		<module name="HiddenField" />
 
-	<!-- Never throw Throwable, Error or RuntimeException -->
-	<!--module name="IllegalThrows" /-->
+		<!-- No String == AnotherString -->
+		<module name="StringLiteralEquality" />
 
-	<!-- Unnecessary Parentheses -->
-	<module name="UnnecessaryParentheses" />
+		<!-- Never throw Throwable, Error or RuntimeException -->
+		<!--module name="IllegalThrows" /-->
 
-	<!-- Long with uppercase L -->
-	<module name="UpperEll" />
+		<!-- Unnecessary Parentheses -->
+		<module name="UnnecessaryParentheses" />
 
-	<!-- Enforce Java-style array definitions -->
-	<module name="ArrayTypeStyle" />
+		<!-- Long values should have suffix 'L' and not 'l' -->
+		<module name="UpperEll" />
 
-	<!-- TODO: Enforce correct indentation
-	<module name="Indentation">
-		 <property name="basicOffset" value="3" />
-		 <property name="caseIndent"  value="3" />
-	</module>
+		<!-- Enforce Java-style array definitions -->
+		<module name="ArrayTypeStyle" />
 
-	This does not work correctly. It expects 'throws' clauses, for
-	example, to be indented 3 spaces. 
-	-->
+		<!-- TODO: Enforce correct indentation
+		<module name="Indentation">
+			 <property name="basicOffset" value="3" />
+			 <property name="caseIndent"  value="3" />
+		</module>
 
-	<!-- No trailing comments, please -->
-	<module name="TrailingComment" />
+		This does not work correctly. It expects 'throws' clauses, for
+		example, to be indented 3 spaces.
+		-->
 
-	<!-- TODO: Require legal notices
-	<module name="RequiredRegexp">
-		 <property name="format" value="Copyright 2003-2005 Wanadoo Nederland B.V." />
-	</module>
-	<module name="RequiredRegexp">
-		 <property name="format" value="See the COPYRIGHT file for redistribution and use restrictions." />
-	</module>
-	-->
+		<!-- No trailing comments, please -->
+		<module name="TrailingComment" />
+
+		<!-- TODO: Require legal notices
+		<module name="RequiredRegexp">
+			 <property name="format" value="Copyright 2003-2005 Wanadoo Nederland B.V." />
+		</module>
+		<module name="RequiredRegexp">
+			 <property name="format" value="See the COPYRIGHT file for redistribution and use restrictions." />
+		</module>
+		-->
 	</module>
 </module>

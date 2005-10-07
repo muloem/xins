@@ -57,7 +57,9 @@ public final class ErrorCodeSpec extends Object {
     * @throws InvalidSpecificationException
     *    if the result code file cannot be found or is incorrect.
     */
-   public ErrorCodeSpec(String name, Class reference, String baseURL) throws InvalidSpecificationException {
+   public ErrorCodeSpec(String name, Class reference, String baseURL)
+   throws IllegalArgumentException, InvalidSpecificationException {
+
       MandatoryArgumentChecker.check("name", name, "reference", reference, "baseURL", baseURL);
       _errorCodeName = name;
       try {
