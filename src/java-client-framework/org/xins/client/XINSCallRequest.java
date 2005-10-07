@@ -253,9 +253,8 @@ public final class XINSCallRequest extends CallRequest {
     *    if the request was already sent to the other end.
     *
     * @param method
-    *    the HTTP method to use, or <code>null</code> if the used
-    *    <code>XINSServiceCaller</code> should determine what HTTP method to
-    *    use.
+    *    the HTTP method to use, or <code>null</code> if a default should be
+    *    used.
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code> or if <code>parameters</code>
@@ -279,8 +278,16 @@ public final class XINSCallRequest extends CallRequest {
 
       // Create an associated XINSCallConfig object
       XINSCallConfig callConfig = new XINSCallConfig();
+
+      // Configure fail-over
       callConfig.setFailOverAllowed(failOverAllowed);
-      callConfig.setHTTPMethod(method);
+
+      // Configure the HTTP method
+      if (method != null) {
+         callConfig.setHTTPMethod(method);
+      }
+
+      // Apply the configuration
       setXINSCallConfig(callConfig);
    }
 
