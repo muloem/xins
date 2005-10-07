@@ -122,7 +122,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       } catch (FileNotFoundException fnfe) {
          String message = "File \""
                         + file
-                        + "\" cannot be opened for reading."
+                        + "\" cannot be opened for reading.";
          ParseException pe = new ParseException(message);
          ExceptionUtils.setCause(pe, ioe);
          throw pe;
@@ -131,7 +131,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       } catch (IOException ioe) {
          String message = "Cannot parse the file \""
                         + file
-                        + "\" due to an I/O error."
+                        + "\" due to an I/O error.";
          ParseException pe = new ParseException(message);
          ExceptionUtils.setCause(pe, ioe);
          throw pe;
