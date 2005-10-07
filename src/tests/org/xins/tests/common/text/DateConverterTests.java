@@ -108,33 +108,38 @@ public class DateConverterTests extends TestCase {
 
       String separator = "-";
       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd" + separator + "HHmmssSSS");
+      DateConverter dc = new DateConverter(true);
 
-      long   millis    = 0L;
-      String expected  = formatter.format(new Date(millis));
-      String actual    = DateConverter.toDateString(millis, true);
-      String message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
-      assertEquals(message, expected, actual);
-
-      millis++;
-      expected  = formatter.format(new Date(millis));
-      actual    = DateConverter.toDateString(millis, true);
-      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
-      assertEquals(message, expected, actual);
-
-      millis++;
-      expected  = formatter.format(new Date(millis));
-      actual    = DateConverter.toDateString(millis, true);
-      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
-      assertEquals(message, expected, actual);
+      long millis;
+      String expected, actual, message;
+      for (millis = 0L; millis < 11000L; millis++) {
+         expected  = formatter.format(new Date(millis));
+         actual    = dc.format(millis);
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
+         assertEquals(message, expected, actual);
+      }
+      for (millis = 1L; millis < 11000L; millis += 2) {
+         expected  = formatter.format(new Date(millis));
+         actual    = dc.format(millis);
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
+         assertEquals(message, expected, actual);
+      }
 
       millis = System.currentTimeMillis();
-      expected  = formatter.format(new Date(millis));
-      actual    = DateConverter.toDateString(millis, true);
-      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
-      assertEquals(message, expected, actual);
+      for (; millis < 11000L; millis++) {
+         expected  = formatter.format(new Date(millis));
+         actual    = dc.format(millis);
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
+         assertEquals(message, expected, actual);
+      }
+      for (; millis < 11000L; millis += 2) {
+         expected  = formatter.format(new Date(millis));
+         actual    = dc.format(millis);
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
+         assertEquals(message, expected, actual);
+      }
 
       Random random = new Random();
-      DateConverter dc = new DateConverter(true);
       String s1 = "The date is: ";
       String s2 = "YYYYMMDDxHHMMSSNNN";
       String s3 = s1 + s2;
@@ -148,14 +153,14 @@ public class DateConverterTests extends TestCase {
          }
 
          expected  = formatter.format(new Date(millis));
-         actual    = DateConverter.toDateString(millis, true);
-         message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+         actual    = dc.format(millis);
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
          assertEquals(message, expected, actual);
 
          expected  = s1 + formatter.format(new Date(millis));
          dc.format(millis, buffer, 13);
          actual    = new String(buffer);
-         message   = "Expected DateConverter.format(long,char[],int) to return \"" + expected + "\" instead of \"" + actual + "\".";
+         message   = "Expected DateConverter.format(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\" (millis=" + millis + ")";
          assertEquals(message, expected, actual);
       }
    }

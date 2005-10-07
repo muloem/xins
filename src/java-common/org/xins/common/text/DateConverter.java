@@ -46,45 +46,22 @@ public class DateConverter extends Object {
     */
    private static final char[][] VALUES;
 
-   /**
-    * The character zero (<code>'0'</code>) as an <code>int</code>.
-    */
-   private static final int ZERO = (int) '0';
-
-   /**
-    * The time zone for this host.
-    */
-   private final static TimeZone TIME_ZONE = TimeZone.getDefault();
-
-   /**
-    * The cached time.
-    */
-   private static long CACHED_TIME = -1000L;
-
-   /**
-    * The <code>String</code> representation of the cached time in the format
-    * <em>yyyyMMdd-HHmmss</em>.
-    */
-   private static String CACHED_TIME_STRING;
-
-   /**
-    * The lock for the cached time.
-    */
-   private final static Object TIME_LOCK = new Object();
-
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Class initialized. Initializes the {@link #VALUES} array.
+    */
    static {
 
       // Fill the VALUES array
       VALUES = new char[100][];
 
       for (int i = 0; i < 100; i++) {
-         int first  = ZERO + (i / 10);
-         int second = ZERO + (i % 10);
+         int first  = ((int) '0') + (i / 10);
+         int second = ((int) '0') + (i % 10);
          VALUES[i] = new char[] { (char) first, (char) second };
       }
    }
@@ -169,160 +146,6 @@ public class DateConverter extends Object {
       buffer.append(String.valueOf(ms));
 
       return buffer.toString();
-   }
-
-   /**
-    * Formats the timestamp as a <code>String</code>.
-    *
-    * @param millis
-    *    the timestamp, as a number of milliseconds since the Epoch.
-    *
-    * @param withCentury
-    *    <code>true</code> if the century should be in the result,
-    *    <code>false</code> otherwise.
-    *
-    * @return
-    *    the converted character string, cannot be <code>null</code>.
-    *
-    * @since XINS 1.3.0
-    */
-   public static String toDateString(long millis, boolean withCentury) {
-
-      long millisOnly = millis % 1000L;
-      long delta = millis - CACHED_TIME;
-
-      synchronized (TIME_LOCK) {
-
-         // If we are in the same second, just append the milli seconds.
-         if (delta < 1000L &&
-               millisOnly < CACHED_TIME % 1000L && delta > 0L) {
-            FastStringBuffer buffer = new FastStringBuffer(18, CACHED_TIME_STRING);
-            appendMillis(buffer, (int) millisOnly);
-            String date = buffer.toString();
-            if (withCentury) {
-               return date;
-            } else {
-               return date.substring(2);
-            }
-
-         // If we are in the same minute, just change the seconds and append the milli seconds.
-         } else if (CACHED_TIME_STRING != null && delta > 0L) {
-            int secondsOnly = Integer.parseInt(CACHED_TIME_STRING.substring(13));
-            long secondsDiff = delta / 1000L;
-            if (secondsDiff < (60 - secondsOnly)) {
-               FastStringBuffer buffer = new FastStringBuffer(18);
-               buffer.append(CACHED_TIME_STRING.substring(0, 13));
-               int newSeconds = secondsOnly + (int) secondsDiff;
-               if (newSeconds < 10) {
-                  buffer.append('0');
-               }
-               buffer.append(newSeconds);
-               CACHED_TIME = millis;
-               CACHED_TIME_STRING = buffer.toString();
-               appendMillis(buffer, (int) millisOnly);
-               String date = buffer.toString();
-               if (withCentury) {
-                  return date;
-               } else {
-                  return date.substring(2);
-               }
-            }
-         }
-      }
-      String date = toDateString(millis, true, "-");
-      synchronized (TIME_LOCK) {
-         CACHED_TIME = millis;
-         CACHED_TIME_STRING = date;
-      }
-      FastStringBuffer buffer = new FastStringBuffer(18);
-      if (withCentury) {
-         buffer.append(date);
-      } else {
-         buffer.append(date.substring(2));
-      }
-      appendMillis(buffer, (int) millisOnly);
-      return buffer.toString();
-   }
-
-   /**
-    * Formats a timestamp as a <code>String</code>.
-    *
-    * @param millis
-    *    the timestamp, as a number of milliseconds since the Epoch.
-    *
-    * @param withCentury
-    *    <code>true</code> if the century should be in the result,
-    *    <code>false</code> otherwise.
-    *
-    * @param separator
-    *    the separator between the date and the hours, or <code>null</code>
-    *    if no separator should be set.
-    *
-    * @return
-    *    the converted character string without the milliseconds,
-    *    cannot be <code>null</code>.
-    */
-   private static String toDateString(long    millis,
-                                      boolean withCentury,
-                                      String  separator) {
-
-      // Convert the millis to a GregorianCalendar instance
-      GregorianCalendar calendar = new GregorianCalendar(TIME_ZONE);
-      Date date = new Date(millis);
-      calendar.setTime(date);
-
-      // Get all individual fields from the calendar
-      int year  = calendar.get(Calendar.YEAR);
-      int month = calendar.get(Calendar.MONTH);
-      int day   = calendar.get(Calendar.DAY_OF_MONTH);
-      int hour  = calendar.get(Calendar.HOUR_OF_DAY);
-      int min   = calendar.get(Calendar.MINUTE);
-      int sec   = calendar.get(Calendar.SECOND);
-
-      // Add century and year or both
-      FastStringBuffer buffer = new FastStringBuffer(23);
-      if (withCentury) {
-         int century  = year / 100;
-         buffer.append(VALUES[century]);
-      }
-      int yearOnly = year % 100;
-      buffer.append(VALUES[yearOnly]);
-
-      // Add month (which is 0-based, so we need to add 1)
-      buffer.append(VALUES[month + 1]);
-
-      // Add day
-      buffer.append(VALUES[day]);
-
-      // Add separator between date and time
-      if (separator != null) {
-         buffer.append(separator);
-      }
-
-      // Add hours, minutes and seconds
-      buffer.append(VALUES[hour]);
-      buffer.append(VALUES[min]);
-      buffer.append(VALUES[sec]);
-
-      return buffer.toString();
-   }
-
-   /**
-    * Appends the millis to the <code>FastStringBuffer</code>.
-    *
-    * @param buffer
-    *    the buffer, cannot be <code>null</code>.
-    *
-    * @param millis
-    *    the millis to add.
-    */
-   private static void appendMillis(FastStringBuffer buffer, int millis) {
-      if (millis < 10) {
-         buffer.append(VALUES[0]);
-      } else if (millis < 100) {
-         buffer.append('0');
-      }
-      buffer.append(millis);
    }
 
 
@@ -423,7 +246,7 @@ public class DateConverter extends Object {
       _cachedDate        = date;
       _cachedMinutes     = date / 60000L;
       long seconds       = date /  1000L;
-      _cachedJustSeconds = (int) (seconds %    60L);
+      _cachedJustSeconds = (int) (seconds % 60L);
 
       // Format the date
       String s = _formatter.format(new Date(_cachedDate));
@@ -435,6 +258,55 @@ public class DateConverter extends Object {
     * the setting of the <em>withCentury</em> property (passed to the
     * constructor), the format is as follows. If <em>withCentury</em> is set,
     * then the format is:
+    *
+    * <blockquote><em>CCYYMMDD-hhmmssSSS</em> (length is 18)</blockquote>
+    *
+    * Otherwise, if <em>withCentury</em> is not set, then the format is
+    * without the century:
+    *
+    * <blockquote><em>YYMMDD-hhmmssSSS</em> (length is 16)</blockquote>
+    *
+    * <p>The timestamp is a number of milliseconds since the Epoch (midnight
+    * at the start of January 1, 1970, GMT). See
+    * {@link System#currentTimeMillis()}.
+    *
+    * <p>Note: This method is <em>not</em> thread-safe.
+    *
+    * @param date
+    *    the timestamp, in milliseconds since the Epoch, must be &gt;=
+    *    <code>0L</code>.
+    *
+    * @return
+    *    a character string with the specified date in the correct format.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>date &lt; 0L</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public String format(long date)
+   throws IllegalArgumentException {
+
+      // Check precondition
+      if (date < 0L) {
+         throw new IllegalArgumentException("date (" + date + ") < 0L");
+      }
+
+      // Reserve a character buffer
+      char[] buffer = new char[_length];
+
+      // Perform formatting
+      format(date, buffer, 0);
+
+      // Convert the buffer to a String object
+      return new String(buffer);
+   }
+
+   /**
+    * Formats the specified timestamp as a string in a character buffer.
+    * Depending on the setting of the <em>withCentury</em> property (passed
+    * to the constructor), the format is as follows. If <em>withCentury</em>
+    * is set, then the format is:
     *
     * <blockquote><em>CCYYMMDD-hhmmssSSS</em> (length is 18)</blockquote>
     *

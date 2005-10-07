@@ -10,6 +10,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Rewrote the MandatoryArgumentChecker class in org.xins.common. If the
     passed argument name is null, then a programming error is logged and a
     ProgrammingException is thrown. Improved the unit tests.
+  - Changed the interface of the DateConverter class. Replaced the class
+    function toDateString(long,boolean) with an instance method format(long).
   - Improved logging in HostnameTask.
   - Improved Javadoc comments and formatting.
 
