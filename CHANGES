@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Server Framework:
+  - Improved performance of log messages 3540 and 3541 by making FormattedDate
+    use the performance-optimized method in DateConverter.
   - Only logging unused properties (message 3434) if the framework
     (re-)initialized successfully.
   - Improved Javadoc comments and formatting.

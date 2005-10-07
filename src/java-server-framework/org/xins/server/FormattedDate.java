@@ -24,6 +24,14 @@ extends AbstractLogdocSerializable {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Shared <code>DateConverter</code> instance. Used by all
+    * <code>FormattedDate</code> instances. Needs to be locked first.
+    */
+   private static final DateConverter DATE_CONVERTER =
+      new DateConverter(true);
+
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
@@ -65,6 +73,8 @@ extends AbstractLogdocSerializable {
     *    <code>null</code>.
     */
    protected String initialize() {
-      return DateConverter.toDateString(_epochDate, true);
+      synchronized (DATE_CONVERTER) {
+         return DATE_CONVERTER.format(_epochDate);
+      }
    }
 }
