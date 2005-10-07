@@ -147,7 +147,7 @@ public class UtilsTests extends TestCase {
                         + "\") to contain \""
                         + s[i]
                         + "\".";
-         assertTrue(message, pe.getMessage().contains(s[i]));
+         assertTrue(message, pe.getMessage().indexOf(s[i]) >= 0);
       }
 
       // TODO: Test actual logging, too
