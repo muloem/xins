@@ -16,9 +16,8 @@
 	<module name="TreeWalker">
 
 		<!-- Make sure the file header is correct -->
-		<module name="Header">
+		<module name="RegexpHeader">
 			<property name="headerFile" value="src/config/checkstyle/java.header" />
-			<property name="ignoreLines" value="2" />
 		</module>
 
 		<!-- Avoid creating duplicate objects -->
