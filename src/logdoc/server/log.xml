@@ -492,7 +492,7 @@
 		</entry>
 		<entry id="3522" level="INFO" exception="true">
 			<description>The received request cannot be parsed correctly.</description>
-			<param name="errorCode" type="int32" nullable="false" />
+			<param name="httpCode" type="int32" nullable="false" />
 		</entry>
 	</group>
 
