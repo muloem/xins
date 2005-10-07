@@ -13,7 +13,6 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Changed the interface of the DateConverter class. Replaced the class
     function toDateString(long,boolean) with an instance method format(long).
   - Improved logging in HostnameTask.
-  - Improved Javadoc comments and formatting.
   - Removed unused method 'log' from class org.xins.common.Utils.
   - Improved the message for a ProgrammingException.
   - Improved the implementation of the HTTPCallConfig class. Implemented the
@@ -21,15 +20,18 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     solves an inconsistency in the Javadoc comments.
   - Changed the copy method of the ExpiryFolder so it can be executed even if
     the strategy is stopped.
-  - Change the HTTPCallResult constructor to check all mandatory arguments at
+  - Changed the HTTPCallResult constructor to check all mandatory arguments at
     once.
   - Improved the message for an InitializationException, added a unit test,
     and fixed a bug (a NullPointerException) in the creating of the message.
+  - Improved Javadoc comments and formatting.
 
 * XINS/Java Client Framework:
   - Improved the implementation of the XINSCallConfig class. Implemented the
     describe() method and made the HTTP method required in setHTTPMethod. This
     solves an inconsistency in the Javadoc comments.
+  - Changed the XINSCallResult constructor to check all mandatory arguments at
+    once.
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Server Framework:
