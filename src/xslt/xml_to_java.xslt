@@ -36,6 +36,7 @@ $Id$
 					<xsl:when test="$firstchar='&#xEC;'">\u00EC</xsl:when>
 					<xsl:when test="$firstchar='&#xEF;'">\u00EF</xsl:when>
 					<xsl:when test="$firstchar='&#xF3;'">\u00F3</xsl:when>
+					<xsl:when test="$firstchar='&#xF4;'">\u00F4</xsl:when>
 					<xsl:when test="$firstchar='&#xF9;'">\u00F9</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="$firstchar" />
