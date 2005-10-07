@@ -45,7 +45,8 @@ public class FastStringBuffer extends Object {
 
       // Check preconditions
       if (capacity < 0) {
-         throw new IllegalArgumentException("capacity (" + capacity + ") < 0");
+         throw new IllegalArgumentException(
+            "capacity (" + capacity + ") < 0");
       }
 
       // Initialize fields
@@ -100,7 +101,8 @@ public class FastStringBuffer extends Object {
          throw new IllegalArgumentException("s == null");
       }
       if (capacity < s.length()) {
-         throw new IllegalArgumentException("capacity (" + capacity + ") < s.length() (" + s.length() + ')');
+         throw new IllegalArgumentException(
+            "capacity (" + capacity + ") < s.length() (" + s.length() + ')');
       }
 
       // Initialize fields
@@ -146,7 +148,7 @@ public class FastStringBuffer extends Object {
 
       // Increase capacity if needed
       if (current < needed) {
-         int newCapacity = needed * 2; // XXX: Is this okay?
+         int newCapacity = needed << 2;
 
          Log.log_1250(current, newCapacity);
 
@@ -246,11 +248,13 @@ public class FastStringBuffer extends Object {
       if (off < 0) {
          throw new IllegalArgumentException("off (" + off + ") < 0");
       } else if (off >= cbuf.length && off > 0) {
-         throw new IllegalArgumentException("off (" + off + ") >= cbuf.length (" + cbuf.length + ')');
+         throw new IllegalArgumentException(
+            "off (" + off + ") >= cbuf.length (" + cbuf.length + ')');
       } else if (len < 0) {
          throw new IllegalArgumentException("len (" + len + ") < 0");
       } else if (off + len > cbuf.length) {
-         throw new IllegalArgumentException("off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
+         throw new IllegalArgumentException(
+            "off (" + off + ") + len (" + len + ") > cbuf.length (" + cbuf.length + ')');
       }
 
       if (len == 0) {
@@ -414,7 +418,8 @@ public class FastStringBuffer extends Object {
    throws IndexOutOfBoundsException {
 
       if (index >= _length) {
-         throw new IndexOutOfBoundsException("index (" + index + ") >= getLength() (" + _length + ')');
+         throw new IndexOutOfBoundsException(
+            "index (" + index + ") >= getLength() (" + _length + ')');
       }
 
       char oldChar = _buffer[index];
@@ -441,9 +446,11 @@ public class FastStringBuffer extends Object {
 
       // Check preconditions
       if (newLength < 0) {
-         throw new IllegalArgumentException("newLength (" + newLength + ") < 0");
+         throw new IllegalArgumentException(
+            "newLength (" + newLength + ") < 0");
       } else if (newLength > _length) {
-         throw new IllegalArgumentException("newLength (" + newLength + ") > getLength() (" + _length + ')');
+         throw new IllegalArgumentException(
+            "newLength (" + newLength + ") > getLength() (" + _length + ')');
       }
 
       _length = newLength;
