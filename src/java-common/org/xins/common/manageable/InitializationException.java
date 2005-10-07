@@ -42,14 +42,14 @@ extends Exception {
     * @return
     *    the message, never <code>null</code>.
     */
-   private static String createMessage(String message, Throwable cause) {
+   private static String createMessage(String detail, Throwable cause) {
 
       FastStringBuffer buffer = new FastStringBuffer(159);
       buffer.append("Initialization failed");
 
-      if (message != null) {
+      if (detail != null) {
          buffer.append(": \"");
-         buffer.append(message);
+         buffer.append(detail);
          buffer.append('"');
       }
 
