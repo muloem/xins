@@ -563,12 +563,17 @@ implements DefaultResultCodes {
       // TODO: Investigate whether we can take the configuration file reload
       //       interval from somewhere (ConfigManager? Engine?).
       String acl = runtimeSettings.get(ACL_PROPERTY);
-      String aclInterval =
-         runtimeSettings.get(APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY);
+      String propName  = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
+      String propValue = runtimeSettings.get(propName);
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
-      if (aclInterval != null && aclInterval.trim().length() > 0) {
+      if (propValue != null && propValue.trim().length() > 0) {
          // TODO: Can this ever fail? Check and test.
-         interval = Integer.parseInt(aclInterval);
+         interval = Integer.parseInt(propValue);
+
+         if (interval < 0) {
+            throw new InvalidPropertyValueException(propName, propValue,
+               "Negative interval not allowed. Use 0 to disable reloading.");
+         }
       }
 
       // Dispose the old access control list
