@@ -46,6 +46,8 @@
 	<translation entry="1305">Plus aucune cible mais le fail-over aurait été authorisé.</translation>
 	<translation entry="1306">Des cibles sont encore disponibles mais le fail-over n'est pas authorisé.</translation>
 	<translation entry="1307">Des cibles sont encore disponibles et le fail-over est authorisé.</translation>
+<!-- FIXME TODO: 1308 -->
+	<translation entry="1308">Protocol in URL <value-of-param name="url" format="quoted" /> is unsupported.</translation>
 
 	<translation entry="1400">Dossier d'expiration <value-of-param name="folderName" format="quoted" />: tic-tac effectué. Entrées expirées: <value-of-param name="expired" />.</translation>
 	<translation entry="1401"><value-of-param name="folder" /> associé avec <value-of-param name="strategy" />.</translation>

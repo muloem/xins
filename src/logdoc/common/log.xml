@@ -212,6 +212,10 @@
 		<entry id="1307" level="DEBUG">
 			<description>More targets available and fail-over is allowed</description>
 		</entry>
+		<entry id="1308" level="DEBUG">
+			<description>Unsupported protocol.</description>
+			<param name="url" type="text" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="collections" name="Generic collection classes" />

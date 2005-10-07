@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     once.
   - Improved the message for an InitializationException, added a unit test,
     and fixed a bug (a NullPointerException) in the creating of the message.
+  - Logging unsupported protocol as message 1308 (in the DescriptorBuilder).
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Client Framework:

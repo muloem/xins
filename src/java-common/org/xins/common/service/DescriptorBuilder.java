@@ -406,7 +406,7 @@ public final class DescriptorBuilder extends Object {
             try {
                caller.testTargetDescriptor(td);
             } catch (UnsupportedProtocolException cause) {
-               // TODO: Log
+               Log.log_1308(url);
                InvalidPropertyValueException exception = new InvalidPropertyValueException(propertyName, value, "Unsupported protocol.");
                ExceptionUtils.setCause(exception, cause);
                throw exception;
