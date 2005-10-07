@@ -115,6 +115,18 @@ public class DateConverterTests extends TestCase {
       String message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
       assertEquals(message, expected, actual);
 
+      millis++;
+      expected  = formatter.format(new Date(millis));
+      actual    = DateConverter.toDateString(millis, true);
+      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+      assertEquals(message, expected, actual);
+
+      millis++;
+      expected  = formatter.format(new Date(millis));
+      actual    = DateConverter.toDateString(millis, true);
+      message   = "Expected DateConverter.toDateString(long,boolean,String) to return \"" + expected + "\" instead of \"" + actual + "\".";
+      assertEquals(message, expected, actual);
+
       millis = System.currentTimeMillis();
       expected  = formatter.format(new Date(millis));
       actual    = DateConverter.toDateString(millis, true);
