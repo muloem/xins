@@ -114,7 +114,6 @@ public final class Doorman extends Object {
          } else {
             detail = "maxQueueWaitTime (" + maxQueueWaitTime + ") <= 0L";
          }
-         // TODO: Log programming error
          throw new IllegalArgumentException(detail);
       }
 
@@ -215,10 +214,6 @@ public final class Doorman extends Object {
       final String THIS_METHOD    = "enterAsReader()";
       final String CALLING_CLASS  = Utils.getCallingClass();
       final String CALLING_METHOD = Utils.getCallingMethod();
-
-
-      // TODO: Return successfully from this method in only a single place, so
-      //       only log entry 1005 in that place.
 
       Thread reader = Thread.currentThread();
 
@@ -453,7 +448,6 @@ public final class Doorman extends Object {
          boolean readerRemoved = _currentReaders.remove(reader);
 
          if (!readerRemoved) {
-            // TODO: Remove from queue if it is in there?
             final String DETAIL = _asString
                                 + ": "
                                 + reader.getName()
