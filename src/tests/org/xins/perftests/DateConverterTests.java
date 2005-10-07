@@ -74,13 +74,14 @@ public class DateConverterTests extends TestCase {
    public void testDateConverter1() throws Exception {
 
       long millis = System.currentTimeMillis();
+      DateConverter dc = new DateConverter(true);
 
       for (int i = 0; i < ROUNDS; i++) {
          millis += i & 0xff;
-         DateConverter.toDateString(millis, true);
-         DateConverter.toDateString(millis, true);
+         dc.format(millis);
+         dc.format(millis);
          millis++;
-         DateConverter.toDateString(millis, true);
+         dc.format(millis);
       }
    }
 
