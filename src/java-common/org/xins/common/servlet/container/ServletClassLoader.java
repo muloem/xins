@@ -1,9 +1,9 @@
 /*
- * ServletClassLoader.java
+ * $Id$
  *
- * Created on April 18, 2005, 1:32 PM
+ * Copyright 2003-2005 Wanadoo Nederland B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
  */
-
 package org.xins.common.servlet.container;
 
 import java.io.File;
