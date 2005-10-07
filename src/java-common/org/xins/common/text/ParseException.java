@@ -65,7 +65,9 @@ public final class ParseException extends Exception {
     */
    public ParseException(String message, Throwable cause, String detail) {
       super(message);
-      ExceptionUtils.setCause(this, cause);
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
 
       _detail = detail;
    }
