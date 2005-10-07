@@ -114,15 +114,27 @@ public class AccessRuleFile implements AccessRuleContainer {
       String file = nextToken(descriptor, tokenizer);
 
       // First try parsing the file as it is
-      // XXX: Should we really throw an exception from here?!
       IOException exception;
       try {
          parseAccessRuleFile(file, interval);
+
+      // File not found
+      } catch (FileNotFoundException fnfe) {
+         String message = "File \""
+                        + file
+                        + "\" cannot be opened for reading."
+         ParseException pe = new ParseException(message);
+         ExceptionUtils.setCause(pe, ioe);
+         throw pe;
+
+      // I/O error reading from the file not found
       } catch (IOException ioe) {
-         throw new ParseException("Cannot parse the file "
-                                + file
-                                + " due to an IO exception: "
-                                + ioe.getMessage());
+         String message = "Cannot parse the file \""
+                        + file
+                        + "\" due to an I/O error."
+         ParseException pe = new ParseException(message);
+         ExceptionUtils.setCause(pe, ioe);
+         throw pe;
       }
 
       // Create and start a file watch thread, if the interval is not zero

@@ -39,11 +39,14 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     use the performance-optimized method in DateConverter.
   - Only logging unused properties (message 3434) if the framework
     (re-)initialized successfully.
-  - Improved Javadoc comments and formatting.
   - Fixed bug: Now actually allowing the reload interval to be 0 in the
     AccessRuleFile.
   - Fixed bug: Now correctly reporting a negative reload interval instead of
     logging an IllegalArgumentException (in class API).
+  - Improved the logging of an I/O error in the AccessRuleFile constructor,
+    especially when the file is not found. Also now correctly setting the
+    cause of the ParseException to the related IOException.
+  - Improved Javadoc comments and formatting.
 
 * Generation of server-side Java code:
   - Fixed possibility of conflict in generated code between variables.
