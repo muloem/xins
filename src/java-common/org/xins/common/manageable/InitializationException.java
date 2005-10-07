@@ -33,8 +33,8 @@ extends Exception {
    /**
     * Creates a message based on the specified constructor argument.
     *
-    * @param message
-    *    the message passed to the constructor, or <code>null</code>.
+    * @param detail
+    *    the detail message passed to the constructor, or <code>null</code>.
     *
     * @param cause
     *    the cause exception, or <code>null</code>.
@@ -44,24 +44,28 @@ extends Exception {
     */
    private static String createMessage(String message, Throwable cause) {
 
-      // TODO: Improve this method.
+      FastStringBuffer buffer = new FastStringBuffer(159);
+      buffer.append("Initialization failed");
 
       if (message != null) {
-         return message;
+         buffer.append(": \"");
+         buffer.append(message);
+         buffer.append('"');
       }
 
-      String exceptionMessage = cause.getMessage();
+      if (cause != null) {
+         String causeMessage = cause.getMessage();
+         if (causeMessage != null && causeMessage.trim().length() < 1) {
+            causeMessage = null;
+         }
 
-      FastStringBuffer buffer = new FastStringBuffer(150);
-      buffer.append("Caught ");
-      buffer.append(cause.getClass().getName());
-      if (exceptionMessage != null && exceptionMessage.length() > 0) {
-         buffer.append(". Message: \"");
-         buffer.append(exceptionMessage);
-         buffer.append("\".");
-      } else {
-         buffer.append('.');
+         buffer.append(". Caught ");
+         buffer.append(cause.getClass().getName());
+         buffer.append(" with message \"");
+         buffer.append(causeMessage);
+         buffer.append('"');
       }
+      buffer.append('.');
 
       return buffer.toString();
    }
@@ -73,13 +77,13 @@ extends Exception {
 
    /**
     * Constructs a new <code>InitializationException</code> with the specified
-    * message.
+    * detail message.
     *
-    * @param message
+    * @param detail
     *    the detail message, or <code>null</code>.
     */
-   public InitializationException(String message) {
-      this(message, null);
+   public InitializationException(String detail) {
+      this(detail, null);
    }
 
    /**
@@ -97,14 +101,14 @@ extends Exception {
     * Constructs a new <code>InitializationException</code> with the specified
     * detail message and cause exception.
     *
-    * @param message
+    * @param detail
     *    the detail message, or <code>null</code>.
     *
     * @param cause
     *    the cause exception, or <code>null</code>.
     */
-   public InitializationException(String message, Throwable cause) {
-      super(createMessage(message, cause));
+   public InitializationException(String detail, Throwable cause) {
+      super(createMessage(detail, cause));
       ExceptionUtils.setCause(this, cause);
    }
 
