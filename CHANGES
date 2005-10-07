@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     function toDateString(long,boolean) with an instance method format(long).
   - Improved logging in HostnameTask.
   - Improved Javadoc comments and formatting.
+  - Removed unused method 'log' from class org.xins.common.Utils.
 
 * XINS/Java Client Framework:
   - Improved Javadoc comments and formatting.
