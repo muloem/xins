@@ -88,7 +88,7 @@ extends RuntimeException {
       }
 
       message.append('.');
-      
+
       return message.toString();
    }
 
