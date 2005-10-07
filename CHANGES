@@ -16,8 +16,11 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Improved Javadoc comments and formatting.
   - Removed unused method 'log' from class org.xins.common.Utils.
   - Improved the message for a ProgrammingException.
-  - The copy method of the ExpiryFolder can be executed even if the strategy
-    is stopped.
+  - Improved the implementation of the HTTPCallConfig class. Implemented the
+    describe() method and made the HTTP method required in setMethod. This
+    solves an inconsistency in the Javadoc comments.
+  - Changed the copy method of the ExpiryFolder so it can be executed even if
+    the strategy is stopped.
 
 * XINS/Java Client Framework:
   - In class XINSCallConfig, method setHTTPMethod: No longer allowing the

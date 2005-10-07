@@ -6,10 +6,15 @@
  */
 package org.xins.common.http;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.CallConfig;
+import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 /**
- * Call configuration for the HTTP service caller.
+ * Call configuration for the HTTP service caller. The HTTP method and the
+ * <em>User-Agent</em> string can be configured. By default the HTTP method is
+ * <em>POST</em> and the no <em>User-Agent</em> string is set.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -21,6 +26,17 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The number of instances of this class. Initially zero.
+    */
+   private static int INSTANCE_COUNT;
+
+   /**
+    * Lock object for field <code>INSTANCE_COUNT</code>.
+    */
+   private static Object INSTANCE_COUNT_LOCK = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -34,6 +50,13 @@ public final class HTTPCallConfig extends CallConfig {
     * Constructs a new <code>HTTPCallConfig</code> object.
     */
    public HTTPCallConfig() {
+
+      // First determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNumber = ++INSTANCE_COUNT;
+      }
+
+      // Default to the POST method
       _method = HTTPMethod.POST;
    }
 
@@ -41,6 +64,13 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
 
    /**
     * The HTTP method to use. This field cannot be <code>null</code>.
@@ -56,8 +86,6 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   // TODO: Override describe()
 
    /**
     * Returns the HTTP method associated with this configuration.
@@ -75,10 +103,19 @@ public final class HTTPCallConfig extends CallConfig {
     * Sets the HTTP method associated with this configuration.
     *
     * @param method
-    *    the HTTP method to be associated with this configuration, can be
+    *    the HTTP method to be associated with this configuration, cannot be
     *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>method == null</code>.
     */
-   public void setMethod(HTTPMethod method) {
+   public void setMethod(HTTPMethod method)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("method", method);
+
+      // Store the new HTTP method
       synchronized (getLock()) {
          _method = method;
       }
@@ -113,4 +150,38 @@ public final class HTTPCallConfig extends CallConfig {
          return _userAgent;
       }
    }
+
+   /**
+    * Describes this configuration.
+    *
+    * @return
+    *    the description of this configuration, should never be
+    *    <code>null</code>, should never be empty and should never start or
+    *    end with whitespace characters.
+    */
+   public String describe() {
+
+      boolean    failOverAllowed;
+      HTTPMethod method;
+      String     userAgent;
+      synchronized (getLock()) {
+         failOverAllowed = isFailOverAllowed();
+         method          = _method;
+         userAgent       = _userAgent;
+      }
+
+      FastStringBuffer buffer = new FastStringBuffer(55);
+      buffer.append("HTTP call config #");
+      buffer.append(_instanceNumber);
+      buffer.append(" [failOverAllowed=");
+      buffer.append(failOverAllowed);
+      buffer.append("; method=");
+      buffer.append(TextUtils.quote(method.toString()));
+      buffer.append("; userAgent=");
+      buffer.append(TextUtils.quote(userAgent));
+      buffer.append(']');
+
+      return buffer.toString();
+   }
+
 }
