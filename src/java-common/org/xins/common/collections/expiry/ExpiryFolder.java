@@ -283,8 +283,6 @@ extends Object {
 
       _strategyStopped = true;
 
-      // TODO: Log
-
       synchronized (_lock) {
          _strategy         = null;
          _recentlyAccessed = null;
