@@ -140,9 +140,6 @@ extends RuntimeException {
                           detail,
                           cause));
       ExceptionUtils.setCause(this, cause);
-
-      // TODO: Store arguments in fields
-      // TODO: Add getters for arguments stored in fields
    }
 
 
