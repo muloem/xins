@@ -125,7 +125,7 @@ class CheckLinks extends Object {
       // Check preconditions
       MandatoryArgumentChecker.check("descriptors", descriptors);
 
-      List threads =  new ArrayList();
+      List threads = new ArrayList();
       if (descriptors.size() > 0) {
 
          // Get all the targets from the descriptor list
@@ -487,17 +487,17 @@ class CheckLinks extends Object {
 
       String result;
       if (exception instanceof UnknownHostException) {
-         result =  UNKNOWN_HOST;
+         result = UNKNOWN_HOST;
       } else if (exception instanceof ConnectException) {
-         result =  CONNECTION_REFUSAL;
+         result = CONNECTION_REFUSAL;
       } else if (exception instanceof ConnectTimeoutException) {
-         result =  CONNECTION_TIMEOUT;
+         result = CONNECTION_TIMEOUT;
 
       // SocketTimeoutException is not available in older java versions,
       // so we do not refer to the class to avoid a NoClassDefFoundError.
       } else if (exception.getClass().getName().equals(
                                          "java.net.SocketTimeoutException")) {
-         result =  SOCKET_TIMEOUT;
+         result = SOCKET_TIMEOUT;
 
       } else if (exception instanceof InterruptedIOException) {
          String exMessage = exception.getMessage();
@@ -505,16 +505,16 @@ class CheckLinks extends Object {
          // XXX: Only tested on Sun JVM
          // TODO: Test on non-Sun JVM
          if (exMessage.startsWith("Read timed out")) {
-            result =  SOCKET_TIMEOUT;
+            result = SOCKET_TIMEOUT;
 
          // Unspecific I/O error
          } else {
-            result =  OTHER_IO_ERROR;
+            result = OTHER_IO_ERROR;
          }
       } else if (exception instanceof IOException) {
-         result =  OTHER_IO_ERROR;
+         result = OTHER_IO_ERROR;
       } else {
-         result =  OTHER_FAILURE;
+         result = OTHER_FAILURE;
       }
 
       // Log the result and exception.
