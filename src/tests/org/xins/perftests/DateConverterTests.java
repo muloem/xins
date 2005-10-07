@@ -46,6 +46,8 @@ public class DateConverterTests extends TestCase {
 
    private static final int ROUNDS = 1000000;
 
+   private static final ThreadLocal THREAD_LOCAL = new ThreadLocal();
+
 
    //-------------------------------------------------------------------------
    // Constructor
@@ -71,7 +73,7 @@ public class DateConverterTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testDateConverter1() throws Exception {
+   public void testDateConverterFormatString() throws Exception {
 
       long millis = System.currentTimeMillis();
       DateConverter dc = new DateConverter(true);
@@ -85,7 +87,7 @@ public class DateConverterTests extends TestCase {
       }
    }
 
-   public void testDateConverterFormat() throws Exception {
+   public void testDateConverterFormatCharBuffer() throws Exception {
 
       long millis = System.currentTimeMillis();
       DateConverter dc = new DateConverter(true);
@@ -96,6 +98,26 @@ public class DateConverterTests extends TestCase {
          dc.format(millis, buffer, 0);
          dc.format(millis, buffer, 0);
          millis++;
+         dc.format(millis, buffer, 0);
+      }
+   }
+
+   public void testDateConverterFormatWithThreadLocal() throws Exception {
+
+      long millis = System.currentTimeMillis();
+      DateConverter dc = new DateConverter(true);
+
+      char[] buffer = new char[30];
+      THREAD_LOCAL.set(buffer);
+
+      for (int i = 0; i < ROUNDS; i++) {
+         buffer = (char[]) THREAD_LOCAL.get();
+         millis += i & 0xff;
+         dc.format(millis, buffer, 0);
+         buffer = (char[]) THREAD_LOCAL.get();
+         dc.format(millis, buffer, 0);
+         millis++;
+         buffer = (char[]) THREAD_LOCAL.get();
          dc.format(millis, buffer, 0);
       }
    }
