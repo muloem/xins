@@ -57,6 +57,11 @@ public class CallConfig extends Object {
     */
    private static int INSTANCE_COUNT;
 
+   /**
+    * Lock object for field <code>INSTANCE_COUNT</code>.
+    */
+   private static Object INSTANCE_COUNT_LOCK = new Object();
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -72,7 +77,9 @@ public class CallConfig extends Object {
    public CallConfig() {
 
       // First determine instance number
-      _instanceNumber = ++INSTANCE_COUNT;
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNumber = ++INSTANCE_COUNT;
+      }
 
       // Create lock object
       _lock = new Object();
