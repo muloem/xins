@@ -770,9 +770,6 @@ extends Object {
 
       final String THIS_METHOD = "copy(" + CLASSNAME + ')';
 
-      // Check state
-      assertStrategyNotStopped();
-
       // Check arguments
       MandatoryArgumentChecker.check("newFolder", newFolder);
       if (newFolder == this) {
