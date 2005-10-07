@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     solves an inconsistency in the Javadoc comments.
   - Changed the copy method of the ExpiryFolder so it can be executed even if
     the strategy is stopped.
+  - Change the HTTPCallResult constructor to check all mandatory arguments at
+    once.
 
 * XINS/Java Client Framework:
   - Improved the implementation of the XINSCallConfig class. Implemented the
