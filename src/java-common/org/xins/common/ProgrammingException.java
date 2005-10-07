@@ -7,6 +7,7 @@
 package org.xins.common;
 
 import org.xins.logdoc.ExceptionUtils;
+import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception thrown when a programming error is detected.
@@ -58,8 +59,37 @@ extends RuntimeException {
                                        String    detail,
                                        Throwable cause) {
 
-      // TODO: Include all arguments in the exception message
-      return detail;
+      FastStringBuffer message = new FastStringBuffer(271);
+
+      message.append("Programming error suspected");
+
+      if (subjectClass != null) {
+         message.append(" in class ");
+         message.append(subjectClass);
+         if (subjectMethod != null) {
+            message.append(", method ");
+            message.append(subjectMethod);
+         }
+      }
+
+      if (detectingClass != null) {
+         message.append(". Detected by class ");
+         message.append(detectingClass);
+         if (detectingMethod != null) {
+            message.append(", method ");
+            message.append(detectingMethod);
+         }
+      }
+
+      if (detail != null) {
+         message.append(". Detail: \"");
+         message.append(detail);
+         message.append("\"");
+      }
+
+      message.append('.');
+      
+      return message.toString();
    }
 
 
