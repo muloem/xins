@@ -54,6 +54,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 * Generation of client-side Java code:
   - Fixed possibility of conflict in generated code between variables.
 
+* Build- and release-process:
+  - Fixed incorrect directory name for package target.
+
 * Other:
   - Improved the Checkstyle config. Now also checking things like a maximum
     method line count (100), @author tag format, @version tag format, etc.

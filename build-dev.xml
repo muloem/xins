@@ -517,7 +517,7 @@ ${sf.file}</fail>
 		</copy>
 	</target>
 
-	<target name="package" depends="javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">
+	<target name="package" depends="-init-release-properties,javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
