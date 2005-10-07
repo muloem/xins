@@ -96,7 +96,7 @@ public class AccessRuleFile implements AccessRuleContainer {
 
       // Check preconditions
       MandatoryArgumentChecker.check("descriptor", descriptor);
-      if (interval < 1) {
+      if (interval < 0) {
          throw new IllegalArgumentException("interval ("
                                           + interval
                                           + ") < 0");
