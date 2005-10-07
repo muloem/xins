@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.StringTokenizer;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.ParseException;
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * A collection of access rules.
@@ -124,7 +126,7 @@ public class AccessRuleFile implements AccessRuleContainer {
                         + file
                         + "\" cannot be opened for reading.";
          ParseException pe = new ParseException(message);
-         ExceptionUtils.setCause(pe, ioe);
+         ExceptionUtils.setCause(pe, fnfe);
          throw pe;
 
       // I/O error reading from the file not found
