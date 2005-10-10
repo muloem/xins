@@ -198,11 +198,9 @@ public class HexConverterTests extends TestCase {
       assertEquals("1000", HexConverter.toHexString((char) 0x1000));
       assertEquals("ffff", HexConverter.toHexString((char) 0xffff));
 
-      /* FIXME
       FastStringBuffer buffer = new FastStringBuffer("Testing ");
       HexConverter.toHexString(buffer, (char) 0x0fa0);
       assertEquals("Testing 0fa0", buffer.toString());
-      */
    }
 
    public void testToHexString_short() throws Throwable {
