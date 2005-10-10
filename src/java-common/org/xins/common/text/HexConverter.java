@@ -451,6 +451,46 @@ public class HexConverter extends Object {
    }
 
    /**
+    * Converts the specified <code>char</code> to unsigned number and appends
+    * it to the specified string buffer. Exactly 4 characters will be
+    * appended, all between <code>'0'</code> to <code>'9'</code> or between
+    * <code>'a'</code> and <code>'f'</code>.
+    *
+    * @param buffer
+    *    the string buffer to append to, cannot be <code>null</code>.
+    *
+    * @param n
+    *    the number to be converted to a hex string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>buffer == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static void toHexString(FastStringBuffer buffer, char n)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (buffer == null) {
+         throw new IllegalArgumentException("buffer == null");
+      }
+
+      // Store the starting position where the buffer should write the value.
+      int initPos = buffer.getLength();
+
+      // Append 4 zero characters to the buffer
+      buffer.append(FOUR_ZEROES);
+
+      int pos = initPos + SHORT_LENGTH - 1;
+
+      // Convert the char to a hex string until the remainder is 0
+      int x = ((int) n) & 0x0000ffff;
+      for (; x != 0; x >>>= 4) {
+         buffer.setChar(pos--, DIGITS[x & INT_MASK]);
+      }
+   }
+
+   /**
     * Converts the specified <code>int</code> to unsigned number and appends
     * it to the specified string buffer. Exactly 8 characters will be
     * appended, all between <code>'0'</code> to <code>'9'</code> or between
