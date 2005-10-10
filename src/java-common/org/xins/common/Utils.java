@@ -47,6 +47,68 @@ public final class Utils extends Object {
    }
 
    /**
+    * Retrieves the name of the calling class at the specified level. The level
+    * <code>0</code> indicates the direct caller, while <code>1</code>
+    * indicates the caller of the caller.
+    *
+    * <p>If it cannot be determined, then <code>"&lt;unknown&gt;"</code> is
+    * returned.
+    *
+    * @param level
+    *    the level of the caller, must be &gt;= 0.
+    *
+    * @return
+    *    the class name of the caller of the caller of this method, at the
+    *    specified level, never an empty string and never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>level &lt; 0</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String getCallingClass(int level)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (level < 0) {
+         throw new IllegalArgumentException("level (" + level + ") < 0");
+      }
+      int depth = level + 2;
+
+      // Only execute on Java 1.4 and up
+      if (getJavaVersion() >= 1.4) {
+
+         // Create an exception in order to have a stack trace
+         Throwable exception = new Throwable();
+
+         // Analyze the stack trace
+         StackTraceElement[] trace = exception.getStackTrace();
+         if (trace != null) {
+            for (int pos = 0, i = 0; i < trace.length; i++) {
+
+               // Skip all non-authentic methods
+               String method = trace[pos].getMethodName();
+               while (method.startsWith("access$")) {
+                  method = trace[++pos].getMethodName();
+               }
+
+               // If we are at the right depth, then return the method name
+               if (i == depth) {
+                  return trace[pos].getClassName();
+
+               // Otherwise go deeper
+               } else {
+                  pos++;
+               }
+            }
+         }
+      }
+
+      // Fallback
+      return "<unknown>";
+   }
+
+   /**
     * Retrieves the name of the calling class. If it cannot be determined,
     * then a special string (e.g. <code>"&lt;unknown&gt;"</code>) is returned.
     *
@@ -64,6 +126,68 @@ public final class Utils extends Object {
                String callingClass = caller.getClassName();
                if (! TextUtils.isEmpty(callingClass)) {
                   return callingClass;
+               }
+            }
+         }
+      }
+
+      // Fallback
+      return "<unknown>";
+   }
+
+   /**
+    * Retrieves the name of the calling method at the specified level. The
+    * level <code>0</code> indicates the direct caller, while <code>1</code>
+    * indicates the caller of the caller.
+    *
+    * <p>If it cannot be determined, then <code>"&lt;unknown&gt;"</code> is
+    * returned.
+    *
+    * @param level
+    *    the level of the caller, must be &gt;= 0.
+    *
+    * @return
+    *    the method name of the caller of the caller of this method, at the
+    *    specified level, never an empty string and never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>level &lt; 0</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String getCallingMethod(int level)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      if (level < 0) {
+         throw new IllegalArgumentException("level (" + level + ") < 0");
+      }
+      int depth = level + 2;
+
+      // Only execute on Java 1.4 and up
+      if (getJavaVersion() >= 1.4) {
+
+         // Create an exception in order to have a stack trace
+         Throwable exception = new Throwable();
+
+         // Analyze the stack trace
+         StackTraceElement[] trace = exception.getStackTrace();
+         if (trace != null) {
+            for (int pos = 0, i = 0; i < trace.length; i++) {
+
+               // Skip all non-authentic methods
+               String method = trace[pos].getMethodName();
+               while (method.startsWith("access$")) {
+                  method = trace[++pos].getMethodName();
+               }
+
+               // If we are at the right depth, then return the method name
+               if (i == depth) {
+                  return method;
+
+               // Otherwise go deeper
+               } else {
+                  pos++;
                }
             }
          }
@@ -155,8 +279,9 @@ public final class Utils extends Object {
     * Logs a programming error with an optional cause exception, and returns a
     * <code>ProgrammingException</code> object for it.
     *
-    * <p>The class and method that call this method will be considered to be
-    * the detecting class and calling class for the programming error.
+    * <p>The calling class/method are considered the detecting class and the
+    * caller of those (one level up) is considered the subject class/method
+    * for the programming error.
     *
     * @param detail
     *    the detail message, can be <code>null</code>.
@@ -165,10 +290,9 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static ProgrammingException
-   logProgrammingError(String detail) {
-      return logProgrammingError(getCallingClass(), getCallingMethod(),
-                                 getCallingClass(), getCallingMethod(),
+   public static ProgrammingException logProgrammingError(String detail) {
+      return logProgrammingError(getCallingClass(0), getCallingMethod(0),
+                                 getCallingClass(1), getCallingMethod(1),
                                  detail);
    }
 
@@ -183,8 +307,7 @@ public final class Utils extends Object {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     */
-   public static ProgrammingException
-   logProgrammingError(Throwable cause) {
+   public static ProgrammingException logProgrammingError(Throwable cause) {
 
       String sourceClass;
       String sourceMethod;

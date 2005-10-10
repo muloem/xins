@@ -27,6 +27,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Logging unsupported protocol as message 1308 (in the DescriptorBuilder).
   - Added getters for detecting class/method, subject class/method and detail
     in class ProgrammingException.
+  - Added getCallingClass(int) and getClassMethod(int) methods in class Utils.
+  - Slightly changed Utils.logProgrammingError(String). The caller is assumed
+    to be the detecting class/method, while the caller of the caller is now
+    expected to be the subject class/method.
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Client Framework:
