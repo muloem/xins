@@ -121,6 +121,8 @@ class XSLTCallingConvention extends StandardCallingConvention {
           InvalidPropertyValueException,
           InitializationException {
 
+      // FIXME: Throw an InvalidPropertyValueException if the value is not
+      //        either 'true' or 'false'
       _cacheTemplates = "false".equals(
          runtimeProperties.get(TEMPLATES_CACHE_PROPERTY));
 
