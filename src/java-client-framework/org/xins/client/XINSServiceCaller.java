@@ -626,9 +626,13 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Make sure data was received
       byte[] httpData = httpResult.getData();
       if (httpData == null || httpData.length == 0) {
-         final String MESSAGE = "No data received.";
-         Log.log_2110(url, function, params, duration, MESSAGE);
-         throw new InvalidResultXINSCallException(xinsRequest, target, duration, MESSAGE, null);
+
+         // Log: No data was received
+         Log.log_2110(url, function, params, duration, "No data received.");
+
+         // Throw an appropriate exception
+         throw InvalidResultXINSCallException.noDataReceived(
+            xinsRequest, target, duration);
       }
 
       // Parse the result
@@ -640,19 +644,17 @@ public final class XINSServiceCaller extends ServiceCaller {
       } catch (ParseException e) {
 
          // Create a message for the new exception
-         FastStringBuffer message = new FastStringBuffer(69);
-         message.append("Failed to parse result");
          String detail = e.getDetail();
-         if (detail != null) {
-            message.append(": ");
-            message.append(detail);
-         } else {
-            message.append('.');
-         }
+         String message = detail != null && detail.trim().length() > 0
+                        ? "Failed to parse result: " + detail.trim()
+                        : "Failed to parse result.";
 
-         String s = message.toString();
-         Log.log_2110(url, function, params, duration, s);
-         throw new InvalidResultXINSCallException(xinsRequest, target, duration, s, e);
+         // Log: Parsing failed
+         Log.log_2110(url, function, params, duration, message);
+
+         // Throw an appropriate exception
+         throw InvalidResultXINSCallException.parseError(
+            httpData, xinsRequest, target, duration, e);
       }
 
       // If the result is unsuccessful, then throw an exception
