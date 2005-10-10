@@ -409,7 +409,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log event
-            Log.log_3217(exception, _name, className, exception.getMessage());
+            Log.log_3217(exception, _name, className);
 
             // Throw a BootstrapException. If necessary, wrap around the
             // caught exception
@@ -450,8 +450,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log this event
-            String exceptionMessage = exception.getMessage();
-            Log.log_3224(exception, _name, functionName, exceptionMessage);
+            Log.log_3224(exception, _name, functionName);
 
             // Throw a BootstrapException. If necessary, wrap around the
             // caught exception
@@ -644,7 +643,7 @@ implements DefaultResultCodes {
          } catch (Throwable exception) {
 
             // Log this event
-            Log.log_3420(exception, _name, className, exception.getMessage());
+            Log.log_3420(exception, _name, className);
             if (exception instanceof InitializationException) {
                throw (InitializationException) exception;
             } else {

@@ -62,7 +62,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     detected) is logged.
   - Consequently using the term 'API-manageable' instead of 'Manageable
     object' in log messages.
-  - Slightly improved en_US translation of log messages 3220-3224.
+  - Applied more improvements to various log messages.
   - Improved state checking in CallingConvention class.
   - Improved Javadoc comments and formatting.
 
