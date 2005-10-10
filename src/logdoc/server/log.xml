@@ -419,10 +419,7 @@
 			<param name="index" type="int32" nullable="false" />
 			<param name="rule"  type="text"  nullable="false" />
 		</entry>
-		<entry id="3430" level="ERROR">
-			<description>Invalid state transition.</description>
-			<param name="state" />
-		</entry>
+		<!-- XXX: Removed 3430 here (@since XINS 1.3.0) -->
 		<entry id="3431" level="INFO">
 			<description>No filter specified for incoming diagnostic context identifiers.</description>
 		</entry>

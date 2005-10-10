@@ -343,12 +343,12 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
-         Log.log_3430(state.getName());
          String message = "State is "
                         + state
                         + " instead of "
                         + BOOTSTRAPPING
                         + '.';
+         Utils.logProgrammingError(message);
          throw new IllegalStateException(message);
       }
 
@@ -544,12 +544,12 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != INITIALIZING) {
-         Log.log_3430(state.getName());
          String message = "State is "
                         + state
                         + " instead of "
                         + INITIALIZING
                         + '.';
+         Utils.logProgrammingError(message);
          throw new IllegalStateException(message);
       }
 
@@ -719,12 +719,12 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != BOOTSTRAPPING) {
-         Log.log_3430(state.getName());
          String message = "State is "
                         + state
                         + " instead of "
                         + BOOTSTRAPPING
                         + '.';
+         Utils.logProgrammingError(message);
          throw new IllegalStateException(message);
       }
 
@@ -793,7 +793,6 @@ implements DefaultResultCodes {
     *
     * @throws IllegalStateException
     *    if this API state is incorrect.
-    *
     */
    final void functionAdded(Function function)
    throws NullPointerException, IllegalStateException {
@@ -801,12 +800,12 @@ implements DefaultResultCodes {
       // Check state
       Manageable.State state = getState();
       if (state != UNUSABLE) {
-         Log.log_3430(state.getName());
          String message = "State is "
                         + state
                         + " instead of "
                         + UNUSABLE
                         + '.';
+         Utils.logProgrammingError(message);
          throw new IllegalStateException(message);
       }
 
