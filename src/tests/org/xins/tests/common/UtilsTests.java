@@ -125,7 +125,35 @@ public class UtilsTests extends TestCase {
                           version == 1.5 || version == 1.6);
    }
 
-   public void testLogProgrammingError() {
+   public void testLogProgrammingErrorWithoutArguments() {
+      testLogProgrammingErrorWithoutArguments(null, null);
+   }
+
+   private void testLogProgrammingErrorWithoutArguments(java.lang.String arg1,
+                                                        byte[]           arg2) {
+      String thisMethod = "testLogProgrammingErrorWithoutArguments("
+                        + "java.lang.String,"
+                        + "byte[])";
+      String thatMethod = "test(java.lang.String)";
+
+      InnerClass c = new InnerClass();
+      ProgrammingException pe = null;
+      String detail = "SomeDetail";
+      try {
+         c.test(detail);
+      } catch (ProgrammingException exception) {
+         pe = exception;
+      }
+
+      assertNotNull(pe);
+      assertEquals(detail,                     pe.getDetail()         );
+      assertEquals(UtilsTests.class.getName(), pe.getSubjectClass()   );
+      assertEquals(thisMethod,                 pe.getSubjectMethod()  );
+      assertEquals(InnerClass.class.getName(), pe.getDetectingClass() );
+      assertEquals(thatMethod,                 pe.getDetectingMethod());
+   }
+
+   public void testLogProgrammingErrorWithArguments() {
 
       String c1     = ThreadLocal.class.getName();
       String m1     = "toString()";
@@ -136,6 +164,11 @@ public class UtilsTests extends TestCase {
       ProgrammingException pe =
          Utils.logProgrammingError(c1, m1, c2, m2, detail, e);
       assertNotNull("Expected logProgrammingError to return a ProgrammingException instance, not null.", pe);
+      assertEquals(c1,     pe.getDetectingClass());
+      assertEquals(m1,     pe.getDetectingMethod());
+      assertEquals(c2,     pe.getSubjectClass());
+      assertEquals(m2,     pe.getSubjectMethod());
+      assertEquals(detail, pe.getDetail());
 
       assertTrue("Incorrect cause for ProgrammingException.", ExceptionUtils.getCause(pe) == e);
 
@@ -151,5 +184,11 @@ public class UtilsTests extends TestCase {
       }
 
       // TODO: Test actual logging, too
+   }
+
+   private class InnerClass {
+      private void test(String detail) {
+         throw Utils.logProgrammingError(detail);
+      }
    }
 }
