@@ -50,11 +50,20 @@ abstract class CallingConvention extends Manageable {
     */
    private static final String CLASSNAME = CallingConvention.class.getName();
 
+   /**
+    * The default value of the <code>"Server"</code> header sent with an HTTP
+    * response.
+    */
+   private static final String SERVER_HEADER;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
+   static {
+      SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
+   }
 
    /**
     * Removes all parameters that should not be passed to a function. If the
@@ -131,6 +140,10 @@ abstract class CallingConvention extends Manageable {
     * @return
     *    the XINS request object, never <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if this calling convention is currently not usable, see
+    *    {@link Manageable#assertUsable()}.
+    *
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
@@ -141,21 +154,16 @@ abstract class CallingConvention extends Manageable {
     *    if the request does not indicate the name of the function to execute.
     */
    final FunctionRequest convertRequest(HttpServletRequest httpRequest)
-   throws IllegalArgumentException,
+   throws IllegalStateException,
+          IllegalArgumentException,
           InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      final String THIS_METHOD = "convertRequest("
-                               + HttpServletRequest.class.getName()
-                               + ')';
+      // Make sure the current state is okay
+      assertUsable();
 
       // Check preconditions
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
-
-      final String SUBJECT_CLASS  = getClass().getName(); // XXX: Cache?
-      final String SUBJECT_METHOD = "convertRequestImpl("
-                                  + HttpServletRequest.class.getName()
-                                  + ')'; // XXX: Cache?
 
       // Delegate to the implementation method
       FunctionRequest xinsRequest;
@@ -169,10 +177,18 @@ abstract class CallingConvention extends Manageable {
          } else if (t instanceof FunctionNotSpecifiedException) {
             throw (FunctionNotSpecifiedException) t;
          } else {
+            String thisMethod    = "convertRequest("
+                                 + HttpServletRequest.class.getName()
+                                 + ')';
+            String subjectClass  = getClass().getName();
+            String subjectMethod = "convertRequestImpl("
+                                 + HttpServletRequest.class.getName()
+                                 + ')';
+
             throw Utils.logProgrammingError(CLASSNAME,
-                                            THIS_METHOD,
-                                            SUBJECT_CLASS,
-                                            SUBJECT_METHOD,
+                                            thisMethod,
+                                            subjectClass,
+                                            subjectMethod,
                                             null,
                                             t);
          }
@@ -180,12 +196,19 @@ abstract class CallingConvention extends Manageable {
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
-         final String DETAIL = "Method returned null.";
+         String thisMethod    = "convertRequest("
+                              + HttpServletRequest.class.getName()
+                              + ')';
+         String subjectClass  = getClass().getName();
+         String subjectMethod = "convertRequestImpl("
+                              + HttpServletRequest.class.getName()
+                              + ')';
+         String detail = "Method returned null.";
          throw Utils.logProgrammingError(CLASSNAME,
-                                         THIS_METHOD,
-                                         SUBJECT_CLASS,
-                                         SUBJECT_METHOD,
-                                         DETAIL);
+                                         thisMethod,
+                                         subjectClass,
+                                         subjectMethod,
+                                         detail);
       }
 
       return xinsRequest;
@@ -209,7 +232,8 @@ abstract class CallingConvention extends Manageable {
     * @throws FunctionNotSpecifiedException
     *    if the request does not indicate the name of the function to execute.
     */
-   protected abstract FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
+   protected abstract FunctionRequest convertRequestImpl(
+      HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException;
 
@@ -228,8 +252,14 @@ abstract class CallingConvention extends Manageable {
     * @param httpRequest
     *    the HTTP request, will not be <code>null</code>.
     *
+    * @throws IllegalStateException
+    *    if this calling convention is currently not usable, see
+    *    {@link Manageable#assertUsable()}.
+    *
     * @throws IllegalArgumentException
-    *    if <code>xinsResult == null || httpResponse == null || httpRequest == null</code>.
+    *    if <code>xinsResult == null
+    *          || httpResponse == null
+    *          || httpRequest == null</code>.
     *
     * @throws IOException
     *    if calling any of the methods in <code>httpResponse</code> causes an
@@ -238,16 +268,21 @@ abstract class CallingConvention extends Manageable {
    final void convertResult(FunctionResult      xinsResult,
                             HttpServletResponse httpResponse,
                             HttpServletRequest  httpRequest)
-   throws IllegalArgumentException, IOException {
+   throws IllegalStateException,
+          IllegalArgumentException,
+          IOException {
+
+      // Make sure the current state is okay
+      assertUsable();
 
       // Check preconditions
       MandatoryArgumentChecker.check("xinsResult",   xinsResult,
                                      "httpResponse", httpResponse,
                                      "httpRequest",  httpRequest);
 
-      // By default, all calling convention return the same Server header.
+      // By default, all calling conventions return the same "Server" header.
       // This can be overridden in the convertResultImpl() method.
-      httpResponse.addHeader("Server", "XINS/Java Server Framework " + Library.getVersion());
+      httpResponse.addHeader("Server", SERVER_HEADER);
 
       // Delegate to the implementation method
       try {
@@ -258,24 +293,21 @@ abstract class CallingConvention extends Manageable {
          if (exception instanceof IOException) {
             throw (IOException) exception;
          } else {
-            final String THIS_METHOD    = "convertResult("
-                                        + FunctionResult.class.getName()
-                                        + ','
-                                        + HttpServletResponse.class.getName()
-                                        + ','
-                                        + HttpServletRequest.class.getName()
-                                        + ')';
-            final String SUBJECT_CLASS  = getClass().getName();
-            final String SUBJECT_METHOD = "convertResultImpl("
-                                        + HttpServletRequest.class.getName()
-                                        + ')';
+            String thisMethod    = "convertResult("
+                                 + FunctionResult.class.getName()
+                                 + ','
+                                 + HttpServletResponse.class.getName()
+                                 + ','
+                                 + HttpServletRequest.class.getName()
+                                 + ')';
+            String subjectClass  = getClass().getName();
+            String subjectMethod = "convertResultImpl("
+                                 + HttpServletRequest.class.getName()
+                                 + ')';
 
-            throw Utils.logProgrammingError(CLASSNAME,
-                                            THIS_METHOD,
-                                            SUBJECT_CLASS,
-                                            SUBJECT_METHOD,
-                                            null,
-                                            exception);
+            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                            subjectClass, subjectMethod,
+                                            null,         exception);
          }
       }
    }
@@ -319,13 +351,15 @@ abstract class CallingConvention extends Manageable {
     * @throws InvalidRequestException
     *    if the HTTP request cannot be read or cannot be parsed correctly.
     */
-   protected Element parseXMLRequest(HttpServletRequest httpRequest, boolean checkType)
+   protected Element parseXMLRequest(HttpServletRequest httpRequest,
+                                     boolean            checkType)
    throws InvalidRequestException {
 
       // Check content type
       String contentType = httpRequest.getContentType();
       if (checkType && (contentType == null || !contentType.startsWith("text/xml"))) {
-         throw new InvalidRequestException("Incorrect content type \"" + contentType + "\".");
+         throw new InvalidRequestException("Incorrect content type \"" +
+                                           contentType + "\".");
       }
 
       try {
@@ -346,11 +380,13 @@ abstract class CallingConvention extends Manageable {
 
       // I/O error
       } catch (IOException ex) {
-         throw new InvalidRequestException("Cannot read the XML request.", ex);
+         String message = "Failed to read XML request.";
+         throw new InvalidRequestException(message, ex);
 
       // Parsing error
       } catch (ParseException ex) {
-         throw new InvalidRequestException("Cannot parse the XML request.", ex);
+         String message = "Failed to parse XML request.";
+         throw new InvalidRequestException(message, ex);
       }
    }
 }
