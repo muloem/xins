@@ -105,23 +105,23 @@
 			<param name="apiVersion"   />
 		</entry>
 		<entry id="3213" level="DEBUG">
-			<description>Bootstrapping manageable object.</description>
+			<description>Bootstrapping API-manageable.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
 		<entry id="3214" level="DEBUG">
-			<description>Bootstrapped manageable object.</description>
+			<description>Bootstrapped API-manageable.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
 		<entry id="3215" level="FATAL">
-			<description>Manageable object could not be bootstrapped due to a missing required property.</description>
+			<description>API-manageable could not be bootstrapped due to a missing required property.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
 		</entry>
 		<entry id="3216" level="FATAL">
-			<description>Manageable object could not be bootstrapped due to an invalid property value.</description>
+			<description>API-manageable could not be bootstrapped due to an invalid property value.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
@@ -129,13 +129,13 @@
 			<param name="reason" />
 		</entry>
 		<entry id="3217" level="FATAL" exception="true">
-			<description>Manageable object could not be bootstrapped.</description>
+			<description>API-manageable could not be bootstrapped.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
 		<entry id="3218" level="DEBUG">
-			<description>Adding manageable object to API.</description>
+			<description>Adding API-manageable to API.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
@@ -342,38 +342,38 @@
 			<description>XINS/Java Server Framework has been (re-)initialized.</description>
 		</entry>
 		<entry id="3416" level="DEBUG">
-			<description>Initializing manageable object.</description>
-			<param name="api" />
+			<description>Initializing API-manageable.</description>
+			<param name="api"       />
 			<param name="className" />
 		</entry>
 		<entry id="3417" level="DEBUG">
-			<description>Initialized manageable object.</description>
-			<param name="api" />
+			<description>Initialized API-manageable.</description>
+			<param name="api"       />
 			<param name="className" />
 		</entry>
 		<entry id="3418" level="FATAL">
-			<description>Manageable object could not be initialized due to a missing required property.</description>
-			<param name="api" />
-			<param name="className" />
+			<description>API-manageable could not be initialized due to a missing required property.</description>
+			<param name="api"          />
+			<param name="className"    />
 			<param name="propertyName" />
 		</entry>
 		<entry id="3419" level="FATAL">
-			<description>Manageable object could not be initialized due to an invalid property value.</description>
-			<param name="api" />
-			<param name="className" />
-			<param name="propertyName" />
+			<description>API-manageable could not be initialized due to an invalid property value.</description>
+			<param name="api"           />
+			<param name="className"     />
+			<param name="propertyName"  />
 			<param name="propertyValue" />
-			<param name="reason" />
+			<param name="reason"        />
 		</entry>
 		<entry id="3420" level="FATAL" exception="true">
-			<description>Manageable object could not be initialized.</description>
-			<param name="api" />
+			<description>API-manageable could not be initialized.</description>
+			<param name="api"       />
 			<param name="className" />
-			<param name="message" />
+			<param name="message"   />
 		</entry>
 		<entry id="3421" level="DEBUG">
 			<description>Initializing function.</description>
-			<param name="api" />
+			<param name="api"      />
 			<param name="function" />
 		</entry>
 		<entry id="3422" level="DEBUG">
@@ -383,21 +383,21 @@
 		</entry>
 		<entry id="3423" level="ERROR">
 			<description>Function could not be initialized due to a missing required property.</description>
-			<param name="api" />
-			<param name="function" />
+			<param name="api"          />
+			<param name="function"     />
 			<param name="propertyName" />
 		</entry>
 		<entry id="3424" level="ERROR">
 			<description>Function could not be initialized due to an invalid property value.</description>
-			<param name="api" />
-			<param name="function" />
-			<param name="propertyName" />
+			<param name="api"           />
+			<param name="function"      />
+			<param name="propertyName"  />
 			<param name="propertyValue" />
-			<param name="reason" />
+			<param name="reason"        />
 		</entry>
 		<entry id="3425" level="ERROR" exception="true">
 			<description>Function could not be initialized, exception available.</description>
-			<param name="api" />
+			<param name="api"      />
 			<param name="function" />
 		</entry>
 		<entry id="3426" level="WARNING">
@@ -410,17 +410,17 @@
 		</entry>
 		<entry id="3428" level="ERROR">
 			<description>Error loading access rule list.</description>
-			<param name="propertyName" nullable="false" />
-			<param name="propertyValue" nullable="false" />
-			<param name="message" />
+			<param name="propertyName"  type="text" nullable="false" />
+			<param name="propertyValue" type="text" nullable="false" />
+			<param name="message"       type="text" nullable="true"  />
 		</entry>
 		<entry id="3429" level="INFO">
 			<description>Access rule parsed.</description>
 			<param name="index" type="int32" nullable="false" />
-			<param name="rule" nullable="false" />
+			<param name="rule"  type="text"  nullable="false" />
 		</entry>
 		<entry id="3430" level="ERROR">
-			<description>Invalid state when adding manageable.</description>
+			<description>Invalid state transition.</description>
 			<param name="state" />
 		</entry>
 		<entry id="3431" level="INFO">
@@ -453,12 +453,12 @@
 		</entry>
 		<entry id="3502" level="DEBUG" exception="true">
 			<description>Exception result message while checking a URL.</description>
-			<param name="url"      type="text"  nullable="false" />
-			<param name="result"   type="text"  nullable="false" />
+			<param name="url"    type="text"  nullable="false" />
+			<param name="result" type="text"  nullable="false" />
 		</entry>
 		<entry id="3503" level="DEBUG">
 			<description>Thread to check a URL has started.</description>
-			<param name="url"                type="text"   nullable="false" />
+			<param name="url"               type="text"   nullable="false" />
 			<param name="totalTimeout"      type="int32"  nullable="false" />
 			<param name="connectionTimeout" type="int32"  nullable="false" />
 			<param name="socketTimeout"     type="int32"  nullable="false" />
@@ -470,7 +470,7 @@
 		</entry>
 		<entry id="3505" level="DEBUG">
 			<description>Thread to check a URL is still active.</description>
-			<param name="url"      type="text"   nullable="false" />
+			<param name="url" type="text"   nullable="false" />
 		</entry>
 	</group>
 
@@ -591,23 +591,23 @@
 			<description>XINS/Java Server Framework shutdown completed.</description>
 		</entry>
 		<entry id="3603" level="DEBUG">
-			<description>Deinitializing manageable object.</description>
+			<description>Deinitializing API-manageable.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
 		<entry id="3604" level="DEBUG">
-			<description>Deinitialized manageable object.</description>
+			<description>Deinitialized API-manageable.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
 		<entry id="3605" level="WARNING">
-			<description>Manageable object could not be deinitialized.</description>
+			<description>API-manageable could not be deinitialized.</description>
 			<param name="api" />
 			<param name="className" />
 			<param name="message" />
 		</entry>
 		<entry id="3606" level="WARNING" exception="true">
-			<description>Manageable object could not be deinitialized due to an unexpected exception.</description>
+			<description>API-manageable could not be deinitialized due to an unexpected exception.</description>
 			<param name="api" />
 			<param name="className" />
 		</entry>
