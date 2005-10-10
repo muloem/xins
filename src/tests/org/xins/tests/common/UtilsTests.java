@@ -131,10 +131,8 @@ public class UtilsTests extends TestCase {
 
    private void testLogProgrammingErrorWithoutArguments(java.lang.String arg1,
                                                         byte[]           arg2) {
-      String thisMethod = "testLogProgrammingErrorWithoutArguments("
-                        + "java.lang.String,"
-                        + "byte[])";
-      String thatMethod = "test(java.lang.String)";
+      String thisMethod = "testLogProgrammingErrorWithoutArguments";
+      String thatMethod = "test";
 
       InnerClass c = new InnerClass();
       ProgrammingException pe = null;
@@ -145,12 +143,22 @@ public class UtilsTests extends TestCase {
          pe = exception;
       }
 
+      // Subject class/method
+      String sc = UtilsTests.class.getName();
+      String sm = thisMethod;
+
+      // Detecting class/method
+      String dc = InnerClass.class.getName();
+      String dm = thatMethod;
+
+      String message = pe.getMessage();
       assertNotNull(pe);
-      assertEquals(detail,                     pe.getDetail()         );
-      assertEquals(UtilsTests.class.getName(), pe.getSubjectClass()   );
-      assertEquals(thisMethod,                 pe.getSubjectMethod()  );
-      assertEquals(InnerClass.class.getName(), pe.getDetectingClass() );
-      assertEquals(thatMethod,                 pe.getDetectingMethod());
+      assertEquals(message, detail, pe.getDetail()         );
+      assertEquals(message, sc,     pe.getSubjectClass()   );
+      assertEquals(message, sc,     pe.getSubjectClass()   );
+      assertEquals(message, sm,     pe.getSubjectMethod()  );
+      assertEquals(message, dc,     pe.getDetectingClass() );
+      assertEquals(message, dm,     pe.getDetectingMethod());
    }
 
    public void testLogProgrammingErrorWithArguments() {
