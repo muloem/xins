@@ -29,6 +29,7 @@ import org.xins.logdoc.ExceptionUtils;
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 class CallingConventionManager {
 
@@ -37,7 +38,7 @@ class CallingConventionManager {
    //-------------------------------------------------------------------------
 
    /**
-    * The list of the calling convention included in XINS.
+    * The list of the calling conventions currently included in XINS.
     */
    private final static String[] CONVENTIONS = {
       APIServlet.STANDARD_CALLING_CONVENTION,
@@ -61,18 +62,29 @@ class CallingConventionManager {
     * Creates the <code>CallingConventionManager</code>.
     *
     * @param servletConfig
-    *    the servlet configuration object.
+    *    the servlet configuration object, cannot be <code>null</code>.
+    *
     * @param api
-    *    the API.
+    *    the API, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>servletConfig == null || api == null</code>.
     *
     * @throws ServletException
     *    if the default calling convention cannot be created.
     */
    CallingConventionManager(ServletConfig servletConfig, API api)
-   throws ServletException {
+   throws IllegalArgumentException, ServletException {
 
+      // Check preconditions
+      MandatoryArgumentChecker.check("servletConfig", servletConfig,
+                                     "api",           api);
+
+      // Store the arguments in fields
       _servletConfig = servletConfig;
-      _api = api;
+      _api           = api;
+
+      // Initialize the collection of other calling conventions 
       _otherConventions = new HashMap();
 
       // Initialize the default calling convention
@@ -89,14 +101,14 @@ class CallingConventionManager {
    private final ServletConfig _servletConfig;
 
    /**
-    * The stored runtime properties. Can be <code>null</code>.
-    */
-   private PropertyReader _runtimeProperties;
-
-   /**
     * The API. Never <code>null</code>.
     */
    private final API _api;
+
+   /**
+    * The stored runtime properties. Can be <code>null</code>.
+    */
+   private PropertyReader _runtimeProperties;
 
    /**
     * The name of the default calling convention for this engine. This field
@@ -143,12 +155,13 @@ class CallingConventionManager {
       try {
          // Determine the name of the default calling convention, as specified
          // in the build-time propertie
-         String ccName = _servletConfig.getInitParameter(APIServlet.API_CALLING_CONVENTION_PROPERTY);
+         String ccName = _servletConfig.getInitParameter(
+            APIServlet.API_CALLING_CONVENTION_PROPERTY);
 
          // If the name is specified, attempt to construct an instance
          if (! TextUtils.isEmpty(ccName)) {
             _defaultConventionName = ccName;
-            _defaultConvention = create(ccName);
+            _defaultConvention     = create(ccName);
 
             // If the factory method returned null, then the specified name
             // does not identify a known calling convention
@@ -166,7 +179,7 @@ class CallingConventionManager {
          // so use the standard calling convention
          } else {
             _defaultConventionName = APIServlet.STANDARD_CALLING_CONVENTION;
-            _defaultConvention = create(_defaultConventionName);
+            _defaultConvention     = create(_defaultConventionName);
 
             // TODO: Log that we use the standard calling convention
             // TODO: Log.log_3xxx("_xins-std");
@@ -190,15 +203,23 @@ class CallingConventionManager {
 
       // Initialize the other calling conventions.
       for (int i = 0; i < CONVENTIONS.length; i++) {
-         String nextConventionName = CONVENTIONS[i];
-         if (!nextConventionName.equals(_defaultConventionName)) {
-            try {
-               CallingConvention nextConvention = create(nextConventionName);
-               _otherConventions.put(nextConventionName, nextConvention);
-            } catch (Exception ex) {
+         String ccName = CONVENTIONS[i];
 
-               // Just log a warning.
-               Log.log_3560(ex, nextConventionName);
+         // Handle all conventions except the default one
+         if (! ccName.equals(_defaultConventionName)) {
+            CallingConvention cc = null;
+            try {
+               cc = create(ccName);
+
+            // If the creation of the calling convention fails, log a warning
+            } catch (Exception ex) {
+               Log.log_3560(ex, ccName);
+               // TODO: Should we not use Utils.logIgnoredException ?
+            }
+
+            // Store the CallingConvention instance
+            if (cc != null) {
+               _otherConventions.put(ccName, cc);
             }
          }
       }
@@ -370,7 +391,9 @@ class CallingConventionManager {
       }
 
       // Bootstrap the calling convention
+      // TODO: Log that the calling convention is being bootstrapped
       created.bootstrap(new ServletConfigPropertyReader(_servletConfig));
+      // TODO: Log that the calling convention has been bootstrapped
 
       return created;
    }
