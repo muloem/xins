@@ -368,7 +368,7 @@ final class Engine extends Object {
 
       // Initialization of API failed for some other reason
       } catch (InitializationException exception) {
-         Log.log_3413(exception, exception.getMessage());
+         Log.log_3413(exception);
 
       // Unexpected error
       //

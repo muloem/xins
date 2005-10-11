@@ -356,7 +356,6 @@
 		</entry>
 		<entry id="3413" level="FATAL" exception="true">
 			<description>API could not be initialized.</description>
-			<param name="message" />
 		</entry>
 		<entry id="3414" level="FATAL" exception="true">
 			<description>API could not be initialized due to an unexpected exception.</description>
