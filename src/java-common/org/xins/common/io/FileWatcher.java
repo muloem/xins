@@ -234,7 +234,7 @@ public final class FileWatcher extends Thread {
     * Configures the name of this thread.
     */
    private void configureThreadName() {
-      FastStringBuffer name = new FastStringBuffer(47, CLASSNAME);
+      FastStringBuffer name = new FastStringBuffer(238, CLASSNAME);
       name.append(" #");
       name.append(_instanceID);
       name.append(" [file=\"");
