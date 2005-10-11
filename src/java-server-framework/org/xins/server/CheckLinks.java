@@ -486,19 +486,26 @@ class CheckLinks extends Object {
       MandatoryArgumentChecker.check("exception", exception, "url", url);
 
       String result;
+
+      // DNS error, unknown host name
       if (exception instanceof UnknownHostException) {
          result = UNKNOWN_HOST;
+
+      // Connection refused
       } else if (exception instanceof ConnectException) {
          result = CONNECTION_REFUSAL;
+
+      // Connection time-out
       } else if (exception instanceof ConnectTimeoutException) {
          result = CONNECTION_TIMEOUT;
 
-      // SocketTimeoutException is not available in older java versions,
+      // SocketTimeoutException is not available in older Java versions,
       // so we do not refer to the class to avoid a NoClassDefFoundError.
       } else if (exception.getClass().getName().equals(
                                          "java.net.SocketTimeoutException")) {
          result = SOCKET_TIMEOUT;
 
+      // Interrupted I/O (this _may_ indicate a socket time-out)
       } else if (exception instanceof InterruptedIOException) {
          String exMessage = exception.getMessage();
 
@@ -511,8 +518,12 @@ class CheckLinks extends Object {
          } else {
             result = OTHER_IO_ERROR;
          }
+
+      // Other I/O error
       } else if (exception instanceof IOException) {
          result = OTHER_IO_ERROR;
+
+      // Other error, apparently not an I/O error
       } else {
          result = OTHER_FAILURE;
       }

@@ -41,6 +41,7 @@ import org.xins.common.text.TextUtils;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 class XSLTCallingConvention extends StandardCallingConvention {
 
@@ -100,19 +101,21 @@ class XSLTCallingConvention extends StandardCallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Flag that indicates whether the templates should be cached.
+    * The XSLT transformer. Never <code>null</code>.
+    */
+   private final TransformerFactory _factory;
+
+   /**
+    * Flag that indicates whether the templates should be cached. This field
+    * is set during initialization.
     */
    private boolean _cacheTemplates;
 
    /**
-    * Location of the XSLT templates.
+    * Location of the XSLT templates. This field is initially
+    * <code>null</code> and set during initialization.
     */
    private String _location;
-
-   /**
-    * The XSLT transformer.
-    */
-   private final TransformerFactory _factory;
 
 
    //-------------------------------------------------------------------------
@@ -251,35 +254,60 @@ class XSLTCallingConvention extends StandardCallingConvention {
       }
    }
 
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
    /**
-    * Class used to revolved URL locations when an SLT file refers to another XSLT file using a relative URL.
+    * Class used to revolved URL locations when an SLT file refers to another
+    * XSLT file using a relative URL.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
    class XsltURIResolver implements URIResolver {
 
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
       /**
-       * The previous base URL if any.
+       * The previous base URL, if any. Can be <code>null</code>.
        */
       private String _base;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
 
       /**
        * Revolve a hyperlink reference.
        *
        * @param href
-       *    The hyperlink to resolve.
+       *    the hyperlink to resolve.
+       *
        * @param base
-       *    The base URI in effect when the href attribute was encountered.
+       *    the base URI in effect when the href attribute was encountered.
        *
        * @return
-       *    A Source object, or <code>null</code> if the href cannot be resolved,
-       *    and the processor should try to resolve the URI itself.
+       *    a {@link Source} object, or <code>null</code> if the href cannot
+       *    be resolved, and the processor should try to resolve the URI
+       *    itself.
        *
        * @throws TransformerException
-       *    If an error occurs when trying to resolve the URI.
+       *    if an error occurs when trying to resolve the URI.
        */
-      public Source resolve(String href, String base) throws TransformerException {
+      public Source resolve(String href, String base)
+      throws TransformerException {
+
          if (base == null) {
             base = _base;
-         } else if (!base.endsWith("/")) {
+         } else if (! base.endsWith("/")) {
             base += '/';
          }
          _base = base;
@@ -290,6 +318,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
             url = href;
             _base = href.substring(0, href.lastIndexOf('/') + 1);
          }
+
          try {
             return new StreamSource(new URL(url).openStream());
          } catch (IOException ioe) {
