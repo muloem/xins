@@ -225,6 +225,61 @@ public final class Utils extends Object {
    }
 
    /**
+    * Logs an exception that will be ignored, with the specified detail
+    * message.
+    *
+    * @param detectingClass
+    *    the name of the class that detected the problem, or
+    *    <code>null</code> if unknown.
+    *
+    * @param detectingMethod
+    *    the name of the method within the <code>detectingClass</code> that
+    *    detected the problem, cannot be <code>null</code>.
+    *
+    * @param subjectClass
+    *    the name of the class which exposes the programming error, cannot be
+    *    <code>null</code>.
+    *
+    * @param subjectMethod
+    *    the name of the method (within the <code>subjectClass</code>) which
+    *    exposes the programming error, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    detail message, can be <code>null</code>.
+    *
+    * @param exception
+    *    the exception to log, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>detectingClass == null || detectingMethod == null
+    *          || subjectClass   == null || subjectMethod   == null
+    *          || exception      == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static void logIgnoredException(String    detectingClass,
+                                          String    detectingMethod,
+                                          String    subjectClass,
+                                          String    subjectMethod,
+                                          String    detail,
+                                          Throwable exception)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("detectingClass",  detectingClass,
+                                     "detectingMethod", detectingMethod,
+                                     "subjectClass",    subjectClass,
+                                     "subjectMethod",   subjectMethod);
+      MandatoryArgumentChecker.check("exception",       exception);
+
+      // Perform the actual logging
+      Log.log_1051(exception,
+                   detectingClass, detectingMethod,
+                   subjectClass,   subjectMethod,
+                   detail);
+   }
+
+   /**
     * Logs an exception that will be ignored.
     *
     * @param detectingClass
@@ -253,26 +308,18 @@ public final class Utils extends Object {
     *
     * @since XINS 1.3.0
     */
-   public static void logIgnoredException(Throwable exception,
-                                          String    detectingClass,
+   public static void logIgnoredException(String    detectingClass,
                                           String    detectingMethod,
                                           String    subjectClass,
-                                          String    subjectMethod)
+                                          String    subjectMethod,
+                                          Throwable exception)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("exception",       exception);
-      MandatoryArgumentChecker.check("detectingClass",  detectingClass,
-                                     "detectingMethod", detectingMethod,
-                                     "subjectClass",    subjectClass,
-                                     "subjectMethod",   subjectMethod);
-
-      // Perform the actual logging
       String detail = null;
-      Log.log_1051(exception,
-                   detectingClass, detectingMethod,
-                   subjectClass,   subjectMethod,
-                   detail);
+
+      logIgnoredException(detectingClass, detectingMethod,
+                          subjectClass,   subjectMethod,
+                          detail,         exception);
    }
 
    /**

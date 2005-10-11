@@ -676,9 +676,10 @@ final class Engine extends Object {
          try {
             _configManager.destroy();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(exception,
+            Utils.logIgnoredException(
                Engine.class.getName(),              "destroy()",
-               _configManager.getClass().getName(), "destroy()");
+               _configManager.getClass().getName(), "destroy()",
+               exception);
          }
       }
 
@@ -687,9 +688,10 @@ final class Engine extends Object {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(exception,
+            Utils.logIgnoredException(
                Engine.class.getName(),    "destroy()",
-               _api.getClass().getName(), "deinit()");
+               _api.getClass().getName(), "deinit()",
+               exception);
          }
       }
 

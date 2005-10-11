@@ -266,9 +266,9 @@ public final class FileWatcher extends Thread {
                                   + Listener.class.getName()
                                   + ")";
          String subjectClass = "java.io.File";
-         Utils.logIgnoredException(exception,
-                                   CLASSNAME,    thisMethod,
-                                   subjectClass, subjectMethod);
+         Utils.logIgnoredException(CLASSNAME,    thisMethod,
+                                   subjectClass, subjectMethod,
+                                   exception);
       }
    }
 
@@ -448,9 +448,9 @@ public final class FileWatcher extends Thread {
          } catch (Throwable exception) {
             String subjectMethod =
                "securityException(java.lang.SecurityException)";
-            Utils.logIgnoredException(exception,
-                                      CLASSNAME,      thisMethod,
-                                      _listenerClass, subjectMethod);
+            Utils.logIgnoredException(CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod,
+                                      exception);
          }
 
          // Short-circuit
@@ -471,9 +471,9 @@ public final class FileWatcher extends Thread {
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
             String subjectMethod = "fileNotFound()";
-            Utils.logIgnoredException(exception,
-                                      CLASSNAME,      thisMethod,
-                                      _listenerClass, subjectMethod);
+            Utils.logIgnoredException(CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod,
+                                      exception);
          }
 
       // Previously the file could not be found, but now it can
@@ -489,9 +489,9 @@ public final class FileWatcher extends Thread {
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
             String subjectMethod = "fileFound()";
-            Utils.logIgnoredException(exception,
-                                      CLASSNAME,      thisMethod,
-                                      _listenerClass, subjectMethod);
+            Utils.logIgnoredException(CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod,
+                                      exception);
          }
 
       // File has been modified
@@ -507,9 +507,9 @@ public final class FileWatcher extends Thread {
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
             String subjectMethod = "fileModified()";
-            Utils.logIgnoredException(exception,
-                                      CLASSNAME,      thisMethod,
-                                      _listenerClass, subjectMethod);
+            Utils.logIgnoredException(CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod,
+                                      exception);
          }
 
       // File has not been modified
@@ -522,9 +522,9 @@ public final class FileWatcher extends Thread {
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
             String subjectMethod = "fileNotModified()";
-            Utils.logIgnoredException(exception,
-                                      CLASSNAME,      thisMethod,
-                                      _listenerClass, subjectMethod);
+            Utils.logIgnoredException(CLASSNAME,      thisMethod,
+                                      _listenerClass, subjectMethod,
+                                      exception);
          }
       }
    }

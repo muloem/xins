@@ -737,29 +737,30 @@ class CheckLinks extends Object {
       /**
        * Releases the connection used by the passed
        * <code>HttpMethodBase</code>. If the connection is not released
-       * successfully and a {@link Throwable} is thrown by the method, it is
-       * logged and ignored.
+       * successfully and an exception is thrown, then it is just logged and
+       * ignored. If the argument is <code>null</code> then nothing is done.
        *
-       * @param optionsMethod
-       *    the {@link HttpMethodBase} containing a connection,
-       *    can be <code>null</code>.
+       * @param method
+       *    the {@link HttpMethodBase} potentially having an unreleased
+       *    connection, can be <code>null</code>.
        */
-      private void releaseConnection(HttpMethodBase optionsMethod) {
-         if (optionsMethod != null) {
+      private void releaseConnection(HttpMethodBase method) {
+
+         if (method != null) {
+
+            // Release the connection
             try {
+               method.releaseConnection();
 
-               // Release the connection from OptionsMethod.
-               optionsMethod.releaseConnection();
+            // Just ignore (and log) any exception as we do not want to fail
+            // if the connection is not properly released.
             } catch (Throwable ignorable) {
-
-               // Just ignore the exception and log it as we do not care
-               // if the connection is not properly released.
                Utils.logIgnoredException(
-                  ignorable,
                   CheckLinks.URLChecker.class.getName(),
                   "releaseConnection(HttpMethodBase)",
-                  optionsMethod.getClass().getName(),
-                  "releaseConnection()");
+                  method.getClass().getName(),
+                  "releaseConnection()",
+                  ignorable);
             }
          }
       }

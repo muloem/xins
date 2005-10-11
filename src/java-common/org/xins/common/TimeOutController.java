@@ -97,9 +97,9 @@ public final class TimeOutController extends Object {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
          Utils.logIgnoredException(
-            exception,
             CLASSNAME,                   THIS_METHOD,
-            thread.getClass().getName(), "join(long)"
+            thread.getClass().getName(), "join(long)",
+            exception
          );
       }
 
