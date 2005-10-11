@@ -6,7 +6,10 @@
  */
 package org.xins.client;
 
+import java.io.UnsupportedEncodingException;
+
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.service.TargetDescriptor;
 
 /**
@@ -34,7 +37,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a <code>InvalidCallResultException</code> for the situation
+    * Creates a <code>InvalidResultXINSCallException</code> for the situation
     * where no HTTP data is received.
     *
     * @param request
@@ -66,7 +69,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
             "duration (" + duration + ") < 0");
       }
 
-      String    detail = "No HTTP data received.";
+      String    detail = "No HTTP response received.";
       Throwable cause  = null;
 
       return new InvalidResultXINSCallException(
@@ -74,7 +77,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
    }
 
    /**
-    * Creates a <code>InvalidCallResultException</code> for the situation
+    * Creates a <code>InvalidResultXINSCallException</code> for the situation
     * where the received HTTP data cannot be parsed.
     *
     * @param httpData
@@ -120,7 +123,24 @@ public final class InvalidResultXINSCallException extends XINSCallException {
             "duration (" + duration + ") < 0");
       }
 
-      String detail = null; // TODO FIXME
+      // Determine how much to quote; max is 1024 bytes
+      int    quoteLength = Math.min(httpData.length, 1024);
+      String quote;
+      try {
+         quote = new String(httpData, 0, quoteLength, "US-ASCII");
+      } catch (UnsupportedEncodingException exception) {
+         throw Utils.logProgrammingError(
+            InvalidResultXINSCallException.class.getName(), "parseError",
+            "java.lang.String", "<init>(byte[],int,int,java.lang.String)",
+            null, cause);
+      }
+
+      // Construct the detail message
+      String detail = "Failed to parse the HTTP response. The first "
+                    + quoteLength
+                    + " bytes are (in ASCII): \""
+                    + quote
+                    + "\".";
 
       return new InvalidResultXINSCallException(
          request, target, duration, detail, cause);
@@ -137,7 +157,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InvalidCallResultException</code>.
+    * Constructs a new <code>InvalidResultXINSCallException</code>.
     *
     * @param request
     *    the original request, cannot be <code>null</code>.
