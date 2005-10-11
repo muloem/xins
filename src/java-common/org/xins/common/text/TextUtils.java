@@ -87,6 +87,27 @@ public final class TextUtils extends Object {
       return (s == null) || (s.length() < 1);
    }
 
+   /**
+    * Trims the specified string, or returns an empty string if the argument
+    * is <code>null</code>.
+    *
+    * @param s
+    *    the string, or <code>null</code>.
+    *
+    * @return
+    *    the trimmed version of the string (see {@link String#trim()}) or
+    *    <code>""</code> if <code>s == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String trim(String s) {
+      if (s == null) {
+         return "";
+      } else {
+         return s.trim();
+      }
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors

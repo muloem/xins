@@ -33,6 +33,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     expected to be the subject class/method.
   - Added missing toHexString(FastStringBuffer,char) method in class
     HexConverter. Unit tests for this new method are in place.
+  - Added Utils.trim(String) that returns the trimmed version of the argument
+    string, or an empty string if the argument is null.
   - Improved Javadoc comments and formatting.
 
 * XINS/Java Client Framework:
