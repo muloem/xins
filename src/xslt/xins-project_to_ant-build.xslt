@@ -690,7 +690,7 @@ APIs in this project are:
 			<mkdir dir="{$builddir}/wsdl" />
 			<style
 			in="{$api_specsdir}/api.xml"
-			out="{$builddir}/xsdl/{$api}.wsdl"
+			out="{$builddir}/wsdl/{$api}.wsdl"
 			style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
