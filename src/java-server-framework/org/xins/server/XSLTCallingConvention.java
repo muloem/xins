@@ -53,7 +53,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * The name of the runtime property that defines if the templates should be
     * cached. Should be either <code>"true"</code> or <code>"false"</code>.
     */
-   public final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
+   final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
     * The name of the runtime property that defines the location of the XSLT
@@ -71,18 +71,18 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * <li><code>https://xslt.johndoe/</code></li>
     * </ul>
     */
-   public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
+   final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
-   public final static String TEMPLATE_PARAMETER = "_template";
+   final static String TEMPLATE_PARAMETER = "_template";
 
    /**
     * The name of the input parameter used to clear the template cache.
     */
-   public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
+   final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
    /**
     * Cache for the XSLT templates. Never <code>null</code>.
