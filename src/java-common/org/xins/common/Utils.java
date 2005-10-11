@@ -376,7 +376,7 @@ public final class Utils extends Object {
       }
 
       // Determine detecting class and method
-      String detectingClass = getCallingClass();
+      String detectingClass  = getCallingClass();
       String detectingMethod = getCallingMethod();
 
       // Log the programming error
