@@ -41,7 +41,7 @@ final class CallResultOutputter extends Object {
     * The initial output for each output conversion. Never <code>null</code>.
     */
    private static final char[] PREFACE =
-      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<result".toCharArray();
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?><result".toCharArray();
 
    /**
     * Per-thread caches for the <code>FastStringWriter</code> instances. Never
@@ -146,7 +146,7 @@ final class CallResultOutputter extends Object {
                if (v != null && (v.length() > 0) && v.trim().length() > 0) {
 
                   // TODO: Put this in a static char[]
-                  buffer.append("\n<param name=\"");
+                  buffer.append("<param name=\"");
 
                   // Encode and output the name
                   XML_ENCODER.text(writer, n, true);
