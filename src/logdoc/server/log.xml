@@ -211,9 +211,7 @@
 			<description>Determined API name.</description>
 			<param name="apiName" />
 		</entry>
-		<entry id="3236" level="WARNING">
-			<description>API build version is not set.</description>
-		</entry>
+		<!-- XXX: Removed 3236 here (@since XINS 1.3.0) -->
 		<entry id="3237" level="DEBUG">
 			<description>Bootstrapping calling convention.</description>
 			<param name="name" />
