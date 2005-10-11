@@ -13,6 +13,7 @@ if "%OS%" == "Windows_NT" setlocal
 IF NOT ""%XINS_HOME%"" == """" GOTO test_version
 
 :: If XINS_HOME is not set, it should be the directory of the script.
+IF NOT "%OS%" == "Windows_NT" GOTO show_error
 for %%x in (%0) do set XINS_HOME=%%~dpsx
 for %%x in (%XINS_HOME%) do set XINS_HOME=%%~dpsx
 set XINS_HOME=%XINS_HOME%..\
@@ -41,7 +42,7 @@ GOTO end
 
 :: Displays the error message
 :show_error
-ECHO Please set XINS_HOME enviornment vairable.
+ECHO Please set XINS_HOME environment variable.
 GOTO end
 
 :end
