@@ -143,6 +143,9 @@ public class AccessRuleFile implements AccessRuleContainer {
          _aclFileWatcher = new FileWatcher(file, interval, aclFileListener);
          _aclFileWatcher.start();
       }
+
+      // Generate the string representation
+      _asString = "file " + file;
    }
 
 
@@ -172,9 +175,8 @@ public class AccessRuleFile implements AccessRuleContainer {
 
    /**
     * String representation of this object. Cannot be <code>null</code>.
-    * XXX TODO
     */
-   //private final String _asString;
+   private final String _asString;
 
 
    //-------------------------------------------------------------------------
@@ -303,6 +305,15 @@ public class AccessRuleFile implements AccessRuleContainer {
       _rules = (AccessRuleContainer[])rules.toArray(new AccessRuleContainer[0]);
 
    }
+
+   public String toString() {
+      return _asString;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
 
    /**
     * Listener that reloads the ACL file if it changes.
