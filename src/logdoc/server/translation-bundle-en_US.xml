@@ -110,6 +110,8 @@
 	<translation entry="3437">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
 	<translation entry="3438">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />. Reason: <value-of-param name="reason" /></translation>
 	<translation entry="3439">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed.</translation>
+	<translation entry="3440">XSLT template cache in the XSLT calling convention is enabled.</translation>
+	<translation entry="3441">XSLT template cache in the XSLT calling convention is disabled.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>

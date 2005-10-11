@@ -478,6 +478,12 @@
 			<description>Calling convention could not be initialized, exception available.</description>
 			<param name="name" />
 		</entry>
+		<entry id="3440" level="INFO">
+			<description>XSLT template cache in the XSLT calling convention is enabled.</description>
+		</entry>
+		<entry id="3441" level="INFO">
+			<description>XSLT template cache in the XSLT calling convention is disabled.</description>
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">

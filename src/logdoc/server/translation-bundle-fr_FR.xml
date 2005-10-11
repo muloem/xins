@@ -62,7 +62,7 @@
 	<translation entry="3300">Initialisation du sous-système de logging avec les paramètres définis dans le fichier <value-of-param name="configFile" format="quoted" />.</translation>
 	<translation entry="3301">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être ouvert.</translation>
 	<translation entry="3302">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être lu à cause de restriction de sécurité.</translation>
-	translation entry="3303">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être lu à cause d'une erreur d'E/S.</translation>
+	<translation entry="3303">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être lu à cause d'une erreur d'E/S.</translation>
 	<translation entry="3304">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne défini pas apparement les propriétés d'initialisation attendues. Les propriétés par défaut vont être appliquées.</translation>
 	<translation entry="3305">Le sous-système de logging a été initialisé.</translation>
 	<translation entry="3306">Changement de la locale pour les message de log de <value-of-param name="oldLocale" /> à <value-of-param name="newLocale" />.</translation>
@@ -111,6 +111,8 @@
 <!-- FIXME -->	<translation entry="3437">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
 <!-- FIXME -->	<translation entry="3438">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />. Reason: <value-of-param name="reason" /></translation>
 <!-- FIXME -->	<translation entry="3439">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed.</translation>
+<!-- FIXME -->	<translation entry="3440">XSLT template cache in the XSLT calling convention is enabled.</translation>
+<!-- FIXME -->	<translation entry="3441">XSLT template cache in the XSLT calling convention is disabled.</translation>
 
 	<translation entry="3500">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exception attrapée.</translation>
 	<translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: la fonction a retouné une réponse invalide.</translation>
