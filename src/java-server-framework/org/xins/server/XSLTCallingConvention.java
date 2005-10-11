@@ -28,6 +28,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -104,9 +105,9 @@ class XSLTCallingConvention extends StandardCallingConvention {
    private boolean _cacheTemplates;
 
    /**
-    * Location of the XSLT transformation Style Sheet.
+    * Location of the XSLT templates.
     */
-   private String _baseXSLTDir;
+   private String _location;
 
    /**
     * The XSLT transformer.
@@ -152,23 +153,34 @@ class XSLTCallingConvention extends StandardCallingConvention {
       // Get the base directory of the Style Sheet
       // e.g. http://xslt.mycompany.com/myapi/
       // then the XSLT file must have the function names.
-      _baseXSLTDir = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
+      _location = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
 
       // Relative URLs use the user directory as base dir.
-      if (TextUtils.isEmpty(_baseXSLTDir)) {
+      if (TextUtils.isEmpty(_location) || _location.indexOf("://") == -1) {
+
+         // Trim the location and make sure it's never null
+         _location = TextUtils.trim(_location);
+
+         // Attempt to convert the home directory to a URL
+         String home    = System.getProperty("user.dir");
+         String homeURL = "";
          try {
-            _baseXSLTDir = new File(System.getProperty("user.dir")).toURL().toString();
-         } catch (IOException ioe) {
-            // Ignore
+            homeURL = new File(home).toURL().toString();
+
+         // If the conversion to a URL failed, then just use the original
+         } catch (IOException exception) {
+            Utils.logIgnoredException(
+               XSLTCallingConvention.class.getName(), "initImpl",
+               "java.io.File",                        "toURL()",
+               exception);
          }
-      } else if (_baseXSLTDir.indexOf("://") == -1) {
-         try {
-            String userDir = new File(System.getProperty("user.dir")).toURL().toString();
-            _baseXSLTDir = userDir + _baseXSLTDir;
-         } catch (IOException ioe) {
-            // Ignore
-         }
+
+         // Prepend the home directory URL
+         _location = homeURL + _location;
       }
+
+      // Log the base directory for XSLT templates
+      Log.log_3442(_location);
    }
 
    protected void convertResultImpl(FunctionResult      xinsResult,
@@ -183,7 +195,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       String xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);
       if (xsltLocation == null) {
-         xsltLocation = _baseXSLTDir + httpRequest.getParameter("_function") + ".xslt";
+         xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
       }
       try {
          Templates t = null;
@@ -197,7 +209,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          if (!_cacheTemplates && TEMPLATE_CACHE.containsKey(xsltLocation)) {
             t = (Templates) TEMPLATE_CACHE.get(xsltLocation);
          } else {
-            t = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _baseXSLTDir));
+            t = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _location));
             if (_cacheTemplates) {
                TEMPLATE_CACHE.put(xsltLocation, t);
             }
