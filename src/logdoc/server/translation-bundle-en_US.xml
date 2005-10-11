@@ -112,6 +112,7 @@
 	<translation entry="3439">Initialization of calling convention <value-of-param name="name" format="quoted" /> failed.</translation>
 	<translation entry="3440">XSLT template cache in the XSLT calling convention is enabled.</translation>
 	<translation entry="3441">XSLT template cache in the XSLT calling convention is disabled.</translation>
+	<translation entry="3442">Base directory for the XSLT calling convention templates is <value-of-param name="dir" format="quoted" />.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function.</translation>

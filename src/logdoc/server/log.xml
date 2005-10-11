@@ -484,6 +484,10 @@
 		<entry id="3441" level="INFO">
 			<description>XSLT template cache in the XSLT calling convention is disabled.</description>
 		</entry>
+		<entry id="3442" level="INFO">
+			<description>Determined base directory for the XSLT templates used by the XSLT calling convention.</description>
+			<param name="dir" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">
