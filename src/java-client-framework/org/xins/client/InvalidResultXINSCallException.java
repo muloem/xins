@@ -123,8 +123,8 @@ public final class InvalidResultXINSCallException extends XINSCallException {
             "duration (" + duration + ") < 0");
       }
 
-      // Determine how much to quote; max is 1024 bytes
-      int    quoteLength = Math.min(httpData.length, 1024);
+      // Determine how much to quote; max is 512 bytes
+      int    quoteLength = Math.min(httpData.length, 512);
       String quote;
       try {
          quote = new String(httpData, 0, quoteLength, "US-ASCII");
