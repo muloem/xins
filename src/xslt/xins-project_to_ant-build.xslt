@@ -127,7 +127,7 @@ APIs in this project are:
 			<target name="ask" description="Asks for the command and API to execute.">
 				<input addproperty="command"
 				       message="Command "
-				       validargs="run,war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server,wsdl" />
+				       validargs="run,war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server,wsdl,stub,test" />
 				<input addproperty="api"
 				       message="API ">
 					<xsl:attribute name="validargs">
@@ -687,10 +687,10 @@ APIs in this project are:
 		<target name="wsdl-{$api}">
 			<property file="{$project_home}/build.properties" />
 			<property name="wsdl.endpoint" value="" />
-			<mkdir dir="{$builddir}/webapps/{$api}" />
+			<mkdir dir="{$builddir}/wsdl" />
 			<style
 			in="{$api_specsdir}/api.xml"
-			out="{$builddir}/webapps/{$api}/{$api}.wsdl"
+			out="{$builddir}/xsdl/{$api}.wsdl"
 			style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
@@ -698,7 +698,7 @@ APIs in this project are:
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
 			</style>
-			<replace file="{$builddir}/webapps/{$api}/{$api}.wsdl"
+			<replace file="{$builddir}/wsdl/{$api}.wsdl"
 			token="urn:apiname"
 			value="urn:{$api}" />
 		</target>
