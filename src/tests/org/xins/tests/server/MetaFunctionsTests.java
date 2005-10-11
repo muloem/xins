@@ -130,18 +130,19 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("The function returned a data element.", result.getDataElement());
       parameters = result.getParameters();
       assertNotNull("The function _GetStatistics did not returned any parameters.", parameters);
-      assertNotNull("No startup date specified.", parameters.get("startup"));
+      String startup = parameters.get("startup");
+      assertNotNull("No startup date specified.", startup);
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
       try {
-         SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
-         formatter.parse(parameters.get("startup"));
+         formatter.parse(startup);
       } catch (ParseException parseException) {
-         fail("Incorrect date format for startup time.");
+         fail("Incorrect date format for startup time (\"" + startup + "\".");
       }
-      assertNotNull("No (now) date specified.", parameters.get("now"));
+      String now = parameters.get("now");
+      assertNotNull("No (now) date specified.", now);
       try {
-         SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
-         Date now = formatter.parse(parameters.get("now"));
-         assertTrue("Start-up time is after 'now' time.", now.after(formatter.parse(parameters.get("startup"))));
+         Date nowDate = formatter.parse(now);
+         assertTrue("Start-up time (\"" + startup + "\") is after now time (\"" + now + "\").", nowDate.after(formatter.parse(startup)));
       } catch (ParseException parseException) {
          fail("Incorrect date format for 'now'.");
       }
