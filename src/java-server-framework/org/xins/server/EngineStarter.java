@@ -492,10 +492,6 @@ final class EngineStarter extends Object {
       if (TextUtils.isEmpty(apiName)) {
          Log.log_3232(APIServlet.API_NAME_PROPERTY);
          apiName = "-";
-         /* TODO for XINS 2.0.0: Fail if API name is not set.
-          Log.log_3209(API_NAME_PROPERTY);
-          throw new ServletException();
-          */
       } else {
          apiName = apiName.trim();
          Log.log_3235(apiName);
