@@ -173,10 +173,10 @@ final class EngineStarter extends Object {
 
       // Warn if API build version is more recent than running version
       if (Library.isProductionRelease(serverVersion)) {
-         String buildVersion = _config.getInitParameter(
-            APIServlet.API_BUILD_VERSION_PROPERTY);
+         String propName     = APIServlet.API_BUILD_VERSION_PROPERTY;
+         String buildVersion = _config.getInitParameter(propName);
          if (buildVersion == null) {
-            // TODO: Log, unless this is already done in API or APIServlet
+            Log.log_3232(propName);
          } else if (Library.isProductionRelease(buildVersion)
                     && Library.isMoreRecent(buildVersion)) {
             Log.log_3229(buildVersion, serverVersion);
@@ -498,13 +498,8 @@ final class EngineStarter extends Object {
           */
       } else {
          apiName = apiName.trim();
+         Log.log_3235(apiName);
       }
-
-      // Log the API name
-      Log.log_3235(apiName);
-
-      // TODO: Should we not _either_ log 3232 _or_ 3235 ?
-      //       We now log both.
 
       return apiName;
    }
