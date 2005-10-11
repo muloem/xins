@@ -487,7 +487,6 @@ final class Engine extends Object {
 
       // If a filter is specified, validate that the ID matches it
       if (_contextIDPattern != null) {
-         // TODO: Investigate whether this causes a performance bottleneck
          Perl5Matcher matcher = new Perl5Matcher();
          return matcher.matches(contextID, _contextIDPattern);
 
