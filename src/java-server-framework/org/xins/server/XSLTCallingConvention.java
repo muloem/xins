@@ -27,11 +27,13 @@ import javax.xml.transform.stream.StreamSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.InitializationException;
+import org.xins.common.text.TextUtils;
 
 /**
  * XSLT calling convention.
@@ -99,7 +101,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * Flag that indicates whether the templates should be cached.
     */
-   private boolean _cacheTemplates = true;
+   private boolean _cacheTemplates;
 
    /**
     * Location of the XSLT transformation Style Sheet.
@@ -121,10 +123,31 @@ class XSLTCallingConvention extends StandardCallingConvention {
           InvalidPropertyValueException,
           InitializationException {
 
-      // FIXME: Throw an InvalidPropertyValueException if the value is not
-      //        either 'true' or 'false'
-      _cacheTemplates = "false".equals(
-         runtimeProperties.get(TEMPLATES_CACHE_PROPERTY));
+      // Determine if the template cache should be enabled
+      String propName  = TEMPLATES_CACHE_PROPERTY;
+      String propValue = runtimeProperties.get(propName);
+
+      // By default, the template cache is enabled
+      if (TextUtils.isEmpty(propValue)) {
+         _cacheTemplates = true;
+      } else {
+         propValue = propValue.trim();
+         if ("true".equals(propValue)) {
+            _cacheTemplates = true;
+         } else if ("false".equals(propValue)) {
+            _cacheTemplates = false;
+         } else {
+            throw new InvalidPropertyValueException(propName, propValue,
+               "Expected either \"true\" or \"false\".");
+         }
+      }
+
+      // Log whether the cache is enabled or not
+      if (_cacheTemplates) {
+         Log.log_3440();
+      } else {
+         Log.log_3441();
+      }
 
       // Get the base directory of the Style Sheet
       // e.g. http://xslt.mycompany.com/myapi/
@@ -132,7 +155,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
       _baseXSLTDir = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
 
       // Relative URLs use the user directory as base dir.
-      if (_baseXSLTDir == null) {
+      if (TextUtils.isEmpty(_baseXSLTDir)) {
          try {
             _baseXSLTDir = new File(System.getProperty("user.dir")).toURL().toString();
          } catch (IOException ioe) {
