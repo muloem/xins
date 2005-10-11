@@ -525,8 +525,6 @@ final class Engine extends Object {
       String remoteIP    = request.getRemoteAddr();
       String queryString = request.getQueryString();
 
-      // TODO: Return 'Server' header
-
       // Check the HTTP request method
       String  method = request.getMethod();
       boolean sendOutput;
@@ -675,11 +673,14 @@ final class Engine extends Object {
       _state.setState(EngineState.DISPOSING);
 
       // Destroy the configuration manager
-      try {
-         _configManager.destroy();
-      } catch (Throwable t) {
-         // TODO: Log
-         // ignore
+      if (_configManager != null) {
+         try {
+            _configManager.destroy();
+         } catch (Throwable exception) {
+            Utils.logIgnoredException(exception,
+               Engine.class.getName(),              "destroy()",
+               _configManager.getClass().getName(), "destroy()");
+         }
       }
 
       // Destroy the API
@@ -687,7 +688,9 @@ final class Engine extends Object {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Log.log_3601(exception);
+            Utils.logIgnoredException(exception,
+               Engine.class.getName(),    "destroy()",
+               _api.getClass().getName(), "deinit()");
          }
       }
 

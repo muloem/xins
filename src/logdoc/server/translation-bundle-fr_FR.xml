@@ -133,7 +133,7 @@ as done in the English translations -->
 	<translation entry="3583">"Diagnostic context identifier" <value-of-param name="contextID" format="quoted"/> généré.</translation>
 	
 	<translation entry="3600">Fermeture du XINS/Java Server Framework.</translation>
-	<translation entry="3601">La désinitialisation de l'API a échoué lors de l'arrêt du XINS/Java Server.</translation>
+	<!-- XXX: Removed 3601 here (@since XINS 1.3.0) -->
 	<translation entry="3602">Fermeture du XINS/Java Server Framework terminé.</translation>
 	<translation entry="3603">La désinitialisation du manageable <value-of-param name="className" />.</translation>
 	<translation entry="3604">Manageable <value-of-param name="className" /> déinitialisé.</translation>
