@@ -163,7 +163,7 @@ abstract class CallingConvention extends Manageable {
     *    {@link Manageable#assertUsable()}.
     *
     * @throws IllegalArgumentException
-    *    if <code>request == null</code>.
+    *    if <code>httpRequest == null</code>.
     *
     * @throws InvalidRequestException
     *    if the request is considerd to be invalid.
@@ -189,11 +189,11 @@ abstract class CallingConvention extends Manageable {
          xinsRequest = convertRequestImpl(httpRequest);
 
       // Filter any thrown exceptions
-      } catch (Throwable t) {
-         if (t instanceof InvalidRequestException) {
-            throw (InvalidRequestException) t;
-         } else if (t instanceof FunctionNotSpecifiedException) {
-            throw (FunctionNotSpecifiedException) t;
+      } catch (Throwable exception) {
+         if (exception instanceof InvalidRequestException) {
+            throw (InvalidRequestException) exception;
+         } else if (exception instanceof FunctionNotSpecifiedException) {
+            throw (FunctionNotSpecifiedException) exception;
          } else {
             String thisMethod    = "convertRequest("
                                  + HttpServletRequest.class.getName()
@@ -203,12 +203,11 @@ abstract class CallingConvention extends Manageable {
                                  + HttpServletRequest.class.getName()
                                  + ')';
 
-            throw Utils.logProgrammingError(CLASSNAME,
-                                            thisMethod,
-                                            subjectClass,
-                                            subjectMethod,
-                                            null,
-                                            t);
+            String detail = null;
+
+            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                            subjectClass, subjectMethod,
+                                            detail,       exception);
          }
       }
 
@@ -222,10 +221,8 @@ abstract class CallingConvention extends Manageable {
                               + HttpServletRequest.class.getName()
                               + ')';
          String detail = "Method returned null.";
-         throw Utils.logProgrammingError(CLASSNAME,
-                                         thisMethod,
-                                         subjectClass,
-                                         subjectMethod,
+         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                         subjectClass, subjectMethod,
                                          detail);
       }
 
@@ -268,20 +265,21 @@ abstract class CallingConvention extends Manageable {
     *    the HTTP response object to configure, cannot be <code>null</code>.
     *
     * @param httpRequest
-    *    the HTTP request, will not be <code>null</code>.
+    *    the HTTP request, cannot be <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this calling convention is currently not usable, see
     *    {@link Manageable#assertUsable()}.
     *
     * @throws IllegalArgumentException
-    *    if <code>xinsResult == null
+    *    if <code>xinsResult   == null
     *          || httpResponse == null
-    *          || httpRequest == null</code>.
+    *          || httpRequest  == null</code>.
     *
     * @throws IOException
-    *    if calling any of the methods in <code>httpResponse</code> causes an
-    *    I/O error.
+    *    if the invocation of any of the methods in either
+    *    <code>httpResponse</code> or <code>httpRequest</code> caused an I/O
+    *    error.
     */
    final void convertResult(FunctionResult      xinsResult,
                             HttpServletResponse httpResponse,
@@ -331,7 +329,9 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Converts a XINS result to an HTTP response (implementation method).
+    * Converts a XINS result to an HTTP response (implementation method). This
+    * method should only be called from class {@link CallingConvention}. Only
+    * then it is guaranteed that none of the arguments is <code>null</code>.
     *
     * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
@@ -344,8 +344,9 @@ abstract class CallingConvention extends Manageable {
     *    the HTTP request, will not be <code>null</code>.
     *
     * @throws IOException
-    *    if calling any of the methods in <code>httpResponse</code> causes an
-    *    I/O error.
+    *    if the invocation of any of the methods in either
+    *    <code>httpResponse</code> or <code>httpRequest</code> caused an I/O
+    *    error.
     */
    protected abstract void convertResultImpl(FunctionResult      xinsResult,
                                              HttpServletResponse httpResponse,
@@ -354,17 +355,21 @@ abstract class CallingConvention extends Manageable {
    // XXX: Replace IOException with more appropriate exception?
 
    /**
-    * Reads the HTTP request and parses it to an {@link org.xins.common.xml.Element}.
+    * Parses the specified HTTP request to produce an XML
+    * <code>Element</code>.
     *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
     *
     * @param checkType
     *    flag indicating whether this method should check that the content type
-    *    of the request is text/xml.
+    *    of the request is <em>text/xml</em>.
     *
     * @return
     *    the parsed element, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>httpRequest == null</code>.
     *
     * @throws InvalidRequestException
     *    if the HTTP request cannot be read or cannot be parsed correctly.
@@ -373,13 +378,27 @@ abstract class CallingConvention extends Manageable {
                                      boolean            checkType)
    throws InvalidRequestException {
 
-      // Check content type
+      // Check arguments
+      MandatoryArgumentChecker.check("httpRequest", httpRequest);
+
+      // Check the content type, if appropriate
       String contentType = httpRequest.getContentType();
-      if (checkType && (contentType == null || !contentType.startsWith("text/xml"))) {
-         throw new InvalidRequestException("Incorrect content type \"" +
-                                           contentType + "\".");
+      if (checkType) {
+         if (contentType == null || contentType.trim().length() < 1) {
+            throw new InvalidRequestException("No content type set.");
+         } else {
+            String contentTypeLC = contentType.toLowerCase();
+            if (! ("text/xml".equals(contentTypeLC) ||
+                   contentTypeLC.startsWith("text/xml;"))) {
+               String message = "Invalid content type \""
+                              + contentType
+                              + "\".";
+               throw new InvalidRequestException(message);
+            }
+         }
       }
 
+      // TODO: Should we really prefetch everything?
       try {
 
          // Convert the Reader to a string buffer
