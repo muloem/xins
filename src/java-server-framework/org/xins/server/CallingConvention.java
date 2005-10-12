@@ -52,7 +52,9 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * The default value of the <code>"Server"</code> header sent with an HTTP
-    * response.
+    * response. The actual value is
+    * <code>"XINS/Java Server Framework "</code>, followed by the version of
+    * the server framework.
     */
    private static final String SERVER_HEADER;
 
@@ -66,26 +68,38 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Removes all parameters that should not be passed to a function. If the
-    * set of parameters passed is <code>null</code>, then nothing is done.
+    * Removes all parameters that should not be transmitted. A parameter will
+    * be removed if it matches any of the following rules:
+    *
+    * <ul>
+    * <li>parameter name is <code>null</code>;
+    * <li>parameter name is empty;
+    * <li>parameter name equals <code>"function"</code>.
+    * </ul>
     *
     * @param parameters
     *    the {@link ProtectedPropertyReader} containing the set of parameters
-    *    to investigate, or <code>null</code>.
+    *    to investigate, cannot be <code>null</code>.
     *
     * @param secretKey
-    *    the secret key required to be able to modify the parameters, can be
-    *    <code>null</code>.
+    *    the secret key required to be able to modify the parameters, cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>parameters == null || secretKey == null</code>.
     */
    void cleanUpParameters(ProtectedPropertyReader parameters,
-                          Object                  secretKey) {
+                          Object                  secretKey)
+   throws IllegalArgumentException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("parameters", parameters,
+                                     "secretKey",  secretKey);
 
       // TODO: Should we not let the diagnostic context ID through?
 
-      // If the set of parameters passed is null, then nothing is done.
-      if (parameters == null) {
-         return;
-      }
+      // TODO: Improve the performance and memory usage by not always copying
+      //       the PropertyReader names to a list
 
       // Get an list of the parameter names
       ArrayList names = CollectionUtils.list(parameters.getNames());
@@ -102,6 +116,7 @@ abstract class CallingConvention extends Manageable {
             parameters.set(secretKey, name, null);
 
          // XXX: If the parameter name is "function", then remove it
+         // FIXME: Add this to the TODO list for XINS 2.0.0
          } else if ("function".equals(name)) {
             parameters.set(secretKey, name, null);
          }
