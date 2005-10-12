@@ -56,16 +56,13 @@ abstract class CallingConvention extends Manageable {
     * <code>"XINS/Java Server Framework "</code>, followed by the version of
     * the server framework.
     */
-   private static final String SERVER_HEADER;
+   private static final String SERVER_HEADER =
+      "XINS/Java Server Framework " + Library.getVersion();
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   static {
-      SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
-   }
 
    /**
     * Removes all parameters that should not be transmitted. A parameter will
@@ -98,9 +95,6 @@ abstract class CallingConvention extends Manageable {
 
       // TODO: Should we not let the diagnostic context ID through?
 
-      // TODO: Improve the performance and memory usage by not always copying
-      //       the PropertyReader names to a list
-
       // Get the parameter names
       Iterator names = parameters.getNames();
 
@@ -112,8 +106,10 @@ abstract class CallingConvention extends Manageable {
          String name  = (String) names.next();
          String value = parameters.get(name);
 
-         // If the name or value is empty, then remove the parameter
-         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value)) {
+         // If the parameter name or value is empty, or if the name is
+         // "function", then mark the parameter as 'to be removed'
+         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) ||
+             "function".equals(name)) {
             if (toRemove == null) {
                toRemove = new ArrayList();
             }
