@@ -9,8 +9,8 @@ package org.xins.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,23 +101,30 @@ abstract class CallingConvention extends Manageable {
       // TODO: Improve the performance and memory usage by not always copying
       //       the PropertyReader names to a list
 
-      // Get an list of the parameter names
-      ArrayList names = CollectionUtils.list(parameters.getNames());
+      // Get the parameter names
+      Iterator names = parameters.getNames();
 
       // Loop through all parameters
-      for (int i = 0; i < names.size(); i++) {
+      ArrayList toRemove = null;
+      while (names.hasNext()) {
 
          // Determine parameter name and value
-         String name  = (String) names.get(i);
+         String name  = (String) names.next();
          String value = parameters.get(name);
 
          // If the name or value is empty, then remove the parameter
          if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value)) {
-            parameters.set(secretKey, name, null);
+            if (toRemove == null) {
+               toRemove = new ArrayList();
+            }
+            toRemove.add(name);
+         }
+      }
 
-         // XXX: If the parameter name is "function", then remove it
-         // FIXME: Add this to the TODO list for XINS 2.0.0
-         } else if ("function".equals(name)) {
+      // If there is anything to remove, then do so
+      if (toRemove != null) {
+         for (int i = (toRemove.size() - 1); i >= 0; i--) {
+            String name = (String) toRemove.get(i);
             parameters.set(secretKey, name, null);
          }
       }
