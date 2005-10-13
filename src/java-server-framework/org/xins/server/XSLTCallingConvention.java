@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
@@ -35,9 +34,18 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.text.TextUtils;
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * XSLT calling convention.
+ * The XSLT calling convention input is the same as for the standard calling
+ * convention. The XSLT calling convention output is the result of the XML
+ * normally returned by the standard calling convention and the specified
+ * XSLT.
+ * The Mime type of the return data can be specified in the XSLT using the 
+ * media-type or method attribute of the XSL output element.
+ * More information about the XSLT calling conventino can be found in the 
+ * <a href='http://www.xins.org/docs/index.html>user guide</a>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -52,43 +60,37 @@ class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * The name of the runtime property that defines if the templates should be
     * cached. Should be either <code>"true"</code> or <code>"false"</code>.
+    * By default the cache is enabled.
     */
-   final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
+   private final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
     * The name of the runtime property that defines the location of the XSLT
     * templates. Should indicate a directory, either locally or remotely.
     * Local locations will be interpreted as relative to the user home
-    * directory.
+    * directory. The value should be a URL or a relative directory.
     *
     * <p>Examples of valid locations include:
     *
     * <ul>
     * <li><code>projects/dubey/xslt/</code></li>
-    * <li><code>/home/john.doe/projects/dubey/xslt/</code></li>
     * <li><code>file:///home/john.doe/projects/dubey/xslt/</code></li>
-    * <li><code>http://johndoe/projects/dubey/xslt/</code></li>
-    * <li><code>https://xslt.johndoe/</code></li>
+    * <li><code>http://johndoe.com/projects/dubey/xslt/</code></li>
+    * <li><code>https://xslt.johndoe.com/</code></li>
     * </ul>
     */
-   final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
+   private final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
-   final static String TEMPLATE_PARAMETER = "_template";
+   private final static String TEMPLATE_PARAMETER = "_template";
 
    /**
     * The name of the input parameter used to clear the template cache.
     */
-   final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
-
-   /**
-    * Cache for the XSLT templates. Never <code>null</code>.
-    */
-   private final static Map TEMPLATE_CACHE = new HashMap(89);
-   // FIXME: Make TEMPLATE_CACHE an instance variable
+   private final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
 
    //-------------------------------------------------------------------------
@@ -106,7 +108,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       // Creates the transformer factory
       _factory = TransformerFactory.newInstance();
-      _factory.setURIResolver(new XsltURIResolver());
+      _factory.setURIResolver(new URIResolver());
    }
 
 
@@ -131,6 +133,11 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    private String _location;
 
+   /**
+    * Cache for the XSLT templates. Never <code>null</code>.
+    */
+   private Map _templateCache = new HashMap(89);
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -142,21 +149,38 @@ class XSLTCallingConvention extends StandardCallingConvention {
           InitializationException {
 
       // Determine if the template cache should be enabled
-      String propName  = TEMPLATES_CACHE_PROPERTY;
-      String propValue = runtimeProperties.get(propName);
+      String cacheEnabled = runtimeProperties.get(TEMPLATES_CACHE_PROPERTY);
+      initCacheEnabled(cacheEnabled);
 
+      // Get the base directory of the style sheets.
+      initXSLTLocation(runtimeProperties);
+   }
+
+   /**
+    * Determines if the template cache should be enabled.
+    * If no value is set or the property does not exists, the cache is by default
+    * enabled.
+    *
+    * @param enableCache
+    *    the value of the parameter set in the runtime property, can be <code>null</code>.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value is incorrect.
+    */
+   private void initCacheEnabled(String cacheEnabled) throws InvalidPropertyValueException {
+      
       // By default, the template cache is enabled
-      if (TextUtils.isEmpty(propValue)) {
+      if (TextUtils.isEmpty(cacheEnabled)) {
          _cacheTemplates = true;
       } else {
-         propValue = propValue.trim();
-         if ("true".equals(propValue)) {
+         cacheEnabled = cacheEnabled.trim();
+         if ("true".equals(cacheEnabled)) {
             _cacheTemplates = true;
-         } else if ("false".equals(propValue)) {
+         } else if ("false".equals(cacheEnabled)) {
             _cacheTemplates = false;
          } else {
-            throw new InvalidPropertyValueException(propName, propValue,
-               "Expected either \"true\" or \"false\".");
+            throw new InvalidPropertyValueException(TEMPLATES_CACHE_PROPERTY,
+               cacheEnabled, "Expected either \"true\" or \"false\".");
          }
       }
 
@@ -166,12 +190,20 @@ class XSLTCallingConvention extends StandardCallingConvention {
       } else {
          Log.log_3441();
       }
-
-      // Get the base directory of the Style Sheet
-      // e.g. http://xslt.mycompany.com/myapi/
-      // then the XSLT file must have the function names.
+   }
+   
+   /**
+    * Initilizes the location for the XSLT style sheets.
+    * e.g. http://xslt.mycompany.com/myapi/ or file:///c:/home/
+    * then the XSLT file must have the function names.
+    *
+    * @param runtimeProperties
+    *    the runtime properties, cannot be <code>null</code>.
+    */
+   private void initXSLTLocation(PropertyReader runtimeProperties) {
       _location = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
 
+      // If the value is not a URL, it's considered as a relative path.
       // Relative URLs use the user directory as base dir.
       if (TextUtils.isEmpty(_location) || _location.indexOf("://") == -1) {
 
@@ -199,50 +231,59 @@ class XSLTCallingConvention extends StandardCallingConvention {
       // Log the base directory for XSLT templates
       Log.log_3442(_location);
    }
-
+   
    protected void convertResultImpl(FunctionResult      xinsResult,
                                     HttpServletResponse httpResponse,
                                     HttpServletRequest  httpRequest)
    throws IOException {
 
-      // Send the XML output to the stream and flush
+      // If the request is to clear the cache, just clear the cache.
+      if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
+         _templateCache.clear();
+         PrintWriter out = httpResponse.getWriter();
+         out.write("Done.");
+         out.close();
+         return;
+      }
+
+      // Get the XML output similar to the standard calling convention.
       FastStringWriter xmlOutput = new FastStringWriter();
       CallResultOutputter.output(xmlOutput, xinsResult, false);
       xmlOutput.close();
 
+      // Get the location of the XSLT file.
       String xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);
       if (xsltLocation == null) {
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
       }
+      
       try {
-         Templates t = null;
-         if ("true".equals(httpRequest.getParameter(CLEAR_TEMPLATE_CACHE_PARAMETER))) {
-            TEMPLATE_CACHE.clear();
-            PrintWriter out = httpResponse.getWriter();
-            out.write("Done.");
-            out.close();
-            return;
-         }
-         if (!_cacheTemplates && TEMPLATE_CACHE.containsKey(xsltLocation)) {
-            t = (Templates) TEMPLATE_CACHE.get(xsltLocation);
+         
+         // Load the template or get it from the cache.
+         Templates templates = null;
+         if (!_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
+            templates = (Templates) _templateCache.get(xsltLocation);
          } else {
-            t = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _location));
+            templates = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _location));
             if (_cacheTemplates) {
-               TEMPLATE_CACHE.put(xsltLocation, t);
+               _templateCache.put(xsltLocation, templates);
             }
          }
-         Transformer xformer = t.newTransformer();
+         
+         // Proceed to the transformation.
+         Transformer xformer = templates.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
          Writer buffer = new FastStringWriter(1024);
          Result result = new StreamResult(buffer);
          xformer.transform(source, result);
 
+         // Send the result of the transformation.
          PrintWriter out = httpResponse.getWriter();
 
          // Determine the MIME type for the output.
-         String mimeType = t.getOutputProperties().getProperty("media-type");
+         String mimeType = templates.getOutputProperties().getProperty("media-type");
          if (mimeType == null) {
-            String method = t.getOutputProperties().getProperty("method");
+            String method = templates.getOutputProperties().getProperty("method");
             if ("xml".equals(method)) {
                mimeType = "text/xml";
             } else if ("html".equals(method)) {
@@ -251,7 +292,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
                mimeType = "text/plain";
             }
          }
-         String encoding = t.getOutputProperties().getProperty("encoding");
+         String encoding = templates.getOutputProperties().getProperty("encoding");
          if (mimeType != null && encoding != null) {
             mimeType += ";charset=" + encoding;
          }
@@ -262,9 +303,13 @@ class XSLTCallingConvention extends StandardCallingConvention {
          httpResponse.setStatus(HttpServletResponse.SC_OK);
          out.print(buffer.toString());
          out.close();
+      } catch (IOException ioex) {
+         throw ioex;
       } catch (Exception ex) {
-         ex.printStackTrace();
-         throw new IOException(ex.getMessage());
+         IOException ioe = new IOException("Cannot transform the result with" +
+               " the XSLT located at \"" + xsltLocation + "\".");
+         ExceptionUtils.setCause(ioe, ex);
+         throw ioe;
       }
    }
 
@@ -279,7 +324,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
-   class XsltURIResolver implements URIResolver {
+   class URIResolver implements javax.xml.transform.URIResolver {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -290,9 +335,9 @@ class XSLTCallingConvention extends StandardCallingConvention {
       //----------------------------------------------------------------------
 
       /**
-       * The previous base URL, if any. Can be <code>null</code>.
+       * The base directory of the previous call to resolve, if any. Cannot be <code>null</code>.
        */
-      private String _base;
+      private String _base = "";
 
 
       //----------------------------------------------------------------------
@@ -300,13 +345,14 @@ class XSLTCallingConvention extends StandardCallingConvention {
       //----------------------------------------------------------------------
 
       /**
-       * Revolve a hyperlink reference.
+       * Revolves a hyperlink reference.
        *
        * @param href
-       *    the hyperlink to resolve.
+       *    the hyperlink to resolve, cannot be <code>null</code>.
        *
        * @param base
-       *    the base URI in effect when the href attribute was encountered.
+       *    the base URI in effect when the href attribute was encountered,
+       *    can be <code>null</code>.
        *
        * @return
        *    a {@link Source} object, or <code>null</code> if the href cannot
@@ -319,12 +365,17 @@ class XSLTCallingConvention extends StandardCallingConvention {
       public Source resolve(String href, String base)
       throws TransformerException {
 
+         // If no base is specified, use the last location.
          if (base == null) {
             base = _base;
+            
+         // The base should always ends with a slash.
          } else if (! base.endsWith("/")) {
             base += '/';
          }
          _base = base;
+         
+         // Result the URL
          String url = null;
          if (href.indexOf(":/") == -1) {
             url = base + href;
@@ -333,10 +384,10 @@ class XSLTCallingConvention extends StandardCallingConvention {
             _base = href.substring(0, href.lastIndexOf('/') + 1);
          }
 
+         // Return the source of the resolved XSLT.
          try {
             return new StreamSource(new URL(url).openStream());
          } catch (IOException ioe) {
-            ioe.printStackTrace();
             throw new TransformerException(ioe);
          }
       }
