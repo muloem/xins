@@ -173,6 +173,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
   - Fixed bug which caused the generation of function files to fail with a
     NullPointerException on Java 1.4.1.
 
+* Generation of the specific documentation:
+  - Removed the link to the environment on the API page as it does not point
+    to any HTML page.
+
 * Generated test forms:
   - Fixed the environment did not match the destination when the back
     and forward button was used.

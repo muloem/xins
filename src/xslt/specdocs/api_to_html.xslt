@@ -287,12 +287,7 @@
 
 	<xsl:template match="environment">
 		<li>
-			<a>
-				<xsl:attribute name="href">
-					<xsl:value-of select="@url" />
-				</xsl:attribute>
-				<xsl:value-of select="@id" />
-			</a>
+			<xsl:value-of select="@id" />
 			<!-- Generate the ( version statistics settings ) links. -->
 			<font size="-1">
 				<xsl:text> (</xsl:text>
