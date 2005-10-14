@@ -246,7 +246,6 @@ class CallingConventionManager {
             nextConvention.init(runtimeProperties);
          } catch (Exception ex) {
             Log.log_3561(ex, nextConventionName);
-            _otherConventions.remove(nextConventionName);
          }
       }
    }
@@ -275,7 +274,7 @@ class CallingConventionManager {
       }
 
       CallingConvention cc = (CallingConvention) _otherConventions.get(name);
-      if (cc != null) {
+      if (cc != null && cc.getState() == cc.USABLE) {
          return cc;
       }
 
