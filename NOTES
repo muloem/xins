@@ -54,6 +54,16 @@ Windows 2000).
 The 'xins.bat' batch file has been tested with various Windows versions,
 including Windows ME, 2000 and XP.
 
+All 260 unit tests for this release have been executed on the following
+platforms, with the indicated results:
+
+- On Linux 2.6/x86 (SMP kernel):
+  - Sun JDK 1.4.2_09:        OK
+  - Sun JDK 1.5.0_05:        OK
+
+- On Microsoft Windows 2000:
+  - Sun JDK 1.4.2_09:        OK
+
 
 *** BUGS ***
 
