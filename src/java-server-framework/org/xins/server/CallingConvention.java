@@ -93,8 +93,6 @@ abstract class CallingConvention extends Manageable {
       MandatoryArgumentChecker.check("parameters", parameters,
                                      "secretKey",  secretKey);
 
-      // TODO: Should we not let the diagnostic context ID through?
-
       // Get the parameter names
       Iterator names = parameters.getNames();
 
