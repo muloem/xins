@@ -208,7 +208,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
       if (TextUtils.isEmpty(_location) || _location.indexOf("://") == -1) {
 
          // Trim the location and make sure it's never null
-         _location = TextUtils.trim(_location);
+         _location = TextUtils.trim(_location, "");
 
          // Attempt to convert the home directory to a URL
          String home    = System.getProperty("user.dir");

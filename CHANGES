@@ -33,8 +33,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     expected to be the subject class/method.
   - Added missing toHexString(FastStringBuffer,char) method in class
     HexConverter. Unit tests for this new method are in place.
-  - Added Utils.trim(String) that returns the trimmed version of the argument
-    string, or an empty string if the argument is null.
+  - Added TextUtils.trim(String,String) that returns the trimmed version of
+    the first argument, or the second argument if the first argument is either
+    null or empty (after trimming).
   - Changed Utils.logIgnoredException to have the same order of arguments as
     the corresponding logProgrammingError method.
   - Added a version of Utils.logIgnoredException that accepts a detail

@@ -94,18 +94,27 @@ public final class TextUtils extends Object {
     * @param s
     *    the string, or <code>null</code>.
     *
+    * @param ifEmpty
+    *    the string to return if
+    *    <code>s == null || s.trim().length &lt; 1</code>.
+    *
     * @return
     *    the trimmed version of the string (see {@link String#trim()}) or
-    *    <code>""</code> if <code>s == null</code>.
+    *    <code>ifEmpty</code> if
+    *    <code>s == null</code> or <code>s.trim().length &lt; 1</code>.
     *
     * @since XINS 1.3.0
     */
-   public static String trim(String s) {
-      if (s == null) {
-         return "";
-      } else {
-         return s.trim();
+   public static String trim(String s, String ifEmpty) {
+
+      if (s != null) {
+         s = s.trim();
+         if (s.length() >= 1) {
+            return s;
+         }
       }
+
+      return ifEmpty;
    }
 
 
