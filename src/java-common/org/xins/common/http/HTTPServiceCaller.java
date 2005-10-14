@@ -17,9 +17,9 @@ import java.net.UnknownHostException;
 
 import java.util.Iterator;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.util.TimeoutController;
@@ -668,6 +668,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       Throwable exception = executor.getException();
       if (exception != null) {
 
+         String exceptionName = exception.getClass().getName();
          // Unknown host
          if (exception instanceof UnknownHostException) {
             Log.log_1102(url, params, duration);
@@ -687,7 +688,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
             throw new ConnectionRefusedCallException(request, target, duration);
 
          // Connection time-out
-         } else if (exception instanceof ConnectTimeoutException) {
+         //
+         // XXX: We do not use instanceof because class ConnectTimeoutException
+         //      is not available in HTTPClient 2.0
+         } else if (exceptionName.equals("org.apache.commons.httpclient.ConnectTimeoutException")
+               || exceptionName.equals("org.apache.commons.httpclient.HttpConnection.ConnectionTimeoutException")) {
             Log.log_1104(url, params, duration, connectionTimeOut);
             executor.dispose();
             throw new ConnectionTimeOutCallException(request, target, duration);
@@ -696,7 +701,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
          //
          // XXX: We do not use instanceof because class SocketTimeoutException
          //      is not available in Java 1.3
-         } else if (exception.getClass().getName().equals("java.net.SocketTimeoutException")) {
+         } else if (exceptionName.equals("java.net.SocketTimeoutException")
+               || (exception instanceof HttpRecoverableException
+                  && ((HttpRecoverableException) exception).getReason().indexOf("Read timed out") != -1)) {
             Log.log_1105(url, params, duration, socketTimeOut);
             executor.dispose();
             throw new SocketTimeOutCallException(request, target, duration);
@@ -1092,8 +1099,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
          int    socketTimeOut     = _target.getSocketTimeOut();
 
          // Configure connection time-out and socket time-out
-         client.getParams().setConnectionManagerTimeout(connectionTimeOut);
-         client.getParams().setSoTimeout(socketTimeOut);
+         // For compatibility with HTTPClient 2.0, the deprecated methods are still used.
+         client.setHttpConnectionFactoryTimeout(connectionTimeOut);
+         client.setTimeout(socketTimeOut);
 
          // Construct the method object
          HttpMethodBase method = createMethod(url, _request, _callConfig);
@@ -1122,11 +1130,18 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
             } else {
                _throwingMethod    = "getResponseContentLength()";
-               long contentLength = method.getResponseContentLength();
-               // XXX: What if contentLength > Integer.MAX_VALUE ?
+               int contentLength = 4096;
+               
+               // This method fails with HTTPClient 2.0.
+               try {
+                  contentLength = (int) method.getResponseContentLength();
+               } catch (NoSuchMethodError nsme) {
+                  
+                  // Ignore
+               }
 
                // Create byte array output stream
-               int size = contentLength > 0 ? (int) contentLength : 4096;
+               int size = contentLength > 0 ? contentLength : 4096;
                ByteArrayOutputStream out = new ByteArrayOutputStream(size);
                byte[] buffer = new byte[4096];
 

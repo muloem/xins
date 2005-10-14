@@ -41,6 +41,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Added a version of Utils.logIgnoredException that accepts a detail
     message.
   - Improved Javadoc comments and formatting.
+  - Made the HTTPServiceCaller class compatible with HTTPClient 2.0.2.
 
 * XINS/Java Client Framework:
   - Improved the implementation of the XINSCallConfig class. Implemented the
@@ -88,6 +89,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Added more comments in the XSLTCallingConvention.
   - Fixed if a calling convention fails at the initialisation, it can
     be re-initialized.
+  - Made the _CheckLinks meta function also compatible with HTTPClient 2.0.2.
   - Simplified reading of the XML request in class CallingConvention. This
     should speed-up the handling of incoming XML documents and it should
     reduce object churn.

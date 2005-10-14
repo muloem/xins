@@ -9,14 +9,15 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.methods.OptionsMethod;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -60,15 +61,16 @@ class CheckLinks extends Object {
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
-    * the exception is <code>ConnectException</code>.
+    * the exception is <code>ConnectTimeoutException</code> or the message
+    * of the exception starts with "Connect timed out".
     */
-   private final static String CONNECTION_REFUSAL = "ConnectionRefusal";
+   private final static String CONNECTION_TIMEOUT = "ConnectionTimeout";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
-    * the exception is <code>ConnectTimeoutException</code>.
+    * the exception is <code>ConnectException</code>.
     */
-   private final static String CONNECTION_TIMEOUT = "ConnectionTimeout";
+   private final static String CONNECTION_REFUSAL = "ConnectionRefusal";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
@@ -485,24 +487,30 @@ class CheckLinks extends Object {
       // Check preconditions.
       MandatoryArgumentChecker.check("exception", exception, "url", url);
 
+      String exceptionName = exception.getClass().getName();
       String result;
 
       // DNS error, unknown host name
       if (exception instanceof UnknownHostException) {
          result = UNKNOWN_HOST;
 
+      // Connection time-out
+      } else if (exceptionName.equals("org.apache.commons.httpclient.ConnectTimeoutException")
+            || exception.getMessage().startsWith("Connect timed out")) {
+         result = CONNECTION_TIMEOUT;
+
       // Connection refused
       } else if (exception instanceof ConnectException) {
          result = CONNECTION_REFUSAL;
 
-      // Connection time-out
-      } else if (exception instanceof ConnectTimeoutException) {
-         result = CONNECTION_TIMEOUT;
-
       // SocketTimeoutException is not available in older Java versions,
       // so we do not refer to the class to avoid a NoClassDefFoundError.
-      } else if (exception.getClass().getName().equals(
-                                         "java.net.SocketTimeoutException")) {
+      } else if (exceptionName.equals("java.net.SocketTimeoutException")) {
+         result = SOCKET_TIMEOUT;
+
+      // HTTPClient 2.0 socket time out is done using the HttpRecoverableException
+      } else if (exception instanceof HttpRecoverableException
+            && ((HttpRecoverableException) exception).getReason().indexOf("Read timed out") != -1) {
          result = SOCKET_TIMEOUT;
 
       // Interrupted I/O (this _may_ indicate a socket time-out)
@@ -706,13 +714,10 @@ class CheckLinks extends Object {
             HttpClient client = new HttpClient();
 
             // Set the socket timeout for the URL.
-            client.getParams().setSoTimeout(
-                              _targetDescriptor.getSocketTimeOut());
+            client.setTimeout(_targetDescriptor.getSocketTimeOut());
 
             // Set the connection timeout for the URL.
-            client.getHttpConnectionManager().getParams(
-                              ).setConnectionTimeout(
-                              _targetDescriptor.getConnectionTimeOut());
+            client.setHttpConnectionFactoryTimeout(_targetDescriptor.getConnectionTimeOut());
 
             // Create a new OptionsMethod with the URL, this will represent
             // a request for information about the communication options
@@ -889,12 +894,12 @@ class CheckLinks extends Object {
             // Set the duration as was defined for connection timeout
             _duration = _targetDescriptor.getConnectionTimeOut();
 
-            // Create a new ConnectTimeoutException.
+            // Create a new ConnectException.
             // TODO: Currently it is observed that mostly the URLs which are
             // expected to throw a ConnectTimeoutException keeps on running
             // but we need to take care of the situation when because of some
             // other reason the thread is still active.
-            _exception = new ConnectTimeoutException("connect timed out");
+            _exception = new ConnectException("Connect timed out");
          }
       }
 
