@@ -15,6 +15,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -187,8 +188,8 @@ class CallingConventionManager {
 
       } catch (Throwable t) {
 
-         // TODO: Consider catching the exception one level up so we do not
-         //       have to generate a ServletException here
+         // XXX: Consider catching the exception one level up so we do not
+         //      have to generate a ServletException here
 
          // Throw a ServletException
          ServletException se;
@@ -213,8 +214,14 @@ class CallingConventionManager {
 
             // If the creation of the calling convention fails, log a warning
             } catch (Exception ex) {
-               Log.log_3560(ex, ccName);
-               // TODO: Should we not use Utils.logIgnoredException ?
+               String className  = CallingConventionManager.class.getName();
+               String methodName = "initCallingConvention()";
+               String detail     = "Unable to create calling convention \""
+                                 + ccName
+                                 + "\".";
+               Utils.logIgnoredException(className, methodName,
+                                         className, "create(java.lang.String)",
+                                         detail,    ex);
             }
 
             // Store the CallingConvention instance
