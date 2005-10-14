@@ -332,9 +332,6 @@ extends HttpServlet {
          // Initialization failed, log the exception
          Log.log_3002(exception);
 
-         // TODO: Make sure the current state is an error state and log a
-         //       programming error if it is not.
-
          // Pass the exception through
          if (exception instanceof ServletException) {
             throw (ServletException) exception;
