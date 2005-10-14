@@ -87,6 +87,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Added more comments in the XSLTCallingConvention.
   - Fixed if a calling convention fails at the initialisation, it can
     be re-initialized.
+  - Simplified reading of the XML request in class CallingConvention. This
+    should speed-up the handling of incoming XML documents and it should
+    reduce object churn.
 
 * Generation of server-side Java code:
   - Fixed possibility of conflict in generated code between variables.

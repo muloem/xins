@@ -398,22 +398,10 @@ abstract class CallingConvention extends Manageable {
          }
       }
 
-      // TODO: Should we really prefetch everything?
+      // Parse the content in the HTTP request
+      ElementParser parser = new ElementParser();
       try {
-
-         // Convert the Reader to a string buffer
-         BufferedReader reader = httpRequest.getReader();
-         FastStringBuffer content = new FastStringBuffer(1024);
-         String nextLine;
-         while ((nextLine = reader.readLine()) != null) {
-            content.append(nextLine);
-            content.append("\n");
-         }
-
-         String contentString = content.toString().trim();
-         ElementParser parser = new ElementParser();
-         Element parsedElem = parser.parse(new StringReader(contentString));
-         return parsedElem;
+         return parser.parse(httpRequest.getReader());
 
       // I/O error
       } catch (IOException ex) {
