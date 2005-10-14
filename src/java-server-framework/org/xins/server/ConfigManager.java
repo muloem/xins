@@ -43,6 +43,8 @@ import org.xins.logdoc.UnsupportedLocaleException;
  */
 final class ConfigManager extends Object {
 
+   // XXX: Consider adding state checking
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -173,10 +175,7 @@ final class ConfigManager extends Object {
     */
    void determineConfigFile() {
 
-      // TODO: Check state
-
-      // TODO: What if the name cannot be determined?
-
+      // Get the value of the appropriate system property
       String prop = APIServlet.CONFIG_FILE_SYSTEM_PROPERTY;
       String configFile = null;
       try {
@@ -193,11 +192,10 @@ final class ConfigManager extends Object {
          configFile = _config.getInitParameter(prop);
 
          // If it is still not set, then assume null
-         if (configFile != null && configFile.trim().length() < 1) {
-            configFile = null;
-         }
+         configFile = TextUtils.trim(configFile, null);
       }
 
+      // Store the name of the configuration file
       _configFile = configFile;
    }
 
@@ -209,8 +207,6 @@ final class ConfigManager extends Object {
     * the engine.
     */
    void readRuntimeProperties() {
-
-      // TODO: Check state
 
       // If the value is not set only localhost can access the API.
       // NOTE: Don't trim the configuration file name, since it may start
@@ -281,8 +277,6 @@ final class ConfigManager extends Object {
     * if the interval has changed and starts the config file watcher.
     */
    void init() {
-
-      // TODO: Check the state
 
       // Determine the reload interval
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
@@ -516,9 +510,7 @@ final class ConfigManager extends Object {
     */
    void destroy() {
 
-      // TODO: Change state of this object?
-
-      // stop the FileWatcher
+      // Stop the FileWatcher
       if (_configFileWatcher != null) {
          _configFileWatcher.end();
       }
