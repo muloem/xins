@@ -98,6 +98,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 * Build- and release-process:
   - Fixed incorrect directory name for package target.
 
+* Libraries:
+  - Upgraded Jakarta Commons HttpClient from 3.0-rc3 to 3.0-rc4.
+
 * Other:
   - Improved the Checkstyle config. Now also checking things like a maximum
     method line count (100), @author tag format, @version tag format, etc.
@@ -565,7 +568,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 2:
     'org.xins.tests.AllTests'.
 
 * Libraries:
-  - Upgrade Jakarta Commons HttpClient from 3.0-rc2 to 3.0-rc3.
+  - Upgraded Jakarta Commons HttpClient from 3.0-rc2 to 3.0-rc3.
 
 * Other:
   - The debug and profile targets in the NetBeans build script do not require
