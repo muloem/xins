@@ -220,8 +220,6 @@ final class ConfigManager extends Object {
          _configFile = _configFile.replace('/',  File.separatorChar);
          _configFile = _configFile.replace('\\', File.separatorChar);
 
-         // TODO: Allow a slash in the file name?
-
          // Initialize the logging subsystem
          Log.log_3300(_configFile);
 
