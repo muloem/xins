@@ -136,7 +136,7 @@ class CheckLinks extends Object {
          // Create the thread for each target and run them
          threads = createAndRunUrlCheckers(targetDescriptors);
 
-         // Get the biggest timeout from all the targets
+         // Get the biggest time-out from all the targets
          int timeout = getBiggestTimeout(targetDescriptors);
 
          // Wait till all the threads finish their execution or timedout.
@@ -247,17 +247,17 @@ class CheckLinks extends Object {
    }
 
    /**
-    * Returns the biggest timeout of all the URLs defined in
+    * Returns the biggest time-out of all the URLs defined in
     * <code>TargetDescriptor</code>s list. Each {@link TargetDescriptor} in
-    * the list has total timeout. The biggest of all of them is returned.
-    * This timeout is then used to setup the timeouts of the
+    * the list has total time-out. The biggest of all of them is returned.
+    * This time-out is then used to setup the time-outs of the
     * {@link URLChecker} threads.
     *
     * @param targetDescriptors
     *    the list of {@link TargetDescriptor}s, cannot be <code>null</code>.
     *
     * @return
-    *    the biggest timeout from the list, or <code>-1</code> if none of the
+    *    the biggest time-out from the list, or <code>-1</code> if none of the
     *    target descriptors defines a time-out.
     *
     * @throws IllegalArgumentException
@@ -286,17 +286,17 @@ class CheckLinks extends Object {
    }
 
    /**
-    * Sets up the timeout for each thread and waits till each thread finishes
-    * execution. The timeout is the biggest timeout of all the URLs in
+    * Sets up the time-out for each thread and waits till each thread finishes
+    * execution. The time-out is the biggest time-out of all the URLs in
     * {@link TargetDescriptor}s. Timeout for every next thread also considers
     * the time which is already spent and that time is subtracted from the
-    * timeout for the current thread.
+    * time-out for the current thread.
     *
     * @param threads
     *    the list of {@link URLChecker} threads, cannot be <code>null</code>.
     *
     * @param timeout
-    *    the timeout for {@link URLChecker} threads.
+    *    the time-out for {@link URLChecker} threads.
     *
     * @throws IllegalArgumentException
     *    if <code>threads == null</code>.
@@ -319,16 +319,16 @@ class CheckLinks extends Object {
             URLChecker urlThread = (URLChecker) threadIterator.next();
             urlThread.join(threadTimeout);
 
-            // If the previous thread was setup with a certain timeout
-            // the next thread should be setup with a timeout subtracted
+            // If the previous thread was setup with a certain time-out
+            // the next thread should be setup with a time-out subtracted
             // by the time which is already passed.
-            long endTime = System.currentTimeMillis();
+            long endTime    = System.currentTimeMillis();
             long timePassed = endTime - startTime;
-            threadTimeout = timeout - timePassed;
+            threadTimeout   = timeout - timePassed;
 
-            // If the timeout becomes negative, it means that the total
-            // timeout interval has passed now we do not need to setup
-            // timeout for threads and they all should have finished
+            // If the time-out becomes negative, it means that the total
+            // time-out interval has passed now we do not need to setup
+            // time-out for threads and they all should have finished
             // execution by now.
             if (threadTimeout <= 0) {
                return;
@@ -345,7 +345,7 @@ class CheckLinks extends Object {
 
    /**
     * Confimrs that each <code>URLChecker</code> has finished its execution.
-    * If some threads are still running, inforce a connection timeout and let
+    * If some threads are still running, inforce a connection time-out and let
     * it run and ignore.
     *
     * @param threads
@@ -369,7 +369,7 @@ class CheckLinks extends Object {
          // Check if thread is still alive.
          if (urlThread.isAlive()) {
 
-            // Enforce a timeout for the thread and log it.
+            // Enforce a time-out for the thread and log it.
             urlThread.enforceTimeout();
             Log.log_3505(urlThread.getURL());
          }
@@ -713,10 +713,10 @@ class CheckLinks extends Object {
          try {
             HttpClient client = new HttpClient();
 
-            // Set the socket timeout for the URL.
+            // Set the socket time-out for the URL.
             client.setTimeout(_targetDescriptor.getSocketTimeOut());
 
-            // Set the connection timeout for the URL.
+            // Set the connection time-out for the URL.
             client.setHttpConnectionFactoryTimeout(_targetDescriptor.getConnectionTimeOut());
 
             // Create a new OptionsMethod with the URL, this will represent
@@ -883,23 +883,24 @@ class CheckLinks extends Object {
       }
 
       /**
-       * Enforces a timeout on the <code>URLChecker</code> thread. Actualy the
-       * thread is allowed to run and ignored. So set the duration as the
-       * initial connection timeout value and create a new
-       * {@link ConnectTimeoutException}.
+       * Enforces a time-out on the <code>URLChecker</code> thread. Actualy
+       * the thread is allowed to run and ignored. So set the duration as the
+       * initial connection time-out value and create a new
+       * {@link ConnectException}.
        */
       public void enforceTimeout() {
-         if (!hasRun()) {
+         if (! hasRun()) {
 
-            // Set the duration as was defined for connection timeout
+            // Set the duration as was defined for connection time-out
             _duration = _targetDescriptor.getConnectionTimeOut();
 
             // Create a new ConnectException.
-            // TODO: Currently it is observed that mostly the URLs which are
+            _exception = new ConnectException("Connect timed out");
+
+            // XXX: Currently it is observed that mostly the URLs which are
             // expected to throw a ConnectTimeoutException keeps on running
             // but we need to take care of the situation when because of some
             // other reason the thread is still active.
-            _exception = new ConnectException("Connect timed out");
          }
       }
 
