@@ -20,7 +20,8 @@ import org.xins.common.text.ParseException;
  * <p>An access rule list <em>descriptor</em>, a character string, can be
  * converted to produce an {@link AccessRuleList} object. A valid descriptor
  * consists of a list of access rule descriptors (see class
- * {@link AccessRule}), separated by semi-colon characters (<code>';'</code>).
+ * {@link AccessRule}) and/or access rule file descriptors (see class
+ * {@link AccessRuleFile}), separated by semi-colon characters (<code>';'</code>).
  * Optionally, the rules can have any amount of whitespace (space-, tab-,
  * newline- and carriage return-characters), before and after them. The last
  * descriptor cannot end with a semi-colon.
@@ -33,14 +34,14 @@ import org.xins.common.text.ParseException;
  * <br>deny  194.134.168.213/24 _*;
  * <br>allow 194.134.168.213/24 *;
  * <br>file  /var/conf/file1.acl;
- * <br>deny 0.0.0.0/0 *</code></blockquote>
+ * <br>deny  0.0.0.0/0 *</code></blockquote>
  *
- * <p>The above access control list grants access to the IP address
- * 194.134.168.213 to access all functions. Then in the second rule it denies
+ * <p>The above access control list grants the IP address 194.134.168.213
+ * access to all functions. Then in the second rule it denies
  * access to all IP addresses in the range 194.134.168.0 to 194.134.168.255 to
  * all functions that start with an underscore (<code>'_'</code>). Then it
- * allows access for those IP addresses to all other functions, then it applies
- * the rules in the /var/conf/file1.acl file and finally
+ * allows access for those IP addresses to all other functions, then it
+ * applies the rules in the <code>/var/conf/file1.acl</code> file and finally
  * all other IP addresses are denied access to any of the functions.
  *
  * @version $Revision$ $Date$
@@ -56,9 +57,10 @@ extends Object implements AccessRuleContainer {
    //-------------------------------------------------------------------------
 
    /**
-    * An empty access rule list.
+    * An empty access rule list. This field is never <code>null</code>.
     */
-   static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
+   static final AccessRuleList EMPTY =
+      new AccessRuleList(new AccessRuleContainer[0]);
 
    /**
     * Default watch interval for referenced files, in seconds. Equals one
@@ -137,10 +139,12 @@ extends Object implements AccessRuleContainer {
                                           + ") < 0");
       }
 
-      // Tokenize the descriptor
+      // First trim whitespace from the descriptor
       descriptor = descriptor.trim();
+
+      // Tokenize the descriptor, separator is semi-colon
       StringTokenizer tokenizer = new StringTokenizer(descriptor, ";");
-      int ruleCount = tokenizer.countTokens();
+      int             ruleCount = tokenizer.countTokens();
 
       // Parse all tokens
       AccessRuleContainer[] rules = new AccessRuleContainer[ruleCount];
@@ -155,7 +159,12 @@ extends Object implements AccessRuleContainer {
          } else if (token.startsWith("file")) {
             rules[i] = new AccessRuleFile(token, interval);
          } else {
-            throw new ParseException("Incorrect access rule");
+            String detail = "Failed to parse access rule list. "
+                          + "Expected token \""
+                          + token
+                          + "\" to start with "
+                          + "\"allow\", \"deny\" or \"file\".";
+            throw new ParseException(detail);
          }
       }
 
@@ -169,12 +178,13 @@ extends Object implements AccessRuleContainer {
 
    /**
     * Creates a new <code>AccessRuleList</code> object. The passed
-    * {@link AccessRuleContainer} array is assumed to be owned by the constructor.
+    * {@link AccessRuleContainer} array is assumed to be owned by the
+    * constructor.
     *
     * @param rules
-    *    the list of rules, should not be <code>null</code> and should not
-    *    contain any <code>null</code> elements; if these constraints are
-    *    violated, the behaviour is undefined.
+    *    the list of rules, not <code>null</code> and should not contain any
+    *    duplicate or <code>null</code> elements; if one of these latter 2
+    *    constraints are violated, the behaviour is undefined.
     *
     * @throws NullPointerException
     *    if <code>rules == null</code>.
@@ -185,20 +195,21 @@ extends Object implements AccessRuleContainer {
       // Count number of rules (may throw NPE)
       int ruleCount = rules.length;
 
-      // Build string representation
+      // Build string representation and log
       FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
          String s = rules[0].toString();
          buffer.append(s);
          Log.log_3429(0, s);
-      }
-      for (int i = 1; i < ruleCount; i++) {
-         String s = rules[i].toString();
 
-         buffer.append(';');
-         buffer.append(s);
+         for (int i = 1; i < ruleCount; i++) {
+            s = rules[i].toString();
 
-         Log.log_3429(i, s);
+            buffer.append(';');
+            buffer.append(s);
+
+            Log.log_3429(i, s);
+         }
       }
       _asString = buffer.toString();
 
@@ -260,22 +271,15 @@ extends Object implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
+    *
+    * @deprecated
+    *    Deprecated since XINS 1.3.0.
+    *    Use {@link #isAllowed(String,String)} instead.
     */
    public boolean allow(String ip, String functionName)
    throws IllegalArgumentException, ParseException {
-
       Boolean allowed = isAllowed(ip, functionName);
-
-      if (allowed != null) {
-         return allowed.booleanValue();
-      } else {
-
-         // Log: No access rule match
-         // TODO: Should this logging really be done in this class?
-         Log.log_3553(ip, functionName);
-
-         return false;
-      }
+      return (allowed != null) ? allowed.booleanValue() : false;
    }
 
    /**
@@ -349,11 +353,13 @@ extends Object implements AccessRuleContainer {
     * called.
     */
    public void dispose() {
-      if (_rules != null) {
-         for (int i = 0; i < _rules.length; i++) {
-            _rules[i].dispose();
-         }
+
+      // Dispose the current rules
+      int count = _rules == null ? 0 : _rules.length;
+      for (int i = 0; i < count; i++) {
+         _rules[i].dispose();
       }
+      _rules = null;
    }
 
    /**
