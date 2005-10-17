@@ -321,7 +321,7 @@ implements AccessRuleContainer {
     *    access or <code>null</code> if there is no match.
     *
     * @throws IllegalStateException
-    *    if this access rule is disposed (<em>since XINS 1.3.0</em>).
+    *    if this object is disposed (<em>since XINS 1.3.0</em>).
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
