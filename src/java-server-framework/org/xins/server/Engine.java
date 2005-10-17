@@ -335,7 +335,7 @@ final class Engine extends Object {
       boolean succeeded = false;
 
       boolean localeInitialized = _configManager.determineLogLocale();
-      if (!localeInitialized) {
+      if (! localeInitialized) {
          _state.setState(EngineState.API_INITIALIZATION_FAILED);
          return false;
       }
