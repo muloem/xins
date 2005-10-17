@@ -870,6 +870,66 @@ implements DefaultResultCodes {
       return _apiSpecification;
    }
 
+   /**
+    * Determines if the specified IP address is allowed to access the
+    * specified function, returning a <code>boolean</code> value.
+    *
+    * <p>This method finds the first matching rule and then returns the
+    * <em>allow</em> property of that rule (see
+    * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
+    * <code>false</code> is returned.
+    *
+    * @param ip
+    *    the IP address, cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the request is allowed, <code>false</code> if
+    *    the request is denied.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ip == null || functionName == null</code>.
+    *
+    * @throws ParseException
+    *    if the specified IP address is malformed.
+    */
+   public boolean allow(String ip, String functionName)
+   throws IllegalArgumentException {
+
+      // If no property is defined only localhost is allowed
+      if (_accessRuleList == AccessRuleList.EMPTY &&
+          (ip.equals("127.0.0.1") || ip.equals(_localIPAddress))) {
+         return true;
+      }
+
+      // Match an access rule
+      Boolean allowed;
+      try {
+         allowed = _accessRuleList.isAllowed(ip, functionName);
+
+      // If the IP address cannot be parsed there is a programming error
+      // somewhere
+      } catch (ParseException exception) {
+         String thisMethod    = "allow(java.lang.String,java.lang.String)";
+         String subjectClass  = _accessRuleList.getClass().getName();
+         String subjectMethod = "allow(java.lang.String,java.lang.String)";
+         String detail        = "Malformed IP address: \"" + ip + "\".";
+         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                         subjectClass, subjectMethod,
+                                         detail,       exception);
+      }
+
+      // If there is a match, return the allow-indication
+      if (allowed != null) {
+         return allowed.booleanValue();
+      }
+
+      // No matching access rule match, do not allow
+      Log.log_3553(ip, functionName);
+      return false;
+   }
 
    /**
     * Forwards a call to a function. The call will actually be handled by
@@ -920,31 +980,8 @@ implements DefaultResultCodes {
       String functionName = functionRequest.getFunctionName();
 
       // Check the access rule list
-      boolean allow;
-
-      // If no property is defined only localhost is allowed
-      if (_accessRuleList == AccessRuleList.EMPTY &&
-          (ip.equals("127.0.0.1") || ip.equals(_localIPAddress))) {
-         allow = true;
-      } else {
-         try {
-            allow = _accessRuleList.allow(ip, functionName);
-
-         // If the IP address cannot be parsed there is a programming error
-         // somewhere
-         } catch (ParseException exception) {
-            String subjectClass  = _accessRuleList.getClass().getName();
-            String subjectMethod = "allow(java.lang.String,java.lang.String)";
-            String detail        = "Malformed IP address: \"" + ip + "\".";
-            throw Utils.logProgrammingError(CLASSNAME,
-                                            THIS_METHOD,
-                                            subjectClass,
-                                            subjectMethod,
-                                            detail,
-                                            exception);
-         }
-      }
-      if (!allow) {
+      boolean allow = allow(ip, functionName);
+      if (! allow) {
          throw new AccessDeniedException(ip, functionName);
       }
 
