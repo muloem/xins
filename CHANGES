@@ -42,6 +42,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     message.
   - Improved Javadoc comments and formatting.
   - Made the HTTPServiceCaller class compatible with HTTPClient 2.0.2.
+  - Implemented the getScheme(), getRequestURI() and getRequestURL() method 
+    in the internal Servlet container.
 
 * XINS/Java Client Framework:
   - Improved the implementation of the XINSCallConfig class. Implemented the
@@ -93,6 +95,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Simplified reading of the XML request in class CallingConvention. This
     should speed-up the handling of incoming XML documents and it should
     reduce object churn.
+  - Stored the name of the parsed ACL in case of re-initialisation.
 
 * Generation of server-side Java code:
   - Fixed possibility of conflict in generated code between variables.

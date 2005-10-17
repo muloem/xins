@@ -370,6 +370,7 @@ public class HTTPServletHandler {
       boolean inputRead = false;
 
       while (!inputRead && (inputLine = input.readLine()) != null) {
+         // System.err.println(": " + inputLine);
          if (inputLine.startsWith("GET ")) {
             url = inputLine.substring(4);
             url = url.replace(',', '&');
@@ -377,9 +378,9 @@ public class HTTPServletHandler {
          }
 
          // POST method
-         if (inputLine.startsWith("POST ")) {
+         if (url == null && inputLine.startsWith("POST ")) {
             url = inputLine.substring(5);
-         } else if (inputLine.startsWith("Content-Type: ")) {
+         } else if (inputLine.toLowerCase().startsWith("content-type: ")) {
             contentType = inputLine.substring(14);
          } else if (inputLine.startsWith("Content-Length: ")) {
             contentLength = Integer.parseInt(inputLine.substring(16));

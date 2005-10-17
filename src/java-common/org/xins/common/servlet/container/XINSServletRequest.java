@@ -100,10 +100,11 @@ public class XINSServletRequest implements HttpServletRequest {
     * @since XINS 1.3.0
     */
    public XINSServletRequest(String url, char[] data, String contentType) {
+      _url = url;
+      _postData = data;
+      _contentType = contentType;
       _date = System.currentTimeMillis();
       _attributes = new Hashtable();
-      _contentType = contentType;
-      _postData = data;
 
       // Parse the URL
       _parameters = new Properties();
@@ -131,6 +132,11 @@ public class XINSServletRequest implements HttpServletRequest {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The requested URL included the optional parameters.
+    */
+   private String _url;
 
    /**
     * The parameters retrieved from the URL.
@@ -166,10 +172,6 @@ public class XINSServletRequest implements HttpServletRequest {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   public HttpSession getSession(boolean param) {
-      throw new UnsupportedOperationException();
-   }
 
    public void setCharacterEncoding(String str) {
       throw new UnsupportedOperationException();
@@ -332,11 +334,11 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getRequestURI() {
-      return "";
+      return _url;
    }
 
    public StringBuffer getRequestURL() {
-      return new StringBuffer();
+      return new StringBuffer(_url);
    }
 
    public String getRequestedSessionId() {
@@ -344,6 +346,10 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getScheme() {
+      int separator = _url.indexOf("://");
+      if (separator != -1) {
+         return _url.substring(0, separator + 3);
+      }
       return "file://";
    }
 
@@ -356,7 +362,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public int getServerPort() {
-      return -1;
+      return 8080;
    }
 
    public String getServletPath() {
@@ -364,6 +370,10 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public HttpSession getSession() {
+      return getSession(true);
+   }
+
+   public HttpSession getSession(boolean create) {
       throw new UnsupportedOperationException();
    }
 

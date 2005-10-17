@@ -150,15 +150,15 @@ implements AccessRuleContainer {
       }
 
       // First try parsing the file as it is
-      String file = nextToken(descriptor, tokenizer);
+      _file = nextToken(descriptor, tokenizer);
       IOException exception;
       try {
-         parseAndApply(file, interval);
+         parseAndApply(_file, interval);
 
       // File not found
       } catch (FileNotFoundException fnfe) {
          String message = "File \""
-                        + file
+                        + _file
                         + "\" cannot be opened for reading.";
          ParseException pe = new ParseException(message, fnfe, null);
          throw pe;
@@ -166,7 +166,7 @@ implements AccessRuleContainer {
       // I/O error reading from the file not found
       } catch (IOException ioe) {
          String message = "Cannot parse the file \""
-                        + file
+                        + _file
                         + "\" due to an I/O error.";
          ParseException pe = new ParseException(message, ioe, null);
          throw pe;
@@ -175,12 +175,12 @@ implements AccessRuleContainer {
       // Create and start a file watch thread, if the interval is not zero
       if (interval > 0) {
          FileListener fileListener = new FileListener();
-         _fileWatcher = new FileWatcher(file, interval, fileListener);
+         _fileWatcher = new FileWatcher(_file, interval, fileListener);
          _fileWatcher.start();
       }
 
       // Generate the string representation
-      _asString = "file " + file;
+      _asString = "file " + _file;
    }
 
 
