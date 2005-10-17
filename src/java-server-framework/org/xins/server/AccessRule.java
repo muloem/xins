@@ -26,7 +26,8 @@ import org.xins.common.text.SimplePatternParser;
  *    <li>followed by any number of white space characters;
  *    <li>followed by a valid IP address;
  *    <li>followed by a slash character (<code>'/'</code>);
- *    <li>followed by a mask between 0 and 32 in decimal format, no leading zeroes;
+ *    <li>followed by a mask between 0 and 32 in decimal format, without
+ *        leading zeroes;
  *    <li>followed by any number of white space characters;
  *    <li>followed by a simple pattern, see class {@link SimplePatternParser}.
  * </ul>
@@ -51,7 +52,9 @@ import org.xins.common.text.SimplePatternParser;
  *
  * @since XINS 1.0.0
  */
-public final class AccessRule implements AccessRuleContainer {
+public final class AccessRule
+extends Object
+implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -62,8 +65,8 @@ public final class AccessRule implements AccessRuleContainer {
     * <code>AccessRule</code> object.
     *
     * @param descriptor
-    *    the access rule descriptor, the character string to parse, cannot be <code>null</code>.
-    *    It also cannot be empty <code>(" ")</code>.
+    *    the access rule descriptor, the character string to parse, cannot be
+    *    <code>null</code>.
     *
     * @return
     *    an {@link AccessRule} instance, never <code>null</code>.
@@ -90,46 +93,61 @@ public final class AccessRule implements AccessRuleContainer {
       } else if ("deny".equals(token)) {
          allow = false;
       } else {
-         throw new ParseException("First token of descriptor is \"" + token + "\", instead of either 'allow' or 'deny'.");
+         String message = "First token of descriptor is \""
+                        + token
+                        + "\", instead of either 'allow' or 'deny'.";
+         throw new ParseException(message);
       }
-      FastStringBuffer asString = new FastStringBuffer(70, token);
+      FastStringBuffer buffer = new FastStringBuffer(70, token);
 
       // Determine the IP address to be checked
       token = nextToken(descriptor, tokenizer);
       IPFilter filter = IPFilter.parseIPFilter(token);
-      asString.append(' ');
-      asString.append(filter.toString());
+      buffer.append(' ');
+      buffer.append(filter.toString());
 
       // Determine the function the access is to be checked for
       token = nextToken(descriptor, tokenizer);
-      Perl5Pattern pattern = new SimplePatternParser().parseSimplePattern(token);
-      asString.append(' ');
-      asString.append(token);
+      SimplePatternParser parser = new SimplePatternParser();
+      Perl5Pattern pattern = parser.parseSimplePattern(token);
+      buffer.append(' ');
+      buffer.append(token);
 
-      return new AccessRule(allow, filter, pattern, asString.toString());
+      return new AccessRule(allow, filter, pattern, buffer.toString());
    }
 
    /**
     * Returns the next token in the descriptor.
     *
     * @param descriptor
-    *   the original descriptor, for use in the {@link ParseException}, if
-    *   necessary.
+    *   the original descriptor, useful when constructing the message for a
+    *   {@link ParseException}, when appropriate, should not be
+    *   <code>null</code>.
     *
     * @param tokenizer
-    *   the {@link StringTokenizer} to retrieve the next token from.
+    *   the {@link StringTokenizer} to retrieve the next token from, cannot be
+    *   <code>null</code>.
     *
     * @return
     *   the next token, never <code>null</code>.
     *
+    * @throws NullPointerException
+    *   if <code>tokenizer == null</code>
+    *
     * @throws ParseException
-    *   if <code>tokenizer.</code>{@link StringTokenizer#hasMoreTokens() hasMoreTokens}()<code> == false</code>.
+    *   if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
+    *   hasMoreTokens}() == false</code>.
     */
-   private static String nextToken(String descriptor, StringTokenizer tokenizer)
+   private static String nextToken(String          descriptor,
+                                   StringTokenizer tokenizer)
    throws ParseException {
 
       if (!tokenizer.hasMoreTokens()) {
-         throw new ParseException("The string \"" + descriptor + "\" is invalid as an access rule descriptor. Too few tokens retrieved from the descriptor.");
+         String message = "The string \""
+                        + descriptor
+                        + "\" is invalid as an access rule descriptor. More "
+                        + "tokens expected.";
+         throw new ParseException(message);
       } else {
          return tokenizer.nextToken();
       }
@@ -155,31 +173,31 @@ public final class AccessRule implements AccessRuleContainer {
     *    textual presentation of this access rule, cannot be
     *    <code>null</code>.
     *
-    * @param functionNamePattern
+    * @param functionNameRegex
     *    regular expression used for matching (or not) a function name; cannot
     *    be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>ipFilter            == null
-    *          || functionNamePattern == null
-    *          || asString            == null</code>.
+    *    if <code>ipFilter          == null
+    *          || functionNameRegex == null
+    *          || asString          == null</code>.
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
-                      Perl5Pattern functionNamePattern,
+                      Perl5Pattern functionNameRegex,
                       String       asString)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("ipFilter",            ipFilter,
-                                     "functionNamePattern", functionNamePattern,
-                                     "asString",            asString);
+      MandatoryArgumentChecker.check("ipFilter",          ipFilter,
+                                     "functionNameRegex", functionNameRegex,
+                                     "asString",          asString);
 
       // Store the data
-      _allow               = allow ? Boolean.TRUE : Boolean.FALSE;
-      _ipFilter            = ipFilter;
-      _functionNamePattern = functionNamePattern;
-      _asString            = asString;
+      _allow             = allow ? Boolean.TRUE : Boolean.FALSE;
+      _ipFilter          = ipFilter;
+      _functionNameRegex = functionNameRegex;
+      _asString          = asString;
    }
 
 
@@ -201,7 +219,7 @@ public final class AccessRule implements AccessRuleContainer {
    /**
     * The function name pattern. Cannot be <code>null</code>.
     */
-   private final Perl5Pattern _functionNamePattern;
+   private final Perl5Pattern _functionNameRegex;
 
    /**
     * String representation of this object. Cannot be <code>null</code>.
@@ -293,11 +311,17 @@ public final class AccessRule implements AccessRuleContainer {
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
       Perl5Matcher patternMatcher = new Perl5Matcher();
-      if (!_ipFilter.match(ip) || !patternMatcher.matches(functionName, _functionNamePattern)) {
-         return null;
-      } else {
-         return _allow;
+
+      // First check if the IP filter matches
+      if (_ipFilter.match(ip)) {
+         
+         // Then check if the function name matches
+         if (patternMatcher.matches(functionName, _functionNameRegex)) {
+            return _allow;
+         }
       }
+
+      return null;
    }
 
    /**
@@ -306,10 +330,6 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * <p>Once disposed, the {@link #isAllowed} method should no longer be
     * called.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.3.0. This method is unused and the
-    *    implementation is empty.
     */
    public void dispose() {
       // empty

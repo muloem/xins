@@ -236,8 +236,12 @@ public class AccessRuleFile implements AccessRuleContainer {
     *
     * <p>Once disposed, the {@link #isAllowed} method should no longer be
     * called.
+    *
+    * @throws IllegalStateException
+    *    if {@link #dispose()} has been called previously
+    *    (<em>since XINS 1.3.0</em>).
     */
-   public void dispose() {
+   public void dispose() throws IllegalStateException {
 
       // Close all the children
       if (_rules != null) {
@@ -394,6 +398,7 @@ public class AccessRuleFile implements AccessRuleContainer {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotModified() {
+         // empty
       }
 
       /**

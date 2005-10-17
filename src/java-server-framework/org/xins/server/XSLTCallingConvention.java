@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -45,7 +46,7 @@ import org.xins.logdoc.ExceptionUtils;
  * The Mime type of the return data can be specified in the XSLT using the 
  * media-type or method attribute of the XSL output element.
  * More information about the XSLT calling conventino can be found in the 
- * <a href='http://www.xins.org/docs/index.html>user guide</a>.
+ * <a href="http://www.xins.org/docs/index.html">user guide</a>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -157,21 +158,25 @@ class XSLTCallingConvention extends StandardCallingConvention {
    }
 
    /**
-    * Determines if the template cache should be enabled.
-    * If no value is set or the property does not exists, the cache is by default
-    * enabled.
+    * Determines if the template cache should be enabled. If no value is
+    * passed, then by default the cache is enabled. An invalid value, however,
+    * will trigger an {@link InvalidPropertyValueException}.
     *
-    * @param enableCache
-    *    the value of the parameter set in the runtime property, can be <code>null</code>.
+    * @param cacheEnabled
+    *    the value of the runtime property that specifies whether the cache
+    *    should be enabled, can be <code>null</code>.
     *
     * @throws InvalidPropertyValueException
     *    if the value is incorrect.
     */
-   private void initCacheEnabled(String cacheEnabled) throws InvalidPropertyValueException {
+   private void initCacheEnabled(String cacheEnabled)
+   throws InvalidPropertyValueException {
       
       // By default, the template cache is enabled
       if (TextUtils.isEmpty(cacheEnabled)) {
          _cacheTemplates = true;
+
+      // Trim before comparing with 'true' and 'false'
       } else {
          cacheEnabled = cacheEnabled.trim();
          if ("true".equals(cacheEnabled)) {
@@ -193,14 +198,25 @@ class XSLTCallingConvention extends StandardCallingConvention {
    }
    
    /**
-    * Initilizes the location for the XSLT style sheets.
-    * e.g. http://xslt.mycompany.com/myapi/ or file:///c:/home/
-    * then the XSLT file must have the function names.
+    * Initializes the location for the XSLT templates. Examples include:
+    * 
+    * <ul>
+    *    <li><code>http://xslt.mycompany.com/myapi/</code></li>
+    *    <li><code>file:///c:/home/</code></li>
+    * </ul>
+    *
+    * <p>XSLT template files must match the names of the corresponding
+    * functions.
     *
     * @param runtimeProperties
     *    the runtime properties, cannot be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>runtimeProperties == null</code>.
     */
    private void initXSLTLocation(PropertyReader runtimeProperties) {
+
+      // Get the value of the property
       _location = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
 
       // If the value is not a URL, it's considered as a relative path.
@@ -281,9 +297,10 @@ class XSLTCallingConvention extends StandardCallingConvention {
          PrintWriter out = httpResponse.getWriter();
 
          // Determine the MIME type for the output.
-         String mimeType = templates.getOutputProperties().getProperty("media-type");
+         Properties outputProperties = templates.getOutputProperties();
+         String mimeType = outputProperties.getProperty("media-type");
          if (mimeType == null) {
-            String method = templates.getOutputProperties().getProperty("method");
+            String method = outputProperties.getProperty("method");
             if ("xml".equals(method)) {
                mimeType = "text/xml";
             } else if ("html".equals(method)) {
@@ -292,7 +309,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
                mimeType = "text/plain";
             }
          }
-         String encoding = templates.getOutputProperties().getProperty("encoding");
+         String encoding = outputProperties.getProperty("encoding");
          if (mimeType != null && encoding != null) {
             mimeType += ";charset=" + encoding;
          }
@@ -312,6 +329,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          throw ioe;
       }
    }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
