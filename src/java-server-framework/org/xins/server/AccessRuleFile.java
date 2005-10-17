@@ -15,23 +15,52 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.ParseException;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
- * A collection of access rules.
+ * A set of access rules in a separate file.
+ *
+ * <p>An <code>AccessRuleFile</code> instance is constructed using a
+ * descriptor and a file watch interval. The descriptor is a character string
+ * that is parsed to determine which file should be parsed and monitored for
+ * changes. Such a descriptor must match the following pattern:
+ *
+ * <blockquote><code>file&nbsp;<em>filename</em></code></blockquote>
+ *
+ * where <em>filename</em> is the name of the file to parse and watch.
+ *
+ * <p>The file watch interval is specified in seconds. At the specified
+ * interval, the file will be checked for modifications. If there are any
+ * modifications, then the file is reloaded and the access rules are
+ * re-applied.
+ *
+ * <p>If the file watch interval is set to <code>0</code>, then the watching
+ * is disabled, and no automatic reloading will be performed.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.1.0
  */
-public class AccessRuleFile implements AccessRuleContainer {
+public class AccessRuleFile
+extends Object
+implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * An empty array of type <code>AccessRuleContainer[]</code>. Size is 0.
+    * This object is used to pass to {@link List#toArray(Object[])}.
+    */
+   private static final AccessRuleContainer[] ARC_ARRAY =
+      new AccessRuleContainer[0];
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -41,30 +70,36 @@ public class AccessRuleFile implements AccessRuleContainer {
     * Returns the next token in the descriptor.
     *
     * @param descriptor
-    *   the original descriptor, for use in the {@link ParseException}, if
-    *   necessary.
+    *    the original descriptor, useful when constructing the message for a
+    *    {@link ParseException}, when appropriate, should not be
+    *    <code>null</code>.
     *
     * @param tokenizer
-    *   the {@link StringTokenizer} to retrieve the next token from.
+    *    the {@link StringTokenizer} to retrieve the next token from, cannot be
+    *    <code>null</code>.
     *
     * @return
-    *   the next token, never <code>null</code>.
+    *    the next token, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>tokenizer == null</code>
     *
     * @throws ParseException
-    *   if <code>tokenizer.{@link StringTokenizer#hasMoreTokens() hasMoreTokens}() == false</code>.
+    *    if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
+    *    hasMoreTokens}() == false</code>.
     */
    private static String nextToken(String          descriptor,
                                    StringTokenizer tokenizer)
    throws ParseException {
 
-      if (tokenizer.hasMoreTokens()) {
-         return tokenizer.nextToken();
+      if (! tokenizer.hasMoreTokens()) {
+         String message = "The string \""
+                        + descriptor
+                        + "\" is invalid as an access rule file descriptor. "
+                        + "More tokens expected.";
+         throw new ParseException(message);
       } else {
-         throw new ParseException("The string \""
-                                + descriptor
-                                + "\" is invalid as an access rule"
-                                + " descriptor. Too few tokens retrieved"
-                                + " from the descriptor.");
+         return tokenizer.nextToken();
       }
    }
 
@@ -74,14 +109,15 @@ public class AccessRuleFile implements AccessRuleContainer {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>AccessRuleFile</code>.
+    * Constructs a new <code>AccessRuleFile</code> based on a descriptor and
+    * a file watch interval.
     *
     * <p>If the specified interval is <code>0</code>, then no watching will be
     * performed.
     *
     * @param descriptor
-    *    the access rule descriptor, the character string to parse, cannot be <code>null</code>.
-    *    It also cannot be empty <code>(" ")</code>.
+    *    the access rule file descriptor, the character string to parse,
+    *    cannot be <code>null</code>.
     *
     * @param interval
     *    the interval to check the ACL file for modifications, in seconds,
@@ -104,21 +140,20 @@ public class AccessRuleFile implements AccessRuleContainer {
                                           + ") < 0");
       }
 
-      StringTokenizer tokenizer = new StringTokenizer(descriptor," \t\n\r");
-
+      // First token must be 'file'
+      StringTokenizer tokenizer = new StringTokenizer(descriptor, " \t\n\r");
       String token = nextToken(descriptor, tokenizer);
       if (! "file".equals(token)) {
          throw new ParseException("First token of descriptor is \""
                                 + token
-                                + "\", instead of 'file'.");
+                                + "\", instead of \"file\".");
       }
 
-      String file = nextToken(descriptor, tokenizer);
-
       // First try parsing the file as it is
+      String file = nextToken(descriptor, tokenizer);
       IOException exception;
       try {
-         parseAccessRuleFile(file, interval);
+         parseAndApply(file, interval);
 
       // File not found
       } catch (FileNotFoundException fnfe) {
@@ -139,9 +174,9 @@ public class AccessRuleFile implements AccessRuleContainer {
 
       // Create and start a file watch thread, if the interval is not zero
       if (interval > 0) {
-         ACLFileListener aclFileListener = new ACLFileListener();
-         _aclFileWatcher = new FileWatcher(file, interval, aclFileListener);
-         _aclFileWatcher.start();
+         FileListener fileListener = new FileListener();
+         _fileWatcher = new FileWatcher(file, interval, fileListener);
+         _fileWatcher.start();
       }
 
       // Generate the string representation
@@ -164,9 +199,9 @@ public class AccessRuleFile implements AccessRuleContainer {
    private int _interval;
 
    /**
-    * File watcher for this ACL file.
+    * Watcher for the ACL file.
     */
-   private FileWatcher _aclFileWatcher;
+   private FileWatcher _fileWatcher;
 
    /**
     * The list of rules. Cannot be <code>null</code>.
@@ -177,6 +212,11 @@ public class AccessRuleFile implements AccessRuleContainer {
     * String representation of this object. Cannot be <code>null</code>.
     */
    private final String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
 
 
    //-------------------------------------------------------------------------
@@ -202,7 +242,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
-    *    access or <code>null</code> if no match is found.
+    *    access or <code>null</code> if there is no match.
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
@@ -213,21 +253,25 @@ public class AccessRuleFile implements AccessRuleContainer {
    public Boolean isAllowed(String ip, String functionName)
    throws IllegalArgumentException, ParseException {
 
-      // TODO: If disposed, then throw a ProgrammingError
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRuleFile is disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
 
-      // Check preconditions
+      // Check arguments
       MandatoryArgumentChecker.check("ip",           ip,
                                      "functionName", functionName);
 
-      for (int i = 0; i < _rules.length; i++) {
-         Boolean allowed = _rules[i].isAllowed(ip, functionName);
-         if (allowed != null) {
-            return allowed;
-         }
+      // Find a matching rule and see if the call is allowed
+      int count = _rules == null ? 0 : _rules.length;
+      Boolean allowed = null;
+      for (int i = 0; i < count && allowed == null; i++) {
+         allowed = _rules[i].isAllowed(ip, functionName);
       }
 
-      // Not found
-      return null;
+      return allowed;
    }
 
    /**
@@ -243,18 +287,49 @@ public class AccessRuleFile implements AccessRuleContainer {
     */
    public void dispose() throws IllegalStateException {
 
-      // Close all the children
-      if (_rules != null) {
-         for (int i = 0; i < _rules.length; i++) {
-            _rules[i].dispose();
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRuleFile is already disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
+
+      // Dispose all children
+      int count = _rules == null ? 0 : _rules.length;
+      for (int i = 0; i < count; i++) {
+         AccessRuleContainer rule = _rules[i];
+         if (rule != null) {
+            try {
+               rule.dispose();
+            } catch (Throwable exception) {
+               Utils.logIgnoredException(AccessRuleFile.class.getName(),
+                                         "dispose()",
+                                         rule.getClass().getName(),
+                                         "dispose()",
+                                         exception);
+            }
          }
       }
-      _aclFileWatcher.end();
-      _aclFileWatcher = null;
+      _rules = null;
+
+      // Stop the file watcher
+      if (_fileWatcher != null) {
+         try {
+            _fileWatcher.end();
+         } catch (Throwable exception) {
+            Utils.logIgnoredException(AccessRuleFile.class.getName(),
+                                      "dispose()",
+                                      _fileWatcher.getClass().getName(),
+                                      "end()",
+                                      exception);
+         }
+         _fileWatcher = null;
+      }
    }
 
    /**
-    * Parses an ACL file.
+    * Parses the specified ACL file and then applies it to this
+    * <code>AccessRuleFile</code> instance.
     *
     * @param file
     *    the file to parse, cannot be <code>null</code>.
@@ -272,7 +347,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @throws IOException
     *    if there was an I/O error while reading from the file.
     */
-   private void parseAccessRuleFile(String file, int interval)
+   private void parseAndApply(String file, int interval)
    throws IllegalArgumentException, ParseException, IOException {
 
       // Check preconditions
@@ -281,33 +356,82 @@ public class AccessRuleFile implements AccessRuleContainer {
          throw new IllegalArgumentException("interval < 0");
       }
 
+      // Buffer the input from the file
       BufferedReader reader = new BufferedReader(new FileReader(file));
 
+      // Loop through the file, line by line
       List rules = new ArrayList(25);
       int lineNumber = 0;
       String nextLine = "";
       while(reader.ready() && nextLine != null) {
-         nextLine = reader.readLine();
-         lineNumber++;
-         if (nextLine == null || nextLine.trim().equals("") || nextLine.startsWith("#")) {
 
-            // Ignore comments and empty lines
+         // Read the next line and remove leading/trailing whitespace
+         nextLine = reader.readLine().trim();
+
+         // Increase the line number (so it's 1-based)
+         lineNumber++;
+
+         // Skip comments and empty lines
+         if (nextLine == null || nextLine.trim().equals("") || nextLine.startsWith("#")) {
+            // ignore
+
+         // Plain access rule
          } else if (nextLine.startsWith("allow") || nextLine.startsWith("deny")) {
             rules.add(AccessRule.parseAccessRule(nextLine));
+
+         // File reference
          } else if (nextLine.startsWith("file")) {
+
+            // Make sure the file does not include itself
             if (nextLine.substring(5).equals(file)) {
-               throw new ParseException("The access rule file  \"" + file + "\" cannot include itself.");
+               throw new ParseException("The access rule file \"" + file + "\" includes itself.");
             }
             rules.add(new AccessRuleFile(nextLine, interval));
-         } else {
 
-            // Incorrect line
-            // TODO: Logdoc
-            throw new ParseException("Incorrect line \"" + nextLine + "\" in the file " + file + " at line " + lineNumber + ".");
+         // Otherwise: Incorrect line
+         } else {
+            String detail = "Failed to parse \""
+                          + file
+                          + "\", line #"
+                          + lineNumber
+                          + ": \""
+                          + nextLine
+                          + "\".";
+            throw new ParseException(detail);
+            // XXX: Log parsing problem?
          }
       }
-      _rules = (AccessRuleContainer[])rules.toArray(new AccessRuleContainer[0]);
 
+      // Copy to the instance field
+      _rules = (AccessRuleContainer[]) rules.toArray(ARC_ARRAY);
+   }
+
+   /**
+    * Re-initializes the ACL rules for this file.
+    */
+   private void reinit() {
+
+      // Dispose the current rules
+      int count = _rules == null ? 0 : _rules.length;
+      for (int i = 0; i < count; i++) {
+         _rules[i].dispose();
+      }
+      _rules = null;
+
+      // Parse the file and apply the rules
+      try {
+         parseAndApply(_file, _interval);
+
+      // If the parsing fails, then log the exception
+      } catch (Throwable exception) {
+         Utils.logIgnoredException(AccessRuleFile.class.getName(),
+                                   "reinit()",
+                                   AccessRuleFile.class.getName(),
+                                   "parseAndApply",
+                                   exception);
+         _rules = new AccessRuleContainer[0];
+         // TODO: The framework re-initialization should fail
+      }
    }
 
    public String toString() {
@@ -327,7 +451,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     *
     * @since XINS 1.1.0
     */
-   private final class ACLFileListener
+   private final class FileListener
    extends Object
    implements FileWatcher.Listener {
 
@@ -336,9 +460,9 @@ public class AccessRuleFile implements AccessRuleContainer {
       //----------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>ACLFileListener</code> object.
+       * Constructs a new <code>FileListener</code> object.
        */
-      ACLFileListener() {
+      FileListener() {
          // empty
       }
 
@@ -350,26 +474,6 @@ public class AccessRuleFile implements AccessRuleContainer {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
-
-      /**
-       * Re-initializes the ACL rules for this file.
-       */
-      private void reinit() {
-
-         // Close the children
-         if (_rules != null) {
-            for (int i = 0; i < _rules.length; i++) {
-               _rules[i].dispose();
-            }
-         }
-         try {
-            parseAccessRuleFile(_file, _interval);
-         } catch (Exception ioe) {
-
-            // XXX log error
-            _rules = new AccessRuleContainer[0];
-         }
-      }
 
       /**
        * Callback method called when the configuration file is found while it
