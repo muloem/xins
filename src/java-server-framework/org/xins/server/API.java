@@ -566,8 +566,12 @@ implements DefaultResultCodes {
       String propValue = runtimeSettings.get(propName);
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
       if (propValue != null && propValue.trim().length() > 0) {
-         // TODO: Can this ever fail? Check and test.
-         interval = Integer.parseInt(propValue);
+         try {         
+            interval = Integer.parseInt(propValue);
+         } catch (NumberFormatException e) {
+            throw new InvalidPropertyValueException(propName, propValue,
+               "Invalid interval. Must be a 32-bit integer number.");
+         }
 
          if (interval < 0) {
             throw new InvalidPropertyValueException(propName, propValue,
