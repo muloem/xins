@@ -66,6 +66,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     configuration and then later on remove from the runtime configuration, the
     framework now switches back to the default locale. This problem was
     probably in XINS since release 1.0.0.
+  - Fixed SF.net bug #1326533: Incorrect MIME type support.
   - Fixed bug: Now actually allowing the reload interval to be 0 in the
     AccessRuleFile.
   - Fixed bug: Now correctly reporting a negative reload interval instead of
