@@ -703,13 +703,11 @@ final class Engine extends Object {
    }
 
    /**
-    * Returns the config manager.
-    *
-    * @return
-    *    the config manager, never <code>null</code>.
+    * Re-initializes the configuration file listener if there is no file
+    * watcher; otherwise interrupts the file watcher.
     */
-   ConfigManager getConfigManager() {
-      return _configManager;
+   void reloadPropertiesIfChanged() {
+      _configManager.reloadPropertiesIfChanged();
    }
 
    /**

@@ -569,8 +569,10 @@ implements DefaultResultCodes {
          try {         
             interval = Integer.parseInt(propValue);
          } catch (NumberFormatException e) {
+            String detail = "Invalid interval. Must be a non-negative integer"
+                          + " number (32-bit signed).";
             throw new InvalidPropertyValueException(propName, propValue,
-               "Invalid interval. Must be a 32-bit integer number.");
+                                                    detail);
          }
 
          if (interval < 0) {
@@ -1110,7 +1112,7 @@ implements DefaultResultCodes {
 
       // Reload the runtime properties
       } else if ("_ReloadProperties".equals(functionName)) {
-         _engine.getConfigManager().reloadPropertiesIfChanged();
+         _engine.reloadPropertiesIfChanged();
          result = SUCCESSFUL_RESULT;
 
       // Meta-function does not exist
