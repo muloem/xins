@@ -7,9 +7,12 @@
 package org.xins.server;
 
 import java.util.StringTokenizer;
+
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.oro.text.regex.Perl5Pattern;
+
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.SimplePatternParser;
@@ -37,10 +40,10 @@ import org.xins.common.text.SimplePatternParser;
  * <p>Example of access rule descriptors:
  *
  * <dl>
- *    <dt><code>"allow&nbsp;194.134.168.213/32 *"</code></dt>
+ *    <dt><code>"allow&nbsp;194.134.168.213/32&nbsp;*"</code></dt>
  *    <dd>Allows 194.134.168.213 to access any function.</dd>
  *
- *    <dt><code>"deny&nbsp;&nbsp;194.134.168.213/24\t_*"</code></dt>
+ *    <dt><code>"deny&nbsp;194.134.168.213/24&nbsp;_*"</code></dt>
  *    <dd>Denies all 194.134.168.x IP addresses to access any function
  *        starting with an underscore (<code>'_'</code>).</dd>
  * </dl>
@@ -87,62 +90,60 @@ implements AccessRuleContainer {
 
       // Determine if it is an 'allow' or a 'deny' rule
       boolean allow;
-      String token = nextToken(descriptor, tokenizer);
-      if ("allow".equals(token)) {
+      String sAllow = nextToken(descriptor, tokenizer);
+      if ("allow".equals(sAllow)) {
          allow = true;
-      } else if ("deny".equals(token)) {
+      } else if ("deny".equals(sAllow)) {
          allow = false;
       } else {
          String message = "First token of descriptor is \""
-                        + token
+                        + sAllow
                         + "\", instead of either 'allow' or 'deny'.";
          throw new ParseException(message);
       }
-      FastStringBuffer buffer = new FastStringBuffer(70, token);
 
-      // Determine the IP address to be checked
-      token = nextToken(descriptor, tokenizer);
-      IPFilter filter = IPFilter.parseIPFilter(token);
-      buffer.append(' ');
-      buffer.append(filter.toString());
+      // Determine the IP address filter
+      String   sFilter = nextToken(descriptor, tokenizer);
+      IPFilter filter  = IPFilter.parseIPFilter(sFilter);
 
       // Determine the function the access is to be checked for
-      token = nextToken(descriptor, tokenizer);
-      SimplePatternParser parser = new SimplePatternParser();
-      Perl5Pattern pattern = parser.parseSimplePattern(token);
-      buffer.append(' ');
-      buffer.append(token);
+      String              sPattern = nextToken(descriptor, tokenizer);
+      SimplePatternParser parser   = new SimplePatternParser();
+      Perl5Pattern        pattern  = parser.parseSimplePattern(sPattern);
 
-      return new AccessRule(allow, filter, pattern, buffer.toString());
+      // Construct a description
+      String asString = sAllow + ' ' + filter.toString() + ' ' + sPattern;
+
+      return new AccessRule(allow, filter, pattern, asString);
    }
 
    /**
     * Returns the next token in the descriptor.
     *
     * @param descriptor
-    *   the original descriptor, useful when constructing the message for a
-    *   {@link ParseException}, when appropriate, should not be
-    *   <code>null</code>.
+    *    the original descriptor, useful when constructing the message for a
+    *    {@link ParseException}, when appropriate, should not be
+    *    <code>null</code>.
     *
     * @param tokenizer
-    *   the {@link StringTokenizer} to retrieve the next token from, cannot be
-    *   <code>null</code>.
+    *    the {@link StringTokenizer} to retrieve the next token from, cannot be
+    *    <code>null</code>.
     *
     * @return
-    *   the next token, never <code>null</code>.
+    *    the next token, never <code>null</code>.
     *
     * @throws NullPointerException
-    *   if <code>tokenizer == null</code>
+    *    if <code>tokenizer == null</code>
     *
     * @throws ParseException
-    *   if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
-    *   hasMoreTokens}() == false</code>.
+    *    if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
+    *    hasMoreTokens}() == false</code>.
     */
    private static String nextToken(String          descriptor,
                                    StringTokenizer tokenizer)
    throws ParseException {
 
-      if (!tokenizer.hasMoreTokens()) {
+      if (! tokenizer.hasMoreTokens()) {
          String message = "The string \""
                         + descriptor
                         + "\" is invalid as an access rule descriptor. More "
@@ -194,7 +195,7 @@ implements AccessRuleContainer {
                                      "asString",          asString);
 
       // Store the data
-      _allow             = allow ? Boolean.TRUE : Boolean.FALSE;
+      _allow             = allow;
       _ipFilter          = ipFilter;
       _functionNameRegex = functionNameRegex;
       _asString          = asString;
@@ -208,7 +209,7 @@ implements AccessRuleContainer {
    /**
     * If the access method is 'allow' or not.
     */
-   private final Boolean _allow;
+   private final boolean _allow;
 
    /**
     * The IP address filter used to create the access rule. Cannot be
@@ -226,6 +227,11 @@ implements AccessRuleContainer {
     */
    private final String _asString;
 
+   /**
+    * Flag that indicates whether this access rule is disposed.
+    */
+   private boolean _disposed;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -239,14 +245,15 @@ implements AccessRuleContainer {
     *    <code>false</code> if this is a <em>deny</em> rule.
     */
    public boolean isAllowRule() {
-      return _allow.booleanValue();
+      return _allow;
    }
 
    /**
     * Returns the IP filter.
     *
     * @return
-    *    the IP filter, cannot be <code>null</code>.
+    *    the {@link IPFilter} associated with this access rule, never
+    *    <code>null</code>.
     */
    public IPFilter getIPFilter() {
       return _ipFilter;
@@ -254,6 +261,11 @@ implements AccessRuleContainer {
 
    /**
     * Determines if the specified IP address and function match this rule.
+    *
+    * <p>Calling this function is equivalent to calling:
+    *
+    * <blockquote><code>{@link #isAllowed(String,String) isAllowed}(ip,
+    * functionName) != null</code></blockquote>
     *
     * @param ip
     *    the IP address to match, cannot be <code>null</code>.
@@ -264,6 +276,9 @@ implements AccessRuleContainer {
     * @return
     *    <code>true</code> if this rule matches, <code>false</code> otherwise.
     *
+    * @throws IllegalStateException
+    *    if this access rule is disposed (<em>since XINS 1.3.0</em>).
+    *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
     *
@@ -271,7 +286,16 @@ implements AccessRuleContainer {
     *    if the specified IP address cannot be parsed.
     */
    public boolean match(String ip, String functionName)
-   throws IllegalArgumentException, ParseException {
+   throws IllegalStateException, IllegalArgumentException, ParseException {
+
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRule is disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
+
+      // Delegate to the isAllowed method
       return isAllowed(ip, functionName) != null;
    }
 
@@ -296,6 +320,9 @@ implements AccessRuleContainer {
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
     *    access or <code>null</code> if no match is found.
     *
+    * @throws IllegalStateException
+    *    if this access rule is disposed (<em>since XINS 1.3.0</em>).
+    *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
     *
@@ -303,21 +330,25 @@ implements AccessRuleContainer {
     *    if the specified IP address is malformed.
     */
    public Boolean isAllowed(String ip, String functionName)
-   throws IllegalArgumentException, ParseException {
+   throws IllegalStateException, IllegalArgumentException, ParseException {
 
-      // TODO: If disposed, then throw a ProgrammingError
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRule is disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
 
-      // Check preconditions
+      // Check arguments
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
 
-      Perl5Matcher patternMatcher = new Perl5Matcher();
-
       // First check if the IP filter matches
+      Perl5Matcher patternMatcher = new Perl5Matcher();
       if (_ipFilter.match(ip)) {
          
          // Then check if the function name matches
          if (patternMatcher.matches(functionName, _functionNameRegex)) {
-            return _allow;
+            return _allow ? Boolean.TRUE : Boolean.FALSE;
          }
       }
 
@@ -328,11 +359,23 @@ implements AccessRuleContainer {
     * Disposes this access rule. All claimed resources are freed as much as
     * possible.
     *
-    * <p>Once disposed, the {@link #isAllowed} method should no longer be
-    * called.
+    * <p>Once disposed, neither {@link #match} nor {@link #isAllowed} should
+    * be called.
+    *
+    * @throws IllegalStateException
+    *    if this access rule is already disposed (<em>since XINS 1.3.0</em>).
     */
    public void dispose() {
-      // empty
+
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRule is already disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
+
+      // Mark this object as disposed
+      _disposed = true;
    }
 
    /**
