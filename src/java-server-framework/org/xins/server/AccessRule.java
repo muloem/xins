@@ -146,8 +146,8 @@ implements AccessRuleContainer {
       if (! tokenizer.hasMoreTokens()) {
          String message = "The string \""
                         + descriptor
-                        + "\" is invalid as an access rule descriptor. More "
-                        + "tokens expected.";
+                        + "\" is invalid as an access rule descriptor. "
+                        + "More tokens expected.";
          throw new ParseException(message);
       } else {
          return tokenizer.nextToken();
@@ -228,7 +228,7 @@ implements AccessRuleContainer {
    private final String _asString;
 
    /**
-    * Flag that indicates whether this access rule is disposed.
+    * Flag that indicates whether this object is disposed.
     */
    private boolean _disposed;
 
@@ -318,7 +318,7 @@ implements AccessRuleContainer {
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
-    *    access or <code>null</code> if no match is found.
+    *    access or <code>null</code> if there is no match.
     *
     * @throws IllegalStateException
     *    if this access rule is disposed (<em>since XINS 1.3.0</em>).
