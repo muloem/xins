@@ -38,10 +38,57 @@ final class CallResultOutputter extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * The initial output for each output conversion. Never <code>null</code>.
+    * The first output for each output conversion. Never <code>null</code>.
     */
-   private static final char[] PREFACE =
+   private static final char[] DOCUMENT_PREFACE =
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?><result".toCharArray();
+
+   /**
+    * The output for the old-style calling convention in case success is true.
+    * Never <code>null</code>.
+    */
+   private static final char[] SUCCESS_TRUE =
+      " success=\"true\">".toCharArray();
+
+   /**
+    * The output for the old-style calling convention in case success is
+    * false, just before the name of the first error code.
+    * Never <code>null</code>.
+    */
+   private static final char[] SUCCESS_FALSE_PREFIX =
+      " success=\"false\" code=\"".toCharArray();
+
+   /**
+    * The output for the old-style calling convention in case success is
+    * false, just after the name of the first error code and before the name
+    * of the second.
+    * Never <code>null</code>.
+    */
+   private static final char[] SUCCESS_FALSE_MIDDLE =
+      "\" errorcode=\"".toCharArray();
+
+   /**
+    * The output for the new-style calling convention in case success is
+    * false, just before the name of the error code.
+    * Never <code>null</code>.
+    */
+   private static final char[] ERRORCODE_IS =
+      " errorcode=\"".toCharArray();
+
+   /**
+    * The output just before a parameter name. Never <code>null</code>.
+    */
+   private static final char[] PARAM_PREFACE = "<param name=\"".toCharArray();
+
+   /**
+    * The output right after a parameter value. Never <code>null</code>.
+    */
+   private static final char[] PARAM_SUFFIX = "</param>".toCharArray();
+
+   /**
+    * The final output for each output conversion. Never <code>null</code>.
+    */
+   private static final char[] DOCUMENT_SUFFIX = "</result>".toCharArray();
 
    /**
     * Per-thread caches for the <code>FastStringWriter</code> instances. Never
@@ -95,7 +142,7 @@ final class CallResultOutputter extends Object {
                              boolean        oldStyle)
    throws IllegalArgumentException, IOException {
 
-      // TODO: Support OutputStream instead of Writer
+      // XXX: Using OutputStream instead of Writer will boost performance
 
       // Check preconditions
       MandatoryArgumentChecker.check("out", out, "result", result);
@@ -112,26 +159,29 @@ final class CallResultOutputter extends Object {
       FastStringBuffer buffer = writer.getBuffer();
 
       // Output the declaration
-      buffer.append(PREFACE);
+      buffer.append(DOCUMENT_PREFACE);
 
+      // Output the start of the <result> element
       String code = result.getErrorCode();
       if (oldStyle) {
          if (code == null) {
-            buffer.append(" success=\"true\">");
+            buffer.append(SUCCESS_TRUE);
          } else {
-            buffer.append(" success=\"false\" code=\"");
+            buffer.append(SUCCESS_FALSE_PREFIX);
             buffer.append(code);
-            buffer.append("\" errorcode=\"");
+            buffer.append(SUCCESS_FALSE_MIDDLE);
             buffer.append(code);
-            buffer.append("\">");
+            buffer.append('"');
+            buffer.append('>');
          }
       } else {
          if (code == null) {
             buffer.append('>');
          } else {
-            buffer.append(" errorcode=\"");
+            buffer.append(ERRORCODE_IS);
             buffer.append(code);
-            buffer.append("\">");
+            buffer.append('"');
+            buffer.append('>');
          }
       }
 
@@ -144,21 +194,12 @@ final class CallResultOutputter extends Object {
             if (n != null && n.length() > 0 && n.trim().length() > 0) {
                String v = params.get(n);
                if (v != null && (v.length() > 0) && v.trim().length() > 0) {
-
-                  // TODO: Put this in a static char[]
-                  buffer.append("<param name=\"");
-
-                  // Encode and output the name
+                  buffer.append(PARAM_PREFACE);
                   XML_ENCODER.text(writer, n, true);
-
-                  // TODO: Put this in a static char[]
-                  buffer.append("\">");
-
-                  // Encode and output the value
+                  buffer.append('"');
+                  buffer.append('>');
                   XML_ENCODER.text(writer, v, true);
-
-                  // TODO: Put this in a static char[]
-                  buffer.append("</param>");
+                  buffer.append(PARAM_SUFFIX);
                }
             }
          }
@@ -173,8 +214,7 @@ final class CallResultOutputter extends Object {
       }
 
       // End the root element <result>
-      // TODO: Put this in a static char[]
-      buffer.append("</result>");
+      buffer.append(DOCUMENT_SUFFIX);
 
       // Write the result to the servlet response
       String s = buffer.toString();
