@@ -384,7 +384,10 @@ implements AccessRuleContainer {
 
             // Make sure the file does not include itself
             if (nextLine.substring(5).equals(file)) {
-               throw new ParseException("The access rule file \"" + file + "\" includes itself.");
+               String detail = "The access rule file \""
+                             + file
+                             + "\" includes itself.";
+               throw new ParseException(detail);
             }
             rules.add(new AccessRuleFile(nextLine, interval));
 
@@ -396,7 +399,8 @@ implements AccessRuleContainer {
                           + lineNumber
                           + ": \""
                           + nextLine
-                          + "\".";
+                          + "\". Expected line to start with \"#\", "
+                          + "\"allow\", \"deny\" or \"file\".";
             throw new ParseException(detail);
             // XXX: Log parsing problem?
          }
