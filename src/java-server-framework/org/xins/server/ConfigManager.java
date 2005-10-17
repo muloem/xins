@@ -21,6 +21,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
@@ -330,19 +331,27 @@ final class ConfigManager extends Object {
     * @param interval
     *    the interval in seconds, must be greater than or equal to 1.
     *
+    * @throws IllegalStateException
+    *    if no runtime configuration file is specified or if there is already
+    *    a file watcher. 
+    *
     * @throws IllegalArgumentException
     *    if <code>interval &lt; 1</code>.
     */
    void startConfigFileWatcher(int interval)
-   throws IllegalArgumentException {
+   throws IllegalStateException, IllegalArgumentException {
 
-      // TODO: Describe preconditions
-
-      // Check preconditions
+      // Check state: Config file must be set
       if (_configFile == null || _configFile.length() < 1) {
-         throw new IllegalStateException("Name of runtime configuration file not set.");
+         throw new IllegalStateException(
+            "Name of runtime configuration file not set.");
+
+      // Check state: File watcher cannot exist yet
       } else if (_configFileWatcher != null) {
-         throw new IllegalStateException("Runtime configuration file watcher exists.");
+         throw new IllegalStateException(
+            "Runtime configuration file watcher exists.");
+
+      // Check arguments
       } else if (interval < 1) {
          throw new IllegalArgumentException("interval (" + interval + ") < 1");
       }
@@ -355,14 +364,10 @@ final class ConfigManager extends Object {
    }
 
    /**
-    * If the config file watcher == <code>null</code>, then the config file
-    * listener will be re-initialized. If not the file watcher will be
-    * interrupted.
+    * Re-initializes the configuration file listener if there is no file
+    * watcher; otherwise interrupts the file watcher.
     */
    void reloadPropertiesIfChanged() {
-
-      // TODO: Improve method description
-
       if (_configFileWatcher == null) {
          _configFileListener.reinit();
       } else {
@@ -471,9 +476,6 @@ final class ConfigManager extends Object {
     */
    boolean determineLogLocale() {
 
-      // TODO: Determine what happens/should happen when there was a log
-      //       locale specified and then it was removed.
-
       String newLocale = null;
 
       // If we have runtime properties, then get the log locale
@@ -488,7 +490,7 @@ final class ConfigManager extends Object {
       // If the log locale is set, apply it
       if (newLocale != null) {
          String currentLocale = LogCentral.getLocale();
-         if (!currentLocale.equals(newLocale)) {
+         if (! currentLocale.equals(newLocale)) {
             Log.log_3306(currentLocale, newLocale);
             try {
                LogCentral.setLocale(newLocale);
@@ -498,6 +500,10 @@ final class ConfigManager extends Object {
                return false;
             }
          }
+
+      // No property defines the locale, use the default
+      } else {
+         LogCentral.useDefaultLocale();
       }
 
       return true;
@@ -510,9 +516,17 @@ final class ConfigManager extends Object {
 
       // Stop the FileWatcher
       if (_configFileWatcher != null) {
-         _configFileWatcher.end();
+         try {
+            _configFileWatcher.end();
+         } catch (Throwable exception) {
+            Utils.logIgnoredException(ConfigManager.class.getName(),
+                                      "destroy()",
+                                      _configFileWatcher.getClass().getName(),
+                                      "end()",
+                                      exception);
+         }
+         _configFileWatcher = null;
       }
-      _configFileWatcher = null;
    }
 
    //-------------------------------------------------------------------------
