@@ -9,6 +9,7 @@ package org.xins.server;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
@@ -232,6 +233,11 @@ extends Object implements AccessRuleContainer {
     */
    private String _asString;
 
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -303,6 +309,9 @@ extends Object implements AccessRuleContainer {
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
     *    access or <code>null</code> if no match is found.
     *
+    * @throws IllegalStateException
+    *    if this object is disposed (<em>since XINS 1.3.0</em>).
+    *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
     *
@@ -312,7 +321,12 @@ extends Object implements AccessRuleContainer {
    public Boolean isAllowed(String ip, String functionName)
    throws IllegalArgumentException, ParseException {
 
-      // TODO: If disposed, then throw a ProgrammingError
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRuleList is disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
 
       // Check preconditions
       MandatoryArgumentChecker.check("ip", ip, "functionName", functionName);
@@ -330,7 +344,7 @@ extends Object implements AccessRuleContainer {
             boolean allow = allowed.booleanValue();
 
             // Log this match
-            // TODO: Should this logging really be done in this class?
+            // XXX: Should this logging really be done in this class?
             if (allow) {
                Log.log_3550(ip, functionName, i, ruleString);
             } else {
@@ -354,10 +368,31 @@ extends Object implements AccessRuleContainer {
     */
    public void dispose() {
 
+      // Check state
+      if (_disposed) {
+         String detail = "This AccessRule is already disposed.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalStateException(detail);
+      }
+
+      // Mark this object as disposed
+      _disposed = true;
+
       // Dispose the current rules
       int count = _rules == null ? 0 : _rules.length;
       for (int i = 0; i < count; i++) {
-         _rules[i].dispose();
+         AccessRuleContainer rule = _rules[i];
+         if (rule != null) {
+            try {
+               rule.dispose();
+            } catch (Throwable exception) {
+               Utils.logIgnoredException(AccessRuleList.class.getName(),
+                                         "dispose()",
+                                         rule.getClass().getName(),
+                                         "dispose()",
+                                         exception);
+            }
+         }
       }
       _rules = null;
    }
