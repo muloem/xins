@@ -145,6 +145,25 @@ public final class LogCentral {
    }
 
    /**
+    * Sets the locale on all <em>logdoc</em> <code>Log</code> classes to the
+    * default locale.
+    *
+    * @since XINS 1.3.0
+    */
+   public static void useDefaultLocale() {
+      try {
+         setLocale(DEFAULT_LOCALE);
+      } catch (UnsupportedLocaleException ule) {
+         String detail = "Failed to apply default locale (\""
+                       + DEFAULT_LOCALE
+                       + "\").";
+         RuntimeException exception = new RuntimeException(detail);
+         ExceptionUtils.setCause(exception, ule);
+         throw exception;
+      }
+   }
+
+   /**
     * Get the locale set in this LogCentral.
     *
     * @return
