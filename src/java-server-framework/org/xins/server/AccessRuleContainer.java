@@ -36,7 +36,7 @@ public interface AccessRuleContainer {
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
-    *    access or <code>null</code> if no match is found.
+    *    access or <code>null</code> if there is no match.
     *
     * @throws IllegalStateException
     *    if {@link #dispose()} has been called previously
