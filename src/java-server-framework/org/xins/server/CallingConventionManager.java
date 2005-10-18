@@ -214,6 +214,9 @@ class CallingConventionManager {
 
             // If the creation of the calling convention fails, log a warning
             } catch (Exception ex) {
+               // XXX: This can be a normal exception, such as a
+               //      MissingRequiredPropertyException, which would already
+               //      be logged using Logdoc messages 3239, 3240 or 3241.
                String className  = CallingConventionManager.class.getName();
                String methodName = "initCallingConvention()";
                String detail     = "Unable to create calling convention \""
@@ -259,16 +262,18 @@ class CallingConventionManager {
 
    /**
     * Gets the calling convention for the given name.
-    * If the given name is <code>null</code> or empty, the default calling
+    *
+    * <p>If the given name is <code>null</code> or empty, the default calling
     * convention is returned.
-    * The returned calling convention is bootstraped and inittialized.
+    *
+    * <p>The returned calling convention is bootstrapped and initialized.
     *
     * @param name
     *    the name of the calling convention to retrieve, can be
     *    <code>null</code>.
     *
     * @return
-    *    the calling convention, never <code>null</code>
+    *    the calling convention, never <code>null</code>.
     *
     * @throws InvalidRequestException
     *    if the calling convention name is unknown.
@@ -304,7 +309,7 @@ class CallingConventionManager {
     *
     * <p>Before returning the {@link CallingConvention} instance, it will be
     * bootstrapped with the properties of the servlet configuration and
-    * initialized with the runtime properties (if available).
+    * not initialized.
     *
     * @param name
     *    the name of the calling convention to retrieve, cannot be
@@ -397,9 +402,39 @@ class CallingConventionManager {
       }
 
       // Bootstrap the calling convention
-      // TODO: Log that the calling convention is being bootstrapped
-      created.bootstrap(new ServletConfigPropertyReader(_servletConfig));
-      // TODO: Log that the calling convention has been bootstrapped
+      Log.log_3237(name);
+      try {
+         created.bootstrap(new ServletConfigPropertyReader(_servletConfig));
+         Log.log_3238(name);
+
+      // Missing property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3239(name, exception.getPropertyName());
+         throw exception;
+
+      // Invalid property
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3240(name,
+                      exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+         throw exception;
+
+      // Catch BootstrapException and any other exceptions not caught
+      // by previous catch statements
+      } catch (Throwable exception) {
+
+         // Log event
+         Log.log_3241(exception, name);
+
+         // Throw a BootstrapException. If necessary, wrap around the
+         // caught exception
+         if (exception instanceof BootstrapException) {
+            throw (BootstrapException) exception;
+         } else {
+            throw new BootstrapException(exception);
+         }
+      }
 
       return created;
    }
