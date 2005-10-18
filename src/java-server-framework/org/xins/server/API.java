@@ -998,24 +998,52 @@ implements DefaultResultCodes {
       }
 
       // Handle meta-functions
+      FunctionResult result;
       if (functionName.charAt(0) == '_') {
          try {
-            return callMetaFunction(start, functionName, functionRequest, ip);
-         } catch (NoSuchFunctionException exception) {
-            throw exception;
+            result = callMetaFunction(start, functionName, functionRequest, ip);
          } catch (Throwable exception) {
-            final int CALL_ID = 0; // TODO
-            return handleFunctionException(start, functionRequest, ip,
-                                           CALL_ID, exception);
+            if (exception instanceof NoSuchFunctionException) {
+               throw (NoSuchFunctionException) exception;
+            }
+
+            // Determine the call ID (TODO)
+            final int CALL_ID = 0;
+
+            result = handleFunctionException(start, functionRequest, ip,
+                                             CALL_ID, exception);
          }
-      }
+
+         // Determine duration
+         long duration = System.currentTimeMillis() - start;
+
+         // Determine error code, fallback is a zero character
+         String code = result.getErrorCode();
+         if (code == null || code.length() < 1) {
+            code = "0";
+         }
+
+         // Prepare for transaction logging
+         LogdocSerializable serStart  = new FormattedDate(start);
+         LogdocSerializable inParams  =
+            new FormattedParameters(functionRequest.getParameters());
+         LogdocSerializable outParams =
+            new FormattedParameters(result.getParameters());
+
+         // Log transaction before returning the result
+         Log.log_3540(serStart, ip, functionName, duration, code, inParams,
+                      outParams);
+         Log.log_3541(serStart, ip, functionName, duration, code);
 
       // Handle normal functions
-      Function function = getFunction(functionName);
-      if (function == null)  {
-         throw new NoSuchFunctionException(functionName);
+      } else {
+         Function function = getFunction(functionName);
+         if (function == null)  {
+            throw new NoSuchFunctionException(functionName);
+         }
+         result = function.handleCall(start, functionRequest, ip);
       }
-      return function.handleCall(start, functionRequest, ip);
+      return result;
    }
 
    /**
@@ -1119,27 +1147,6 @@ implements DefaultResultCodes {
       } else {
          throw new NoSuchFunctionException(functionName);
       }
-
-      // Determine duration
-      long duration = System.currentTimeMillis() - start;
-
-      // Determine error code, fallback is a zero character
-      String code = result.getErrorCode();
-      if (code == null || code.length() < 1) {
-         code = "0";
-      }
-
-      // Prepare for transaction logging
-      LogdocSerializable serStart  = new FormattedDate(start);
-      LogdocSerializable inParams  =
-         new FormattedParameters(functionRequest.getParameters());
-      LogdocSerializable outParams =
-         new FormattedParameters(result.getParameters());
-
-      // Log transaction before returning the result
-      Log.log_3540(serStart, ip, functionName, duration, code, inParams,
-                   outParams);
-      Log.log_3541(serStart, ip, functionName, duration, code);
 
       return result;
    }
