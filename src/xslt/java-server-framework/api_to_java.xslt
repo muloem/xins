@@ -36,13 +36,18 @@
 
 	<xsl:template match="api">
 
-		<xsl:apply-templates select="impl-java" />
+		<xsl:apply-templates select="impl-java">
+			<xsl:with-param name="api_node" select="." />
+		</xsl:apply-templates>
 		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
-			<xsl:apply-templates select="document($impl_file)/impl" />
+			<xsl:apply-templates select="document($impl_file)/impl">
+				<xsl:with-param name="api_node" select="." />
+			</xsl:apply-templates>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="impl-java | impl">
+		<xsl:param name="api_node" />
 
 		<xsl:call-template name="java-header" />
 		<xsl:text>package </xsl:text>
@@ -71,16 +76,16 @@ public class APIImpl extends API {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
-		<xsl:for-each select="document($api_file)/api/resultcode">
-			<xsl:variable name="name"    select="@name" />
-			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.rcd')" />
+		<xsl:for-each select="$api_node/resultcode">
+			<xsl:variable name="name"     select="@name" />
+			<xsl:variable name="rcd_node" select="document(concat($specsdir, '/', $name, '.rcd'))/resultcode" />
 			<xsl:variable name="value">
 				<xsl:choose>
-					<xsl:when test="document($file)/resultcode/@value">
-						<xsl:value-of select="document($file)/resultcode/@value" />
+					<xsl:when test="$rcd_node/@value">
+						<xsl:value-of select="$rcd_node/@value" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="document($file)/resultcode/@name" />
+						<xsl:value-of select="$rcd_node/@name" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
@@ -111,7 +116,7 @@ public class APIImpl extends API {
 			<xsl:text>");</xsl:text>
 		</xsl:for-each>
 
-		<xsl:for-each select="document($api_file)/api/function">
+		<xsl:for-each select="$api_node/function">
 			<xsl:variable name="name"    select="@name" />
 			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.fnc')" />
 			<xsl:variable name="fieldname">
