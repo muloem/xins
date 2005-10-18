@@ -124,7 +124,8 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}">
+		target="${javac.targetvm}"
+        encoding="ISO-8859-1">
 			<classpath>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
@@ -192,7 +193,8 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}">
+		target="${javac.targetvm}"
+        encoding="ISO-8859-1">
 			<src path="build/src/java-${src.side}" />
 			<include name="org/xins/${side}/Library.java" />
 			<classpath>
@@ -207,7 +209,8 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}">
+		target="${javac.targetvm}"
+        encoding="ISO-8859-1">
 			<src path="src/java-${src.side}" />
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />

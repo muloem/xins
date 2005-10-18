@@ -135,7 +135,8 @@ ${sf.file}</fail>
 		debug="true"
 		deprecation="${tests.deprecation}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}">
+		target="${javac.targetvm}"
+        encoding="ISO-8859-1">
 			<src path="src/tests" />
 			<classpath>
 				<pathelement location="build/xins-common.jar" />
