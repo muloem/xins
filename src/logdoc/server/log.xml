@@ -235,7 +235,6 @@
 		<entry id="3241" level="FATAL" exception="true">
 			<description>Calling convention could not be bootstrapped.</description>
 			<param name="name"     />
-			<param name="message"  />
 		</entry>
 	</group>
 
