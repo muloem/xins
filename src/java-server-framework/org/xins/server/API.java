@@ -368,8 +368,9 @@ implements DefaultResultCodes {
 
       Log.log_3212(_buildHost, _buildTime, _buildVersion, _name, _apiVersion);
 
+      // Skip check if build version is not set
       if (_buildVersion == null) {
-         // TODO: Log warning: build version not set in build properties
+         // fall through
 
       // Check if build version identifies a production release of XINS
       } else if (! Library.isProductionRelease(_buildVersion)) {
