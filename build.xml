@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="US-ASCII" ?>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
 <!--
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
@@ -85,11 +85,12 @@ ${version.file}</fail>
 		<property name="www.url"             value="http://www.xins.org/" />
 
 		<!-- Java compiler-related properties -->
-		<property name="javac.targetvm"      value="1.3"   />
-		<property name="javac.debug"         value="true"  />
-		<property name="javac.deprecation"   value="true"  />
-		<property name="javac.optimize"      value="false" />
-		<property name="tests.deprecation"   value="false" />
+		<property name="javac.targetvm"      value="1.3"        />
+		<property name="javac.debug"         value="true"       />
+		<property name="javac.deprecation"   value="true"       />
+		<property name="javac.optimize"      value="false"      />
+		<property name="javac.encoding"      value="ISO-8859-1" />
+		<property name="tests.deprecation"   value="false"      />
 
 		<!-- Javadoc-related properties -->
 		<property name="javadoc.srcdir.j2se" value="${java.home}/src" />
@@ -125,7 +126,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="ISO-8859-1">
+        encoding="${javac.encoding}">
 			<classpath>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
@@ -194,7 +195,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="ISO-8859-1">
+        encoding="${javac.encoding}">
 			<src path="build/src/java-${src.side}" />
 			<include name="org/xins/${side}/Library.java" />
 			<classpath>
@@ -210,7 +211,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="ISO-8859-1">
+        encoding="${javac.encoding}">
 			<src path="src/java-${src.side}" />
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />

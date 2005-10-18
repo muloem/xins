@@ -133,6 +133,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - The script xins.bat displays an error when XINS_HOME is not set and it is
     not run from the XINS bin directory.
   - Configured the encoding of Java source files to ISO-8859-1.
+  - Changed the encoding of build.xml and build-dev.xml from US-ASCII to
+    ISO-8859-1.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 3:
