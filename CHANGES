@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 
 * Logdoc:
   - Added public static method useDefaultLocale() to LogCentral.
+  - Fixed the encoding of all Logdoc XML files (under src/logdoc) from UTF-8
+    to ISO-8859-1.
 
 * XINS/Java Common Library:
   - Rewrote the MandatoryArgumentChecker class in org.xins.common. If the
