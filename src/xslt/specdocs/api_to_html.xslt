@@ -36,10 +36,11 @@
 
 	<xsl:template match="api">
 
-		<xsl:variable name="prevcount" select="count(document($project_file)/project/api[@name = $api]/preceding::api)" />
-		<xsl:variable name="prev"      select="document($project_file)/project/api[$prevcount]/@name" />
+		<xsl:variable name="project_node" select="document($project_file)/project" />
+		<xsl:variable name="prevcount" select="count($project_node/api[@name = $api]/preceding::api)" />
+		<xsl:variable name="prev"      select="$project_node/api[$prevcount]/@name" />
 		<xsl:variable name="prev_url"  select="concat('../', $prev, '/index.html')" />
-		<xsl:variable name="next"      select="document($project_file)/project/api[@name = $api]/following-sibling::api/@name" />
+		<xsl:variable name="next"      select="$project_node/api[@name = $api]/following-sibling::api/@name" />
 		<xsl:variable name="next_url"  select="concat('../', $next, '/index.html')" />
 
 		<xsl:variable name="prev_title">
@@ -71,7 +72,7 @@
 				<link rel="first">
 					<xsl:attribute name="href">
 						<xsl:text>../</xsl:text>
-						<xsl:value-of select="document($project_file)/project/api[1]/@name" />
+						<xsl:value-of select="$project_node/api[1]/@name" />
 						<xsl:text>/index.html</xsl:text>
 					</xsl:attribute>
 				</link>
@@ -219,7 +220,7 @@
 							<xsl:apply-templates select="environment" />
 						</ul>
 					</xsl:when>
-					<xsl:when test="document($project_file)/project/api[@name = $api]/environments">
+					<xsl:when test="$project_node/api[@name = $api]/environments">
 						<ul>
 							<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 							<xsl:apply-templates select="document($env_file)/environments/environment" />
@@ -234,8 +235,8 @@
 
 				<h2>Properties</h2>
 				<xsl:choose>
-					<xsl:when test="document($project_file)/project/api[@name = $api]/impl">
-						<xsl:for-each select="document($project_file)/project/api[@name = $api]/impl">
+					<xsl:when test="$project_node/api[@name = $api]/impl">
+						<xsl:for-each select="$project_node/api[@name = $api]/impl">
 							<xsl:variable name="implName" select="@name" />
 							<xsl:variable name="implName2">
 								<xsl:if test="@name and string-length($implName) &gt; 0">

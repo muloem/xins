@@ -74,7 +74,7 @@
 		<!-- This test is not guaranteed to work with all XSLT
 		     processors. -->
 		<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', @name, '/spec/api.xml')" />
-		<xsl:variable name="path">
+		<xsl:variable name="api_file">
 			<xsl:choose>
 				<xsl:when test="impl or environments or document($new_api_file)">
 					<xsl:value-of select="$new_api_file" />
@@ -84,16 +84,17 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="functioncount" select="count(document($path)/api/function)" />
+		<xsl:variable name="api_node" select="document($api_file)/api" />
+		<xsl:variable name="functioncount" select="count($api_node/function)" />
 
-		<xsl:if test="not(document($path)/api/@name = @name)">
+		<xsl:if test="not($api_node/@name = @name)">
 			<xsl:message terminate="yes">
 				<xsl:text>API name specified in xins-project.xml ('</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>') does not match the name specified in the api.xml file ('</xsl:text>
-				<xsl:value-of select="$path" />
+				<xsl:value-of select="$api_file" />
 				<xsl:text>'), which is: '</xsl:text>
-				<xsl:value-of select="document($path)/api/@name" />
+				<xsl:value-of select="$api_node/@name" />
 				<xsl:text>'.</xsl:text>
 			</xsl:message>
 		</xsl:if>
@@ -109,7 +110,7 @@
 			</td>
 
 			<td>
-				<xsl:apply-templates select="document($path)/api/description" />
+				<xsl:apply-templates select="$api_node/description" />
 			</td>
 
 			<td>

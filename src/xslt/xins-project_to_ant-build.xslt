@@ -407,30 +407,31 @@ APIs in this project are:
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="api_file" select="concat($api_specsdir, '/api.xml')" />
+		<xsl:variable name="api_node" select="document($api_file)/api" />
 		<xsl:variable name="typeClassesDir"    select="concat($project_home, '/build/classes-types/', $api)" />
 		<xsl:variable name="functionIncludes">
-			<xsl:for-each select="document($api_file)/api/function">
+			<xsl:for-each select="$api_node/function">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:value-of select="@name" />
 				<xsl:text>.fnc</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="typeIncludes">
-			<xsl:for-each select="document($api_file)/api/type">
+			<xsl:for-each select="$api_node/type">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:value-of select="@name" />
 				<xsl:text>.typ</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="resultcodeIncludes">
-			<xsl:for-each select="document($api_file)/api/resultcode">
+			<xsl:for-each select="$api_node/resultcode">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:value-of select="@name" />
 				<xsl:text>.rcd</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="categoryIncludes">
-			<xsl:for-each select="document($api_file)/api/category">
+			<xsl:for-each select="$api_node/category">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:value-of select="@name" />
 				<xsl:text>.cat</xsl:text>
@@ -443,7 +444,7 @@ APIs in this project are:
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="clientPackageAsDir" select="translate($clientPackage, '.','/')" />
-		<xsl:variable name="apiHasTypes" select="boolean(document($api_file)/api/type)" />
+		<xsl:variable name="apiHasTypes" select="boolean($api_node/type)" />
 
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 			<dependset>
@@ -533,7 +534,7 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
-			<xsl:if test="document($api_file)/api/category">
+			<xsl:if test="$api_node/category">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
@@ -552,7 +553,7 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
-			<xsl:if test="document($api_file)/api/environment or not(environments)">
+			<xsl:if test="$api_node/environment or not(environments)">
 				<style
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
@@ -703,7 +704,7 @@ APIs in this project are:
 			value="urn:{$api}" />
 		</target>
 
-		<xsl:for-each select="document($api_file)/api/impl-java | impl">
+		<xsl:for-each select="$api_node/impl-java | impl">
 			<xsl:variable name="implName" select="@name" />
 			<xsl:variable name="implName2">
 				<xsl:if test="@name and string-length($implName) &gt; 0">
@@ -754,7 +755,7 @@ APIs in this project are:
 			<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
 
 			<target name="-impl-{$api}{$implName2}-existencechecks">
-				<xsl:for-each select="document($api_file)/api/function">
+				<xsl:for-each select="$api_node/function">
 					<xsl:variable name="function"        select="@name" />
 					<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
 					<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
@@ -765,7 +766,7 @@ APIs in this project are:
 				</xsl:for-each>
 			</target>
 
-			<xsl:for-each select="document($api_file)/api/function">
+			<xsl:for-each select="$api_node/function">
 				<xsl:variable name="function"        select="@name" />
 				<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
 				<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
@@ -800,7 +801,7 @@ APIs in this project are:
 
 			<target name="-skeletons-impl-{$api}{$implName2}">
 				<xsl:attribute name="depends">
-					<xsl:for-each select="document($api_file)/api/function">
+					<xsl:for-each select="$api_node/function">
 						<xsl:variable name="function" select="@name" />
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>-skeleton-impl-</xsl:text>
@@ -945,7 +946,7 @@ APIs in this project are:
 				</xsl:if>
 
 				<!-- Generate the logdoc java file is needed -->
-				<xsl:if test="document($api_file)/api/impl-java/logdoc">
+				<xsl:if test="$api_node/impl-java/logdoc">
 					<echo message="Generating the logdoc for {$api}" />
 					<mkdir dir="build/logdoc/{$api}" />
 					<style
@@ -1480,7 +1481,7 @@ APIs in this project are:
 			<xsl:attribute name="depends">
 				<xsl:text>client-</xsl:text>
 				<xsl:value-of select="$api" />
-				<xsl:if test="document($api_file)/api/impl-java or impl">
+				<xsl:if test="$api_node/impl-java or impl">
 					<xsl:text>, server-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:if>

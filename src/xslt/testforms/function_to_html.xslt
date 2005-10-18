@@ -38,13 +38,14 @@
 	<xsl:template match="function">
 
 		<xsl:variable name="functionName" select="@name" />
+		<xsl:variable name="api_node"     select="document($api_file)/api" />
 		<xsl:variable name="init_environment">
 			<xsl:choose>
 				<xsl:when test="string-length($env_file) > 0">
 					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
 				</xsl:when>
-				<xsl:when test="document($api_file)/api/environment">
-					<xsl:value-of select="document($api_file)/api/environment[1]/@url" />
+				<xsl:when test="$api_node/environment">
+					<xsl:value-of select="$api_node/environment[1]/@url" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>http://API_PATH</xsl:text>
@@ -95,8 +96,8 @@
 										</option>
 									</xsl:for-each>
 								</xsl:when>
-								<xsl:when test="document($api_file)/api/environment">
-									<xsl:for-each select="document($api_file)/api/environment">
+								<xsl:when test="$api_node/environment">
+									<xsl:for-each select="$api_node/environment">
 										<option value="{@url}">
 											<xsl:value-of select="@id" />
 										</option>

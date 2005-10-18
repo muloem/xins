@@ -32,7 +32,7 @@
 	<xsl:output method="text" />
 
 	<!-- Determine name of API -->
-	<xsl:variable name="api" select="document($api_file)/api/@name" />
+	<xsl:variable name="api" select="/api/@name" />
 
 	<xsl:template match="api">
 

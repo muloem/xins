@@ -308,9 +308,10 @@
 		
 		<xsl:variable name="type_name" select="@name" />
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type_name, '.typ')" />
+		<xsl:variable name="type_node" select="document($type_file)/type" />
 		<xsl:variable name="base_type">
 			<xsl:choose>
-				<xsl:when test="document($type_file)/type/pattern or document($type_file)/type/enum or document($type_file)/type/list or document($type_file)/type/set">
+				<xsl:when test="$type_node/pattern or $type_node/enum or $type_node/list or $type_node/set">
 					<xsl:text>string</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -319,7 +320,7 @@
 						<xsl:with-param name="project_file" select="$project_file" />
 						<xsl:with-param name="specsdir"     select="$specsdir" />
 						<xsl:with-param name="api"          select="$api" />
-						<xsl:with-param name="type"         select="concat('_', local-name(document($type_file)/type/*[2]))" />
+						<xsl:with-param name="type"         select="concat('_', local-name($type_node/*[2]))" />
 					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -328,34 +329,34 @@
 		<xsd:simpleType name="{$type_name}Type">
 			<xsd:annotation>
 				<xsd:documentation>
-					<xsl:value-of select="document($type_file)/type/description/text()" />
+					<xsl:value-of select="$type_node/description/text()" />
 				</xsd:documentation>
 			</xsd:annotation>
 			<xsd:restriction base="xsd:{$base_type}">
-				<xsl:if test="document($type_file)/type/pattern">
-					<xsl:variable name="pattern" select="document($type_file)/type/pattern/text()" />
+				<xsl:if test="$type_node/pattern">
+					<xsl:variable name="pattern" select="$type_node/pattern/text()" />
 					<xsd:pattern value="{$pattern}" />
 				</xsl:if>
-				<xsl:if test="document($type_file)/type/enum">
-					<xsl:for-each select="document($type_file)/type/enum/item">
+				<xsl:if test="$type_node/enum">
+					<xsl:for-each select="$type_node/enum/item">
 						<xsl:variable name="enumeration_value" select="@value" />
 						<xsd:enumeration value="{$enumeration_value}" />
 					</xsl:for-each>
 				</xsl:if>
-				<xsl:if test="document($type_file)/type/int8 or document($type_file)/type/int16 or document($type_file)/type/int32 or document($type_file)/type/int64 or document($type_file)/type/float32 or document($type_file)/type/float64">
-					<xsl:if test="document($type_file)/type/*[2]/@min">
-						<xsd:minInclusive value="{document($type_file)/type/*[2]/@min}" />
+				<xsl:if test="$type_node/int8 or $type_node/int16 or $type_node/int32 or $type_node/int64 or $type_node/float32 or $type_node/float64">
+					<xsl:if test="$type_node/*[2]/@min">
+						<xsd:minInclusive value="{$type_node/*[2]/@min}" />
 					</xsl:if>
-					<xsl:if test="document($type_file)/type/*[2]/@max">
-						<xsd:maxInclusive value="{document($type_file)/type/*[2]/@max}" />
+					<xsl:if test="$type_node/*[2]/@max">
+						<xsd:maxInclusive value="{$type_node/*[2]/@max}" />
 					</xsl:if>
 				</xsl:if>
-				<xsl:if test="document($type_file)/type/base64">
-					<xsl:if test="document($type_file)/base64/@min">
-						<xsd:minLength value="{document($type_file)/base64/@min}" />
+				<xsl:if test="$type_node/base64">
+					<xsl:if test="$type_node/base64/@min">
+						<xsd:minLength value="{$type_node/base64/@min}" />
 					</xsl:if>
-					<xsl:if test="document($type_file)/base64/@max">
-						<xsd:maxLength value="{document($type_file)/base64/@max}" />
+					<xsl:if test="$type_node/base64/@max">
+						<xsd:maxLength value="{$type_node/base64/@max}" />
 					</xsl:if>
 				</xsl:if>
 			</xsd:restriction>

@@ -106,13 +106,14 @@
 
 	<xsl:template match="function-ref">
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_node" select="document($function_file)/function" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="document($function_file)/function/@rcsversion" />
+				<xsl:with-param name="revision" select="$function_node/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(document($function_file)/function)">
+		<xsl:if test="not($function_node)">
 			<xsl:message terminate="yes">
 				<xsl:text>Function file '</xsl:text>
 				<xsl:value-of select="$function_file" />
@@ -148,15 +149,15 @@
 							<xsl:text>Broken Freeze</xsl:text>
 						</span>
 					</xsl:when>
-					<xsl:when test="document($function_file)/function/deprecated">
-						<span class="broken_freeze" title="{document($function_file)/function/deprecated/text()}">
+					<xsl:when test="$function_node/deprecated">
+						<span class="broken_freeze" title="{$function_node/deprecated/text()}">
 							<xsl:text>Deprecated</xsl:text>
 						</span>
 					</xsl:when>
 				</xsl:choose>
 			</td>
 			<td>
-				<xsl:apply-templates select="document($function_file)/function/description" />
+				<xsl:apply-templates select="$function_node/description" />
 			</td>
 		</tr>
 	</xsl:template>

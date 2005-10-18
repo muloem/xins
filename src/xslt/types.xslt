@@ -290,30 +290,31 @@
 						<xsl:with-param name="type"     select="$type"     />
 					</xsl:call-template>
 				</xsl:variable>
+				<xsl:variable name="type_node" select="document($typefile)/type" />
 
 				<xsl:choose>
-					<xsl:when test="document($typefile)/type/properties">
+					<xsl:when test="$type_node/properties">
 						<xsl:text>_properties</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/int8">
+					<xsl:when test="$type_node/int8">
 						<xsl:text>_int8</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/int16">
+					<xsl:when test="$type_node/int16">
 						<xsl:text>_int16</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/int32">
+					<xsl:when test="$type_node/int32">
 						<xsl:text>_int32</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/int64">
+					<xsl:when test="$type_node/int64">
 						<xsl:text>_int64</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/float32">
+					<xsl:when test="$type_node/float32">
 						<xsl:text>_float32</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/float64">
+					<xsl:when test="$type_node/float64">
 						<xsl:text>_float64</xsl:text>
 					</xsl:when>
-					<xsl:when test="document($typefile)/type/base64">
+					<xsl:when test="$type_node/base64">
 						<xsl:text>_base64</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>

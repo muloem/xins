@@ -19,10 +19,11 @@
 		<xsl:param name="specsdirectory" />
 		<xsl:param name="api_file" />
 
-
 		<xsl:for-each select="document($api_file)/api/resultcode">
-			<xsl:variable name="elementName" select="document(concat($specsdirectory, '/', @name, '.rcd'))/resultcode/@name"/>
-			<xsl:variable name="elementValue" select="document(concat($specsdirectory, '/', @name, '.rcd'))/resultcode/@value"/>
+			<xsl:variable name="rcd_file" select="concat($specsdirectory, '/', @name, '.rcd')" />
+			<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
+			<xsl:variable name="elementName" select="$rcd_node/@name"/>
+			<xsl:variable name="elementValue" select="$rcd_node/@value"/>
 
 			<xsl:if test="$elementName != $resultcode_name and $elementValue = $resultcode_value">
 
@@ -38,10 +39,5 @@ The resultcode value must be unique. The resultcode: </xsl:text>
 
 			</xsl:if>
 		</xsl:for-each>
-		
-
 	</xsl:template>
-
-
-
 </xsl:stylesheet>
