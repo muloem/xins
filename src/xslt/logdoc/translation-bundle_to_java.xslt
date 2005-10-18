@@ -24,6 +24,9 @@
 	<!-- Set output method -->
 	<xsl:output method="text" />
 
+	<!-- Global variable -->
+	<xsl:variable name="log_file_doc" select="document($log_file)" />
+	
 	<!-- Match the root element 'translation-bundle' -->
 	<xsl:template match="translation-bundle">
 		<xsl:variable name="classname" select="concat('TranslationBundle_', $locale)" />
@@ -49,11 +52,11 @@ import org.xins.logdoc.LogdocStringBuffer;
 		<xsl:text><![CDATA[</em> locale.
  *
  * @see Log]]></xsl:text>
-      <xsl:if test="string-length(document($log_file)/log/@since) &gt; 0">
+      <xsl:if test="string-length($log_file_doc/log/@since) &gt; 0">
          <xsl:text>
  *
  * @since </xsl:text>
-         <xsl:value-of select="document($log_file)/log/@since" />
+         <xsl:value-of select="$log_file_doc/log/@since" />
       </xsl:if>
       <xsl:text>
  */
@@ -107,39 +110,41 @@ import org.xins.logdoc.LogdocStringBuffer;
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
 
-		<xsl:for-each select="translation">
-			<xsl:variable name="entry" select="@entry" />
-			<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception = 'true'" />
-
-			<xsl:text>
-
-   public String translation_</xsl:text>
-			<xsl:value-of select="$entry" />
-			<xsl:text>(</xsl:text>
-			<xsl:if test="$exception">
-				<xsl:text>java.lang.Throwable _exception</xsl:text>
-			</xsl:if>
-			<xsl:apply-templates select="document($log_file)/log/group/entry[@id = $entry]/param" mode="method-argument">
-				<xsl:with-param name="exception" select="$exception" />
-			</xsl:apply-templates>
-			<xsl:text>) {
-      LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
-			<xsl:apply-templates />
-			<xsl:text>
-      return buffer.toString();</xsl:text>
-			<xsl:text>
-   }</xsl:text>
-		</xsl:for-each>
+	 <xsl:apply-templates select="translation" />
 
 		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
 
+	<xsl:template match="translation">
+		<xsl:variable name="entry" select="@entry" />
+		<xsl:variable name="exception" select="$log_file_doc/log/group/entry[@id = $entry]/@exception = 'true'" />
+
+		<xsl:text>
+
+   public String translation_</xsl:text>
+		<xsl:value-of select="$entry" />
+		<xsl:text>(</xsl:text>
+		<xsl:if test="$exception">
+			<xsl:text>Throwable _exception</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates select="$log_file_doc/log/group/entry[@id = $entry]/param" mode="method-argument">
+			<xsl:with-param name="exception" select="$exception" />
+		</xsl:apply-templates>
+		<xsl:text>) {
+      LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
+		<xsl:apply-templates />
+		<xsl:text>
+      return buffer.toString();</xsl:text>
+		<xsl:text>
+   }</xsl:text>
+	</xsl:template>
+
 	<!-- Match <exception-property/> elements -->
 	<xsl:template match="translation/exception-property">
 		<xsl:variable name="entry" select="../@entry" />
-		<xsl:variable name="exception" select="document($log_file)/log/group/entry[@id = $entry]/@exception = 'true'" />
+		<xsl:variable name="exception" select="$log_file_doc/log/group/entry[@id = $entry]/@exception = 'true'" />
 
 		<xsl:if test="not($exception)">
 			<xsl:message terminate="yes">
@@ -187,8 +192,8 @@ import org.xins.logdoc.LogdocStringBuffer;
 	<xsl:template match="translation/value-of-param">
 		<xsl:variable name="entry" select="../@entry" />
 		<xsl:variable name="param-name" select="@name" />
-		<xsl:variable name="param-type" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@type" />
-		<xsl:variable name="param-nullable" select="document($log_file)/log/group/entry[@id = $entry]/param[@name=$param-name]/@nullable" />
+		<xsl:variable name="param-type" select="$log_file_doc/log/group/entry[@id = $entry]/param[@name=$param-name]/@type" />
+		<xsl:variable name="param-nullable" select="$log_file_doc/log/group/entry[@id = $entry]/param[@name=$param-name]/@nullable" />
 
 		<xsl:text>
       </xsl:text>
