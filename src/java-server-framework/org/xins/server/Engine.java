@@ -244,7 +244,7 @@ final class Engine extends Object {
       MandatoryArgumentChecker.check("properties", properties);
 
       // Determine pattern string
-      // TODO: Store "org.xins.server.contextID.filter" in a constant
+      // XXX: Store "org.xins.server.contextID.filter" in a constant
       String propName  = "org.xins.server.contextID.filter";
       String propValue = properties.get(propName);
 
@@ -442,7 +442,7 @@ final class Engine extends Object {
    private String determineContextID(final HttpServletRequest request) {
 
       // See if the request already specifies a diagnostic context identifier
-      // TODO: Store "_context" in a constant
+      // XXX: Store "_context" in a constant
       String contextID = request.getParameter("_context");
       if (TextUtils.isEmpty(contextID)) {
          Log.log_3580();
