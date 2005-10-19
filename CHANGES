@@ -51,6 +51,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Made the HTTPServiceCaller class compatible with HTTPClient 2.0.2.
   - Implemented the getScheme(), getRequestURI() and getRequestURL() method 
     in the internal Servlet container.
+  - Added method isUsable() in class Manageable.
 
 * XINS/Java Client Framework:
   - Improved the implementation of the XINSCallConfig class. Implemented the

@@ -441,7 +441,22 @@ public abstract class Manageable extends Object {
    }
 
    /**
-    * Checks that this object is currently usable. If it is not, then an
+    * Determines if this object is currently usable.
+    *
+    * @return
+    *    <code>true</code> if this object is usable,
+    *    </code>false</code> if it is not.
+    */
+   protected final boolean isUsable() {
+      State state;
+      synchronized (_stateLock) {
+         state = _state;
+      }
+      return state == USABLE;
+   }
+
+   /**
+    * Asserts that this object is currently usable. If it is not, then an
     * {@link IllegalStateException} is thrown.
     *
     * @throws IllegalStateException
@@ -450,17 +465,16 @@ public abstract class Manageable extends Object {
    protected final void assertUsable()
    throws IllegalStateException {
 
-      boolean usable;
-
       // Minimize the time the lock is held
+      State state;
       synchronized (_stateLock) {
-         usable = (_state == USABLE);
+         state = _state;
       }
 
       // Construct and throw an exception, if appropriate
-      if (!usable) {
+      if (state != USABLE) {
          String message = "The current state is "
-                        + _state
+                        + state
                         + " instead of "
                         + USABLE
                         + '.';
