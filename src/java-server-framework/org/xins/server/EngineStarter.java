@@ -82,12 +82,14 @@ final class EngineStarter extends Object {
     * Constructor for the <code>EngineStarter</code> class.
     *
     * @param config
-    *    servlet configuration, cannot be <code>null</code>.
+    *    servlet configuration, cannot be <code>null</code> and is guaranteed
+    *    to have a {@link ServletContext} associated with it.
     *
     * @throws IllegalArgumentException
     *    if <code>config == null</code>.
     */
-   EngineStarter(ServletConfig config) throws IllegalArgumentException {
+   EngineStarter(ServletConfig config)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("config", config);
@@ -122,10 +124,6 @@ final class EngineStarter extends Object {
 
       // Determine the ServletContext
       ServletContext context = _config.getServletContext();
-      if (context == null) {
-         throw Utils.logProgrammingError(
-            "ServletConfig.getServletContext() returned null.");
-      }
 
       // Determine servlet container info
       String containerInfo = context.getServerInfo();
@@ -160,17 +158,6 @@ final class EngineStarter extends Object {
       if (! Library.isProductionRelease(serverVersion)) {
          Log.log_3227(serverVersion);
       }
-   }
-
-   /**
-    * Performs some logging with regards to the version of the XINS/Java
-    * Server Framework.
-    */
-   void checkAndLogVersionNumber() {
-
-      // Log XINS version
-      String serverVersion = Library.getVersion();
-      Log.log_3225(serverVersion);
 
       // Warn if API build version is more recent than running version
       if (Library.isProductionRelease(serverVersion)) {
@@ -274,13 +261,11 @@ final class EngineStarter extends Object {
             + " SINGLETON in class "
             + apiClassName
             + '.';
-         final String THIS_METHOD = "<init>(javax.servlet.ServletConfig)";
-         Utils.logProgrammingError(Engine.class.getName(),
-                                   THIS_METHOD,
-                                   apiClassName,
-                                   "SINGLETON",
-                                   detail,
-                                   exception);
+         String thisMethod = "getAPIFromSingletonField("
+                           + "java.lang.String,java.lang.Class)";
+         Utils.logProgrammingError(Engine.class.getName(), thisMethod,
+                                   apiClassName,           "SINGLETON",
+                                   detail,                 exception);
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
          throw servletExceptionFor(exception);
       }
@@ -411,9 +396,9 @@ final class EngineStarter extends Object {
     * @throws ServletException
     *    If the log doc class can not be loaded.
     */
-   void loadLogDoc() throws ServletException {
+   void loadLogdoc() throws ServletException {
 
-      String logdocClassName = determineLogDocName();
+      String logdocClassName = determineLogdocName();
 
       try {
          // Attempt to load the Logdoc 'Log' class. This should execute the
@@ -461,7 +446,7 @@ final class EngineStarter extends Object {
     *    the fully-qualified name of the Logdoc Log class, never
     *    <code>null</code>.
     */
-   private String determineLogDocName() {
+   private String determineLogdocName() {
 
       // Determine the name of the API class
       String apiClassName = _config.getInitParameter(

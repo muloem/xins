@@ -107,6 +107,9 @@ import org.xins.logdoc.ExceptionUtils;
 public final class APIServlet
 extends HttpServlet {
 
+   // TODO: Log 3611 and return an appropriate HTTP result when the API is not
+   //       usable.
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -287,7 +290,7 @@ extends HttpServlet {
     *
     * @throws IllegalArgumentException
     *    if <code>config == null
-    *          || config.{@link ServletConfig#getServletContext()} == null</code>.
+    *    || config.{@link ServletConfig#getServletContext()} == null</code>.
     *
     * @throws ServletException
     *    if the servlet could not be initialized.

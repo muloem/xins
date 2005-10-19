@@ -130,9 +130,6 @@ final class Engine extends Object {
       _configManager.determineConfigFile();
       _configManager.readRuntimeProperties();
 
-      // Log version of XINS/Java Server Framework
-      _starter.checkAndLogVersionNumber();
-
       // Construct and bootstrap the API
       _state.setState(EngineState.CONSTRUCTING_API);
       try {
@@ -150,6 +147,9 @@ final class Engine extends Object {
       } catch (Exception exception) {
         throw EngineStarter.servletExceptionFor(exception);
       }
+
+      // Done bootstrapping the framework
+      Log.log_3225(Library.getVersion());
 
       // Initialize the configuration manager
       _configManager.init();
@@ -250,7 +250,7 @@ final class Engine extends Object {
 
       // If the property value is empty, then there is no pattern
       Pattern pattern;
-      if (propValue == null || propValue.trim().length() < 1) {
+      if (TextUtils.isEmpty(propValue)) {
          pattern = null;
          Log.log_3431();
 
@@ -305,7 +305,7 @@ final class Engine extends Object {
          _apiName = _starter.determineAPIName();
 
          // Load the Logdoc if available
-         _starter.loadLogDoc();
+         _starter.loadLogdoc();
 
          // Actually bootstrap the API
          bootProps = _starter.bootstrap(_api);

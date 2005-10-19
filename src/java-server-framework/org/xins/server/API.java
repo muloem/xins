@@ -541,18 +541,6 @@ implements DefaultResultCodes {
           InitializationException,
           IllegalStateException {
 
-      // Check state
-      Manageable.State state = getState();
-      if (state != INITIALIZING) {
-         String message = "State is "
-                        + state
-                        + " instead of "
-                        + INITIALIZING
-                        + '.';
-         Utils.logProgrammingError(message);
-         throw new IllegalStateException(message);
-      }
-
       Log.log_3405(_name);
 
       // Store runtime settings
@@ -990,12 +978,6 @@ implements DefaultResultCodes {
       boolean allow = allow(ip, functionName);
       if (! allow) {
          throw new AccessDeniedException(ip, functionName);
-      }
-
-      // Short-circuit if we are shutting down
-      if (getState().equals(DEINITIALIZING)) {
-         Log.log_3611(_name, functionName);
-         return new FunctionResult("_InternalError");
       }
 
       // Handle meta-functions
