@@ -34,7 +34,7 @@
 	<translation entry="3215">Bootstrap of API-manageable <value-of-param name="className" format="quoted" /> failed. The required property <value-of-param name="propertyName" format="quoted" /> is not set.</translation>
 	<translation entry="3216">Bootstrap of API-manageable <value-of-param name="className" format="quoted" /> failed. The property <value-of-param name="propertyName" format="quoted" /> has an invalid value: <value-of-param name="propertyValue" format="quoted" />. Reason: <value-of-param name="reason" /></translation>
 	<translation entry="3217">Bootstrap of API-manageable <value-of-param name="className" format="quoted" /> failed. Reason: <exception-property name="message" format="quoted" />.</translation>
-	<translation entry="3218">Adding API-manageable <value-of-param name="className" /> to API.</translation>
+	<translation entry="3218">Adding API-manageable <value-of-param name="className" format="quoted" /> to API.</translation>
 	<translation entry="3220">Bootstrapping function <value-of-param name="function" format="quoted" />.</translation>
 	<translation entry="3221">Bootstrapped function <value-of-param name="function" format="quoted" />.</translation>
 	<translation entry="3222">Bootstrap of function <value-of-param name="function" format="quoted" /> failed. The property <value-of-param name="propertyName" format="quoted" /> is missing.</translation>
