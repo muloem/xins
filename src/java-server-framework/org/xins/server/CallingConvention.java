@@ -6,9 +6,7 @@
  */
 package org.xins.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,10 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-import org.xins.common.collections.CollectionUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.manageable.Manageable;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -360,8 +356,8 @@ abstract class CallingConvention extends Manageable {
     *    the HTTP request, cannot be <code>null</code>.
     *
     * @param checkType
-    *    flag indicating whether this method should check that the content type
-    *    of the request is <em>text/xml</em>.
+    *    flag indicating whether this method should check that the content
+    *    type of the request is <em>text/xml</em>.
     *
     * @return
     *    the parsed element, never <code>null</code>.
@@ -374,7 +370,7 @@ abstract class CallingConvention extends Manageable {
     */
    protected Element parseXMLRequest(HttpServletRequest httpRequest,
                                      boolean            checkType)
-   throws InvalidRequestException {
+   throws IllegalArgumentException, InvalidRequestException {
 
       // Check arguments
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
