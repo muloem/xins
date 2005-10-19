@@ -235,14 +235,18 @@ final class EngineStarter extends Object {
    /**
     * Gets the API from the singleton field that is available on all API's.
     *
-    * @param apiClassName The api class name
-    * @param apiClass The api
+    * @param apiClassName
+    *   the api class name, cannot be <code>null</code>.
+    *
+    * @param apiClass
+    *   the api class, cannot be <code>null</code>.
     *
     * @return
-    *    The api.
+    *    an instance of the api object, can be <code>null</code>.
     *
-    * @throws ServletException If the apiClass doesn't have a singleton field or
-    *    if the value of the field can noet be cast to the API class.
+    * @throws ServletException
+    *    if the apiClass doesn't have a singleton field or
+    *    if the value of the field can not be cast to the API class.
     */
    private API getAPIFromSingletonField(String apiClassName,
                                         Class apiClass)
@@ -257,8 +261,7 @@ final class EngineStarter extends Object {
       } catch (Throwable exception) {
          String detail = "Caught unexpected "
             + exception.getClass().getName()
-            + " while retrieving the value of the static field"
-            + " SINGLETON in class "
+            + " while retrieving the value of the static field SINGLETON in class "
             + apiClassName
             + '.';
          String thisMethod = "getAPIFromSingletonField("

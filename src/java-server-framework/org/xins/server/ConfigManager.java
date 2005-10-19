@@ -302,7 +302,7 @@ final class ConfigManager extends Object {
       if (initialized) {
          logUnusedRuntimeProperties();
 
-         // ...and log that the framework was reinitialized
+         // ...and log that the framework was (re)initialized
          Log.log_3415();
       }
    }

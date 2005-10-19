@@ -1350,8 +1350,6 @@ implements DefaultResultCodes {
     */
    private final FunctionResult doGetSettings() {
 
-      final String THIS_METHOD  = "doGetSettings()";
-
       FunctionResult builder = new FunctionResult();
 
       // Build settings
@@ -1387,6 +1385,7 @@ implements DefaultResultCodes {
       try {
          sysProps = System.getProperties();
       } catch (SecurityException ex) {
+         final String THIS_METHOD  = "doGetSettings()";
          final String SUBJECT_CLASS  = "java.lang.System";
          final String SUBJECT_METHOD = "getProperties()";
          Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
