@@ -150,7 +150,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
     * @param api
     *    the API, needed for the XML-RPC messages.
     */
-   XMLRPCCallingConvention(API api) {
+   public XMLRPCCallingConvention(API api) {
       _api = api;
    }
 

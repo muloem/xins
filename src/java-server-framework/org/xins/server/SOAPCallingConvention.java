@@ -100,7 +100,7 @@ final class SOAPCallingConvention extends CallingConvention {
     * @param api
     *    the API, needed for the SOAP messages.
     */
-   SOAPCallingConvention(API api) {
+   public SOAPCallingConvention(API api) {
       _api = api;
    }
 

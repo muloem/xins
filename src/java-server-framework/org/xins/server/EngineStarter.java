@@ -16,6 +16,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.AbstractLog;
@@ -356,17 +357,24 @@ final class EngineStarter extends Object {
     * Calls the bootstrap on the API and logs exceptions in case of an error.
     *
     * @param api
-    *    The API to bootstrap, never <code>null</code>.
+    *    the API to bootstrap, never <code>null</code>.
+    *
+    * @return
+    *    a {@link PropertyReader} for the bootstrap properties, never
+    *    <code>null</code>.
     *
     * @throws ServletException
-    *    If the bootstrap of the api fails.
+    *    if the bootstrap of the api fails.
     */
-   void bootstrap(API api) throws ServletException {
+   PropertyReader bootstrap(API api) throws ServletException {
+
+      // Convert ServletConfig to PropertyReader
+      PropertyReader properties = new ServletConfigPropertyReader(_config);
 
       // Bootstrap the API self
       Throwable caught;
       try {
-         api.bootstrap(new ServletConfigPropertyReader(_config));
+         api.bootstrap(properties);
          caught = null;
 
       // Missing required property
@@ -393,6 +401,8 @@ final class EngineStarter extends Object {
          ExceptionUtils.setCause(se, caught);
          throw se;
       }
+
+      return properties;
    }
 
    /**

@@ -279,12 +279,13 @@ final class Engine extends Object {
 
    /**
     * Bootstraps the API. The following steps will be performed:
+    *
     * <ul>
-    *   <li>Determine API name
-    *   <li>Load the Logdoc if available
-    *   <li>Bootstrap the API itself
-    *   <li>Determine the calling convention
-    *   <li>Link the engine to the API
+    *   <li>determine the API name;
+    *   <li>load the Logdoc, if available;
+    *   <li>bootstrap the API;
+    *   <li>construct and bootstrap the calling conventions;
+    *   <li>link the engine to the API.
     * </ul>
     *
     * @throws ServletException
@@ -292,9 +293,12 @@ final class Engine extends Object {
     */
    private void bootstrapAPI() throws ServletException {
 
+      // XXX: This method should not throw ServletException
+
       // Proceed to next stage
       _state.setState(EngineState.BOOTSTRAPPING_API);
 
+      PropertyReader bootProps;
       try {
 
          // Determine the name of the API
@@ -304,13 +308,24 @@ final class Engine extends Object {
          _starter.loadLogDoc();
 
          // Actually bootstrap the API
-         _starter.bootstrap(_api);
+         bootProps = _starter.bootstrap(_api);
 
-         // Initialize the calling convention manager
-         _conventionManager = new CallingConventionManager(_servletConfig, _api);
+      // Handle any failures
       } catch (ServletException se) {
          _state.setState(EngineState.API_BOOTSTRAP_FAILED);
          throw se;
+      }
+
+      // Create the calling convention manager
+      _conventionManager = new CallingConventionManager(_api);
+   
+      // Bootstrap the calling convention manager
+      try {
+         _conventionManager.bootstrap(bootProps);
+      } catch (Throwable cause) {
+         ServletException exception = new ServletException();
+         ExceptionUtils.setCause(exception, cause);
+         throw exception;
       }
 
       // Make the API have a link to this Engine
