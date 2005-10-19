@@ -447,7 +447,7 @@ public abstract class Manageable extends Object {
     *    <code>true</code> if this object is usable,
     *    </code>false</code> if it is not.
     */
-   protected final boolean isUsable() {
+   public final boolean isUsable() {
       State state;
       synchronized (_stateLock) {
          state = _state;
