@@ -133,9 +133,7 @@
 	<translation entry="3552">Request from <value-of-param name="ip" /> to function <value-of-param name="function" /> does not match access rule <value-of-param name="index" /> (<value-of-param name="rule" format="quoted" />).</translation>
 	<translation entry="3553">Denying call from <value-of-param name="ip" /> to function <value-of-param name="function" />. Request matches no access rules.</translation>
 
-	<translation entry="3560">Error when creating or bootstraping the calling convention <value-of-param name="convention" format="quoted" />.</translation>
-	<translation entry="3561">Error when initializing the calling convention <value-of-param name="convention" format="quoted" />.</translation>
-	<translation entry="3562">The class <value-of-param name="conventionClass" format="quoted" /> for the calling convention <value-of-param name="convention" format="quoted" /> could not be found or created.</translation>
+	<translation entry="3560">Failed to create an instance of class <value-of-param name="conventionClass" format="quoted" /> for the calling convention <value-of-param name="convention" format="quoted" />.</translation>
 	
 	<translation entry="3580">No diagnostic context identifier specified in request.</translation>
 	<translation entry="3581">Request specifies valid diagnostic context identifier <value-of-param name="contextID" format="quoted"/>.</translation>

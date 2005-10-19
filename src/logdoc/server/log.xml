@@ -227,14 +227,14 @@
 		</entry>
 		<entry id="3240" level="FATAL">
 			<description>Calling convention could not be bootstrapped due to an invalid property value.</description>
-			<param name="name"         />
-			<param name="propertyName" />
+			<param name="name"          />
+			<param name="propertyName"  />
 			<param name="propertyValue" />
 			<param name="reason"        />
 		</entry>
 		<entry id="3241" level="FATAL" exception="true">
 			<description>Calling convention could not be bootstrapped.</description>
-			<param name="name"     />
+			<param name="name" />
 		</entry>
 	</group>
 
@@ -596,17 +596,10 @@
 	</group>
 
 	<group id="runtime.cc" name="Calling Convention">
-		<entry id="3560" level="WARNING" exception="true">
-			<description>Error when creating a calling convention.</description>
-			<param name="convention" nullable="false" />
-		</entry>
-		<entry id="3561" level="WARNING" exception="true">
-			<description>Error when initializing a calling convention.</description>
-			<param name="convention" nullable="false" />
-		</entry>
-		<entry id="3562" level="ERROR" exception="true">
-			<description>Class for the custom calling convention cannot be created.</description>
-			<param name="convention" nullable="false" />
+        <!-- TODO: Move to different category ? -->
+		<entry id="3560" level="ERROR" exception="true">
+			<description>Error while creating calling convention.</description>
+			<param name="convention"      nullable="false" />
 			<param name="conventionClass" nullable="false" />
 		</entry>
 	</group>
