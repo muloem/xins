@@ -179,10 +179,10 @@ public abstract class Manageable extends Object {
       }
 
       // Delegate to subclass
-      boolean done = false;
+      State newState = UNUSABLE;
       try {
          bootstrapImpl(properties);
-         done = true;
+         newState = BOOTSTRAPPED;
 
       // Catch expected exceptions
       } catch (MissingRequiredPropertyException exception) {
@@ -199,11 +199,7 @@ public abstract class Manageable extends Object {
       // Always set the state before returning
       } finally {
          synchronized (_stateLock) {
-            if (done) {
-               _state = BOOTSTRAPPED;
-            } else {
-               _state = UNUSABLE;
-            }
+            _state = newState;
          }
       }
    }
@@ -300,10 +296,10 @@ public abstract class Manageable extends Object {
       }
 
       // Delegate to subclass
-      boolean done = false;
+      State newState = BOOTSTRAPPED;
       try {
          initImpl(properties);
-         done = true;
+         newState = USABLE;
 
       // Catch expected exceptions
       } catch (MissingRequiredPropertyException exception) {
@@ -320,11 +316,7 @@ public abstract class Manageable extends Object {
       // Always set the state before returning
       } finally {
          synchronized (_stateLock) {
-            if (done) {
-               _state = USABLE;
-            } else {
-               _state = BOOTSTRAPPED;
-            }
+            _state = newState;
          }
       }
    }
@@ -405,10 +397,10 @@ public abstract class Manageable extends Object {
       }
 
       // Delegate to subclass
-      boolean done = false;
+      State newState = BOOTSTRAPPED;
       try {
          deinitImpl();
-         done = true;
+         newState = UNUSABLE;
 
       // Catch and wrap all caught exceptions
       } catch (Throwable exception) {
@@ -417,11 +409,7 @@ public abstract class Manageable extends Object {
       // Always set the state before returning
       } finally {
          synchronized (_stateLock) {
-            if (done) {
-               _state = UNUSABLE;
-            } else {
-               _state = BOOTSTRAPPED;
-            }
+            _state = newState;
          }
       }
    }
