@@ -72,6 +72,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:
   - Printing max 1024 bytes of the received HTTP data in the exception message
     in case of an invalid XINS call result (i.e. parse error).
   - Improved Javadoc comments and formatting.
+  - Unit tests added for unicode charcters in prameters.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1323689: AccessRuleFile not printed correctly in log

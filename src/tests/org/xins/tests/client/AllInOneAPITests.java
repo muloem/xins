@@ -361,23 +361,42 @@ public class AllInOneAPITests extends TestCase {
     * PCDATA.
     */
    public void testDataSection() throws Exception {
-      DataElement element = _capi.callDataSection("Doe").dataElement();
-      List users = element.getChildElements();
-      assertTrue("No users found.", users.size() > 0);
-      DataElement su = (DataElement) users.get(0);
-      assertEquals("Incorrect elements.", "user", su.getName());
-      assertEquals("Incorrect name for su.", "superuser", su.get("name"));
-      assertEquals("Incorrect address.", "12 Madison Avenue", su.get("address"));
-      assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
-      assertEquals(0, su.getChildElements().size());
-      DataElement doe = (DataElement) users.get(1);
-      assertEquals("Incorrect elements.", "user", doe.getName());
-      assertEquals("Incorrect name for Doe.", "Doe", doe.get("name"));
-      assertEquals("Incorrect address.", "Unknown", doe.get("address"));
-      assertNull(doe.getText());
-      assertEquals(0, doe.getChildElements().size());
+      dataSectionTests("doe");
    }
 
+   // Next 8 tests check special characters as parameters.
+   public void testSpecialCharacters() throws Exception {
+      dataSectionTests("H$llo");
+   }
+   
+   public void testSpecialCharacters1() throws Exception {
+      dataSectionTests("H&llo");
+   }
+   
+   public void testSpecialCharacters2() throws Exception {
+      dataSectionTests("H'llo");
+   }
+   
+   public void testSpecialCharacters3() throws Exception {
+      dataSectionTests("H\"llo");
+   }
+   
+   public void testSpecialCharacters4() throws Exception {
+      dataSectionTests("H<llo");
+   }
+   
+   public void testSpecialCharacters5() throws Exception {
+      dataSectionTests("H>llo");
+   }
+   
+   public void testSpecialCharacters6() throws Exception {
+      dataSectionTests("Euro sign: \u20AC");
+   }
+   
+   public void testSpecialCharacters7() throws Exception {
+      dataSectionTests("Arabic: \u0630");
+   }
+      
    /**
     * Tests a function that returns a data section with elements that contain
     * other elements.
@@ -810,4 +829,24 @@ public class AllInOneAPITests extends TestCase {
          assertNull(invalidParam1.getText());
       }
    }
+   
+   private void dataSectionTests(String inputText) 
+   throws Exception {
+      DataElement element = _capi.callDataSection(inputText).dataElement();
+      List users = element.getChildElements();
+      assertTrue("No users found.", users.size() > 0);
+      DataElement su = (DataElement) users.get(0);
+      assertEquals("Incorrect elements.", "user", su.getName());
+      assertEquals("Incorrect name for su.", "superuser", su.get("name"));
+      assertEquals("Incorrect address.", "12 Madison Avenue", su.get("address"));
+      assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
+      assertEquals(0, su.getChildElements().size());
+      DataElement doe = (DataElement) users.get(1);
+      assertEquals("Incorrect elements.", "user", doe.getName());
+      assertEquals("Incorrect name for " + inputText + ".", inputText, doe.get("name"));
+      assertEquals("Incorrect address.", "Unknown", doe.get("address"));
+      assertNull(doe.getText());
+      assertEquals(0, doe.getChildElements().size());
+   }
+
 }
