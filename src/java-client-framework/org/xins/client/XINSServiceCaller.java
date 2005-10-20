@@ -368,12 +368,6 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      final String THIS_METHOD = "call("
-                               + XINSCallRequest.class.getName()
-                               + ','
-                               + XINSCallConfig.class.getName()
-                               + ')';
-
       long start = System.currentTimeMillis();
 
       XINSCallResult result;
@@ -399,6 +393,11 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Unknown kind of exception. This should never happen. Log and
          // re-throw the exception, wrapped within a ProgrammingException
          } else {
+            final String THIS_METHOD = "call("
+                                     + XINSCallRequest.class.getName()
+                                     + ','
+                                     + XINSCallConfig.class.getName()
+                                     + ')';
             final String SUBJECT_CLASS  = ServiceCaller.class.getName();
             final String SUBJECT_METHOD = "doCall("
                                         + CallRequest.class.getName()
