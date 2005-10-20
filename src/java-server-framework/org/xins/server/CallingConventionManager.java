@@ -340,24 +340,12 @@ extends Manageable {
     *    the bootstrap properties, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>cc == null || properties == null</code>.
-    *
-    * @throws MissingRequiredPropertyException
-    *    if a required property is not given.
-    *
-    * @throws InvalidPropertyValueException
-    *    if the value of a certain property is invalid.
-    *
-    * @throws BootstrapException
-    *    if the bootstrapping failed for any other reason.
+    *    if <code>name == null || cc == null || properties == null</code>.
     */
    private void bootstrap(String            name,
                           CallingConvention cc,
                           PropertyReader    properties)
-   throws IllegalArgumentException,
-          MissingRequiredPropertyException,
-          InvalidPropertyValueException,
-          BootstrapException {
+   throws IllegalArgumentException {
 
       // Check arguments
       MandatoryArgumentChecker.check("name",       name,
@@ -374,7 +362,6 @@ extends Manageable {
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
          Log.log_3239(name, exception.getPropertyName());
-         throw exception;
 
       // Invalid property
       } catch (InvalidPropertyValueException exception) {
@@ -382,22 +369,11 @@ extends Manageable {
                       exception.getPropertyName(),
                       exception.getPropertyValue(),
                       exception.getReason());
-         throw exception;
 
       // Catch BootstrapException and any other exceptions not caught
       // by previous catch statements
       } catch (Throwable exception) {
-
-         // Log event
          Log.log_3241(exception, name);
-
-         // Throw a BootstrapException. If necessary, wrap around the
-         // caught exception
-         if (exception instanceof BootstrapException) {
-            throw (BootstrapException) exception;
-         } else {
-            throw new BootstrapException(exception);
-         }
       }
    }
 
@@ -429,40 +405,68 @@ extends Manageable {
          String            name = (String) iterator.next();
          CallingConvention cc   = (CallingConvention) _conventions.get(name);
 
-         // Attempt the initialization
-         Log.log_3435(name);
-         try {
-            cc.init(properties);
-            Log.log_3436(name);
+         // Initialize it
+         init(name, cc, properties);
+      }
+   }
 
-         // Missing property
-         } catch (MissingRequiredPropertyException exception) {
-            Log.log_3437(name, exception.getPropertyName());
-            throw exception;
+   /**
+    * Initializes the specified calling convention.
+    *
+    * <p>If the specified calling convention is not even bootstrapped, the
+    * initialization is not even attempted.
+    *
+    * @param name
+    *    the name of the calling convention, cannot be <code>null</code>.
+    *
+    * @param cc
+    *    the {@link CallingConvention} object to initialize, cannot be
+    *    <code>null</code>.
+    *
+    * @param properties
+    *    the initialization properties, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || cc == null || properties == null</code>.
+    */
+   private void init(String            name,
+                     CallingConvention cc,
+                     PropertyReader    properties)
+   throws IllegalArgumentException {
 
-         // Invalid property
-         } catch (InvalidPropertyValueException exception) {
-            Log.log_3438(name,
-                         exception.getPropertyName(),
-                         exception.getPropertyValue(),
-                         exception.getReason());
-            throw exception;
+      // Check arguments
+      MandatoryArgumentChecker.check("name",       name,
+                                     "cc",         cc,
+                                     "properties", properties);
 
-         // Catch InitializationException and any other exceptions not caught
-         // by previous catch statements
-         } catch (Throwable exception) {
+      // If the CallingConvention is not even bootstrapped, then do not even
+      // attempt to initialize it
+      if (cc.getState() == Manageable.UNUSABLE) {
+         return;
+      }
 
-            // Log event
-            Log.log_3439(exception, name);
+      // Initialize calling convention
+      Log.log_3435(name);
 
-            // Throw an InitializationException. If necessary, wrap around the
-            // caught exception
-            if (exception instanceof InitializationException) {
-               throw (InitializationException) exception;
-            } else {
-               throw new InitializationException(exception);
-            }
-         }
+      try {
+         cc.init(properties);
+         Log.log_3436(name);
+
+      // Missing property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3437(name, exception.getPropertyName());
+
+      // Invalid property
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3438(name,
+                      exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+
+      // Catch InitializationException and any other exceptions not caught
+      // by previous catch statements
+      } catch (Throwable exception) {
+         Log.log_3439(exception, name);
       }
    }
 
