@@ -243,9 +243,10 @@
 			<description>Initializing logging subsystem.</description>
 			<param name="configFile" />
 		</entry>
-		<entry id="3301" level="ERROR" exception="true">
+		<entry id="3301" level="ERROR">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened.</description>
-			<param name="configFile" />
+			<param name="configFile" nullable="false" />
+			<param name="detail"     nullable="true"  />
 		</entry>
 		<entry id="3302" level="ERROR" exception="true">
 			<description>Logging subsystem cannot be initialized since runtime properties file cannot be opened due to a security restriction.</description>

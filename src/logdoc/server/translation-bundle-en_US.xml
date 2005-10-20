@@ -59,7 +59,7 @@
 	<translation entry="3241">Bootstrap of calling convention <value-of-param name="name" format="quoted" /> failed. Reason: <exception-property name="message" format="quoted" />.</translation>
 
 	<translation entry="3300">Initializing logging subsystem with the settings set in the <value-of-param name="configFile" format="quoted" /> file.</translation>
-	<translation entry="3301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
+	<translation entry="3301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened. Detail: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="3302">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>
 	<translation entry="3303">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to an I/O error.</translation>
 	<translation entry="3304">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) apparently does not define the proper initialization settings. Applying fallback log method.</translation>

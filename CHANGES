@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 
+* XINS/Java Server Framework:
+  - No longer logging the exception with log message 3301. This message is
+    logged when the runtime properties file exists at start-up, but cannot be
+    opened.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:

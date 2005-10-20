@@ -236,7 +236,8 @@ final class ConfigManager extends Object {
 
             // No such file
             } catch (FileNotFoundException exception) {
-               Log.log_3301(exception, _configFile);
+               String detail = TextUtils.trim(exception.getMessage(), null);
+               Log.log_3301(_configFile, detail);
 
             // Security issue
             } catch (SecurityException exception) {
