@@ -36,13 +36,14 @@ extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * The fully-qualified name of this class.
+    * Fully-qualified name of this class.
     */
    private static final String CLASSNAME =
       CallingConventionManager.class.getName();
 
    /**
-    * The list of the calling conventions currently included in XINS.
+    * List of the names of the calling conventions currently included in
+    * XINS.
     */
    private final static String[] CONVENTIONS = {
       APIServlet.STANDARD_CALLING_CONVENTION,
@@ -55,7 +56,7 @@ extends Manageable {
 
    /**
     * Array of type <code>Class</code> that is used when constructing a
-    * <code>CallingConvention</code> instance via RMI.
+    * <code>CustomCallingConvention</code> instance via RMI.
     */
    private final static Class[] CONSTRUCTOR_ARG_CLASSES = { API.class };
 
@@ -165,7 +166,7 @@ extends Manageable {
       // Store the default calling convention
       _defaultConventionName = ccName;
 
-      // TODO: Log that we use the specified calling convention
+      // TODO: Log that the specified calling convention is the default
 
       // Construct and bootstrap all other calling conventions.
       for (int i = 0; i < CONVENTIONS.length; i++) {
@@ -205,7 +206,7 @@ extends Manageable {
     *    <code>null</code>.
     *
     * @return
-    *    a non-bootstrapped {@link CallingConvention} instances that matches
+    *    a non-bootstrapped {@link CallingConvention} instance that matches
     *    the specified name, or <code>null</code> if no match is found.
     *
     * @throws IllegalArgumentException
@@ -217,15 +218,6 @@ extends Manageable {
 
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "name", name);
-
-      // Determine the name and class of the custom calling convention, if any
-      String prop    = APIServlet.API_CALLING_CONVENTION_PROPERTY;
-      String cccName = TextUtils.trim(properties.get(prop), null);
-      String cccClass = null;
-      if (cccName != null) {
-         prop     = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
-         cccClass = TextUtils.trim(properties.get(prop), null);
-      }
 
       // Old-style XINS calling convention
       if (APIServlet.OLD_STYLE_CALLING_CONVENTION.equals(name)) {
@@ -251,14 +243,40 @@ extends Manageable {
       } else if (APIServlet.XML_RPC_CALLING_CONVENTION.equals(name)) {
          return new XMLRPCCallingConvention(_api);
 
-      // The custom calling convention
-      } else if (cccName.equals(name) && cccClass != null) {
-         return construct(name, cccClass);
-
-      // If the name is unrecognized, return null
       } else {
-         return null;
+
+         // Determine the name of the custom calling convention, if any
+         String prop    = APIServlet.API_CALLING_CONVENTION_PROPERTY;
+         String cccName = TextUtils.trim(properties.get(prop), null);
+
+         // The custom calling convention
+         if (name.equals(cccName)) {
+            prop = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
+
+            // Get the name of the class, default to null
+            String cccClass = TextUtils.trim(properties.get(prop), null);
+
+            // Custom calling convention class not specified
+            if (cccClass == null) {
+               // TODO: Log ERROR: Unable to create custom calling convention,
+               //       class not specified.
+
+            // Construct a CustomCallingConvention instance
+            } else {
+               CallingConvention ccc = construct(name, cccClass);
+               if (ccc == null) {
+                  // TODO: Log ERROR: Unable to create custom calling
+                  //       convention, instance of class could not be
+                  //       constructed.
+               }
+
+               return ccc;
+            }
+         }
       }
+
+      // Otherwise return null
+      return null;
    }
 
    /**
@@ -272,13 +290,13 @@ extends Manageable {
     *    the name of the class, cannot be <code>null</code>.
     *
     * @return
-    *    the constructed {@link CallingConvention} instance, or
+    *    the constructed {@link CustomCallingConvention} instance, or
     *    <code>null</code> if the construction failed.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || className == null</code>.
     */
-   private CallingConvention construct(String name, String className)
+   private CustomCallingConvention construct(String name, String className)
    throws IllegalArgumentException {
 
       String thisMethod = "construct(java.lang.String,java.lang.String)";
@@ -299,27 +317,32 @@ extends Manageable {
       Constructor con = null;
       try {
          con = clazz.getConstructor(CONSTRUCTOR_ARG_CLASSES);
-      } catch (Throwable exception) {
+      } catch (NoSuchMethodException exception) {
          // fall through, do not even log
       }
 
-      // If that succeeded, try to invoke the constructor
+      // If there is such a constructor, invoke it
       if (con != null) {
+
+         // Invoke it
          Object[] args = { _api };
          try {
-            return (CallingConvention) con.newInstance(args);
+            return (CustomCallingConvention) con.newInstance(args);
+
+         // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {
             Utils.logIgnoredException(CLASSNAME,
                                       thisMethod,
                                       clazz.getName(),
                                       "newInstance(java.lang.Object[])",
                                       exception);
+            return null;
          }
       }
 
       // Secondly try a constructor with no arguments
       try {
-         return (CallingConvention) clazz.newInstance();
+         return (CustomCallingConvention) clazz.newInstance();
       } catch (Throwable exception) {
          Log.log_3560(exception, name, className);
          return null;
@@ -473,8 +496,8 @@ extends Manageable {
    /**
     * Gets the calling convention for the given name.
     *
-    * <p>If the given name is <code>null</code> or empty, the default calling
-    * convention is returned.
+    * <p>If the given name is <code>null</code> or empty (after trimming),
+    * then the default calling convention is returned.
     *
     * <p>The returned calling convention is bootstrapped and initialized.
     *
