@@ -667,10 +667,6 @@
 			<param name="api" />
 			<param name="function" />
 		</entry>
-		<entry id="3611" level="DEBUG">
-			<description>Function returned _InternalError because the API is shutting down.</description>
-			<param name="api" />
-			<param name="function" />
-		</entry>
+		<!-- XXX: Removed 3611 here (@since XINS 1.3.0) -->
 	</group>
 </log>
