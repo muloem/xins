@@ -57,10 +57,7 @@
 			<param name="actual_version" />
 			<param name="expected_version" />
 		</entry>
-		<entry id="3204" level="FATAL" exception="true">
-			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
-			<param name="propertyName" />
-		</entry>
+		<!-- XXX: Removed 3204 here (@since XINS 1.3.0) -->
 		<entry id="3205" level="WARNING">
 			<description>The property that defines the runtime properties file to use is not set.</description>
 			<param name="propertyName" />
