@@ -140,14 +140,6 @@ final class Engine extends Object {
       }
       bootstrapAPI();
 
-      // Construct a generator for diagnostic context IDs
-      _contextIDGenerator = new ContextIDGenerator(_api.getName());
-      try {
-         _contextIDGenerator.bootstrap(new ServletConfigPropertyReader(config));
-      } catch (Exception exception) {
-        throw EngineStarter.servletExceptionFor(exception);
-      }
-
       // Done bootstrapping the framework
       Log.log_3225(Library.getVersion());
 
@@ -285,7 +277,8 @@ final class Engine extends Object {
     *   <li>load the Logdoc, if available;
     *   <li>bootstrap the API;
     *   <li>construct and bootstrap the calling conventions;
-    *   <li>link the engine to the API.
+    *   <li>link the engine to the API;
+    *   <li>construct and bootstrap a context ID generator;
     * </ul>
     *
     * @throws ServletException
@@ -330,6 +323,14 @@ final class Engine extends Object {
 
       // Make the API have a link to this Engine
       _api.setEngine(this);
+
+      // Construct a generator for diagnostic context IDs
+      _contextIDGenerator = new ContextIDGenerator(_api.getName());
+      try {
+         _contextIDGenerator.bootstrap(bootProps);
+      } catch (Exception exception) {
+        throw EngineStarter.servletExceptionFor(exception);
+      }
    }
 
    /**
