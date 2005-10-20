@@ -64,9 +64,12 @@ platforms, with the indicated results:
   - Sun       JDK 1.6.0 EA (build 56): OK
 
 - On Microsoft Windows 2000:
+  - Sun JDK 1.4.1_07: OK
   - Sun JDK 1.4.2_09: OK
   - Sun JDK 1.5.0_05: OK
 
+- On Solaris (Sun OS 5.6):
+  - Sun JDK 1.4.2_06: OK
 
 *** BUGS ***
 
