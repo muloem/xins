@@ -124,18 +124,18 @@ final class SOAPCallingConvention extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      Element envelopElem = parseXMLRequest(httpRequest, true);
+      Element envelopeElem = parseXMLRequest(httpRequest, true);
 
-      if (!envelopElem.getLocalName().equals("Envelope")) {
-         throw new InvalidRequestException("Root element is not a SOAP envelop but \"" +
-               envelopElem.getLocalName() + "\".");
+      if (!envelopeElem.getLocalName().equals("Envelope")) {
+         throw new InvalidRequestException("Root element is not a SOAP envelope but \"" +
+               envelopeElem.getLocalName() + "\".");
       }
 
-      List bodiesElem = envelopElem.getChildElements("Body");
+      List bodiesElem = envelopeElem.getChildElements("Body");
       if (bodiesElem.size() == 0) {
-         throw new InvalidRequestException("No body specified in the SOAP envelop.");
+         throw new InvalidRequestException("No body specified in the SOAP envelope.");
       } else if (bodiesElem.size() > 1) {
-         throw new InvalidRequestException("More than one body specified in the SOAP envelop.");
+         throw new InvalidRequestException("More than one body specified in the SOAP envelope.");
       }
       Element bodyElem = (Element) bodiesElem.get(0);
       List functionsElem = bodyElem.getChildElements();
@@ -234,7 +234,7 @@ final class SOAPCallingConvention extends CallingConvention {
       // XXX: Make it configurable whether the declaration is output or not?
       xmlout.declaration();
 
-      // Write the envelop start tag
+      // Write the envelope start tag
       xmlout.startTag("soap:Envelope");
       xmlout.attribute("xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/");
 
@@ -312,7 +312,7 @@ final class SOAPCallingConvention extends CallingConvention {
       }
 
       xmlout.endTag(); // body
-      xmlout.endTag(); // envelop
+      xmlout.endTag(); // envelope
 
       // Write the result to the servlet response
       out.write(buffer.toString());
