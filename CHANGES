@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - No longer logging the exception with log message 3301. This message is
     logged when the runtime properties file exists at start-up, but cannot be
     opened.
+  - Removed unused log message 3201.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:

@@ -47,10 +47,7 @@
 			<param name="jvm"       />
 			<param name="os"        />
 		</entry>
-		<entry id="3201" level="FATAL">
-			<description>Unable to bootstrap XINS/Java Server Framework due to unexpected state.</description>
-			<param name="state" />
-		</entry>
+		<!-- XXX: Removed 3201 here (@since XINS 1.3.0) -->
 		<entry id="3202" level="FATAL">
 			<description>Unable to bootstrap XINS/Java Server Framework due to application server behaving unexpectedly.</description>
 			<param name="detail" />
