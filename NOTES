@@ -1,4 +1,4 @@
-This file contains the XINS 1.3.0-rc1 release notes.
+This file contains the XINS 1.3.0-beta4 release notes.
 
 Contents:
 - Introduction
@@ -9,7 +9,7 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is a release candidate. It is expected to be stable and should not
+This is a beta release. It is expected to be stable and should not
 undergo any major changes.
 
 This release should be compatible with previous stable releases.
@@ -61,7 +61,7 @@ platforms, with the indicated results:
   - Blackdown JDK 1.4.2_01:     OK
   - Sun       JDK 1.4.2_09:     OK
   - Sun       JDK 1.5.0_05:     OK
-  - Sun       JDK 1.6.0 EA b56: OK
+  - Sun       JDK 1.6.0 EA (build 56): OK
 
 - On Microsoft Windows 2000:
   - Sun JDK 1.4.2_09: OK
