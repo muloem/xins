@@ -178,11 +178,156 @@ public final class WhislEncoding extends Object {
          return "";
       }
 
-      for (int i = 0; i < length; i++) {
-
+      FastStringBuffer buffer = new FastStringBuffer(length + 16);
+      try {
+         for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            if (c == '%') {
+               decodeASCII(s, i, buffer);
+               i += 2;
+            } else if (c == '$') {
+               decodeUnicode(s, i, buffer);
+               i += 4;
+            } else if (c == '+') {
+               buffer.append(' ');
+            } else {
+               buffer.append(c);
+            }
+         }
+      } catch (IndexOutOfBoundsException exception) {
+         String detail = "Malformed Whisl-encoded string: \"" + s + "\".";
+         throw new ParseException(detail);
       }
 
-      return s; // FIXME TODO
+      return buffer.toString();
+   }
+
+   /**
+    * Decodes a 2 hex-digit Unicode code at the specified position in a
+    * string. The result is appended to the specified string buffer.
+    *
+    * @param s
+    *    the string to read from, should not be <code>null</code>.
+    *
+    * @param i
+    *    the index into the string, where to start reading.
+    *
+    * @param buffer
+    *    the character string buffer to append to, should not be
+    *    <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>s == null || buffer == null</code>.
+    *
+    * @throws IndexOutOfBoundsException
+    *    if it failed to read 2 characters after index <code>i</code>.
+    *
+    * @throws ParseException
+    *    if one of the hex digits could not be decoded.
+    */
+   private static void decodeASCII(String s, int i, FastStringBuffer buffer)
+   throws NullPointerException,
+          IndexOutOfBoundsException,
+          ParseException {
+
+      char c1 = s.charAt(i + 1);
+      char c2 = s.charAt(i + 2);
+
+      int n1 = decodeHexDigit(c1);
+      int n2 = decodeHexDigit(c2);
+      int n  = (n1 << 4) | n2;
+
+      if (n > 127) {
+         String message = "Hex value \""
+                        + c1
+                        + c2
+                        + "\" converts to non-ASCII value "
+                        + n
+                        + ", while it should be less than 128.";
+         throw new ParseException(message);
+      }
+
+      buffer.append((char) n);
+   }
+
+   /**
+    * Decodes a 4 hex-digit Unicode code at the specified position in a
+    * string. The result is appended to the specified string buffer.
+    *
+    * @param s
+    *    the string to read from, should not be <code>null</code>.
+    *
+    * @param i
+    *    the index into the string, where to start reading.
+    *
+    * @param buffer
+    *    the character string buffer to append to, should not be
+    *    <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>s == null || buffer == null</code>.
+    *
+    * @throws IndexOutOfBoundsException
+    *    if it failed to read 4 characters after index <code>i</code>.
+    *
+    * @throws ParseException
+    *    if one of the hex digits could not be decoded.
+    */
+   private static void decodeUnicode(String s, int i, FastStringBuffer buffer)
+   throws NullPointerException,
+          IndexOutOfBoundsException,
+          ParseException {
+
+      char c1 = s.charAt(i + 1);
+      char c2 = s.charAt(i + 2);
+      char c3 = s.charAt(i + 3);
+      char c4 = s.charAt(i + 4);
+
+      int n1 = decodeHexDigit(c1);
+      int n2 = decodeHexDigit(c2);
+      int n3 = decodeHexDigit(c3);
+      int n4 = decodeHexDigit(c4);
+      int n  = (n1 << 12) | (n2 << 8) | (n3 << 4) | n4;
+
+      buffer.append((char) n);
+   }
+
+   /**
+    * Decodes the specified hexadecimal digit character.
+    *
+    * @param c
+    *    the character to decode, should be in the range '0' to '9' or in the
+    *    range 'a' to 'f' (case-insensitive).
+    *
+    * @return
+    *    the hexadecimal value represented by the character, between 0 and 15.
+    *
+    * @throws ParseException
+    *    if the character is not in the specified ranges.
+    */
+   private static int decodeHexDigit(char c)
+   throws ParseException {
+
+      final int ZERO    = (int) '0', NINE    = (int) '9';
+      final int UPPER_A = (int) 'A', UPPER_F = (int) 'F';
+      final int LOWER_A = (int) 'a', LOWER_F = (int) 'f';
+
+      int i = (int) c;
+
+      if (i >= ZERO && c <= NINE) {
+         return i - ZERO;
+      } else if (i >= UPPER_A && i <= UPPER_F) {
+         return (i - UPPER_A) + 10;
+      } else if (i >= LOWER_A && i <= LOWER_F) {
+         return (i - LOWER_A) + 10;
+      } else {
+         String message = "Character '"
+                        + c
+                        + "' ("
+                        + i
+                        + ") is not a hexadecimal digit.";
+         throw new ParseException(message);
+      }
    }
 
 
