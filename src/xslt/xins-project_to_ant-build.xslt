@@ -1153,7 +1153,7 @@ APIs in this project are:
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="*.fnc" />
 				</xmlvalidate>
-				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
+				<available file="{$javaImplDir}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
 				<style basedir="{$api_specsdir}" 
 				includes="*.fnc" 
