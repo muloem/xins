@@ -94,6 +94,9 @@ public class WhislEncodingTests extends TestCase {
       doTestDecodeFailure("%g");
       doTestDecodeFailure("%0g");
       doTestDecodeFailure("%gg");
+      doTestDecodeFailure("%80");
+      doTestDecodeFailure("%ff");
+      doTestDecodeFailure("%FF");
    }
 
    private void doTestDecodeFailure(String s)
@@ -124,6 +127,8 @@ public class WhislEncodingTests extends TestCase {
       input    = "a\u1234 ~!";
       expected = "a$1234+%7E%21";
       doTestWhislEncoding(input, expected);
+
+      // TODO: Test '+' in input
    }
 
    private void doTestWhislEncoding(String input, String expected)
@@ -131,7 +136,7 @@ public class WhislEncodingTests extends TestCase {
       String encoded = WhislEncoding.encode(input);
       String message = "Expected encoded version of \""
                      + input
-                     + "\" to be "
+                     + "\" to be \""
                      + expected
                      + "\" instead of \""
                      + encoded
