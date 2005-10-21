@@ -293,9 +293,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
          Result result = new StreamResult(buffer);
          xformer.transform(source, result);
 
-         // Send the result of the transformation.
-         PrintWriter out = httpResponse.getWriter();
-
          // Determine the MIME type for the output.
          Properties outputProperties = templates.getOutputProperties();
          String mimeType = outputProperties.getProperty("media-type");
@@ -318,6 +315,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          }
 
          httpResponse.setStatus(HttpServletResponse.SC_OK);
+         PrintWriter out = httpResponse.getWriter();
          out.print(buffer.toString());
          out.close();
       } catch (IOException ioex) {

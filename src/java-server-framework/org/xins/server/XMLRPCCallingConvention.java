@@ -265,8 +265,8 @@ final class XMLRPCCallingConvention extends CallingConvention {
    throws IOException {
 
       // Send the XML output to the stream and flush
-      PrintWriter out = httpResponse.getWriter();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+      PrintWriter out = httpResponse.getWriter();
       httpResponse.setStatus(HttpServletResponse.SC_OK);
 
       // Store the result in a StringWriter before sending it.

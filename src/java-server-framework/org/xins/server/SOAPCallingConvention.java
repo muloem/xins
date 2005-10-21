@@ -216,8 +216,8 @@ final class SOAPCallingConvention extends CallingConvention {
    throws IOException {
 
       // Send the XML output to the stream and flush
-      PrintWriter out = httpResponse.getWriter();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+      PrintWriter out = httpResponse.getWriter();
       if (xinsResult.getErrorCode() != null) {
          httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       } else {

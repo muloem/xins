@@ -152,7 +152,7 @@ abstract class CallingConvention extends Manageable {
          return null;
       } else {
          try {
-            return WhislEncoding.decode(value);
+            return WhislEncoding.decodeURLDecoded(value);
          } catch (ParseException cause) {
             String detail = "Failed to decode parameter \""
                           + parameter

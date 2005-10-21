@@ -53,7 +53,8 @@ extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   static final String RESPONSE_CONTENT_TYPE = "text/xml; charset="
+                                             + RESPONSE_ENCODING;
 
    /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
@@ -108,9 +109,6 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      final String THIS_METHOD = "convertRequestImpl("
-                               + HttpServletRequest.class.getName()
-                               + ')';
 
       // Determine function name
       String functionName = decodeParameter(httpRequest, "_function");
@@ -142,16 +140,22 @@ extends CallingConvention {
             dataElement = parser.parse(new StringReader(dataSectionValue));
 
          // I/O error, should never happen on a StringReader
-         } catch (IOException ex) {
-            final String SUBJECT_CLASS  = "java.lang.String";
-            final String SUBJECT_METHOD = "getBytes(java.lang.String)";
-            final String DETAIL         = "Encoding \"" + DATA_ENCODING + "\" is not supported.";
-            throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                            SUBJECT_CLASS, SUBJECT_METHOD,
-                                            DETAIL,        ex);
+         } catch (IOException exception) {
+            String thisMethod = "convertRequestImpl("
+                              + HttpServletRequest.class.getName()
+                              + ')';
+            String subjectClass  = "java.lang.String";
+            String subjectMethod = "getBytes(java.lang.String)";
+            String detail        = "Encoding \""
+                                 + DATA_ENCODING
+                                 + "\" is not supported.";
+            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                            subjectClass, subjectMethod,
+                                            detail,       exception);
          // Parsing error
-         } catch (ParseException ex) {
-            throw new InvalidRequestException("Cannot parse the data section.", ex);
+         } catch (ParseException exception) {
+            String detail = "Cannot parse the data section.";
+            throw new InvalidRequestException(detail, exception);
          }
       }
 
@@ -182,8 +186,8 @@ extends CallingConvention {
    throws IOException {
 
       // Send the XML output to the stream and flush
-      PrintWriter out = httpResponse.getWriter();
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+      PrintWriter out = httpResponse.getWriter();
       httpResponse.setStatus(HttpServletResponse.SC_OK);
       CallResultOutputter.output(out, xinsResult, false);
       out.close();
