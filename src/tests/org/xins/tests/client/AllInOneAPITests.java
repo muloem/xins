@@ -368,19 +368,19 @@ public class AllInOneAPITests extends TestCase {
    public void testSpecialCharacters() throws Exception {
       dataSectionTests("H$llo");
    }
-   
+
    public void testSpecialCharacters1() throws Exception {
       dataSectionTests("H&llo");
    }
-   
+
    public void testSpecialCharacters2() throws Exception {
       dataSectionTests("H'llo");
    }
-   
+
    public void testSpecialCharacters3() throws Exception {
       dataSectionTests("H\"llo");
    }
-   
+
    public void testSpecialCharacters4() throws Exception {
       dataSectionTests("H<llo");
    }
