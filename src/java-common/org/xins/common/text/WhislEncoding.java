@@ -167,7 +167,7 @@ public final class WhislEncoding extends Object {
     * @since XINS 1.3.0
     */
    public static String decode(String s)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, ParseException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
@@ -176,6 +176,10 @@ public final class WhislEncoding extends Object {
       int length = s.length();
       if (length < 1) {
          return "";
+      }
+
+      for (int i = 0; i < length; i++) {
+
       }
 
       return s; // FIXME TODO
