@@ -163,6 +163,8 @@ public final class WhislEncoding extends Object {
     *
     * @throws ParseException
     *    if the string cannot be decoded.
+    *
+    * @since XINS 1.3.0
     */
    public static String decode(String s)
    throws IllegalArgumentException {
@@ -176,7 +178,7 @@ public final class WhislEncoding extends Object {
          return "";
       }
 
-      return null; // FIXME TODO
+      return s; // FIXME TODO
    }
 
 
