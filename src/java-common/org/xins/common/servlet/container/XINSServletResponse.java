@@ -57,9 +57,10 @@ public class XINSServletResponse implements HttpServletResponse {
    private int _status;
 
    /**
-    * The enconding of the result.
+    * The encoding of the result. Must default to ISO-8859-1, according to the
+    * Java Servlet 2.4 Specification.
     */
-   private String _encoding;
+   private String _encoding = "ISO-8859-1";
 
    /**
     * The writer where to write the result.
@@ -110,6 +111,13 @@ public class XINSServletResponse implements HttpServletResponse {
 
    public void setContentType(String type) {
       _contentType = type;
+
+      String search = "charset=";
+      int i = type.indexOf(search);
+      if (i >= 0) {
+         _encoding = type.substring(i + search.length());
+         System.err.println("Setting charset to: " + _encoding);
+      }
    }
 
    public void setStatus(int sc) {

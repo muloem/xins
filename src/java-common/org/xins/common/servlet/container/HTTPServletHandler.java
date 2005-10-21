@@ -328,16 +328,13 @@ public class HTTPServletHandler {
          BufferedReader inbound = new BufferedReader(new InputStreamReader(client.getInputStream()));
          outbound = new BufferedOutputStream(client.getOutputStream());
 
-         // Get the output
-         String httpResult = httpQuery(inbound);
-
-         outbound.write(httpResult.getBytes("ASCII"), 0, httpResult.length());
+         httpQuery(inbound, outbound);
 
       } finally{
          // Clean up
          outbound.close();
 
-         // The following close statements doesn't work on Unix.
+         // The following close statements seem not to work on Unix.
          // inbound.close();
          // outbound.close();
          // client.close();
@@ -353,19 +350,23 @@ public class HTTPServletHandler {
     * the virtual path "/" is found then HTTP 404 is returned.
     *
     * @param input
-    *    the input stream that contains the data send by the client.
+    *    the input character stream that contains the request sent by the
+    *    client.
     *
-    * @return
-    *    the HTTP result to send back to the client.
+    * @param outbound
+    *    the output byte stream that must be fed the response towards the
+    *    client.
     *
     * @throws IOException
     *    If the query is not handled correctly.
     */
-   public String httpQuery(BufferedReader input) throws IOException {
+   public void httpQuery(BufferedReader input,
+                         BufferedOutputStream outbound) throws IOException {
+
       String inputLine;
       String url = null;
       char[] contentData = null;
-      String contentType = null;
+      String inContentType = null;
       int contentLength = -1;
       boolean inputRead = false;
 
@@ -381,11 +382,11 @@ public class HTTPServletHandler {
          if (url == null && inputLine.startsWith("POST ")) {
             url = inputLine.substring(5);
          } else if (inputLine.toLowerCase().startsWith("content-type: ")) {
-            contentType = inputLine.substring(14);
+            inContentType = inputLine.substring(14);
          } else if (inputLine.startsWith("Content-Length: ")) {
             contentLength = Integer.parseInt(inputLine.substring(16));
          } else if (contentLength != -1 && inputLine.trim().equals("")) {
-            if (contentType == null) {
+            if (inContentType == null) {
                input.readLine();
             }
             contentData = new char[contentLength];
@@ -394,16 +395,18 @@ public class HTTPServletHandler {
          }
       }
 
-      if (url != null) {
+      String httpResult;
+      String encoding = "ISO-8859-1";
+      if ("/favicon.ico".equals(url)) {
+         httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+
+      } else if (url != null) {
          if (url.indexOf(' ') != -1) {
             url = url.substring(0, url.indexOf(' '));
          }
-         if ((contentType == null || contentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
+         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
             url += '?' + new String(contentData);
             contentData = null;
-         }
-         if (url.equals("/favicon.ico")) {
-            return "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
          }
          String virtualPath = url;
          if (virtualPath.indexOf('?') != -1) {
@@ -417,34 +420,44 @@ public class HTTPServletHandler {
             servlet = (LocalServletHandler) _servlets.get("/");
          }
          if (servlet == null) {
-            return "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
-         }
-         XINSServletResponse response = servlet.query(url, contentData, contentType);
-         String result = response.getResult();
-         if (result == null) {
-            return "HTTP/1.1 " + response.getStatus() + " " +
-                  HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
-         }
-         PropertyReader headers = response.getHeaders();
-         Iterator itHeaderNames = headers.getNames();
-         String httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
-         httpResult += "Content-Type: " + response.getContentType() + "\r\n";
-         while (itHeaderNames.hasNext()) {
-            String nextHeader = (String) itHeaderNames.next();
-            String headerValue = headers.get(nextHeader);
-            if (headerValue != null) {
-               httpResult += nextHeader + ": " + headerValue + "\r\n";
+            httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+         } else {
+            XINSServletResponse response = servlet.query(url, contentData, inContentType);
+            String result = response.getResult();
+            if (result == null) {
+               httpResult = "HTTP/1.1 " + response.getStatus() + " " +
+                     HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
+            } else {
+               
+               PropertyReader headers = response.getHeaders();
+               Iterator itHeaderNames = headers.getNames();
+               httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
+               httpResult += "Content-Type: " + response.getContentType() + "\r\n";
+               while (itHeaderNames.hasNext()) {
+                  String nextHeader = (String) itHeaderNames.next();
+                  String headerValue = headers.get(nextHeader);
+                  if (headerValue != null) {
+                     httpResult += nextHeader + ": " + headerValue + "\r\n";
+                  }
+               }
+
+               encoding = response.getCharacterEncoding();
+               System.err.println("Using charset: " + encoding);
+
+               int length = result.getBytes(encoding).length + 1;
+               httpResult += "Content-Length: " + length + "\r\n";
+               httpResult += "Connection: close\r\n";
+               httpResult += "\r\n";
+               httpResult += result + "\n";
+               httpResult += "\n";
             }
          }
-         int length = result.length() + 1;
-         httpResult += "Content-Length: " + length + "\r\n";
-         httpResult += "Connection: close\r\n";
-         httpResult += "\r\n";
-         httpResult += result + "\n";
-         httpResult += "\n";
-         return httpResult;
+      } else {
+         httpResult = "HTTP/1.1 400 BAD_REQUEST\n\n";
       }
-      return "HTTP/1.1 400 BAD_REQUEST\n\n";
+
+      byte[] bytes = httpResult.getBytes(encoding);
+      outbound.write(bytes, 0, bytes.length);
    }
 
    /**
