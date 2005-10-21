@@ -516,6 +516,10 @@
 			<description>Thread to check a URL is still active.</description>
 			<param name="url" type="text"   nullable="false" />
 		</entry>
+		<entry id="3506" level="ERROR" exception="true">
+			<description>Calling convention thrown an I/O exception when creating the result.</description>
+			<param name="conventionClassName" type="text"  nullable="false" />
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">

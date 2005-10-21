@@ -301,6 +301,7 @@ abstract class CallingConvention extends Manageable {
       // Filter any thrown exceptions
       } catch (Throwable exception) {
          if (exception instanceof IOException) {
+            Log.log_3506(exception, getClass().getName());
             throw (IOException) exception;
          } else {
             String thisMethod    = "convertResult("

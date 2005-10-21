@@ -668,7 +668,12 @@ final class Engine extends Object {
       // Send the output only if GET or POST; convert it from a XINS function
       // result to an HTTP response
       if (sendOutput) {
-         cc.convertResult(result, response, request);
+         try {
+            cc.convertResult(result, response, request);
+         } catch (Throwable exception) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+         }
       }
    }
 
