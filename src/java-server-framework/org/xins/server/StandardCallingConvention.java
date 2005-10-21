@@ -9,19 +9,15 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.Utils;
-
 import org.xins.common.collections.ProtectedPropertyReader;
-
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -116,20 +112,19 @@ extends CallingConvention {
                                + HttpServletRequest.class.getName()
                                + ')';
 
-      // XXX: What if invalid URL, e.g. query string ends with percent sign?
-
       // Determine function name
-      String functionName = httpRequest.getParameter("_function");
+      String functionName = decodeParameter(httpRequest, "_function");
       if (TextUtils.isEmpty(functionName)) {
          throw new FunctionNotSpecifiedException();
       }
 
       // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      ProtectedPropertyReader functionParams =
+         new ProtectedPropertyReader(SECRET_KEY);
       Enumeration params = httpRequest.getParameterNames();
       while (params.hasMoreElements()) {
-         String name = (String) params.nextElement();
-         String value = httpRequest.getParameter(name);
+         String name  = (String) params.nextElement();
+         String value = decodeParameter(httpRequest, name);
          functionParams.set(SECRET_KEY, name, value);
       }
 
@@ -137,7 +132,7 @@ extends CallingConvention {
       cleanUpParameters(functionParams, SECRET_KEY);
 
       // Get data section
-      String dataSectionValue = httpRequest.getParameter("_data");
+      String dataSectionValue = decodeParameter(httpRequest, "_data");
       Element dataElement = null;
       if (dataSectionValue != null && dataSectionValue.length() > 0) {
          ElementParser parser = new ElementParser();
