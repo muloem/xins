@@ -9,10 +9,11 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is a beta release. It is expected to be stable and should not
+This is a release candidate. It is expected to be stable and will not
 undergo any major changes.
 
-This release should be compatible with previous stable releases.
+This release is considered fully compatible with all previous stable releases.
+An exception is logging; log messages can change between individual releases.
 
 
 *** PREREQUISITES ***
@@ -68,8 +69,9 @@ platforms, with the indicated results:
   - Sun JDK 1.4.2_09: OK
   - Sun JDK 1.5.0_05: OK
 
-- On Solaris (Sun OS 5.6):
+- On Solaris (Solaris 8):
   - Sun JDK 1.4.2_06: OK
+
 
 *** BUGS ***
 
