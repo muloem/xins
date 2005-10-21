@@ -132,7 +132,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals((short) -1, result.getOutputShort());
       assertEquals(16,         result.getOutputInt());
       assertEquals(14L,        result.getOutputLong());
-      assertEquals("hello",    result.getOutputText());
+      assertEquals("Hello ~!@#$%^&*()_+<>?[]\\;',./ \u20AC\u0630&", result.getOutputText());
       assertNull(result.getOutputText2());
       assertNull(result.getOutputProperties());
       assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
@@ -191,7 +191,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals((short) -1, result.getOutputShort());
       assertEquals(16,         result.getOutputInt());
       assertEquals(14L,        result.getOutputLong());
-      assertEquals("hello",    result.getOutputText());
+      assertEquals("Hello ~!@#$%^&*()_+<>?[]\\;',./ \u20AC\u0630&", result.getOutputText());
       assertNull(result.getOutputText2());
       assertNull(result.getOutputProperties());
       assertEquals(Date.fromStringForRequired("20040621"), result.getOutputDate());
