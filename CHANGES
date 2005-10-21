@@ -12,18 +12,27 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     cannot be opened.
   - Removed unused log messages 3201, 3204 and 3611.
   - If the calling convention throws an IOException when converting the
-    result, the exception is logged and an error is returned.
+    result, the exception is logged and a '500 Internal Server Error' is
+    returned.
+  - Fixed a bug in all CallingConvention instances. The
+    HttpServletResponse.setEncoding(String) method was called _after_ calling
+    getWriter(), which is invalid according to the Java Servlet 2.4
+    Specification.
 
 * XINS/Java Common Library:
   - Fixed bug #1334039: FastStringBuffer#append(char[] ch, int off, int len) 
     now accepts ch.length == off if len == 0.
-  - Added WhislEncoding.decode(String).
+  - Added WhislEncoding.decode(String) and decodeURLDecoded(String).
 
 * Generated build file:
   - If no directory exists for the implementation, the stub target will
     create the directory.
   - If the implementation directory is not created, the generation of the
     stub will create it.
+
+* Libraries:
+  - Upgraded xmlenc from 0.49 to 0.50. This fixes a bug regarding the escaping
+    of quote characters in attribute values.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:
