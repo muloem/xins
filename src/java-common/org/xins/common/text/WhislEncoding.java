@@ -183,13 +183,62 @@ public final class WhislEncoding extends Object {
          for (int i = 0; i < length; i++) {
             char c = s.charAt(i);
             if (c == '%') {
-               decodeASCII(s, i, buffer);
+               decodeASCII(s, i + 1, buffer);
                i += 2;
             } else if (c == '$') {
-               decodeUnicode(s, i, buffer);
+               decodeUnicode(s, i + 1, buffer);
                i += 4;
             } else if (c == '+') {
                buffer.append(' ');
+            } else {
+               buffer.append(c);
+            }
+         }
+      } catch (IndexOutOfBoundsException exception) {
+         String detail = "Malformed Whisl-encoded string: \"" + s + "\".";
+         throw new ParseException(detail);
+      }
+
+      return buffer.toString();
+   }
+
+   /**
+    * Decodes the specified Whisl-encoded character string, assuming it's
+    * already URL-decoded.
+    *
+    * @param s
+    *    the string to decode, not <code>null</code>.
+    *
+    * @return
+    *    the decoded string, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null</code>
+    *
+    * @throws ParseException
+    *    if the string cannot be decoded.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String decodeURLDecoded(String s)
+   throws IllegalArgumentException, ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // Short-circuit if the string is empty
+      int length = s.length();
+      if (length < 1) {
+         return "";
+      }
+
+      FastStringBuffer buffer = new FastStringBuffer(length + 16);
+      try {
+         for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            if (c == '$') {
+               decodeUnicode(s, i + 1, buffer);
+               i += 4;
             } else {
                buffer.append(c);
             }
@@ -230,8 +279,8 @@ public final class WhislEncoding extends Object {
           IndexOutOfBoundsException,
           ParseException {
 
-      char c1 = s.charAt(i + 1);
-      char c2 = s.charAt(i + 2);
+      char c1 = s.charAt(i    );
+      char c2 = s.charAt(i + 1);
 
       int n1 = decodeHexDigit(c1);
       int n2 = decodeHexDigit(c2);
@@ -278,10 +327,10 @@ public final class WhislEncoding extends Object {
           IndexOutOfBoundsException,
           ParseException {
 
-      char c1 = s.charAt(i + 1);
-      char c2 = s.charAt(i + 2);
-      char c3 = s.charAt(i + 3);
-      char c4 = s.charAt(i + 4);
+      char c1 = s.charAt(i    );
+      char c2 = s.charAt(i + 1);
+      char c3 = s.charAt(i + 2);
+      char c4 = s.charAt(i + 3);
 
       int n1 = decodeHexDigit(c1);
       int n2 = decodeHexDigit(c2);
