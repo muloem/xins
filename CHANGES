@@ -12,6 +12,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     opened.
   - Removed unused log messages 3201, 3204 and 3611.
 
+* XINS/Java Common Library:
+  - Fixed: FastStringBuffer#append(char[] ch, int off, int len) now accepts
+    ch.length == off if len == 0.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:
 

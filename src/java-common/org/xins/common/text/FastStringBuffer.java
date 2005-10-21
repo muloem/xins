@@ -234,7 +234,7 @@ public class FastStringBuffer extends Object {
     * @throws IllegalArgumentException
     *    if <code>cbuf == null
     *          || off &lt; 0
-    *          || off &gt;= cbuf.length
+    *          || off &gt; cbuf.length
     *          || len &lt; 0
     *          || (off + len &gt; cbuf.length)</code>.
     */
@@ -247,7 +247,7 @@ public class FastStringBuffer extends Object {
       }
       if (off < 0) {
          throw new IllegalArgumentException("off (" + off + ") < 0");
-      } else if (off >= cbuf.length && off > 0) {
+      } else if (off > cbuf.length) {
          throw new IllegalArgumentException(
             "off (" + off + ") >= cbuf.length (" + cbuf.length + ')');
       } else if (len < 0) {
