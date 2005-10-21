@@ -25,8 +25,6 @@ import org.xins.common.MandatoryArgumentChecker;
  *        number that indicate the Unicode value of a single character;
  * </ul>
  *
- * <p>TODO: Add decode method.
- *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
@@ -89,7 +87,7 @@ public final class WhislEncoding extends Object {
    }
 
    /**
-    * Whisl encodes the specified character string.
+    * Whisl-encodes the specified character string.
     *
     * @param s
     *    the string to Whisl-encode, not <code>null</code>.
@@ -112,9 +110,9 @@ public final class WhislEncoding extends Object {
       if (length < 1) {
          return "";
       }
-      char[] string = s.toCharArray();
 
       // Construct a buffer
+      char[] string = s.toCharArray();
       FastStringBuffer buffer = null;
 
       // Loop through the string. If the character is less than 128 then get
@@ -150,6 +148,37 @@ public final class WhislEncoding extends Object {
 
       return buffer.toString();
    }
+
+   /**
+    * Decodes the specified Whisl-encoded character string.
+    *
+    * @param s
+    *    the string to decode, not <code>null</code>.
+    *
+    * @return
+    *    the decoded string, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>s == null</code>
+    *
+    * @throws ParseException
+    *    if the string cannot be decoded.
+    */
+   public static String encode(String s)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s);
+
+      // Short-circuit if the string is empty
+      int length = s.length();
+      if (length < 1) {
+         return "";
+      }
+
+      return null; // FIXME TODO
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
