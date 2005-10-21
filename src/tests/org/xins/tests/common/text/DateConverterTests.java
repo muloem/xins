@@ -6,6 +6,7 @@
  */
 package org.xins.tests.common.text;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
@@ -164,4 +165,20 @@ public class DateConverterTests extends TestCase {
          assertEquals(message, expected, actual);
       }
    }
+
+   /**
+    * Tests a possible JDK bug in {@link java.util.Date#after}.
+    */
+   /* This is not a XINS bug but a JDK bug. 
+   public void testIncorrectDateAfter() {
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
+      try {
+         Date beforeNoon = formatter.parse("2005.10.20 11:59:37.932");
+         Date afterNoon = formatter.parse("2005.10.20 12:00:02.674");
+         assertTrue("The morning is not before the afternoon.", beforeNoon.before(afterNoon));
+         assertTrue("The afternoon is not after the morning.", afterNoon.after(beforeNoon));
+      } catch (ParseException parseException) {
+         fail("Incorrect date format for startup time.");
+      }
+   }*/
 }
