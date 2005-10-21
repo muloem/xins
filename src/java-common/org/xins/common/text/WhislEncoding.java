@@ -164,7 +164,7 @@ public final class WhislEncoding extends Object {
     * @throws ParseException
     *    if the string cannot be decoded.
     */
-   public static String encode(String s)
+   public static String decode(String s)
    throws IllegalArgumentException {
 
       // Check preconditions
