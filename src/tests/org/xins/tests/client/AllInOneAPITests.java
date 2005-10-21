@@ -384,19 +384,23 @@ public class AllInOneAPITests extends TestCase {
    public void testSpecialCharacters4() throws Exception {
       dataSectionTests("H<llo");
    }
-   
+
    public void testSpecialCharacters5() throws Exception {
       dataSectionTests("H>llo");
    }
-   
+
    public void testSpecialCharacters6() throws Exception {
       dataSectionTests("Euro sign: \u20AC");
    }
-   
+
    public void testSpecialCharacters7() throws Exception {
       dataSectionTests("Arabic: \u0630");
    }
-      
+
+   public void testSpecialCharacters8() throws Exception {
+      dataSectionTests("ends with &");
+   }
+
    /**
     * Tests a function that returns a data section with elements that contain
     * other elements.
