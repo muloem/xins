@@ -12,6 +12,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.xins.common.text.ParseException;
 import org.xins.common.text.WhislEncoding;
 
 /**
@@ -65,7 +66,7 @@ public class WhislEncodingTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   public void testWhislEncoding() throws Throwable {
+   public void testWhislEncodingEncode() throws Throwable {
       try {
          WhislEncoding.encode(null);
          fail("Expected IllegalArgumentException for WhislEncoding.encode(null).");
@@ -73,7 +74,40 @@ public class WhislEncodingTests extends TestCase {
       } catch (IllegalArgumentException exception) {
          // as expected
       }
+   }
 
+   public void testWhislEncodingDecode() throws Throwable {
+      try {
+         WhislEncoding.decode(null);
+         fail("Expected IllegalArgumentException for WhislEncoding.decode(null).");
+         return;
+      } catch (IllegalArgumentException exception) {
+         // as expected
+      }
+
+      doTestDecodeFailure("$");
+      doTestDecodeFailure("$g");
+      doTestDecodeFailure("$000");
+      doTestDecodeFailure("$000g");
+      doTestDecodeFailure("%");
+      doTestDecodeFailure("%0");
+      doTestDecodeFailure("%g");
+      doTestDecodeFailure("%0g");
+      doTestDecodeFailure("%gg");
+   }
+
+   private void doTestDecodeFailure(String s)
+   throws Exception {
+      try {
+         WhislEncoding.decode(s);
+         fail("Expected decoding of \"" + s + "\" to fail.");
+      } catch (ParseException exception) {
+         // as expected
+      }
+   }
+
+   public void testWhislEncoding()
+   throws Exception {
       String input, expected;
 
       input    = "";
@@ -92,13 +126,26 @@ public class WhislEncodingTests extends TestCase {
       doTestWhislEncoding(input, expected);
    }
 
-   private void doTestWhislEncoding(String input, String expected) {
-      String actual  = WhislEncoding.encode(input);
-      String message = "Expected \""
+   private void doTestWhislEncoding(String input, String expected)
+   throws Exception {
+      String encoded = WhislEncoding.encode(input);
+      String message = "Expected encoded version of \""
+                     + input
+                     + "\" to be "
                      + expected
                      + "\" instead of \""
-                     + actual
+                     + encoded
                      + "\".";
-      assertEquals(message, expected, actual);
+      assertEquals(message, expected, encoded);
+
+      String decoded = WhislEncoding.decode(encoded);
+      message = "Expected decoded version of \""
+              + encoded
+              + "\" to be "
+              + input
+              + "\" instead of \""
+              + decoded
+              + "\".";
+      assertEquals(message, input, decoded);
    }
 }
