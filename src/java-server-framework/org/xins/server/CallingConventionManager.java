@@ -153,7 +153,7 @@ extends Manageable {
       // does not identify a known calling convention
       if (cc == null) {
          String detail = "No such calling convention.";
-         Log.log_3240(ccName, prop, ccName, detail);
+         Log.log_3243(ccName, prop, ccName, detail);
          throw new InvalidPropertyValueException(prop, ccName, detail);
       }
 
@@ -376,19 +376,19 @@ extends Manageable {
                                      "properties", properties);
 
       // Bootstrapping calling convention
-      Log.log_3237(name);
+      Log.log_3240(name);
 
       try {
          cc.bootstrap(properties);
-         Log.log_3238(name);
+         Log.log_3241(name);
 
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3239(name, exception.getPropertyName());
+         Log.log_3242(name, exception.getPropertyName());
 
       // Invalid property
       } catch (InvalidPropertyValueException exception) {
-         Log.log_3240(name,
+         Log.log_3243(name,
                       exception.getPropertyName(),
                       exception.getPropertyValue(),
                       exception.getReason());
@@ -396,7 +396,7 @@ extends Manageable {
       // Catch BootstrapException and any other exceptions not caught
       // by previous catch statements
       } catch (Throwable exception) {
-         Log.log_3241(exception, name);
+         Log.log_3244(exception, name);
       }
    }
 

@@ -18,6 +18,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     HttpServletResponse.setEncoding(String) method was called _after_ calling
     getWriter(), which is invalid according to the Java Servlet 2.4
     Specification.
+  - Moved log messages 3237-3241 three IDs up (to 3240-3244). These log
+    messages are new since XINS 1.3.0. Added log messages 3237-3239 in
+    between.
 
 * XINS/Java Common Library:
   - Fixed bug #1334039: FastStringBuffer#append(char[] ch, int off, int len) 
