@@ -17,22 +17,94 @@ import org.xins.common.Utils;
 /**
  * Abstraction of a service caller for a TCP-based service. Service caller
  * implementations can be used to perform a call to a service, and potentially
- * fail-over to other back-ends if one is not available. Additionally,
- * load-balancing and different types of time-outs are supported.
+ * fail-over to other back-ends if one is not available.
  *
- * <p>Back-ends are
- * represented by {@link TargetDescriptor} instances. Groups of back-ends are
- * represented by {@link GroupDescriptor} instances.
+ * <a name="section-descriptors"></a>
+ * <h2>Descriptors</h2>
  *
- * <a name="section-lbfo"></a>
- * <h2>Load-balancing and fail-over</h2>
+ * <p>A service caller has a link to a {@link Descriptor} instance, which
+ * describes which back-ends to call. A <code>Descriptor</code> describes
+ * either a single back-end or a group of back-ends. A single back-end is
+ * represented by a {@link TargetDescriptor} instance, while a groups of
+ * back-ends is represented by a {@link GroupDescriptor} instance. Both are
+ * subclasses of class <code>Descriptor</code>.
  *
- * <p>TODO: Describe load-balancing and fail-over.
+ * <p>There is only one type of target descriptor, but there are
+ * different types of group descriptor:
+ *
+ * <ul>
+ * <li><em>ordered</em>: underlying descriptors are iterated over in
+ *     sequential order;
+ * <li><em>random</em>: underlying descriptors are iterated over in random
+ *     order.
+ * </ul>
+ *
+ * <p>Note that group descriptors may contain other group descriptors.
  *
  * <a name="section-timeouts"></a>
  * <h2>Time-outs</h2>
  *
- * <p>TODO: Describe time-outs.
+ * <p>Target descriptors support three kinds of time-out:
+ *
+ * <ul>
+ * <li><em>total time-out</em>: limits the duration of a call,
+ *     including connection time, time used to send the request, time used to
+ *     receive the response, etcetera;
+ * <li><em>connection time-out</em>: limits the time for attempting to
+ *     establish a connection;
+ * <li><em>socket time-out</em>: limits the time for attempting to receive
+ *     data on a socket.
+ * </ul>
+ *
+ * <a name="section-lbfo"></a>
+ * <h2>Load-balancing and fail-over</h2>
+ *
+ * Service callers can help in evenly distributing processing across
+ * available resources. This load-balancing is achieved by using a group
+ * descriptor which iterates over the underlying descriptors in a
+ * <em>random</em> order.
+ *
+ * <p>Unlike load-balancing, fail-over allows the detection of a failure and
+ * the migration of the processing to a similar, redundant back-end. This can
+ * be achieved using any type of group descriptor (either <em>ordered</em> or
+ * <em>random</em>).
+ *
+ * <p>Not all calls should be retried on a different back-end. For example, if
+ * a call fails because the back-end indicates the request is considered
+ * incorrect, then it may be considered unappropriate to try other back-ends.
+ * The {@link #shouldFailOver(CallRequest,CallConfig,CallExceptionList)
+ * shouldFailOver} method determines whether a failed call will be retried.
+ *
+ * <p>Consider the following hypothetical scenario. A company has two data
+ * centers, a primary site and a secondary backup site. The primary site has
+ * 3 back-ends running an <em>eshop</em> service, while the hot backup site
+ * has only 2 such back-ends. The back-ends at the primary site should always
+ * be preferred over the back-ends at the backup site. At each site, load
+ * should be evenly distributed among the available back-ends within that
+ * site.
+ *
+ * <p>Such a scenario can be converted to a descriptor configuration such as
+ * the following:
+ *
+ * <ul>
+ * <li>the service caller uses a group descriptor called <em>All</em> of type
+ *     <em>ordered</em>. This group descriptor contains 2 other group
+ *     descriptors: <em>MainSite</em> and <em>BackupSite</em>.
+ * <li>the group descriptor <em>MainSite</em> is of type <em>random</em> and
+ *     contains 3 target descriptors, called <em>Main1</em>,
+ *     <em>Main2</em> and <em>Main3</em>.
+ * <li>the group descriptor <em>BackupSite</em> is also of type
+ *     <em>random</em> and contains 2 target descriptors, called
+ *     <em>Backup1</em> and <em>Backup2</em>.
+ * </ul>
+ *
+ * <p>Now if the service caller performs a call, it will first randomly select
+ * one of <em>Main1</em>, <em>Main2</em> and <em>Main3</em>. If the call
+ * fails and fail-over is considered allowable, it will retry the call with
+ * one of the other back-ends in the <em>MainSite</em> group. If none of the
+ * back-ends in the <em>MainSite</em> group succeeds, it will randomly select
+ * back-ends from the <em>BackupSite</em> group until the call has succeeded
+ * or until all back-ends were tried.
  *
  * <a name="section-callconfig"></a>
  * <h2>Call configuration</h2>
@@ -46,8 +118,8 @@ import org.xins.common.Utils;
  * applied:
  *
  * <ul>
- *    <li>stored in a <code>ServiceCaller</code>;
- *    <li>stored in a <code>CallRequest</code>;
+ *    <li>associated with a <code>ServiceCaller</code>;
+ *    <li>associated with a <code>CallRequest</code>;
  *    <li>passed with the call method.
  * </ul>
  *
@@ -62,7 +134,7 @@ import org.xins.common.Utils;
  * call method. If it is, then this overrides any other settings.
  *
  * <a name="section-implementations"></a>
- * <h2>Implementations</h2>
+ * <h2>Subclass implementations</h2>
  *
  * <p>This class is abstract and is intended to be have service-specific
  * subclasses, e.g. for HTTP, FTP, JDBC, etc.
@@ -184,7 +256,9 @@ public abstract class ServiceCaller extends Object {
                                         + ')';
             final String DETAIL         = "Method "
                                         + SUBJECT_METHOD
-                                        + " should be implemented since class uses old-style (XINS 1.0) constructor.";
+                                        + " should be implemented since class"
+                                        + " uses the old-style (XINS 1.0)"
+                                        + " constructor.";
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
@@ -200,7 +274,9 @@ public abstract class ServiceCaller extends Object {
                                         + "java.lang.Throwable)";
             final String DETAIL         = "Method "
                                         + SUBJECT_METHOD
-                                        + " should be implemented since class uses old-style (XINS 1.0) constructor.";
+                                        + " should be implemented since class"
+                                        + " uses the old-style (XINS 1.0)"
+                                        + " constructor.";
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
@@ -220,7 +296,9 @@ public abstract class ServiceCaller extends Object {
                                         + ')';
             final String DETAIL         = "Method "
                                         + SUBJECT_METHOD
-                                        + " should not be implemented since class uses old-style (XINS 1.0) constructor.";
+                                        + " should not be implemented since"
+                                        + " class uses the old-style (XINS"
+                                        + " 1.0) constructor.";
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
@@ -241,7 +319,9 @@ public abstract class ServiceCaller extends Object {
                                         + ')';
             final String DETAIL         = "Method "
                                         + SUBJECT_METHOD
-                                        + " should not be implemented since class uses old-style (XINS 1.0) constructor.";
+                                        + " should not be implemented since"
+                                        + " class uses the old-style (XINS"
+                                        + " 1.0) constructor.";
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
          }
       }
@@ -294,7 +374,8 @@ public abstract class ServiceCaller extends Object {
          } catch (MethodNotImplementedError e) {
             final String DETAIL = "Method "
                                 + SUBJECT_METHOD
-                                + " should be implemented since class uses new-style (XINS 1.1) constructor.";
+                                + " should be implemented since class uses"
+                                + " the new-style (XINS 1.1) constructor.";
             throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
 
          // ...it should not throw any exception...
@@ -616,7 +697,8 @@ public abstract class ServiceCaller extends Object {
                                      + THIS_METHOD
                                      + " called while class "
                                      + _className
-                                     + " uses old-style (XINS 1.0) constructor.";
+                                     + " uses the old-style (XINS 1.0)"
+                                     + " constructor.";
          throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
                                          SUBJECT_CLASS, SUBJECT_METHOD,
                                          DETAIL);
@@ -721,7 +803,8 @@ public abstract class ServiceCaller extends Object {
                                      + THIS_METHOD
                                      + " called while class "
                                      + _className
-                                     + " uses old-style (XINS 1.0) constructor.";
+                                     + " uses the old-style (XINS 1.0)"
+                                     + " constructor.";
          throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
                                          SUBJECT_CLASS, SUBJECT_METHOD,
                                          DETAIL);
@@ -932,7 +1015,8 @@ public abstract class ServiceCaller extends Object {
                                      + THIS_METHOD
                                      + " called while class "
                                      + _className
-                                     + " uses new-style (XINS 1.1) constructor.";
+                                     + " uses the new-style (XINS 1.1)"
+                                     + " constructor.";
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
       }
 
@@ -1064,7 +1148,8 @@ public abstract class ServiceCaller extends Object {
          if (succeeded) {
             long duration = System.currentTimeMillis() - start;
 
-            return createCallResult(request, target, duration, exceptions, result);
+            return createCallResult(request, target, duration, exceptions,
+                                    result);
          }
       }
 
@@ -1313,8 +1398,14 @@ public abstract class ServiceCaller extends Object {
     * <code>true</code> is immediately returned.
     *
     * <p>The implementation of this method in class {@link ServiceCaller}
-    * returns <code>true</code> if and only if
-    * <code>callConfig.{@link CallConfig#isFailOverAllowed() isFailOverAllowed()} || exception instanceof {@link ConnectionCallException}</code>.
+    * returns <code>true</code> if and only if at least one of the following
+    * conditions is true:
+    *
+    * <ul>
+    * <li><code>callConfig.{@link CallConfig#isFailOverAllowed()
+    *     isFailOverAllowed()}</code>
+    * <li><code>exception instanceof {@link ConnectionCallException}</code>
+    * </ul>
     *
     * @param request
     *    the request for the call, as passed to {@link #doCall(CallRequest)},
@@ -1338,23 +1429,23 @@ public abstract class ServiceCaller extends Object {
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
 
-      final String THIS_METHOD = "shouldFailOver("
-                               + CallRequest.class.getName()
-                               + ','
-                               + CallConfig.class.getName()
-                               + ','
-                               + CallExceptionList.class.getName()
-                               + ')';
-
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
+         final String THIS_METHOD    = "shouldFailOver("
+                                     + CallRequest.class.getName()
+                                     + ','
+                                     + CallConfig.class.getName()
+                                     + ','
+                                     + CallExceptionList.class.getName()
+                                     + ')';
          final String SUBJECT_CLASS  = Utils.getCallingClass();
          final String SUBJECT_METHOD = Utils.getCallingMethod();
          final String DETAIL         = "Method "
                                      + THIS_METHOD
                                      + " called while class "
                                      + _className
-                                     + " uses old-style (XINS 1.0) constructor.";
+                                     + " uses the old-style (XINS 1.0)"
+                                     + " constructor.";
          RuntimeException exception = Utils.logProgrammingError(
             CLASSNAME,     THIS_METHOD,
             SUBJECT_CLASS, SUBJECT_METHOD,
