@@ -363,6 +363,7 @@ public class HTTPServletHandler {
    public void httpQuery(BufferedReader input,
                          BufferedOutputStream outbound) throws IOException {
 
+      // Read the input
       String inputLine;
       String url = null;
       char[] contentData = null;
@@ -381,7 +382,7 @@ public class HTTPServletHandler {
          // POST method
          if (url == null && inputLine.startsWith("POST ")) {
             url = inputLine.substring(5);
-         } else if (inputLine.toLowerCase().startsWith("content-type: ")) {
+         } else if (inputLine.startsWith("Content-Type: ")) {
             inContentType = inputLine.substring(14);
          } else if (inputLine.startsWith("Content-Length: ")) {
             contentLength = Integer.parseInt(inputLine.substring(16));
@@ -397,10 +398,13 @@ public class HTTPServletHandler {
 
       String httpResult;
       String encoding = "ISO-8859-1";
+      
+      // Netscape also request for a favicon.ico, this query should be ignored
       if ("/favicon.ico".equals(url)) {
          httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
-
       } else if (url != null) {
+         
+         // Normalize the URL
          if (url.indexOf(' ') != -1) {
             url = url.substring(0, url.indexOf(' '));
          }
@@ -408,6 +412,8 @@ public class HTTPServletHandler {
             url += '?' + new String(contentData);
             contentData = null;
          }
+         
+         // Locate the path of the URL
          String virtualPath = url;
          if (virtualPath.indexOf('?') != -1) {
             virtualPath = virtualPath.substring(0, url.indexOf('?'));
@@ -415,20 +421,31 @@ public class HTTPServletHandler {
          if (virtualPath.endsWith("/") && virtualPath.length() > 1) {
             virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
          }
+         
+         // Get the Servlet according to the path
          LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
+         
+         // If not found the root Servlet is used
          if (servlet == null) {
             servlet = (LocalServletHandler) _servlets.get("/");
          }
+         
+         // If no servlet is found return 404
          if (servlet == null) {
             httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
          } else {
+            
+            // Query the Servlet
             XINSServletResponse response = servlet.query(url, contentData, inContentType);
+            
+            // If result == null, the Servlet failed with an HTTP error
             String result = response.getResult();
             if (result == null) {
                httpResult = "HTTP/1.1 " + response.getStatus() + " " +
                      HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
             } else {
                
+               // Create the HTTP answer
                PropertyReader headers = response.getHeaders();
                Iterator itHeaderNames = headers.getNames();
                httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
@@ -442,7 +459,6 @@ public class HTTPServletHandler {
                }
 
                encoding = response.getCharacterEncoding();
-               System.err.println("Using charset: " + encoding);
 
                int length = result.getBytes(encoding).length + 1;
                httpResult += "Content-Length: " + length + "\r\n";

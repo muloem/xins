@@ -116,7 +116,6 @@ public class XINSServletResponse implements HttpServletResponse {
       int i = type.indexOf(search);
       if (i >= 0) {
          _encoding = type.substring(i + search.length());
-         System.err.println("Setting charset to: " + _encoding);
       }
    }
 
