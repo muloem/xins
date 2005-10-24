@@ -19,7 +19,6 @@ import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-import org.xins.common.text.WhislEncoding;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -117,47 +116,6 @@ abstract class CallingConvention extends Manageable {
          for (int i = (toRemove.size() - 1); i >= 0; i--) {
             String name = (String) toRemove.get(i);
             parameters.set(secretKey, name, null);
-         }
-      }
-   }
-
-   /**
-    * Retrieves the value of an HTTP parameter and decodes it.
-    *
-    * @param request
-    *    the HTTP request, cannot be <code>null</code>.
-    *
-    * @param parameter
-    *    the name of the parameter, cannot be <code>null</code>.
-    *
-    * @return
-    *    the decoded value of the HTTP parameter, or <code>null</code> if the
-    *    parameter is not set.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request == null || parameter == null</code>.
-    *
-    * @throws InvalidRequestException
-    *    if the decoding of the value failed.
-    */
-   String decodeParameter(HttpServletRequest request, String parameter)
-   throws IllegalArgumentException, InvalidRequestException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("request",   request,
-                                     "parameter", parameter);
-
-      String value = request.getParameter(parameter);
-      if (value == null) {
-         return null;
-      } else {
-         try {
-            return WhislEncoding.decodeURLDecoded(value);
-         } catch (ParseException cause) {
-            String detail = "Failed to decode parameter \""
-                          + parameter
-                          + "\".";
-            throw new InvalidRequestException(detail, cause);
          }
       }
    }

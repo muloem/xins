@@ -111,7 +111,7 @@ extends CallingConvention {
 
 
       // Determine function name
-      String functionName = decodeParameter(httpRequest, "_function");
+      String functionName = httpRequest.getParameter("_function");
       if (TextUtils.isEmpty(functionName)) {
          throw new FunctionNotSpecifiedException();
       }
@@ -122,7 +122,7 @@ extends CallingConvention {
       Enumeration params = httpRequest.getParameterNames();
       while (params.hasMoreElements()) {
          String name  = (String) params.nextElement();
-         String value = decodeParameter(httpRequest, name);
+         String value = httpRequest.getParameter(name);
          functionParams.set(SECRET_KEY, name, value);
       }
 
@@ -130,7 +130,7 @@ extends CallingConvention {
       cleanUpParameters(functionParams, SECRET_KEY);
 
       // Get data section
-      String dataSectionValue = decodeParameter(httpRequest, "_data");
+      String dataSectionValue = httpRequest.getParameter("_data");
       Element dataElement = null;
       if (dataSectionValue != null && dataSectionValue.length() > 0) {
          ElementParser parser = new ElementParser();
