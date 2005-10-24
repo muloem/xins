@@ -831,7 +831,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       //      It has been decided to take this approach since the
       //      shouldFailOver method in class HTTPServiceCaller has protected
       //      access.
-      //
+      //      An alternative solution that should be investigated is to
+      //      subclass HTTPServiceCaller.
+
       // A non-2xx HTTP status code indicates the request was not handled
       } else if (exception instanceof StatusCodeHTTPCallException) {
          int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
@@ -840,7 +842,8 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Some XINS error codes indicate the request was not accepted
       } else if (exception instanceof UnsuccessfulXINSCallException) {
          String s = ((UnsuccessfulXINSCallException) exception).getErrorCode();
-         should = ("_InvalidRequest".equals(s) || "_DisabledFunction".equals(s));
+         should = ("_InvalidRequest".equals(s)
+                || "_DisabledFunction".equals(s));
 
       // Otherwise do not fail over
       } else {
