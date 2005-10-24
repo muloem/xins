@@ -218,8 +218,8 @@
 		</entry>
 		<entry id="3239" level="ERROR" exception="true">
 			<description>Error while creating calling convention.</description>
-			<param name="convention"      nullable="false" />
-			<param name="conventionClass" nullable="false" />
+			<param name="name"      nullable="false" />
+			<param name="className" nullable="false" />
 		</entry>
 		<entry id="3240" level="DEBUG">
 			<description>Bootstrapping calling convention.</description>
@@ -610,7 +610,7 @@
 	</group>
 
 	<group id="runtime.cc" name="Calling Convention">
-        <!-- XXX: Moved 3560 to bootstrap category (@since XINS 1.3.0) -->
+        <!-- XXX: Removed 3560 (@since XINS 1.3.0) Replaced by 3239. -->
 	</group>
 
 	<group id="runtime.context" name="Diagnostic Context Identifiers">

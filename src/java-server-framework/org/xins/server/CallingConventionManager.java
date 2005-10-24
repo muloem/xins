@@ -309,7 +309,7 @@ extends Manageable {
       try {
          clazz = Class.forName(className);
       } catch (Throwable exception) {
-         Log.log_3560(exception, name, className);
+         Log.log_3239(exception, name, className);
          return null;
       }
 
@@ -344,7 +344,7 @@ extends Manageable {
       try {
          return (CustomCallingConvention) clazz.newInstance();
       } catch (Throwable exception) {
-         Log.log_3560(exception, name, className);
+         Log.log_3239(exception, name, className);
          return null;
       }
    }
