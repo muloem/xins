@@ -242,6 +242,8 @@ extends Manageable {
 
       // No custom calling convention is specified
       if (name == null) {
+         // TODO: Log @DEBUG: No calling convention specified
+         // TODO: Log.log_3xxx(nameProp);
          return;
       }
 
@@ -325,13 +327,17 @@ extends Manageable {
          return null;
       }
 
+      Log.log_3237(name, className);
+
       // Construct a CallingConvention instance
       CallingConvention cc = construct(name, className);
-      if (cc == null) {
-         // TODO: Log ERROR: Unable to create custom calling
-         //       convention, instance of class could not be
-         //       constructed.
+
+      // Constructed successfully
+      if (cc != null) {
+         Log.log_3238(name, className);
       }
+
+      // Note that the logging of failures is done in the construct method
 
       return cc;
    }
@@ -583,7 +589,7 @@ extends Manageable {
       if (cc == null) {
          String detail = "Calling convention \""
                        + name
-                       + "\" is unknown.";
+                       + "\" is unknown or could not be created.";
          throw new InvalidRequestException(detail);
 
       // Not usable (so not bootstrapped and initialized)
