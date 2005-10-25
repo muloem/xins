@@ -88,7 +88,6 @@ The following bugs are known to apply to this version of XINS:
 - 1329335: No error when shell script cannot guess XINS_HOME.
 - 1328576: Circular dependencies in ACL files possible.
 - 1263832: No unique call ID for meta-functions.
-- 1263768: Log: Servlet init succeeded while framework init failed.
 - 1172375: Code generation does not avoid Java keywords.
 - 1091721: Loglevel NOTICE not recognised.
 
