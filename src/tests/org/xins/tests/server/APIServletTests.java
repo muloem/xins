@@ -133,17 +133,8 @@ public class APIServletTests extends TestCase {
       context._minor = 0;
       config  = new TestServletConfig();
       config._context = context;
-      try {
-         servlet.init(config);
-         fail("Expected ProgrammingException.");
-         return;
-      } catch (ProgrammingException exception) {
-         // as expected
-         String msg = exception.getMessage();
-         assertNotNull(msg);
-         assertTrue(msg.indexOf("getServerInfo()") > -1);
-         assertTrue(msg.indexOf("null"           ) > -1);
-      }
+      servlet.init(config);
+      // TODO: Test that state indicates failure
 
       context._serverInfo = getClass().getName();
       try {
