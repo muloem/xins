@@ -40,7 +40,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     listing the groups that actually have associated entries.
 
 * Libraries:
-  - Upgraded xmlenc from 0.49 to 0.50. This fixes a bug regarding the escaping
+  - Upgraded xmlenc from 0.49 to 0.51. This fixes a bug regarding the escaping
     of quote characters in attribute values.
 
 ______________________________________________________________________________
