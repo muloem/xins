@@ -71,6 +71,13 @@ platforms, with the indicated results:
   - Sun JDK 1.5.0_05:           TODO
   - Sun JDK 1.6.0 EA b56:       TODO
 
+- On Microsoft Windows XP:
+  - Sun JDK 1.4.2_07: OK
+  - Sun JDK 1.5.0_05: OK
+
+- On Microsoft Windows ME:
+  - Sun JDK 1.4.2_01: OK (Except for ExpiryFolder and HTTPS)
+
 - On Solaris 8:
   - Sun JDK 1.4.2_06:           TODO
 
