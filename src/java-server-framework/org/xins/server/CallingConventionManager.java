@@ -39,12 +39,6 @@ extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME =
-      CallingConventionManager.class.getName();
-
-   /**
     * List of the names of the calling conventions currently included in
     * XINS.
     */
@@ -231,8 +225,7 @@ extends Manageable {
 
       // No custom calling convention is specified
       if (name == null) {
-         // TODO: Log @DEBUG: No calling convention specified
-         // TODO: Log.log_3xxx(nameProp);
+         Log.log_3246(nameProp);
          return;
       }
 
@@ -256,8 +249,7 @@ extends Manageable {
       _nameCustomCC  = name;
       _classCustomCC = className;
 
-      // TODO: Determined custom calling convention:
-      // TODO: Log.log(name, className);
+      Log.log_3247(nameProp, name, className);
    }
 
    /**
@@ -343,12 +335,12 @@ extends Manageable {
       // Construct a CallingConvention instance
       CallingConvention cc = construct(name, className);
 
+      // NOTE: Logging of construction failures is done in construct(...)
+
       // Constructed successfully
       if (cc != null) {
          Log.log_3238(name, className);
       }
-
-      // Note that the logging of failures is done in the construct method
 
       return cc;
    }
@@ -372,8 +364,6 @@ extends Manageable {
     */
    private CallingConvention construct(String name, String className)
    throws IllegalArgumentException {
-
-      String thisMethod = "construct(java.lang.String,java.lang.String)";
 
       // Check arguments
       MandatoryArgumentChecker.check("name", name, "className", className);
@@ -405,9 +395,12 @@ extends Manageable {
 
          // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {
-            Utils.logIgnoredException(CLASSNAME,
+            String thisClass  = CallingConventionManager.class.getName();
+            String thisMethod = "construct(java.lang.String,"
+                              + "java.lang.String)";
+            Utils.logIgnoredException(thisClass,
                                       thisMethod,
-                                      clazz.getName(),
+                                      con.getClass().getName(),
                                       "newInstance(java.lang.Object[])",
                                       exception);
             return null;
