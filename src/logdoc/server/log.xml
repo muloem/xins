@@ -181,7 +181,7 @@
 			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
 		</entry>
-		<entry id="3231" level="INFO">
+		<entry id="3231" level="DEBUG">
 			<description>Reading the runtime properties file to use from the bootstrap properties.</description>
 			<param name="propertyName" />
 		</entry>
