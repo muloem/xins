@@ -60,6 +60,7 @@
 	<translation entry="3242">Le démarrage de la convention d'appel <value-of-param name="name" format="quoted" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> est manquante.</translation>
 	<translation entry="3243">Le démarrage de la convention d'appel <value-of-param name="name" format="quoted" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur incorrecte: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3244">Le démarrage de la convention d'appel <value-of-param name="name" format="quoted" /> a échoué. Raison: <exception-property name="message" format="quoted" />.</translation>
+<!-- FIXME -->	<translation entry="3245">Default calling convention is <value-of-param name="name" format="quoted" />.</translation>
 
 	<translation entry="3300">Initialisation du sous-système de logging avec les paramètres définis dans le fichier <value-of-param name="configFile" format="quoted" />.</translation>
 	<translation entry="3301">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être ouvert. Détail: <value-of-param name="detail" format="quoted" /></translation>

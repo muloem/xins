@@ -245,6 +245,10 @@
 			<description>Calling convention could not be bootstrapped.</description>
 			<param name="name" />
 		</entry>
+		<entry id="3245" level="INFO">
+			<description>Determined default calling convention.</description>
+			<param name="name" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
