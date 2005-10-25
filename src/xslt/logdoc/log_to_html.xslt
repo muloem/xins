@@ -58,7 +58,7 @@
 						<th title="The logging category for the group">Category</th>
 						<th title="The number of log entries in this group">Entries</th>
 					</tr>
-					<xsl:for-each select="group">
+					<xsl:for-each select="group[entry]">
 						<xsl:variable name="category" select="concat($package_name, '.', @id)" />
 						<xsl:variable name="group_link" select="concat('group-', @id, '.html')" />
 						<tr>

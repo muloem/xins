@@ -35,6 +35,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - If the implementation directory is not created, the generation of the
     stub will create it.
 
+* Logdoc:
+  - In the generated HTML index page (titled "Log documentation") now only
+    listing the groups that actually have associated entries.
+
 * Libraries:
   - Upgraded xmlenc from 0.49 to 0.50. This fixes a bug regarding the escaping
     of quote characters in attribute values.
