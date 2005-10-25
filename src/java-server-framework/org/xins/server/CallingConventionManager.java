@@ -56,7 +56,7 @@ extends Manageable {
 
    /**
     * Array of type <code>Class</code> that is used when constructing a
-    * <code>CustomCallingConvention</code> instance via RMI.
+    * <code>CallingConvention</code> instance via RMI.
     */
    private final static Class[] CONSTRUCTOR_ARG_CLASSES = { API.class };
 
@@ -116,6 +116,24 @@ extends Manageable {
     */
    private final HashMap _conventions;
 
+   /**
+    * Name of the custom calling convention as specified in the bootstrap
+    * properties. This field will only be set together with the field
+    * {@link #_classCustomCC}.
+    *
+    * <p>This field is initialized during bootstrapping.
+    */
+   private String _nameCustomCC;
+
+   /**
+    * Name of the custom calling convention class as specified in the
+    * bootstrap properties. This field will only be set together with the
+    * field {@link #_nameCustomCC}.
+    *
+    * <p>This field is initialized during bootstrapping.
+    */
+   private String _classCustomCC;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -140,6 +158,9 @@ extends Manageable {
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
+
+      // Determine the name and class of the custom calling convention
+      determineCustomConvention(properties);
 
       // Determine the name of the default calling convention
       String prop     = APIServlet.API_CALLING_CONVENTION_PROPERTY;
@@ -192,6 +213,63 @@ extends Manageable {
    }
 
    /**
+    * Determines the name and class name for the custom calling convention
+    * defined in the specified bootstrap properties.
+    *
+    * @param properties
+    *    the bootstrap properties, cannot be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>properties == null</code>.
+    *
+    * @throws MissingRequiredPropertyException
+    *    if a required property is not given.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value of a certain property is invalid.
+    */
+   private void determineCustomConvention(PropertyReader properties)
+   throws NullPointerException,
+          MissingRequiredPropertyException,
+          InvalidPropertyValueException {
+
+      // Get bootstrap property names
+      String nameProp  = APIServlet.API_CALLING_CONVENTION_PROPERTY;
+      String classProp = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
+
+      // Determine the name of the custom calling convention, if any
+      String name = TextUtils.trim(properties.get(nameProp), null);
+
+      // No custom calling convention is specified
+      if (name == null) {
+         return;
+      }
+
+      // Get the name of the class, default to null
+      String className = TextUtils.trim(properties.get(classProp), null);
+
+      // Custom calling convention class not specified
+      if (className == null) {
+         throw new MissingRequiredPropertyException(classProp);
+      }
+
+      // Try to load the class
+      try {
+         Class.forName(className);
+      } catch (Throwable exception) {
+         throw new InvalidPropertyValueException(classProp, className,
+                                                 "Unable to load class.");
+      }
+
+      // Store the custom calling convention name and class
+      _nameCustomCC  = name;
+      _classCustomCC = className;
+
+      // TODO: Determined custom calling convention:
+      // TODO: Log.log(name, className);
+   }
+
+   /**
     * Constructs the calling convention with the specified name, using the
     * specified bootstrap properties.
     *
@@ -219,64 +297,43 @@ extends Manageable {
       // Check preconditions
       MandatoryArgumentChecker.check("properties", properties, "name", name);
 
-      // Old-style XINS calling convention
+      String className = null;
+
+      // Regular calling conventions
       if (APIServlet.OLD_STYLE_CALLING_CONVENTION.equals(name)) {
-         return new OldStyleCallingConvention();
-
-      // XINS standard calling convention
+         className = "org.xins.server.OldStyleCallingConvention";
       } else if (APIServlet.STANDARD_CALLING_CONVENTION.equals(name)) {
-         return new StandardCallingConvention();
-
-      // XINS XML calling convention
+         className = "org.xins.server.StandardCallingConvention";
       } else if (APIServlet.XML_CALLING_CONVENTION.equals(name)) {
-         return new XMLCallingConvention();
-
-      // XINS XSLT calling convention
+         className = "org.xins.server.XMLCallingConvention";
       } else if (APIServlet.XSLT_CALLING_CONVENTION.equals(name)) {
-         return new XSLTCallingConvention();
-
-      // XINS SOAP calling convention
+         className = "org.xins.server.XSLTCallingConvention";
       } else if (APIServlet.SOAP_CALLING_CONVENTION.equals(name)) {
-         return new SOAPCallingConvention(_api);
-
-      // XINS XML-RPC calling convention
+         className = "org.xins.server.SOAPCallingConvention";
       } else if (APIServlet.XML_RPC_CALLING_CONVENTION.equals(name)) {
-         return new XMLRPCCallingConvention(_api);
+         className = "org.xins.server.XMLRPCCallingConvention";
 
-      } else {
-
-         // Determine the name of the custom calling convention, if any
-         String prop    = APIServlet.API_CALLING_CONVENTION_PROPERTY;
-         String cccName = TextUtils.trim(properties.get(prop), null);
-
-         // The custom calling convention
-         if (name.equals(cccName)) {
-            prop = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
-
-            // Get the name of the class, default to null
-            String cccClass = TextUtils.trim(properties.get(prop), null);
-
-            // Custom calling convention class not specified
-            if (cccClass == null) {
-               // TODO: Log ERROR: Unable to create custom calling convention,
-               //       class not specified.
-
-            // Construct a CustomCallingConvention instance
-            } else {
-               CallingConvention ccc = construct(name, cccClass);
-               if (ccc == null) {
-                  // TODO: Log ERROR: Unable to create custom calling
-                  //       convention, instance of class could not be
-                  //       constructed.
-               }
-
-               return ccc;
-            }
-         }
+      // Custom calling convention
+      } else if (name.equals(_nameCustomCC)) {
+         className = _classCustomCC;
       }
 
-      // Otherwise return null
-      return null;
+      // If the class could not be determined, then return null
+      if (className == null) {
+         // TODO: Log warning: No calling convention named <name>.
+         //       (should probably be logged one level up)
+         return null;
+      }
+
+      // Construct a CallingConvention instance
+      CallingConvention cc = construct(name, className);
+      if (cc == null) {
+         // TODO: Log ERROR: Unable to create custom calling
+         //       convention, instance of class could not be
+         //       constructed.
+      }
+
+      return cc;
    }
 
    /**
@@ -290,13 +347,13 @@ extends Manageable {
     *    the name of the class, cannot be <code>null</code>.
     *
     * @return
-    *    the constructed {@link CustomCallingConvention} instance, or
+    *    the constructed {@link CallingConvention} instance, or
     *    <code>null</code> if the construction failed.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null || className == null</code>.
     */
-   private CustomCallingConvention construct(String name, String className)
+   private CallingConvention construct(String name, String className)
    throws IllegalArgumentException {
 
       String thisMethod = "construct(java.lang.String,java.lang.String)";
@@ -327,7 +384,7 @@ extends Manageable {
          // Invoke it
          Object[] args = { _api };
          try {
-            return (CustomCallingConvention) con.newInstance(args);
+            return (CallingConvention) con.newInstance(args);
 
          // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {
@@ -342,7 +399,7 @@ extends Manageable {
 
       // Secondly try a constructor with no arguments
       try {
-         return (CustomCallingConvention) clazz.newInstance();
+         return (CallingConvention) clazz.newInstance();
       } catch (Throwable exception) {
          Log.log_3239(exception, name, className);
          return null;
