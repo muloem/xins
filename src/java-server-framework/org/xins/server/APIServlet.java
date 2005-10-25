@@ -319,38 +319,14 @@ extends HttpServlet {
          Log.log_3203(actual, expected);
       }
 
-      // Starting servlet initialization
-      Log.log_3000();
-
+      // Construct an engine
       try {
-
-         // Construct an engine
          _engine = new Engine(config);
 
-         // Initialization succeeded
-         Log.log_3001();
-
+      // Fail silently, so that the servlet container will not keep trying to
+      // re-initialize this servlet (possibly on each call!)
       } catch (Throwable exception) {
-
-         // Initialization failed, log the exception
-         Log.log_3002(exception);
-
-         // Pass the exception through
-         if (exception instanceof ServletException) {
-            throw (ServletException) exception;
-         } else if (exception instanceof Error) {
-            throw (Error) exception;
-         } else if (exception instanceof RuntimeException) {
-            throw (RuntimeException) exception;
-
-         // Should in theory never happen, but because of the design of the
-         // JVM this cannot be guaranteed. So throw an Error that wraps
-         // around the original exception.
-         } else {
-            Error wrappingError = new Error();
-            ExceptionUtils.setCause(wrappingError, exception);
-            throw wrappingError;
-         }
+         return;
       }
    }
 

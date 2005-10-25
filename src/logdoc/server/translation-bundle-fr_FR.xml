@@ -8,9 +8,9 @@
 -->
 
 <translation-bundle>
-	<translation entry="3000">Démarrage de l'initialisation de la servlet.</translation>
-	<translation entry="3001">Succès de l'initialisation de la servlet.</translation>
-	<translation entry="3002">L'initialisation de la servlet a échoué.</translation>
+	<!-- XXX: Removed 3000 here (@since XINS 1.3.0) -->
+	<!-- XXX: Removed 3001 here (@since XINS 1.3.0) -->
+	<!-- XXX: Removed 3002 here (@since XINS 1.3.0) -->
 	<translation entry="3003">Echec de la servlet lors du traitement de la requête.</translation>
 
 	<translation entry="3100">Changement de l'état de l'APIServlet de <value-of-param name="oldState" /> à <value-of-param name="newState" />.</translation>

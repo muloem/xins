@@ -8,9 +8,9 @@
 -->
 
 <translation-bundle>
-	<translation entry="3000">Starting servlet initialization.</translation>
-	<translation entry="3001">Successfully finished servlet initialization.</translation>
-	<translation entry="3002">Servlet initialization failed.</translation>
+	<!-- XXX: Removed 3000 here (@since XINS 1.3.0) -->
+	<!-- XXX: Removed 3001 here (@since XINS 1.3.0) -->
+	<!-- XXX: Removed 3002 here (@since XINS 1.3.0) -->
 	<translation entry="3003">Servlet failed while servicing request.</translation>
 
 	<translation entry="3100">Changing APIServlet state from <value-of-param name="oldState" />	to <value-of-param name="newState" />.</translation>

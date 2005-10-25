@@ -138,7 +138,9 @@ final class Engine extends Object {
          _state.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw se;
       }
-      bootstrapAPI();
+      if (! bootstrapAPI()) {
+         throw new ServletException(); // XXX
+      }
 
       // Done bootstrapping the framework
       Log.log_3225(Library.getVersion());
@@ -281,12 +283,11 @@ final class Engine extends Object {
     *   <li>construct and bootstrap a context ID generator;
     * </ul>
     *
-    * @throws ServletException
-    *    if bootstrap fails.
+    * @return
+    *    <code>true</code> if the bootstrapping of the API succeeded,
+    *    <code>false</code> if it failed.
     */
-   private void bootstrapAPI() throws ServletException {
-
-      // XXX: This method should not throw ServletException
+   private boolean bootstrapAPI() {
 
       // Proceed to next stage
       _state.setState(EngineState.BOOTSTRAPPING_API);
@@ -306,7 +307,7 @@ final class Engine extends Object {
       // Handle any failures
       } catch (ServletException se) {
          _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-         throw se;
+         return false;
       }
 
       // Create the calling convention manager
@@ -315,10 +316,23 @@ final class Engine extends Object {
       // Bootstrap the calling convention manager
       try {
          _conventionManager.bootstrap(bootProps);
-      } catch (Throwable cause) {
-         ServletException exception = new ServletException();
-         ExceptionUtils.setCause(exception, cause);
-         throw exception;
+
+      // Missing required property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3209(exception.getPropertyName());
+         return false;
+
+      // Invalid property value
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3210(exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+         return false;
+
+      // Other bootstrap error
+      } catch (Throwable exception) {
+         Log.log_3211(exception);
+         return false;
       }
 
       // Make the API have a link to this Engine
@@ -329,8 +343,11 @@ final class Engine extends Object {
       try {
          _contextIDGenerator.bootstrap(bootProps);
       } catch (Exception exception) {
-        throw EngineStarter.servletExceptionFor(exception);
+        return false;
       }
+
+      // Succeeded
+      return true;
    }
 
    /**

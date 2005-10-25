@@ -12,15 +12,9 @@
 	<translation-bundle locale="fr_FR" />
 
 	<group id="servlet" name="Servlet">
-		<entry id="3000" level="DEBUG">
-			<description>Starting servlet initialization.</description>
-		</entry>
-		<entry id="3001" level="DEBUG">
-			<description>Successfully finished servlet initialization.</description>
-		</entry>
-		<entry id="3002" level="FATAL" exception="true">
-			<description>Servlet initialization failed.</description>
-		</entry>
+		<!-- XXX: Removed 3000 here (@since XINS 1.3.0) -->
+		<!-- XXX: Removed 3001 here (@since XINS 1.3.0) -->
+		<!-- XXX: Removed 3002 here (@since XINS 1.3.0) -->
 		<entry id="3003" level="FATAL" exception="true">
 			<description>Servlet failed while servicing request.</description>
 		</entry>
