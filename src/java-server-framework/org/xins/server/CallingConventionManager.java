@@ -7,8 +7,10 @@
 package org.xins.server;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -45,20 +47,26 @@ extends Manageable {
     * List of the names of the calling conventions currently included in
     * XINS.
     */
-   private final static String[] CONVENTIONS = {
+   private final static List CONVENTIONS = Arrays.asList(new String[] {
       APIServlet.STANDARD_CALLING_CONVENTION,
       APIServlet.OLD_STYLE_CALLING_CONVENTION,
       APIServlet.XML_CALLING_CONVENTION,
       APIServlet.XSLT_CALLING_CONVENTION,
       APIServlet.SOAP_CALLING_CONVENTION,
       APIServlet.XML_RPC_CALLING_CONVENTION,
-   };
+   });
 
    /**
     * Array of type <code>Class</code> that is used when constructing a
     * <code>CallingConvention</code> instance via RMI.
     */
    private final static Class[] CONSTRUCTOR_ARG_CLASSES = { API.class };
+
+   /**
+    * Placeholder object used to indicate that the construction of a calling
+    * convention object failed. Never <code>null</code>.
+    */
+   private final static Object CREATION_FAILED = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -110,7 +118,9 @@ extends Manageable {
 
    /**
     * Map containing all calling conventions. The key is the name of the
-    * calling convention, the value is the calling convention object.
+    * calling convention, the value is the calling convention object, or
+    * {@link #CREATION_FAILED} if the calling convention object could not be
+    * constructed.
     *
     * <p>This field is initialized during bootstrapping.
     */
@@ -159,6 +169,9 @@ extends Manageable {
           InvalidPropertyValueException,
           BootstrapException {
 
+      // NOTE: The default calling convention *must* be created successfully,
+      //       while the others do not need to be.
+
       // Determine the name and class of the custom calling convention
       determineCustomConvention(properties);
 
@@ -173,7 +186,9 @@ extends Manageable {
       // If the factory method returned null, then the specified name
       // does not identify a known calling convention
       if (cc == null) {
-         String detail = "No such calling convention.";
+         String detail = "Calling convention \""
+                       + ccName
+                       + "\" could not be created.";
          Log.log_3243(ccName, prop, ccName, detail);
          throw new InvalidPropertyValueException(prop, ccName, detail);
       }
@@ -190,8 +205,8 @@ extends Manageable {
       // TODO: Log that the specified calling convention is the default
 
       // Construct and bootstrap all other calling conventions.
-      for (int i = 0; i < CONVENTIONS.length; i++) {
-         ccName = CONVENTIONS[i];
+      for (int i = 0; i < CONVENTIONS.size(); i++) {
+         ccName = (String) CONVENTIONS.get(i);
 
          // Skip the default calling convention
          if (ccName.equals(_defaultConventionName)) {
@@ -201,6 +216,7 @@ extends Manageable {
          // Create the calling convention
          cc = create(properties, ccName);
 
+         // Succeeded in creating the calling convention
          if (cc != null) {
 
             // Store it in the map with other calling conventions
@@ -208,6 +224,10 @@ extends Manageable {
 
             // Bootstrap it
             bootstrap(ccName, cc, properties);
+
+         // Failed to create calling convention
+         } else {
+            _conventions.put(ccName, CREATION_FAILED);
          }
       }
    }
@@ -488,11 +508,13 @@ extends Manageable {
       while (iterator.hasNext()) {
 
          // Determine the name and get the CallingConvention instance
-         String            name = (String) iterator.next();
-         CallingConvention cc   = (CallingConvention) _conventions.get(name);
+         String name = (String) iterator.next();
+         Object cc   = _conventions.get(name);
 
-         // Initialize it
-         init(name, cc, properties);
+         // If creation of CallingConvention succeeded, then initialize it
+         if (cc != CREATION_FAILED) {
+            init(name, (CallingConvention) cc, properties);
+         }
       }
    }
 
@@ -583,23 +605,35 @@ extends Manageable {
       }
 
       // Get the CallingConvention object
-      CallingConvention cc = (CallingConvention) _conventions.get(name);
+      Object o = _conventions.get(name);
 
       // Not found
-      if (cc == null) {
+      if (o == null) {
          String detail = "Calling convention \""
                        + name
-                       + "\" is unknown or could not be created.";
+                       + "\" is unknown.";
          throw new InvalidRequestException(detail);
 
-      // Not usable (so not bootstrapped and initialized)
-      } else if (! cc.isUsable()) {
+      // Creation failed
+      } else if (o == CREATION_FAILED) {
          String detail = "Calling convention \""
                        + name
-                       + "\" is uninitialized.";
+                       + "\" is recognized, but could not be created.";
          throw new InvalidRequestException(detail);
+
+      // Calling convention is recognized and was created OK
+      } else {
+
+         // Not usable (so not bootstrapped and initialized)
+         CallingConvention cc = (CallingConvention) o;
+         if (! cc.isUsable()) {
+            String detail = "Calling convention \""
+                          + name
+                          + "\" is uninitialized.";
+            throw new InvalidRequestException(detail);
+         }
+
+         return cc;
       }
-
-      return cc;
    }
 }
