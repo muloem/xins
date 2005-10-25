@@ -16,6 +16,8 @@ import org.xins.common.text.FastStringBuffer;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see InvalidPropertyValueException
  */
 public final class MissingRequiredPropertyException
 extends Exception {
