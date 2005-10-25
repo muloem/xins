@@ -8,6 +8,7 @@ package org.xins.common.collections;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 /**
  * Exception thrown to indicate a required property has no value set for it.
@@ -32,13 +33,17 @@ extends Exception {
     * @param propertyName
     *    the name of the property, cannot be <code>null</code>.
     *
+    * @param detail
+    *    a more detailed description of why this property is required in this
+    *    context, can be <code>null</code>.
+    *
     * @return
     *    the message, never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>propertyName == null</code>.
     */
-   private static String createMessage(String propertyName)
+   private static String createMessage(String propertyName, String detail)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -48,7 +53,15 @@ extends Exception {
       FastStringBuffer buffer = new FastStringBuffer(120);
       buffer.append("No value is set for the required property \"");
       buffer.append(propertyName);
-      buffer.append("\".");
+
+      // Append the detail message, if any
+      detail = TextUtils.trim(detail, null);
+      if (detail != null) {
+         buffer.append("\": ");
+         buffer.append(detail);
+      } else {
+         buffer.append("\".");
+      }
 
       return buffer.toString();
    }
@@ -63,6 +76,33 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
+    * Constructs a new <code>MissingRequiredPropertyException</code>, with the
+    * specified detail message.
+    *
+    * @param propertyName
+    *    the name of the required property, not <code>null</code>.
+    *
+    * @param detail
+    *    a more detailed description of why this property is required in this
+    *    context, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>propertyName == null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public MissingRequiredPropertyException(String propertyName, String detail)
+   throws IllegalArgumentException {
+
+      // Construct message and call superclass constructor
+      super(createMessage(propertyName, detail));
+
+      // Store data
+      _propertyName = propertyName;
+      _detail       = TextUtils.trim(detail, null);
+   }
+
+   /**
     * Constructs a new <code>MissingRequiredPropertyException</code>.
     *
     * @param propertyName
@@ -73,12 +113,7 @@ extends Exception {
     */
    public MissingRequiredPropertyException(String propertyName)
    throws IllegalArgumentException {
-
-      // Construct message and call superclass constructor
-      super(createMessage(propertyName));
-
-      // Store data
-      _propertyName = propertyName;
+      this(propertyName, null);
    }
 
 
@@ -87,9 +122,15 @@ extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * The name of the property.
+    * The name of the property. Never <code>null</code>.
     */
    private final String _propertyName;
+
+   /**
+    * Detailed description of why this property is required in the current
+    * context. Can be <code>null</code>.
+    */
+   private final String _detail;
 
 
    //-------------------------------------------------------------------------
@@ -104,5 +145,17 @@ extends Exception {
     */
    public String getPropertyName() {
       return _propertyName;
+   }
+
+   /**
+    * Returns the detail message.
+    *
+    * @return
+    *    the trimmed detail message, can be <code>null</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public String getDetail() {
+      return _detail;
    }
 }
