@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -169,65 +170,33 @@ extends Manageable {
           InvalidPropertyValueException,
           BootstrapException {
 
-      // NOTE: The default calling convention *must* be created successfully,
-      //       while the others do not need to be.
-
       // Determine the name and class of the custom calling convention
       determineCustomConvention(properties);
 
       // Determine the name of the default calling convention
-      String prop     = APIServlet.API_CALLING_CONVENTION_PROPERTY;
-      String fallback = APIServlet.STANDARD_CALLING_CONVENTION;
-      String ccName   = TextUtils.trim(properties.get(prop), fallback);
+      determineDefaultConvention(properties);
 
-      // Attempt to construct an instance
-      CallingConvention cc = create(properties, ccName);
-
-      // If the factory method returned null, then the specified name
-      // does not identify a known calling convention
-      if (cc == null) {
-         String detail = "Calling convention \""
-                       + ccName
-                       + "\" could not be created.";
-         Log.log_3243(ccName, prop, ccName, detail);
-         throw new InvalidPropertyValueException(prop, ccName, detail);
+      // Create a list with all known calling convention names
+      ArrayList conventions = new ArrayList(CONVENTIONS);
+      if (_nameCustomCC != null) {
+         conventions.add(_nameCustomCC);
       }
 
-      // Store the convention
-      _conventions.put(ccName, cc);
-
-      // Bootstrap the default calling convention
-      bootstrap(ccName, cc, properties);
-
-      // Store the default calling convention
-      _defaultConventionName = ccName;
-
-      // TODO: Log that the specified calling convention is the default
-
-      // Construct and bootstrap all other calling conventions.
-      for (int i = 0; i < CONVENTIONS.size(); i++) {
-         ccName = (String) CONVENTIONS.get(i);
-
-         // Skip the default calling convention
-         if (ccName.equals(_defaultConventionName)) {
-            continue;
-         }
+      // Construct and bootstrap all calling conventions
+      for (int i = 0, size = conventions.size(); i < size; i++) {
 
          // Create the calling convention
-         cc = create(properties, ccName);
+         String            name = (String) conventions.get(i);
+         CallingConvention cc   = create(properties, name);
 
-         // Succeeded in creating the calling convention
+         // If created, store the object and attempt bootstrapping
          if (cc != null) {
+            _conventions.put(name, cc);
+            bootstrap(name, cc, properties);
 
-            // Store it in the map with other calling conventions
-            _conventions.put(ccName, cc);
-
-            // Bootstrap it
-            bootstrap(ccName, cc, properties);
-
-         // Failed to create calling convention
+         // Otherwise remember we know this one, but it failed to create
          } else {
-            _conventions.put(ccName, CREATION_FAILED);
+            _conventions.put(name, CREATION_FAILED);
          }
       }
    }
@@ -289,6 +258,28 @@ extends Manageable {
 
       // TODO: Determined custom calling convention:
       // TODO: Log.log(name, className);
+   }
+
+   /**
+    * Determines the name of the default calling convention and stores it in a
+    * field. The field it is stored in is {@link #_defaultConventionName}.
+    *
+    * @param properties
+    *    the bootstrap properties, cannot be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>properties == null</code>.
+    */
+   private void determineDefaultConvention(PropertyReader properties)
+   throws NullPointerException {
+
+      // Get the value of the bootstrap property, fallback to default
+      String prop            = APIServlet.API_CALLING_CONVENTION_PROPERTY;
+      String fallback        = APIServlet.STANDARD_CALLING_CONVENTION;
+      _defaultConventionName = TextUtils.trim(properties.get(prop), fallback);
+
+      // Log: Determined the default calling convention
+      Log.log_3245(_defaultConventionName);
    }
 
    /**
