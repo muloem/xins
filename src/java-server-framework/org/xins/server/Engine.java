@@ -648,6 +648,11 @@ final class Engine extends Object {
 
             Log.log_3522(exception, error);
 
+            // XXX: We could pass the result of HttpStatus.getStatusText(int)
+            //      to log message 3522, but this would introduce a dependency
+            //      from the XINS/Java Server Framework on the HttpClient
+            //      library.
+
             response.sendError(error);
             return;
          }
