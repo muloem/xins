@@ -124,20 +124,20 @@ extends Manageable {
    /**
     * Name of the custom calling convention as specified in the bootstrap
     * properties. This field will only be set together with the field
-    * {@link #_classCustomCC}.
+    * {@link #_customCC}.
     *
     * <p>This field is initialized during bootstrapping.
     */
    private String _nameCustomCC;
 
    /**
-    * Name of the custom calling convention class as specified in the
+    * An instance of the custom calling convention as specified in the
     * bootstrap properties. This field will only be set together with the
     * field {@link #_nameCustomCC}.
     *
     * <p>This field is initialized during bootstrapping.
     */
-   private String _classCustomCC;
+   private CustomCallingConvention _customCC;
 
 
    //-------------------------------------------------------------------------
@@ -165,10 +165,7 @@ extends Manageable {
           BootstrapException {
 
       // Determine the name and class of the custom calling convention
-      determineCustomConvention(properties);
-
-      // Determine the name of the default calling convention
-      determineDefaultConvention(properties);
+      determineDefinedConvention(properties);
 
       // Create a list with all known calling convention names
       ArrayList conventions = new ArrayList(CONVENTIONS);
@@ -190,15 +187,24 @@ extends Manageable {
 
          // Otherwise remember we know this one, but it failed to create
          } else {
-            // TODO: Log warning: No calling convention named <name>.
             _conventions.put(name, CREATION_FAILED);
          }
       }
    }
 
    /**
-    * Determines the name and class name for the custom calling convention
-    * defined in the specified bootstrap properties.
+    * Determines the details of the calling convention defined in the
+    * bootstrap properties. Both the custom calling convention and the default
+    * calling convention are determined.
+    *
+    * <p>The name and class name for the custom calling convention will be
+    * stored in {@link #_nameCustomCC} and {@link #_classCustomCC},
+    * respectively. If no custom calling convention is specified, then both
+    * will be set to <code>null</code>.
+    *
+    * <p>The name of the default calling convention will be stored in
+    * {@link #_defaultConventionName}. This field will always be set to a
+    * non-<code>null</code> value.
     *
     * @param properties
     *    the bootstrap properties, cannot be <code>null</code>.
@@ -212,94 +218,114 @@ extends Manageable {
     * @throws InvalidPropertyValueException
     *    if the value of a certain property is invalid.
     */
-   private void determineCustomConvention(PropertyReader properties)
+   private void determineDefinedConvention(PropertyReader properties)
    throws NullPointerException,
           MissingRequiredPropertyException,
           InvalidPropertyValueException {
 
-      // Get bootstrap property names
+      //
+      // Preparation: Determine constant values
+      //
+
+      // Get names for bootstrap properties
       String nameProp  = APIServlet.API_CALLING_CONVENTION_PROPERTY;
       String classProp = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
 
-      // Determine the name of the custom calling convention, if any
+      // Determine the name of the fallback default calling convention
+      String fallbackDefaultCC = APIServlet.STANDARD_CALLING_CONVENTION;
+
+
+      //
+      // Get bootstrap properties
+      //
+
+      // Name of the default calling convention (if any)
       String name = TextUtils.trim(properties.get(nameProp), null);
 
-      // No custom calling convention is specified
-      if (name == null) {
-         Log.log_3246(nameProp);
-         return;
-      }
-
-      // Get the name of the class from the bootstrap properties
+      // Class name for the custom calling convention (if any)
       String className1 = TextUtils.trim(properties.get(classProp), null);
 
-      // See if name is recognized as existing calling convention 
-      String className2 = classNameFor(name);
 
-      // Not specified in bootstrap properties
-      if (className1 == null) {
+      //
+      // The algorithm
+      //
 
-         // Not recognized as existing one
+      // No calling convention defined
+      if (name == null) {
+
+         // Log: No custom calling convention specified
+         Log.log_3246();
+
+         // Short-circuit
+         return;
+
+      // Default calling convention is a regular one
+      } else if (name.charAt(0) == '_') {
+
+         // Determine the actual class name
+         String className2 = classNameForRegular(name);
+
+         // No such regular calling convention
          if (className2 == null) {
-            String detail = "No class specified for calling convention \""
+            String detail = "Regular calling convention \""
                           + name
-                          + "\".";
-            throw new MissingRequiredPropertyException(classProp, detail);
+                          + "\" does not exist.";
+            throw new InvalidPropertyValueException(nameProp, name, detail);
 
-         // There is no custom calling convention
-         } else {
-            return;
-         }
-
-      // Specified in bootstrap properties
-      } else {
-
-         // Recognized as existing one
-         if (className2 != null && !className2.equals(className1)) {
-            String detail = "Class specified for calling convention \""
+         // Mismatching class name in bootstrap properties
+         } else if (className1 != null && !className1.equals(className2)) {
+            String detail = "Regular calling convention \""
                           + name
-                          + "\" is known to be implemented by class \""
+                          + "\" is represented by class \""
                           + className2
                           + "\".";
-            throw new InvalidPropertyValueException(classProp, className1, detail);
+            throw new InvalidPropertyValueException(classProp, className1,
+                                                    detail);
          }
+
+         // Log: No custom calling convention specified
+         Log.log_3246();
+
+      // Default calling convention is a custom one
+      } else {
+
+         // Class not specified
+         if (className1 == null) {
+            String detail = "No class specified for custom calling convention"
+                          + " \""
+                          + name
+                          + "\", defined in property \""
+                          + nameProp
+                          + "\".";
+            throw new MissingRequiredPropertyException(classProp, detail);
+         }
+
+         // Get an instance of the class
+         CallingConvention cc = construct(name, className1);
+         if (cc == null) {
+            String detail = "Unable to construct CallingConvention instance.";
+            throw new InvalidPropertyValueException(classProp, className1,
+                                                    detail);
+
+         // Make sure it's a subclass of CustomCallingConvention
+         } else if (! (cc instanceof CustomCallingConvention)) {
+            String detail = "Class is not a subclass of class \""
+                          + CustomCallingConvention.class.getName()
+                          + "\".";
+            throw new InvalidPropertyValueException(classProp, className1,
+                                                    detail);
+         }
+
+         // Store the custom calling convention instance with its name
+         _nameCustomCC = name;
+         _customCC     = (CustomCallingConvention) cc;
+         
+         // Log: Custom calling convention is specified
+         Log.log_3247(nameProp, name, className1);
       }
 
-      // Try to load the class
-      try {
-         Class.forName(className1);
-      } catch (Throwable exception) {
-         throw new InvalidPropertyValueException(classProp, className1,
-                                                 "Unable to load class.");
-      }
-
-      // Store the custom calling convention name and class
-      _nameCustomCC  = name;
-      _classCustomCC = className1;
-
-      Log.log_3247(nameProp, name, className1);
-   }
-
-   /**
-    * Determines the name of the default calling convention and stores it in a
-    * field. The field it is stored in is {@link #_defaultConventionName}.
-    *
-    * @param properties
-    *    the bootstrap properties, cannot be <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>properties == null</code>.
-    */
-   private void determineDefaultConvention(PropertyReader properties)
-   throws NullPointerException {
-
-      // Get the value of the bootstrap property, fallback to default
-      String prop            = APIServlet.API_CALLING_CONVENTION_PROPERTY;
-      String fallback        = APIServlet.STANDARD_CALLING_CONVENTION;
-      _defaultConventionName = TextUtils.trim(properties.get(prop), fallback);
-
-      // Log: Determined the default calling convention
-      Log.log_3245(_defaultConventionName);
+      // Log: Determined default calling convention
+      Log.log_3245(name);
    }
 
    /**
@@ -331,7 +357,7 @@ extends Manageable {
       MandatoryArgumentChecker.check("properties", properties, "name", name);
 
       // Determine the name of the CallingConvention class
-      String className = classNameFor(name);
+      String className = classNameForRegular(name);
 
       // If the class could not be determined, then return null
       if (className == null) {
@@ -355,11 +381,14 @@ extends Manageable {
    }
 
    /**
-    * Determines the name of the class that represents the calling convention
-    * with the specified name.
+    * Determines the name of the class that represents the regular calling
+    * convention with the specified name. A <em>regular</em> calling
+    * convention is one that comes with the XINS framework.
     *
     * @param name
-    *    the name of the calling convention, should not be <code>null</code>.
+    *    the name of the calling convention, should not be <code>null</code>
+    *    and should normally starts with an underscore character
+    *    (<code>'_'</code>).
     *
     * @return
     *    the name of the {@link CallingConvention} class that matches the
@@ -368,34 +397,36 @@ extends Manageable {
     * @throws NullPointerException
     *    if <code>name == null</code>.
     */
-   private String classNameFor(String name) {
+   private String classNameForRegular(String name) {
 
-      String className;
-
-      // Regular calling conventions
+      // XINS old-style
       if (name.equals(APIServlet.OLD_STYLE_CALLING_CONVENTION)) {
-         className = "org.xins.server.OldStyleCallingConvention";
+         return "org.xins.server.OldStyleCallingConvention";
+
+      // XINS standard (new-style)
       } else if (name.equals(APIServlet.STANDARD_CALLING_CONVENTION)) {
-         className = "org.xins.server.StandardCallingConvention";
+         return "org.xins.server.StandardCallingConvention";
+
+      // XINS XML
       } else if (name.equals(APIServlet.XML_CALLING_CONVENTION)) {
-         className = "org.xins.server.XMLCallingConvention";
+         return "org.xins.server.XMLCallingConvention";
+
+      // XSLT
       } else if (name.equals(APIServlet.XSLT_CALLING_CONVENTION)) {
-         className = "org.xins.server.XSLTCallingConvention";
+         return "org.xins.server.XSLTCallingConvention";
+
+      // SOAP
       } else if (name.equals(APIServlet.SOAP_CALLING_CONVENTION)) {
-         className = "org.xins.server.SOAPCallingConvention";
+         return "org.xins.server.SOAPCallingConvention";
+
+      // XML-RPC
       } else if (name.equals(APIServlet.XML_RPC_CALLING_CONVENTION)) {
-         className = "org.xins.server.XMLRPCCallingConvention";
+         return "org.xins.server.XMLRPCCallingConvention";
 
-      // Custom calling convention
-      } else if (name.equals(_nameCustomCC)) {
-         className = _classCustomCC;
-
-      // Not recognized
+      // Unrecognized
       } else {
-         className = null;
+         return null;
       }
-
-      return className;
    }
 
    /**
