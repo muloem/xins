@@ -249,7 +249,6 @@
 		</entry>
 		<entry id="3246" level="DEBUG">
 			<description>No custom calling convention specified.</description>
-			<param name="property" />
 		</entry>
 		<entry id="3247" level="DEBUG">
 			<description>Custom calling convention is specified.</description>

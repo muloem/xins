@@ -61,7 +61,7 @@
 	<translation entry="3243">Le démarrage de la convention d'appel <value-of-param name="name" format="quoted" /> a échoué. La propriété <value-of-param name="propertyName" format="quoted" /> a une valeur incorrecte: <value-of-param name="propertyValue" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 	<translation entry="3244">Le démarrage de la convention d'appel <value-of-param name="name" format="quoted" /> a échoué. Raison: <exception-property name="message" format="quoted" />.</translation>
 	<translation entry="3245">La convention d'appel par défaut est <value-of-param name="name" format="quoted" />.</translation>
-	<translation entry="3246">Pas de convention d'appel personnalisée spécifiée. La propriété <value-of-param name="property" format="quoted" /> n'est pas définie.</translation>
+	<translation entry="3246">Pas de convention d'appel personnalisée spécifiée.</translation>
 	<translation entry="3247">La convention d'appel personnalisée est spécifiée dans la propriété <value-of-param name="property" format="quoted" />. La nom est <value-of-param name="name" format="quoted" />. La classe est <value-of-param name="className" format="quoted" />.</translation>
 
 	<translation entry="3300">Initialisation du sous-système de logging avec les paramètres définis dans le fichier <value-of-param name="configFile" format="quoted" />.</translation>
