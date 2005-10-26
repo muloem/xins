@@ -74,6 +74,7 @@
 		<entry id="3209" level="FATAL">
 			<description>Bootstrap of API class failed due to a missing but required property.</description>
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3210" level="FATAL">
 			<description>Bootstrap of API class failed due to an invalid property value.</description>
@@ -107,6 +108,7 @@
 			<param name="api" />
 			<param name="className" />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3216" level="FATAL">
 			<description>API-manageable could not be bootstrapped due to an invalid property value.</description>
@@ -141,6 +143,7 @@
 			<param name="api" />
 			<param name="function" />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3223" level="FATAL">
 			<description>Function could not be bootstrapped due to an invalid property value.</description>
@@ -227,6 +230,7 @@
 			<description>Calling convention could not be bootstrapped due to a missing required property.</description>
 			<param name="name"         />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3243" level="FATAL">
 			<description>Calling convention could not be bootstrapped due to an invalid property value.</description>
@@ -362,6 +366,7 @@
 		<entry id="3411" level="FATAL">
 			<description>API could not be initialized due to a missing required property.</description>
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3412" level="FATAL">
 			<description>API could not be initialized due to an invalid property value.</description>
@@ -393,6 +398,7 @@
 			<param name="api"          />
 			<param name="className"    />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3419" level="FATAL">
 			<description>API-manageable could not be initialized due to an invalid property value.</description>
@@ -422,6 +428,7 @@
 			<param name="api"          />
 			<param name="function"     />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3424" level="ERROR">
 			<description>Function could not be initialized due to an invalid property value.</description>
@@ -483,6 +490,7 @@
 			<description>Calling convention could not be initialized due to a missing required property.</description>
 			<param name="name"         />
 			<param name="propertyName" />
+			<param name="detail" />
 		</entry>
 		<entry id="3438" level="ERROR">
 			<description>Calling convention could not be initialized due to an invalid property value.</description>

@@ -38,6 +38,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     confusing. See SF.net bug report #1263768: "Log: Servlet init succeeded
     while framework init failed."
   - Changed level of log message 3231 from INFO to DEBUG.
+  - Added support for an optional 'detail' parameter to the following log
+    messages: 3209, 3215, 3222, 3242, 3411, 3418, 3423 and 3437.
 
 * XINS/Java Common Library:
   - Fixed bug #1334039: FastStringBuffer#append(char[] ch, int off, int len) 

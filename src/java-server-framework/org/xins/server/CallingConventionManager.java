@@ -451,7 +451,8 @@ extends Manageable {
 
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3242(name, exception.getPropertyName());
+         Log.log_3242(name, exception.getPropertyName(),
+                      exception.getDetail());
 
       // Invalid property
       } catch (InvalidPropertyValueException exception) {
@@ -546,7 +547,8 @@ extends Manageable {
 
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3437(name, exception.getPropertyName());
+         Log.log_3437(name, exception.getPropertyName(),
+                      exception.getDetail());
 
       // Invalid property
       } catch (InvalidPropertyValueException exception) {

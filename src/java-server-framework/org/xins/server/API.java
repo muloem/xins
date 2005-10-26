@@ -393,7 +393,8 @@ implements DefaultResultCodes {
 
          // Missing property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_3215(_name, className, exception.getPropertyName());
+            Log.log_3215(_name, className, exception.getPropertyName(),
+                         exception.getDetail());
             throw exception;
 
          // Invalid property
@@ -434,7 +435,8 @@ implements DefaultResultCodes {
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_3222(_name, functionName, exception.getPropertyName());
+            Log.log_3222(_name, functionName, exception.getPropertyName(),
+                         exception.getDetail());
             throw exception;
 
          // Invalid property value
@@ -621,7 +623,8 @@ implements DefaultResultCodes {
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_3418(_name, className, exception.getPropertyName());
+            Log.log_3418(_name, className, exception.getPropertyName(),
+                         exception.getDetail());
             throw exception;
 
          // Invalid property value
@@ -659,7 +662,8 @@ implements DefaultResultCodes {
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
-            Log.log_3423(_name, functionName, exception.getPropertyName());
+            Log.log_3423(_name, functionName, exception.getPropertyName(),
+                         exception.getDetail());
             throw exception;
 
          // Invalid property value

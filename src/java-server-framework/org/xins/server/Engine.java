@@ -319,7 +319,7 @@ final class Engine extends Object {
 
       // Missing required property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3209(exception.getPropertyName());
+         Log.log_3209(exception.getPropertyName(), exception.getDetail());
          return false;
 
       // Invalid property value
@@ -391,7 +391,7 @@ final class Engine extends Object {
 
       // Missing required property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3411(exception.getPropertyName());
+         Log.log_3411(exception.getPropertyName(), exception.getDetail());
 
       // Invalid property value
       } catch (InvalidPropertyValueException exception) {

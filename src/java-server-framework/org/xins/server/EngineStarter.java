@@ -367,7 +367,7 @@ final class EngineStarter extends Object {
 
       // Missing required property
       } catch (MissingRequiredPropertyException exception) {
-         Log.log_3209(exception.getPropertyName());
+         Log.log_3209(exception.getPropertyName(), exception.getDetail());
          caught = exception;
 
       // Invalid property value
