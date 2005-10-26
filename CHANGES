@@ -7,6 +7,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 
 * XINS/Java Server Framework:
+  - Refactored CallingConventionManager. Fixed SF.net bug #1336471 (Failed
+    creation of a calling convention fails the server) in the process.
   - No longer logging the associated exception when logging message 3301. This
     message is logged when the runtime properties file exists at start-up, but
     cannot be opened.
@@ -29,7 +31,6 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
     . 3245: Determined default calling convention
     . 3246: No custom calling convention specified
     . 3247: Custom calling convention is specified
-  - Refactored CallingConventionManager.
   - The servlet initialization now always fails silently, meaning that the
     servlet container is not notified by means of an exception. This is done
     to avoid re-initialization by the servlet container.
