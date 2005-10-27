@@ -619,7 +619,8 @@ extends Manageable {
 
       // If the CallingConvention is not even bootstrapped, then do not even
       // attempt to initialize it
-      if (cc.getState() == Manageable.UNUSABLE) {
+      if (cc.getState() != Manageable.BOOTSTRAPPED &&
+          cc.getState() != Manageable.USABLE) {
          return;
       }
 
