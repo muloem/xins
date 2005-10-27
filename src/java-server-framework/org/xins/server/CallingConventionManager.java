@@ -197,9 +197,10 @@ extends Manageable {
     * bootstrap properties. Both the custom calling convention and the default
     * calling convention are determined.
     *
-    * <p>The name and class name for the custom calling convention will be
-    * stored in {@link #_nameCustomCC} and {@link #_classCustomCC},
-    * respectively. If no custom calling convention is specified, then both
+    * <p>The name and for the custom calling convention will be
+    * stored in {@link #_nameCustomCC} and an actual
+    * {@link CustomCallingConvention} instance in {@link #_customCC}.
+    * If no custom calling convention is specified, then both
     * will be set to <code>null</code>.
     *
     * <p>The name of the default calling convention will be stored in
@@ -231,9 +232,6 @@ extends Manageable {
       String nameProp  = APIServlet.API_CALLING_CONVENTION_PROPERTY;
       String classProp = APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY;
 
-      // Determine the name of the fallback default calling convention
-      String fallbackDefaultCC = APIServlet.STANDARD_CALLING_CONVENTION;
-
 
       //
       // Get bootstrap properties
@@ -256,8 +254,8 @@ extends Manageable {
          // Log: No custom calling convention specified
          Log.log_3246();
 
-         // Short-circuit
-         return;
+         // Fallback to the XINS-specified default calling convention
+         name = APIServlet.STANDARD_CALLING_CONVENTION;
 
       // Default calling convention is a regular one
       } else if (name.charAt(0) == '_') {
@@ -323,6 +321,9 @@ extends Manageable {
          // Log: Custom calling convention is specified
          Log.log_3247(nameProp, name, className1);
       }
+
+      // Store the name of the default calling convention
+      _defaultConventionName = name;
 
       // Log: Determined default calling convention
       Log.log_3245(name);
@@ -682,13 +683,15 @@ extends Manageable {
          String detail = "Calling convention \""
                        + name
                        + "\" is unknown.";
+         Log.log_3507(name, detail);
          throw new InvalidRequestException(detail);
 
       // Creation failed
       } else if (o == CREATION_FAILED) {
          String detail = "Calling convention \""
                        + name
-                       + "\" is recognized, but could not be created.";
+                       + "\" is known, but could not be created.";
+         Log.log_3507(name, detail);
          throw new InvalidRequestException(detail);
 
       // Calling convention is recognized and was created OK
@@ -699,7 +702,8 @@ extends Manageable {
          if (! cc.isUsable()) {
             String detail = "Calling convention \""
                           + name
-                          + "\" is uninitialized.";
+                          + "\" is known, but is uninitialized.";
+            Log.log_3507(name, detail);
             throw new InvalidRequestException(detail);
          }
 
