@@ -18,6 +18,13 @@ then
    fi
 fi
 
+# Decide if XINS_HOME is valid by checking if bootstrap.xml exists
+BOOT_XML="${XINS_HOME}/src/ant/bootstrap.xml"
+if [ ! -f "${BOOT_XML}" ]; then
+   echo "ERROR: Unable to determine XINS home directory. Please set XINS_HOME correctly."
+   exit 1
+fi
+
 # Recognize '-version' (or 'version') option
 if [ "$1" = "-version" ] || [ "$1" = "version" ]
 then
