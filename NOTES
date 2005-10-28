@@ -55,7 +55,7 @@ Windows 2000).
 The 'xins.bat' batch file has been tested with various Windows versions,
 including Windows ME, 2000 and XP.
 
-All 271 unit tests for this release have been executed on the following
+All 268 unit tests for this release have been executed on the following
 platforms, with the indicated results:
 
 - On Linux 2.6/x86:
