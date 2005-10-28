@@ -68,10 +68,10 @@ platforms, with the indicated results:
   - IBM       JDK 1.4.2 SR3:    TODO
 
 - On Microsoft Windows 2000:
-  - Sun JDK 1.4.1_07:           TODO
-  - Sun JDK 1.4.2_09:           TODO
-  - Sun JDK 1.5.0_05:           TODO
-  - Sun JDK 1.6.0 EA b56:       TODO
+  - Sun JDK 1.4.1_07:           OK
+  - Sun JDK 1.4.2_07:           OK
+  - Sun JDK 1.5.0_05:           OK
+  - Sun JDK 1.6.0 EA b56:       OK
 
 - On Microsoft Windows XP:
   - Sun JDK 1.4.2_07:           OK
@@ -81,7 +81,7 @@ platforms, with the indicated results:
   - Sun JDK 1.4.2_01:           OK (Except for ExpiryFolder and HTTPS)
 
 - On Solaris 8:
-  - Sun JDK 1.4.2_06:           TODO
+  - Sun JDK 1.4.2_06:           OK
 
 - On Linux 2.6/PPC:
   - IBM JDK 1.4.2 SR 1a:        TODO
