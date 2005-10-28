@@ -63,7 +63,7 @@ platforms, with the indicated results:
   - Sun       JDK 1.4.2_09:     OK
   - Sun       JDK 1.5.0_05:     OK
   - Sun       JDK 1.6.0 EA b56: OK
-  - Blackdown JDK 1.3.1 FCS 2b: Failed; see note [2]
+  - Blackdown JDK 1.3.1 FCS 2b: Fatal error; see note [2]
   - Blackdown JDK 1.4.1_01:     HTTPS test failed; see note [3]
   - Blackdown JDK 1.4.2_01:     OK
   - IBM       JDK 1.3.1:        Some failures; see note [1]
