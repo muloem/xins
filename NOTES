@@ -59,11 +59,13 @@ All 268 unit tests for this release have been executed on the following
 platforms, with the indicated results:
 
 - On Linux 2.6/x86:
-  - Sun       JDK 1.3.1_15:     Some failures. See note [1].
+  - Sun       JDK 1.3.1_15:     Some failures; see note [1].
   - Sun       JDK 1.4.2_09:     OK
   - Sun       JDK 1.5.0_05:     OK
   - Sun       JDK 1.6.0 EA b56: OK
   - Blackdown JDK 1.4.2_01:     OK
+  - IBM       JDK 1.3.1:        Some failures; see note [1]
+  - IBM       JDK 1.4.2 SR3:    TODO
 
 - On Microsoft Windows 2000:
   - Sun JDK 1.4.1_07:           TODO
