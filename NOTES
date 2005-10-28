@@ -59,11 +59,11 @@ All 268 unit tests for this release have been executed on the following
 platforms, with the indicated results:
 
 - On Linux 2.6/x86:
-  - Sun       JDK 1.3.1_15:     TODO
+  - Sun       JDK 1.3.1_15:     Some failures. See note [1].
   - Sun       JDK 1.4.2_09:     OK
   - Sun       JDK 1.5.0_05:     OK
   - Sun       JDK 1.6.0 EA b56: OK
-  - Blackdown JDK 1.4.2_01:     TODO
+  - Blackdown JDK 1.4.2_01:     OK
 
 - On Microsoft Windows 2000:
   - Sun JDK 1.4.1_07:           TODO
@@ -72,17 +72,30 @@ platforms, with the indicated results:
   - Sun JDK 1.6.0 EA b56:       TODO
 
 - On Microsoft Windows XP:
-  - Sun JDK 1.4.2_07: OK
-  - Sun JDK 1.5.0_05: OK
+  - Sun JDK 1.4.2_07:           OK
+  - Sun JDK 1.5.0_05:           OK
 
 - On Microsoft Windows ME:
-  - Sun JDK 1.4.2_01: OK (Except for ExpiryFolder and HTTPS)
+  - Sun JDK 1.4.2_01:           OK (Except for ExpiryFolder and HTTPS)
 
 - On Solaris 8:
   - Sun JDK 1.4.2_06:           TODO
 
 - On Linux 2.6/PPC:
   - IBM JDK 1.4.2 SR 1a:        TODO
+
+Notes:
+
+[1] a. HTTPS does not work on Java 1.3. It may work if an appropriate library
+       is installed, but this has not been tested.
+    b. Also, on Java 1.3 the names of the calling class and method cannot be
+       determined automatically. Consequently the logProgrammingError(String)
+       method in class org.xins.common.Utils will log the "<unknown>" instead
+       of the actual class- and method names.
+    c. Finally, Java 1.3 does not come with a compatible XSLT library.
+       Consequently, the XSLT calling convention does not work. It may work if
+       an appropriate library (e.g. Saxon or Xalan) is installed. However,
+       this has not been tested.
 
 
 *** BUGS ***
