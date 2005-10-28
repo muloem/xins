@@ -87,7 +87,7 @@ platforms, with the indicated results:
   - Sun JDK 1.4.2_06:           OK
 
 - On Linux 2.6/PPC:
-  - IBM JDK 1.4.2 SR 1a:        TODO
+  - IBM JDK 1.4.2 SR 1a:        OK
 
 Notes:
 
