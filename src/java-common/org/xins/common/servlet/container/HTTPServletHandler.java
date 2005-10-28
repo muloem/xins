@@ -508,7 +508,7 @@ public class HTTPServletHandler {
                   serviceClient(clientSocket);
                } catch (Exception ex) {
                   // If anything goes wrong still continue to listen to the port.
-                  Utils.logProgrammingError(getClass().getName(), "run", "", "", "", ex);
+                  Utils.logIgnoredException("SocketAcceptor", "serviceClient", "SocketAcceptor", "run", ex);
                }
             }
          } catch (SocketException ie) {
