@@ -144,6 +144,19 @@ implements DefaultResultCodes {
       _emptyProperties     = new RuntimeProperties();
       _timeZone            = TimeZone.getDefault();
       _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
+
+      // Initialize mapping from meta-function to call ID
+      _metaFunctionCallIDs = new HashMap(89);
+      _metaFunctionCallIDs.put("_NoOp",             new Counter());
+      _metaFunctionCallIDs.put("_GetFunctionList",  new Counter());
+      _metaFunctionCallIDs.put("_GetStatistics",    new Counter());
+      _metaFunctionCallIDs.put("_GetVersion",       new Counter());
+      _metaFunctionCallIDs.put("_CheckLinks",       new Counter());
+      _metaFunctionCallIDs.put("_GetSettings",      new Counter());
+      _metaFunctionCallIDs.put("_DisableFunction",  new Counter());
+      _metaFunctionCallIDs.put("_EnableFunction",   new Counter());
+      _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
+      _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
    }
 
 
@@ -266,6 +279,12 @@ implements DefaultResultCodes {
     * The local IP address.
     */
    private String _localIPAddress;
+
+   /**
+    * Mapping from function name to the call ID for all meta-functions. This
+    * field is never <code>null</code>.
+    */
+   private final HashMap _metaFunctionCallIDs;
 
 
    //-------------------------------------------------------------------------
@@ -987,18 +1006,24 @@ implements DefaultResultCodes {
       // Handle meta-functions
       FunctionResult result;
       if (functionName.charAt(0) == '_') {
+
+         // Determine the call ID
+         int callID;
+         synchronized (_metaFunctionCallIDs) {
+            Counter counter = (Counter) _metaFunctionCallIDs.get(functionName);
+            if (counter == null) {
+               throw new NoSuchFunctionException(functionName);
+            } else {
+               callID = counter.next();
+            }
+         }
+
+         // Call the meta-function
          try {
             result = callMetaFunction(start, functionName, functionRequest, ip);
          } catch (Throwable exception) {
-            if (exception instanceof NoSuchFunctionException) {
-               throw (NoSuchFunctionException) exception;
-            }
-
-            // Determine the call ID (TODO)
-            final int CALL_ID = 0;
-
             result = handleFunctionException(start, functionRequest, ip,
-                                             CALL_ID, exception);
+                                             callID, exception);
          }
 
          // Determine duration
@@ -1497,4 +1522,55 @@ implements DefaultResultCodes {
       return SUCCESSFUL_RESULT;
    }
 
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Thread-safe <code>int</code> counter.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private static final class Counter extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>Counter</code> that initially returns the
+       * value <code>0</code>.
+       */
+      private Counter() {
+         // empty
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The wrapped <code>int</code> number. Initially <code>0</code>.
+       */
+      private int _value;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      /**
+       * Retrieves the next value. The first time <code>0</code> is returned,
+       * the second time <code>1</code>, etc.
+       *
+       * @return
+       *    the next sequence number.
+       */
+      private synchronized int next() {
+         return _value++;
+      }
+   }
 }

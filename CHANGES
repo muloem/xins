@@ -7,6 +7,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
 
 * XINS/Java Server Framework:
+  - Fixed SF.net bug #1263832: No unique call ID for meta-functions.
   - Refactored CallingConventionManager. Fixed SF.net bug #1336471 (Failed
     creation of a calling convention fails the server) in the process.
   - No longer logging the associated exception when logging message 3301. This
