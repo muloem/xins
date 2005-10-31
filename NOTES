@@ -85,6 +85,7 @@ platforms, with the indicated results:
   - Sun JDK 1.6.0 EA b56:       OK
 
 - On Microsoft Windows XP:
+  - Sun JDK 1.4.1_07:           OK
   - Sun JDK 1.4.2_07:           OK
   - Sun JDK 1.5.0_05:           OK
 
