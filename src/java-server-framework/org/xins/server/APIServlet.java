@@ -396,8 +396,18 @@ extends HttpServlet {
           ServletException,
           IOException {
 
-      _engine.service((HttpServletRequest)  request,
-                      (HttpServletResponse) response);
+      // Convert request and response to HTTP-specific variants
+      HttpServletRequest  httpRequest  = (HttpServletRequest)  request;
+      HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+      // Engine failed to initialize, return '500 Internal Server Error'
+      if (_engine == null) {
+         httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
+      }
+
+      // Pass control to the Engine
+      _engine.service(httpRequest, httpResponse);
    }
 
    /**
@@ -421,6 +431,13 @@ extends HttpServlet {
    throws NullPointerException,
           IOException {
 
+      // Engine failed to initialize, return '500 Internal Server Error'
+      if (_engine == null) {
+         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         return;
+      }
+
+      // Pass control to the Engine
       _engine.service(request, response);
    }
 
