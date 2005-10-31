@@ -60,6 +60,7 @@ platforms, with the indicated results:
 
 - On Solaris 8:
   - Sun JDK 1.4.1_02:           One test failed; see note [1]
+  - Sun JDK 1.4.1_07:           OK
   - Sun JDK 1.4.2_06:           OK
 
 - On Linux 2.6/x86:
