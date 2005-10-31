@@ -59,19 +59,19 @@ All 268 unit tests for this release have been executed on the following
 platforms, with the indicated results:
 
 - On Solaris 8:
-  - Sun JDK 1.4.1_02:           One test failed; see note [4]
+  - Sun JDK 1.4.1_02:           One test failed; see note [1]
   - Sun JDK 1.4.2_06:           OK
 
 - On Linux 2.6/x86:
-  - Sun       JDK 1.3.1_15:     Some failures; see note [1]
+  - Sun       JDK 1.3.1_15:     Some tests failed; see note [2]
   - Sun       JDK 1.4.2_09:     OK
   - Sun       JDK 1.5.0_05:     OK
-  - Sun       JDK 1.6.0 EA b56: OK; with warnings, see note [2]
-  - Sun       JDK 1.6.0 EA b58: OK; with warnings, see note [2]
-  - Blackdown JDK 1.3.1 FCS 2b: Fatal error; see note [3]
+  - Sun       JDK 1.6.0 EA b56: OK; with warnings, see note [3]
+  - Sun       JDK 1.6.0 EA b58: OK; with warnings, see note [3]
+  - Blackdown JDK 1.3.1 FCS 2b: Fatal error; see note [4]
   - Blackdown JDK 1.4.1_01:     One test failed; see note [4]
   - Blackdown JDK 1.4.2_01:     OK
-  - IBM       JDK 1.3.1:        Some failures; see note [1]
+  - IBM       JDK 1.3.1:        Some tests failed; see note [2]
   - IBM       JDK 1.4.2 SR3:    OK
   - IBM       JDK 1.5.0 beta:   OK
 
@@ -89,11 +89,18 @@ platforms, with the indicated results:
   - Sun JDK 1.5.0_05:           OK
 
 - On Microsoft Windows ME:
-  - Sun JDK 1.4.2_01:           Some failures; see note [5]
+  - Sun JDK 1.4.2_01:           Some tests failed; see note [5]
 
 Notes:
 
-[1] a. HTTPS does not work on Java 1.3. It may work if an appropriate library
+[4] The HTTPS test failed on the Blackdown JDK 1.4.1.01 (on Linux 2.6/x86) and
+    on the Sun JDK 1.4.1_02 (on Solaris 8/SPARC). The Sun SSL code (class
+    com.sun.net.ssl.internal.ssl.X509TrustManagerImpl) reported it was unable
+    to find a trusted certificate. Apparently the certificates shipped with
+    this release are outdated. This is, however, expected to be unrelated to
+    XINS.
+
+[2] a. HTTPS does not work on Java 1.3. It may work if an appropriate library
        is installed, but this has not been tested.
     b. Also, on Java 1.3 the names of the calling class and method cannot be
        determined automatically. Consequently the logProgrammingError(String)
@@ -104,11 +111,11 @@ Notes:
        an appropriate library (e.g. Saxon or Xalan) is installed. However,
        this has not been tested.
 
-[2] Message 'Warning: Could not get charToByteConverterClass!' was
+[3] Message 'Warning: Could not get charToByteConverterClass!' was
     displayed while executing the task 'specdocs-allinone', after the message
     'Loading stylesheet src/xslt/specdocs/api_to_html.xslt'.
 
-[3] The Blackdown JDK 1.3.1-02b-FCS hung while running the unit tests, after
+[4] The Blackdown JDK 1.3.1-02b-FCS hung while running the unit tests, after
     outputting the following message:
 
     /shared/home/ernst/blackdown-jdk1.3.1/bin/i386/native_threads/java:
@@ -116,13 +123,6 @@ Notes:
     /shared/home/ernst/blackdown-jdk1.3.1/jre/lib/i386/libjava.so: symbol
     __libc_waitpid, version GLIBC_2.0 not defined in file libc.so.6 with link
     time reference
-
-[4] The HTTPS test failed on the Blackdown JDK 1.4.1.01 (on Linux 2.6/x86) and
-    on the Sun JDK 1.4.1_02 (on Solaris 8/SPARC). The Sun SSL code (class
-    com.sun.net.ssl.internal.ssl.X509TrustManagerImpl) reported it was unable
-    to find a trusted certificate. Apparently the certificates shipped with
-    this release are outdated. This is, however, expected to be unrelated to
-    XINS.
 
 [5] On Windows ME, the ExpiryFolder tests repeatedly fail, along with the
     HTTPS tests. The HTTPS test failures may be related to the old JDK version
