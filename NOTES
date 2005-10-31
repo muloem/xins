@@ -142,6 +142,7 @@ The following bugs are known to apply to this version of XINS:
 - 1172375: Code generation does not avoid Java keywords
 - 1091721: Loglevel NOTICE not recognised
 - 1343470: NPE in APIServlet
+- 1343520: French translation for log message 1308 is English
 
 To get an overview of all XINS-related bugs, or to submit a new one, visit:
 http://sourceforge.net/tracker/?group_id=71598&atid=531814
