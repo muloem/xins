@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
     FileInputStream.
   - Fixed SF.net bug #1343973: AccessRuleFile does not close constructed
     FileReader stream.
+  - Removed an unused variable from class API, method handleCall.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1343520: Potential NPE in DataElement#setAttribute.

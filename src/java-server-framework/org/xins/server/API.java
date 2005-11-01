@@ -987,10 +987,6 @@ implements DefaultResultCodes {
           NoSuchFunctionException,
           AccessDeniedException {
 
-      final String THIS_METHOD = "handleCall(long,"
-                               + FunctionRequest.class.getName()
-                               + ",java.lang.String)";
-
       // Check state first
       assertUsable();
 
