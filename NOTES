@@ -49,11 +49,10 @@ For more information on Ant, visit:
    Download page: http://ant.apache.org/bindownload.cgi
 
 The 'xins' shell script in this release has been tested with bash 2.0x on
-Linux 2.4/x86, Linux 2.6/x86, Mac OS/X, Solaris 8 and Cygwin 1.5.12 (on
-Windows 2000).
+Linux 2.6/x86, Solaris 8 and Cygwin 1.5.12 (on Windows 2000).
 
-The 'xins.bat' batch file has been tested with various Windows versions,
-including Windows ME, 2000 and XP.
+The 'xins.bat' batch file has been tested with Windows ME, Windows 2000 and
+Windows XP.
 
 All 268 unit tests for this release have been executed on the following
 platforms, with the indicated results:
@@ -76,7 +75,7 @@ platforms, with the indicated results:
   - Blackdown JDK 1.4.1_01:     One test failed; see note [1]
   - Blackdown JDK 1.4.2_01:     OK
   - IBM       JDK 1.3.1:        Some tests failed; see note [2]
-  - IBM       JDK 1.4.2 SR3:    OK
+  - IBM       JDK 1.4.2 SR 3:   OK
   - IBM       JDK 1.5.0 beta:   OK
 
 - On Linux 2.6/PPC:
