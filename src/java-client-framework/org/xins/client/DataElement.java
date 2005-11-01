@@ -215,7 +215,7 @@ public class DataElement implements Cloneable {
       String getValue = getAttribute(namespaceURI, localName);
       if ((value != null && getValue == null)
        || (value == null && getValue != null)
-       || (!value.equals(getValue))) {
+       || (value != null && !value.equals(getValue))) {
          String message = "Postcondition failed"
            + "; namespaceURI="      + TextUtils.quote(namespaceURI)
            + "; qn.namespaceURI="   + TextUtils.quote(qn.getNamespaceURI())

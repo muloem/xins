@@ -768,14 +768,6 @@ public final class XINSServiceCaller extends ServiceCaller {
                                          Object            result)
    throws ClassCastException {
 
-      final String METHODNAME = "createCallResult("
-                              + CallRequest.class.getName()
-                              + ','
-                              + TargetDescriptor.class.getName()
-                              + ",long,"
-                              + CallExceptionList.class.getName()
-                              + ",java.lang.Object)";
-
       XINSCallResult r = new XINSCallResult((XINSCallRequest) request,
                                             succeededTarget,
                                             duration,
@@ -806,14 +798,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    protected boolean shouldFailOver(CallRequest       request,
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
-
-      final String METHODNAME = "shouldFailOver("
-                              + CallRequest.class.getName()
-                              + ','
-                              + CallConfig.class.getName()
-                              + ','
-                              + CallExceptionList.class.getName()
-                              + ')';
 
       // Get the most recent exception
       CallException exception = exceptions.last();
