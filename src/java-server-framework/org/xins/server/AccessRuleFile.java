@@ -329,11 +329,11 @@ implements AccessRuleContainer {
    }
 
    /**
-    * Parses the specified ACL file and then applies it to this
+    * Reads and parses the specified ACL file and then applies it to this
     * <code>AccessRuleFile</code> instance.
     *
     * @param file
-    *    the file to parse, cannot be <code>null</code>.
+    *    the file to open, read and parse, cannot be <code>null</code>.
     *
     * @param interval
     *    the interval for checking the ACL file for modifications, in
@@ -358,13 +358,72 @@ implements AccessRuleContainer {
       }
 
       // Buffer the input from the file
-      BufferedReader reader = new BufferedReader(new FileReader(file));
+      FileReader     fileReader = new FileReader(file);
+      BufferedReader buffReader = null;
+      try {
+         buffReader = new BufferedReader(fileReader);
+
+         // Delegate
+         parseAndApply(file, buffReader, interval);
+
+      // Always close the streams
+      } finally {
+         try {
+            fileReader.close();
+         } catch (Throwable exception) {
+            Utils.logIgnoredException(AccessRuleFile.class.getName(),
+                                      "parseAndApply",
+                                      "java.io.FileReader",
+                                      "close()",
+                                      exception);
+         }
+         if (buffReader != null) {
+            try {
+               buffReader.close();
+            } catch (Throwable exception) {
+               Utils.logIgnoredException(AccessRuleFile.class.getName(),
+                                         "parseAndApply",
+                                         "java.io.BufferedReader",
+                                         "close()",
+                                         exception);
+            }
+         }
+      }
+   }
+
+   /**
+    * Parses the specified ACL file (already opened) and then applies it to
+    * this <code>AccessRuleFile</code> instance.
+    *
+    * @param file
+    *    the name of the opened file, should not be <code>null</code>.
+    *
+    * @param reader
+    *    input stream for the file, should not be <code>null</code>.
+    *
+    * @param interval
+    *    the interval for checking the ACL file for modifications, in
+    *    milliseconds.
+    *
+    * @throws NullPointerException
+    *    if <code>file == null || reader == null</code>.
+    *
+    * @throws ParseException
+    *    if the file could not be parsed successfully.
+    *
+    * @throws IOException
+    *    if there was an I/O error while reading from the file.
+    */
+   private void parseAndApply(String         file,
+                              BufferedReader reader,
+                              int            interval)
+   throws NullPointerException, ParseException, IOException {
 
       // Loop through the file, line by line
       List rules = new ArrayList(25);
       int lineNumber = 0;
       String nextLine = "";
-      while(reader.ready() && nextLine != null) {
+      while (reader.ready() && nextLine != null) {
 
          // Read the next line and remove leading/trailing whitespace
          nextLine = TextUtils.trim(reader.readLine(), null);

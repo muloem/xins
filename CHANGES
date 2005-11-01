@@ -18,6 +18,8 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
     parseAndApply(String,int).
   - Fixed SF.net bug #1343980: ConfigManager does not close constructed
     FileInputStream.
+  - Fixed SF.net bug #1343973: AccessRuleFile does not close constructed
+    FileReader stream.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1343520: Potential NPE in DataElement#setAttribute.
