@@ -399,10 +399,13 @@ public class HTTPServletHandler {
       String httpResult;
       String encoding = "ISO-8859-1";
       
-      // Netscape also request for a favicon.ico, this query should be ignored
-      if ("/favicon.ico".equals(url)) {
+      if (url == null) {
+         httpResult = "HTTP/1.1 400 BAD_REQUEST\n\n";
+
+      // Some browsers also request for a favicon.ico, this query should be ignored
+      } else if (url.startsWith("/favicon.ico ")) {
          httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
-      } else if (url != null) {
+      } else {
          
          // Normalize the URL
          if (url.indexOf(' ') != -1) {
@@ -468,8 +471,6 @@ public class HTTPServletHandler {
                httpResult += "\n";
             }
          }
-      } else {
-         httpResult = "HTTP/1.1 400 BAD_REQUEST\n\n";
       }
 
       byte[] bytes = httpResult.getBytes(encoding);
