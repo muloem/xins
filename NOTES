@@ -136,7 +136,6 @@ Notes:
 
 The following bugs are known to apply to this version of XINS:
 
-- 1252449: Unsollicited automatic retry of HTTP requests
 - 1328576: Circular dependencies in ACL files possible
 - 1172375: Code generation does not avoid Java keywords
 - 1091721: Loglevel NOTICE not recognised
