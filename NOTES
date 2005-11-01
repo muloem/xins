@@ -68,6 +68,7 @@ platforms, with the indicated results:
   - Sun       JDK 1.4.0_04:     One test failed; see note [1]
   - Sun       JDK 1.4.1_07:     OK
   - Sun       JDK 1.4.2_09:     OK
+  - Sun       JDK 1.4.2_10:     OK
   - Sun       JDK 1.5.0_05:     OK
   - Sun       JDK 1.6.0 EA b56: OK; with warnings, see note [3]
   - Sun       JDK 1.6.0 EA b58: OK; with warnings, see note [3]
