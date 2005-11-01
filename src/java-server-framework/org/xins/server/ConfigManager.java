@@ -227,12 +227,12 @@ final class ConfigManager extends Object {
          synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
 
             Properties properties = new Properties();
+            FileInputStream in = null;
             try {
 
                // Open file, load properties, close file
-               FileInputStream in = new FileInputStream(_configFile);
+               in = new FileInputStream(_configFile);
                properties.load(in);
-               in.close();
 
             // No such file
             } catch (FileNotFoundException exception) {
@@ -246,6 +246,20 @@ final class ConfigManager extends Object {
             // Other I/O error
             } catch (IOException exception) {
                Log.log_3303(exception, _configFile);
+
+            // Always close the input stream
+            } finally {
+               if (in != null) {
+                  try {
+                     in.close();
+                  } catch (Throwable exception) {
+                     Utils.logIgnoredException(ConfigManager.class.getName(),
+                                               "readRuntimeProperties()",
+                                               in.getClass().getName(),
+                                               "close()",
+                                               exception);
+                  }
+               }
             }
 
             // Attempt to configure Log4J
