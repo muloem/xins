@@ -823,6 +823,7 @@
 									<xsl:value-of select="@url" />
 									<xsl:text>?_function=</xsl:text>
 									<xsl:value-of select="$function_name" />
+									<xsl:text>&amp;_convention=_xins-std</xsl:text>
 									<xsl:for-each select="$example-inputparams">
 										<xsl:text>&amp;</xsl:text>
 										<xsl:value-of select="../@name" />
