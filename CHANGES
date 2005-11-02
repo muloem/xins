@@ -12,6 +12,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
   - Return 404 on requests of the /favicon.ico file in the internal Servlet
     container.
 
+* XINS/Java Client Framework:
+  - Fixed SF.net bug #1343520: Potential NPE in DataElement#setAttribute.
+  - Removed unused variables in XINSServiceCaller.
+
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1343470: NPE in APIServlet.
   - Fixed SF.net bug #1343968: Potential NPE in AccessRuleFile, method
@@ -22,9 +26,9 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
     FileReader stream.
   - Removed an unused variable from class API, method handleCall.
 
-* XINS/Java Client Framework:
-  - Fixed SF.net bug #1343520: Potential NPE in DataElement#setAttribute.
-  - Removed unused variables in XINSServiceCaller.
+* Generatation of specdocs:
+  - Fixed SF.net bug #1345831: Examples incorrect if default convention is not
+    _xins-std.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:

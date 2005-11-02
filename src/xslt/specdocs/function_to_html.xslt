@@ -562,6 +562,12 @@
 							<xsl:value-of select="$function_name" />
 						</span>
 					</span>
+					<xsl:text>&amp;</xsl:text>
+					<span class="param">
+						<span class="name">_convention</span>
+						<xsl:text>=</xsl:text>
+						<span class="value">_xins-std</span>
+					</span>
 					<xsl:for-each select="$example-inputparams">
 						<xsl:text>&amp;</xsl:text>
 						<span class="param">
@@ -780,6 +786,7 @@
 								<xsl:value-of select="@url" />
 								<xsl:text>?_function=</xsl:text>
 								<xsl:value-of select="$function_name" />
+								<xsl:text>&amp;_convention=_xins-std</xsl:text>
 								<xsl:for-each select="$example-inputparams">
 									<xsl:text>&amp;</xsl:text>
 									<xsl:value-of select="../@name" />
