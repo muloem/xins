@@ -283,7 +283,9 @@ public final class FileWatcher extends Thread {
     */
    public void run() throws IllegalStateException {
 
-      int interval, state;
+      int interval;
+      int state;
+
       synchronized (this) {
          interval = _interval;
          state    = _state;
