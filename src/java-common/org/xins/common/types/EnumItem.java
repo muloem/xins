@@ -120,8 +120,8 @@ public class EnumItem extends Object {
     */
    public boolean equals(Object obj) {
 
-      // Check class
-      if (!(obj.getClass().equals(getClass()))) {
+      // Check null and the class
+      if (obj == null || !(obj.getClass().equals(getClass()))) {
          return false;
       }
 

@@ -11,6 +11,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
     English.
   - Return 404 on requests of the /favicon.ico file in the internal Servlet
     container.
+  - Fixed SF.net bug #1344993: Possible null pointer dereference in
+    Element.setAttribute.
+  - Fixed SF.net bug #1344989: Potential null pointer dereference in
+    EnumItem.equals.
 
 * XINS/Java Client Framework:
   - Fixed SF.net bug #1343520: Potential NPE in DataElement#setAttribute.
