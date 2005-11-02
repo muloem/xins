@@ -117,7 +117,8 @@ Notes:
 
 [3] Message 'Warning: Could not get charToByteConverterClass!' was
     displayed while executing the task 'specdocs-allinone', after the message
-    'Loading stylesheet src/xslt/specdocs/api_to_html.xslt'.
+    'Loading stylesheet src/xslt/specdocs/api_to_html.xslt'. This occurred
+    with all Java 6 Early Access releases. 
 
 [4] The Blackdown JDK 1.3.1-02b-FCS hung while running the unit tests, after
     outputting the following message:
