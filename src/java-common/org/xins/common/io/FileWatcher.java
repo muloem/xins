@@ -233,7 +233,7 @@ public final class FileWatcher extends Thread {
    /**
     * Configures the name of this thread.
     */
-   private void configureThreadName() {
+   private synchronized void configureThreadName() {
       FastStringBuffer name = new FastStringBuffer(238, CLASSNAME);
       name.append(" #");
       name.append(_instanceID);
@@ -283,18 +283,24 @@ public final class FileWatcher extends Thread {
     */
    public void run() throws IllegalStateException {
 
+      int interval, state;
+      synchronized (this) {
+         interval = _interval;
+         state    = _state;
+      }
+
       // Check preconditions
       if (Thread.currentThread() != this) {
          throw new IllegalStateException("Thread.currentThread() != this");
-      } else if (_state == RUNNING) {
+      } else if (state == RUNNING) {
          throw new IllegalStateException("Thread already running.");
-      } else if (_state == SHOULD_STOP) {
+      } else if (state == SHOULD_STOP) {
          throw new IllegalStateException("Thread should stop running.");
-      } else if (_interval < 1) {
+      } else if (interval < 1) {
          throw new IllegalStateException("Interval has not been set yet.");
       }
 
-      Log.log_1200(_instanceID, _filePath, _interval);
+      Log.log_1200(_instanceID, _filePath, interval);
 
       // Move to the RUNNING state
       synchronized (this) {
@@ -307,13 +313,19 @@ public final class FileWatcher extends Thread {
          try {
             while(! shouldStop) {
 
+               synchronized (this) {
+                  interval = _interval;
+               }
+
                // Wait for the designated amount of time
-               sleep(((long)_interval) * 1000L);
+               sleep(((long) interval) * 1000L);
 
                // Should we stop?
                synchronized (this) {
                   shouldStop = (_state != RUNNING);
+                  // XXX: Optimization: Call check() in this block
                }
+
 
                // If we do not have to stop yet, check if the file changed
                if (! shouldStop) {

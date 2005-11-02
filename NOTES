@@ -137,10 +137,7 @@ Notes:
 
 The following bugs are known to apply to this version of XINS:
 
-- 1344991: Element.clone() does not call super.clone()
-- 1344988: HTTPServletHandler ignores result of InputStream.read()
 - 1344985: Inconsistent locking of FileWatcher fields
-- 1344979: DataElement#clone() does not call super.clone()
 - 1328576: Circular dependencies in ACL files possible
 - 1172375: Code generation does not avoid Java keywords
 - 1091721: Loglevel NOTICE not recognised

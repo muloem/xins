@@ -443,21 +443,26 @@ public class Element implements Cloneable {
     */
    public Object clone() {
 
-      // Construct a new Element, copy the name
-      Element clone = new Element(getNamespaceURI(), getLocalName());
+      // Construct a new Element, copy all field values (shallow copy)
+      Element clone;
+      try {
+         clone = (Element) super.clone();
+      } catch (CloneNotSupportedException exception) {
+         String detail = null;
+         throw Utils.logProgrammingError(Element.class.getName(), "clone()",
+                                         "java.lang.Object",      "clone()",
+                                         detail,                  exception);
+      }
 
-      // Copy the children
+      // Deep copy the children
       if (_children != null) {
          clone._children = (ProtectedList) _children.clone();
       }
 
-      // Copy the attributes
+      // Deep copy the attributes
       if (_attributes != null) {
          clone._attributes = (HashMap) _attributes.clone();
       }
-
-      // Copy the character content
-      clone._text = _text;
 
       return clone;
    }
