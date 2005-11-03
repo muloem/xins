@@ -1,16 +1,16 @@
-This file contains the XINS 1.3.0 release notes.
+This file contains the XINS 1.4.0-alpha1 release notes.
 
 Contents:
 - Introduction
 - Prerequisites
-- Compatibility
 - Bugs
 
 
 *** INTRODUCTION ***
 
-This is a stable, final release, which is considered fully compatible with all
-previous stable releases.
+This is an alpha release. It is not guaranteed to be fully compatible with all
+previous stable releases and added classes, methods and fields may be removed
+before the release candidate stage.
 
 
 *** PREREQUISITES ***
@@ -20,124 +20,7 @@ The following are prerequisites for using the XINS framework:
 - Java SDK:   1.3.1 or higher (1.4.2 recommended)
 
 
-*** COMPATIBILITY ***
-
-Binary backwards compatibility of the JAR files (logdoc.jar, xins-common.jar,
-xins-client.jar and xins-server.jar) with XINS 1.2.5 has been validated using
-Japitools.
-
-Also, compatibility with XINS 1.0 has been improved. In XINS 1.1.0, some
-public methods were removed from the XINS/Java Server Framework. These have
-been re-added and marked as deprecated. Again, Japitools was used for
-validation.
-
-For more information on Japitools, see:
-
-   http://www.kaffe.org/~stuart/japi/
-
-This release has been tested successfully in combination with Apache Ant
-version 1.6.5 on different operating systems, including Solaris 8, Linux 2.6,
-Windows ME, Windows 2000 and Windows XP.
-
-Most likely, it will also work correctly with earlier versions of Ant.
-For more information on Ant, visit:
-
-   Homepage:      http://ant.apache.org/
-   Download page: http://ant.apache.org/bindownload.cgi
-
-The 'xins' shell script in this release has been tested with bash 2.0x on
-Linux 2.6/x86, Solaris 8 and Cygwin 1.5.12 (on Windows 2000).
-
-The 'xins.bat' batch file has been tested with Windows ME, Windows 2000 and
-Windows XP.
-
-All 268 unit tests for this release have been executed on the following
-platforms, with the indicated results:
-
-- On Solaris 8:
-  - Sun JDK 1.4.1_02:           One test failed; see note [1]
-  - Sun JDK 1.4.1_07:           OK
-  - Sun JDK 1.4.2_06:           OK
-
-- On Linux 2.6/x86:
-  - Sun       JDK 1.3.1_15:     Some tests failed; see note [2]
-  - Sun       JDK 1.4.0_04:     One test failed; see note [1]
-  - Sun       JDK 1.4.1_07:     OK
-  - Sun       JDK 1.4.2_09:     OK
-  - Sun       JDK 1.4.2_10:     OK
-  - Sun       JDK 1.5.0_05:     OK
-  - Sun       JDK 1.6.0 EA b56: OK; with warnings, see note [3]
-  - Sun       JDK 1.6.0 EA b58: OK; with warnings, see note [3]
-  - Blackdown JDK 1.3.1 FCS 2b: Fatal error; see note [4]
-  - Blackdown JDK 1.4.1_01:     One test failed; see note [1]
-  - Blackdown JDK 1.4.2_01:     OK
-  - IBM       JDK 1.3.1:        Some tests failed; see note [2]
-  - IBM       JDK 1.4.2 SR 3:   OK
-  - IBM       JDK 1.5.0 beta:   OK
-  - JRockit   JDK 1.5.0_03:     OK
-
-- On Linux 2.6/PPC:
-  - IBM JDK 1.4.2 SR 1a:        OK
-
-- On Microsoft Windows 2000:
-  - Sun JDK 1.4.1_07:           OK
-  - Sun JDK 1.4.2_07:           OK
-  - Sun JDK 1.5.0_05:           OK
-  - Sun JDK 1.6.0 EA b56:       OK; with warnings, see note [3]
-
-- On Microsoft Windows XP:
-  - Sun JDK 1.4.1_07:           OK
-  - Sun JDK 1.4.2_07:           OK
-  - Sun JDK 1.5.0_05:           OK
-
-- On Microsoft Windows ME:
-  - Sun JDK 1.4.2_01:           Some tests failed; see note [5]
-
-Notes:
-
-[1] The HTTPS test failed on various older 1.4.x JDKs (Blackdown 1.4.1_01 and
-    Sun 1.4.0_04 on Linux 2.6/x86 and Sun 1.4.1_02 on Solaris 8/SPARC). The
-    Sun SSL code reported it was unable to find a trusted certificate.
-    Apparently the SSL certificates shipped with these releases are outdated.
-    This is unrelated to XINS.
-
-[2] a. HTTPS does not work on Java 1.3. It may work if an appropriate library
-       is installed, but this has not been tested.
-    b. Also, on Java 1.3 the names of the calling class and method cannot be
-       determined automatically. Consequently the logProgrammingError(String)
-       method in class org.xins.common.Utils will log the "<unknown>" instead
-       of the actual class- and method names.
-    c. Finally, Java 1.3 does not come with a compatible XSLT library.
-       Consequently, the XSLT calling convention does not work. It may work if
-       an appropriate library (e.g. Saxon or Xalan) is installed. However,
-       this has not been tested.
-
-[3] Message 'Warning: Could not get charToByteConverterClass!' was
-    displayed while executing the task 'specdocs-allinone', after the message
-    'Loading stylesheet src/xslt/specdocs/api_to_html.xslt'. This occurred
-    with all Java 6 Early Access releases. 
-
-[4] The Blackdown JDK 1.3.1-02b-FCS hung while running the unit tests, after
-    outputting the following message:
-
-    /shared/home/ernst/blackdown-jdk1.3.1/bin/i386/native_threads/java:
-    relocation error:
-    /shared/home/ernst/blackdown-jdk1.3.1/jre/lib/i386/libjava.so: symbol
-    __libc_waitpid, version GLIBC_2.0 not defined in file libc.so.6 with link
-    time reference
-
-[5] On Windows ME, the ExpiryFolder tests repeatedly fail, along with the
-    HTTPS tests. The HTTPS test failures may be related to the old JDK version
-    (1.4.2_01).
-
-
 *** BUGS ***
-
-The following bugs are known to apply to this version of XINS:
-
-- 1328576: Circular dependencies in ACL files possible
-- 1172375: Code generation does not avoid Java keywords
-- 1091721: Loglevel NOTICE not recognised
 
 To get an overview of all XINS-related bugs, or to submit a new one, visit:
 http://sourceforge.net/tracker/?group_id=71598&atid=531814
