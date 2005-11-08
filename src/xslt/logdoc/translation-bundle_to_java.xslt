@@ -174,7 +174,8 @@ import org.xins.logdoc.LogdocStringBuffer;
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>
-            buffer.append(_exception.getMessage());</xsl:text>
+            buffer.append(_exception.getMessage());
+         }</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
