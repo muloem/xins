@@ -12,6 +12,12 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Fixed SF.net bug #1351055: Incorrect code generated for exception message.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.3.0 FINAL:
+
+* Logdoc:
+  - Fixed SF.net bug #1351055: Incorrect code generated for exception message.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
 
 * XINS/Java Common Library:
