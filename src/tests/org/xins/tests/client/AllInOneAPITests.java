@@ -834,6 +834,51 @@ public class AllInOneAPITests extends TestCase {
          assertNull(invalidParam1.getText());
       }
    }
+
+   public void testEcho() throws Exception {
+      EchoRequest request = new EchoRequest();
+      EchoResult  result;
+
+      // Do not set input text
+      result = _capi.callEcho(request);
+      assertNull(result.getOut());
+
+      // Set input text explicitly to null
+      request = new EchoRequest();
+      request.setIn(null);
+      result = _capi.callEcho(request);
+      assertNull(result.getOut());
+
+      // Set input text to an empty string, which is equivalent to null
+      request = new EchoRequest();
+      request.setIn("");
+      result = _capi.callEcho(request);
+      assertNull(result.getOut());
+
+      // Non-empty input string
+      String in = "Hello there!";
+      request.setIn(in);
+      result = _capi.callEcho(request);
+      assertEquals(in, result.getOut());
+
+      // First set to one value, then override that value
+      in = "Hello there!";
+      request.setIn("Old value!");
+      request.setIn(in);
+      result = _capi.callEcho(request);
+      assertEquals(in, result.getOut());
+   }
+
+   public void testBug1362875() throws Exception {
+      EchoRequest request = new EchoRequest();
+      EchoResult  result;
+
+      // First set to one value, then override that value with an empty string
+      request.setIn("Old value!");
+      request.setIn("");
+      result = _capi.callEcho(request);
+      assertNull("Bug 1362875: Overriding Request input value with empty string ignored.", result.getOut());
+   }
    
    private void dataSectionTests(String inputText) 
    throws Exception {
@@ -853,5 +898,4 @@ public class AllInOneAPITests extends TestCase {
       assertNull(doe.getText());
       assertEquals(0, doe.getChildElements().size());
    }
-
 }
