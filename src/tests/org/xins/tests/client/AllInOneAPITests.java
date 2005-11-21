@@ -849,7 +849,8 @@ public class AllInOneAPITests extends TestCase {
       result = _capi.callEcho(request);
       assertNull(result.getOut());
 
-      // Set input text to an empty string, which is equivalent to null
+      // Set input text to an empty string, which is in the end equivalent to
+      // null
       request = new EchoRequest();
       request.setIn("");
       result = _capi.callEcho(request);
