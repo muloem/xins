@@ -870,6 +870,84 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(in, result.getOut());
    }
 
+   /**
+    * Test for RFE 1359740, titled "Add get methods for CAPI Request objects".
+    *
+    * @since XINS 1.4.0
+    */
+   public void testEnhancement1359740() throws Exception {
+
+      SimpleTypesRequest request = new SimpleTypesRequest();
+      assertNull(request.getInputByte());
+      assertNull(request.getInputShort());
+      assertNull(request.getInputInt());
+      assertNull(request.getInputLong());
+      assertNull(request.getInputFloat());
+      assertNull(request.getInputDouble());
+      assertNull(request.getInputText());
+      assertNull(request.getInputText2());
+      assertNull(request.getInputDate());
+      assertNull(request.getInputTimestamp());
+      assertNull(request.getInputBinary());
+
+      byte b = (byte) 8;
+      request.setInputByte(b);
+      assertEquals(b, request.getInputByte().byteValue());
+      request.setInputByte(null);
+      assertNull(request.getInputByte());
+
+      int i = -65;
+      request.setInputInt(i);
+      assertEquals(i, request.getInputInt().intValue());
+      request.setInputInt(null);
+      assertNull(request.getInputInt());
+
+      long l = 88L;
+      request.setInputLong(88L);
+      assertEquals(l, request.getInputLong().longValue());
+      request.setInputLong(null);
+      assertNull(request.getInputLong());
+      
+      float f = 32.5F;
+      request.setInputFloat(f);
+      assertEquals(f, request.getInputFloat().floatValue(), 0.0F);
+      request.setInputFloat(null);
+      assertNull(request.getInputFloat());
+
+      double d = 37.2;
+      request.setInputDouble(d);
+      assertEquals(d, request.getInputDouble().doubleValue(), 0.0);
+      request.setInputDouble(null);
+      assertNull(request.getInputDouble());
+
+      String t = "text";
+      request.setInputText(t);
+      assertEquals(t, request.getInputText());
+      t = "";
+      request.setInputText(t);
+      assertEquals(t, request.getInputText());
+      request.setInputText(null);
+      assertNull(request.getInputText());
+
+      Date.Value dv = Date.fromStringForRequired("20061231");
+      request.setInputDate(dv);
+      assertEquals(dv, request.getInputDate());
+      request.setInputDate(null);
+      assertNull(request.getInputDate());
+
+      Timestamp.Value ts = Timestamp.fromStringForOptional("20041225153255");
+      request.setInputTimestamp(ts);
+      assertEquals(ts, request.getInputTimestamp());
+      request.setInputTimestamp(null);
+      assertNull(request.getInputTimestamp());
+
+      byte[] ba = new byte[] { 25, 88, 66 };
+      request.setInputBinary(ba);
+      assertEquals(ba, request.getInputBinary());
+      request.setInputBinary(null);
+      assertNull(request.getInputBinary());
+   }
+
    public void testBug1362875() throws Exception {
       EchoRequest request = new EchoRequest();
       EchoResult  result;

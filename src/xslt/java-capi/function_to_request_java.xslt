@@ -202,13 +202,39 @@ extends org.xins.client.AbstractCAPICallRequest {
 		</xsl:variable>
 
 		<!-- Determine the names of the methods -->
-		<xsl:variable name="setMethod">
-			<xsl:text>set</xsl:text>
+		<xsl:variable name="methodTail">
 			<xsl:value-of select="translate(substring(@name,1,1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 			<xsl:value-of select="substring(@name,2)" />
 		</xsl:variable>
+		<xsl:variable name="getMethod">
+			<xsl:text>get</xsl:text>
+			<xsl:value-of select="$methodTail" />
+		</xsl:variable>
+		<xsl:variable name="setMethod">
+			<xsl:text>set</xsl:text>
+			<xsl:value-of select="$methodTail" />
+		</xsl:variable>
 
-		<xsl:text>
+		<xsl:text><![CDATA[
+
+   /**
+    * Gets the value of the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> parameter.
+    * If unset, <code>null</code> is returned.
+    *
+    * @return
+    *    the value of the parameter, or <code>null</code> if unset.
+    *
+    * @since XINS 1.4.0
+    */
+   public ]]></xsl:text>
+		<xsl:value-of select="$javaclass" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="$getMethod" />
+		<xsl:text>() {
+      return null; // TODO FIXME
+   }
 
    /**
     * Sets</xsl:text>
