@@ -20,6 +20,10 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     . Implemented SF.net RFE #1362836: [Type].toString is called twice in CAPI
       Request set methods.
 
+* DTD:
+  - Copied all 1.3 DTDs to 1.4 DTDs.
+  - Introduced the 1.4 DTDs, where appropriate.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 FINAL:
 

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.0//EN" "http://www.xins.org/dtd/translation-bundle_1_0.dtd">
-<!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
- $Id$
--->
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.4//EN" "http://www.xins.org/dtd/translation-bundle_1_4.dtd">
+<!-- $Id$ -->
 
 <translation-bundle>
 	<translation entry="2100">Calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" />, total time-out is <value-of-param name="totalTimeOut" /> ms, connection time-out is <value-of-param name="connectionTimeOut" /> ms, socket time-out is <value-of-param name="socketTimeOut" /> ms.</translation>
@@ -21,7 +16,7 @@
 	<translation entry="2111">Error while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" /> in <value-of-param name="duration" /> ms: Caught unexpected exception.</translation>
 	<translation entry="2112">Received unsuccessful XINS result (error code <value-of-param name="errorCode" />) while calling function <value-of-param name="function" /> at <value-of-param name="url" /> with parameters <value-of-param name="parameters" />.</translation>
 	<translation entry="2113">Call request for function <value-of-param name="function" /> with parameters <value-of-param name="parameters" /> failed completely after <value-of-param name="duration" /> ms.</translation>
-   <translation entry="2114">The build-time XINS version for the <value-of-param name="apiName" format="quoted" /> CAPI (<value-of-param name="buildVersion" />) differs from the runtime version of the XINS/Java Client Framework (<value-of-param name="runtimeVersion" />).</translation>
+	<translation entry="2114">The build-time XINS version for the <value-of-param name="apiName" format="quoted" /> CAPI (<value-of-param name="buildVersion" />) differs from the runtime version of the XINS/Java Client Framework (<value-of-param name="runtimeVersion" />).</translation>
 
 	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" format="quoted" /> instead of "result" with namespace (null).</translation>
 	<translation entry="2201">Found output parameter with name nor value.</translation>
