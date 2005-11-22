@@ -11,6 +11,12 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 * Logdoc:
   - Fixed SF.net bug #1351055: Incorrect code generated for exception message.
 
+* Generation of client-side Java code:
+  - Added a test case for SF.net bug #1362875: Overriding Request input value
+    with empty string ignored.
+  - Made preparations for the implementation of SF.net RFE #1359740: Add get
+    methods for CAPI Request objects.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 FINAL:
 
