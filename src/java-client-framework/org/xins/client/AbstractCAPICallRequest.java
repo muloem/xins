@@ -98,7 +98,7 @@ public abstract class AbstractCAPICallRequest {
     *    the name of the parameter to set, cannot be <code>null</code>.
     *
     * @param value
-    *    the String representation of the value of the parameter,
+    *    the character string representation of the value of the parameter,
     *    can be <code>null</code>.
     *
     * @throws IllegalArgumentException
