@@ -875,7 +875,7 @@ public class AllInOneAPITests extends TestCase {
     *
     * @since XINS 1.4.0
     */
-   public void testEnhancement1359740() throws Exception {
+   public void testGetCAPIMethods() throws Exception {
 
       SimpleTypesRequest request = new SimpleTypesRequest();
       assertNull(request.getInputByte());
@@ -948,7 +948,7 @@ public class AllInOneAPITests extends TestCase {
       assertNull(request.getInputBinary());
    }
 
-   public void testBug1362875() throws Exception {
+   public void testResetInputParameter() throws Exception {
       EchoRequest request = new EchoRequest();
       EchoResult  result;
 
