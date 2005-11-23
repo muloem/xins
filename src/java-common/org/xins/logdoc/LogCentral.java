@@ -71,12 +71,7 @@ public final class LogCentral {
 
       // When the first LogController registers, set the locale.
       if (LOCALE == null) {
-         String startupLocale = System.getProperty(LOG_LOCALE_PROPERTY);
-         if (startupLocale == null || startupLocale.equals("")) {
-            LOCALE = DEFAULT_LOCALE;
-         } else {
-            LOCALE = startupLocale;
-         }
+         initStartupLocale();
       }
 
       if (controller.isLocaleSupported(LOCALE)) {
@@ -94,6 +89,24 @@ public final class LogCentral {
          System.arraycopy(CONTROLLERS, 0, newControlers, 0, size);
          newControlers[size] = controller;
          CONTROLLERS = newControlers;
+      }
+   }
+
+   /**
+    * Initializes the start-up locale. If the system property
+    * {@link #LOG_LOCALE_PROPERTY} is set, then this will be used as the
+    * locale, otherwise {@link #DEFAULT_LOCALE} is assumed.
+    *
+    * <p>This method is called from
+    * {@link #registerLog(AbstractLog.LogController)} as soon as the first
+    * {@link AbstractLog.LogController} is registered.
+    */
+   private static void initStartupLocale() {
+      String startupLocale = System.getProperty(LOG_LOCALE_PROPERTY);
+      if (startupLocale == null || startupLocale.equals("")) {
+         LOCALE = DEFAULT_LOCALE;
+      } else {
+         LOCALE = startupLocale;
       }
    }
 
@@ -126,11 +139,13 @@ public final class LogCentral {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newLocale", newLocale);
+System.err.println("Changing to locale \"" + newLocale + "\".");
 
       // Make sure the locale is supported by all controllers
       int size = CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
          if (!CONTROLLERS[i].isLocaleSupported(newLocale)) {
+System.err.println("Locale \"" + newLocale + "\" is not supported by log controller " + i + ": " + CONTROLLERS[i]);
             throw new UnsupportedLocaleException(newLocale);
          }
       }
@@ -142,6 +157,7 @@ public final class LogCentral {
       }
 
       LOCALE = newLocale;
+System.err.println("Changed to locale \"" + newLocale + "\".");
    }
 
    /**

@@ -10,6 +10,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 
 * Logdoc:
   - Fixed SF.net bug #1351055: Incorrect code generated for exception message.
+  - Minor refactoring in class LogCentral.
 
 * Generation of client-side Java code:
   - Improved the generation of the CAPI [Function]Request classes:
