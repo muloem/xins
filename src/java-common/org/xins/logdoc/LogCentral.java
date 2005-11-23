@@ -103,7 +103,7 @@ public final class LogCentral {
     */
    private static void initStartupLocale() {
       String startupLocale = System.getProperty(LOG_LOCALE_PROPERTY);
-      if (startupLocale == null || startupLocale.equals("")) {
+      if (startupLocale == null || startupLocale.trim().equals("")) {
          LOCALE = DEFAULT_LOCALE;
       } else {
          LOCALE = startupLocale;
