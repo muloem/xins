@@ -23,13 +23,13 @@ public final class LogCentral {
    //-------------------------------------------------------------------------
 
    /**
-    * The property used to change the locale of the logdoc.
+    * The name of the property that specifies which locale should be used.
     */
    public final static String LOG_LOCALE_PROPERTY = "org.xins.logdoc.locale";
 
    /**
-    * The default locale used for starting up when the locale is not defined in
-    * command line arguments.
+    * The default locale used at start-up, if no locale is specified in a
+    * system property.
     */
    public static final String DEFAULT_LOCALE = "en_US";
 
@@ -71,42 +71,53 @@ public final class LogCentral {
 
       // When the first LogController registers, set the locale.
       if (LOCALE == null) {
-         initStartupLocale();
+         LOCALE = determineStartupLocale();
       }
 
+      // Set the locale on the controller
       if (controller.isLocaleSupported(LOCALE)) {
          controller.setLocale(LOCALE);
+
+      // Fail if the controller does not support this locale
       } else {
+         System.err.println("Locale \"" + LOCALE + "\" is not supported by log controller: " + controller);
          throw new UnsupportedLocaleException(LOCALE);
       }
 
-      // Add the controller to the List
+      // Add it to the list of registered controllers
       if (CONTROLLERS == null) {
          CONTROLLERS = new AbstractLog.LogController[] { controller };
       } else {
          int size = CONTROLLERS.length;
-         AbstractLog.LogController[] newControlers = new AbstractLog.LogController[size + 1];
-         System.arraycopy(CONTROLLERS, 0, newControlers, 0, size);
-         newControlers[size] = controller;
-         CONTROLLERS = newControlers;
+         AbstractLog.LogController[] temp = new AbstractLog.LogController[size + 1];
+         System.arraycopy(CONTROLLERS, 0, temp, 0, size);
+         temp[size] = controller;
+         CONTROLLERS = temp;
       }
    }
 
    /**
-    * Initializes the start-up locale. If the system property
-    * {@link #LOG_LOCALE_PROPERTY} is set, then this will be used as the
-    * locale, otherwise {@link #DEFAULT_LOCALE} is assumed.
+    * Determines the start-up locale. If the system property
+    * {@link #LOG_LOCALE_PROPERTY} is set to a non-empty value, then this
+    * will be returned, otherwise {@link #DEFAULT_LOCALE} is returned.
     *
     * <p>This method is called from
     * {@link #registerLog(AbstractLog.LogController)} as soon as the first
     * {@link AbstractLog.LogController} is registered.
+    *
+    * @return
+    *    the locale to use initially, at start-up.
     */
-   private static void initStartupLocale() {
-      String startupLocale = System.getProperty(LOG_LOCALE_PROPERTY);
-      if (startupLocale == null || startupLocale.trim().equals("")) {
-         LOCALE = DEFAULT_LOCALE;
+   private static String determineStartupLocale() {
+
+      // Use the value of the system property, if set
+      String locale = System.getProperty(LOG_LOCALE_PROPERTY);
+      if (locale != null && locale.trim().length() > 0) {
+         return locale;
+
+      // Fallback to the default locale
       } else {
-         LOCALE = startupLocale;
+         return DEFAULT_LOCALE;
       }
    }
 
@@ -139,13 +150,16 @@ public final class LogCentral {
 
       // Check preconditions
       MandatoryArgumentChecker.check("newLocale", newLocale);
-System.err.println("Changing to locale \"" + newLocale + "\".");
+
+      // Short-circuit if the new locale equals the current one
+      if (newLocale.equals(LOCALE)) {
+         return;
+      }
 
       // Make sure the locale is supported by all controllers
-      int size = CONTROLLERS.length;
+      int size = (CONTROLLERS == null) ? 0 : CONTROLLERS.length;
       for (int i = 0; i < size; i++) {
          if (!CONTROLLERS[i].isLocaleSupported(newLocale)) {
-System.err.println("Locale \"" + newLocale + "\" is not supported by log controller " + i + ": " + CONTROLLERS[i]);
             throw new UnsupportedLocaleException(newLocale);
          }
       }
@@ -157,7 +171,6 @@ System.err.println("Locale \"" + newLocale + "\" is not supported by log control
       }
 
       LOCALE = newLocale;
-System.err.println("Changed to locale \"" + newLocale + "\".");
    }
 
    /**
