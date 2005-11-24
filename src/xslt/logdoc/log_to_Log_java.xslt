@@ -180,6 +180,10 @@
       // Methods
       //----------------------------------------------------------------------
 
+      public String toString() {
+         return getClass().getName();
+      }
+
       protected boolean isLocaleSupported(String locale) {
 
          // Return true if the bundle exists
