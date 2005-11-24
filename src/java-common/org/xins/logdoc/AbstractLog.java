@@ -119,7 +119,7 @@ public abstract class AbstractLog {
     *
     * @since XINS 1.0.0
     */
-   protected static abstract class LogController {
+   protected static abstract class LogController extends Object {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -163,6 +163,10 @@ public abstract class AbstractLog {
       /**
        * Activates the specified locale.
        *
+       * <p>This method should only be called with locales that are supported,
+       * according to {@link #isLocaleSupported(String)}. Otherwise the
+       * behaviour of this method is unspecified.
+       *
        * @param newLocale
        *    the new locale, not <code>null</code>.
        */
@@ -177,7 +181,7 @@ public abstract class AbstractLog {
     *
     * @since XINS 1.0.0
     */
-   private static class CustomLevel extends Level {
+   private static final class CustomLevel extends Level {
 
       //----------------------------------------------------------------------
       // Constructors
