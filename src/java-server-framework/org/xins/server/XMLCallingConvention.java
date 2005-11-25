@@ -47,7 +47,8 @@ extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   static final String RESPONSE_CONTENT_TYPE = "text/xml;charset="
+                                             + RESPONSE_ENCODING;
 
    /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
@@ -101,7 +102,6 @@ extends CallingConvention {
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
-
 
       Element requestElem = parseXMLRequest(httpRequest, true);
 
