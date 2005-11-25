@@ -44,6 +44,7 @@ public class ChainedMap extends AbstractMap {
     * Creates a new instance of <code>ChainedMap</code>.
     */
    public ChainedMap() {
+      // empty
    }
 
    //-------------------------------------------------------------------------
@@ -104,9 +105,9 @@ public class ChainedMap extends AbstractMap {
     */
    private class EntryMap implements Map.Entry {
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Constructor
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * Creates a new <code>EntryMap</code> instance.
@@ -123,9 +124,9 @@ public class ChainedMap extends AbstractMap {
       }
 
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Fields
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * The key. Can be <code>null</code>.
@@ -138,9 +139,9 @@ public class ChainedMap extends AbstractMap {
       private Object _value;
 
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Methods
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
        public Object getKey() {
           return _key;
@@ -171,18 +172,23 @@ public class ChainedMap extends AbstractMap {
        }
    }
 
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
    /**
-    * The <code>ChainedSet</code> used for the {@link #entrySet} method of this
-    * <code>ChainedMap</code>.
+    * The <code>ChainedSet</code> used for the <code>entrySet</code> method of
+    * this <code>ChainedMap</code>.
     *
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
    private class ChainedSet extends AbstractSet {
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Constructor
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * Creates a new instance of <code>ChainedSet</code>.
@@ -194,7 +200,8 @@ public class ChainedMap extends AbstractMap {
        * Creates a new instance of <code>ChainedSet</code>.
        *
        * @param collection
-       *    the collection that contains the values of the set, cannot be <code>null</code>.
+       *    the collection that contains the values of the set, cannot be
+       *    <code>null</code>.
        */
       public ChainedSet(Collection collection) {
          Iterator itCollection = collection.iterator();
@@ -204,18 +211,18 @@ public class ChainedMap extends AbstractMap {
       }
 
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Fields
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * The values of the set.
        */
       private List _values = new ArrayList();
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Methods
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       public int size() {
          return _values.size();
