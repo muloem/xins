@@ -655,11 +655,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
          executor.dispose();
          throw new TotalTimeOutCallException(request, target, duration);
 
-      } finally {
-
-         // Determine the call duration
-         duration = System.currentTimeMillis() - start;
       }
+
+      // Determine the call duration
+      duration = System.currentTimeMillis() - start;
 
       // Log that the HTTP call is done
       Log.log_1101(url, params, duration);

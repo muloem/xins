@@ -103,7 +103,7 @@ public class ChainedMap extends AbstractMap {
     * @version $Revision$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
-   private class EntryMap implements Map.Entry {
+   private static class EntryMap implements Map.Entry {
 
       //----------------------------------------------------------------------
       // Constructor
@@ -172,11 +172,6 @@ public class ChainedMap extends AbstractMap {
        }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>ChainedSet</code> used for the <code>entrySet</code> method of
     * this <code>ChainedMap</code>.
@@ -184,7 +179,7 @@ public class ChainedMap extends AbstractMap {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
-   private class ChainedSet extends AbstractSet {
+   private static class ChainedSet extends AbstractSet {
 
       //----------------------------------------------------------------------
       // Constructor
@@ -194,6 +189,7 @@ public class ChainedMap extends AbstractMap {
        * Creates a new instance of <code>ChainedSet</code>.
        */
       public ChainedSet() {
+         // empty
       }
 
       /**

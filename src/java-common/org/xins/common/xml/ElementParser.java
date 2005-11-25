@@ -173,14 +173,12 @@ extends Object {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
-    *
-    * @since XINS 1.1.0
     */
-   private class Handler extends DefaultHandler {
+   private static class Handler extends DefaultHandler {
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Constructors
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * Constructs a new <code>Handler</code> instance.
@@ -194,9 +192,9 @@ extends Object {
       }
 
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Fields
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * The current state. Never <code>null</code>.
@@ -229,9 +227,9 @@ extends Object {
       private int _level;
 
 
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
       // Methods
-      //-------------------------------------------------------------------------
+      //----------------------------------------------------------------------
 
       /**
        * Receive notification of the beginning of an element.
@@ -280,7 +278,9 @@ extends Object {
          _level++;
 
          if (currentState == ERROR) {
-            String detail = "Unexpected state " + currentState + " (level=" + _level + ')';
+            String detail = "Unexpected state "
+                          + currentState
+                          + " (level=" + _level + ')';
             throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
 
          } else {
@@ -335,9 +335,6 @@ extends Object {
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
-
-         // Make sure namespaceURI is either null or non-empty
-         namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
 
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName);
