@@ -340,7 +340,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * @version $Revision$ $Date$
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
-   class URIResolver implements javax.xml.transform.URIResolver {
+   static class URIResolver implements javax.xml.transform.URIResolver {
 
       //----------------------------------------------------------------------
       // Constructors
