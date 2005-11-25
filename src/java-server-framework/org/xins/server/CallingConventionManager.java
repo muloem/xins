@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -651,6 +653,32 @@ extends Manageable {
    }
 
    /**
+    * Determines the calling convention to use for the specified request.
+    *
+    * @param request
+    *    the incoming request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the calling convention to use, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the request is considered invalid, for example because the calling
+    *    convention specified in the request is unknown.
+    */
+   CallingConvention getCallingConvention(HttpServletRequest request)
+   throws InvalidRequestException {
+
+      String paramName = APIServlet.CALLING_CONVENTION_PARAMETER;
+      String ccName    = request.getParameter(paramName);
+
+      return getCallingConvention(ccName);
+   }
+
+
+   /**
     * Gets the calling convention for the given name.
     *
     * <p>If the given name is <code>null</code> or empty (after trimming),
@@ -668,7 +696,7 @@ extends Manageable {
     * @throws InvalidRequestException
     *    if the calling convention name is unknown.
     */
-   CallingConvention getCallingConvention(String name)
+   private CallingConvention getCallingConvention(String name)
    throws InvalidRequestException {
 
       // Default to the default calling convention

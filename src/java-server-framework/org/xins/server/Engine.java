@@ -596,7 +596,6 @@ final class Engine extends Object {
       // Determine the calling convention; if an existing calling convention
       // is specified in the request, then use that, otherwise use the default
       // calling convention for this engine
-      String ccParam = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
       CallingConvention cc = null;
       FunctionRequest xinsRequest = null;
       FunctionResult result = null;
@@ -607,7 +606,8 @@ final class Engine extends Object {
 
          try {
 
-            cc = _conventionManager.getCallingConvention(ccParam);
+            // Determine which calling convention to use
+            cc = _conventionManager.getCallingConvention(request);
 
             // Convert the HTTP request to a XINS request
             xinsRequest = cc.convertRequest(request);
