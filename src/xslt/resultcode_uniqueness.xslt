@@ -16,11 +16,11 @@
 
 		<xsl:param name="resultcode_name" />
 		<xsl:param name="resultcode_value" />
-		<xsl:param name="specsdirectory" />
-		<xsl:param name="api_file" />
+		<xsl:param name="specsdir" />
+		<xsl:param name="api_node" />
 
-		<xsl:for-each select="document($api_file)/api/resultcode">
-			<xsl:variable name="rcd_file" select="concat($specsdirectory, '/', @name, '.rcd')" />
+		<xsl:for-each select="$api_node/resultcode">
+			<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
 			<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
 			<xsl:variable name="elementName" select="$rcd_node/@name"/>
 			<xsl:variable name="elementValue" select="$rcd_node/@value"/>

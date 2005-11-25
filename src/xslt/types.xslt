@@ -89,14 +89,15 @@
 		<xsl:param name="type"     />
 
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_node" select="document($type_file)/type" />
 		<xsl:variable name="type_url"  select="concat($type, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">
-				<xsl:with-param name="text" select="document($type_file)/type/description/text()" />
+				<xsl:with-param name="text" select="$type_node/description/text()" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(boolean(document($type_file)))">
+		<xsl:if test="not(boolean($type_node))">
 			<xsl:message terminate="yes">
 				<xsl:text>The type '</xsl:text>
 				<xsl:value-of select="$type" />
@@ -116,13 +117,13 @@
 	</xsl:template>
 
 	<xsl:template name="javatypeclass_for_type">
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="api"          />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="type"         />
 
-		<xsl:if test="string-length($project_file) &lt; 1">
-			<xsl:message terminate="yes">Mandatory parameter 'project_file' is not defined.</xsl:message>
+		<xsl:if test="not($project_node)">
+			<xsl:message terminate="yes">Mandatory parameter 'project_node' is not defined.</xsl:message>
 		</xsl:if>
 
 		<xsl:choose>
@@ -133,7 +134,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="package_for_type_classes">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 				</xsl:call-template>
 				<xsl:text>.</xsl:text>
@@ -170,7 +171,7 @@
 	<xsl:template name="javatype_for_type">
 
 		<!-- Define parameters -->
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
@@ -180,8 +181,8 @@
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
-		<xsl:if test="string-length($project_file) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'project_file' is mandatory.</xsl:message>
+		<xsl:if test="not($project_node)">
+			<xsl:message terminate="yes">Parameter 'project_node' is mandatory.</xsl:message>
 		</xsl:if>
 		<xsl:if test="string-length($specsdir) &lt; 1">
 			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
@@ -204,7 +205,7 @@
 			<!-- Determine Java type for enum type -->
 			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
 				<xsl:call-template name="javatype_for_customtype">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="type"         select="$type"         />
 				</xsl:call-template>
@@ -214,7 +215,7 @@
 			<!-- Determine Java type for list type or set type -->
 			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
 				<xsl:call-template name="javatype_for_customtype">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="type"         select="$type"         />
 				</xsl:call-template>
@@ -283,14 +284,14 @@
 				<xsl:value-of select="$type" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:variable name="typefile">
+				<xsl:variable name="type_file">
 					<xsl:call-template name="file_for_type">
 						<xsl:with-param name="specsdir" select="$specsdir" />
 						<xsl:with-param name="api"      select="$api"      />
 						<xsl:with-param name="type"     select="$type"     />
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:variable name="type_node" select="document($typefile)/type" />
+				<xsl:variable name="type_node" select="document($type_file)/type" />
 
 				<xsl:choose>
 					<xsl:when test="$type_node/properties">
@@ -359,7 +360,7 @@
 			<xsl:when test="count(document($type_file)/type/pattern) &gt; 0">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"          select="$api"          />
 						<xsl:with-param name="type"         select="$type"         />
 					</xsl:call-template>
@@ -382,7 +383,7 @@
 			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"          select="$api"          />
 						<xsl:with-param name="type"         select="$type"         />
 					</xsl:call-template>
@@ -398,7 +399,7 @@
 			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"          select="$api"          />
 						<xsl:with-param name="type"         select="$type"         />
 					</xsl:call-template>
@@ -475,7 +476,7 @@
 			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"          select="$api"          />
 						<xsl:with-param name="type"         select="$type"         />
 					</xsl:call-template>
@@ -533,12 +534,12 @@
 	</xsl:template>
 
 	<xsl:template name="javatype_for_customtype">
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
 
 		<xsl:call-template name="package_for_type_classes">
-			<xsl:with-param name="project_file" select="$project_file" />
+			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="api"          select="$api"          />
 		</xsl:call-template>
 		<xsl:text>.</xsl:text>
@@ -571,7 +572,7 @@
 	<xsl:template name="javaimport_for_type">
 
 		<!-- Define parameters -->
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
@@ -580,8 +581,8 @@
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 
 		<!-- Check preconditions -->
-		<xsl:if test="string-length($project_file) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'project_file' is mandatory.</xsl:message>
+		<xsl:if test="not($project_node)">
+			<xsl:message terminate="yes">Parameter 'project_node' is mandatory.</xsl:message>
 		</xsl:if>
 		<xsl:if test="string-length($specsdir) &lt; 1">
 			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
@@ -601,7 +602,7 @@
 			<!-- Determine Java type for list type or set type -->
 			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0 or document($type_file)/type/list or document($type_file)/type/set">
 				<xsl:call-template name="javatype_for_customtype">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="type"         select="$type"         />
 				</xsl:call-template>
@@ -652,8 +653,8 @@
 	* The type could be a standard type or a defined type.
 	* For more information about the returned type: http://www.w3.org/TR/xmlschema-2
 	*
-	* @param project_file
-	*    the location of the xins-project.xml file.
+	* @param project_node
+	*    the content of the xins-project.xml file.
 	*
 	* @param specsdir
 	*    the specification directory for the concerning XINS project, must be
@@ -672,7 +673,7 @@
 	<xsl:template name="soaptype_for_type">
 
 		<!-- Define parameters -->
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
@@ -684,7 +685,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:call-template name="basetype_for_type">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir" select="$specsdir" />
 						<xsl:with-param name="api" select="$api" />
 						<xsl:with-param name="type" select="$type" />

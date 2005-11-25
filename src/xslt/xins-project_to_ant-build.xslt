@@ -26,9 +26,10 @@
 
 	<xsl:output indent="yes" />
 
-	<xsl:variable name="xmlenc_version"    select="'0.49'"                                          />
-	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"             />
-	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"      />
+	<xsl:variable name="xmlenc_version"    select="'0.49'"                                      />
+	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"         />
+	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"  />
+	<xsl:variable name="project_node"      select="document($project_file)/project"             />
 	<xsl:variable name="specsdir">
 		<xsl:value-of select="$project_home" />
 		<xsl:text>/</xsl:text>
@@ -460,7 +461,7 @@ APIs in this project are:
 		</xsl:variable>
 		<xsl:variable name="clientPackage">
 			<xsl:call-template name="package_for_client_api">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api" select="$api" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -498,7 +499,6 @@ APIs in this project are:
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="api"          expression="{$api}"          />
-				<param name="api_file"     expression="{$api_file}"     />
 			</style>
 			<xmlvalidate warn="false">
 				<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
@@ -567,11 +567,8 @@ APIs in this project are:
 				includes="{$categoryIncludes}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 				</style>
 			</xsl:if>
 			<xsl:if test="$api_node/environment or not(environments)">
@@ -628,12 +625,11 @@ APIs in this project are:
 					out="{$project_home}/build/specdocs/{$api}/properties{$implName2}.html"
 					style="{$xins_home}/src/xslt/specdocs/impl_to_html.xslt">
 						<xmlcatalog refid="all-dtds" />
-						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
 						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$api_specsdir}" />
+						<param name="specsdir"     expression="{$api_specsdir}"     />
+						<param name="xins_version" expression="{$xins_version}" />
 						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
 					</style>
 				</xsl:if>
 			</xsl:for-each>
@@ -643,7 +639,7 @@ APIs in this project are:
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_type_classes">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api" select="$api" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -664,13 +660,7 @@ APIs in this project are:
 				out="{$javaDestDir}/{$packageAsDir}/package.html"
 				style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}"  />
-					<param name="project_home" expression="{$project_home}"  />
-					<param name="project_file" expression="{$project_file}"  />
-					<param name="specsdir"     expression="{$api_specsdir}"  />
-					<param name="api"          expression="{$api}"           />
-					<param name="api_file"     expression="{$api_file}"      />
-					<param name="package"      expression="{$package}"       />
+					<param name="api" expression="{$api}" />
 				</style>
 				<xmlvalidate warn="false">
 					<fileset dir="{$copiedTypesDir}" includes="**/*.typ"/>
@@ -683,13 +673,10 @@ APIs in this project are:
 				reloadstylesheet="true"
 				extension=".java">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 					<param name="package"      expression="{$package}"      />
+					<param name="api"          expression="{$api}"          />
 				</style>
 
 				<mkdir dir="{$typeClassesDir}" />
@@ -734,7 +721,7 @@ APIs in this project are:
 			</xsl:variable>
 			<xsl:variable name="package">
 				<xsl:call-template name="package_for_server_api">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api" select="$api" />
 				</xsl:call-template>
 			</xsl:variable>
@@ -749,8 +736,8 @@ APIs in this project are:
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:choose>
-							<xsl:when test="document($project_file)/project/@javadir">
-								<xsl:value-of select="document($project_file)/project/@javadir" />
+							<xsl:when test="$project_node/@javadir">
+								<xsl:value-of select="$project_node/@javadir" />
 							</xsl:when>
 							<xsl:otherwise>src/impl-java</xsl:otherwise>
 						</xsl:choose>
@@ -887,7 +874,6 @@ APIs in this project are:
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 					<param name="impl_file"    expression="{$impl_file}"    />
 					<param name="package"      expression="{$package}"      />
 				</style>
@@ -896,26 +882,17 @@ APIs in this project are:
 				out="{$javaDestDir}/{$packageAsDir}/package.html"
 				style="{$xins_home}/src/xslt/java-server-framework/api_to_packagehtml.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
-					<param name="package"      expression="{$package}"      />
+					<param name="api" expression="{$api}" />
 				</style>
 				<style
 				in="{$impl_file}"
 				out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
 				style="{$xins_home}/src/xslt/java-server-framework/impl_to_java.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 					<param name="package"      expression="{$package}"      />
+					<param name="api"          expression="{$api}"          />
 				</style>
 
 				<xmlvalidate warn="false">
@@ -1029,7 +1006,7 @@ APIs in this project are:
 							<pathelement path="{$typeClassesDir}" />
 						</xsl:if>
 						<path refid="xins.classpath" />
-						<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
@@ -1077,7 +1054,7 @@ APIs in this project are:
 					<lib dir="{$xins_home}/build" includes="xins-server.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
-					<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
+					<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 					<xsl:if test="local-name() = 'impl'">
 						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
@@ -1146,7 +1123,7 @@ APIs in this project are:
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 					<classpath>
 						<path refid="xins.classpath" />
-						<xsl:apply-templates select="document($api_file)/api/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
@@ -1212,7 +1189,7 @@ APIs in this project are:
 				</xsl:attribute>
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_server_api">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api" select="$api" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -1256,7 +1233,7 @@ APIs in this project are:
 			<target name="generatetest-{$api}" unless="test.generated">
 				<xsl:variable name="package">
 					<xsl:call-template name="package_for_server_api">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api" select="$api" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -1274,12 +1251,6 @@ APIs in this project are:
 				out="{$javaTestDir}/APITests.java"
 				style="{$xins_home}/src/xslt/tests/api_to_test.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 					<param name="package"      expression="{$package}"      />
 				</style>
 				<xmlvalidate warn="false">
@@ -1292,12 +1263,7 @@ APIs in this project are:
 				extension="Tests.java"
 				style="{$xins_home}/src/xslt/tests/function_to_test.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
 					<param name="package"      expression="{$package}"      />
 				</style>
 			</target>
@@ -1313,26 +1279,18 @@ APIs in this project are:
 			out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
 			style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
 				<xmlcatalog refid="all-dtds" />
-				<param name="xins_version" expression="{$xins_version}"  />
-				<param name="project_home" expression="{$project_home}"  />
 				<param name="project_file" expression="{$project_file}"  />
 				<param name="specsdir"     expression="{$api_specsdir}"  />
-				<param name="api"          expression="{$api}"           />
-				<param name="api_file"     expression="{$api_file}"      />
 				<param name="package"      expression="{$clientPackage}" />
+				<param name="api"          expression="{$api}"           />
+				<param name="xins_version" expression="{$xins_version}"  />
 			</style>
 			<style
 			in="{$api_file}"
 			out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/package.html"
 			style="{$xins_home}/src/xslt/java-capi/api_to_packagehtml.xslt">
 				<xmlcatalog refid="all-dtds" />
-				<param name="xins_version" expression="{$xins_version}"  />
-				<param name="project_home" expression="{$project_home}"  />
-				<param name="project_file" expression="{$project_file}"  />
-				<param name="specsdir"     expression="{$api_specsdir}"  />
-				<param name="api"          expression="{$api}"           />
-				<param name="api_file"     expression="{$api_file}"      />
-				<param name="package"      expression="{$clientPackage}" />
+				<param name="api" expression="{$api}" />
 			</style>
 			<xsl:if test="string-length($functionIncludes) &gt; 0">
 				<xmlvalidate warn="false">
@@ -1361,13 +1319,10 @@ APIs in this project are:
 				extension="Request.java"
 				includes="{$functionIncludes}">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}"  />
-					<param name="project_home" expression="{$project_home}"  />
 					<param name="project_file" expression="{$project_file}"  />
 					<param name="specsdir"     expression="{$api_specsdir}"  />
-					<param name="api"          expression="{$api}"           />
-					<param name="api_file"     expression="{$api_file}"      />
 					<param name="package"      expression="{$clientPackage}" />
+					<param name="api"          expression="{$api}"           />
 				</style>
 			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
@@ -1382,13 +1337,10 @@ APIs in this project are:
 				extension="Exception.java"
 				includes="{$resultcodeIncludes}">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}"  />
-					<param name="project_home" expression="{$project_home}"  />
-					<param name="project_file" expression="{$project_file}"  />
 					<param name="specsdir"     expression="{$api_specsdir}"  />
+					<param name="package"      expression="{$clientPackage}" />
 					<param name="api"          expression="{$api}"           />
 					<param name="api_file"     expression="{$api_file}"      />
-					<param name="package"      expression="{$clientPackage}" />
 				</style>
 			</xsl:if>
 		</target>

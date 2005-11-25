@@ -22,6 +22,9 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+
 	<xsl:output
 	method="html"
 	indent="yes"
@@ -46,8 +49,8 @@
 		<xsl:call-template name="resultcodeValidity">
 			<xsl:with-param name="resultcode_name" select="@name" /> 
 			<xsl:with-param name="resultcode_value" select="@value" />
-			<xsl:with-param name="specsdirectory" select="$specsdir" />
-			<xsl:with-param name="api_file" select="$api_file" />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="api_node" select="$api_node" />
 		</xsl:call-template>
 
 		<!-- Warn if name differs from value -->
@@ -92,11 +95,10 @@
 				<xsl:variable name="broken_file" select="concat($resultcode_name,'.rcd')" />
 				<xsl:call-template name="broken_freeze">
 					<xsl:with-param name="project_home" select="$project_home" />
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="api" select="$api" />
-					<xsl:with-param name="api_file" select="$api_file" />
-					<xsl:with-param name="frozen_version" select="document($api_file)/api/resultcode[@name=$resultcode_name]/@freeze" />
+					<xsl:with-param name="frozen_version" select="$api_node/resultcode[@name=$resultcode_name]/@freeze" />
 					<xsl:with-param name="broken_file" select="$broken_file" />
 				</xsl:call-template>
 

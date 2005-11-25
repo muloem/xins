@@ -17,14 +17,13 @@
 	<xsl:template name="broken_freeze">
 		<!-- Define parameters -->
 		<xsl:param name="project_home"   />
-		<xsl:param name="project_file"   />
+		<xsl:param name="project_node"   />
 		<xsl:param name="specsdir"       />
 		<xsl:param name="api"            />
-		<xsl:param name="api_file"       />
 		<xsl:param name="frozen_version" />
 		<xsl:param name="broken_file"    />
 
-		<xsl:variable name="cvsweb_url" select="document($project_file)/project/cvsweb/@href" />
+		<xsl:variable name="cvsweb_url" select="$project_node/cvsweb/@href" />
 
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">

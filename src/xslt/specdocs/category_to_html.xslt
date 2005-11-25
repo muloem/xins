@@ -16,19 +16,13 @@
 
 	<!-- Define parameters -->
 	<xsl:param name="xins_version" />
-	<xsl:param name="project_home" />
-	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
-	<xsl:include href="broken_freeze.xslt"  />
-	<xsl:include href="output_section.xslt" />
 	<xsl:include href="../header.xslt"      />
 	<xsl:include href="../footer.xslt"      />
-	<xsl:include href="../urlencode.xslt"   />
-	<xsl:include href="../types.xslt"       />
+	<xsl:include href="../firstline.xslt"   />
 
 	<xsl:output
 	method="html"
@@ -166,6 +160,21 @@
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />
 		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="description">
+		<xsl:if test="description">
+			<xsl:apply-templates select="description" />
+			<xsl:if test="deprecated">
+				<br />
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="deprecated">
+			<em>
+				<strong>Deprecated: </strong>
+				<xsl:apply-templates select="deprecated" />
+			</em>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

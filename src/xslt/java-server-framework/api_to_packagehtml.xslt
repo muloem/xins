@@ -14,12 +14,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
-	<xsl:param name="project_home" />
-	<xsl:param name="project_file" />
-	<xsl:param name="specsdir"     />
-	<xsl:param name="package"      />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<!-- Output is HTML -->
 	<xsl:output method="html" />

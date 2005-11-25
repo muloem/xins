@@ -140,7 +140,7 @@ implements Result {
 		</xsl:variable>
 		<xsl:variable name="javasimpletype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="'true'"        />

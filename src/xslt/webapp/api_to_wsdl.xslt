@@ -27,6 +27,8 @@
 
 	<xsl:output method="xml" indent="yes" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	
 	<xsl:template match="api">
 	
 		<xsl:variable name="apiname" select="@name" />
@@ -35,7 +37,7 @@
 				<xsl:when test="string-length($endpoint) > 0">
 					<xsl:value-of select="$endpoint" />
 				</xsl:when>
-				<xsl:when test="document($project_file)/project/api[@name=$apiname]/environments">
+				<xsl:when test="$project_node/api[@name=$apiname]/environments">
 					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $apiname, '/environments.xml')" />
 					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
 					<xsl:text>/?_convention=_xins-soap</xsl:text>
@@ -62,14 +64,14 @@
 					
 					<!-- Write the elements -->
 					<xsl:apply-templates select="function" mode="elements">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir"     />
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
 					
 					<!-- Write the defined types -->
 					<xsl:apply-templates select="type" mode="types">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir"     />
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
@@ -109,20 +111,20 @@
 	
 	<xsl:template match="function" mode="elements">
 		
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 
 		<xsl:apply-templates select="document($function_file)/function/input" mode="elements">
-			<xsl:with-param name="project_file" select="$project_file" />
+			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Request')" />
 		</xsl:apply-templates>
 		<xsl:apply-templates select="document($function_file)/function/output" mode="elements">
-			<xsl:with-param name="project_file" select="$project_file" />
+			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Response')" />
@@ -131,7 +133,7 @@
 	
 	<xsl:template match="input | output" mode="elements">
 
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="elementname"  />
@@ -143,7 +145,7 @@
 					<xsl:for-each select="param">
 						<xsl:variable name="elementtype">
 							<xsl:call-template name="elementtype">
-								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="project_node" select="$project_node" />
 								<xsl:with-param name="specsdir"     select="$specsdir" />
 								<xsl:with-param name="api"          select="$api" />
 								<xsl:with-param name="type"         select="@type" />
@@ -165,7 +167,7 @@
 									<xsl:if test="data/@contains">
 										<xsl:variable name="contained_element" select="data/@contains" />
 										<xsl:apply-templates select="data/element[@name=$contained_element]" mode="datasection">
-											<xsl:with-param name="project_file" select="$project_file" />
+											<xsl:with-param name="project_node" select="$project_node" />
 											<xsl:with-param name="specsdir"     select="$specsdir" />
 											<xsl:with-param name="api"          select="$api" />
 										</xsl:apply-templates>
@@ -173,7 +175,7 @@
 									<xsl:for-each select="data/contains/contained">
 										<xsl:variable name="contained_element" select="@element" />
 										<xsl:apply-templates select="../../element[@name=$contained_element]" mode="datasection">
-											<xsl:with-param name="project_file" select="$project_file" />
+											<xsl:with-param name="project_node" select="$project_node" />
 											<xsl:with-param name="specsdir"     select="$specsdir" />
 											<xsl:with-param name="api"          select="$api" />
 										</xsl:apply-templates>
@@ -189,7 +191,7 @@
 	
 	<xsl:template match="element" mode="datasection">
 	
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		
@@ -200,7 +202,7 @@
 						<xsl:for-each select="contains/contained">
 							<xsl:variable name="contained_element" select="@element" />
 							<xsl:apply-templates select="../../../element[@name=$contained_element]" mode="datasection">
-								<xsl:with-param name="project_file" select="$project_file" />
+								<xsl:with-param name="project_node" select="$project_node" />
 								<xsl:with-param name="specsdir"     select="$specsdir" />
 								<xsl:with-param name="api"          select="$api" />
 							</xsl:apply-templates>
@@ -215,7 +217,7 @@
 				<xsl:for-each select="attribute">
 					<xsl:variable name="elementtype">
 						<xsl:call-template name="elementtype">
-							<xsl:with-param name="project_file" select="$project_file" />
+							<xsl:with-param name="project_node" select="$project_node" />
 							<xsl:with-param name="specsdir"     select="$specsdir" />
 							<xsl:with-param name="api"          select="$api" />
 							<xsl:with-param name="type"         select="@type" />
@@ -302,7 +304,7 @@
 	
 	<xsl:template match="type" mode="types">
 	
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		
@@ -317,7 +319,7 @@
 				<xsl:otherwise>
 					<!-- It's the same as for the basic type -->
 					<xsl:call-template name="soaptype_for_type">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir" />
 						<xsl:with-param name="api"          select="$api" />
 						<xsl:with-param name="type"         select="concat('_', local-name($type_node/*[2]))" />
@@ -365,7 +367,7 @@
 	
 	<xsl:template name="elementtype">
 		
-		<xsl:param name="project_file" />
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
@@ -374,7 +376,7 @@
 			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
 				<xsl:variable name="soaptype">
 					<xsl:call-template name="soaptype_for_type">
-						<xsl:with-param name="project_file" select="$project_file" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir" />
 						<xsl:with-param name="api"          select="$api" />
 						<xsl:with-param name="type"         select="@type" />

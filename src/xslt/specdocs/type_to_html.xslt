@@ -36,6 +36,9 @@
 	<xsl:include href="../types.xslt"      />
 	<xsl:include href="../urlencode.xslt"  />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+
 	<xsl:template match="type">
 
 		<xsl:variable name="type_name"    select="@name" />
@@ -70,11 +73,10 @@
 				<!-- Broken freezes -->
 				<xsl:call-template name="broken_freeze">
 					<xsl:with-param name="project_home" select="$project_home" />
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="api" select="$api" />
-					<xsl:with-param name="api_file" select="$api_file" />
-					<xsl:with-param name="frozen_version" select="document($api_file)/api/type[@name=$type_name]/@freeze" />
+					<xsl:with-param name="frozen_version" select="$api_node/type[@name=$type_name]/@freeze" />
 					<xsl:with-param name="broken_file" select="concat($type_name, '.typ')" />
 				</xsl:call-template>
 
@@ -157,8 +159,8 @@
 		<!-- If no pattern URL is provided, use the default one on sourceforge. -->
 		<xsl:variable name="pattern_url">
 			<xsl:choose>
-				<xsl:when test="document($project_file)/project/patterntest">
-					<xsl:value-of select="document($project_file)/project/patterntest/@href" />
+				<xsl:when test="$project_node/patterntest">
+					<xsl:value-of select="$project_node/patterntest/@href" />
 				</xsl:when>
 				<xsl:otherwise>http://www.xins.org/patterntest.php</xsl:otherwise>
 			</xsl:choose>

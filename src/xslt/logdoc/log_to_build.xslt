@@ -22,10 +22,6 @@
 	<xsl:param name="java_destdir"    />
 	<xsl:param name="package_name"    />
 
-	<!-- Perform includes -->
-	<xsl:include href="../hungarian.xslt"       />
-	<xsl:include href="../package_for_api.xslt" />
-
 	<xsl:output indent="yes" />
 
 	<xsl:template match="log">

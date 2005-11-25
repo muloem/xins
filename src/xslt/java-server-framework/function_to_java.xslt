@@ -33,6 +33,9 @@
 	<xsl:include href="result_java.xslt" />
 	<xsl:include href="check_params.xslt" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+
 	<xsl:template match="function">
 
 		<xsl:variable name="functionName" select="//function/@name" />
@@ -93,7 +96,7 @@ public abstract class ]]></xsl:text>
 		<xsl:text>", "</xsl:text>
 		<xsl:value-of select="$version" />
 		<xsl:text>");</xsl:text>
-		<xsl:for-each select="document($api_file)/api/impl-java/instance">
+		<xsl:for-each select="$api_node/impl-java/instance">
 			<xsl:text>
       </xsl:text>
 			<xsl:value-of select="@name" />
@@ -101,7 +104,7 @@ public abstract class ]]></xsl:text>
 			<xsl:value-of select="@getter" />
 			<xsl:text>();</xsl:text>
 		</xsl:for-each>
-		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+		<xsl:if test="$project_node/api[@name = $api]/impl">
 			<xsl:for-each select="document($impl_file)/impl/instance">
 				<xsl:text>
       </xsl:text>
@@ -135,7 +138,7 @@ public abstract class ]]></xsl:text>
     */
    private final java.util.HashSet _errorCodes;
 ]]></xsl:text>
-		<xsl:for-each select="document($api_file)/api/impl-java/instance">
+		<xsl:for-each select="$api_node/impl-java/instance">
 			<xsl:text>
    protected final </xsl:text>
 			<xsl:value-of select="@class" />
@@ -145,7 +148,7 @@ public abstract class ]]></xsl:text>
 
 </xsl:text>
 		</xsl:for-each>
-		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+		<xsl:if test="$project_node/api[@name = $api]/impl">
 			<xsl:for-each select="document($impl_file)/impl/instance">
 				<xsl:text>
    protected final </xsl:text>
@@ -284,9 +287,9 @@ public abstract class ]]></xsl:text>
 		<!-- Generates the Request object used to get the input data. -->
 		<xsl:call-template name="request">
 			<xsl:with-param name="project_home"   select="$project_home"   />
-			<xsl:with-param name="project_file"   select="$project_file"   />
+			<xsl:with-param name="project_node"   select="$project_node"   />
 			<xsl:with-param name="api"            select="$api"            />
-			<xsl:with-param name="api_file"       select="$api_file"       />
+			<xsl:with-param name="api_node"       select="$api_node"       />
 			<xsl:with-param name="specsdir"       select="$specsdir"       />
 		</xsl:call-template>
 <xsl:text>
@@ -294,9 +297,9 @@ public abstract class ]]></xsl:text>
 		<!-- Generates the Result interfaces and object used to set the output data. -->
 		<xsl:call-template name="result">
 			<xsl:with-param name="project_home"   select="$project_home"   />
-			<xsl:with-param name="project_file"   select="$project_file"   />
+			<xsl:with-param name="project_node"   select="$project_node"   />
 			<xsl:with-param name="api"            select="$api"            />
-			<xsl:with-param name="api_file"       select="$api_file"       />
+			<xsl:with-param name="api_node"       select="$api_node"       />
 			<xsl:with-param name="specsdir"       select="$specsdir"       />
 		</xsl:call-template>
 <xsl:text>

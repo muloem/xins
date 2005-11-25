@@ -15,12 +15,7 @@
 
 	<xsl:output method="text"/>
 
-	<xsl:param name="project_home" />
-	<xsl:param name="project_file" />
-	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
-	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<xsl:template match="api">
 		<xsl:text><![CDATA[/*

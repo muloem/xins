@@ -19,7 +19,6 @@
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<xsl:output
 	method="html"
@@ -34,9 +33,10 @@
 	<xsl:include href="../firstline.xslt" />
 	<xsl:include href="../author.xslt" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+
 	<xsl:template match="api">
 
-		<xsl:variable name="project_node" select="document($project_file)/project" />
 		<xsl:variable name="prevcount" select="count($project_node/api[@name = $api]/preceding::api)" />
 		<xsl:variable name="prev"      select="$project_node/api[$prevcount]/@name" />
 		<xsl:variable name="prev_url"  select="concat('../', $prev, '/index.html')" />
@@ -243,16 +243,17 @@
 									<xsl:value-of select="concat('-', $implName)" />
 								</xsl:if>
 							</xsl:variable>
-							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+							<xsl:variable name="impl_node" select="document($impl_file)/impl" />
 							<xsl:choose>
-								<xsl:when test="document($impl_file)/impl/runtime-properties/property and @name and string-length($implName) &gt; 0">
+								<xsl:when test="$impl_node/runtime-properties/property and @name and string-length($implName) &gt; 0">
 									<a href="properties{$implName2}.html" title="Specification of the runtime properties used for the {$implName} implementation.">
 										<xsl:text>Runtime properties for </xsl:text>
 										<xsl:value-of select="$implName" />
 										<xsl:text> implementation.</xsl:text>
 									</a>
 								</xsl:when>
-								<xsl:when test="document($impl_file)/impl/runtime-properties/property">
+								<xsl:when test="$impl_node/runtime-properties/property">
 									<a href="properties.html" title="Specification of the runtime properties used by this API">Runtime properties</a>
 								</xsl:when>
 								<xsl:when test="@name and string-length($implName) &gt; 0">
@@ -329,13 +330,14 @@
 	<xsl:template match="function">
 
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_node" select="document($function_file)/function" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="document($function_file)/function/@rcsversion" />
+				<xsl:with-param name="revision" select="$function_node/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(document($function_file)/function)">
+		<xsl:if test="not($function_node)">
 			<xsl:message terminate="yes">
 				<xsl:text>Function file '</xsl:text>
 				<xsl:value-of select="$function_file" />
@@ -371,15 +373,15 @@
 							<xsl:text>Broken Freeze</xsl:text>
 						</span>
 					</xsl:when>
-					<xsl:when test="document($function_file)/function/deprecated">
-						<span class="broken_freeze" title="{document($function_file)/function/deprecated/text()}">
+					<xsl:when test="$function_node/deprecated">
+						<span class="broken_freeze" title="{$function_node/deprecated/text()}">
 							<xsl:text>Deprecated</xsl:text>
 						</span>
 					</xsl:when>
 				</xsl:choose>
 			</td>
 			<td>
-				<xsl:apply-templates select="document($function_file)/function/description" />
+				<xsl:apply-templates select="$function_node/description" />
 			</td>
 		</tr>
 	</xsl:template>
@@ -387,13 +389,14 @@
 	<xsl:template match="type">
 
 		<xsl:variable name="type_file" select="concat($specsdir, '/', @name, '.typ')" />
+		<xsl:variable name="type_node" select="document($type_file)/type" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="document($type_file)/type/@rcsversion" />
+				<xsl:with-param name="revision" select="$type_node/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(document($type_file)/type)">
+		<xsl:if test="not($type_node)">
 			<xsl:message terminate="yes">
 				<xsl:text>Type file '</xsl:text>
 				<xsl:value-of select="$type_file" />
@@ -429,15 +432,15 @@
 							<xsl:text>Broken Freeze</xsl:text>
 						</span>
 					</xsl:when>
-					<xsl:when test="document($type_file)/type/deprecated">
-						<span class="broken_freeze" title="{document($type_file)/type/deprecated/text()}">
+					<xsl:when test="$type_node/deprecated">
+						<span class="broken_freeze" title="{$type_node/deprecated/text()}">
 							<xsl:text>Deprecated</xsl:text>
 						</span>
 					</xsl:when>
 				</xsl:choose>
 			</td>
 			<td>
-				<xsl:apply-templates select="document($type_file)/type/description" />
+				<xsl:apply-templates select="$type_node/description" />
 			</td>
 		</tr>
 	</xsl:template>
@@ -445,13 +448,14 @@
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
+		<xsl:variable name="resultcode_node" select="document($resultcode_file)/resultcode" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="document($resultcode_file)/resultcode/@rcsversion" />
+				<xsl:with-param name="revision" select="$resultcode_node/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(document($resultcode_file)/resultcode)">
+		<xsl:if test="not($resultcode_node)">
 			<xsl:message terminate="yes">
 				<xsl:text>Result code file '</xsl:text>
 				<xsl:value-of select="$resultcode_file" />
@@ -487,15 +491,15 @@
 							<xsl:text>Broken Freeze</xsl:text>
 						</span>
 					</xsl:when>
-					<xsl:when test="document($resultcode_file)/resultcode/deprecated">
-						<span class="broken_freeze" title="{document($resultcode_file)/resultcode/deprecated/text()}">
+					<xsl:when test="$resultcode_node/deprecated">
+						<span class="broken_freeze" title="{$resultcode_node/deprecated/text()}">
 							<xsl:text>Deprecated</xsl:text>
 						</span>
 					</xsl:when>
 				</xsl:choose>
 			</td>
 			<td>
-				<xsl:apply-templates select="document($resultcode_file)/resultcode/description" />
+				<xsl:apply-templates select="$resultcode_node/description" />
 			</td>
 		</tr>
 	</xsl:template>
@@ -503,13 +507,14 @@
 	<xsl:template match="category">
 
 		<xsl:variable name="category_file" select="concat($specsdir, '/', @name, '.cat')" />
+		<xsl:variable name="category_node" select="document($category_file)/category" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
-				<xsl:with-param name="revision" select="document($category_file)/category/@rcsversion" />
+				<xsl:with-param name="revision" select="$category_node/@rcsversion" />
 			</xsl:call-template>
 		</xsl:variable>
 
-		<xsl:if test="not(document($category_file)/category)">
+		<xsl:if test="not($category_node)">
 			<xsl:message terminate="yes">
 				<xsl:text>Category file '</xsl:text>
 				<xsl:value-of select="$category_file" />
@@ -530,7 +535,7 @@
 				</a>
 			</td>
 			<td>
-				<xsl:apply-templates select="document($category_file)/category/description" />
+				<xsl:apply-templates select="$category_node/description" />
 			</td>
 		</tr>
 	

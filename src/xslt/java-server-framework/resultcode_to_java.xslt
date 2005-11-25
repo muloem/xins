@@ -31,6 +31,9 @@
 	<xsl:include href="../warning.xslt"    />
 	<xsl:include href="../resultcode_uniqueness.xslt"    />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode" select="@name" />
@@ -39,12 +42,12 @@
 		<xsl:call-template name="resultcodeValidity">
 			<xsl:with-param name="resultcode_name" select="@name" />
 			<xsl:with-param name="resultcode_value" select="@value" />
-			<xsl:with-param name="specsdirectory" select="$specsdir" />
-			<xsl:with-param name="api_file" select="$api_file" />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="api_node" select="$api_node" />
 		</xsl:call-template>
 
 		<xsl:variable name="resultcodeIncludes">
-			<xsl:for-each select="document($api_file)/api/function">
+			<xsl:for-each select="$api_node/function">
 				<xsl:call-template name="search-matching-resultcode">
 					<xsl:with-param name="functionName" select="@name" />
 					<xsl:with-param name="resultcode" select="$resultcode" />

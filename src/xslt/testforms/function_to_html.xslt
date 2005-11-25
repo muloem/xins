@@ -27,6 +27,9 @@
 	<xsl:include href="../header.xslt" />
 	<xsl:include href="../types.xslt" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node"     select="document($api_file)/api" />
+
 	<xsl:output
 	method="html"
 	indent="yes"
@@ -38,7 +41,6 @@
 	<xsl:template match="function">
 
 		<xsl:variable name="functionName" select="@name" />
-		<xsl:variable name="api_node"     select="document($api_file)/api" />
 		<xsl:variable name="init_environment">
 			<xsl:choose>
 				<xsl:when test="string-length($env_file) > 0">

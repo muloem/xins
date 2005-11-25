@@ -25,6 +25,10 @@
 	<xsl:include href="../types.xslt"  />
 	<xsl:include href="../author.xslt" />
 
+	<!-- Convert the file locations to nodes -->
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+
 	<xsl:template match="function">
 
 		<xsl:text><![CDATA[/*
@@ -48,7 +52,7 @@ package ]]></xsl:text>
  * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
  * @author ]]></xsl:text>
 				<xsl:variable name="owner_info">
-					<xsl:apply-templates select="document($api_file)/api" mode="owner" />
+					<xsl:apply-templates select="$api_node" mode="owner" />
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="$owner_info != ''">
@@ -135,7 +139,7 @@ public final class ]]></xsl:text>
 		<xsl:if test="$types">
 			<xsl:variable name="import">
 				<xsl:call-template name="javaimport_for_type">
-					<xsl:with-param name="project_file" select="$project_file"   />
+					<xsl:with-param name="project_node" select="$project_node"   />
 					<xsl:with-param name="specsdir"     select="$specsdir"       />
 					<xsl:with-param name="api"          select="$api"            />
 					<xsl:with-param name="type"         select="$types[1]/@type" />

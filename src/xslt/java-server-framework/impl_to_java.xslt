@@ -15,12 +15,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
-	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
 	<xsl:include href="../java.xslt"  />
@@ -28,6 +26,8 @@
 	<xsl:include href="../types.xslt" />
 
 	<xsl:output method="text" />
+
+	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="impl | api">
 
@@ -161,7 +161,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:if test="not(starts-with(@type, '_')) and not(string-length(@type) = 0)">
 					<xsl:variable name="class">
 						<xsl:call-template name="javatype_for_customtype">
-							<xsl:with-param name="project_file" select="$project_file" />
+							<xsl:with-param name="project_node" select="$project_node" />
 							<xsl:with-param name="api"          select="$api"          />
 							<xsl:with-param name="type"         select="@type"         />
 						</xsl:call-template>
@@ -214,7 +214,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		<!-- TODO translate the variable -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
@@ -262,7 +262,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		<!-- Get the return type of the variable. -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />

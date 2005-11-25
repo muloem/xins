@@ -38,7 +38,9 @@
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes" />
 
-	<xsl:variable name="resultcodes_file" select="'../../xml/default_resultcodes.xml'" />
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="api_node" select="document($api_file)/api" />
+	<xsl:variable name="resultcodes_node" select="document('../../xml/default_resultcodes.xml')/resultcodes" />
 
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
@@ -78,11 +80,10 @@
 				<!-- Broken freezes -->
 				<xsl:call-template name="broken_freeze">
 					<xsl:with-param name="project_home" select="$project_home" />
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="api" select="$api" />
-					<xsl:with-param name="api_file" select="$api_file" />
-					<xsl:with-param name="frozen_version" select="document($api_file)/api/function[@name=$function_name]/@freeze" />
+					<xsl:with-param name="frozen_version" select="$api_node/function[@name=$function_name]/@freeze" />
 					<xsl:with-param name="broken_file" select="concat($function_name, '.fnc')" />
 				</xsl:call-template>
 
@@ -510,7 +511,7 @@
 			</xsl:for-each>
 
 			<!-- Tests also that the result code is defined correctly -->
-			<xsl:if test="not(document($api_file)/api/resultcode[@name=$resultcode])">
+			<xsl:if test="not($api_node/resultcode[@name=$resultcode])">
 				<xsl:message terminate="yes">
 					<xsl:text>The error code '</xsl:text>
 					<xsl:value-of select="$resultcode" />
@@ -776,11 +777,11 @@
 				</span>
 			</td>
 		</tr>
-		<xsl:if test="count(document($api_file)/api/environment) &gt; 0 or document($project_file)/project/api[@name = $api]/environments">
+		<xsl:if test="count($api_node/environment) &gt; 0 or $project_node/api[@name = $api]/environments">
 			<tr>
 				<th>Test on:</th>
 				<td>
-					<xsl:for-each select="document($api_file)/api/environment">
+					<xsl:for-each select="$api_node/environment">
 						<a>
 							<xsl:attribute name="href">
 								<xsl:value-of select="@url" />
@@ -815,7 +816,7 @@
 						</a>
 						<xsl:text> </xsl:text>
 					</xsl:for-each>
-					<xsl:if test="document($project_file)/project/api[@name = $api]/environments">
+					<xsl:if test="$project_node/api[@name = $api]/environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 						<xsl:for-each select="document($env_file)/environments/environment">
 							<a>
@@ -1089,9 +1090,9 @@
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
 			<xsl:variable name="code" select="@name" />
-			<xsl:variable name="file" select="concat($specsdir, '/', $code, '.rcd')" />
+			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $code, '.rcd')" />
 
-			<xsl:for-each select="document($file)/resultcode">
+			<xsl:for-each select="document($rcd_file)/resultcode">
 				<tr>
 					<td class="value">
 						<a href="{$code}.html">
@@ -1109,7 +1110,7 @@
 	<xsl:template name="default_resultcodes">
 		<xsl:variable name="haveParams" select="boolean(//function/input/param)" />
 
-		<xsl:for-each select="document($resultcodes_file)/resultcodes/code">
+		<xsl:for-each select="$resultcodes_node/code">
 			<xsl:choose>
 				<xsl:when test="@value = 'MissingFunctionName'" />
 				<xsl:when test="@value = 'NoSuchFunction'"      />

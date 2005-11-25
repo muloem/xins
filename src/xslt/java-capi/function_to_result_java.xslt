@@ -15,18 +15,18 @@
 
 	<xsl:output method="text" />
 
-	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
 	<xsl:include href="../java-server-framework/check_params.xslt"  />
 	<xsl:include href="../java-server-framework/request_java.xslt"  />
+
+	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="function">
 		<xsl:variable name="version">
@@ -265,7 +265,7 @@ extends org.xins.client.AbstractCAPICallResult {
 	<xsl:template match="function/output/param" mode="field">
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
@@ -301,7 +301,7 @@ extends org.xins.client.AbstractCAPICallResult {
 		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />

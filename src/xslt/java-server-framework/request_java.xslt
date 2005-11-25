@@ -98,7 +98,7 @@
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="specsdir"     select="$specsdir"     />
 					<xsl:with-param name="required"     select="@required"     />
@@ -137,7 +137,7 @@
 	<xsl:template match="function/input/param | input/data/element/attribute | output/data/element/attribute" mode="field">
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
@@ -172,7 +172,7 @@
 		<!-- Get the return type of the variable. -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
@@ -182,7 +182,7 @@
 		<!-- Get the return type of the get method. -->
 		<xsl:variable name="javasimpletype">
 			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_file" select="$project_file" />
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="'true'"     />

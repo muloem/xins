@@ -16,20 +16,19 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
-	<xsl:param name="xins_version" />
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
+	<xsl:param name="xins_version" />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
-	<xsl:include href="broken_freeze.xslt"  />
 	<xsl:include href="output_section.xslt" />
 	<xsl:include href="../header.xslt"      />
 	<xsl:include href="../footer.xslt"      />
-	<xsl:include href="../types.xslt"       />
-	<xsl:include href="../urlencode.xslt"   />
+	<xsl:include href="../types.xslt"      />
+
+	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:output
 	method="html"

@@ -15,14 +15,9 @@
 
 	<xsl:output method="text"/>
 
-	<xsl:param name="project_home" />
-	<xsl:param name="project_file" />
-	<xsl:param name="specsdir"     />
-	<xsl:param name="package"      />
-	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
+	<xsl:param name="api" />
+	<xsl:param name="package" />
 
-	<xsl:include href="../types.xslt"  />
 	<xsl:include href="../xml_to_java.xslt"  />
 	
 	<xsl:template match="function">

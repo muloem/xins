@@ -29,6 +29,8 @@
 
 	<xsl:include href="../package_for_api.xslt" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+
 	<xsl:template match="api">
 		<xsl:if test="string-length($hostname) &lt; 1">
 			<xsl:message terminate="yes">Parameter 'hostname' is not specified.</xsl:message>
@@ -37,7 +39,7 @@
 			<xsl:message terminate="yes">Parameter 'timestamp' is not specified.</xsl:message>
 		</xsl:if>
 		<xsl:apply-templates select="impl-java" />
-		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+		<xsl:if test="$project_node/api[@name = $api]/impl">
 			<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>
 			<xsl:apply-templates select="document($impl_file)/impl" />
 		</xsl:if>
@@ -68,7 +70,7 @@
 					<param-name>org.xins.api.class</param-name>
 					<param-value>
 						<xsl:call-template name="package_for_server_api">
-							<xsl:with-param name="project_file" select="$project_file" />
+							<xsl:with-param name="project_node" select="$project_node" />
 							<xsl:with-param name="api" select="$api" />
 						</xsl:call-template>
 						<xsl:text>.APIImpl</xsl:text>

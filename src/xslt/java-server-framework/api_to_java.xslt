@@ -18,8 +18,7 @@
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
-	<xsl:param name="api_file"     />
-	<xsl:param name="impl_file"     />
+	<xsl:param name="impl_file"    />
 	<xsl:param name="package"      />
 	<xsl:param name="enable_statistics">true</xsl:param>
 
@@ -34,12 +33,14 @@
 	<!-- Determine name of API -->
 	<xsl:variable name="api" select="/api/@name" />
 
+	<xsl:variable name="project_node" select="document($project_file)/project" />
+
 	<xsl:template match="api">
 
 		<xsl:apply-templates select="impl-java">
 			<xsl:with-param name="api_node" select="." />
 		</xsl:apply-templates>
-		<xsl:if test="document($project_file)/project/api[@name = $api]/impl">
+		<xsl:if test="$project_node/api[@name = $api]/impl">
 			<xsl:apply-templates select="document($impl_file)/impl">
 				<xsl:with-param name="api_node" select="." />
 			</xsl:apply-templates>

@@ -14,12 +14,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Define parameters -->
-	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
-	<xsl:param name="api_file"     />
 
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt"    />
@@ -28,6 +26,8 @@
 	<xsl:include href="../types.xslt"         />
 
 	<xsl:output method="text" />
+
+	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="type">
 
@@ -178,7 +178,7 @@ public final class ]]></xsl:text>
 			<xsl:when test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
 				<xsl:variable name="required_object">
 					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_file"     select="$project_file" />
+						<xsl:with-param name="project_node"     select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir" />
 						<xsl:with-param name="api"     select="$api" />
 						<xsl:with-param name="type"     select="concat('_', $kind)" />
@@ -187,7 +187,7 @@ public final class ]]></xsl:text>
 				</xsl:variable>
 				<xsl:variable name="optional_object">
 					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_file"     select="$project_file" />
+						<xsl:with-param name="project_node"     select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir" />
 						<xsl:with-param name="api"     select="$api" />
 						<xsl:with-param name="type"     select="concat('_', $kind)" />
@@ -326,14 +326,14 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="$kind = 'properties'">
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"      />
 					<xsl:with-param name="specsdir"     select="$specsdir" />
 					<xsl:with-param name="type"         select="properties/@nameType" />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON, </xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"      />
 					<xsl:with-param name="specsdir"     select="$specsdir" />
 					<xsl:with-param name="type"         select="properties/@valueType" />
@@ -483,7 +483,7 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="$kind = 'list'">
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"      />
 					<xsl:with-param name="specsdir"     select="$specsdir" />
 					<xsl:with-param name="type"         select="list/@type" />
@@ -492,7 +492,7 @@ public final class ]]></xsl:text>
 			</xsl:when>
 			<xsl:when test="$kind = 'set'">
 				<xsl:call-template name="javatypeclass_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"      />
 					<xsl:with-param name="specsdir"     select="$specsdir" />
 					<xsl:with-param name="type"         select="set/@type" />
@@ -525,7 +525,7 @@ public final class ]]></xsl:text>
 			</xsl:variable>
 			<xsl:variable name="javasimpletype">
 				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="specsdir"     select="$specsdir"     />
 					<xsl:with-param name="required"     select="'true'"        />
@@ -534,7 +534,7 @@ public final class ]]></xsl:text>
 			</xsl:variable>
 			<xsl:variable name="javaoptionaltype">
 				<xsl:call-template name="javatype_for_type">
-					<xsl:with-param name="project_file" select="$project_file" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 					<xsl:with-param name="specsdir"     select="$specsdir"     />
 					<xsl:with-param name="required"     select="'false'"       />
