@@ -13,6 +13,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     HTTPServiceCaller and ElementParser.
   - Marked the following non-public inner classes as static:
     ChainedMap$ChainedSet, ChainedMap$EntrySet and ElementParser$Handler.
+  - Removed unused field _withCentury from class DateConverter.
 
 * XINS/Java Server Framework:
   - Applied a refactoring to the CallingConventionManager as a preparation for

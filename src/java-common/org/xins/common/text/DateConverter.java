@@ -165,9 +165,6 @@ public class DateConverter extends Object {
     */
    public DateConverter(boolean withCentury) {
 
-      // Store the flag
-      _withCentury = withCentury;
-
       // Determine the length of the formatted date strings
       _length           = withCentury ? 18 : 16;
       _cachedDateBuffer = new char[_length];
@@ -193,13 +190,6 @@ public class DateConverter extends Object {
     * the date. Never <code>null</code>.
     */
    private final SimpleDateFormat _formatter;
-
-   /**
-    * Flag that indicates whether the century should be in the formatted date.
-    * Is <code>true</code> if the century should be in there, or
-    * <code>false</code> if not.
-    */
-   private final boolean _withCentury;
 
    /**
     * Length of the produced timestamp string. If the century is printed, it's
