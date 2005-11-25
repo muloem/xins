@@ -410,12 +410,11 @@ class CheckLinks extends Object {
       // check element.
       while (threadIterator.hasNext()) {
          URLChecker urlThread = (URLChecker) threadIterator.next();
-         ElementBuilder check = new ElementBuilder("check");
-         check.setAttribute("url", urlThread.getURL());
-         check.setAttribute("duration",
-            new Long(urlThread.getDuration()).toString());
-         check.setAttribute("result", getResult(urlThread));
-         builder.add(check.createElement());
+         ElementBuilder eb = new ElementBuilder("check");
+         eb.setAttribute("url",      urlThread.getURL());
+         eb.setAttribute("duration", Long.toString(urlThread.getDuration()));
+         eb.setAttribute("result",   getResult(urlThread));
+         builder.add(eb.createElement());
 
          if (!urlThread.getSuccess()) {
             errorCount ++;
