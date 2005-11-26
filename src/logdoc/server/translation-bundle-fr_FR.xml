@@ -123,6 +123,9 @@
 	<translation entry="3505">Le thread vérifiant l'URL: <value-of-param name="url" format="quoted" /> est toujours actif.</translation>
 	<translation entry="3506">La convention d'appel <value-of-param name="conventionClassName" format="quoted" /> ne peut pas convertir le résultat à cause d'une erreur d'E/S.</translation>
 	<translation entry="3507">Impossible d'obtenir la convention d'appel <value-of-param name="name" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
+<!-- FIXME TODO -->	<translation entry="3508">Request does not specify any calling convention.</translation>
+<!-- FIXME TODO -->	<translation entry="3509">Using matching calling convention <value-of-param name="name" format="quoted" /> for request, since it did not specify any calling convention.</translation>
+<!-- FIXME TODO -->	<translation entry="3510">Unable to find any matching calling convention for request.</translation>
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>

@@ -550,6 +550,16 @@
 			<param name="name"   />
 			<param name="detail" />
 		</entry>
+		<entry id="3508" level="DEBUG">
+			<description>Request does not specify any calling convention.</description>
+		</entry>
+		<entry id="3509" level="DEBUG">
+			<description>Calling convention chosen for request that does not specify any calling convention.</description>
+         <param name="name" />
+		</entry>
+		<entry id="3510" level="INFO">
+			<description>Unable to find any calling convention for request that does not specify any calling convention.</description>
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">

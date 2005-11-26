@@ -768,10 +768,14 @@ extends Manageable {
    CallingConvention detectCallingConvention(HttpServletRequest request)
    throws InvalidRequestException {
 
+      // Log: Request does not specify any calling convention
+      Log.log_3508();
+
       // First see if the default calling convention matches
       CallingConvention defaultCC = (CallingConvention) _conventions.get(_defaultConventionName);
       int match = defaultCC.matchesRequest(request);
       if (match > 0) {
+         Log.log_3509(_defaultConventionName);
          return defaultCC;
       }
 
@@ -779,6 +783,7 @@ extends Manageable {
       // FIXME: TODO
 
       // No matches, invalid request
+      Log.log_3510();
       throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and it was not possible to find a single calling convention that can handle it.");
    }
 }
