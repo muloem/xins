@@ -55,6 +55,27 @@ abstract class CallingConvention extends Manageable {
    private static final String SERVER_HEADER =
       "XINS/Java Server Framework " + Library.getVersion();
 
+   /**
+    * Value that can be used to indicate that it is unknown whether a request
+    * can be handled by a certain calling convention. See
+    * {@link #matchesRequest(HttpServletRequest)}.
+    */
+   static final int MATCHING_UNKNOWN = -1;
+
+   /**
+    * Value that can be used to indicate that a request cannot be handled by a
+    * certain calling convention. See
+    * {@link #matchesRequest(HttpServletRequest)}.
+    */
+   static final int NOT_MATCHING = 0;
+
+   /**
+    * Value that can be used to indicate that it is expected that a request
+    * can be handled by a certain calling convention. See
+    * {@link #matchesRequest(HttpServletRequest)}.
+    */
+   static final int MATCHING = 1;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -140,6 +161,32 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
    // Methods
    //------------------------------------------------------------------------
+
+   /**
+    * Checks if the specified request can be handled by this calling
+    * convention.
+    *
+    * <p>The return value is as follows:
+    *
+    * <ul>
+    *    <li>a positive value indicates that the request <em>can</em>
+    *        be handled;
+    *    <li>the value <code>0</code> indicates that the request
+    *        <em>cannot</em> be handled;
+    *    <li>a negative number indicates that it is <em>unknown</em>
+    *        whether the request can be handled by this calling convention.
+    * </ul>
+    *
+    * <p>This method should not throw any exception.
+    *
+    * @param httpRequest
+    *    the HTTP request to investigate, cannot be <code>null</code>.
+    *
+    * @return
+    *    a positive value if the request can be handled; <code>0</code> if the
+    *    request cannot be handled or a negative value if it is unknown.
+    */
+   abstract int matchesRequest(HttpServletRequest httpRequest);
 
    /**
     * Converts an HTTP request to a XINS request (wrapper method). This method
@@ -350,8 +397,35 @@ abstract class CallingConvention extends Manageable {
    // XXX: Replace IOException with more appropriate exception?
 
    /**
-    * Parses the specified HTTP request to produce an XML
-    * <code>Element</code>.
+    * Parses XML from the specified HTTP request and checks that the content
+    * type is correct.
+    *
+    * <p>Calling this method is equivalent with calling
+    * {@link #parseXMLRequest(HttpServletRequest,boolean)} with the
+    * <code>checkType</code> argument set to <code>true</code>.
+    *
+    * @param httpRequest
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the parsed element, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>httpRequest == null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the HTTP request cannot be read or cannot be parsed correctly.
+    *
+    * @since XINS 1.4.0
+    */
+   protected Element parseXMLRequest(HttpServletRequest httpRequest)
+   throws IllegalArgumentException, InvalidRequestException {
+      return parseXMLRequest(httpRequest, true);
+   }
+
+   /**
+    * Parses XML from the specified HTTP request and optionally checks that
+    * the content type is correct.
     *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
