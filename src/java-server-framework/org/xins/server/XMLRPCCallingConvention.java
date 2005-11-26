@@ -25,6 +25,7 @@ import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
+import org.xins.common.text.TextUtils;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
@@ -169,11 +170,66 @@ final class XMLRPCCallingConvention extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Checks if the specified request can be handled by this calling
+    * convention.
+    *
+    * <p>The return value is as follows:
+    *
+    * <ul>
+    *    <li>a positive value indicates that the request <em>can</em>
+    *        be handled;
+    *    <li>the value <code>0</code> indicates that the request
+    *        <em>cannot</em> be handled;
+    *    <li>a negative number indicates that it is <em>unknown</em>
+    *        whether the request can be handled by this calling convention.
+    * </ul>
+    *
+    * <p>This method will not throw any exception.
+    *
+    * @param httpRequest
+    *    the HTTP request to investigate, cannot be <code>null</code>.
+    *
+    * @return
+    *    a positive value if the request can be handled; <code>0</code> if the
+    *    request cannot be handled or a negative value if it is unknown.
+    */
+   int matchesRequest(HttpServletRequest httpRequest) {
+
+      // There is no match, unless XML can be parsed in the request and the
+      // name of the function to invoke can be determined
+      int match = NOT_MATCHING;
+
+      try {
+
+         // Parse the XML in the request (if any)
+         Element element = parseXMLRequest(httpRequest);
+
+         // The root element must be <methodCall/>
+         if (element.getLocalName().equals("methodCall")) {
+
+            // The text within the <methodName/> element is the function name
+            String function = getUniqueChild(element, "methodName").getText();
+
+            // There is a match only if the function name is non-empty
+            if (! TextUtils.isEmpty(function)) {
+               match = MATCHING;
+            }
+         }
+
+      // If an exception is caught, the fallback NOT_MATCHING will be used
+      } catch (Throwable exception) {
+         // fall through
+      }
+
+      return match;
+   }
+
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      Element xmlRequest = parseXMLRequest(httpRequest, true);
+      Element xmlRequest = parseXMLRequest(httpRequest);
       if (!xmlRequest.getLocalName().equals("methodCall")) {
          throw new InvalidRequestException("Root element is not \"methodCall\" but \"" +
                xmlRequest.getLocalName() + "\".");

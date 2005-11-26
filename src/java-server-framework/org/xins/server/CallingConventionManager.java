@@ -107,7 +107,8 @@ extends Manageable {
    private final API _api;
 
    /**
-    * The name of the default calling convention.
+    * The name of the default calling convention. There is always a default
+    * calling convention (at least after bootstrapping).
     *
     * <p>This field is initialized during bootstrapping.
     */
@@ -671,23 +672,28 @@ extends Manageable {
    CallingConvention getCallingConvention(HttpServletRequest request)
    throws InvalidRequestException {
 
+      // Get the value of the input parameter that determines the convention
       String paramName = APIServlet.CALLING_CONVENTION_PARAMETER;
       String ccName    = request.getParameter(paramName);
 
-      return getCallingConvention(ccName);
+      // If a calling convention is specified then use that one
+      if (! TextUtils.isEmpty(ccName)) {
+         return getCallingConvention(ccName);
+
+      // Otherwise try to detect which one is appropriate
+      } else {
+         return detectCallingConvention(request);
+      }
    }
 
 
    /**
     * Gets the calling convention for the given name.
     *
-    * <p>If the given name is <code>null</code> or empty (after trimming),
-    * then the default calling convention is returned.
-    *
     * <p>The returned calling convention is bootstrapped and initialized.
     *
     * @param name
-    *    the name of the calling convention to retrieve, can be
+    *    the name of the calling convention to retrieve, should not be
     *    <code>null</code>.
     *
     * @return
@@ -698,11 +704,6 @@ extends Manageable {
     */
    private CallingConvention getCallingConvention(String name)
    throws InvalidRequestException {
-
-      // Default to the default calling convention
-      if (TextUtils.isEmpty(name)) {
-         name = _defaultConventionName;
-      }
 
       // Get the CallingConvention object
       Object o = _conventions.get(name);
@@ -738,5 +739,46 @@ extends Manageable {
 
          return cc;
       }
+   }
+
+   /**
+    * Attempts to detect which calling convention is the most appropriate for
+    * an incoming request. This method is called when the calling convention
+    * is not explicitly specified in the request.
+    *
+    * <p>If the default calling convention is able to handle this request,
+    * then that one will be returned. Otherwise another matching calling
+    * convention will be searched. If exactly one matches, then that one will
+    * be returned, otherwise (multiple matches or none) an
+    * {@link InvalidRequestException} is thrown.
+    *
+    * @param request
+    *    the incoming request, cannot be <code>null</code>.
+    *
+    * @return
+    *    the calling convention to use, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the request is considered invalid, for example because the calling
+    *    convention specified in the request is unknown.
+    */
+   CallingConvention detectCallingConvention(HttpServletRequest request)
+   throws InvalidRequestException {
+
+      // First see if the default calling convention matches
+      CallingConvention defaultCC = (CallingConvention) _conventions.get(_defaultConventionName);
+      int match = defaultCC.matchesRequest(request);
+      if (match > 0) {
+         return defaultCC;
+      }
+
+      // Determine which other calling conventions match
+      // FIXME: TODO
+
+      // No matches, invalid request
+      throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and it was not possible to find a single calling convention that can handle it.");
    }
 }

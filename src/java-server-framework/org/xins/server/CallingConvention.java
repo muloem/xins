@@ -150,13 +150,37 @@ abstract class CallingConvention extends Manageable {
     * Constructs a new <code>CallingConvention</code>.
     */
    protected CallingConvention() {
-      // empty
+      _cachedRequest    = new ThreadLocal();
+      _cachedRequestXML = new ThreadLocal();
    }
 
 
    //------------------------------------------------------------------------
    // Fields
    //------------------------------------------------------------------------
+
+   /**
+    * Cached <code>HttpServletRequest</code>, local per thread. When
+    * any of the <code>parseXMLRequest</code> methods is called, the request
+    * is stored in this field, to be able to confirm later that
+    * {@link #_cachedRequestXML} should be returned.
+    *
+    * <p>The value inside this {@link ThreadLocal} is always either
+    * <code>null</code> or otherwise an instance of a class that implements
+    * {@link HttpServletRequest}.
+    */
+   private final ThreadLocal _cachedRequest;
+
+   /**
+    * Cached XML <code>Element</code>, local per thread. When
+    * any of the <code>parseXMLRequest</code> methods is called, the result is
+    * stored in this field before returning it.
+    *
+    * <p>The value inside this {@link ThreadLocal} is always either
+    * <code>null</code> or otherwise an instance of class {@link Element}.
+    */
+   private final ThreadLocal _cachedRequestXML;
+
 
    //------------------------------------------------------------------------
    // Methods
@@ -427,6 +451,9 @@ abstract class CallingConvention extends Manageable {
     * Parses XML from the specified HTTP request and optionally checks that
     * the content type is correct.
     *
+    * <p>Since XINS 1.4.0, this method uses a cache to optimize performance if
+    * this method is called multiple times for the same request.
+    *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
     *
@@ -450,27 +477,43 @@ abstract class CallingConvention extends Manageable {
       // Check arguments
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
 
-      // Check the content type, if appropriate
-      String contentType = httpRequest.getContentType();
-      if (checkType) {
-         if (contentType == null || contentType.trim().length() < 1) {
-            throw new InvalidRequestException("No content type set.");
-         } else {
-            String contentTypeLC = contentType.toLowerCase();
-            if (! ("text/xml".equals(contentTypeLC) ||
-                   contentTypeLC.startsWith("text/xml;"))) {
-               String message = "Invalid content type \""
-                              + contentType
-                              + "\".";
-               throw new InvalidRequestException(message);
-            }
+      // Determine if the request matches the cached request and the parsed
+      // XML is already cached
+      if (_cachedRequest.get() == httpRequest) {
+         Object cached = _cachedRequestXML.get();
+         if (cached != null) {
+System.err.println("Found request XML in cache."); // FIXME TODO
+            return (Element) cached;
          }
+      }
+
+      // Always first check the content type, even if checking is enabled. We
+      // do this because the parsed request will only be stored if the content
+      // type was OK.
+      String contentType = httpRequest.getContentType();
+      String errorMessage = null;
+      if (contentType == null || contentType.trim().length() < 1) {
+         errorMessage = "No content type set.";
+      } else {
+         String contentTypeLC = contentType.toLowerCase();
+         if (! ("text/xml".equals(contentTypeLC) ||
+                contentTypeLC.startsWith("text/xml;"))) {
+            errorMessage = "Invalid content type \""
+                         + contentType
+                         + "\" Expected \"text/xml\".";
+         }
+      }
+
+      // If checking is enabled and the check was unsuccessful, then fail
+      if (errorMessage != null && checkType) {
+         throw new InvalidRequestException(errorMessage);
       }
 
       // Parse the content in the HTTP request
       ElementParser parser = new ElementParser();
+      Element element;
       try {
-         return parser.parse(httpRequest.getReader());
+         element = parser.parse(httpRequest.getReader());
 
       // I/O error
       } catch (IOException ex) {
@@ -482,5 +525,13 @@ abstract class CallingConvention extends Manageable {
          String message = "Failed to parse XML request.";
          throw new InvalidRequestException(message, ex);
       }
+
+      // Only store in the cache if the content type was OK
+      if (errorMessage == null) {
+         _cachedRequest.set(httpRequest);
+         _cachedRequestXML.set(element);
+      }
+
+      return element;
    }
 }

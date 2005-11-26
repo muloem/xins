@@ -82,6 +82,71 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Checks if the specified request can be handled by this calling
+    * convention.
+    *
+    * <p>The return value is as follows:
+    *
+    * <ul>
+    *    <li>a positive value indicates that the request <em>can</em>
+    *        be handled;
+    *    <li>the value <code>0</code> indicates that the request
+    *        <em>cannot</em> be handled;
+    *    <li>a negative number indicates that it is <em>unknown</em>
+    *        whether the request can be handled by this calling convention.
+    * </ul>
+    *
+    * <p>This method will not throw any exception.
+    *
+    * @param httpRequest
+    *    the HTTP request to investigate, cannot be <code>null</code>.
+    *
+    * @return
+    *    a positive value if the request can be handled; <code>0</code> if the
+    *    request cannot be handled or a negative value if it is unknown.
+    */
+   int matchesRequest(HttpServletRequest httpRequest) {
+
+      // There is no match, unless XML can be parsed in the request and the
+      // name of the function to invoke can be determined
+      int match = NOT_MATCHING;
+
+      try {
+
+         // Parse the XML in the request (if any)
+         Element element = parseXMLRequest(httpRequest);
+
+         // Get all <param/> elements
+         //
+         // NOTE: getChildElements never returns null
+         Iterator parameters = element.getChildElements("param").iterator();
+
+         // Search through the parameters until we find the one that specifies
+         // the name of the function to invoke
+         boolean searching = true;
+         while (searching && parameters.hasNext()) {
+            Element nextParameter = (Element) parameters.next();
+            String  name          = nextParameter.getAttribute("name");
+
+            // We found the _function parameter, stop searching; if the value
+            // is non-empty we have a match, otherwise we don't.
+            if ("_function".equals(name)) {
+               searching = false;
+               if (! TextUtils.isEmpty(nextParameter.getText())) {
+                  match = MATCHING;
+               }
+            }
+         }
+
+      // If an exception is caught, the fallback NOT_MATCHING will be used
+      } catch (Throwable exception) {
+         // fall through
+      }
+
+      return match;
+   }
+
+   /**
     * Converts an HTTP request to a XINS request (implementation method). This
     * method should only be called from class {@link CallingConvention}. Only
     * then it is guaranteed that the <code>httpRequest</code> argument is not
@@ -103,7 +168,7 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      Element requestElem = parseXMLRequest(httpRequest, true);
+      Element requestElem = parseXMLRequest(httpRequest);
 
       String functionName = null;
 
@@ -132,7 +197,7 @@ extends CallingConvention {
       Element dataElement = null;
       List dataElementList = requestElem.getChildElements("data");
       if (dataElementList.size() == 1) {
-         dataElement = (Element)dataElementList.get(0);
+         dataElement = (Element) dataElementList.get(0);
       } else if (dataElementList.size() > 1) {
          throw new InvalidRequestException("Found multiple data sections.");
       }

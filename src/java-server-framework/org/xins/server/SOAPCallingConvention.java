@@ -90,6 +90,43 @@ final class SOAPCallingConvention extends CallingConvention {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Gets the unique child of an element.
+    *
+    * @param parentElement
+    *    the parent element, cannot be <code>null</code>.
+    *
+    * @param elementName
+    *    the name of the child element to get, or <code>null</code> if the
+    *    parent have a unique child.
+    *
+    * @return
+    *    The sub-element of this element.
+    *
+    * @throws InvalidRequestException
+    *    if no child was found or more than one child was found.
+    */
+   private static Element getUniqueChild(Element parentElement, String elementName)
+   throws InvalidRequestException {
+      List childList = null;
+      if (elementName == null) {
+         childList = parentElement.getChildElements();
+      } else {
+         childList = parentElement.getChildElements(elementName);
+      }
+      if (childList.size() == 0) {
+         throw new InvalidRequestException("No \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
+               "\" element of the XML-RPC request.");
+      } else if (childList.size() > 1) {
+         throw new InvalidRequestException("More than one \"" + elementName +
+               "\" children found in the \"" + parentElement.getLocalName() +
+               "\" element of the XML-RPC request.");
+      }
+      return (Element) childList.get(0);
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -119,14 +156,77 @@ final class SOAPCallingConvention extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
+   /**
+    * Checks if the specified request can be handled by this calling
+    * convention.
+    *
+    * <p>The return value is as follows:
+    *
+    * <ul>
+    *    <li>a positive value indicates that the request <em>can</em>
+    *        be handled;
+    *    <li>the value <code>0</code> indicates that the request
+    *        <em>cannot</em> be handled;
+    *    <li>a negative number indicates that it is <em>unknown</em>
+    *        whether the request can be handled by this calling convention.
+    * </ul>
+    *
+    * <p>This method will not throw any exception.
+    *
+    * @param httpRequest
+    *    the HTTP request to investigate, cannot be <code>null</code>.
+    *
+    * @return
+    *    a positive value if the request can be handled; <code>0</code> if the
+    *    request cannot be handled or a negative value if it is unknown.
+    */
+   int matchesRequest(HttpServletRequest httpRequest) {
+
+      // There is no match, unless XML can be parsed in the request and the
+      // name of the function to invoke can be determined
+      int match = NOT_MATCHING;
+
+      try {
+
+         // Parse the XML in the request (if any)
+         Element element = parseXMLRequest(httpRequest);
+
+         // The root element must be <Envelope/>
+         if (element.getLocalName().equals("Envelope")) {
+
+            // There must be a <Body/> element within the <Envelope/>
+            Element bodyElement = getUniqueChild(element, "Body");
+
+            // There must be one child element
+            List bodyChildren = bodyElement.getChildElements();
+            if (bodyChildren != null && bodyChildren.size() == 1) {
+               Element functionElement     = (Element) bodyChildren.get(0);
+               String  functionElementName = functionElement.getLocalName();
+
+               // The name of the child element must match '<Function>Request'
+               if (functionElementName.endsWith("Request") &&
+                   functionElementName.length() > 7) {
+                  match = MATCHING;
+               }
+            }
+         }
+
+      // If an exception is caught, the fallback NOT_MATCHING will be used
+      } catch (Throwable exception) {
+         // fall through
+      }
+
+      return match;
+   }
+
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-      Element envelopeElem = parseXMLRequest(httpRequest, true);
+      Element envelopeElem = parseXMLRequest(httpRequest);
 
-      if (!envelopeElem.getLocalName().equals("Envelope")) {
+      if (! envelopeElem.getLocalName().equals("Envelope")) {
          throw new InvalidRequestException("Root element is not a SOAP envelope but \"" +
                envelopeElem.getLocalName() + "\".");
       }
