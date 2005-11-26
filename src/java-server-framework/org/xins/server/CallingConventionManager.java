@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -771,19 +773,73 @@ extends Manageable {
       // Log: Request does not specify any calling convention
       Log.log_3508();
 
-      // First see if the default calling convention matches
-      CallingConvention defaultCC = (CallingConvention) _conventions.get(_defaultConventionName);
+      // Get name, instance and class name for the default calling convention
+      String            defaultName = _defaultConventionName;
+      CallingConvention defaultCC   = (CallingConvention) _conventions.get(defaultName);
+
+      // See if the default calling convention matches
       int match = defaultCC.matchesRequest(request);
       if (match > 0) {
-         Log.log_3509(_defaultConventionName);
+         Log.log_3509(defaultCC.getClass().getName());
          return defaultCC;
       }
 
       // Determine which other calling conventions match
-      // FIXME: TODO
+      Set       entrySet  = _conventions.entrySet();
+      Iterator  iterator  = entrySet.iterator();
+      ArrayList unknowns  = null;
+      ArrayList positives = null;
+
+      while (iterator.hasNext()) {
+         Map.Entry         entry = (Map.Entry)         iterator.next();
+         CallingConvention cc    = (CallingConvention) entry.getValue();
+
+         // Skip the default calling convention, we already established that
+         // this one cannot handle the request
+         if (cc != defaultCC) {
+
+            // Determine whether this one can handle it
+            match = cc.matchesRequest(request);
+
+            // Unknown
+            if (match < 0) {
+               if (unknowns == null) {
+                  unknowns = new ArrayList();
+               }
+               unknowns.add(cc);
+
+            // Definitely able to handle it
+            } else if (match > 0) {
+               if (positives == null) {
+                  positives = new ArrayList();
+               }
+               positives.add(cc);
+            }
+         }
+      }
+
+      // Determine how many matches there are
+      int unknownCount  = unknowns  == null ? 0 : unknowns.size();
+      int positiveCount = positives == null ? 0 : positives.size();
+      int totalCount    = unknownCount + positiveCount;
+
+      // One calling convention matches
+      if (totalCount == 1) {
+         if (unknownCount == 1) {
+            return (CallingConvention) unknowns.get(0);
+         } else {
+            return (CallingConvention) positives.get(0);
+         }
 
       // No matches, invalid request
-      Log.log_3510();
-      throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and it was not possible to find a single calling convention that can handle it.");
+      } else if (totalCount < 1) {
+         Log.log_3510();
+         throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and it was not possible to find a single calling convention that can handle it.");
+
+      // Multiple matches
+      } else {
+         // FIXME TODO Log.log_3511();
+         throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and multiple calling conventions are able to handle it.");
+      }
    }
 }
