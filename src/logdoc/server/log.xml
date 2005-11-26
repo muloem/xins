@@ -555,10 +555,13 @@
 		</entry>
 		<entry id="3509" level="DEBUG">
 			<description>Calling convention chosen for request that does not specify any calling convention.</description>
-         <param name="conventionClassName" />
+			<param name="conventionClassName" />
 		</entry>
 		<entry id="3510" level="INFO">
-			<description>Unable to find any calling convention for request that does not specify any calling convention.</description>
+			<description>Unable to detect calling convention for request. None of the calling conventions matches.</description>
+		</entry>
+		<entry id="3511" level="INFO">
+			<description>Unable to detect calling convention for request. Multiple calling conventions match.</description>
 		</entry>
 	</group>
 
@@ -635,7 +638,7 @@
 	</group>
 
 	<group id="runtime.cc" name="Calling Convention">
-        <!-- XXX: Removed 3560 (@since XINS 1.3.0) Replaced by 3239. -->
+		<!-- XXX: Removed 3560 (@since XINS 1.3.0) Replaced by 3239. -->
 	</group>
 
 	<group id="runtime.context" name="Diagnostic Context Identifiers">

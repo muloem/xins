@@ -18,7 +18,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 * XINS/Java Server Framework:
   - Applied some backward-compatible changes to the CallingConventionManager
     as a preparation for SF.net RFE #1359962: Automatic CallingConvention
-    detection. Added log messages 3508-3510.
+    detection. Added log messages 3508-3511.
   - Added a parseXMLRequest method to class CallingConvention, that only
     accepts an HttpServletRequest and not a boolean that indicates whether the
     content type should be checked. The content type will always be cheched.
