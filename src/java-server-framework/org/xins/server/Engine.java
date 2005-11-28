@@ -625,7 +625,7 @@ final class Engine extends Object {
             } else if (xinsRequest == null) {
                subjectClass  = cc.getClass().getName();
                subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
-            } else if (result == null) {
+            } else { // (result == null) {
                subjectClass  = _api.getClass().getName();
                subjectMethod = "handleCall(long,"
                              + FunctionRequest.class.getName()

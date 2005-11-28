@@ -321,13 +321,18 @@ class XSLTCallingConvention extends StandardCallingConvention {
          PrintWriter out = httpResponse.getWriter();
          out.print(buffer.toString());
          out.close();
-      } catch (IOException ioex) {
-         throw ioex;
-      } catch (Exception ex) {
-         IOException ioe = new IOException("Cannot transform the result with" +
-               " the XSLT located at \"" + xsltLocation + "\".");
-         ExceptionUtils.setCause(ioe, ex);
-         throw ioe;
+      } catch (Exception exception) {
+         if (exception instanceof IOException) {
+            throw (IOException) exception;
+         } else {
+            String message = "Cannot transform the result with the XSLT "
+                           + "located at \""
+                           + xsltLocation
+                           + "\".";
+            IOException ioe = new IOException(message);
+            ExceptionUtils.setCause(ioe, exception);
+            throw ioe;
+         }
       }
    }
 
