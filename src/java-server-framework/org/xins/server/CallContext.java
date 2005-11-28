@@ -72,7 +72,6 @@ extends Object {
       _parameters   = functionRequest.getParameters();
       _dataElement  = functionRequest.getDataElement();
       _start        = start;
-      _function     = function;
       _callID       = callID;
       _remoteIP     = remoteIP;
       _builder      = new FunctionResult();
@@ -103,11 +102,6 @@ extends Object {
     * January 1, 1970 UTC.
     */
    private final long _start;
-
-   /**
-    * The function currently being called. Cannot be <code>null</code>.
-    */
-   private final Function _function;
 
    /**
     * The call ID, unique in the context of the pertaining function.
