@@ -61,9 +61,7 @@ extends CallingConvention {
     * Constructs a new <code>OldStyleCallingConvention</code> instance.
     */
    OldStyleCallingConvention() {
-
-      // This calling convention is deprecated, so pass 'true' up
-      super(true);
+      // empty
    }
 
 
@@ -79,41 +77,30 @@ extends CallingConvention {
     * Checks if the specified request can be handled by this calling
     * convention.
     *
-    * <p>The return value is as follows:
-    *
-    * <ul>
-    *    <li>a positive value indicates that the request <em>can</em>
-    *        be handled;
-    *    <li>the value <code>0</code> indicates that the request
-    *        <em>cannot</em> be handled;
-    *    <li>a negative number indicates that it is <em>unknown</em>
-    *        whether the request can be handled by this calling convention.
-    * </ul>
-    *
     * <p>This method will not throw any exception.
     *
     * @param httpRequest
     *    the HTTP request to investigate, cannot be <code>null</code>.
     *
     * @return
-    *    a positive value if the request can be handled; <code>0</code> if the
-    *    request cannot be handled or a negative value if it is unknown.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
     */
-   int matchesRequest(HttpServletRequest httpRequest) {
+   protected boolean matches(HttpServletRequest httpRequest) {
 
-      int match;
+      // Get the values of the 2 parameters that can possibly specify the name
+      // of the function to invoke: "_function" and "function"
+      String f1 = httpRequest.getParameter("_function");
+      String f2 = httpRequest.getParameter("function");
 
-      // No match if neither parameter '_function' nor 'function' is specified
-      if (TextUtils.isEmpty(httpRequest.getParameter("_function")) &&
-          TextUtils.isEmpty(httpRequest.getParameter("function"))) {
-         match = NOT_MATCHING;
+      // See which one is empty
+      boolean e1 = TextUtils.isEmpty(f1);
+      boolean e2 = TextUtils.isEmpty(f2);
 
-      // If either parameter is set, then there is a match
-      } else {
-         match = MATCHING;
-      }
-
-      return match;
+      // There is a match if either '_function' or 'function' is specified, or
+      // both have the same value
+      return (e1 && !e2) || (!e1 && e2) || (!e1 && !e2 && f1.equals(f2));
    }
 
    /**

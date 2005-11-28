@@ -107,9 +107,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    XSLTCallingConvention() {
 
-      // This calling convention is not deprecated, so pass 'false' up
-      super(false);
-
       // Create the transformer factory
       _factory = TransformerFactory.newInstance();
       _factory.setURIResolver(new URIResolver());

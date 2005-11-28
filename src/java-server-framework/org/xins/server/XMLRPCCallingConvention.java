@@ -159,9 +159,6 @@ final class XMLRPCCallingConvention extends CallingConvention {
    public XMLRPCCallingConvention(API api)
    throws IllegalArgumentException {
 
-      // This calling convention is not deprecated, so pass 'false' up
-      super(false);
-
       // Check arguments
       MandatoryArgumentChecker.check("api", api);
 
@@ -188,55 +185,39 @@ final class XMLRPCCallingConvention extends CallingConvention {
     * Checks if the specified request can be handled by this calling
     * convention.
     *
-    * <p>The return value is as follows:
-    *
-    * <ul>
-    *    <li>a positive value indicates that the request <em>can</em>
-    *        be handled;
-    *    <li>the value <code>0</code> indicates that the request
-    *        <em>cannot</em> be handled;
-    *    <li>a negative number indicates that it is <em>unknown</em>
-    *        whether the request can be handled by this calling convention.
-    * </ul>
-    *
     * <p>This method will not throw any exception.
     *
     * @param httpRequest
     *    the HTTP request to investigate, cannot be <code>null</code>.
     *
     * @return
-    *    a positive value if the request can be handled; <code>0</code> if the
-    *    request cannot be handled or a negative value if it is unknown.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
+    *
+    * @throws Exception
+    *    if analysis of the request causes an exception;
+    *    <code>false</code> will be assumed.
     */
-   int matchesRequest(HttpServletRequest httpRequest) {
+   protected boolean matches(HttpServletRequest httpRequest)
+   throws Exception {
 
-      // There is no match, unless XML can be parsed in the request and the
-      // name of the function to invoke can be determined
-      int match = NOT_MATCHING;
+      // Parse the XML in the request (if any)
+      Element element = parseXMLRequest(httpRequest);
 
-      try {
+      // The root element must be <methodCall/>
+      if (element.getLocalName().equals("methodCall")) {
 
-         // Parse the XML in the request (if any)
-         Element element = parseXMLRequest(httpRequest);
+         // The text within the <methodName/> element is the function name
+         String function = getUniqueChild(element, "methodName").getText();
 
-         // The root element must be <methodCall/>
-         if (element.getLocalName().equals("methodCall")) {
-
-            // The text within the <methodName/> element is the function name
-            String function = getUniqueChild(element, "methodName").getText();
-
-            // There is a match only if the function name is non-empty
-            if (! TextUtils.isEmpty(function)) {
-               match = MATCHING;
-            }
+         // There is a match only if the function name is non-empty
+         if (! TextUtils.isEmpty(function)) {
+            return true;
          }
-
-      // If an exception is caught, the fallback NOT_MATCHING will be used
-      } catch (Throwable exception) {
-         // fall through
       }
 
-      return match;
+      return false;
    }
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)

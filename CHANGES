@@ -22,20 +22,17 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       appropriate matching calling convention for a request that does not
       specify any.
     . Added a parseXMLRequest method to class CallingConvention that only
-      accepts an HttpServletRequest (and not a boolean that indicates whether
-      the content type should be checked). The content type will always be
-      cheched. This method is added for convenience and to avoid confusion by
-      potential CustomCallingConvention implementors. The
+      accepts an HttpServletRequest (and not also a boolean that indicates
+      whether the content type should be checked). The content type will
+      always be cheched. This method is added for convenience and to avoid
+      confusion by potential CustomCallingConvention implementors. The
       CustomCallingConvention class documentation has been updated.
     . Added caching to the parseXMLRequest methods in class CallingConvention.
-    . Added the package-private method matches(HttpServletRequest) to class
-      CallingConvention. This method indicates whether the calling convention
-      is expected to be able to handle the specified request successfully.
-    . Calling conventions classes can now mark themselves as being deprecated.
-      Added a method 'boolean isDeprecated()' to class CallingConvention and
-      changed the constructors of CallingConvention and
-      CustomCallingConvention to accept a 'deprecated' flag, which is then
-      stored to be returned by isDeprecated().
+    . Added the package-private method 'matchesRequest(HttpServletRequest)'
+      and a delegate for it, the protected method
+      'matches(HttpServletRequest)' to class CallingConvention. These method
+      are used to determine whether the calling convention is expected to be
+      able to handle the specified request successfully.
   - Made the constructors of classes SOAPCallingConvention and
     XMLRPCCallingConvention throw an IllegalArgumentException if the API
     argument is null.

@@ -153,9 +153,6 @@ final class SOAPCallingConvention extends CallingConvention {
    public SOAPCallingConvention(API api)
    throws IllegalArgumentException {
 
-      // This calling convention is not deprecated, so pass 'false' up
-      super(false);
-
       // Check arguments
       MandatoryArgumentChecker.check("api", api);
 
@@ -182,65 +179,46 @@ final class SOAPCallingConvention extends CallingConvention {
     * Checks if the specified request can be handled by this calling
     * convention.
     *
-    * <p>The return value is as follows:
-    *
-    * <ul>
-    *    <li>a positive value indicates that the request <em>can</em>
-    *        be handled;
-    *    <li>the value <code>0</code> indicates that the request
-    *        <em>cannot</em> be handled;
-    *    <li>a negative number indicates that it is <em>unknown</em>
-    *        whether the request can be handled by this calling convention.
-    * </ul>
-    *
     * <p>This method will not throw any exception.
     *
     * @param httpRequest
     *    the HTTP request to investigate, cannot be <code>null</code>.
     *
     * @return
-    *    a positive value if the request can be handled; <code>0</code> if the
-    *    request cannot be handled or a negative value if it is unknown.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
+    *
+    * @throws Exception
+    *    if analysis of the request causes an exception;
+    *    <code>false</code> will be assumed.
     */
-   int matchesRequest(HttpServletRequest httpRequest) {
+   protected boolean matches(HttpServletRequest httpRequest)
+   throws Exception {
 
-      // There is no match, unless XML can be parsed in the request and the
-      // name of the function to invoke can be determined
-      int match = NOT_MATCHING;
+      // Parse the XML in the request (if any)
+      Element element = parseXMLRequest(httpRequest);
 
-      try {
+      // The root element must be <Envelope/>
+      if (element.getLocalName().equals("Envelope")) {
 
-         // Parse the XML in the request (if any)
-         Element element = parseXMLRequest(httpRequest);
+         // There must be a <Body/> element within the <Envelope/>
+         Element bodyElement = getUniqueChild(element, "Body");
 
-         // The root element must be <Envelope/>
-         if (element.getLocalName().equals("Envelope")) {
+         // There must be one child element
+         List bodyChildren = bodyElement.getChildElements();
+         if (bodyChildren != null && bodyChildren.size() == 1) {
+            Element functionElement     = (Element) bodyChildren.get(0);
+            String  functionElementName = functionElement.getLocalName();
 
-            // There must be a <Body/> element within the <Envelope/>
-            Element bodyElement = getUniqueChild(element, "Body");
-
-            // There must be one child element
-            List bodyChildren = bodyElement.getChildElements();
-            if (bodyChildren != null && bodyChildren.size() == 1) {
-               Element functionElement     = (Element) bodyChildren.get(0);
-               String  functionElementName = functionElement.getLocalName();
-
-               // The name of the child element must match '<Function>Request'
-               if (functionElementName.endsWith("Request") &&
-                   functionElementName.length() > 7) {
-                  match = MATCHING;
-               }
-            }
+            // The name of the child element must match '<Function>Request'
+            return functionElementName.endsWith("Request") &&
+                   functionElementName.length() > 7;
          }
-
-      // If an exception is caught, the fallback NOT_MATCHING will be used
-      } catch (Throwable exception) {
-         // fall through
       }
 
-      return match;
+      return false;
    }
-
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,

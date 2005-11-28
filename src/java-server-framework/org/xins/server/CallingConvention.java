@@ -55,27 +55,6 @@ abstract class CallingConvention extends Manageable {
    private static final String SERVER_HEADER =
       "XINS/Java Server Framework " + Library.getVersion();
 
-   /**
-    * Value that can be used to indicate that it is unknown whether a request
-    * can be handled by a certain calling convention. See
-    * {@link #matchesRequest(HttpServletRequest)}.
-    */
-   static final int MATCHING_UNKNOWN = -1;
-
-   /**
-    * Value that can be used to indicate that a request cannot be handled by a
-    * certain calling convention. See
-    * {@link #matchesRequest(HttpServletRequest)}.
-    */
-   static final int NOT_MATCHING = 0;
-
-   /**
-    * Value that can be used to indicate that it is expected that a request
-    * can be handled by a certain calling convention. See
-    * {@link #matchesRequest(HttpServletRequest)}.
-    */
-   static final int MATCHING = 1;
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -147,15 +126,9 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallingConvention</code>, indicating whether it
-    * should be considered deprecated.
-    *
-    * @param deprecated
-    *    <code>true</code> if this calling convention is to be considered
-    *    deprecated, or <code>false</code> if not.
+    * Constructs a new <code>CallingConvention</code>.
     */
-   protected CallingConvention(boolean deprecated) {
-      _deprecated       = deprecated;
+   protected CallingConvention() {
       _cachedRequest    = new ThreadLocal();
       _cachedRequestXML = new ThreadLocal();
    }
@@ -164,11 +137,6 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
    // Fields
    //------------------------------------------------------------------------
-
-   /**
-    * Flag that indicates whether this calling convention is deprecated.
-    */
-   private final boolean _deprecated;
 
    /**
     * Cached <code>HttpServletRequest</code>, local per thread. When
@@ -198,48 +166,72 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Checks if this calling convention is deprecated.
-    *
-    * <p>A deprecated calling convention will always get a lower priority that
-    * non-deprecated ones in situations where a request does not explicitly
-    * specify a calling convention and it is attempted to automatically choose
-    * one to use.
-    *
-    * @return
-    *    <code>true</code> if this calling convention is deprecated,
-    *    <code>false</code> otherwise.
-    *
-    * @since XINS 1.4.0
-    */
-   public final boolean isDeprecated() {
-      return _deprecated;
-   } 
-
-   /**
     * Checks if the specified request can be handled by this calling
-    * convention.
+    * convention. This method delegates to
+    * {@link #matches(HttpServletRequest)}.
     *
-    * <p>The return value is as follows:
+    * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
+    * this exception is logged and ignored and <code>false</code> is returned.
     *
-    * <ul>
-    *    <li>a positive value indicates that the request <em>can</em>
-    *        be handled;
-    *    <li>the value <code>0</code> indicates that the request
-    *        <em>cannot</em> be handled;
-    *    <li>a negative number indicates that it is <em>unknown</em>
-    *        whether the request can be handled by this calling convention.
-    * </ul>
-    *
-    * <p>This method should not throw any exception.
+    * <p>This method is guaranteed not to throw any exception.
     *
     * @param httpRequest
     *    the HTTP request to investigate, cannot be <code>null</code>.
     *
     * @return
-    *    a positive value if the request can be handled; <code>0</code> if the
-    *    request cannot be handled or a negative value if it is unknown.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
     */
-   abstract int matchesRequest(HttpServletRequest httpRequest);
+   final boolean matchesRequest(HttpServletRequest httpRequest) {
+
+      // Delegate to the 'matches' method
+      try {
+         return matches(httpRequest);
+
+      // Log and ignore any exception, just indicate it is unknown whether the
+      // request can indeed be handled
+      } catch (Throwable exception) {
+         Utils.logIgnoredException(CallingConvention.class.getName(),
+                                   "matchesRequest",
+                                   getClass().getName(),
+                                   "matches",
+                                   exception);
+         return false;
+      }
+   }
+
+   /**
+    * Checks if the specified request can be handled by this calling
+    * convention.
+    *
+    * <p>Implementations of this method should be optimized for performance.
+    *
+    * <p>The default implementation of this method returns <code>true</code>.
+    *
+    * <p>If this method throws any exception, the exception is logged as an
+    * ignorable exception and <code>false</code> is assumed.
+    *
+    * <p>This method should just be called by the XINS/Java Server Framework.
+    *
+    * @param httpRequest
+    *    the HTTP request to investigate, never <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
+    *
+    * @throws Exception
+    *    if analysis of the request causes an exception;
+    *    <code>false</code> will be assumed.
+    *
+    * @since XINS 1.4.0
+    */
+   protected boolean matches(HttpServletRequest httpRequest)
+   throws Exception {
+      return true;
+   }
 
    /**
     * Converts an HTTP request to a XINS request (wrapper method). This method

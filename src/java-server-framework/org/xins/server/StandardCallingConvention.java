@@ -75,21 +75,7 @@ extends CallingConvention {
     * Constructs a new <code>StandardCallingConvention</code> object.
     */
    StandardCallingConvention() {
-
-      // This calling convention is not deprecated, so pass 'false' up
-      super(false);
-   }
-
-   /**
-    * Constructs a new <code>StandardCallingConvention</code>, indicating
-    * whether it should be considered deprecated.
-    *
-    * @param deprecated
-    *    <code>true</code> if this calling convention is to be considered
-    *    deprecated, or <code>false</code> if not.
-    */
-   protected StandardCallingConvention(boolean deprecated) {
-      super(deprecated);
+      // empty
    }
 
 
@@ -105,40 +91,20 @@ extends CallingConvention {
     * Checks if the specified request can be handled by this calling
     * convention.
     *
-    * <p>The return value is as follows:
-    *
-    * <ul>
-    *    <li>a positive value indicates that the request <em>can</em>
-    *        be handled;
-    *    <li>the value <code>0</code> indicates that the request
-    *        <em>cannot</em> be handled;
-    *    <li>a negative number indicates that it is <em>unknown</em>
-    *        whether the request can be handled by this calling convention.
-    * </ul>
-    *
     * <p>This method will not throw any exception.
     *
     * @param httpRequest
     *    the HTTP request to investigate, cannot be <code>null</code>.
     *
     * @return
-    *    a positive value if the request can be handled; <code>0</code> if the
-    *    request cannot be handled or a negative value if it is unknown.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it
+    *    <em>definitely</em> not able to handle this request.
     */
-   int matchesRequest(HttpServletRequest httpRequest) {
-
-      int match;
+   protected boolean matches(HttpServletRequest httpRequest) {
 
       // If no _function parameter is specified, then there is no match
-      if (TextUtils.isEmpty(httpRequest.getParameter("_function"))) {
-         match = NOT_MATCHING;
-
-      // If the _function parameter is set, then there is a match
-      } else {
-         match = MATCHING;
-      }
-
-      return match;
+      return ! TextUtils.isEmpty(httpRequest.getParameter("_function"));
    }
 
    /**
