@@ -822,7 +822,7 @@ extends Manageable {
             Log.log_3509(StandardCallingConvention.class.getName());
             return stdCC;
 
-         // Otherwise, use _xins-xslt
+         // Otherwise, indeed use _xins-xslt
          } else {
             Log.log_3509(XSLTCallingConvention.class.getName());
             return xslCC;
