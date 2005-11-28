@@ -748,8 +748,15 @@ extends Manageable {
     * an incoming request. This method is called when the calling convention
     * is not explicitly specified in the request.
     *
-    * <p>If the default calling convention is able to handle this request,
-    * then that one will be returned. Otherwise another matching calling
+    * <p>The following algorithm is used:
+    *
+    * <ul>
+    *    <li>if the default calling convention is possibly able to handle the
+    *        request, then return it;
+    *    <li>otherwise if the {@link StandardCallingConvention} is possibly
+    *        able to handle the request, then return it;
+    *    <li>otherwise if the {@link StandardCallingConvention} is possibly
+    *    able to handle the request, then return it;
     * convention will be searched. If exactly one matches, then that one will
     * be returned, otherwise (multiple matches or none) an
     * {@link InvalidRequestException} is thrown.
@@ -794,11 +801,27 @@ extends Manageable {
          return defaultCC;
       }
 
-      // If not, see if _xins-std matches
+      // If not, see if _xins-std/_xins-xslt matches
+      //
+      // NOTE: We assume (safely) that if _xins-std can handle a request, that
+      //       _xins-xslt can also handle it
       CallingConvention stdCC = (CallingConvention) _conventions.get("_xins-std");
       if (stdCC != defaultCC && stdCC.matchesRequest(request)) {
-         Log.log_3509(StandardCallingConvention.class.getName());
-         return stdCC;
+
+         // Determine if one of the two XSLT-specific parameters is set
+         String p1 = request.getParameter(XSLTCallingConvention.TEMPLATE_PARAMETER);
+         String p2 = request.getParameter(XSLTCallingConvention.CLEAR_TEMPLATE_CACHE_PARAMETER);
+
+         // If neither is set, use _xins-std
+         if (TextUtils.isEmpty(p1) && TextUtils.isEmpty(p2)) {
+            Log.log_3509(StandardCallingConvention.class.getName());
+            return stdCC;
+
+         // Otherwise, use _xins-xslt
+         } else {
+            Log.log_3509(XSLTCallingConvention.class.getName());
+            return (CallingConvention) _conventions.get("_xins-xslt");
+         }
       }
 
       // The first matching calling convention
