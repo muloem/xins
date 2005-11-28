@@ -173,6 +173,9 @@ implements AccessRuleContainer {
          throw pe;
       }
 
+      // Store the interval
+      _interval = interval;
+
       // Create and start a file watch thread, if the interval is not zero
       if (interval > 0) {
          FileListener fileListener = new FileListener();
@@ -326,6 +329,9 @@ implements AccessRuleContainer {
          }
          _fileWatcher = null;
       }
+
+      // Mark this object as disposed
+      _disposed = true;
    }
 
    /**
