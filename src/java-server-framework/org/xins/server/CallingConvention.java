@@ -516,7 +516,6 @@ abstract class CallingConvention extends Manageable {
       if (_cachedRequest.get() == httpRequest) {
          Object cached = _cachedRequestXML.get();
          if (cached != null) {
-System.err.println("Found request XML in cache."); // FIXME TODO
             return (Element) cached;
          }
       }
