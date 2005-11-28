@@ -7,6 +7,7 @@
 package org.xins.common.manageable;
 
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.TextUtils;
 
 import org.xins.logdoc.ExceptionUtils;
 
@@ -54,16 +55,15 @@ extends Exception {
       }
 
       if (cause != null) {
-         String causeMessage = cause.getMessage();
-         if (causeMessage != null && causeMessage.trim().length() < 1) {
-            causeMessage = null;
-         }
-
          buffer.append(". Caught ");
          buffer.append(cause.getClass().getName());
-         buffer.append(" with message \"");
-         buffer.append(causeMessage);
-         buffer.append('"');
+
+         String causeMessage = TextUtils.trim(cause.getMessage(), null);
+         if (causeMessage != null) {
+            buffer.append(" with message \"");
+            buffer.append(causeMessage);
+            buffer.append('"');
+         }
       }
       buffer.append('.');
 
