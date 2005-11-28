@@ -9,12 +9,13 @@ package org.xins.common.text;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * URL encoding utility functions. This class supports both encoding and
- * decoding. Only 7-bit ASCII characters are supported. All characters higher
- * than 127 (0x7f) will cause the encode or decode operation to fail.
+ * URL encoding utility functions with Unicode support. This class supports
+ * both encoding and decoding. All characters higher than 127 will be encoded 
+ * as %uxxxx where xxxx is the Unicode value of the character in hexadecimal.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -28,6 +29,11 @@ public final class URLEncoding extends Object {
     * The character zero (<code>'0'</code>) as an <code>int</code>.
     */
    private static final int CHAR_ZERO = (int) '0';
+
+   /**
+    * The character nine (<code>'7'</code>) as an <code>int</code>.
+    */
+   private static final int CHAR_SEVEN = (int) '7';
 
    /**
     * The character nine (<code>'9'</code>) as an <code>int</code>.
@@ -53,6 +59,16 @@ public final class URLEncoding extends Object {
     * The character uppercase F (<code>'F'</code>) as an <code>int</code>.
     */
    private static final int CHAR_UPPER_F = (int) 'F';
+
+   /**
+    * The character lowercase U (<code>'u'</code>) as an <code>int</code>.
+    */
+   private static final int CHAR_LOWER_U = (int) 'u';
+
+   /**
+    * The character uppercase U (<code>'U'</code>) as an <code>int</code>.
+    */
+   private static final int CHAR_UPPER_U = (int) 'U';
 
    /**
     * Mappings from unencoded (array index) to encoded values (array
@@ -104,13 +120,9 @@ public final class URLEncoding extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>s == null</code>
-    *
-    * @throws NonASCIIException
-    *    if <code>s.charAt(<em>n</em>) &gt; 127</code>,
-    *    where <code>0 &lt;= <em>n</em> &lt; s.length</code>.
     */
    public static String encode(String s)
-   throws IllegalArgumentException, NonASCIIException {
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
@@ -125,15 +137,20 @@ public final class URLEncoding extends Object {
       FastStringBuffer buffer = new FastStringBuffer(length * 2);
 
       // Loop through the string and just append whatever we find
-      // in UNENCODED_TO_ENCODED
-      int c = -99;
-      try {
-         for (int i = 0; i < length; i++) {
-            c = (int) s.charAt(i);
+      // in UNENCODED_TO_ENCODED or if c > 127, append %u and the
+      // value of the Unicode character in hexadecimal with 4 digits/letters.
+      char[] content = s.toCharArray();
+      for (int i = 0; i < length; i++) {
+         int c = (int) content[i];
+         if (c < 128) {
             buffer.append(UNENCODED_TO_ENCODED[c]);
+         } else {
+            buffer.append("%u");
+            buffer.append(Character.toUpperCase(Character.forDigit((c >> 12) & 0xF, 16)));
+            buffer.append(Character.toUpperCase(Character.forDigit((c >> 8)  & 0xF, 16)));
+            buffer.append(Character.toUpperCase(Character.forDigit((c >> 4)  & 0xF, 16)));
+            buffer.append(Character.toUpperCase(Character.forDigit( c        & 0xF, 16)));
          }
-      } catch (IndexOutOfBoundsException exception) {
-         throw new NonASCIIException((char) c);
       }
 
       return buffer.toString();
@@ -166,12 +183,9 @@ public final class URLEncoding extends Object {
     *                               &amp;&amp; {@link org.xins.common.text.HexConverter}.{@link org.xins.common.text.HexConverter#isHexDigit(char) isDigit}(s.{@link String#charAt(int) charAt}(<em>n</em> + 2)))</code>
     *            (percentage sign is followed by 2 characters of which at least one is not a hexadecimal digit)
     *    </ul>
-    *
-    * @throws NonASCIIException
-    *    if a decoded character is found that has a value &gt; 127.
     */
    public static String decode(String s)
-   throws IllegalArgumentException, FormatException, NonASCIIException {
+   throws IllegalArgumentException, FormatException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
@@ -185,33 +199,10 @@ public final class URLEncoding extends Object {
       // Avoid calls to charAt() method.
       char[] string = s.toCharArray();
 
-      // Last character cannot be a percentage sign
-      if (string[length - 1] == '%') {
-         throw new FormatException(s, "Last character is a percentage sign.");
-      }
-
-      // If the string is only one character, return the original string
-      if (length == 1) {
-         int c =  (int) string[0];
-         if (c > 127) {
-            throw new FormatException(s, "Character at position 0 has value " + c + '.');
-         } else if (c == '+') {
-            return " ";
-         } else {
-            return s;
-         }
-      }
-
-      // Before-last character cannot be a percentage sign
-      if (string[length - 2] == '%') {
-         throw new FormatException(s, "Before-last character is a percentage sign.");
-      }
-
       // Loop through the string
       FastStringBuffer buffer = new FastStringBuffer(length * 2);
       int index = 0;
-      int last = length - 3;
-      while (index <= last) {
+      while (index < length) {
 
          // Get the character
          char c = string[index];
@@ -219,7 +210,7 @@ public final class URLEncoding extends Object {
 
          // Encoded character must be ASCII
          if (charAsInt > 127) {
-            throw new FormatException(s, "Character at position " + index + " has value " + charAsInt + '.');
+            throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
 
          // Special case: Recognize plus sign as a space
          } else if (c == '+') {
@@ -227,35 +218,30 @@ public final class URLEncoding extends Object {
 
          // Catch encoded characters
          } else if (c == '%') {
-            int decodedValue;
+            int decodedValue = 0;
 
-            charAsInt = (int) string[++index];
-            if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
-               decodedValue = charAsInt - CHAR_ZERO;
-            } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {
-               decodedValue = charAsInt - CHAR_LOWER_A + 10;
-            } else if (charAsInt >= CHAR_UPPER_A && charAsInt <= CHAR_UPPER_F) {
-               decodedValue = charAsInt - CHAR_UPPER_A + 10;
-            } else {
-               throw new FormatException(s, "Character at position " + index + " is not a hex digit. Value is " + charAsInt + '.');
+            if (index >= length - 2) {
+                throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
             }
-
+            charAsInt = (int) string[++index];
+            if (charAsInt == CHAR_LOWER_U || charAsInt == CHAR_UPPER_U) {
+                if (index >= length - 4) {
+                    throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
+                }
+               charAsInt = (int) string[++index];
+               decodedValue += digit(charAsInt, s, index);
+               decodedValue *= 16;
+               charAsInt = (int) string[++index];
+               decodedValue += digit(charAsInt, s, index);
+               decodedValue *= 16;
+               charAsInt = (int) string[++index];
+            } else if (charAsInt < CHAR_ZERO || charAsInt > CHAR_SEVEN) {
+               throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
+            }
+            decodedValue += digit(charAsInt, s, index);
             decodedValue *= 16;
-
             charAsInt = (int) string[++index];
-            if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
-               decodedValue += charAsInt - CHAR_ZERO;
-            } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {
-               decodedValue += charAsInt - CHAR_LOWER_A + 10;
-            } else if (charAsInt >= CHAR_UPPER_A && charAsInt <= CHAR_UPPER_F) {
-               decodedValue += charAsInt - CHAR_UPPER_A + 10;
-            } else {
-               throw new FormatException(s, "Character at position " + index + " is not a hex digit. Value is " + charAsInt + '.');
-            }
-
-            if (decodedValue > 127) {
-               throw new NonASCIIException((char) decodedValue);
-            }
+            decodedValue += digit(charAsInt, s, index);
 
             buffer.append((char) decodedValue);
 
@@ -268,32 +254,37 @@ public final class URLEncoding extends Object {
          index++;
       }
 
-      // Check and append before-last character
-      if (index == length - 2) {
-         char c        = string[index];
-         int charAsInt = (int) c;
-         if (charAsInt > 127) {
-            throw new FormatException(s, "Character at position " + index + " has value " + charAsInt + '.');
-         } else if (c == '+') {
-            c = ' ';
-         }
-         buffer.append(c);
-         index++;
-      }
-
-      // Check and append last character
-      if (index == length - 1) {
-         char c         = string[index];
-         int charAsInt = (int) c;
-         if (charAsInt > 127) {
-            throw new FormatException(s, "Character at position " + index + " has value " + charAsInt + '.');
-         } else if (c == '+') {
-            c = ' ';
-         }
-         buffer.append(c);
-      }
-
       return buffer.toString();
+   }
+
+   /**
+    * Convert a hexadecimal digit to a number.
+    *
+    * @param charAsInt
+    *    the hexadecimal digit.
+    *
+    * @param s
+    *    the String from which the character has been taken.
+    *
+    * @param index
+    *    the position of the character within the String.
+    *
+    * @throws FormatException
+    *    if c is not a numerical digit or a letter between 'a' and 'f' or
+    *    'A' or 'F'.
+    */
+   private static int digit(int charAsInt, String s, int index) throws FormatException {
+      int decodedValue = 0;
+      if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
+         decodedValue = charAsInt - CHAR_ZERO;
+      } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {
+         decodedValue = charAsInt - CHAR_LOWER_A + 10;
+      } else if (charAsInt >= CHAR_UPPER_A && charAsInt <= CHAR_UPPER_F) {
+         decodedValue = charAsInt - CHAR_UPPER_A + 10;
+      } else {
+         throw new FormatException(s, "Character at position " + index + " is not a hex digit. Value is " + charAsInt + '.');
+      }
+      return decodedValue;
    }
 
 

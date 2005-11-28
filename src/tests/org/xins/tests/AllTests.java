@@ -46,7 +46,7 @@ public class AllTests extends TestSuite {
       // Add all tests
       //
 
-      suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
+      /*suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
 
@@ -64,7 +64,6 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.manageable.InitializationExceptionTests.class);
 
       suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
-      suite.addTestSuite(org.xins.tests.common.net.URLEncodingTests.class);
 
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.SAXParserProviderTests.class);
@@ -125,12 +124,13 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.ElementTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
-      suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
+      suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);*/
 
 
       // XXX: Perform just a single test
       // suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention2"));
 
+      suite.addTestSuite(org.xins.tests.common.text.URLEncodingTests.class);
       // Stop the server
       suite.addTestSuite(StopServer.class);
 

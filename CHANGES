@@ -14,6 +14,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Marked the following non-public inner classes as static:
     ChainedMap$ChainedSet, ChainedMap$EntrySet and ElementParser$Handler.
   - Removed unused field _withCentury from class DateConverter.
+  - Implemented RFE #1359749: Added support for Unicode in URLEncoding.
   - Fixed a minor bug in the InitializationException class, method
     createMessage. If the message for the cause exception is null, then an
     IllegalArgumentException would be triggered in FastStringBuffer, method
