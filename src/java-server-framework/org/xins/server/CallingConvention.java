@@ -167,7 +167,12 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Checks if the specified request can be handled by this calling
-    * convention. This method delegates to
+    * convention. Assuming this <code>CallingConvention</code> instance is
+    * usable (see {@link #isUsable()}, this method delegates to
+    * {@link #matches(HttpServletRequest)}.
+    *
+    * <p>If this calling convention is not usable, then <code>false</code> is
+    * returned, even <em>before</em> calling
     * {@link #matches(HttpServletRequest)}.
     *
     * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
@@ -184,6 +189,12 @@ abstract class CallingConvention extends Manageable {
     *    <em>definitely</em> not able to handle this request.
     */
    final boolean matchesRequest(HttpServletRequest httpRequest) {
+
+      // First check if this CallingConvention instance is bootstrapped and
+      // initialized
+      if (! isUsable()) {
+         return false;
+      }
 
       // Delegate to the 'matches' method
       try {
