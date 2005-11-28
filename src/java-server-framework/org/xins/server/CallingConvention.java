@@ -453,6 +453,10 @@ abstract class CallingConvention extends Manageable {
     * Parses XML from the specified HTTP request and checks that the content
     * type is correct.
     *
+    * <p>This method uses a cache to optimize performance if either of the
+    * <code>parseXMLRequest</code> methods is called multiple times for the
+    * same request.
+    *
     * <p>Calling this method is equivalent with calling
     * {@link #parseXMLRequest(HttpServletRequest,boolean)} with the
     * <code>checkType</code> argument set to <code>true</code>.
@@ -481,7 +485,8 @@ abstract class CallingConvention extends Manageable {
     * the content type is correct.
     *
     * <p>Since XINS 1.4.0, this method uses a cache to optimize performance if
-    * this method is called multiple times for the same request.
+    * either of the <code>parseXMLRequest</code> methods is called multiple
+    * times for the same request.
     *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
