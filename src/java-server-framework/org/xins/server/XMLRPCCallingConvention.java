@@ -175,7 +175,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The API. Can be <code>null</code>.
+    * The API. Never <code>null</code>.
     */
    private final API _api;
 
