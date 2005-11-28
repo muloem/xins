@@ -128,21 +128,11 @@ extends Manageable {
 
    /**
     * Name of the custom calling convention as specified in the bootstrap
-    * properties. This field will only be set together with the field
-    * {@link #_customCC}.
+    * properties.
     *
     * <p>This field is initialized during bootstrapping.
     */
    private String _nameCustomCC;
-
-   /**
-    * An instance of the custom calling convention as specified in the
-    * bootstrap properties. This field will only be set together with the
-    * field {@link #_nameCustomCC}.
-    *
-    * <p>This field is initialized during bootstrapping.
-    */
-   private CustomCallingConvention _customCC;
 
 
    //-------------------------------------------------------------------------
@@ -203,10 +193,8 @@ extends Manageable {
     * calling convention are determined.
     *
     * <p>The name and for the custom calling convention will be
-    * stored in {@link #_nameCustomCC} and an actual
-    * {@link CustomCallingConvention} instance in {@link #_customCC}.
-    * If no custom calling convention is specified, then both
-    * will be set to <code>null</code>.
+    * stored in {@link #_nameCustomCC} and the actual
+    * {@link CustomCallingConvention} instance in {@link #_conventions}.
     *
     * <p>The name of the default calling convention will be stored in
     * {@link #_defaultConventionName}. This field will always be set to a
@@ -319,9 +307,8 @@ extends Manageable {
                                                     detail);
          }
 
-         // Store the custom calling convention instance with its name
+         // Store the name of the custom calling convention
          _nameCustomCC = name;
-         _customCC     = (CustomCallingConvention) cc;
          
          // Log: Custom calling convention is specified
          Log.log_3247(nameProp, name, className1);
