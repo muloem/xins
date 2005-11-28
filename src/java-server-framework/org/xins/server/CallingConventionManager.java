@@ -744,6 +744,45 @@ extends Manageable {
    }
 
    /**
+    * Gets the calling convention for the given name, or <code>null</code> if
+    * the calling convention is not found or not usable.
+    *
+    * <p>The returned calling convention is bootstrapped and initialized.
+    *
+    * @param name
+    *    the name of the calling convention to retrieve, should not be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the calling convention, or <code>null</code>.
+    */
+   private CallingConvention getCallingConvention2(String name) {
+
+      // Get the CallingConvention object
+      Object o = _conventions.get(name);
+
+      // Not a CallingConvention instance
+      if (! (o instanceof CallingConvention)) {
+         return null;
+
+      // Calling convention is recognized and was created OK
+      } else {
+
+         // Cast
+         CallingConvention cc = (CallingConvention) o;
+
+         // Return null if it's unusable
+         if (! cc.isUsable()) {
+            return null;
+
+         // Otherwise return the object
+         } else {
+            return cc;
+         }
+      }
+   }
+
+   /**
     * Attempts to detect which calling convention is the most appropriate for
     * an incoming request. This method is called when the calling convention
     * is not explicitly specified in the request.
@@ -789,44 +828,42 @@ extends Manageable {
                              + "calling conventions are able to handle it: "
                              + '"';
 
-      // FIXME TODO: Do not use a calling convention unless it is initialized
-      
       String defaultName = _defaultConventionName;
 
       // Get some calling convention instances in advance
-      CallingConvention defCC = getCallingConvention(defaultName);
-      CallingConvention xslCC = getCallingConvention("_xins-xslt");
-      CallingConvention stdCC = getCallingConvention("_xins-std");
+      CallingConvention defCC = getCallingConvention2(defaultName);
+      CallingConvention xslCC = getCallingConvention2("_xins-xslt");
+      CallingConvention stdCC = getCallingConvention2("_xins-std");
 
       // Log: Request does not specify any calling convention
       Log.log_3508();
 
       // See if the default calling convention matches
-      if (defCC.matchesRequest(request)) {
+      if (defCC != null && defCC.matchesRequest(request)) {
          Log.log_3509(defCC.getClass().getName());
          return defCC;
       }
 
-      // If not, see if _xins-std/_xins-xslt matches
-      //
-      // NOTE: We (safely) assume that if _xins-std can handle a request, that
-      //       _xins-xslt can also handle it
-      if (stdCC != defCC && stdCC.matchesRequest(request)) {
+      // If not, see if XSLT-specific properties are set /and/ _xins-xslt
+      // matches
+      if (xslCC != null && xslCC != defCC && xslCC.matchesRequest(request)) {
 
          // Determine if one of the two XSLT-specific parameters is set
          String p1 = request.getParameter(XSLTCallingConvention.TEMPLATE_PARAMETER);
          String p2 = request.getParameter(XSLTCallingConvention.CLEAR_TEMPLATE_CACHE_PARAMETER);
 
-         // If neither is set, use _xins-std
-         if (TextUtils.isEmpty(p1) && TextUtils.isEmpty(p2)) {
-            Log.log_3509(StandardCallingConvention.class.getName());
-            return stdCC;
-
-         // Otherwise, indeed use _xins-xslt
-         } else {
+         // Use the XSLT calling convention if and only if at least one of the
+         // parameters is actually set
+         if (! (TextUtils.isEmpty(p1) && TextUtils.isEmpty(p2))) {
             Log.log_3509(XSLTCallingConvention.class.getName());
             return xslCC;
          }
+      }
+
+      // If not, see if _xins-std matches
+      if (stdCC != null && stdCC != defCC && stdCC.matchesRequest(request)) {
+         Log.log_3509(StandardCallingConvention.class.getName());
+         return stdCC;
       }
 
       // Local variable to hold the first matching calling convention
@@ -836,20 +873,32 @@ extends Manageable {
       Set       entrySet  = _conventions.entrySet();
       Iterator  iterator  = entrySet.iterator();
       while (iterator.hasNext()) {
-         Map.Entry         entry = (Map.Entry)         iterator.next();
-         CallingConvention cc    = (CallingConvention) entry.getValue();
+         Map.Entry entry = (Map.Entry) iterator.next();
+         Object    value =             entry.getValue();
 
-         // Skip the default, standard and XSLT calling conventions, we
+         // Skip all values that are not CallingConvention instances
+         if (! (value instanceof CallingConvention)) {
+            continue;
+         }
+
+         // Convert the value to a CallingConvention
+         CallingConvention cc = (CallingConvention) value;
+
+         // Skip the default and the standard calling conventions, we
          // already established that they cannot handle the request
-         if (cc == defCC || cc == stdCC || cc == xslCC) {
+         if (cc == defCC || cc == stdCC) {
             continue;
          }
 
          // Determine whether this one can handle it
          if (cc.matchesRequest(request)) {
 
+            // First match
+            if (matching == null) {
+               matching = cc;
+
             // Fail: Multiple matches
-            if (matching != null) {
+            } else {
                Log.log_3511();
                String message = multipleMatches
                               + matching.getClass().getName()
@@ -857,10 +906,6 @@ extends Manageable {
                               + cc.getClass().getName()
                               + "\".";
                throw new InvalidRequestException(message);
-
-            // First match
-            } else {
-               matching = cc;
             }
          }
       }
