@@ -147,9 +147,15 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CallingConvention</code>.
+    * Constructs a new <code>CallingConvention</code>, indicating whether it
+    * should be considered deprecated.
+    *
+    * @param deprecated
+    *    <code>true</code> if this calling convention is to be considered
+    *    deprecated, or <code>false</code> if not.
     */
-   protected CallingConvention() {
+   protected CallingConvention(boolean deprecated) {
+      _deprecated       = deprecated;
       _cachedRequest    = new ThreadLocal();
       _cachedRequestXML = new ThreadLocal();
    }
@@ -158,6 +164,11 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
    // Fields
    //------------------------------------------------------------------------
+
+   /**
+    * Flag that indicates whether this calling convention is deprecated.
+    */
+   private final boolean _deprecated;
 
    /**
     * Cached <code>HttpServletRequest</code>, local per thread. When
@@ -185,6 +196,19 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
    // Methods
    //------------------------------------------------------------------------
+
+   /**
+    * Checks if this calling convention is deprecated.
+    *
+    * @return
+    *    <code>true</code> if this calling convention is deprecated,
+    *    <code>false</code> otherwise.
+    *
+    * @since XINS 1.4.0
+    */
+   public final boolean isDeprecated() {
+      return _deprecated;
+   } 
 
    /**
     * Checks if the specified request can be handled by this calling

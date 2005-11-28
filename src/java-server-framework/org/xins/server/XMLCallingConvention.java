@@ -69,7 +69,9 @@ extends CallingConvention {
     * Constructs a new <code>XMLCallingConvention</code> object.
     */
    XMLCallingConvention() {
-      // empty
+
+      // This calling convention is not deprecated, so pass 'false' up
+      super(false);
    }
 
 

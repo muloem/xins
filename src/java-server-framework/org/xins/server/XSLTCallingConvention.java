@@ -107,9 +107,15 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    XSLTCallingConvention() {
 
-      // Creates the transformer factory
+      // This calling convention is not deprecated, so pass 'false' up
+      super(false);
+
+      // Create the transformer factory
       _factory = TransformerFactory.newInstance();
       _factory.setURIResolver(new URIResolver());
+
+      // Initialize the template cache
+      _templateCache = new HashMap(89);
    }
 
 
@@ -137,7 +143,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * Cache for the XSLT templates. Never <code>null</code>.
     */
-   private Map _templateCache = new HashMap(89);
+   private Map _templateCache;
 
 
    //-------------------------------------------------------------------------

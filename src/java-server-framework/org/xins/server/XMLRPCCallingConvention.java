@@ -152,6 +152,11 @@ final class XMLRPCCallingConvention extends CallingConvention {
     *    the API, needed for the XML-RPC messages.
     */
    public XMLRPCCallingConvention(API api) {
+
+      // This calling convention is not deprecated, so pass 'false' up
+      super(false);
+
+      // Store the API reference (can be null!)
       _api = api;
    }
 
@@ -161,7 +166,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The API, never <code>null</code>.
+    * The API. Can be <code>null</code>.
     */
    private final API _api;
 

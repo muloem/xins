@@ -58,10 +58,12 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>OldStyleCallingConvention</code> object.
+    * Constructs a new <code>OldStyleCallingConvention</code> instance.
     */
    OldStyleCallingConvention() {
-      // empty
+
+      // This calling convention is deprecated, so pass 'true' up
+      super(true);
    }
 
 

@@ -75,7 +75,21 @@ extends CallingConvention {
     * Constructs a new <code>StandardCallingConvention</code> object.
     */
    StandardCallingConvention() {
-      // empty
+
+      // This calling convention is not deprecated, so pass 'false' up
+      super(false);
+   }
+
+   /**
+    * Constructs a new <code>StandardCallingConvention</code>, indicating
+    * whether it should be considered deprecated.
+    *
+    * @param deprecated
+    *    <code>true</code> if this calling convention is to be considered
+    *    deprecated, or <code>false</code> if not.
+    */
+   protected StandardCallingConvention(boolean deprecated) {
+      super(deprecated);
    }
 
 

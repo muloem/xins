@@ -40,10 +40,25 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>CustomCallingConvention</code> object.
+    * Constructs a new <code>CustomCallingConvention</code>. It is not
+    * considered to be deprecated.
     */
    public CustomCallingConvention() {
-      // empty
+      this(false);
+   }
+
+   /**
+    * Constructs a new <code>CustomCallingConvention</code>, indicating
+    * whether it should be considered deprecated.
+    *
+    * @param deprecated
+    *    <code>true</code> if this calling convention is to be considered
+    *    deprecated, or <code>false</code> if not.
+    *
+    * @since XINS 1.4.0
+    */
+   protected CustomCallingConvention(boolean deprecated) {
+      super(deprecated);
    }
 
 
