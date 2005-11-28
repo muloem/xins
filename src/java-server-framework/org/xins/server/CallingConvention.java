@@ -200,6 +200,11 @@ abstract class CallingConvention extends Manageable {
    /**
     * Checks if this calling convention is deprecated.
     *
+    * <p>A deprecated calling convention will always get a lower priority that
+    * non-deprecated ones in situations where a request does not explicitly
+    * specify a calling convention and it is attempted to automatically choose
+    * one to use.
+    *
     * @return
     *    <code>true</code> if this calling convention is deprecated,
     *    <code>false</code> otherwise.
