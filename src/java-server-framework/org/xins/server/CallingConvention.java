@@ -331,8 +331,7 @@ abstract class CallingConvention extends Manageable {
     * @throws FunctionNotSpecifiedException
     *    if the request does not indicate the name of the function to execute.
     */
-   protected abstract FunctionRequest convertRequestImpl(
-      HttpServletRequest httpRequest)
+   protected abstract FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException,
           FunctionNotSpecifiedException;
 

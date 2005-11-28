@@ -748,18 +748,19 @@ extends Manageable {
     * an incoming request. This method is called when the calling convention
     * is not explicitly specified in the request.
     *
-    * <p>The following algorithm is used:
+    * <p>The {@link CallingConvention#matchRequest(HttpServletRequest)} method
+    * is used to determine which calling conventions match. Then
+    * the following algorithm is used to chose one:
     *
     * <ul>
-    *    <li>if the default calling convention is possibly able to handle the
-    *        request, then return it;
-    *    <li>otherwise if the {@link StandardCallingConvention} is possibly
-    *        able to handle the request, then return it;
-    *    <li>otherwise if the {@link StandardCallingConvention} is possibly
-    *    able to handle the request, then return it;
-    * convention will be searched. If exactly one matches, then that one will
-    * be returned, otherwise (multiple matches or none) an
-    * {@link InvalidRequestException} is thrown.
+    *    <li>if the default calling convention matches, use that;
+    *    <li>otherwise if the {@link XSLTCallingConvention} matches and at
+    *        least one of the parameters specific for the
+    *        {@link XSLTCallingConvention} is set, then use the latter;
+    *    <li>otherwise if the {@link StandardCallingConvention} matches, use
+    *        that;
+    *    <li>otherwise if there is exactly one other calling convention that
+    *        matches
     *
     * @param request
     *    the incoming request, cannot be <code>null</code>.
@@ -788,25 +789,29 @@ extends Manageable {
                              + "calling conventions are able to handle it: "
                              + '"';
 
+      // FIXME TODO: Do not use a calling convention unless it is initialized
+      
+      String defaultName = _defaultConventionName;
+
+      // Get some calling convention instances in advance
+      CallingConvention defCC = getCallingConvention(defaultName);
+      CallingConvention xslCC = getCallingConvention("_xins-xslt");
+      CallingConvention stdCC = getCallingConvention("_xins-std");
+
       // Log: Request does not specify any calling convention
       Log.log_3508();
 
-      // Get name, instance and class name for the default calling convention
-      String            defaultName = _defaultConventionName;
-      CallingConvention defaultCC   = (CallingConvention) _conventions.get(defaultName);
-
       // See if the default calling convention matches
-      if (defaultCC.matchesRequest(request)) {
-         Log.log_3509(defaultCC.getClass().getName());
-         return defaultCC;
+      if (defCC.matchesRequest(request)) {
+         Log.log_3509(defCC.getClass().getName());
+         return defCC;
       }
 
       // If not, see if _xins-std/_xins-xslt matches
       //
-      // NOTE: We assume (safely) that if _xins-std can handle a request, that
+      // NOTE: We (safely) assume that if _xins-std can handle a request, that
       //       _xins-xslt can also handle it
-      CallingConvention stdCC = (CallingConvention) _conventions.get("_xins-std");
-      if (stdCC != defaultCC && stdCC.matchesRequest(request)) {
+      if (stdCC != defCC && stdCC.matchesRequest(request)) {
 
          // Determine if one of the two XSLT-specific parameters is set
          String p1 = request.getParameter(XSLTCallingConvention.TEMPLATE_PARAMETER);
@@ -820,11 +825,11 @@ extends Manageable {
          // Otherwise, use _xins-xslt
          } else {
             Log.log_3509(XSLTCallingConvention.class.getName());
-            return (CallingConvention) _conventions.get("_xins-xslt");
+            return xslCC;
          }
       }
 
-      // The first matching calling convention
+      // Local variable to hold the first matching calling convention
       CallingConvention matching = null;
 
       // Determine which calling conventions match
@@ -834,9 +839,9 @@ extends Manageable {
          Map.Entry         entry = (Map.Entry)         iterator.next();
          CallingConvention cc    = (CallingConvention) entry.getValue();
 
-         // Skip the default and the standard calling conventions, we already
-         // established that they cannot handle the request
-         if (cc == defaultCC || cc == stdCC) {
+         // Skip the default, standard and XSLT calling conventions, we
+         // already established that they cannot handle the request
+         if (cc == defCC || cc == stdCC || cc == xslCC) {
             continue;
          }
 
