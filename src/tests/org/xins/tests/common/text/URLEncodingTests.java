@@ -6,6 +6,9 @@
  */
 package org.xins.tests.common.text;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -104,7 +107,7 @@ public class URLEncodingTests extends TestCase {
             URLEncoding.decode(url);
             fail("Expected URLEncoding.decode(\"" + url + "\") to throw a NonASCIIException.");
             return;
-         } catch (NonASCIIException exception) {
+         } catch (FormatException exception) {
             // as expected
          }
       }
@@ -130,5 +133,100 @@ public class URLEncodingTests extends TestCase {
                          + "\".";
          assertEquals(message, expected, actual);
       }
+   }
+
+   public void testEncode() throws Throwable {
+
+      // Test that a null argument fails
+      try {
+         URLEncoding.encode(null);
+         fail("URLEncoding.encode(null) should throw an IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) { /* as expected */ }
+
+      // Test Unicode character
+      String input  = "\u0080";
+      String result = URLEncoding.encode(input);
+      assertEquals("Incorrect result:" + result, "%u0080", result);
+
+      input  = "HelloThere0999";
+      result = URLEncoding.encode(input);
+      assertEquals(input, result);
+
+      input  = "Hello there";
+      result = URLEncoding.encode(input);
+      assertEquals("Hello+there", result);
+
+      // Make sure java.net.URLEncoder produces an equivalent result
+      input = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+              "01234567890`-=[]\\;',./ ~!@#$%^&*()_+{}|:\"<>?";
+      result = URLEncoding.encode(input);
+      assertEquals(URLEncoder.encode(input), result);
+   }
+
+   public void testDecode() throws Throwable {
+
+      // Test that a null argument fails
+      try {
+         URLEncoding.decode(null);
+         fail("URLEncoding.decode(null) should throw an IllegalArgumentException.");
+      } catch (IllegalArgumentException exception) { /* as expected */ }
+
+      // Make sure that characters higher than 127 make the conversion fail
+      failDecode("\u0080");
+      failDecode("A\u0080");
+      failDecode("AA\u0080");
+      failDecode("\u0080 ");
+      failDecode("\u0080 1");
+      
+      failDecode("%80");
+      failDecode("%u80");
+      failDecode("A%80");
+      failDecode("%80 ");
+      
+      // Before-last character cannot be a percentage sign
+      failDecode("abcd%a");
+
+      // Test unicode characters
+      compareDecode("%u0080", "\u0080");
+      compareDecode("a%u0080", "a\u0080");
+      compareDecode("aa%U0080", "aa\u0080");
+      compareDecode("%u0080a", "\u0080a");
+      compareDecode("%u0080aa", "\u0080aa");
+
+      compareDecode("HelloThere0999", "HelloThere0999");
+      compareDecode("+", " ");
+      compareDecode("a+", "a ");
+      compareDecode("aa+", "aa ");
+      compareDecode("+a", " a");
+      compareDecode("+aa", " aa");
+      compareDecode("+aa+", " aa ");
+      compareDecode("Hello+there", "Hello there");
+      compareDecode("Hello%20there", "Hello there");
+
+      // Make sure java.net.URLDecoder produces an equivalent result
+      String input = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+              "01234567890`-=[]\\;',./ ~!@#$%^&*()_+{}|:\"<>?";
+      String result = URLEncoding.encode(input);
+      assertEquals(URLDecoder.decode(result), input);
+      assertEquals(URLDecoder.decode(result), URLEncoding.decode(result));
+   }
+   
+   /**
+    * Compares if the input String is decoded as expected.
+    */
+   private void compareDecode(String input, String expect) {
+      String result = URLEncoding.decode(input);
+      assertEquals("The input '" + input + "' was decoded to '" + result +
+           "' instead of '" + expect +"'.", expect, result);
+   }
+
+   /**
+    * Tests that a FormatException is thrown when we try to decode the input.
+    */
+   private void failDecode(String input) {
+      try {
+         URLEncoding.decode(input);
+         fail("URLEncoding.decode(\"" + input + "\") should throw a FormatException.");
+      } catch (FormatException exception) { /* as expected */ }
    }
 }
