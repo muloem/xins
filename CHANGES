@@ -57,7 +57,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       Request set methods.
 
 * Generated test forms:
-  - Implemented REF #1359804: A textarea is used to enter the data section 
+  - Implemented RFE #1359804: A textarea is used to enter the data section 
     value.
 
 * XSLT:

@@ -260,17 +260,17 @@
 	</xsl:template>
 
 	<!--
-		Write the row for the data section.
+		Writes the row for the data section.
 	-->
 	<xsl:template match="element">
 		<tr>
 			<td class="name">
 				<span title="data section of the request">
 					Data section
-				</span> (_text)
+				</span>
 			</td>
 			<td class="value">
-				<input type="text" name="_data" class="optional" />
+				<textarea name="_data" rows="6" cols="40" class="optional" />
 			</td>
 		</tr>
 	</xsl:template>
