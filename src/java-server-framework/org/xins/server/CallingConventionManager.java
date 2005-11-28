@@ -770,6 +770,17 @@ extends Manageable {
    CallingConvention detectCallingConvention(HttpServletRequest request)
    throws InvalidRequestException {
 
+      String noMatches = "Request does not specify a calling convention, it "
+                       + "cannot be handled by the default calling "
+                       + "convention and it was not possible to find any "
+                       + "calling convention that can handle it.";
+
+      String multipleMatches = "Request does not specify a calling "
+                             + "convention, it cannot be handled by the "
+                             + "default calling convention and multiple "
+                             + "calling conventions are able to handle it: "
+                             + '"';
+
       // Log: Request does not specify any calling convention
       Log.log_3508();
 
@@ -784,62 +795,86 @@ extends Manageable {
          return defaultCC;
       }
 
+      // The two first matching deprecated calling conventions, if any
+      CallingConvention depr1 = null;
+      CallingConvention depr2 = null;
+
+      // The matching current (non-deprecated) calling convention, if any
+      CallingConvention curr = null;
+
+      // Count deprecated and non-deprecated matches independently
+      int deprCount = 0;
+      int currCount = 0;
+
       // Determine which other calling conventions match
       Set       entrySet  = _conventions.entrySet();
       Iterator  iterator  = entrySet.iterator();
-      ArrayList unknowns  = null;
-      ArrayList positives = null;
-
       while (iterator.hasNext()) {
          Map.Entry         entry = (Map.Entry)         iterator.next();
          CallingConvention cc    = (CallingConvention) entry.getValue();
 
          // Skip the default calling convention, we already established that
          // this one cannot handle the request
-         if (cc != defaultCC) {
+         if (cc == defaultCC) {
+            continue;
+         }
 
-            // Determine whether this one can handle it
-            match = cc.matchesRequest(request);
+         // Determine whether this one can handle it
+         match = cc.matchesRequest(request);
 
-            // Unknown
-            if (match < 0) {
-               if (unknowns == null) {
-                  unknowns = new ArrayList();
+         if (match != 0) {
+            // Handle deprecated matches
+            if (cc.isDeprecated()) {
+               deprCount++;
+
+               if (deprCount == 1) {
+                  depr1 = cc;
+               } else if (deprCount == 2) {
+                  depr2 = cc;
                }
-               unknowns.add(cc);
 
-            // Definitely able to handle it
-            } else if (match > 0) {
-               if (positives == null) {
-                  positives = new ArrayList();
+            // Handle non-deprecated matches
+            } else {
+
+               // Fail: Multiple matches
+               if (currCount > 0) {
+                  Log.log_3511();
+                  String message = multipleMatches
+                                 + curr.getClass().getName()
+                                 + "\", \""
+                                 + cc.getClass().getName()
+                                 + "\".";
+                  throw new InvalidRequestException(message);
                }
-               positives.add(cc);
+
+               currCount++;
+               curr = cc;
             }
          }
       }
 
-      // Determine how many matches there are
-      int unknownCount  = unknowns  == null ? 0 : unknowns.size();
-      int positiveCount = positives == null ? 0 : positives.size();
-      int totalCount    = unknownCount + positiveCount;
+      // One non-deprecated calling convention matches
+      if (currCount == 1) {
+         return curr;
 
-      // One calling convention matches
-      if (totalCount == 1) {
-         if (unknownCount == 1) {
-            return (CallingConvention) unknowns.get(0);
-         } else {
-            return (CallingConvention) positives.get(0);
-         }
+      // One deprecated calling convention matches
+      } else if (deprCount == 1) {
+         return depr1;
 
       // No matches, invalid request
-      } else if (totalCount < 1) {
+      } else if (deprCount == 0) {
          Log.log_3510();
-         throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and it was not possible to find a single calling convention that can handle it.");
+         throw new InvalidRequestException(noMatches);
 
       // Multiple matches
       } else {
          Log.log_3511();
-         throw new InvalidRequestException("Request does not specify a calling convention, it cannot be handled by the default calling convention and multiple calling conventions are able to handle it.");
+         String message = multipleMatches
+                        + depr1.getClass().getName()
+                        + "\", \""
+                        + depr2.getClass().getName()
+                        + "\".";
+         throw new InvalidRequestException(message);
       }
    }
 }
