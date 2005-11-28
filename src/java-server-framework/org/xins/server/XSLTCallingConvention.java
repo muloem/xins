@@ -86,12 +86,12 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
-   private final static String TEMPLATE_PARAMETER = "_template";
+   final static String TEMPLATE_PARAMETER = "_template";
 
    /**
     * The name of the input parameter used to clear the template cache.
     */
-   private final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
+   final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
 
    //-------------------------------------------------------------------------
