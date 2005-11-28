@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.io.FastStringWriter;
@@ -91,39 +92,48 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Gets the unique child of an element.
+    * Gets a unique child of an element.
     *
     * @param parentElement
     *    the parent element, cannot be <code>null</code>.
     *
     * @param elementName
     *    the name of the child element to get, or <code>null</code> if the
-    *    parent have a unique child.
+    *    parent should have exactly one child element and the name is
+    *    considered irrelevant.
     *
     * @return
-    *    The sub-element of this element.
+    *    the sub-element of this element, never <code>null</code>.
     *
     * @throws InvalidRequestException
-    *    if no child was found or more than one child was found.
+    *    if either no matching child was found or multiple matching children
+    *    were found.
     */
-   private static Element getUniqueChild(Element parentElement, String elementName)
+   private static Element getUniqueChild(Element parentElement,
+                                         String  elementName)
    throws InvalidRequestException {
-      List childList = null;
-      if (elementName == null) {
-         childList = parentElement.getChildElements();
-      } else {
-         childList = parentElement.getChildElements(elementName);
-      }
+
+      // Get the list of matching child elements
+      List childList = elementName == null
+                     ? parentElement.getChildElements()
+                     : parentElement.getChildElements(elementName);
+
+      // No matches
       if (childList.size() == 0) {
          throw new InvalidRequestException("No \"" + elementName +
                "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
+
+      // Multiple matches
       } else if (childList.size() > 1) {
          throw new InvalidRequestException("More than one \"" + elementName +
                "\" children found in the \"" + parentElement.getLocalName() +
                "\" element of the XML-RPC request.");
+
+      // Exactly one match
+      } else {
+         return (Element) childList.get(0);
       }
-      return (Element) childList.get(0);
    }
 
 
@@ -132,17 +142,24 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>SOAPCallingConvention</code>
+    * Creates a new <code>SOAPCallingConvention</code> instance.
     *
     * @param api
-    *    the API, needed for the SOAP messages.
+    *    the API, needed for the SOAP messages, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null</code>.
     */
-   public SOAPCallingConvention(API api) {
+   public SOAPCallingConvention(API api)
+   throws IllegalArgumentException {
 
       // This calling convention is not deprecated, so pass 'false' up
       super(false);
 
-      // Store the API (can be null!)
+      // Check arguments
+      MandatoryArgumentChecker.check("api", api);
+
+      // Store the API
       _api = api;
    }
 
@@ -152,7 +169,7 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The API. Can be <code>null</code>.
+    * The API. Never <code>null</code>.
     */
    private final API _api;
 

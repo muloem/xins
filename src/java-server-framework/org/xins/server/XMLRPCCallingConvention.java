@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.spec.DataSectionElementSpec;
@@ -146,15 +147,23 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>XMLRPCCallingConvention</code>.
+    * Creates a new <code>XMLRPCCallingConvention</code> instance.
     *
     * @param api
-    *    the API, needed for the XML-RPC messages.
+    *    the API, needed for the XML-RPC messages, cannot be
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null</code>.
     */
-   public XMLRPCCallingConvention(API api) {
+   public XMLRPCCallingConvention(API api)
+   throws IllegalArgumentException {
 
       // This calling convention is not deprecated, so pass 'false' up
       super(false);
+
+      // Check arguments
+      MandatoryArgumentChecker.check("api", api);
 
       // Store the API reference (can be null!)
       _api = api;
