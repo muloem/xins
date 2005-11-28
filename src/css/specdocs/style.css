@@ -481,6 +481,14 @@ select.required {
 	border: 2px #8888dd solid;
 }
 
+textarea {
+	border: 1px #8888dd solid;
+	font-family: sans-serif;
+	font-size: 9pt;
+	background-color: #ffffff;
+}
+
+
 td.status {
 	font-variant: small-caps;
 }
