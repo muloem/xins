@@ -171,7 +171,7 @@ abstract class CallingConvention extends Manageable {
     * {@link #matches(HttpServletRequest)}.
     *
     * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
-    * this exception is logged and ignored and <code>false</code> is returned.
+    * this exception is ignored and <code>false</code> is returned.
     *
     * <p>This method is guaranteed not to throw any exception.
     *
@@ -189,14 +189,12 @@ abstract class CallingConvention extends Manageable {
       try {
          return matches(httpRequest);
 
-      // Log and ignore any exception, just indicate it is unknown whether the
-      // request can indeed be handled
+      // Assume that an exception indicates the request cannot be handled
+      //
+      // NOTE: We do not log this exception, because it would possibly show up
+      //       in the logs on a regular basis, drawing attention to a
+      //       non-issue.
       } catch (Throwable exception) {
-         Utils.logIgnoredException(CallingConvention.class.getName(),
-                                   "matchesRequest",
-                                   getClass().getName(),
-                                   "matches",
-                                   exception);
          return false;
       }
    }
