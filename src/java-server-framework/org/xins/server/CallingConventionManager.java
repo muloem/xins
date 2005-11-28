@@ -790,9 +790,18 @@ extends Manageable {
 
       // See if the default calling convention matches
       int match = defaultCC.matchesRequest(request);
-      if (match > 0) {
+      if (match != 0) {
          Log.log_3509(defaultCC.getClass().getName());
          return defaultCC;
+
+      // If not, see if _xins-std matches
+      } else if (! (defaultCC instanceof StandardCallingConvention)) {
+         CallingConvention cc = (CallingConvention) _conventions.get("_xins-std");
+         match = cc.matchesRequest(request);
+         if (match != 0) {
+            Log.log_3509(StandardCallingConvention.class.getName());
+            return cc;
+         }
       }
 
       // The two first matching deprecated calling conventions, if any
