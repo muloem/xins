@@ -15,8 +15,10 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     ChainedMap$ChainedSet, ChainedMap$EntrySet and ElementParser$Handler.
   - Removed unused field _withCentury from class DateConverter.
   - Implemented RFE #1359749: Added support for Unicode in URLEncoding.
-    The NonASCIIException is no longer thrown by encode() and decode() and
-    is marked as depreceated.
+    . The NonASCIIException is no longer thrown by encode() and decode() and
+      is marked as depreceated.
+    . Marked the WhislEncoding as deprecated. URLEnconding should be used
+      instead.
   - Fixed a minor bug in the InitializationException class, method
     createMessage. If the message for the cause exception is null, then an
     IllegalArgumentException would be triggered in FastStringBuffer, method
