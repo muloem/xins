@@ -34,6 +34,8 @@ import org.xins.common.xml.ElementParser;
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ *
+ * @see CallingConventionManager
  */
 abstract class CallingConvention extends Manageable {
 
