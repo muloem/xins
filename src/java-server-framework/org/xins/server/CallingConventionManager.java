@@ -783,8 +783,8 @@ extends Manageable {
     * <ul>
     *    <li>if the default calling convention matches, use that;
     *    <li>otherwise if the {@link XSLTCallingConvention} matches and at
-    *        least one of the parameters specific for the
-    *        {@link XSLTCallingConvention} is set, then use the latter;
+    *        least one of the parameters specific for the this calling
+    *        convention is set, then use it;
     *    <li>otherwise if the {@link StandardCallingConvention} matches, use
     *        that;
     *    <li>otherwise if there is exactly one other calling convention that
