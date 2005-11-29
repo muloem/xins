@@ -774,8 +774,8 @@ extends Manageable {
     * an incoming request. This method is called when the calling convention
     * is not explicitly specified in the request.
     *
-    * <p>The {@link CallingConvention#matchRequest(HttpServletRequest)} method
-    * is used to determine which calling conventions match. Then
+    * <p>The {@link CallingConvention#matchesRequest(HttpServletRequest)}
+    * method is used to determine which calling conventions match. Then
     * the following algorithm is used to chose one:
     *
     * <ul>
