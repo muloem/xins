@@ -122,13 +122,13 @@ final class SOAPCallingConvention extends CallingConvention {
       if (childList.size() == 0) {
          throw new InvalidRequestException("No \"" + elementName +
                "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the XML-RPC request.");
+               "\" element of the SOAP request.");
 
       // Multiple matches
       } else if (childList.size() > 1) {
          throw new InvalidRequestException("More than one \"" + elementName +
                "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the XML-RPC request.");
+               "\" element of the SOAP request.");
 
       // Exactly one match
       } else {
