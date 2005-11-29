@@ -563,6 +563,18 @@
 		<entry id="3511" level="INFO">
 			<description>Unable to detect calling convention for request. Multiple calling conventions match.</description>
 		</entry>
+		<entry id="3512" level="DEBUG">
+			<description>Cache miss for parsed request XML.</description>
+		</entry>
+		<entry id="3513" level="DEBUG">
+			<description>Cache hit for parsed request XML.</description>
+		</entry>
+		<entry id="3514" level="DEBUG">
+			<description>Caching parsed request XML.</description>
+		</entry>
+		<entry id="3515" level="DEBUG">
+			<description>Not caching parsed request XML since the content-type is not "text/xml".</description>
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">

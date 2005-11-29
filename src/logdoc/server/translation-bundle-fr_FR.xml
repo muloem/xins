@@ -79,7 +79,7 @@
 	<translation entry="3405">Initialisation de l'API.</translation>
 	<translation entry="3406">API initialisée.</translation>
 	<translation entry="3407">Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) est modifié. Ré-initialisation du XINS/Java Server Framework.</translation>
-	<translation entry="3408">Le fichier des propriétés  d'exécution (<value-of-param name="configFile" format="quoted" />) ne spécifie pas d'intervalle de surveillance, la propriété <value-of-param name="propertyName" format="quoted" /> n'est pas définie. La propriété par défaut est utilisée.</translation>
+	<translation entry="3408">Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne spécifie pas d'intervalle de surveillance, la propriété <value-of-param name="propertyName" format="quoted" /> n'est pas définie. La propriété par défaut est utilisée.</translation>
 	<translation entry="3409">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> est invalide.</translation>
 	<translation entry="3410">L'intervalle de surveillance <value-of-param name="propertyValue" format="quoted" /> pour le fichier des propriétés (<value-of-param name="configFile" format="quoted" />), specifié dans la propriété <value-of-param name="propertyName" format="quoted" /> a été lu correctement.</translation>
 	<translation entry="3411">La (ré)-initialisation du XINS/Java Server Framework a échoué. L'initialisation de l'API a échoué. La propriété d'exécution requise <value-of-param name="propertyName" format="quoted" /> n'est pas définie. Détail: <value-of-param name="detail" format="quoted" />.</translation>
@@ -125,8 +125,12 @@
 	<translation entry="3507">Impossible d'obtenir la convention d'appel <value-of-param name="name" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
 <!-- FIXME TODO -->	<translation entry="3508">Request does not specify any calling convention.</translation>
 <!-- FIXME TODO -->	<translation entry="3509">Using matching calling convention <value-of-param name="conventionClassName" format="quoted" /> for request, since it did not specify any calling convention.</translation>
-<!-- FIXME TODO -->	<translation entry="3510">Unable to detect calling convention for request.  None of the calling conventions matches.</translation>
-<!-- FIXME TODO -->	<translation entry="3511">Unable to detect calling convention for request.  Multiple calling conventions match.</translation>
+<!-- FIXME TODO -->	<translation entry="3510">Unable to detect calling convention for request. None of the calling conventions matches.</translation>
+<!-- FIXME TODO -->	<translation entry="3511">Unable to detect calling convention for request. Multiple calling conventions match.</translation>
+<!-- FIXME TODO -->	<translation entry="3512">Cache miss for parsed request XML.</translation>
+<!-- FIXME TODO -->	<translation entry="3513">Cache hit for parsed request XML.</translation>
+<!-- FIXME TODO -->	<translation entry="3514">Caching parsed request XML.</translation>
+<!-- FIXME TODO -->	<translation entry="3515">Not caching parsed request XML since the content-type is not "text/xml".</translation>
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>

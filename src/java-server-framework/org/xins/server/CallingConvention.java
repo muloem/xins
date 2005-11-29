@@ -513,11 +513,19 @@ abstract class CallingConvention extends Manageable {
 
       // Determine if the request matches the cached request and the parsed
       // XML is already cached
+      Object cached = null;
       if (_cachedRequest.get() == httpRequest) {
-         Object cached = _cachedRequestXML.get();
-         if (cached != null) {
-            return (Element) cached;
-         }
+         cached = _cachedRequestXML.get();
+      }
+
+      // Cache miss
+      if (cached == null) {
+         Log.log_3512();
+
+      // Cache hit
+      } else {
+         Log.log_3513();
+         return (Element) cached;
       }
 
       // Always first check the content type, even if checking is enabled. We
@@ -537,9 +545,16 @@ abstract class CallingConvention extends Manageable {
          }
       }
 
-      // If checking is enabled and the check was unsuccessful, then fail
-      if (errorMessage != null && checkType) {
-         throw new InvalidRequestException(errorMessage);
+      // The content-type check was unsuccessful
+      if (errorMessage != null) {
+
+         // Log: Not caching XML since the content type is not "text/xml"
+         Log.log_3515();
+
+         // If checking is enabled
+         if (checkType) {
+            throw new InvalidRequestException(errorMessage);
+         }
       }
 
       // Parse the content in the HTTP request
@@ -561,8 +576,10 @@ abstract class CallingConvention extends Manageable {
 
       // Only store in the cache if the content type was OK
       if (errorMessage == null) {
+         _cachedRequestXML.set(null);
          _cachedRequest.set(httpRequest);
          _cachedRequestXML.set(element);
+         Log.log_3514();
       }
 
       return element;

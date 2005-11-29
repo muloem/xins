@@ -42,7 +42,6 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       always be cheched. This method is added for convenience and to avoid
       confusion by potential CustomCallingConvention implementors. The
       CustomCallingConvention class documentation has been updated.
-    . Added caching to the parseXMLRequest methods in class CallingConvention.
     . Added the package-private method 'matchesRequest(HttpServletRequest)'
       and a delegate for it, the protected method
       'matches(HttpServletRequest)' to class CallingConvention. These methods
@@ -50,6 +49,9 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       able to handle the specified request successfully.
     . Changed some constants in the XSLTCallingConvention from private to
       package-private.
+  - Added caching to the parseXMLRequest methods in class CallingConvention.
+    Added DEBUG-level log messages 3512-3515 so it can be traced how this
+    cache behaves.
   - Made the constructors of classes SOAPCallingConvention and
     XMLRPCCallingConvention throw an IllegalArgumentException if the API
     argument is null.
