@@ -185,7 +185,7 @@ abstract class CallingConvention extends Manageable {
     *
     * @return
     *    <code>true</code> if this calling convention is <em>possibly</em>
-    *    able to handle this request, or <code>false</code> if it
+    *    able to handle this request, or <code>false</code> if it is
     *    <em>definitely</em> not able to handle this request.
     */
    final boolean matchesRequest(HttpServletRequest httpRequest) {
