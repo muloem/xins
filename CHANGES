@@ -19,6 +19,8 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       is marked as depreceated.
     . Marked the WhislEncoding as deprecated. URLEnconding should be used
       instead.
+  - Modified PropertyReaderUtils to use the URLEncoding instead of the 
+    WhislEncoding.
   - Fixed a minor bug in the InitializationException class, method
     createMessage. If the message for the cause exception is null, then an
     IllegalArgumentException would be triggered in FastStringBuffer, method
@@ -53,6 +55,8 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     argument is null.
   - Marked XSLTCallingConvention$URIResolver as a static inner class.
   - Applied some minor refactorings to several classes.
+  - Modified FormattedParameters to use the URLEncoding instead of the 
+    WhislEncoding.
 
 * Logdoc:
   - Fixed SF.net bug #1351055: Incorrect code generated for exception message.

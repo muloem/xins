@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;
-import org.xins.common.text.WhislEncoding;
+import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 
@@ -100,9 +100,9 @@ extends AbstractLogdocSerializable {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(WhislEncoding.encode(name));
+         buffer.append(URLEncoding.encode(name));
          buffer.append('=');
-         buffer.append(WhislEncoding.encode(value));
+         buffer.append(URLEncoding.encode(value));
       } while (names.hasNext());
 
       return buffer.toString();

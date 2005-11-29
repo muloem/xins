@@ -17,7 +17,7 @@ import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
-import org.xins.common.text.WhislEncoding;
+import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
@@ -252,8 +252,8 @@ extends Object {
 
    /**
     * Serializes the specified <code>PropertyReader</code> for Logdoc. For
-    * each entry, both the key and the value are encoded using the Whisl
-    * encoding (see {@link WhislEncoding}), which is similar to URL encoding.
+    * each entry, both the key and the value are encoded using the URL
+    * encoding (see {@link URLEncoding}).
     * The key and value are separated by a literal equals sign
     * (<code>'='</code>). The entries are separated using an ampersand
     * (<code>'&amp;'</code>).
@@ -301,18 +301,18 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(WhislEncoding.encode(name));
+         buffer.append(URLEncoding.encode(name));
          buffer.append('=');
-         buffer.append(WhislEncoding.encode(value));
+         buffer.append(URLEncoding.encode(value));
       }
    }
 
    /**
     * Serializes the specified <code>PropertyReader</code> to a
     * <code>FastStringBuffer</code>. For each entry, both the key and the
-    * value are encoded using the Whisl encoding (see {@link WhislEncoding}),
-    * which is similar to URL encoding. The key and value are separated by a
-    * literal equals sign (<code>'='</code>). The entries are separated using
+    * value are encoded using the URL encoding (see {@link URLEncoding}).
+    * The key and value are separated by a literal equals sign 
+    * (<code>'='</code>). The entries are separated using
     * an ampersand (<code>'&amp;'</code>).
     *
     * <p>If the value for an entry is either <code>null</code> or an empty
@@ -373,9 +373,9 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(WhislEncoding.encode(name));
+         buffer.append(URLEncoding.encode(name));
          buffer.append('=');
-         buffer.append(WhislEncoding.encode(value));
+         buffer.append(URLEncoding.encode(value));
       }
    }
 
@@ -402,9 +402,9 @@ extends Object {
    /**
     * Serializes the specified <code>PropertyReader</code> to a
     * <code>String</code>. For each entry, both the key and the
-    * value are encoded using the Whisl encoding (see {@link WhislEncoding}),
-    * which is similar to URL encoding. The key and value are separated by a
-    * literal equals sign (<code>'='</code>). The entries are separated using
+    * value are encoded using the URL encoding (see {@link URLEncoding}).
+    * The key and value are separated by a literal equals sign 
+    * (<code>'='</code>). The entries are separated using
     * an ampersand (<code>'&amp;'</code>).
     *
     * <p>If the value for an entry is either <code>null</code> or an empty
@@ -556,9 +556,9 @@ extends Object {
             }
 
             // Append the key and the value, separated by an equals sign
-            buffer.append(WhislEncoding.encode(name));
+            buffer.append(URLEncoding.encode(name));
             buffer.append('=');
-            buffer.append(WhislEncoding.encode(value));
+            buffer.append(URLEncoding.encode(value));
          } while (names.hasNext());
 
          return buffer.toString();
