@@ -14,6 +14,10 @@ package org.xins.common.text;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @deprecated
+ *    Deprecated since XINS 1.4.0.
+ *    No longer thrown as {@link URLEncoding} supports Unicode.
  */
 public final class NonASCIIException
 extends RuntimeException {

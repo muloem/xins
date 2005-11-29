@@ -29,6 +29,10 @@ import org.xins.common.MandatoryArgumentChecker;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @deprecated
+ *    Deprecated since XINS 1.4.0.
+ *    Use class {@link URLEncoding} instead.
  */
 public final class WhislEncoding extends Object {
 
