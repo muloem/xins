@@ -788,7 +788,14 @@ extends Manageable {
     *    <li>otherwise if the {@link StandardCallingConvention} matches, use
     *        that;
     *    <li>otherwise if there is exactly one other calling convention that
-    *        matches
+    *        matches, use that one;
+    *    <li>if none of the calling conventions match, throw an
+    *        {@link InvalidRequestException}, indicating that no match could
+    *        be found;
+    *    <li>if multiple calling conventions match, throw an
+    *        {@link InvalidRequestException}, indicating that several matches
+    *        were found;
+    * </ul>
     *
     * @param request
     *    the incoming request, cannot be <code>null</code>.
