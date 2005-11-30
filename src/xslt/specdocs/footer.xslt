@@ -51,21 +51,14 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="date" select="substring-before($timestamp, ' ')" />
-
-		<xsl:variable name="time" select="substring-after($timestamp, ' ')" />
-
-		<xsl:variable name="date_year" select="substring-before($date, '/')" />
-
-		<xsl:variable name="date_month" select="substring-before(substring-after($date, '/'), '/')" />
-
-		<xsl:variable name="date_day" select="substring-after(substring-after($date, '/'), '/')" />
-
-		<xsl:variable name="time_hour" select="substring-before($time, ':')" />
-
+		<xsl:variable name="date"        select="substring-before($timestamp, ' ')"                  />
+		<xsl:variable name="time"        select="substring-after($timestamp, ' ')"                   />
+		<xsl:variable name="date_year"   select="substring-before($date, '/')"                       />
+		<xsl:variable name="date_month"  select="substring-before(substring-after($date, '/'), '/')" />
+		<xsl:variable name="date_day"    select="substring-after(substring-after($date, '/'), '/')"  />
+		<xsl:variable name="time_hour"   select="substring-before($time, ':')"                       />
 		<xsl:variable name="time_minute" select="substring-before(substring-after($time, ':'), ':')" />
-
-		<xsl:variable name="time_second" select="substring-after(substring-after($time, ':'), ':')" />
+		<xsl:variable name="time_second" select="substring-after(substring-after($time, ':'), ':')"  />
 
 		<!-- Check preconditions -->
 		<xsl:if test="not(string-length($xins_version) &gt; 0)">

@@ -70,6 +70,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 
 * Generatation of specdocs:
   - Moved header.xslt and footer.xslt from src/xslt to src/xslt/specdocs.
+  - Added 'Help' page, with link in header.
 
 * Generation of client-side Java code:
   - Improved the generation of the CAPI [Function]Request classes:
