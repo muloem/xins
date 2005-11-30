@@ -35,8 +35,8 @@
 
 	<xsl:include href="broken_freeze.xslt"  />
 	<xsl:include href="output_section.xslt" />
-	<xsl:include href="../header.xslt"      />
-	<xsl:include href="../footer.xslt"      />
+	<xsl:include href="header.xslt"         />
+	<xsl:include href="footer.xslt"         />
 	<xsl:include href="../types.xslt"       />
 	<xsl:include href="../urlencode.xslt"   />
 	<xsl:include href="../warning.xslt"     />

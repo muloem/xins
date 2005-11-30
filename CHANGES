@@ -68,6 +68,9 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Printing error message to System.err if a locale is not supported by one
     of the Logdoc-generated Log classes
 
+* Generatation of specdocs:
+  - Moved header.xslt and footer.xslt from src/xslt to src/xslt/specdocs.
+
 * Generation of client-side Java code:
   - Improved the generation of the CAPI [Function]Request classes:
     . Fixed SF.net bug #1362875: Overriding Request input value with empty

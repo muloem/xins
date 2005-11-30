@@ -20,9 +20,9 @@
 	<xsl:param name="api"          />
 
 	<!-- Perform includes -->
-	<xsl:include href="../header.xslt"      />
-	<xsl:include href="../footer.xslt"      />
-	<xsl:include href="../firstline.xslt"   />
+	<xsl:include href="header.xslt"       />
+	<xsl:include href="footer.xslt"       />
+	<xsl:include href="../firstline.xslt" />
 
 	<xsl:output
 	method="html"

@@ -24,9 +24,9 @@
 
 	<!-- Perform includes -->
 	<xsl:include href="output_section.xslt" />
-	<xsl:include href="../header.xslt"      />
-	<xsl:include href="../footer.xslt"      />
-	<xsl:include href="../types.xslt"      />
+	<xsl:include href="header.xslt"         />
+	<xsl:include href="footer.xslt"         />
+	<xsl:include href="../types.xslt"       />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 

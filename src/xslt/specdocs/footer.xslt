@@ -14,7 +14,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<!-- Include RCS/CVS parsing utilities -->
-	<xsl:include href="rcs.xslt" />
+	<xsl:include href="../rcs.xslt" />
 
 	<!-- Print the footer -->
 	<xsl:template name="footer">
