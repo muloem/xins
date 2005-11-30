@@ -23,8 +23,8 @@
 	<xsl:param name="api_file"     />
 	<xsl:param name="env_file"     />
 
-	<xsl:include href="../footer.xslt" />
-	<xsl:include href="../header.xslt" />
+	<xsl:include href="../specdocs/footer.xslt" />
+	<xsl:include href="../specdocs/header.xslt" />
 	<xsl:include href="../types.xslt" />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
