@@ -227,20 +227,20 @@ public final class Utils extends Object {
     * message.
     *
     * @param detectingClass
-    *    the name of the class that detected the problem, or
+    *    the name of the class that caught the exception, or
     *    <code>null</code> if unknown.
     *
     * @param detectingMethod
     *    the name of the method within the <code>detectingClass</code> that
-    *    detected the problem, cannot be <code>null</code>.
+    *    caught the exception, cannot be <code>null</code>.
     *
     * @param subjectClass
-    *    the name of the class which exposes the programming error, cannot be
+    *    the name of the class which threw the exception, cannot be
     *    <code>null</code>.
     *
     * @param subjectMethod
     *    the name of the method (within the <code>subjectClass</code>) which
-    *    exposes the programming error, cannot be <code>null</code>.
+    *    threw the exception, cannot be <code>null</code>.
     *
     * @param detail
     *    detail message, can be <code>null</code>.
