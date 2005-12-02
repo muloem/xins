@@ -82,7 +82,10 @@
 					<xsl:sort select="@term" />
 					<tr>
 						<td class="keyword">
-							<xsl:value-of select="@term" />
+							<xsl:variable name="key" select="translate(@term, ' ', '_')" />
+							<span id="{$key}">
+								<xsl:value-of select="@term" />
+							</span>
 						</td>
 						<td>
 							<xsl:call-template name="keyword-definition">
@@ -126,12 +129,13 @@
 				<xsl:with-param name="term" select="@term" />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="key" select="translate($term, ' ', '_')" />
 
-		<span class="keyword">
+		<a class="keyword" href="#{$key}">
 			<acronym title="{$def}">
 				<xsl:value-of select="$term" />
 			</acronym>
-		</span>
+		</a>
 	</xsl:template>
 
 	<xsl:template name="keyword-definition">
