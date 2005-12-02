@@ -18,35 +18,36 @@
 		<group side="client" prefix="CRQ">
 			<title>Request construction</title>
 			<description>These requirements specify how a client must construct a request.</description>
-			<rule>A request <keyword>MUST</keyword> be a valid HTTP 1.1 request.</rule>
-			<rule>A request <keyword>MUST</keyword> use the HTTP GET, POST or HEAD method.</rule>
-			<rule>All set input parameters for a request <keyword>MUST</keyword> be specified in HTTP parameters.</rule>
-			<rule>A request <keyword>MUST</keyword> consider input parameter names starting with an underscore reserved.</rule>
-			<rule>A request <keyword>MUST</keyword> set the parameter <code>_function</code> to the name of the function to be invoked.</rule>
-			<rule>A request <keyword>SHOULD</keyword> set the parameter <code>_convention</code> to the value <code>_xins-std</code>.</rule>
-			<rule>A request <keyword>MUST NOT</keyword> set the parameter <code>_convention</code> to a value other <code>_xins-std</code>.</rule>
-			<rule>A request <keyword>MUST</keyword> contain all input parameters that are set.</rule>
-			<rule>An input parameter that has an empty value <keyword>SHALL</keyword> be considered unset.</rule>
-			<rule>A request <keyword>SHOULD NOT</keyword> contain any input parameters that are unset.</rule>
+			<rule>A request <keyword term="MUST"/> be a valid HTTP 1.1 request.</rule>
+			<rule>A request <keyword term="MUST"/> use the HTTP GET, POST or HEAD method.</rule>
+			<rule>All set input parameters for a request <keyword term="MUST"/> be specified in HTTP parameters.</rule>
+			<rule>A request <keyword term="MUST"/> consider input parameter names starting with an underscore reserved.</rule>
+			<rule>A request <keyword term="MUST"/> set the parameter <code>_function</code> to the name of the function to be invoked.</rule>
+			<rule>A request <keyword term="SHOULD"/> set the parameter <code>_convention</code> to the value <code>_xins-std</code>.</rule>
+			<rule>A request <keyword term="MUST NOT"/> set the parameter <code>_convention</code> to a value other <code>_xins-std</code>.</rule>
+			<rule>A request <keyword term="MUST"/> contain all input parameters that are set.</rule>
+			<rule>An input parameter that has an empty value <keyword term="SHALL"/> be considered unset.</rule>
+			<rule>A request <keyword term="SHOULD NOT"/> contain any input parameters that are unset.</rule>
 		</group>
 		<group side="client" prefix="CRS">
 			<title>Response interpretation</title>
 			<description>These requirements specify how a client must interpret a response, returned in response to a valid request.</description>
-			<rule>A response that is not a valid HTTP 1.1 request <keyword>SHOULD</keyword> be considered erroneous.</rule>
+			<rule>A response that is not a valid HTTP 1.1 request <keyword term="SHOULD"/> be considered erroneous.</rule>
 		</group>
 		<group side="server" prefix="SRQ">
 			<title>Request interpretation</title>
 			<description>These requirements specify how a server must interpret an incoming request.</description>
-			<rule>A request <keyword>MUST NOT</keyword> trigger a function invocation unless it is not considered erroneous.</rule>
-			<rule>If a request is an invalid HTTP 1.1 request, then it <keyword>SHOULD</keyword> be considered erroneous.</rule>
-			<rule>If a request is considered unauthorized, then it <keyword>MUST</keyword> be considered erroneous.</rule>
+			<rule>A request <keyword term="MUST NOT"/> trigger a function invocation unless it is not considered erroneous.</rule>
+			<rule>If a request is an invalid HTTP 1.1 request, then it
+			<keyword term="SHOULD"/> be considered erroneous.</rule>
+			<rule>If a request is considered unauthorized, then it <keyword term="MUST"/> be considered erroneous.</rule>
 		</group>
 		<group side="server" prefix="SRS">
 			<title>Response construction</title>
 			<description>These requirements specify how a server must construct a response.</description>
-			<rule>An erroneous request <keyword>MUST</keyword> return an HTTP status code that indicates an error.</rule>
-			<rule>A request that is not erroneous <keyword>MUST</keyword> return an HTTP status code that indicates an error.</rule>
-			<rule>A response <keyword>MUST</keyword> be a valid HTTP 1.1 response.</rule>
+			<rule>An erroneous request <keyword term="MUST"/> return an HTTP status code that indicates an error.</rule>
+			<rule>A request that is not erroneous <keyword term="MUST"/> return an HTTP status code that indicates an error.</rule>
+			<rule>A response <keyword term="MUST"/> be a valid HTTP 1.1 response.</rule>
 		</group>
 	</requirements>
 </cc-spec>
