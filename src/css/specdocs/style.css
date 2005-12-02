@@ -504,3 +504,8 @@ div.broken_freeze {
 	margin-bottom: 1.5em;
 	padding: 1em;
 }
+
+.keyword {
+	font-size: 85%;
+	white-space: pre;
+}
