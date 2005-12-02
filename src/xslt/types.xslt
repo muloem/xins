@@ -11,7 +11,7 @@
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
 
 	<xsl:include href="standard_types.xslt"  />
 	<xsl:include href="firstline.xslt"       />
@@ -719,4 +719,79 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<!--
+	* Returns the description of the type in Open Document Format.
+	* The type could be a standard type or a defined type.
+	*
+	* @param project_node
+	*    the content of the xins-project.xml file.
+	*
+	* @param specsdir
+	*    the specification directory for the concerning XINS project, must be
+	*    specified.
+	*
+	* @param api
+	*    the name of the API to which the type belongs, must be specified.
+	*
+	* @param type
+	*    the name of the type of the parameter, can be empty.
+	*
+	* @return
+	*    the SOAP type as defined at http://www.w3.org/2001/XMLSchema.xsd.
+	*    Examples: integer, string, base64Binary
+	-->
+	<xsl:template name="opendoc_for_type">
+
+		<!-- Define parameters -->
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+		<xsl:param name="type"         />
+		
+		<xsl:choose>
+			<xsl:when test="string-length($type) = 0 or starts-with($type, '_')">
+				<text:p text:style-name="P1">
+					<xsl:call-template name="description_for_standardtype">
+						<xsl:with-param name="type" select="$type" />
+					</xsl:call-template>
+				</text:p>
+			</xsl:when>
+			<xsl:otherwise>
+			
+				<!-- Determine file that defines type -->
+				<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+				<xsl:variable name="type_node" select="document($type_file)/type" />
+
+				<xsl:choose>
+					<xsl:when test="$type_node/pattern">
+						<text:p text:style-name="P1">
+							<xsl:text>Pattern: </xsl:text>
+							<text:span text:style-name="Code">
+								<xsl:value-of select="$type_node/pattern/text()" />
+							</text:span>
+						</text:p>
+					</xsl:when>
+					<xsl:when test="$type_node/enum">
+						<text:p text:style-name="P1">
+							<xsl:text>One of the value: </xsl:text>
+						</text:p>
+						<text:p text:style-name="Standard">
+							<text:span text:style-name="Code">
+								<xsl:for-each select="$type_node/enum/item">
+									<xsl:value-of select="@value" />
+									<xsl:if test="position() &lt; last()">
+										<text:line-break/>
+									</xsl:if>
+								</xsl:for-each>
+							</text:span>
+						</text:p>
+					</xsl:when>
+					<xsl:otherwise>
+						<!-- TODO the other cases -->
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+		
 </xsl:stylesheet>

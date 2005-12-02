@@ -108,6 +108,7 @@ replace <api> with the name of an existing API:
 - all-<api>           Generates everything for the API.
 - wsdl-<api>          Generates the WSDL for the API.
 - stub-<api>          Generates the stub for the API.
+- opendoc-<api>       Generates the specifications in Opendoc format for the API.
 
 APIs in this project are:
 ]]></echo>
@@ -720,6 +721,25 @@ APIs in this project are:
 			<replace file="{$builddir}/wsdl/{$api}.wsdl"
 			token="urn:apiname"
 			value="urn:{$api}" />
+		</target>
+
+		<target name="opendoc-{$api}">
+			<mkdir dir="{$builddir}/opendoc/{$api}" />
+			<style
+			in="{$api_specsdir}/api.xml"
+			out="{$builddir}/opendoc/{$api}/content.xml"
+			style="{$xins_home}/src/xslt/opendoc/api_to_content.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+				<param name="project_file" expression="{$project_file}" />
+				<param name="specsdir"     expression="{$api_specsdir}" />
+				<param name="api"          expression="{$api}"          />
+			</style>
+			<zip destfile="{$builddir}/opendoc/{$api}/{$api}-specs.odt">
+				<fileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
+				<fileset dir="{$xins_home}/src/opendoc" includes="mimetype styles.xml" />
+				<zipfileset dir="{$xins_home}/src/opendoc" includes="manifest.xml" prefix="META-INF" />
+			</zip>
 		</target>
 
 		<xsl:for-each select="$api_node/impl-java | impl">

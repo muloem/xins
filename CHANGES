@@ -96,6 +96,10 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Implemented RFE #1359804: A textarea is used to enter the data section 
     value.
 
+* Generation of Open Document Format:
+  - Started the implementation of RFE #1189420: Generate specdocs in 
+    OpenDocument format. New xins command 'opendoc' added.
+
 * XSLT:
   - Implemented RFE #1359799: XSLT improved by passing nodes instead of
     file location.

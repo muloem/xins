@@ -505,6 +505,8 @@ abstract class CallingConvention extends Manageable {
     *
     * @throws InvalidRequestException
     *    if the HTTP request cannot be read or cannot be parsed correctly.
+    *
+    * @since XINS 1.3.0
     */
    protected Element parseXMLRequest(HttpServletRequest httpRequest,
                                      boolean            checkType)
