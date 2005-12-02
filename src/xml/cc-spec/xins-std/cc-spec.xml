@@ -15,8 +15,9 @@
 		<term name="server">entity that hosts a number of functions that can be called by certain clients</term>
 	</terminology>
 	<requirements>
-		<group side="client">
+		<group side="client" prefix="CRQ">
 			<title>Request construction</title>
+			<description>These requirements specify how a client must construct a request.</description>
 			<rule>A request <keyword>MUST</keyword> be a valid HTTP 1.1 request.</rule>
 			<rule>A request <keyword>MUST</keyword> use the HTTP GET, POST or HEAD method.</rule>
 			<rule>All set input parameters for a request <keyword>MUST</keyword> be specified in HTTP parameters.</rule>
@@ -28,18 +29,21 @@
 			<rule>An input parameter that has an empty value <keyword>SHALL</keyword> be considered unset.</rule>
 			<rule>A request <keyword>SHOULD NOT</keyword> contain any input parameters that are unset.</rule>
 		</group>
-		<group side="client">
+		<group side="client" prefix="CRS">
 			<title>Response interpretation</title>
+			<description>These requirements specify how a client must interpret a response, returned in response to a valid request.</description>
 			<rule>A response that is not a valid HTTP 1.1 request <keyword>SHOULD</keyword> be considered erroneous.</rule>
 		</group>
-		<group side="server">
+		<group side="server" prefix="SRQ">
 			<title>Request interpretation</title>
+			<description>These requirements specify how a server must interpret an incoming request.</description>
 			<rule>A request <keyword>MUST NOT</keyword> trigger a function invocation unless it is not considered erroneous.</rule>
 			<rule>If a request is an invalid HTTP 1.1 request, then it <keyword>SHOULD</keyword> be considered erroneous.</rule>
 			<rule>If a request is considered unauthorized, then it <keyword>MUST</keyword> be considered erroneous.</rule>
 		</group>
-		<group side="server">
+		<group side="server" prefix="SRS">
 			<title>Response construction</title>
+			<description>These requirements specify how a server must construct a response.</description>
 			<rule>An erroneous request <keyword>MUST</keyword> return an HTTP status code that indicates an error.</rule>
 			<rule>A request that is not erroneous <keyword>MUST</keyword> return an HTTP status code that indicates an error.</rule>
 			<rule>A response <keyword>MUST</keyword> be a valid HTTP 1.1 response.</rule>
