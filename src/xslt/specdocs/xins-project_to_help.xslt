@@ -44,10 +44,113 @@
 				<h1>Help</h1>
 				<p>This page explains how the information presented in these
                 specifications should be interpreted.</p>
+
+				<xsl:apply-templates select="document('../../xml/cc-spec/xins-std/cc-spec.xml')/cc-spec" />
+
+				<h2>Notes on the examples</h2>
+				<p>The examples are non-normative and should not be
+				interpreted literally. However, both clients are server must
+				respect the outlined requirements.</p>
+				<p>For example, the encoding in the result XML document may be
+				different from the one displayed in the example, there can be
+				additional or less ignorable whitespace, there can be
+				ignorable attributes or elements, etc.</p>
+				<p>An XML parser should be used to interpret the
+				response.</p>
+
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>
 			</body>
 		</html>
 	</xsl:template>
+
+	<xsl:template match="terminology">
+		<h2>Terminology</h2>
+		<p>The following terminology is used in the definition of the
+		requirements:</p>
+		<table class="functionlist">
+			<thead>
+				<tr>
+					<th>Term</th>
+					<th>Definition</th>
+				</tr>
+			</thead>
+			<tbody>
+				<xsl:apply-templates />
+			</tbody>
+		</table>
+	</xsl:template>
+
+	<xsl:template match="terminology/term">
+		<tr>
+			<td>
+				<xsl:value-of select="@name" />
+			</td>
+			<td>
+				<xsl:apply-templates />
+			</td>
+		</tr>
+	</xsl:template>
+
+	<xsl:template match="keyword">
+		<small>
+			<xsl:apply-templates />
+		</small>
+	</xsl:template>
+
+	<xsl:template match="code">
+		<code>
+			<xsl:apply-templates />
+		</code>
+	</xsl:template>
+
+	<xsl:template match="requirements">
+		<h2>Requirements</h2>
+		<p>The XINS calling convention is defined in terms of client- and
+		server-side requirements.</p>
+		<xsl:apply-templates />
+	</xsl:template>
+
+	<xsl:template match="requirements/group">
+		<h3>
+			<xsl:choose>
+				<xsl:when test="@side = 'client'">Client-side</xsl:when>
+				<xsl:when test="@side = 'server'">Server-side</xsl:when>
+				<xsl:otherwise>General</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text> requirements: </xsl:text>
+			<em>
+				<xsl:apply-templates select="title" />
+			</em>
+		</h3>
+		<p>
+			<xsl:apply-templates select="description" />
+		</p>
+		<table class="functionlist">
+			<thead>
+				<tr>
+					<th><acronym title="Unique requirement identifier">ID</acronym></th>
+					<th>Definition</th>
+				</tr>
+			</thead>
+			<tbody>
+				<xsl:apply-templates select="rule" />
+			</tbody>
+		</table>
+	</xsl:template>
+
+	<xsl:template match="rule">
+		<tr>
+			<td>
+				<xsl:value-of select="../@prefix" />
+				<xsl:text>_</xsl:text>
+				<xsl:number />
+			</td>
+			<td>
+				<xsl:apply-templates />
+			</td>
+		</tr>
+	</xsl:template>
+
 </xsl:stylesheet>

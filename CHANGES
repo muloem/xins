@@ -70,9 +70,16 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Printing error message to System.err if a locale is not supported by one
     of the Logdoc-generated Log classes
 
+* Calling convention requirements definitions:
+  - Added a format description of the XINS standard calling convention in a
+    new src/xml/cc-spec/xins-std/cc-spec.xml file.
+
 * Generatation of specdocs:
   - Moved header.xslt and footer.xslt from src/xslt to src/xslt/specdocs.
-  - Added 'Help' page, with link in header.
+  - Started work on SF.net RFE #1345859 ("Document specification/example
+	 interpretation rules"): Added 'Help' page, with link in header. The page
+	 contains a list of the requirements for the XINS standard calling
+	 convention (from the cc-spec.xml file).
   - Changed the CSS so that thin borders are now 1px instead of 1pt. That
 	 fixes a minor visual glitch.
 
@@ -98,10 +105,6 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 * DTD:
   - Copied all 1.3 DTDs to 1.4 DTDs.
   - Introduced the 1.4 DTDs, where appropriate.
-
-* Other:
-  - Added a format description of the XINS standard calling convention in a
-    new src/xml/cc-spec/xins-std/cc-spec.xml file.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 FINAL:
