@@ -25,6 +25,14 @@ package ]]></xsl:text>
 		<xsl:value-of select="$package" />
 		<xsl:text>;
 
+import java.io.File;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.xins.common.servlet.container.HTTPServletHandler;
+
 /**
  * Testcase that includes all the tests for the </xsl:text>
 		<xsl:value-of select="@name" />
@@ -32,11 +40,22 @@ package ]]></xsl:text>
  *
  * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
  */
-public class APITests extends junit.framework.TestCase {
+public class APITests extends TestCase {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The Servlet server running the API. &lt;code&gt;null&lt;/code&gt; if the server is not started.
+    */
+   private static HTTPServletHandler API_SERVER;
+
+   /**
+    * Flag that indicates that the API has been started.
+    */
+   private static boolean API_STARTED = false;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -48,9 +67,13 @@ public class APITests extends junit.framework.TestCase {
     * @return
     *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
     */
-   public static junit.framework.Test suite() {
-      junit.framework.TestSuite suite = new junit.framework.TestSuite();
+   public static Test suite() {
 
+      TestSuite suite = new TestSuite();
+
+      if ("true".equals(System.getProperty("test.start.server"))) {
+         suite.addTestSuite(StartServer.class);
+      }
       // Add all tests]]></xsl:text>
 		<xsl:for-each select="function">
 			<xsl:text>
@@ -59,6 +82,9 @@ public class APITests extends junit.framework.TestCase {
 			<xsl:text>Tests.class);</xsl:text>
 		</xsl:for-each>	
 		<xsl:text>
+      if ("true".equals(System.getProperty("test.start.server"))) {
+         suite.addTestSuite(StopServer.class);
+      }
 
       return suite;
    }
@@ -87,10 +113,127 @@ public class APITests extends junit.framework.TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected void setUp() throws Exception {
-   }
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
 
-   protected void tearDown() throws Exception {
+   /**
+    * Starts the web server.
+    */
+   public static class StartServer extends TestCase {
+
+      //-------------------------------------------------------------------------
+      // Class functions
+      //-------------------------------------------------------------------------
+
+      /**
+       * Returns a test suite with all test cases defined by this class.
+       *
+       * @return
+       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
+       */
+      public static Test suite() {
+         return new TestSuite(StartServer.class);
+      }
+
+
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Constructor
+      //-------------------------------------------------------------------------
+
+      /**
+       * Constructs a new &lt;code&gt;StartServer&lt;/code&gt; test suite with
+       * the specified name. The name will be passed to the superconstructor.
+       *
+       * @param name
+       *    the name for this test suite.
+       */
+      public StartServer(String name) {
+         super(name);
+      }
+
+
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+
+      public void testStartServer() throws Exception {
+
+         String warLocation = "build/webapps/</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>/</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>.war".replace('/', File.separatorChar);
+         File warFile = new File(System.getProperty("user.dir"), warLocation);
+
+         // Start the web server
+         API_SERVER = new HTTPServletHandler(warFile);
+         API_STARTED = true;
+      }
+   }
+	 
+   /**
+    * Stops the web server.
+    */
+   public static class StopServer extends TestCase {
+
+      //-------------------------------------------------------------------------
+      // Class functions
+      //-------------------------------------------------------------------------
+
+      /**
+       * Returns a test suite with all test cases defined by this class.
+       *
+       * @return
+       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
+       */
+      public static Test suite() {
+         return new TestSuite(StopServer.class);
+      }
+
+
+      //-------------------------------------------------------------------------
+      // Class fields
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Constructor
+      //-------------------------------------------------------------------------
+
+      /**
+       * Constructs a new &lt;code&gt;StopServer&lt;/code&gt; test suite with
+       * the specified name. The name will be passed to the superconstructor.
+       *
+       * @param name
+       *    the name for this test suite.
+       */
+      public StopServer(String name) {
+         super(name);
+      }
+
+
+      //-------------------------------------------------------------------------
+      // Fields
+      //-------------------------------------------------------------------------
+
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+
+      public void testStopServer() throws Exception {
+
+         if (API_STARTED) {
+            API_SERVER.close();
+         }
+      }
    }
 }</xsl:text>
 	</xsl:template>

@@ -1239,15 +1239,23 @@ APIs in this project are:
 				</javac>
 				<mkdir dir="build/testresults/xml" />
 				<property name="test.environment" value="" />
+				<property name="test.start.server" value="false" />
+				<property name="org.xins.server.config" value="" />
+				<property name="servlet.port" value="8080" />
 				<junit fork="true" printsummary="true" failureproperty="tests.failed">
-					<sysproperty key="user.dir" value="{$project_home}"/>
-					<jvmarg value="-Dtest.environment=${{test.environment}}" />
+					<sysproperty key="user.dir" value="{$project_home}" />
+					<sysproperty key="test.environment" value="${{test.environment}}" />
+					<sysproperty key="test.start.server" value="${{test.start.server}}" />
+					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
+					<sysproperty key="servlet.port" value="${{servlet.port}}" />
 					<formatter type="xml" />
 					<test name="{$package}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
 						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
 						<pathelement path="build/classes-tests/{$api}" />
+						<pathelement path="build/classes-api/{$api}" />
+						<pathelement path="build/classes-types/{$api}" />
 					</classpath>
 				</junit>
 				<mkdir dir="build/testresults/html" />
