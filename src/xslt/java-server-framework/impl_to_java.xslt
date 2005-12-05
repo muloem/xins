@@ -304,7 +304,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		</xsl:choose>
 		<xsl:text>
     */
-   </xsl:text>
+   public </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$methodName" />
