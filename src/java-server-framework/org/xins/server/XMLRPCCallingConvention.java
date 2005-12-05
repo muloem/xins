@@ -26,6 +26,7 @@ import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
+import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
@@ -209,7 +210,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
       if (element.getLocalName().equals("methodCall")) {
 
          // The text within the <methodName/> element is the function name
-         String function = getUniqueChild(element, "methodName").getText();
+         String function = element.getUniqueChildElement("methodName").getText();
 
          // There is a match only if the function name is non-empty
          if (! TextUtils.isEmpty(function)) {
@@ -230,7 +231,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
                xmlRequest.getLocalName() + "\".");
       }
 
-      Element methodNameElem = getUniqueChild(xmlRequest, "methodName");
+      Element methodNameElem = null;
+      try {
+         methodNameElem = xmlRequest.getUniqueChildElement("methodName");
+      } catch (ParseException pex) {
+         throw new InvalidRequestException("Invalid XML-RPC request.", pex);
+      }
       String functionName = methodNameElem.getText();
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
 
@@ -248,18 +254,26 @@ final class XMLRPCCallingConvention extends CallingConvention {
       Iterator itParam = paramsElem.getChildElements("param").iterator();
       while (itParam.hasNext()) {
          Element nextParam = (Element) itParam.next();
-         Element valueElem = getUniqueChild(nextParam, "value");
-         Element structElem = getUniqueChild(valueElem, null);
+         Element structElem = null;
+         Element valueElem = null;
+         try {
+            valueElem = nextParam.getUniqueChildElement("value");
+            structElem = valueElem.getUniqueChildElement(null);
+         } catch (ParseException pex) {
+            throw new InvalidRequestException("Invalid XML-RPC request.", pex);
+         }
          if (structElem.getLocalName().equals("struct")) {
 
             // Parse the input parameter
-            Element memberElem = getUniqueChild(structElem, "member");
-            Element memberNameElem = getUniqueChild(memberElem, "name");
-            Element memberValueElem = getUniqueChild(memberElem, "value");
-            Element typeElem = getUniqueChild(memberValueElem, null);
-            String parameterName = memberNameElem.getText();
-            String parameterValue = typeElem.getText();
+            String parameterName = null;
+            String parameterValue = null;
             try {
+               Element memberElem = structElem.getUniqueChildElement("member");
+               Element memberNameElem = memberElem.getUniqueChildElement("name");
+               Element memberValueElem = memberElem.getUniqueChildElement("value");
+               Element typeElem = memberValueElem.getUniqueChildElement(null);
+               parameterName = memberNameElem.getText();
+               parameterValue = typeElem.getText();
                FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
                Type parameterType = functionSpec.getInputParameter(parameterName).getType();
                parameterValue = convertInput(parameterType, typeElem);
@@ -273,15 +287,23 @@ final class XMLRPCCallingConvention extends CallingConvention {
 
                throw new InvalidRequestException("Invalid value for parameter \"" +
                      parameterName + "\".", pex);
+            } catch (ParseException pex) {
+
+               throw new InvalidRequestException("Invalid XML-RPC request.", pex);
             }
             functionParams.set(SECRET_KEY, parameterName, parameterValue);
          } else if (structElem.getLocalName().equals("array")) {
 
             // Parse the input data section
-            Element arrayElem = getUniqueChild(valueElem, "array");
-            Element dataElem = getUniqueChild(arrayElem, "data");
+            Element dataElem = null;
+            try {
+               Element arrayElem = valueElem.getUniqueChildElement("array");
+               dataElem = arrayElem.getUniqueChildElement("data");
+            } catch (ParseException pex) {
+               throw new InvalidRequestException("Incorrect specification of the input data section.", pex);
+            }
             if (dataSection != null) {
-               throw new InvalidRequestException("Only one data section is allowed per request");
+               throw new InvalidRequestException("Only one data section is allowed per request.");
             }
             Map dataSectionSpec = null;
             try {
@@ -298,8 +320,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
             Iterator itValueElems = dataElem.getChildElements("value").iterator();
             while (itValueElems.hasNext()) {
                Element childValueElem = (Element) itValueElems.next();
-               Element childElem = parseElement(childValueElem, dataSectionSpec);
-               builder.addChild(childElem);
+               try {
+                  Element childElem = parseElement(childValueElem, dataSectionSpec);
+                  builder.addChild(childElem);
+               } catch (ParseException pex) {
+                  throw new InvalidRequestException("Incorrect format for data element in XML-RPC request.", pex);
+               }
             }
             dataSection = builder.createElement();
          } else {
@@ -455,42 +481,6 @@ final class XMLRPCCallingConvention extends CallingConvention {
    }
 
    /**
-    * Gets the unique child of the element.
-    *
-    * @param parentElement
-    *    the parent element, cannot be <code>null</code>.
-    *
-    * @param elementName
-    *    the name of the child element to get, or <code>null</code> if the
-    *    parent have a unique child.
-    *
-    * @return
-    *    The sub-element of this element.
-    *
-    * @throws InvalidRequestException
-    *    if no child was found or more than one child was found.
-    */
-   private Element getUniqueChild(Element parentElement, String elementName)
-   throws InvalidRequestException {
-      List childList = null;
-      if (elementName == null) {
-         childList = parentElement.getChildElements();
-      } else {
-         childList = parentElement.getChildElements(elementName);
-      }
-      if (childList.size() == 0) {
-         throw new InvalidRequestException("No \"" + elementName +
-               "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the XML-RPC request.");
-      } else if (childList.size() > 1) {
-         throw new InvalidRequestException("More than one \"" + elementName +
-               "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the XML-RPC request.");
-      }
-      return (Element) childList.get(0);
-   }
-
-   /**
     * Parses the data section element.
     *
     * @param valueElem
@@ -502,19 +492,19 @@ final class XMLRPCCallingConvention extends CallingConvention {
     * @return
     *    the data section element, never <code>null</code>.
     *
-    * @throws InvalidRequestException
+    * @throws ParseException
     *    if the XML request is incorrect.
     */
-   private Element parseElement(Element valueElem, Map dataSection) throws InvalidRequestException {
-      Element structElem = getUniqueChild(valueElem, "struct");
+   private Element parseElement(Element valueElem, Map dataSection) throws ParseException {
+      Element structElem = valueElem.getUniqueChildElement("struct");
       DataSectionElementSpec elementSpec = null;
       Iterator itMemberElems = structElem.getChildElements("member").iterator();
       ElementBuilder builder = null;
       if (itMemberElems.hasNext()) {
          Element memberElem = (Element) itMemberElems.next();
-         Element memberNameElem = getUniqueChild(memberElem, "name");
-         Element memberValueElem = getUniqueChild(memberElem, "value");
-         Element typeElem = getUniqueChild(memberValueElem, null);
+         Element memberNameElem = memberElem.getUniqueChildElement("name");
+         Element memberValueElem = memberElem.getUniqueChildElement("value");
+         Element typeElem = memberValueElem.getUniqueChildElement(null);
          String parameterName = memberNameElem.getText();
          elementSpec = (DataSectionElementSpec) dataSection.get(parameterName);
          builder = new ElementBuilder(parameterName);
@@ -522,7 +512,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
             builder.setText(typeElem.getText());
          } else if (typeElem.getLocalName().equals("array")) {
             Map childrenSpec = elementSpec.getSubElements();
-            Element dataElem = getUniqueChild(typeElem, "data");
+            Element dataElem = typeElem.getUniqueChildElement("data");
             Iterator itValueElems = dataElem.getChildElements("value").iterator();
             while (itValueElems.hasNext()) {
                Element childValueElem = (Element) itValueElems.next();
@@ -530,18 +520,18 @@ final class XMLRPCCallingConvention extends CallingConvention {
                builder.addChild(childElem);
             }
          } else {
-            throw new InvalidRequestException("Only \"string\" and \"array\" are valid as member value type.");
+            throw new ParseException("Only \"string\" and \"array\" are valid as member value type.");
          }
       } else {
-         throw new InvalidRequestException("The \"struct\" element should at least have one member");
+         throw new ParseException("The \"struct\" element should at least have one member.");
       }
 
       // Fill in the attributes
       while (itMemberElems.hasNext()) {
          Element memberElem = (Element) itMemberElems.next();
-         Element memberNameElem = getUniqueChild(memberElem, "name");
-         Element memberValueElem = getUniqueChild(memberElem, "value");
-         Element typeElem = getUniqueChild(memberValueElem, null);
+         Element memberNameElem = memberElem.getUniqueChildElement("name");
+         Element memberValueElem = memberElem.getUniqueChildElement("value");
+         Element typeElem = memberValueElem.getUniqueChildElement(null);
          String parameterName = memberNameElem.getText();
          String parameterValue = typeElem.getText();
 
@@ -552,7 +542,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
 
             // keep the old value
          } catch (java.text.ParseException pex) {
-            throw new InvalidRequestException("Invalid value for parameter \"" + parameterName + "\".");
+            throw new ParseException("Invalid value for parameter \"" + parameterName + "\".");
          }
 
          builder.setAttribute(parameterName, parameterValue);

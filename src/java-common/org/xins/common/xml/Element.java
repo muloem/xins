@@ -16,6 +16,7 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedList;
+import org.xins.common.text.ParseException;
 
 import org.xins.common.text.TextUtils;
 
@@ -432,6 +433,38 @@ public class Element implements Cloneable {
     */
    public String getText() {
       return _text;
+   }
+
+   /**
+    * Gets the unique child of this element.
+    *
+    * @param elementName
+    *    the name of the child element to get, or <code>null</code> if the
+    *    parent have a unique child.
+    *
+    * @return
+    *    The sub-element of this element, never <code>null</code>.
+    *
+    * @throws ParseException
+    *    if no child was found or more than one child was found.
+    */
+   public Element getUniqueChildElement(String elementName) throws ParseException {
+      List childList = null;
+      if (elementName == null) {
+         childList = getChildElements();
+      } else {
+         childList = getChildElements(elementName);
+      }
+      if (childList.size() == 0) {
+         throw new ParseException("No \"" + elementName +
+               "\" children found in the \"" + getLocalName() +
+               "\" element.");
+      } else if (childList.size() > 1) {
+         throw new ParseException("More than one \"" + elementName +
+               "\" children found in the \"" + getLocalName() +
+               "\" element.");
+      }
+      return (Element) childList.get(0);
    }
 
    /**

@@ -27,6 +27,8 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     append(String).
   - Fixed the Javadoc documentation for the logIgnoredException methods in
     class Utils.
+  - Implemented RFE#1359786: Added getUniqueChildElement() method to 
+    org.xins.common.xml.Element.
 
 * XINS/Java Server Framework:
   - Fixed two issues in the AccessRuleFile class:

@@ -12,6 +12,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.common.text.ParseException;
 
 import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.Element;
@@ -110,5 +111,15 @@ public class ElementParserTests extends TestCase {
       assertEquals(null, hChild.getNamespaceURI());
       assertEquals(0,    hChild.getChildElements().size());
       assertEquals(null, hChild.getText());
+      
+      // Test the getUniqueChildElement
+      assertTrue(element.getUniqueChildElement("e") == eChild);
+      try {
+         element.getUniqueChildElement("test");
+         fail("getUniquehild did not throw any exception when getting a non existing child.");
+      } catch (ParseException pex) {
+         
+         // as expected.
+      }
    }
 }

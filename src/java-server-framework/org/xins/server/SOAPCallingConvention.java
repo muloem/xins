@@ -27,6 +27,7 @@ import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.spec.ParameterSpec;
+import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
@@ -90,51 +91,6 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Gets a unique child of an element.
-    *
-    * @param parentElement
-    *    the parent element, cannot be <code>null</code>.
-    *
-    * @param elementName
-    *    the name of the child element to get, or <code>null</code> if the
-    *    parent should have exactly one child element and the name is
-    *    considered irrelevant.
-    *
-    * @return
-    *    the sub-element of this element, never <code>null</code>.
-    *
-    * @throws InvalidRequestException
-    *    if either no matching child was found or multiple matching children
-    *    were found.
-    */
-   private static Element getUniqueChild(Element parentElement,
-                                         String  elementName)
-   throws InvalidRequestException {
-
-      // Get the list of matching child elements
-      List childList = elementName == null
-                     ? parentElement.getChildElements()
-                     : parentElement.getChildElements(elementName);
-
-      // No matches
-      if (childList.size() == 0) {
-         throw new InvalidRequestException("No \"" + elementName +
-               "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the SOAP request.");
-
-      // Multiple matches
-      } else if (childList.size() > 1) {
-         throw new InvalidRequestException("More than one \"" + elementName +
-               "\" children found in the \"" + parentElement.getLocalName() +
-               "\" element of the SOAP request.");
-
-      // Exactly one match
-      } else {
-         return (Element) childList.get(0);
-      }
-   }
 
 
    //-------------------------------------------------------------------------
@@ -203,7 +159,7 @@ final class SOAPCallingConvention extends CallingConvention {
       if (element.getLocalName().equals("Envelope")) {
 
          // There must be a <Body/> element within the <Envelope/>
-         Element bodyElement = getUniqueChild(element, "Body");
+         Element bodyElement = element.getUniqueChildElement("Body");
 
          // There must be one child element
          List bodyChildren = bodyElement.getChildElements();
@@ -231,20 +187,13 @@ final class SOAPCallingConvention extends CallingConvention {
                envelopeElem.getLocalName() + "\".");
       }
 
-      List bodiesElem = envelopeElem.getChildElements("Body");
-      if (bodiesElem.size() == 0) {
-         throw new InvalidRequestException("No body specified in the SOAP envelope.");
-      } else if (bodiesElem.size() > 1) {
-         throw new InvalidRequestException("More than one body specified in the SOAP envelope.");
+      Element functionElem = null;
+      try {
+         Element bodyElem = envelopeElem.getUniqueChildElement("Body");
+         functionElem = bodyElem.getUniqueChildElement(null);
+      } catch (ParseException pex) {
+         throw new InvalidRequestException("Incorrect SOAP message.", pex);
       }
-      Element bodyElem = (Element) bodiesElem.get(0);
-      List functionsElem = bodyElem.getChildElements();
-      if (functionsElem.size() == 0) {
-         throw new InvalidRequestException("No function specified in the SOAP body.");
-      } else if (bodiesElem.size() > 1) {
-         throw new InvalidRequestException("More than one function specified in the SOAP body.");
-      }
-      Element functionElem = (Element) functionsElem.get(0);
       String requestName = functionElem.getLocalName();
       if (!requestName.endsWith("Request")) {
          throw new InvalidRequestException("Function names should always end " +
