@@ -3,10 +3,16 @@
  project by adding the following line at the top of the file :
 <!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://www.xins.org/dtd/impl_1_4.dtd">
 -->
-<!ELEMENT impl (logdoc?, runtime-properties?, dependency*, calling-convention?, instance*)>
+<!ELEMENT impl (logdoc?, bootstrap-properties?, runtime-properties?, dependency*, calling-convention?, instance*)>
 <!ELEMENT logdoc EMPTY>
 <!ATTLIST logdoc
           accesslevel (package|public) #IMPLIED
+>
+<!ELEMENT bootstrap-properties (bootstrap-property*)>
+<!ELEMENT bootstrap-property (description)>
+<!ATTLIST bootstrap-property
+          name       CDATA #REQUIRED
+          value      CDATA #REQUIRED
 >
 <!ELEMENT runtime-properties (property*)>
 <!ELEMENT property (description)>

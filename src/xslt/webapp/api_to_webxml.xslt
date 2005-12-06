@@ -126,6 +126,16 @@
 						</init-param>
 					</xsl:if>
 				</xsl:if>
+				<xsl:for-each select="bootstrap-properties/bootstrap-property">
+					<init-param>
+						<param-name>
+							<xsl:value-of select="@name" />
+						</param-name>
+						<param-value>
+							<xsl:value-of select="@value" />
+						</param-value>
+					</init-param>
+				</xsl:for-each>
 				<load-on-startup>
 					<!-- XXX: Should we be able to configure the load-on-startup setting ? -->
 					<xsl:text>0</xsl:text>

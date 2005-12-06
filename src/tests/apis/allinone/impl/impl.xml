@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.2//EN" "http://xins.sourceforge.net/dtd/impl_1_2.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://xins.sourceforge.net/dtd/impl_1_4.dtd">
 
 <impl>
 	<logdoc accesslevel="public" />
+	<bootstrap-properties>
+		<bootstrap-property name="username" value="superuser">
+			<description>A bootstrap property set for testing purpose.</description>
+		</bootstrap-property>
+	</bootstrap-properties>
 	<runtime-properties>
 		<property name="allinone.rate" type="_float32" required="true">
 			<description>The tax rate of the country.</description>
