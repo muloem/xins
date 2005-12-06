@@ -13,7 +13,6 @@
 
 	<!-- Define parameters -->
 	<xsl:param name="package_name" />
-	<xsl:param name="sourcedir" />
 	<xsl:param name="group"     />
 
 	<!-- Define variables -->

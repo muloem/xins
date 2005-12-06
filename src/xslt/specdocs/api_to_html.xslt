@@ -280,6 +280,53 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
+				<h2>Lodoc</h2>
+				<xsl:choose>
+					<xsl:when test="$project_node/api[@name = $api]/impl">
+						<xsl:for-each select="$project_node/api[@name = $api]/impl">
+							<xsl:variable name="implName" select="@name" />
+							<xsl:variable name="implName2">
+								<xsl:if test="@name and string-length($implName) &gt; 0">
+									<xsl:value-of select="concat('-', $implName)" />
+								</xsl:if>
+							</xsl:variable>
+							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+							<xsl:variable name="impl_node" select="document($impl_file)/impl" />
+							<xsl:choose>
+								<xsl:when test="$impl_node/logdoc and @name and string-length($implName) &gt; 0">
+									<a href="logdoc{$implName2}/index.html" title="Logdoc used for the {$implName} implementation.">
+										<xsl:text>Logdoc for </xsl:text>
+										<xsl:value-of select="$implName" />
+										<xsl:text> implementation.</xsl:text>
+									</a>
+								</xsl:when>
+								<xsl:when test="$impl_node/logdoc">
+									<a href="logdoc/index.html" title="Logdoc used by the default implementation">Logdoc specifications</a>
+								</xsl:when>
+								<xsl:when test="@name and string-length($implName) &gt; 0">
+									<p>
+										<em>
+											<xsl:text>No Logdoc have been defined for the &quot;</xsl:text>
+											<xsl:value-of select="$implName" />
+											<xsl:text>&quot; implementation.</xsl:text>
+										</em>
+									</p>
+								</xsl:when>
+								<xsl:otherwise>
+									<p>
+										<em>No logdoc have been defined for the default implementation.</em>
+									</p>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<p>
+							<em>No implementation information available for this API.</em>
+						</p>
+					</xsl:otherwise>
+				</xsl:choose>
+
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />
 				</xsl:call-template>

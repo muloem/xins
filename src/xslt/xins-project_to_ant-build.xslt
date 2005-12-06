@@ -478,6 +478,13 @@ APIs in this project are:
 		</xsl:variable>
 		<xsl:variable name="clientPackageAsDir" select="translate($clientPackage, '.','/')" />
 		<xsl:variable name="apiHasTypes" select="boolean($api_node/type)" />
+		<xsl:variable name="package">
+			<xsl:call-template name="package_for_server_api">
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api" select="$api" />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 			<dependset>
@@ -626,8 +633,10 @@ APIs in this project are:
 						<xsl:value-of select="concat('-', $implName)" />
 					</xsl:if>
 				</xsl:variable>
-				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-				<xsl:if test="document($impl_file)/impl/runtime-properties">
+				<xsl:variable name="impl_dir" select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
+				<xsl:variable name="impl_file" select="concat($impl_dir, '/impl.xml')" />
+				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
+				<xsl:if test="$impl_node/runtime-properties">
 					<xmlvalidate file="{$impl_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
@@ -643,18 +652,32 @@ APIs in this project are:
 						<param name="api"          expression="{$api}"          />
 					</style>
 				</xsl:if>
+				<xsl:if test="$impl_node/logdoc">
+					<echo message="Generating the logdoc for {$api}{$implName2}" />
+					<mkdir dir="build/logdoc/{$api}{$implName2}" />
+					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
+						<xmlcatalog refid="all-dtds" />
+					</xmlvalidate>
+					<style
+					in="{$impl_dir}/log.xml"
+					out="build/logdoc/{$api}{$implName2}/build.xml"
+					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
+						<xmlcatalog refid="all-dtds" />
+						<param name="xins_home"       expression="{$xins_home}" />
+						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
+						<param name="sourcedir"       expression="{$impl_dir}" />
+						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
+						<param name="java_destdir"    expression="{$project_home}/build/java-fundament/{$api}{$implName2}" />
+						<param name="package_name"    expression="{$package}" />
+					</style>
+					<copy file="{$xins_home}/src/css/logdoc/style.css" todir="build/specdocs/{$api}/logdoc{$implName2}" />
+					<ant dir="build/logdoc/{$api}{$implName2}" target="html" inheritall="false" />
+				</xsl:if>
 			</xsl:for-each>
 		</target>
 
 		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
-				<xsl:variable name="package">
-					<xsl:call-template name="package_for_type_classes">
-						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api" select="$api" />
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 				<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
@@ -749,13 +772,6 @@ APIs in this project are:
 					<xsl:value-of select="concat('-', $implName)" />
 				</xsl:if>
 			</xsl:variable>
-			<xsl:variable name="package">
-				<xsl:call-template name="package_for_server_api">
-					<xsl:with-param name="project_node" select="$project_node" />
-					<xsl:with-param name="api" select="$api" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 			<!-- This test is not garanted to work with all XSLT processors. -->
 			<xsl:variable name="javaImplDir">
 				<xsl:value-of select="$project_home" />
@@ -986,7 +1002,7 @@ APIs in this project are:
 						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
 						<param name="logdoc_dtd_dir"  expression="{$xins_home}/src/dtd" />
 						<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
-						<param name="html_destdir"    expression="html" />
+						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc" />
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
 					</style>
@@ -995,29 +1011,30 @@ APIs in this project are:
 				<xsl:if test="local-name() = 'impl'">
 					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
 					<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+					<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
 					<xmlvalidate file="{$impl_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
-					<xsl:if test="document($impl_file)/impl/logdoc">
+					<xsl:if test="$impl_node/logdoc">
 						<echo message="Generating the logdoc for {$api}{$implName2}" />
 						<mkdir dir="build/logdoc/{$api}{$implName2}" />
 						<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
-						<xsl:variable name="accesslevel" select="document($impl_file)/impl/logdoc/@accesslevel" />
+						<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
 						<style
 						in="{$impl_dir}/log.xml"
-						out="build/logdoc/{$api}/build.xml"
+						out="build/logdoc/{$api}{$implName2}/build.xml"
 						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 							<xmlcatalog refid="all-dtds" />
 							<param name="xins_home"       expression="{$xins_home}" />
 							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
 							<param name="sourcedir"       expression="{$impl_dir}" />
-							<param name="html_destdir"    expression="html" />
+							<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
 							<param name="java_destdir"    expression="{$javaDestFileDir}" />
 							<param name="package_name"    expression="{$package}" />
 						</style>
-						<ant antfile="build/logdoc/{$api}/build.xml" target="java">
+						<ant antfile="build/logdoc/{$api}{$implName2}/build.xml" target="java">
 							<property name="accesslevel" value="{$accesslevel}" />
 						</ant>
 					</xsl:if>
@@ -1217,12 +1234,6 @@ APIs in this project are:
 					<xsl:text>jar-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:attribute>
-				<xsl:variable name="package">
-					<xsl:call-template name="package_for_server_api">
-						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api" select="$api" />
-					</xsl:call-template>
-				</xsl:variable>
 				
 				<available property="test.generated" file="apis/{$api}/test" type="dir" />
 				<antcall target="generatetest-{$api}" />
@@ -1269,13 +1280,6 @@ APIs in this project are:
 			</target>
 
 			<target name="generatetest-{$api}" unless="test.generated">
-				<xsl:variable name="package">
-					<xsl:call-template name="package_for_server_api">
-						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api" select="$api" />
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 				<xsl:variable name="javaTestDir">
 					<xsl:value-of select="concat('apis/', $api, '/test/', $packageAsDir)" />
 				</xsl:variable>
@@ -1522,6 +1526,7 @@ APIs in this project are:
 				<delete dir="build/javadoc-api/{$api}-{$impl}" />
 				<delete dir="build/logdoc/{$api}-{$impl}" />
 				<delete dir="build/webapps/{$api}-{$impl}" />
+				<delete dir="build/logdoc/{$api}-{$impl}" />
 			</xsl:for-each>
 		</target>
 

@@ -86,7 +86,6 @@
 					style="{$logdoc_xslt_dir}/log_to_group_html.xslt">
 						<xmlcatalog refid="log-dtds" />
 						<param name="package_name" expression="{$package_name}" />
-						<param name="sourcedir" expression="../../{$sourcedir}" />
 						<param name="group"     expression="{@id}"              />
 					</style>
 				</xsl:for-each>
