@@ -235,12 +235,20 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:when test="@required = 'true'">true</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
+
+		<!-- The name of the variable used in code for this parameter -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:text>
          currentParam = "</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>";
          _</xsl:text>
-		<xsl:value-of select="translate(@name, '.', '_')" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text> = </xsl:text>
 		<xsl:call-template name="javatype_from_string_for_type">
 			<xsl:with-param name="api"      select="$api"      />
@@ -254,9 +262,9 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:if test="$required = 'true' and not(starts-with(@type, '_'))">
 			<xsl:text>
          org.xins.common.MandatoryArgumentChecker.check("_</xsl:text>
-			<xsl:value-of select="translate(@name, '.', '_')" />
+			<xsl:value-of select="$javaVariable" />
 			<xsl:text>", _</xsl:text>
-			<xsl:value-of select="translate(@name, '.', '_')" />
+			<xsl:value-of select="$javaVariable" />
 			<xsl:text>);</xsl:text>
 		</xsl:if>
 
@@ -273,12 +281,19 @@ extends org.xins.client.AbstractCAPICallResult {
 			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- The name of the variable used in code for this parameter -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:text>
 
    private final </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> _</xsl:text>
-		<xsl:value-of select="translate(@name, '.', '_')" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
@@ -295,8 +310,8 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:when test="$basetype = '_boolean'">is</xsl:when>
 				<xsl:otherwise>get</xsl:otherwise>
 			</xsl:choose>
-			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text" select="translate(@name, '.', '_')" />
+			<xsl:call-template name="hungarianPropertyUpper">
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javatype">
@@ -306,6 +321,12 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="@required"     />
 				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+		</xsl:variable>
+		<!-- The name of the variable used in code for this parameter -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="required">
@@ -353,7 +374,7 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:value-of select="$methodName" />
 		<xsl:text>() {
       return _</xsl:text>
-		<xsl:value-of select="translate(@name, '.', '_')" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>;
    }</xsl:text>
 	</xsl:template>

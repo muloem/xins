@@ -70,7 +70,7 @@ public final class XINSCallRequest extends CallRequest {
    /**
     * The pattern for a parameter name, as a character string.
     */
-   public static final String PARAMETER_NAME_PATTERN_STRING = "[a-zA-Z][a-zA-Z0-9_]*";
+   public static final String PARAMETER_NAME_PATTERN_STRING = "[a-zA-Z][a-zA-Z0-9_\\-\\.]*";
 
    /**
     * The pattern for a parameter name.

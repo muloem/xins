@@ -21,7 +21,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="birthCountry" required="false" type="_text">
 			<description>The country where the person is borned.</description>
 		</param>
-		<param name="birthCity" required="false" type="_text">
+		<param name="birth-city" required="false" type="_text">
 			<description>The city where the person is borned.</description>
 		</param>
 		<param name="age" required="false" type="Age">
@@ -36,7 +36,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<!-- At least one of the two parameters must be filled -->
 		<param-combo type="inclusive-or">
 			<param-ref name="birthCountry" />
-			<param-ref name="birthCity"    />
+			<param-ref name="birth-city"    />
 		</param-combo>
 		<!-- These parameters must be filled together or not filled at all -->
 		<param-combo type="all-or-none">
@@ -46,7 +46,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param-combo>
 	</input>
 	<output>
-		<param name="registrationDate" required="false" type="_date">
+		<param name="registration-date" required="false" type="_date">
 			<description>The registration date.</description>
 		</param>
 		<param name="registrationYear" required="false" type="_int32">
@@ -57,7 +57,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 		<!-- One of the two parameters must be filled but not both-->
 		<param-combo type="exclusive-or">
-			<param-ref name="registrationDate" />
+			<param-ref name="registration-date" />
 			<param-ref name="registrationYear" />
 		</param-combo>
 		<!-- These parameters must be filled together or not filled at all -->
@@ -76,7 +76,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 					<attribute-example name="name">birthCountry</attribute-example>
 				</element-example>
 				<element-example name="param">
-					<attribute-example name="name">birthCity</attribute-example>
+					<attribute-example name="name">birth-city</attribute-example>
 				</element-example>
 			</element-example>
 			<element-example name="param-combo">
@@ -103,7 +103,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<element-example name="param-combo">
 				<attribute-example name="type">exclusive-or</attribute-example>
 				<element-example name="param">
-					<attribute-example name="name">registrationDate</attribute-example>
+					<attribute-example name="name">registration-date</attribute-example>
 				</element-example>
 				<element-example name="param">
 					<attribute-example name="name">registrationYear</attribute-example>
@@ -117,6 +117,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<input-example name="birthMonth">8</input-example>
 		<input-example name="birthDay">19</input-example>
 		<input-example name="birthCountry">France</input-example>
-		<output-example name="registrationDate">19740801</output-example>
+		<output-example name="registration-date">19740801</output-example>
 	</example>
 </function>

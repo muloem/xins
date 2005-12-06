@@ -96,6 +96,11 @@
        */
       public Request(String __ipArg]]></xsl:text>
 		<xsl:for-each select="input/param">
+			<xsl:variable name="javaVariable">
+				<xsl:call-template name="hungarianPropertyLower">
+					<xsl:with-param name="text" select="@name" />
+				</xsl:call-template>
+			</xsl:variable>
 			<xsl:variable name="javatype">
 				<xsl:call-template name="javatype_for_type">
 					<xsl:with-param name="project_node" select="$project_node" />
@@ -109,7 +114,7 @@
                      </xsl:text>
 			<xsl:value-of select="$javatype" />
 			<xsl:text> </xsl:text>
-			<xsl:value-of select="@name" />
+			<xsl:value-of select="$javaVariable" />
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
 			<xsl:text>,
@@ -118,11 +123,16 @@
 		<xsl:text>) {
          __ip = __ipArg;</xsl:text>
 		<xsl:for-each select="input/param">
+			<xsl:variable name="javaVariable">
+				<xsl:call-template name="hungarianPropertyLower">
+					<xsl:with-param name="text" select="@name" />
+				</xsl:call-template>
+			</xsl:variable>
 			<xsl:text>
          _</xsl:text>
-			<xsl:value-of select="@name" />
+			<xsl:value-of select="$javaVariable" />
 			<xsl:text> = </xsl:text>
-			<xsl:value-of select="@name" />
+			<xsl:value-of select="$javaVariable" />
 			<xsl:text>;</xsl:text>
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
@@ -135,6 +145,11 @@
 
 	<!-- Generates the fields. -->
 	<xsl:template match="function/input/param | input/data/element/attribute | output/data/element/attribute" mode="field">
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
@@ -150,7 +165,7 @@
       private final </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> _</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
@@ -165,7 +180,13 @@
 		</xsl:variable>
 		<!-- Get the name of the get method. -->
 		<xsl:variable name="hungarianName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+		<!-- Get the name of the variable. -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -190,7 +211,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javaobjecttype">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="$javasimpletype" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -231,7 +252,7 @@
 					<xsl:text>")</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$javaVariable" />
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text> != null;
@@ -323,7 +344,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>_</xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$javaVariable" />
 				<xsl:if test="not(@required = 'true') and $typeIsPrimary = 'true'">
 					<xsl:text>.</xsl:text>
 					<xsl:value-of select="$javasimpletype" />
@@ -350,7 +371,7 @@
 
 	<xsl:template match="input/data/element | output/data/element" mode="listMethod">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -438,7 +459,7 @@
 
 	<xsl:template match="input/data/element | output/data/element" mode="listElementClass">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -520,7 +541,7 @@
 	<xsl:template match="input/data/element/contains/contained | output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>

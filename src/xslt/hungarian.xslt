@@ -82,8 +82,8 @@
 		<xsl:param name="startWithUpperCase" select="true()" />
 		<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
 		<xsl:if test="string-length($firstChar) &gt; 0">
-			<xsl:variable name="isDot" select="$firstChar = '.'" />
-			<xsl:if test="not($isDot)">
+			<xsl:variable name="skipChar" select="$firstChar = '.' or $firstChar = '-'" />
+			<xsl:if test="not($skipChar)">
 				<xsl:choose>
 					<xsl:when test="$startWithUpperCase">
 						<xsl:value-of select="translate($firstChar,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
@@ -96,7 +96,7 @@
 			<xsl:variable name="rest" select="substring($text, 2)" />
 			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text"               select="$rest"  />
-				<xsl:with-param name="startWithUpperCase" select="$isDot" />
+				<xsl:with-param name="startWithUpperCase" select="$skipChar" />
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>

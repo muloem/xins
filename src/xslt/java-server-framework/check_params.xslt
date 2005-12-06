@@ -56,7 +56,9 @@
 					<xsl:text>_result.</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'element'">
-					<xsl:value-of select="@name" />
+					<xsl:call-template name="hungarianPropertyLower">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
 					<xsl:text>NextElement.</xsl:text>
 				</xsl:when>
 				<xsl:otherwise />
@@ -68,9 +70,15 @@
       // Get the parameters</xsl:text>
 
 			<xsl:for-each select="param | attribute">
+				<xsl:variable name="localJavaVariable">
+					<xsl:call-template name="hungarianPropertyLower">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+
 				<xsl:text>
       String </xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$localJavaVariable" />
 				<xsl:if test="local-name() = 'attribute'">
 					<xsl:text>Attribute</xsl:text>
 				</xsl:if>
@@ -106,9 +114,15 @@
       // Check the mandatory parameters</xsl:text>
 
 			<xsl:for-each select="param[@required='true'] | attribute[@required='true']">
+				<xsl:variable name="localJavaVariable">
+					<xsl:call-template name="hungarianPropertyLower">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+
 				<xsl:text>
       if (</xsl:text>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:if test="local-name() = 'attribute'">
 						<xsl:text>Attribute</xsl:text>
 					</xsl:if>
@@ -138,6 +152,12 @@
 
       // Check values are valid for the associated types</xsl:text>
 			<xsl:for-each select="param[not(@type='_text' or string-length(@type) = 0)] | attribute[not(@type='_text' or string-length(@type) = 0)]">
+				<xsl:variable name="localJavaVariable">
+					<xsl:call-template name="hungarianPropertyLower">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+
 				<xsl:text>
       if (!</xsl:text>
 				<xsl:call-template name="javatypeclass_for_type">
@@ -147,7 +167,7 @@
 					<xsl:with-param name="type"         select="@type"         />
 				</xsl:call-template>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$localJavaVariable" />
 				<xsl:if test="local-name() = 'attribute'">
 					<xsl:text>Attribute</xsl:text>
 				</xsl:if>
@@ -182,8 +202,14 @@
 				<xsl:text>
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
+
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {</xsl:text>
@@ -194,10 +220,10 @@
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref">
-				<xsl:text>
+					<xsl:text>
          _invalidComboElements.add("</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>");</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>");</xsl:text>
 				</xsl:for-each>
 				<xsl:text>
          _errorResult.addParamCombo("inclusive-or", _invalidComboElements);
@@ -218,8 +244,14 @@
 				<xsl:text>
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
+
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {</xsl:text>
@@ -240,13 +272,23 @@
       }</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="active" select="@name" />
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
 					<xsl:text>
       if (</xsl:text>
-					<xsl:value-of select="$active" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> != null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
+						<xsl:variable name="localJavaVariable2">
+							<xsl:call-template name="hungarianPropertyLower">
+								<xsl:with-param name="text" select="@name" />
+							</xsl:call-template>
+						</xsl:variable>
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$localJavaVariable2" />
 						<xsl:text> != null</xsl:text>
 					</xsl:for-each>
 					<xsl:text>)) {</xsl:text>
@@ -260,9 +302,14 @@
 					<xsl:value-of select="$active" />
 					<xsl:text>");</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
+						<xsl:variable name="localJavaVariable2">
+							<xsl:call-template name="hungarianPropertyLower">
+								<xsl:with-param name="text" select="@name" />
+							</xsl:call-template>
+						</xsl:variable>
 						<xsl:text>
          if (</xsl:text>
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$localJavaVariable2" />
 						<xsl:text> != null) {
             _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
@@ -288,14 +335,24 @@
 				<xsl:text>
       if (!(</xsl:text>
 				<xsl:for-each select="param-ref">
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) &amp;&amp; (</xsl:text>
 				<xsl:for-each select="param-ref">
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> || </xsl:if>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)) {</xsl:text>
@@ -330,10 +387,15 @@
 				<xsl:text>
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
+					<xsl:variable name="localJavaVariable">
+						<xsl:call-template name="hungarianPropertyLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+					</xsl:variable>
 					<xsl:if test="position() &gt; 1">
           &amp;&amp; </xsl:if>
 					<xsl:text>(</xsl:text>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> != null)</xsl:text>
 				</xsl:for-each>
 				<xsl:text>)
@@ -398,17 +460,22 @@
 		<xsl:param name="parentelement" />
 		<xsl:param name="side" />
 
+		<xsl:variable name="elementvariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@element" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="elementname" select="@element" />
 		<xsl:text>
       java.util.Iterator </xsl:text>
-		<xsl:value-of select="$elementname" />
+		<xsl:value-of select="$elementvariable" />
 		<xsl:text>Iterator = </xsl:text>
 		<xsl:value-of select="$parentelement" />
 		<xsl:text>.getChildElements("</xsl:text>
 		<xsl:value-of select="$elementname" />
 		<xsl:text>").iterator();
       while (</xsl:text>
-		<xsl:value-of select="$elementname" />
+		<xsl:value-of select="$elementvariable" />
 		<xsl:text>Iterator.hasNext()) {</xsl:text>
 		<xsl:choose>
 			<xsl:when test="$side='client' and ancestor::output">
@@ -420,7 +487,7 @@
          org.xins.common.xml.Element </xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="$elementname" />
+		<xsl:value-of select="$elementvariable" />
 		<xsl:choose>
 			<xsl:when test="$side='client' and ancestor::output">
 				<xsl:text>NextElement = (org.xins.client.DataElement) </xsl:text>
@@ -429,7 +496,7 @@
 				<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="$elementname" />
+		<xsl:value-of select="$elementvariable" />
 		<xsl:text>Iterator.next();</xsl:text>
 		<xsl:apply-templates select="../../element[@name=$elementname]" mode="checkParams">
 			<xsl:with-param name="side" select="$side" />

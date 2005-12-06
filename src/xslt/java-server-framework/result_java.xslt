@@ -134,7 +134,7 @@ implements Result {
 		</xsl:variable>
 		<xsl:variable name="methodName">
 			<xsl:text>set</xsl:text>
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -147,13 +147,18 @@ implements Result {
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="typeToString">
 			<xsl:call-template name="javatype_to_string_for_type">
 				<xsl:with-param name="api"      select="$api" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="required" select="@required" />
 				<xsl:with-param name="type"     select="@type" />
-				<xsl:with-param name="variable" select="@name" />
+				<xsl:with-param name="variable" select="$javaVariable" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="typeIsPrimary">
@@ -191,7 +196,7 @@ implements Result {
     * SuccessfulResult.
     *
     * @param </xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text><![CDATA[
     *    the value of the <em>]]></xsl:text>
 		<xsl:value-of select="@name" />
@@ -214,12 +219,12 @@ implements Result {
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>) {
       </xsl:text>
 		<xsl:if test="$typeIsPrimary = 'false'" >
 			<xsl:text>if (</xsl:text>
-			<xsl:value-of select="@name" />
+			<xsl:value-of select="$javaVariable" />
 			<xsl:text> != null &amp;&amp; !</xsl:text>
 			<xsl:value-of select="$typeToString" />
 			<xsl:text>.equals("")) {
@@ -244,8 +249,13 @@ implements Result {
 	<!-- ************************************************************* -->
 
 	<xsl:template match="output/data/element | input/data/element" mode="addMethod">
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -276,10 +286,10 @@ implements Result {
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>) {
       add((org.xins.common.xml.Element)</xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>.getElement().clone());
    }
 </xsl:text>
@@ -291,7 +301,7 @@ implements Result {
 
 	<xsl:template match="output/data/element | input/data/element" mode="addElementClass">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -395,8 +405,13 @@ implements Result {
 
 	<xsl:template match="output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@element" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="methodName">
-			<xsl:call-template name="hungarianUpper">
+			<xsl:call-template name="hungarianPropertyUpper">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -406,7 +421,7 @@ implements Result {
     * Adds a sub-element to this element.
     *
     * @param </xsl:text>
-		<xsl:value-of select="@element" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text><![CDATA[
     *    the value of the sub-element to add, cannot be <code>null</code>.]]></xsl:text>
 		<xsl:if test="deprecated">
@@ -423,10 +438,10 @@ implements Result {
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@element" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>) {
       _elementBuilder.addChild((org.xins.common.xml.Element)</xsl:text>
-		<xsl:value-of select="@element" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>.getElement().clone());
    }
 </xsl:text>

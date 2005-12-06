@@ -3,9 +3,8 @@
  -*- mode: Fundamental; tab-width: 4; -*-
  ex:ts=4
 
- XSLT that generates the abstract class as specified in the function.
- The abtract class is responsible for checking the parameters.
- It also includes the style sheets request_java.xslt and result_java.xslt.
+ XSLT that generates the RuntimeProperties class. This class contains methods
+ to access the avlue of the runtime properties.
 
  $Id$
 

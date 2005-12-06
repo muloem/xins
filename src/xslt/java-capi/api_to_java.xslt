@@ -839,12 +839,19 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- The name of the variable used in code for this parameter -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:if test="position() &gt; 1">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> </xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 	</xsl:template>
 
 
@@ -861,11 +868,18 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:choose>
 		</xsl:variable>
 
+		<!-- The name of the variable used in code for this parameter -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianPropertyLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:choose>
 			<xsl:when test="@required = 'false'" >
 				<xsl:text>
       if (</xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$javaVariable" />
 				<xsl:text> != null) {
          params.set(SECRET_KEY, "</xsl:text>
 				<xsl:value-of select="@name" />
@@ -875,7 +889,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="@type" />
-					<xsl:with-param name="variable" select="@name" />
+					<xsl:with-param name="variable" select="$javaVariable" />
 				</xsl:call-template>
 				<xsl:text>);
       }</xsl:text>
@@ -890,7 +904,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="required" select="$required" />
 					<xsl:with-param name="type"     select="@type" />
-					<xsl:with-param name="variable" select="@name" />
+					<xsl:with-param name="variable" select="$javaVariable" />
 				</xsl:call-template>
 				<xsl:text>);</xsl:text>
 			</xsl:otherwise>

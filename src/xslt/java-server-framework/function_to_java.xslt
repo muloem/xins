@@ -190,13 +190,20 @@ public abstract class ]]></xsl:text>
       Request _request = new Request(_context.getRemoteAddr()</xsl:text>
 
 		<xsl:for-each select="input/param">
+			<!-- The name of the variable used in code for this parameter -->
+			<xsl:variable name="javaVariable">
+				<xsl:call-template name="hungarianPropertyLower">
+					<xsl:with-param name="text" select="@name" />
+				</xsl:call-template>
+			</xsl:variable>
+
 			<xsl:text>, </xsl:text>
 			<xsl:call-template name="javatype_from_string_for_type">
 				<xsl:with-param name="api"      select="$api"      />
 				<xsl:with-param name="required" select="@required" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="type"     select="@type"     />
-				<xsl:with-param name="variable" select="@name"     />
+				<xsl:with-param name="variable" select="$javaVariable" />
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:if test="input/data/element">
