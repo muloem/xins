@@ -678,6 +678,13 @@ APIs in this project are:
 
 		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
+				<xsl:variable name="typePackage">
+					<xsl:call-template name="package_for_type_classes">
+						<xsl:with-param name="project_node" select="$project_node" />
+						<xsl:with-param name="api" select="$api" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="typePackageAsDir" select="translate($typePackage, '.','/')" />
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 				<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
@@ -691,7 +698,7 @@ APIs in this project are:
 				</xmlvalidate>
 				<style
 				in="{$api_file}"
-				out="{$javaDestDir}/{$packageAsDir}/package.html"
+				out="{$javaDestDir}/{$typePackageAsDir}/package.html"
 				style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="api" expression="{$api}" />
@@ -702,14 +709,14 @@ APIs in this project are:
 				</xmlvalidate>
 				<style
 				basedir="{$copiedTypesDir}"
-				destdir="{$javaDestDir}/{$packageAsDir}/"
+				destdir="{$javaDestDir}/{$typePackageAsDir}/"
 				style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
 				reloadstylesheet="true"
 				extension=".java">
 					<xmlcatalog refid="all-dtds" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="package"      expression="{$package}"      />
+					<param name="package"      expression="{$typePackage}"  />
 					<param name="api"          expression="{$api}"          />
 				</style>
 
