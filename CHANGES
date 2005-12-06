@@ -73,6 +73,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     of the Logdoc-generated Log classes
   - Fixed Bug #1374150: Multiple Logdoc with multiple implementations 
     does not work.
+  - Implemented RFE #1359758: Log the request with URL.
 
 * Calling convention requirements definitions:
   - Added a format description of the XINS standard calling convention in a
