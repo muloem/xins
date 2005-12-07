@@ -44,9 +44,9 @@
 			<style:text-properties style:font-name="Lucida Console" fo:font-size="8.5pt" style:text-underline-style="solid" style:text-underline-width="auto" style:text-underline-color="font-color"/>
 		</style:style>
 		<style:style style:name="Xml" style:family="text" style:parent-style-name="Code">
+			<!--style:text-properties fo:color="#280099"/-->
 		</style:style>
-		<style:style style:name="XmlDecl" style:family="text" style:parent-style-name="Standard">
-			<style:text-properties style:font-name="Lucida Console" fo:font-size="8.5pt"/>
+		<style:style style:name="XmlDecl" style:family="text" style:parent-style-name="Xml">
 		</style:style>
 		<style:style style:name="Elem" style:family="text" style:parent-style-name="Code">
 		</style:style>

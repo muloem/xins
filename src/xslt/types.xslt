@@ -786,8 +786,53 @@
 							</text:span>
 						</text:p>
 					</xsl:when>
+					<xsl:when test="$type_node/int8 | $type_node/int16 | $type_node/int32 | $type_node/int64 | $type_node/float32 | $type_node/float64">
+						<text:p text:style-name="P1">
+							<xsl:variable name="basetype">
+								<xsl:call-template name="basetype_for_type">
+									<xsl:with-param name="specsdir" select="$specsdir" />
+									<xsl:with-param name="api" select="$api" />
+									<xsl:with-param name="type" select="$type" />
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:call-template name="description_for_standardtype">
+								<xsl:with-param name="type" select="$basetype" />
+							</xsl:call-template>
+							<xsl:if test="$type_node//@min">
+								<text:line-break/>
+								<xsl:text>The minimum value is </xsl:text>
+									<xsl:value-of select="$type_node//@min" />
+								<xsl:text>.</xsl:text>
+							</xsl:if>
+							<xsl:if test="$type_node//@max">
+								<text:line-break/>
+								<xsl:text>The maximum value is </xsl:text>
+									<xsl:value-of select="$type_node//@max" />
+								<xsl:text>.</xsl:text>
+							</xsl:if>
+						</text:p>
+					</xsl:when>
+					<xsl:when test="$type_node/base64">
+						<text:p text:style-name="P1">
+							<xsl:call-template name="description_for_standardtype">
+								<xsl:with-param name="type" select="'_base64'" />
+							</xsl:call-template>
+							<xsl:if test="$type_node/base64/@min">
+								<text:line-break/>
+								<xsl:text>The minimum length of the binary should be </xsl:text>
+									<xsl:value-of select="$type_node/base64/@min" />
+								<xsl:text> bytes.</xsl:text>
+							</xsl:if>
+							<xsl:if test="$type_node/base64/@max">
+								<text:line-break/>
+								<xsl:text>The maximum length of the binary should be </xsl:text>
+									<xsl:value-of select="$type_node/base64/@max" />
+								<xsl:text> bytes.</xsl:text>
+							</xsl:if>
+						</text:p>
+					</xsl:when>
 					<xsl:otherwise>
-						<!-- TODO the other cases -->
+						<!-- TODO the other cases ($type_node/properties, $type_node/list ...) -->
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>

@@ -43,6 +43,22 @@
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
 		<text:h text:style-name="Heading2">Error codes</text:h>
+		<table:table table:name="FunctionsTable" table:style-name="FunctionsTable">
+			<table:table-column table:style-name="FunctionsTable.A"/>
+			<table:table-column table:style-name="FunctionsTable.B"/>
+			<table:table-row>
+				<table:table-cell table:style-name="FunctionsTable.A1" office:value-type="string">
+					<text:p text:style-name="P2">Error code</text:p>
+				</table:table-cell>
+				<table:table-cell table:style-name="FunctionsTable.A1" office:value-type="string">
+					<text:p text:style-name="P2">Description</text:p>
+				</table:table-cell>
+			</table:table-row>
+			<xsl:call-template name="standard-errorcodes" />
+			<xsl:apply-templates select="$function_node/output/resultcode-ref">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+			</xsl:apply-templates>
+		</table:table>
 		<xsl:if test="$function_node/example">
 			<text:h text:style-name="Heading2">Examples</text:h>
 			<text:p text:style-name="Standard">Below are some example requests with corresponding responses. Note that these are non-normative.</text:p>
@@ -153,7 +169,7 @@
 						<xsl:text>http://API_HOST/</xsl:text>
 						<text:line-break/>
 						<xsl:text>?_function=</xsl:text>
-						<xsl:value-of select="//function/@name" />
+						<xsl:value-of select="../@name" />
 						<text:line-break/>
 						<xsl:text>&amp;_convention=_xins-std</xsl:text>
 						<xsl:for-each select="input-example">
@@ -353,5 +369,42 @@
 			<xsl:value-of select="$value" />
 			<xsl:text>"</xsl:text>
 		</text:span>
+	</xsl:template>
+	
+	<xsl:template name="standard-errorcodes">
+		<xsl:variable name="resultcodes_node" select="document('../../xml/default_resultcodes.xml')/resultcodes" />
+		<xsl:for-each select="$resultcodes_node/code">
+			<table:table-row>
+				<table:table-cell office:value-type="string">
+					<text:p text:style-name="P1">
+						<xsl:value-of select="@name" />
+					</text:p>
+				</table:table-cell>
+				<table:table-cell office:value-type="string">
+					<text:p text:style-name="P1">
+						<xsl:value-of select="description/text()" />
+					</text:p>
+				</table:table-cell>
+			</table:table-row>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="resultcode-ref">
+		<xsl:param name="specsdir" />
+		
+		<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')"/>
+		<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode"/>
+		<table:table-row>
+			<table:table-cell office:value-type="string">
+				<text:p text:style-name="P1">
+					<xsl:value-of select="$rcd_node/@name" />
+				</text:p>
+			</table:table-cell>
+			<table:table-cell office:value-type="string">
+				<text:p text:style-name="P1">
+					<xsl:value-of select="$rcd_node/description/text()" />
+				</text:p>
+			</table:table-cell>
+		</table:table-row>
 	</xsl:template>
 </xsl:stylesheet>

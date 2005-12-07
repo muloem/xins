@@ -49,16 +49,6 @@
 						<xsl:with-param name="type-node" select="function" />
 						<xsl:with-param name="extension" select="'fnc'" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="." mode="functions-table">
-						<xsl:with-param name="type-name" select="'Type'" />
-						<xsl:with-param name="type-node" select="type" />
-						<xsl:with-param name="extension" select="'typ'" />
-					</xsl:apply-templates>
-					<xsl:apply-templates select="." mode="functions-table">
-						<xsl:with-param name="type-name" select="'Error code'" />
-						<xsl:with-param name="type-node" select="resultcode" />
-						<xsl:with-param name="extension" select="'rcd'" />
-					</xsl:apply-templates>
 					<xsl:apply-templates select="function" mode="function-chapter">
 						<xsl:with-param name="project_home" select="$project_home" />
 						<xsl:with-param name="project_node" select="$project_node" />
@@ -75,7 +65,7 @@
 			<xsl:value-of select="@name" />
 			<xsl:text> API.</xsl:text>
 		</text:p>
-		<text:p text:style-name="Subtitle">– Technical Guideline –</text:p>
+		<text:p text:style-name="Subtitle">- Technical Guideline -</text:p>
 	</xsl:template>
 	
 	<xsl:template match="api" mode="functions-table">
