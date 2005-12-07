@@ -120,6 +120,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
 
 * Generation of the WAR file:
   - Implemented RFE #1182932: Set bootstrap properties in impl.xml.
+  - Implemented RFE #1359742: Add html/js files to the generated WAR file.
 
 * XSLT:
   - Implemented RFE #1359799: XSLT improved by passing nodes instead of

@@ -146,7 +146,21 @@
 					<xsl:value-of select="$api" />
 				</servlet-name>
 				<url-pattern>
-					<xsl:text>/</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@web-path">
+							<xsl:value-of select="@web-path" />
+							<xsl:text>/</xsl:text>
+						</xsl:when>
+						<xsl:when test="not(@web-path) and content">
+							<xsl:message terminate="yes">
+								<xsl:text>The attribute web-path to the impl element is mandatory
+								if a content element is specified.</xsl:text>
+							</xsl:message>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>/</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
 				</url-pattern>
 			</servlet-mapping>
 		</web-app>

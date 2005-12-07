@@ -1102,7 +1102,8 @@ APIs in this project are:
 				<war
 					webxml="build/webapps/{$api}{$implName2}/web.xml"
 					destfile="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war"
-					manifest="build/webapps/{$api}{$implName2}/MANIFEST.MF">
+					manifest="build/webapps/{$api}{$implName2}/MANIFEST.MF"
+					duplicate="fail">
 					<lib dir="{$xins_home}/build" includes="logdoc.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-common.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-server.jar" />
@@ -1112,6 +1113,7 @@ APIs in this project are:
 					<xsl:if test="local-name() = 'impl'">
 						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
+						<xsl:apply-templates select="document($impl_file)/impl/content" />
 					</xsl:if>
 					<classes dir="{$classesDestDir}" includes="**/*.class" />
 					<xsl:if test="$apiHasTypes">
@@ -1539,6 +1541,24 @@ APIs in this project are:
 
 		<target name="rebuild-{$api}" depends="clean-{$api}, all-{$api}"
 						description="Regenerates everything for the '{$api}' API stubs." />
+	</xsl:template>
+
+	<xsl:template match="content">
+		<zipfileset dir="{$dependenciesDir}/{@dir}">
+			<xsl:attribute name="includes">
+				<xsl:choose>
+					<xsl:when test="@includes">
+						<xsl:value-of select="@includes" />
+					</xsl:when>
+					<xsl:otherwise>**/*</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:if test="@web-path">
+				<xsl:attribute name="prefix">
+					<xsl:value-of select="@web-path" />
+				</xsl:attribute>
+			</xsl:if>
+		</zipfileset>
 	</xsl:template>
 
 	<xsl:template match="dependency">

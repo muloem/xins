@@ -3,7 +3,10 @@
  project by adding the following line at the top of the file :
 <!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://www.xins.org/dtd/impl_1_4.dtd">
 -->
-<!ELEMENT impl (logdoc?, bootstrap-properties?, runtime-properties?, dependency*, calling-convention?, instance*)>
+<!ELEMENT impl (logdoc?, bootstrap-properties?, runtime-properties?, content*, dependency*, calling-convention?, instance*)>
+<!ATTLIST impl
+          web-path    CDATA #IMPLIED
+>
 <!ELEMENT logdoc EMPTY>
 <!ATTLIST logdoc
           accesslevel (package|public) #IMPLIED
@@ -22,6 +25,12 @@
           type       NMTOKEN #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT content EMPTY>
+<!ATTLIST content
+          dir        CDATA #REQUIRED
+          web-path   CDATA #IMPLIED
+          includes   CDATA #IMPLIED
+>
 <!ELEMENT dependency EMPTY>
 <!ATTLIST dependency
           dir        CDATA #REQUIRED
