@@ -279,8 +279,8 @@
 				<xsl:text>org.xins.logdoc.ExceptionUtils.getRootCause(_exception));</xsl:text>
 			</xsl:when>
 			<xsl:when test="$exception">
-				<xsl:text>null);
-         if (LOGGER_</xsl:text>
+				<xsl:text>org.xins.logdoc.LogCentral.isStackTraceAtMessageLevel() ? org.xins.logdoc.ExceptionUtils.getRootCause(_exception) : null);
+         if (!org.xins.logdoc.LogCentral.isStackTraceAtMessageLevel() &amp;&amp; LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />
 				<xsl:text>.isEnabledFor(DEBUG)) {
             LOGGER_</xsl:text>

@@ -21,6 +21,7 @@ import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.ExceptionUtils;
+import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleError;
 
 /**
@@ -358,6 +359,17 @@ final class EngineStarter extends Object {
 
       // Convert ServletConfig to PropertyReader
       PropertyReader properties = new ServletConfigPropertyReader(_config);
+
+      // Determine at what level should the stack traces be displayed
+      String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
+      if ("true".equals(stackTraceAtMessageLevel)) {
+         LogCentral.setStackTraceAtMessageLevel(true);
+      } else if ("false".equals(stackTraceAtMessageLevel)) {
+         LogCentral.setStackTraceAtMessageLevel(false);
+      } else if (stackTraceAtMessageLevel != null) {
+         throw new ServletException("Incorrect value for the " + 
+               LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL + " bootstrap property.");
+      }
 
       // Bootstrap the API self
       Throwable caught;

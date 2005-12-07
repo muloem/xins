@@ -29,6 +29,7 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
+import org.xins.logdoc.LogCentral;
 
 /**
  * XINS server engine. An <code>Engine</code> is a delegate of the
@@ -369,6 +370,17 @@ final class Engine extends Object {
 
       boolean localeInitialized = _configManager.determineLogLocale();
       if (! localeInitialized) {
+         _state.setState(EngineState.API_INITIALIZATION_FAILED);
+         return false;
+      }
+      
+      // Determine at what level should the stack traces be displayed
+      String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
+      if ("true".equals(stackTraceAtMessageLevel)) {
+          LogCentral.setStackTraceAtMessageLevel(true);
+      } else if ("false".equals(stackTraceAtMessageLevel)) {
+          LogCentral.setStackTraceAtMessageLevel(false);
+      } else if (stackTraceAtMessageLevel != null) {
          _state.setState(EngineState.API_INITIALIZATION_FAILED);
          return false;
       }

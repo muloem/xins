@@ -74,6 +74,8 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Fixed Bug #1374150: Multiple Logdoc with multiple implementations 
     does not work.
   - Implemented RFE #1359758: Log the request with URL.
+  - Implemented RFE #1359772: Added the possibility to write the stack trace
+    at the same logging level as the message.
 
 * Calling convention requirements definitions:
   - Added a format description of the XINS standard calling convention in a
@@ -106,7 +108,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
   - Added support for hyphens and dots in the parameter names, attribute names
     and element names.
 
-* Generated JUnit test :
+* Generated JUnit test:
   - Implemented RFE #1359778: Added if the build properties test.start.server 
     is set to true the test target will also start the API Servlet.
 

@@ -28,6 +28,11 @@ public final class LogCentral {
    public final static String LOG_LOCALE_PROPERTY = "org.xins.logdoc.locale";
 
    /**
+    * The name of the property that specifies if the stack traces should be displayed at the message level.
+    */
+   public final static String LOG_STACK_TRACE_AT_MESSAGE_LEVEL = "org.xins.logdoc.stackTraceAtMessageLevel";
+
+   /**
     * The default locale used at start-up, if no locale is specified in a
     * system property.
     */
@@ -44,6 +49,12 @@ public final class LogCentral {
     * The locale for the logdoc.
     */
    private static String LOCALE = null;
+
+   /**
+    * Flag indicating whether the stack trace shol be displayed at the same
+    * level of the message or not.
+    */
+   private static boolean STACK_TRACE_AT_MESSAGE_LEVEL = false;
 
 
    //-------------------------------------------------------------------------
@@ -201,6 +212,30 @@ public final class LogCentral {
    public static String getLocale() {
       return LOCALE;
    }
+
+   /**
+    * Sets the display of the stack trace at the same level as the message.
+    *
+    * @param sameLevel
+    *    <code>true</code> if the stack trace should be at the same level,
+    *    <code>false</code> if the stack trace should be at DEBUG level.
+    */
+   public static void setStackTraceAtMessageLevel(boolean sameLevel) {
+       STACK_TRACE_AT_MESSAGE_LEVEL = sameLevel;
+   }
+
+   /**
+    * Indicates whether the stack trace should be displayed at the same level
+    * as the message.
+    *
+    * @return
+    *    <code>true</code> if the stack trace should be at the same level,
+    *    <code>false</code> if the stack trace should be at DEBUG level.
+    */
+   public static boolean isStackTraceAtMessageLevel() {
+       return STACK_TRACE_AT_MESSAGE_LEVEL;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
