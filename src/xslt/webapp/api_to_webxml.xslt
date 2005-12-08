@@ -132,7 +132,7 @@
 							<xsl:text>Invalid defined bootstrap property &quot;</xsl:text>
 							<xsl:value-of select="@name" />
 							<xsl:text>&quot; in impl.xml. The defined bootstrap property are
-							not allowed to start with &quot;org.xins.&quot;.</xsl:text>
+not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 						</xsl:message>
 					</xsl:if>
 					<init-param>
@@ -156,13 +156,13 @@
 				<url-pattern>
 					<xsl:choose>
 						<xsl:when test="@web-path">
+							<xsl:text>/</xsl:text>
 							<xsl:value-of select="@web-path" />
 							<xsl:text>/</xsl:text>
 						</xsl:when>
 						<xsl:when test="not(@web-path) and content">
 							<xsl:message terminate="yes">
-								<xsl:text>The attribute web-path to the impl element is mandatory
-								if a content element is specified.</xsl:text>
+								<xsl:text>The attribute web-path to the impl element is mandatory if a content element is specified.</xsl:text>
 							</xsl:message>
 						</xsl:when>
 						<xsl:otherwise>

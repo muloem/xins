@@ -27,7 +27,7 @@
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT content EMPTY>
 <!ATTLIST content
-          dir        CDATA #REQUIRED
+          dir        CDATA #IMPLIED
           web-path   CDATA #IMPLIED
           includes   CDATA #IMPLIED
 >
