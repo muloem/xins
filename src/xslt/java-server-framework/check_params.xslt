@@ -19,6 +19,7 @@
 
 	<xsl:template match="input | output | element" mode="checkParams">
 		<xsl:param name="side" />
+		<xsl:param name="level" select="'1'" />
 
 		<xsl:variable name="errorclass">
 			<xsl:choose>
@@ -438,6 +439,7 @@
 		<xsl:apply-templates select="contains/contained" mode="checkParams">
 			<xsl:with-param name="parentelement" select="concat(@name, 'NextElement')" />
 			<xsl:with-param name="side" select="$side" />
+			<xsl:with-param name="level" select="$level" />
 		</xsl:apply-templates>
 
 		<xsl:choose>
@@ -459,6 +461,7 @@
 	<xsl:template match="contains/contained" mode="checkParams">
 		<xsl:param name="parentelement" />
 		<xsl:param name="side" />
+		<xsl:param name="level" select="'1'" />
 
 		<xsl:variable name="elementvariable">
 			<xsl:call-template name="hungarianPropertyLower">
@@ -469,6 +472,7 @@
 		<xsl:text>
       java.util.Iterator </xsl:text>
 		<xsl:value-of select="$elementvariable" />
+		<xsl:value-of select="$level" />
 		<xsl:text>Iterator = </xsl:text>
 		<xsl:value-of select="$parentelement" />
 		<xsl:text>.getChildElements("</xsl:text>
@@ -476,6 +480,7 @@
 		<xsl:text>").iterator();
       while (</xsl:text>
 		<xsl:value-of select="$elementvariable" />
+		<xsl:value-of select="$level" />
 		<xsl:text>Iterator.hasNext()) {</xsl:text>
 		<xsl:choose>
 			<xsl:when test="$side='client' and ancestor::output">
@@ -497,12 +502,15 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:value-of select="$elementvariable" />
+		<xsl:value-of select="$level" />
 		<xsl:text>Iterator.next();</xsl:text>
 		<xsl:apply-templates select="../../element[@name=$elementname]" mode="checkParams">
 			<xsl:with-param name="side" select="$side" />
+			<xsl:with-param name="level" select="$level + 1" />
 		</xsl:apply-templates>
 		<xsl:apply-templates select="../../../element[@name=$elementname]" mode="checkParams">
 			<xsl:with-param name="side" select="$side" />
+			<xsl:with-param name="level" select="$level + 1" />
 		</xsl:apply-templates>
 		<xsl:text>
       }</xsl:text>
