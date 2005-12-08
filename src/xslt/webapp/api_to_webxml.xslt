@@ -127,6 +127,14 @@
 					</xsl:if>
 				</xsl:if>
 				<xsl:for-each select="bootstrap-properties/bootstrap-property">
+					<xsl:if test="starts-with(@name, 'org.xins.')">
+						<xsl:message terminate="yes">
+							<xsl:text>Invalid defined bootstrap property &quot;</xsl:text>
+							<xsl:value-of select="@name" />
+							<xsl:text>&quot; in impl.xml. The defined bootstrap property are
+							not allowed to start with &quot;org.xins.&quot;.</xsl:text>
+						</xsl:message>
+					</xsl:if>
 					<init-param>
 						<param-name>
 							<xsl:value-of select="@name" />
