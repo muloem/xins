@@ -253,6 +253,10 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 1:
   - Fixed SF.net bug #1329335. A descriptive error is now shown when the
     script cannot determine the XINS home directory.
 
+* Build- and release-process:
+  - Removed the generated stub files and generated tests of the allinone API
+    from the release.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:
 
