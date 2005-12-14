@@ -280,7 +280,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          
          // Load the template or get it from the cache.
          Templates templates = null;
-         if (!_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
+         if (_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
             templates = (Templates) _templateCache.get(xsltLocation);
          } else {
             templates = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _location));
