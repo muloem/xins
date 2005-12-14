@@ -748,9 +748,10 @@ APIs in this project are:
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
 			</style>
-			<replace file="{$builddir}/wsdl/{$api}.wsdl"
-			token="urn:apiname"
-			value="urn:{$api}" />
+			<replace file="{$builddir}/wsdl/{$api}.wsdl">
+				<replacefilter token="urn:apiname" value="urn:{$api}" />
+				<replacefilter token="//?_convention=_xins-soap" value="/?_convention=_xins-soap" />
+			</replace>
 		</target>
 
 		<target name="opendoc-{$api}">
