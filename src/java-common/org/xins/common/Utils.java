@@ -296,9 +296,6 @@ public final class Utils extends Object {
     *    the name of the method (within the <code>subjectClass</code>) which
     *    threw the exception, cannot be <code>null</code>.
     *
-    * @param detail
-    *    detail message, can be <code>null</code>.
-    *
     * @param exception
     *    the exception to log, cannot be <code>null</code>.
     *
@@ -316,11 +313,10 @@ public final class Utils extends Object {
                                           Throwable exception)
    throws IllegalArgumentException {
 
-      String detail = null;
-
+		// Call alternative method with detail set to null 
       logIgnoredException(detectingClass, detectingMethod,
                           subjectClass,   subjectMethod,
-                          detail,         exception);
+                          null,           exception);
    }
 
    /**
