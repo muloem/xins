@@ -13,6 +13,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
   - Avoid to have a double slash in the endpoint location in the generated 
     WSDL file.
 
+* Libraries:
+  - Upgraded Log4J from 1.2.12 to 1.2.13.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 1:
 
