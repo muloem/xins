@@ -105,27 +105,8 @@ extends CallingConvention {
       // Parse the XML in the request (if any)
       Element element = parseXMLRequest(httpRequest);
 
-      // Get all <param/> elements
-      //
-      // NOTE: getChildElements never returns null
-      Iterator parameters = element.getChildElements("param").iterator();
-
-      // Search through the parameters until we find the one that specifies
-      // the name of the function to invoke
-      while (parameters.hasNext()) {
-         Element nextParameter = (Element) parameters.next();
-         String  name          = nextParameter.getAttribute("name");
-
-         // We found the _function parameter, stop searching; if the value
-         // is non-empty we have a match, otherwise we don't.
-         if ("_function".equals(name)) {
-            if (! TextUtils.isEmpty(nextParameter.getText())) {
-               return true;
-            }
-         }
-      }
-
-      return false;
+      return element.getLocalName().equals("request") &&
+            element.getAttribute("function") != null;
    }
 
    /**
@@ -152,7 +133,7 @@ extends CallingConvention {
 
       Element requestElem = parseXMLRequest(httpRequest);
 
-      String functionName = null;
+      String functionName = requestElem.getAttribute("function");
 
       // Determine function parameters
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
@@ -161,9 +142,6 @@ extends CallingConvention {
          Element nextParam = (Element) parameters.next();
          String name  = nextParam.getAttribute("name");
          String value = nextParam.getText();
-         if (name.equals("_function")) {
-            functionName = value;
-         }
          functionParams.set(SECRET_KEY, name, value);
       }
 
