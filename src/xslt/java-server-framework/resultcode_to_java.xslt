@@ -29,7 +29,6 @@
 	<xsl:include href="../java.xslt"       />
 	<xsl:include href="../types.xslt"      />
 	<xsl:include href="../warning.xslt"    />
-	<xsl:include href="../resultcode_uniqueness.xslt"    />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 	<xsl:variable name="api_node" select="document($api_file)/api" />
@@ -38,13 +37,6 @@
 
 		<xsl:variable name="resultcode" select="@name" />
 		<xsl:variable name="className" select="concat($resultcode, 'Result')" />
-
-		<xsl:call-template name="resultcodeValidity">
-			<xsl:with-param name="resultcode_name" select="@name" />
-			<xsl:with-param name="resultcode_value" select="@value" />
-			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="api_node" select="$api_node" />
-		</xsl:call-template>
 
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="$api_node/function">
