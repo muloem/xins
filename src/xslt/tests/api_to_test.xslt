@@ -173,9 +173,13 @@ public class APITests extends TestCase {
 		<xsl:value-of select="@name" />
 		<xsl:text>.war".replace('/', File.separatorChar);
          File warFile = new File(System.getProperty("user.dir"), warLocation);
+         int port = 8080;
+         if (System.getProperty("servlet.port") != null && !System.getProperty("servlet.port").equals("")) {
+            port = Integer.parseInt(System.getProperty("servlet.port"));
+         }
 
          // Start the web server
-         API_SERVER = new HTTPServletHandler(warFile);
+         API_SERVER = new HTTPServletHandler(warFile, port, true);
          API_STARTED = true;
       }
    }

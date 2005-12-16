@@ -24,6 +24,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
     uniqueness anymore as the value attribute of the result code is 
     deprecated since XINS 1.0.0.
 
+* Generated tests:
+  - If the serlvlet.port property is set, then the Servlet container will 
+    start on the specified port.
+
 * Generated build file:
   - Avoid to have a double slash in the endpoint location in the generated 
     WSDL file.
