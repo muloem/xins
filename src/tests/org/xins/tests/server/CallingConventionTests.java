@@ -224,8 +224,7 @@ public class CallingConventionTests extends TestCase {
    private void postXMLRequest(String randomFive, boolean success) throws Exception {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xml";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-              "<request>" +
-              "  <param name=\"_function\">ResultCode</param>" +
+              "<request function=\"ResultCode\">" +
               "  <param name=\"inputText\">" + randomFive + "</param>" +
               "</request>";
       Element result = postXML(destination, data);
