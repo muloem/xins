@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.Utils;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
+import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -130,6 +133,8 @@ extends CallingConvention {
           FunctionNotSpecifiedException {
 
 
+      PropertyReader functionParams = new ServletRequestPropertyReader(httpRequest);
+      
       // Determine function name
       String functionName = httpRequest.getParameter("_function");
       if (TextUtils.isEmpty(functionName)) {
@@ -137,20 +142,20 @@ extends CallingConvention {
       }
 
       // Determine function parameters
-      ProtectedPropertyReader functionParams =
+      /*ProtectedPropertyReader functionParams =
          new ProtectedPropertyReader(SECRET_KEY);
-      Enumeration params = httpRequest.getParameterNames();
-      while (params.hasMoreElements()) {
-         String name  = (String) params.nextElement();
-         String value = httpRequest.getParameter(name);
+      Iterator params = parameters.getNames();
+      while (params.hasNext()) {
+         String name  = (String) params.next();
+         String value = parameters.get(name);
          functionParams.set(SECRET_KEY, name, value);
-      }
+      }*/
 
       // Remove all invalid parameters
-      cleanUpParameters(functionParams, SECRET_KEY);
+      //cleanUpParameters(functionParams, SECRET_KEY);
 
       // Get data section
-      String dataSectionValue = httpRequest.getParameter("_data");
+      String dataSectionValue = functionParams.get("_data");
       Element dataElement = null;
       if (dataSectionValue != null && dataSectionValue.length() > 0) {
          ElementParser parser = new ElementParser();

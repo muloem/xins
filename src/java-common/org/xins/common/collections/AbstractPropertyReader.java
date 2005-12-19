@@ -46,7 +46,7 @@ implements PropertyReader {
     * @throws IllegalArgumentException
     *    if <code>map == null</code>.
     */
-   AbstractPropertyReader(Map map)
+   protected AbstractPropertyReader(Map map)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -122,7 +122,7 @@ implements PropertyReader {
     *    the {@link Map} used to store the properties in, cannot be
     *    <code>null</code>.
     */
-   Map getPropertiesMap() {
+   protected Map getPropertiesMap() {
       return _properties;
    }
 }

@@ -10,11 +10,17 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
   - The HTTPServiceCaller logs the URL as it is sent to the server.
   - Implemented a web server with the HTTP Servlet container in order to
     return the web pages included in the WAR file.
+  - Adapted ServletRequestPropertyReader to decode the URL parameters
+    correctly with Unicode characters.
+  - URL decoding will now fails if you try to decode a character that should
+    have been encoded.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1380246: XSLT cache not used in XSLT calling convention.
   - Fixed SF.net bug #1382438: XMLCallingConvention does not match the 
     specifications.
+  - The parsing of the parameters is done in the calling convention itself
+    in order to handle the Unicode characters correctly.
 
 * Generation of server-side Java code:
   - The generation of the result code doesn't check for the result code

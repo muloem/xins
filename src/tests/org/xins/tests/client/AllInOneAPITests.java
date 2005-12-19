@@ -21,9 +21,11 @@ import org.xins.client.InternalErrorException;
 import org.xins.client.InvalidRequestException;
 import org.xins.client.UnacceptableRequestException;
 import org.xins.client.UnsuccessfulXINSCallException;
+import org.xins.client.XINSCallConfig;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
+import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.http.StatusCodeHTTPCallException;
 
@@ -389,7 +391,7 @@ public class AllInOneAPITests extends TestCase {
       dataSectionTests("H>llo");
    }
 
-   /* XXX Unicode is not supported in standard calling convention requests
+   /* Unicode is not supported in standard calling convention requests 
    public void testSpecialCharacters6() throws Exception {
       dataSectionTests("Euro sign: \u20AC");
    }
@@ -400,6 +402,10 @@ public class AllInOneAPITests extends TestCase {
 
    public void testSpecialCharacters8() throws Exception {
       dataSectionTests("ends with &");
+   }
+
+   public void testSpecialCharacters9() throws Exception {
+      dataSectionTests("ends with \u00e9");
    }
 
    /**

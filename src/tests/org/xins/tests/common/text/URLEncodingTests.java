@@ -105,10 +105,8 @@ public class URLEncodingTests extends TestCase {
          String url = nonAscii[i];
          try {
             URLEncoding.decode(url);
-            fail("Expected URLEncoding.decode(\"" + url + "\") to throw a NonASCIIException.");
-            return;
          } catch (FormatException exception) {
-            // as expected
+            fail("Expected URLEncoding.decode(\"" + url + "\") to succeed.");
          }
       }
 
@@ -146,7 +144,7 @@ public class URLEncodingTests extends TestCase {
       // Test Unicode character
       String input  = "\u0080";
       String result = URLEncoding.encode(input);
-      assertEquals("Incorrect result:" + result, "%u0080", result);
+      assertEquals("Incorrect result:" + result, "%80", result);
 
       input  = "HelloThere0999";
       result = URLEncoding.encode(input);
@@ -171,16 +169,16 @@ public class URLEncodingTests extends TestCase {
          fail("URLEncoding.decode(null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException exception) { /* as expected */ }
 
-      // Make sure that characters higher than 127 make the conversion fail
+      // Make sure that characters higher than 255 make the conversion fail
       failDecode("\u0080");
       failDecode("A\u0080");
       failDecode("AA\u0080");
       failDecode("\u0080 ");
       failDecode("\u0080 1");
       
-      failDecode("%80");
+      compareDecode("%80", "\u0080");
       failDecode("%u80");
-      failDecode("A%80");
+      compareDecode("A%80", "A\u0080");
       failDecode("%80 ");
       
       // Before-last character cannot be a percentage sign

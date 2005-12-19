@@ -6,13 +6,15 @@
  */
 package org.xins.common.servlet;
 
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.collections.EnumerationIterator;
-import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.AbstractPropertyReader;
+import org.xins.common.text.URLEncoding;
 
 /**
  * Implementation of a <code>PropertyReader</code> that returns the
@@ -24,8 +26,7 @@ import org.xins.common.collections.PropertyReader;
  * @since XINS 1.0.0
  */
 public final class ServletRequestPropertyReader
-extends Object
-implements PropertyReader {
+extends AbstractPropertyReader {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -45,16 +46,42 @@ implements PropertyReader {
     * @param request
     *    the {@link ServletRequest} object, cannot be <code>null</code>.
     *
-    * @throws IllegalArgumentException
+    * @throws NullPointerException
     *    if <code>request == null</code>.
     */
    public ServletRequestPropertyReader(ServletRequest request)
-   throws IllegalArgumentException {
+   throws NullPointerException {
+      super(request.getParameterMap());
+   }
 
+   /**
+    * Constructs a new <code>ServletRequestPropertyReader</code>.
+    *
+    * @param request
+    *    the {@link HttpServletRequest} object, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request == null</code>.
+    */
+   public ServletRequestPropertyReader(HttpServletRequest request)
+   throws IllegalArgumentException {
+      super(new HashMap(20));
+      
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
-      _request = request;
+      // Parse the query string to get the parameters
+      String query = request.getQueryString();
+      StringTokenizer stParameters = new StringTokenizer(query, "&");
+      while (stParameters.hasMoreTokens()) {
+         String nextParameter = stParameters.nextToken();
+         int equalsPos = nextParameter.indexOf('=');
+         if (equalsPos != -1 && equalsPos != nextParameter.length() -1) {
+            String parameterKey = nextParameter.substring(0, equalsPos);
+            String parameterValue = URLEncoding.decode(nextParameter.substring(equalsPos + 1));
+            getPropertiesMap().put(parameterKey, parameterValue);
+         }
+      }
    }
 
 
@@ -62,50 +89,8 @@ implements PropertyReader {
    // Fields
    //-------------------------------------------------------------------------
 
-   /**
-    * The servlet configuration object.
-    */
-   private final ServletRequest _request;
-
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Retrieves the value of the property with the specified name.
-    *
-    * @param name
-    *    the name of the property, cannot be <code>null</code>.
-    *
-    * @return
-    *    the value of the property, possibly <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
-    */
-   public String get(String name) throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("name", name);
-      return _request.getParameter(name);
-   }
-
-   /**
-    * Returns an <code>Iterator</code> that returns all property names.
-    *
-    * @return
-    *    an {@link Iterator} for all property names, never <code>null</code>.
-    */
-   public Iterator getNames() {
-      return new EnumerationIterator(_request.getParameterNames());
-   }
-
-   /**
-    * Determines the number of properties.
-    *
-    * @return
-    *    the size, always &gt;= 0.
-    */
-   public int size() {
-      return _request.getParameterMap().size();
-   }
 }

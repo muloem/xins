@@ -31,11 +31,6 @@ public final class URLEncoding extends Object {
    private static final int CHAR_ZERO = (int) '0';
 
    /**
-    * The character nine (<code>'7'</code>) as an <code>int</code>.
-    */
-   private static final int CHAR_SEVEN = (int) '7';
-
-   /**
     * The character nine (<code>'9'</code>) as an <code>int</code>.
     */
    private static final int CHAR_NINE = (int) '9';
@@ -76,14 +71,20 @@ public final class URLEncoding extends Object {
     */
    private static final String[] UNENCODED_TO_ENCODED;
 
+   /**
+    * Table which indicates the valid encoded characters.
+    */
+   private static final boolean[] VALID_ENCODED_CHAR;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
    static {
-      UNENCODED_TO_ENCODED = new String[127];
-      for (int i = 0; i < 127; i++) {
+      UNENCODED_TO_ENCODED = new String[255];
+      VALID_ENCODED_CHAR = new boolean[255];
+      for (int i = 0; i < 255; i++) {
          char c = (char) i;
          if ((c >= 'a' && c <= 'z') ||
              (c >= 'A' && c <= 'Z') ||
@@ -93,14 +94,17 @@ public final class URLEncoding extends Object {
              (c == '.')             ||
              (c == '*')) {
             UNENCODED_TO_ENCODED[i] = String.valueOf(c);
+            VALID_ENCODED_CHAR[i] = true;
          } else if (c == ' ') {
             UNENCODED_TO_ENCODED[i] = "+";
+            VALID_ENCODED_CHAR[i] = false;
          } else {
             char[] data = new char[3];
             data[0] = '%';
             data[1] = Character.toUpperCase(Character.forDigit((i >> 4) & 0xF, 16));
             data[2] = Character.toUpperCase(Character.forDigit( i       & 0xF, 16));
             UNENCODED_TO_ENCODED[i] = new String(data);
+            VALID_ENCODED_CHAR[i] = false;
          }
       }
 
@@ -137,12 +141,12 @@ public final class URLEncoding extends Object {
       FastStringBuffer buffer = new FastStringBuffer(length * 2);
 
       // Loop through the string and just append whatever we find
-      // in UNENCODED_TO_ENCODED or if c > 127, append %u and the
+      // in UNENCODED_TO_ENCODED or if c > 255, append %u and the
       // value of the Unicode character in hexadecimal with 4 digits/letters.
       char[] content = s.toCharArray();
       for (int i = 0; i < length; i++) {
          int c = (int) content[i];
-         if (c < 128) {
+         if (c < 256) {
             buffer.append(UNENCODED_TO_ENCODED[c]);
          } else {
             buffer.append("%u");
@@ -235,7 +239,10 @@ public final class URLEncoding extends Object {
                decodedValue += digit(charAsInt, s, index);
                decodedValue *= 16;
                charAsInt = (int) string[++index];
-            } else if (charAsInt < CHAR_ZERO || charAsInt > CHAR_SEVEN) {
+            } else if (charAsInt < CHAR_ZERO || 
+                  (charAsInt > CHAR_NINE && charAsInt < CHAR_UPPER_A) ||
+                  (charAsInt > CHAR_UPPER_F && charAsInt < CHAR_LOWER_A) ||
+                  charAsInt > CHAR_LOWER_F) {
                throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
             }
             decodedValue += digit(charAsInt, s, index);
@@ -245,6 +252,10 @@ public final class URLEncoding extends Object {
 
             buffer.append((char) decodedValue);
 
+         // Catch invalid characters
+         } else if (!VALID_ENCODED_CHAR[c]) {
+            throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
+            
          // Append the character
          } else {
             buffer.append(c);
