@@ -46,7 +46,7 @@
 				<xsl:for-each select="input-example">
 					<!-- Get the name of the get method. -->
 					<xsl:variable name="hungarianName">
-						<xsl:call-template name="hungarianPropertyUpper">
+						<xsl:call-template name="hungarianUpper">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -104,7 +104,7 @@
 
 					<xsl:variable name="parametername" select="@name" />
 					<xsl:variable name="hungarianName">
-						<xsl:call-template name="hungarianPropertyUpper">
+						<xsl:call-template name="hungarianUpper">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -156,7 +156,7 @@
 
 		<xsl:variable name="elementName" select="@name" />
 		<xsl:variable name="elementObject">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="$elementName" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -182,7 +182,7 @@
 		<xsl:for-each select="attribute-example">
 			<xsl:variable name="attributeName" select="@name" />
 			<xsl:variable name="attributeObject">
-				<xsl:call-template name="hungarianPropertyUpper">
+				<xsl:call-template name="hungarianUpper">
 					<xsl:with-param name="text" select="@name" />
 				</xsl:call-template>
 			</xsl:variable>

@@ -109,7 +109,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 	<!-- Generates the checking code. -->
 	<xsl:template match="impl/runtime-properties/property | api/impl-java/runtime-properties/property" mode="check">
 		<xsl:variable name="variableName">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -222,7 +222,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		</xsl:variable>
 
 		<xsl:variable name="variableName">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -248,13 +248,13 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 		</xsl:variable>
 		<!-- Get the name of the variable. -->
 		<xsl:variable name="variableName">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<!-- Get the name of the get method. -->
 		<xsl:variable name="methodName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>

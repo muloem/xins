@@ -57,7 +57,7 @@
 					<xsl:text>_result.</xsl:text>
 				</xsl:when>
 				<xsl:when test="local-name() = 'element'">
-					<xsl:call-template name="hungarianPropertyLower">
+					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 					<xsl:text>NextElement.</xsl:text>
@@ -72,7 +72,7 @@
 
 			<xsl:for-each select="param | attribute">
 				<xsl:variable name="localJavaVariable">
-					<xsl:call-template name="hungarianPropertyLower">
+					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -116,7 +116,7 @@
 
 			<xsl:for-each select="param[@required='true'] | attribute[@required='true']">
 				<xsl:variable name="localJavaVariable">
-					<xsl:call-template name="hungarianPropertyLower">
+					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -154,7 +154,7 @@
       // Check values are valid for the associated types</xsl:text>
 			<xsl:for-each select="param[not(@type='_text' or string-length(@type) = 0)] | attribute[not(@type='_text' or string-length(@type) = 0)]">
 				<xsl:variable name="localJavaVariable">
-					<xsl:call-template name="hungarianPropertyLower">
+					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -204,7 +204,7 @@
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -246,7 +246,7 @@
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -274,7 +274,7 @@
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -284,7 +284,7 @@
 					<xsl:text> != null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
 						<xsl:variable name="localJavaVariable2">
-							<xsl:call-template name="hungarianPropertyLower">
+							<xsl:call-template name="hungarianLower">
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
 						</xsl:variable>
@@ -304,7 +304,7 @@
 					<xsl:text>");</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)]">
 						<xsl:variable name="localJavaVariable2">
-							<xsl:call-template name="hungarianPropertyLower">
+							<xsl:call-template name="hungarianLower">
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
 						</xsl:variable>
@@ -337,7 +337,7 @@
       if (!(</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -348,7 +348,7 @@
 				<xsl:text>) &amp;&amp; (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -389,7 +389,7 @@
       if (</xsl:text>
 				<xsl:for-each select="param-ref">
 					<xsl:variable name="localJavaVariable">
-						<xsl:call-template name="hungarianPropertyLower">
+						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 					</xsl:variable>
@@ -464,7 +464,7 @@
 		<xsl:param name="level" select="'1'" />
 
 		<xsl:variable name="elementvariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>

@@ -185,7 +185,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<!-- The name of the variable used in code for this parameter -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -251,7 +251,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<!-- The name of the variable used in code for this parameter -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -269,7 +269,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 
 		<!-- Determine the names of the methods -->
 		<xsl:variable name="methodTail">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>

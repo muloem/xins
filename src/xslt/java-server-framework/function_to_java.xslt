@@ -192,7 +192,7 @@ public abstract class ]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<!-- The name of the variable used in code for this parameter -->
 			<xsl:variable name="javaVariable">
-				<xsl:call-template name="hungarianPropertyLower">
+				<xsl:call-template name="hungarianLower">
 					<xsl:with-param name="text" select="@name" />
 				</xsl:call-template>
 			</xsl:variable>

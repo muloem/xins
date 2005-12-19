@@ -777,14 +777,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 					<xsl:text><![CDATA[</em> input parameter.]]></xsl:text>
 				</xsl:when>
 				<xsl:when test="substring($origDescription, string-length($origDescription), 1) = '.'">
-					<xsl:call-template name="hungarianLower">
-						<xsl:with-param name="text" select="$origDescription" />
-					</xsl:call-template>
+					<xsl:value-of select="translate(substring($origDescription,1,1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+					<xsl:value-of select="substring($origDescription,2)" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:call-template name="hungarianLower">
-						<xsl:with-param name="text" select="$origDescription" />
-					</xsl:call-template>
+					<xsl:value-of select="translate(substring($origDescription,1,1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+					<xsl:value-of select="substring($origDescription,2)" />
 					<xsl:text>.</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -841,7 +839,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<!-- The name of the variable used in code for this parameter -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -870,7 +868,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<!-- The name of the variable used in code for this parameter -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>

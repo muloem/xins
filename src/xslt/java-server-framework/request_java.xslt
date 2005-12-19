@@ -97,7 +97,7 @@
       public Request(String __ipArg]]></xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javaVariable">
-				<xsl:call-template name="hungarianPropertyLower">
+				<xsl:call-template name="hungarianLower">
 					<xsl:with-param name="text" select="@name" />
 				</xsl:call-template>
 			</xsl:variable>
@@ -124,7 +124,7 @@
          __ip = __ipArg;</xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javaVariable">
-				<xsl:call-template name="hungarianPropertyLower">
+				<xsl:call-template name="hungarianLower">
 					<xsl:with-param name="text" select="@name" />
 				</xsl:call-template>
 			</xsl:variable>
@@ -146,7 +146,7 @@
 	<!-- Generates the fields. -->
 	<xsl:template match="function/input/param | input/data/element/attribute | output/data/element/attribute" mode="field">
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -180,13 +180,13 @@
 		</xsl:variable>
 		<!-- Get the name of the get method. -->
 		<xsl:variable name="hungarianName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<!-- Get the name of the variable. -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -211,7 +211,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javaobjecttype">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="$javasimpletype" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -371,7 +371,7 @@
 
 	<xsl:template match="input/data/element | output/data/element" mode="listMethod">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -459,7 +459,7 @@
 
 	<xsl:template match="input/data/element | output/data/element" mode="listElementClass">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -541,7 +541,7 @@
 	<xsl:template match="input/data/element/contains/contained | output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>

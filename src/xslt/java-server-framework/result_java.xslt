@@ -134,7 +134,7 @@ implements Result {
 		</xsl:variable>
 		<xsl:variable name="methodName">
 			<xsl:text>set</xsl:text>
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -148,7 +148,7 @@ implements Result {
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -250,12 +250,12 @@ implements Result {
 
 	<xsl:template match="output/data/element | input/data/element" mode="addMethod">
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -301,7 +301,7 @@ implements Result {
 
 	<xsl:template match="output/data/element | input/data/element" mode="addElementClass">
 		<xsl:variable name="objectName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -406,12 +406,12 @@ implements Result {
 	<xsl:template match="output/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianPropertyLower">
+			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="methodName">
-			<xsl:call-template name="hungarianPropertyUpper">
+			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@element" />
 			</xsl:call-template>
 		</xsl:variable>
