@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 
 * XINS/Java Common Library:
   - The HTTPServiceCaller logs the URL as it is sent to the server.
+  - Implemented a web server with the HTTP Servlet container in order to
+    return the web pages included in the WAR file.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1380246: XSLT cache not used in XSLT calling convention.

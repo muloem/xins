@@ -9,17 +9,23 @@ package org.xins.common.servlet.container;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.FileNameMap;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.jar.JarFile;
 
 import javax.servlet.ServletException;
 
@@ -69,7 +75,11 @@ public class HTTPServletHandler {
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
 
-
+   /**
+    * The map containing the MIME type information.
+    */
+   private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
+   
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -370,6 +380,7 @@ public class HTTPServletHandler {
       String inContentType = null;
       int contentLength = -1;
       boolean inputRead = false;
+      boolean getMethod = false;
 
       while (!inputRead && (inputLine = input.readLine()) != null) {
          // System.err.println(": " + inputLine);
@@ -377,6 +388,7 @@ public class HTTPServletHandler {
             url = inputLine.substring(4);
             url = url.replace(',', '&');
             inputRead = true;
+            getMethod = true;
          }
 
          // POST method
@@ -399,23 +411,27 @@ public class HTTPServletHandler {
       String httpResult;
       String encoding = "ISO-8859-1";
       
+      // Normalize the URL
+      if (url != null && url.indexOf(' ') != -1) {
+         url = url.substring(0, url.indexOf(' '));
+      }
+
       if (url == null) {
-         httpResult = "HTTP/1.1 400 BAD_REQUEST\n\n";
+         httpResult = "HTTP/1.1 400 Bad Request\r\n";
 
       // Some browsers also request for a favicon.ico, this query should be ignored
-      } else if (url.startsWith("/favicon.ico ")) {
-         httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+      //} else if (url.startsWith("/favicon.ico ")) {
+      //   httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+      // Handle the case that a web page is requested
+      } else if (getMethod && url.indexOf('?') == -1) {
+         httpResult = readWebPage(url);
       } else {
          
-         // Normalize the URL
-         if (url.indexOf(' ') != -1) {
-            url = url.substring(0, url.indexOf(' '));
-         }
          if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
             url += '?' + new String(contentData);
             contentData = null;
          }
-         
+
          // Locate the path of the URL
          String virtualPath = url;
          if (virtualPath.indexOf('?') != -1) {
@@ -435,7 +451,7 @@ public class HTTPServletHandler {
          
          // If no servlet is found return 404
          if (servlet == null) {
-            httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
+            httpResult = "HTTP/1.1 404 Not Found\r\n";
          } else {
             
             // Query the Servlet
@@ -445,13 +461,14 @@ public class HTTPServletHandler {
             String result = response.getResult();
             if (result == null) {
                httpResult = "HTTP/1.1 " + response.getStatus() + " " +
-                     HttpStatus.getStatusText(response.getStatus()).replace(' ', '_') + "\n\n";
+                     HttpStatus.getStatusText(response.getStatus()) + "\n\n";
             } else {
                
                // Create the HTTP answer
                PropertyReader headers = response.getHeaders();
                Iterator itHeaderNames = headers.getNames();
-               httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + "\r\n";
+               httpResult = "HTTP/1.1 " + response.getStatus() + " " + 
+                     HttpStatus.getStatusText(response.getStatus()) + "\r\n";
                httpResult += "Content-Type: " + response.getContentType() + "\r\n";
                while (itHeaderNames.hasNext()) {
                   String nextHeader = (String) itHeaderNames.next();
@@ -475,6 +492,49 @@ public class HTTPServletHandler {
 
       byte[] bytes = httpResult.getBytes(encoding);
       outbound.write(bytes, 0, bytes.length);
+   }
+
+   /**
+    * Reads the content of a web page.
+    *
+    * @param url
+    *    the location of the content, cannot be <code>null</code>.
+    *
+    * @return
+    *    the HTTP response to return, never <code>null</code>.
+    */
+   private String readWebPage(String url) throws IOException {
+      String httpResult = null;
+      System.err.println("url " + url);
+      if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
+         url += "index.html";
+      }
+
+      if (getClass().getResource(url) != null) {
+         InputStream urlInputStream = getClass().getResourceAsStream(url);
+         ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
+         byte[] buf = new byte[8192];
+         int len;
+         while ((len = urlInputStream.read(buf)) > 0) {
+            contentOutputStream.write(buf, 0, len);
+         }
+         contentOutputStream.close();
+         urlInputStream.close();
+         String content = contentOutputStream.toString();
+
+         httpResult = "HTTP/1.1 200 OK\r\n";
+         String fileName = url.substring(url.lastIndexOf('/') + 1);
+         httpResult += "Content-Type: " + MIME_TYPES_MAP.getContentTypeFor(fileName) + "\r\n";
+         int length = content.getBytes("ISO-8859-1").length + 1;
+         httpResult += "Content-Length: " + length + "\r\n";
+         httpResult += "Connection: close\r\n";
+         httpResult += "\r\n";
+         httpResult += content + "\n";
+         httpResult += "\n";
+      } else {
+         httpResult = "HTTP/1.1 404 Not Found\r\n";
+      }
+      return httpResult;
    }
 
    /**
