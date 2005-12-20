@@ -443,7 +443,7 @@ public class Element implements Cloneable {
     *    parent have a unique child.
     *
     * @return
-    *    The sub-element of this element, never <code>null</code>.
+    *    the sub-element of this element, never <code>null</code>.
     *
     * @throws ParseException
     *    if no child was found or more than one child was found.
@@ -455,6 +455,7 @@ public class Element implements Cloneable {
       } else {
          childList = getChildElements(elementName);
       }
+      
       if (childList.size() == 0) {
          throw new ParseException("No \"" + elementName +
                "\" children found in the \"" + getLocalName() +

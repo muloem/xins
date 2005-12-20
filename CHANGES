@@ -15,6 +15,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
   - URL decoding will now fails if you try to decode a character that should
     have been encoded.
   - HTTPServiceCaller sends parameters encoded using the URLEncoding class.
+  - Added a method to provide the possibility to set a prefix when logging the
+    parameters.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1380246: XSLT cache not used in XSLT calling convention.

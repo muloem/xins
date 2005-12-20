@@ -330,7 +330,7 @@ extends Object {
     *    the string to append to the buffer in case
     *    <code>properties == null || properties.size() == 0</code>; if this
     *    argument is <code>null</code>, however, then nothing will be appended
-    *    in the mentioned case..
+    *    in the mentioned case.
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
@@ -396,7 +396,32 @@ extends Object {
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty) {
-      return new SerializedPropertyReader(p, valueIfEmpty);
+      return serialize(p, valueIfEmpty, null);
+   }
+
+   /**
+    * Constructs a <code>LogdocSerializable</code> for the specified
+    * <code>PropertyReader</code>.
+    *
+    * @param p
+    *    the {@link PropertyReader} to construct a {@link LogdocSerializable}
+    *    for, or <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if the specified set of properties is either
+    *    <code>null</code> or empty, can be <code>null</code>.
+    *
+    * @param prefixIfNotEmpty
+    *    the prefix to add to the value if the <code>PropertyReader</code>
+    *    is not empty, can be <code>null</code>.
+    *
+    * @return
+    *    a new {@link LogdocSerializable}, never <code>null</code>.
+    */
+   public static LogdocSerializable serialize(PropertyReader p,
+                                              String         valueIfEmpty,
+                                              String         prefixIfNotEmpty) {
+      return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty);
    }
 
    /**
@@ -482,12 +507,19 @@ extends Object {
        * @param valueIfEmpty
        *    the value to return if the specified set of properties is either
        *    <code>null</code> or empty, can be <code>null</code>.
+       *
+       * @param prefixIfNotEmpty
+       *    the prefix to add to the value if the <code>PropertyReader</code>
+       *    is not empty, can be <code>null</code>.
+       *
        */
       SerializedPropertyReader(PropertyReader p,
-                               String         valueIfEmpty) {
+                               String         valueIfEmpty,
+                               String         prefixIfNotEmpty) {
 
          _propertyReader = p;
          _valueIfEmpty   = valueIfEmpty;
+         _prefixIfNotEmpty   = prefixIfNotEmpty;
       }
 
 
@@ -505,6 +537,11 @@ extends Object {
        * The value to return if the property reader is empty.
        */
       private final String _valueIfEmpty;
+
+      /**
+       * The prefix to add if the property reader is not empty.
+       */
+      private final String _prefixIfNotEmpty;
 
 
       //----------------------------------------------------------------------
@@ -553,6 +590,9 @@ extends Object {
                buffer.append('&');
             } else {
                first = false;
+               if (_prefixIfNotEmpty != null) {
+                  buffer.append(_prefixIfNotEmpty);
+               }
             }
 
             // Append the key and the value, separated by an equals sign

@@ -380,7 +380,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          long               duration  = System.currentTimeMillis() - start;
          String             function  = request.getFunctionName();
          PropertyReader     p         = request.getParameters();
-         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "");
+         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "", "&");
          Log.log_2113(function, params, duration);
 
          if (exception instanceof GenericCallException) {
@@ -519,7 +519,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       String             url       = target.getURL();
       String             function  = xinsRequest.getFunctionName();
       PropertyReader     p         = xinsRequest.getParameters();
-      LogdocSerializable params    = PropertyReaderUtils.serialize(p, "");
+      LogdocSerializable params    = PropertyReaderUtils.serialize(p, "", "&");
 
       // Get the time-out values (for logging)
       int totalTimeOut      = target.getTotalTimeOut();
