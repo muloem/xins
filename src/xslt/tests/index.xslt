@@ -55,6 +55,16 @@
 					<xsl:text> had errors.</xsl:text>
 				</p>
 
+				<xsl:if test="error">
+					<h2>Error</h2>
+					<xsl:text>Exception: </xsl:text>
+					<xsl:value-of select="error/@type" />
+					<p />
+					<xsl:text>Details: </xsl:text>
+					<br />
+					<xsl:value-of select="error/text()" />
+				</xsl:if>
+
 				<xsl:if test="count(testcase[failure or error]) &gt; 0">
 					<h2>Errors and failures</h2>
 					<xsl:apply-templates select="testcase[failure or error]" />
