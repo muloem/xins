@@ -34,7 +34,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
     deprecated since XINS 1.0.0.
 
 * Generated tests:
-  - If the serlvlet.port property is set, then the Servlet container will 
+  - If the servlet.port property is set, then the Servlet container will 
     start on the specified port.
 
 * Generated build file:
@@ -48,6 +48,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 
 * Libraries:
   - Upgraded Log4J from 1.2.12 to 1.2.13.
+  - Upgraded Jakarta Commons HttpClient from 3.0-rc4 to 3.0 (final).
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 1:
