@@ -391,14 +391,13 @@ public class AllInOneAPITests extends TestCase {
       dataSectionTests("H>llo");
    }
 
-   /* Unicode is not supported in standard calling convention requests 
    public void testSpecialCharacters6() throws Exception {
       dataSectionTests("Euro sign: \u20AC");
    }
 
    public void testSpecialCharacters7() throws Exception {
       dataSectionTests("Arabic: \u0630");
-   }*/
+   }
 
    public void testSpecialCharacters8() throws Exception {
       dataSectionTests("ends with &");

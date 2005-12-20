@@ -10,18 +10,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
+import java.nio.charset.UnsupportedCharsetException;
 
 import java.util.Iterator;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpRecoverableException;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.util.TimeoutController;
 import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 
@@ -222,7 +227,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // HTTP POST request
       if (method == HTTPMethod.POST) {
-         PostMethod postMethod = new PostMethod(url);
+         PostMethod postMethod = new UnicodePostMethod(url);
 
          // Loop through the parameters
          if (parameters != null) {
@@ -1329,6 +1334,55 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       public byte[] getData() {
          return _data;
+      }
+   }
+   
+   /**
+    * Post method that encode the Unicode characters above 255 as %uxxxx
+    * where xxxx is the hexadecimal value of the character.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.4.0
+    */
+   private static class UnicodePostMethod extends PostMethod {
+      
+      //-------------------------------------------------------------------------
+      // Constructor
+      //-------------------------------------------------------------------------
+
+      public UnicodePostMethod(String url) {
+         super(url);
+      }
+      
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
+
+      protected RequestEntity generateRequestEntity() {
+         NameValuePair[] params = getParameters();
+         int paramsCount = params.length;
+         if (paramsCount == 0) {
+            return super.generateRequestEntity();
+         } else {
+            StringBuffer queryString = new StringBuffer();
+            for (int i = 0; i < paramsCount; i++) {
+               if (i > 0) {
+                  queryString.append('&');
+               }
+               queryString.append(URLEncoding.encode(params[i].getName()));
+               queryString.append('=');
+               queryString.append(URLEncoding.encode(params[i].getValue()));
+            }
+            try {
+               return new StringRequestEntity(queryString.toString(), 
+                     "application/x-www-form-urlencoded", "US-ASCII");
+            } catch (UnsupportedEncodingException ueex) {
+               // Should never happen
+               throw Utils.logProgrammingError(ueex);
+            }
+         }
       }
    }
 }
