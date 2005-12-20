@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 * Generated build file:
   - Avoid to have a double slash in the endpoint location in the generated 
     WSDL file.
+  - Added Open Document and WSDL to the Zip file created by the client target.
 
 * XSLT:
   - Renamed hungarianPropertyUpper to hungarianUpper and

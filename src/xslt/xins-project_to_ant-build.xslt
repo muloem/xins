@@ -1492,13 +1492,15 @@ APIs in this project are:
 		</target>
 
 		<target name="client-{$api}"
-						depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}"
+						depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}, wsdl-{$api}, opendoc-{$api}"
 						description="Generates the Javadoc API docs for the client side and the client JAR file for the '{$api}' API stubs and zip the result.">
 			<zip destfile="{$builddir}/specdocs/{$api}/{$api}-client.zip">
 				<fileset dir="{$builddir}/capis" includes="{$api}-capi.jar" />
 				<zipfileset dir="{$builddir}/javadoc-capi/{$api}" prefix="javadoc" />
 				<zipfileset dir="{$builddir}/java-capi/{$api}" prefix="java" />
 				<zipfileset dir="{$builddir}/specdocs/{$api}" excludes="{$api}-client.zip" prefix="specdocs" />
+				<fileset dir="{$builddir}/opendoc/{$api}" includes="{$api}-specs.odt" />
+				<fileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" />
 			</zip>
 		</target>
 
