@@ -145,7 +145,6 @@ public abstract class ]]></xsl:text>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>;
-
 </xsl:text>
 		</xsl:for-each>
 		<xsl:if test="$project_node/api[@name = $api]/impl">
@@ -156,12 +155,12 @@ public abstract class ]]></xsl:text>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>;
-
 </xsl:text>
 			</xsl:for-each>
 		</xsl:if>
 
 		<xsl:text>
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------

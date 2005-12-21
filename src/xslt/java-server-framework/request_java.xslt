@@ -140,7 +140,7 @@
          __dataSection = _dataSection;</xsl:text>
 		</xsl:if>
 		<xsl:text>
-   }</xsl:text>
+      }</xsl:text>
 	</xsl:template>
 
 	<!-- Generates the fields. -->

@@ -197,15 +197,6 @@ public class APIImpl extends API {
 			<xsl:value-of select="@name" />
 			<xsl:text>;</xsl:text>
 		</xsl:for-each>
-		<xsl:for-each select="property">
-			<xsl:text>
-
-   private final </xsl:text>
-			<xsl:value-of select="@class" />
-			<xsl:text> _</xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>;</xsl:text>
-		</xsl:for-each>
 		<xsl:text><![CDATA[
 
 
@@ -243,28 +234,18 @@ public class APIImpl extends API {
 			<xsl:text>);</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
-   }
-</xsl:text>
+   }</xsl:text>
 	</xsl:if>
 
 		<xsl:for-each select="instance">
-			<xsl:text>   public </xsl:text>
+			<xsl:text>
+
+   public </xsl:text>
 			<xsl:value-of select="@class" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@getter" />
 			<xsl:text>() {
       return </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>;
-   }</xsl:text>
-		</xsl:for-each>
-		<xsl:for-each select="property">
-			<xsl:text>   public </xsl:text>
-			<xsl:value-of select="@class" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@getter" />
-			<xsl:text>() {
-      return _</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>;
    }</xsl:text>
