@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
     parameters.
 
 * XINS/Java Server Framework:
+  - Fixed SF.net bug #1382394: CustomCallingConvention ignored. This bug was
+	 introduced in XINS 1.4.0-alpha1.
   - Fixed SF.net bug #1380246: XSLT cache not used in XSLT calling convention.
   - Fixed SF.net bug #1382438: XMLCallingConvention does not match the 
     specifications.

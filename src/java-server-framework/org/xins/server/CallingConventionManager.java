@@ -136,6 +136,14 @@ extends Manageable {
     */
    private String _nameCustomCC;
 
+   /**
+    * Name of the class for the custom calling convention, as specified in the
+	 * bootstrap properties.
+    *
+    * <p>This field is initialized during bootstrapping.
+    */
+   private String _classCustomCC;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -195,8 +203,8 @@ extends Manageable {
     * calling convention are determined.
     *
     * <p>The name and for the custom calling convention will be
-    * stored in {@link #_nameCustomCC} and the actual
-    * {@link CustomCallingConvention} instance in {@link #_conventions}.
+    * stored in {@link #_nameCustomCC} and the name of the class in
+	 * {@link #_classCustomCC}.
     *
     * <p>The name of the default calling convention will be stored in
     * {@link #_defaultConventionName}. This field will always be set to a
@@ -309,8 +317,9 @@ extends Manageable {
                                                     detail);
          }
 
-         // Store the name of the custom calling convention
-         _nameCustomCC = name;
+         // Store the name and class of the custom calling convention
+         _nameCustomCC  = name;
+			_classCustomCC = className1;
          
          // Log: Custom calling convention is specified
          Log.log_3247(nameProp, name, className1);
@@ -325,7 +334,8 @@ extends Manageable {
 
    /**
     * Constructs the calling convention with the specified name, using the
-    * specified bootstrap properties.
+    * specified bootstrap properties. This method is called for both
+	 * <em>regular</em> and <em>custom</em> calling conventions.
     *
     * <p>If the name does not identify a recognized calling convention, then
     * <code>null</code> is returned.
@@ -352,11 +362,13 @@ extends Manageable {
       MandatoryArgumentChecker.check("properties", properties, "name", name);
 
       // Determine the name of the CallingConvention class
-      String className = classNameForRegular(name);
+      String className = name.equals(_nameCustomCC)
+                       ? _classCustomCC
+							  : classNameForRegular(name);
 
       // If the class could not be determined, then return null
       if (className == null) {
-         // NOTE: Logging of this failure should be done one level up
+         Log.log_3239(null, name, className);
          return null;
       }
 
