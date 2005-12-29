@@ -63,13 +63,16 @@ abstract class CallingConvention extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * Removes all parameters that should not be transmitted. A parameter will
-    * be removed if it matches any of the following rules:
+    * Removes all parameters that should not be transmitted from a
+	 * <code>ProtectedPropertyReader</code>.
+	 *
+	 * <p>A parameter will be removed if it matches any of the following
+	 * conditions:
     *
     * <ul>
-    * <li>parameter name is <code>null</code>;
-    * <li>parameter name is empty;
-    * <li>parameter name equals <code>"function"</code>.
+    *    <li>parameter name is <code>null</code>;
+    *    <li>parameter name is empty;
+    *    <li>parameter name equals <code>"function"</code>.
     * </ul>
     *
     * @param parameters
@@ -83,8 +86,8 @@ abstract class CallingConvention extends Manageable {
     * @throws IllegalArgumentException
     *    if <code>parameters == null || secretKey == null</code>.
     */
-   void cleanUpParameters(ProtectedPropertyReader parameters,
-                          Object                  secretKey)
+   static void cleanUpParameters(ProtectedPropertyReader parameters,
+                                 Object                  secretKey)
    throws IllegalArgumentException {
 
       // Check arguments
