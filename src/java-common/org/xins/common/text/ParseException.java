@@ -9,7 +9,7 @@ package org.xins.common.text;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
- * Exception thrown to indicate parsing.
+ * Exception thrown to indicate a parsing failure.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
