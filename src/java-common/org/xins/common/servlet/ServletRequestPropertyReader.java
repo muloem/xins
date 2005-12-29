@@ -7,6 +7,7 @@
 package org.xins.common.servlet;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletRequest;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.AbstractPropertyReader;
+import org.xins.common.text.FormatException;
+import org.xins.common.text.ParseException;
 import org.xins.common.text.URLEncoding;
 
 /**
@@ -36,6 +39,48 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+	/**
+	 * Sets a parameter to the specified value. If the parameter is already set
+	 * to a different value, then an exception is thrown.
+	 *
+	 * <p>This function is used during parsing of a HTTP query string, which is
+	 * why a {@link ParseException} is thrown in case of conflicting values.
+	 *
+	 * @param parameters
+	 *    the set of parameters, should not be <code>null</code>.
+	 *
+	 * @param key
+	 *    the parameter key, should not be <code>null</code>.
+	 *
+	 * @param value
+	 *    the parameter value, should not be <code>null</code>.
+	 *
+	 * @throws NullPointerException
+	 *    if <code>properties == null</code>.
+	 *
+	 * @throws ParseException
+	 *    if a conflicting value is found for a certain parameter.
+	 */
+	private static void add(Map properties, String key, String value)
+   throws NullPointerException, ParseException {
+
+      Object existingValue = properties.get(key);
+		if (existingValue != null && ! existingValue.equals(value)) {
+         String detail = "Conflicting values found for parameter \""
+				           + key
+							  + "\": \""
+							  + (String) existingValue
+							  + "\" versus \""
+							  + value
+							  + "\".";
+			throw new ParseException("Failed to parse HTTP query string.",
+					                   (Throwable) null, detail);
+		}
+
+		properties.put(key, value);
+	}
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -66,10 +111,14 @@ extends AbstractPropertyReader {
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
 	 *
+	 * @throws ParseException
+	 *    if the query string in the specified servlet request cannot be
+	 *    parsed.
+	 *
 	 * @since XINS 1.4.0
     */
    public ServletRequestPropertyReader(HttpServletRequest request)
-   throws IllegalArgumentException {
+   throws IllegalArgumentException, ParseException {
 
 		// Initially allocate a complete HashMap already
       super(new HashMap(20));
@@ -77,20 +126,32 @@ extends AbstractPropertyReader {
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
+      Map properties = getPropertiesMap();
+
 		// Get the HTTP query string
       String query = request.getQueryString();
 
       // Parse the parameters in the HTTP query string
       StringTokenizer stParameters = new StringTokenizer(query, "&");
-      while (stParameters.hasMoreTokens()) {
-         String nextParameter = stParameters.nextToken();
-         int equalsPos = nextParameter.indexOf('=');
-         if (equalsPos != -1 && equalsPos != nextParameter.length() -1) {
-            String parameterKey = nextParameter.substring(0, equalsPos);
-            String parameterValue = URLEncoding.decode(nextParameter.substring(equalsPos + 1));
-            getPropertiesMap().put(parameterKey, parameterValue);
+		try {
+         while (stParameters.hasMoreTokens()) {
+            String nextParameter = stParameters.nextToken();
+            int equalsPos = nextParameter.indexOf('=');
+            if (equalsPos != -1) {
+               String parameterKey = nextParameter.substring(0, equalsPos);
+               String parameterValue = URLEncoding.decode(nextParameter.substring(equalsPos + 1));
+               add(properties, parameterKey, parameterValue);
+            } else {
+               add(properties, nextParameter, "");
+			   }
          }
-      }
+
+      // URLEncoding.decode(String) may throw a FormatException
+		} catch (FormatException cause) {
+			throw new ParseException("Failed to parse HTTP query string.",
+					                   cause,
+											 "URL decoding failed.");
+		}
    }
 
 
