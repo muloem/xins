@@ -132,17 +132,17 @@ extends AbstractPropertyReader {
       String query = request.getQueryString();
 
       // Parse the parameters in the HTTP query string
-      StringTokenizer stParameters = new StringTokenizer(query, "&");
+      StringTokenizer st = new StringTokenizer(query, "&");
 		try {
-         while (stParameters.hasMoreTokens()) {
-            String nextParameter = stParameters.nextToken();
-            int equalsPos = nextParameter.indexOf('=');
+         while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            int equalsPos = token.indexOf('=');
             if (equalsPos != -1) {
-               String parameterKey = nextParameter.substring(0, equalsPos);
-               String parameterValue = URLEncoding.decode(nextParameter.substring(equalsPos + 1));
+               String parameterKey = token.substring(0, equalsPos);
+               String parameterValue = URLEncoding.decode(token.substring(equalsPos + 1));
                add(properties, parameterKey, parameterValue);
             } else {
-               add(properties, nextParameter, "");
+               add(properties, token, "");
 			   }
          }
 
