@@ -18,10 +18,11 @@ import org.xins.common.text.URLEncoding;
 
 /**
  * Implementation of a <code>PropertyReader</code> that returns the
- * initialization properties from a <code>ServletRequest</code> object.
+ * request parameters from a <code>ServletRequest</code> object.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
  */
@@ -41,7 +42,8 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ServletRequestPropertyReader</code>.
+    * Constructs a new <code>ServletRequestPropertyReader</code> for a
+	 * <code>ServletRequest</code>.
     *
     * @param request
     *    the {@link ServletRequest} object, cannot be <code>null</code>.
@@ -55,23 +57,30 @@ extends AbstractPropertyReader {
    }
 
    /**
-    * Constructs a new <code>ServletRequestPropertyReader</code>.
-    *
+    * Constructs a new <code>ServletRequestPropertyReader</code> for an
+	 * <code>HttpServletRequest</code>.
+	 *
     * @param request
     *    the {@link HttpServletRequest} object, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
+	 *
+	 * @since XINS 1.4.0
     */
    public ServletRequestPropertyReader(HttpServletRequest request)
    throws IllegalArgumentException {
+
+		// Initially allocate a complete HashMap already
       super(new HashMap(20));
       
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
-      // Parse the query string to get the parameters
+		// Get the HTTP query string
       String query = request.getQueryString();
+
+      // Parse the parameters in the HTTP query string
       StringTokenizer stParameters = new StringTokenizer(query, "&");
       while (stParameters.hasMoreTokens()) {
          String nextParameter = stParameters.nextToken();
@@ -92,5 +101,4 @@ extends AbstractPropertyReader {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
 }
