@@ -26,7 +26,7 @@
 
 	<xsl:output indent="yes" />
 
-	<xsl:variable name="xmlenc_version"    select="'0.51'"                                      />
+	<xsl:variable name="xmlenc_version"    select="'0.52'"                                      />
 	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"         />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"  />
 	<xsl:variable name="project_node"      select="document($project_file)/project"             />

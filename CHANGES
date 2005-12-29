@@ -55,6 +55,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 * Libraries:
   - Upgraded Log4J from 1.2.12 to 1.2.13.
   - Upgraded Jakarta Commons HttpClient from 3.0-rc4 to 3.0 (final).
+  - Upgraded xmlenc from 0.51 to 0.52.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 1:
