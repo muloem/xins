@@ -25,7 +25,8 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**
- * Standard calling convention.
+ * Standard calling convention. The technical name for this calling convention
+ * is <em>_xins-std</em>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -132,27 +133,17 @@ extends CallingConvention {
    throws InvalidRequestException,
           FunctionNotSpecifiedException {
 
-
+      // Parse the parameters in the HTTP request
       PropertyReader functionParams = new ServletRequestPropertyReader(httpRequest);
       
       // Determine function name
-      String functionName = httpRequest.getParameter("_function");
+      String functionName = functionParams.get("_function");
       if (TextUtils.isEmpty(functionName)) {
          throw new FunctionNotSpecifiedException();
       }
 
-      // Determine function parameters
-      /*ProtectedPropertyReader functionParams =
-         new ProtectedPropertyReader(SECRET_KEY);
-      Iterator params = parameters.getNames();
-      while (params.hasNext()) {
-         String name  = (String) params.next();
-         String value = parameters.get(name);
-         functionParams.set(SECRET_KEY, name, value);
-      }*/
-
       // Remove all invalid parameters
-      //cleanUpParameters(functionParams, SECRET_KEY);
+      // XXX: cleanUpParameters(functionParams);
 
       // Get data section
       String dataSectionValue = functionParams.get("_data");
