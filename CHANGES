@@ -59,6 +59,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
   - Upgraded Jakarta Commons HttpClient from 3.0-rc4 to 3.0 (final).
   - Upgraded xmlenc from 0.51 to 0.52.
 
+* Other:
+  - Changed XINS copyright statements from '2003-2005' to '2003-2006'.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 1:
 

@@ -5,7 +5,7 @@
 
  $Id$
 
- Copyright 2003-2005 Wanadoo Nederland B.V.
+ Copyright 2003-2006 Wanadoo Nederland B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
