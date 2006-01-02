@@ -134,16 +134,18 @@ extends CallingConvention {
           FunctionNotSpecifiedException {
 
       // Parse the parameters in the HTTP request
-      PropertyReader functionParams = new ServletRequestPropertyReader(httpRequest);
+      PropertyReader functionParams;
+      try {
+         functionParams = new ServletRequestPropertyReader(httpRequest);
+      } catch (ParseException cause) {
+         throw new InvalidRequestException("Error while parsing HTTP query string.", cause);
+      }
       
       // Determine function name
       String functionName = functionParams.get("_function");
       if (TextUtils.isEmpty(functionName)) {
          throw new FunctionNotSpecifiedException();
       }
-
-      // Remove all invalid parameters
-      // XXX: cleanUpParameters(functionParams);
 
       // Get data section
       String dataSectionValue = functionParams.get("_data");
