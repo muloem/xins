@@ -280,7 +280,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<h2>Lodoc</h2>
+				<h2>Logdoc</h2>
 				<xsl:choose>
 					<xsl:when test="$project_node/api[@name = $api]/impl">
 						<xsl:for-each select="$project_node/api[@name = $api]/impl">
