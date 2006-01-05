@@ -8,6 +8,8 @@ package org.xins.common.servlet.container;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
@@ -155,7 +157,7 @@ public class LocalServletHandler {
     *    If the query is not handled correctly by the servlet.
     */
    public XINSServletResponse query(String url) throws IOException {
-      return query(url, null, null);
+      return query(url, null, new HashMap());
    }
 
    /**
@@ -188,6 +190,48 @@ public class LocalServletHandler {
       Log.log_1504(url);
 
       XINSServletRequest request = new XINSServletRequest(url, data, contentType);
+      XINSServletResponse response = new XINSServletResponse();
+      try {
+         _apiServlet.service(request, response);
+      } catch (ServletException ex) {
+         Log.log_1505(ex);
+         throw new IOException(ex.getMessage());
+      }
+      Log.log_1506(response.getResult(), response.getStatus());
+      return response;
+   }
+
+   /**
+    * Queries the Servlet with the specified URL with the specific content
+    * and the specified HTTP headers.
+    *
+    * @param url
+    *    the url query for the request, if <code>null</code> then the /
+    *    path is used as default with no parameters.
+    *
+    * @param data
+    *    the data post for the request. <code>null</code> for HTTP GET queries.
+    *
+    * @param headers
+    *    the HTTP headers passed with the query, cannot be <code>null</code>.
+    *    The key and the value of the Map is String.
+    *
+    * @return
+    *    the servlet response.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly by the servlet.
+    *
+    * @since XINS 1.4.0
+    */
+   public XINSServletResponse query(String url,
+                                    char[] data,
+                                    Map headers)
+   throws IOException {
+
+      Log.log_1504(url);
+
+      XINSServletRequest request = new XINSServletRequest(url, data, headers);
       XINSServletResponse response = new XINSServletResponse();
       try {
          _apiServlet.service(request, response);

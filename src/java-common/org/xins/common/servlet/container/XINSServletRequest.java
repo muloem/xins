@@ -81,7 +81,8 @@ public class XINSServletRequest implements HttpServletRequest {
     *    with comma's.
     */
    public XINSServletRequest(String url) {
-      this(url, null, null);
+      _url = url;
+      parseURL(url);
    }
 
    /**
@@ -103,11 +104,98 @@ public class XINSServletRequest implements HttpServletRequest {
       _url = url;
       _postData = data;
       _contentType = contentType;
-      _date = System.currentTimeMillis();
-      _attributes = new Hashtable();
+      parseURL(url);
+   }
 
+   /**
+    * Creates a new Servlet request.
+    *
+    * @param url
+    *    the request url or the list of the parameters (name=value) separated
+    *    with ampersands.
+    *
+    * @param data
+    *    the content of the request.
+    *
+    * @param header
+    *    the HTTP headers of the request. The key and the value of the Map
+    *    is a String.
+    *
+    * @since XINS 1.4.0
+    */
+   public XINSServletRequest(String url, char[] data, Map headers) {
+      _url = url;
+      _postData = data;
+      _headers.putAll(headers);
+      if (headers.get("Content-Type") != null) {
+         _contentType = (String) headers.get("Content-Type");
+      }
+      parseURL(url);
+   }
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * The requested URL included the optional parameters.
+    */
+   private String _url;
+
+   /**
+    * The parameters retrieved from the URL.
+    */
+   private Properties _parameters = new Properties();
+
+   /**
+    * The date when the request was created.
+    */
+   private long _date = System.currentTimeMillis();
+
+   /**
+    * The attributes of the request.
+    */
+   private Hashtable _attributes = new Hashtable();
+
+   /**
+    * The HTTP headers of the request.
+    */
+   private Hashtable _headers = new Hashtable();
+
+   /**
+    * The URL query string.
+    */
+   private String _queryString;
+
+   /**
+    * The content type of the query.
+    */
+   private String _contentType;
+
+   /**
+    * The content of the HTTP POST.
+    */
+   private char[] _postData;
+
+   /**
+    * The cookies of the request.
+    */
+   private Cookie[] _cookies;
+
+
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   /**
+    * Parses the url to extract the parameters.
+    *
+    * @param url
+    *    the request URL or the list of the parameters (name=value) separated
+    *    with ampersands.
+    */
+   private void parseURL(String url) {
       // Parse the URL
-      _parameters = new Properties();
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos != -1) {
          _queryString = url.substring(questionMarkPos + 1);
@@ -128,51 +216,6 @@ public class XINSServletRequest implements HttpServletRequest {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The requested URL included the optional parameters.
-    */
-   private String _url;
-
-   /**
-    * The parameters retrieved from the URL.
-    */
-   private Properties _parameters;
-
-   /**
-    * The date when the request was created.
-    */
-   private long _date;
-
-   /**
-    * The attributes of the request.
-    */
-   private Hashtable _attributes;
-
-   /**
-    * The URL query string.
-    */
-   private String _queryString;
-
-   /**
-    * The content type of the query.
-    */
-   private String _contentType;
-
-   /**
-    * The content of the HTTP POST.
-    */
-   private char[] _postData;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public void setCharacterEncoding(String str) {
       throw new UnsupportedOperationException();
    }
@@ -187,7 +230,11 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public int getIntHeader(String str) {
-      throw new UnsupportedOperationException();
+      if (_headers.get(str) != null) {
+         return Integer.parseInt(str);
+      } else {
+         return -1;
+      }
    }
 
    public Object getAttribute(String str) {
@@ -199,7 +246,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getHeader(String str) {
-      throw new UnsupportedOperationException();
+      return (String) _headers.get(str);
    }
 
    public Enumeration getHeaders(String str) {
@@ -293,11 +340,10 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public int getContentLength() {
-      throw new UnsupportedOperationException();
+      return getIntHeader("Content-Length");
    }
 
    public String getContentType() {
-
       return _contentType;
    }
 
@@ -306,11 +352,26 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public Cookie[] getCookies() {
-      throw new UnsupportedOperationException();
+      if (_cookies == null && _headers.get("Cookie") != null) {
+         String cookies = (String) _headers.get("Cookie");
+         StringTokenizer stCookies = new StringTokenizer(cookies, ";");
+         _cookies = new Cookie[stCookies.countTokens()];
+         int counter = 0;
+         while (stCookies.hasMoreTokens()) {
+            String nextCookie = stCookies.nextToken().trim();
+            int equalsPos = nextCookie.indexOf('=');
+            String cookieName = nextCookie.substring(0, equalsPos);
+            String cookieValue = nextCookie.substring(equalsPos + 1);
+            _cookies[counter++] = new Cookie(cookieName, cookieValue);
+         }
+      } else if (_cookies == null) {
+         _cookies = new Cookie[0];
+      }
+      return _cookies;
    }
 
    public Enumeration getHeaderNames() {
-      throw new UnsupportedOperationException();
+      return _headers.keys();
    }
 
    public ServletInputStream getInputStream() {
@@ -334,7 +395,11 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getRequestURI() {
-      return _url;
+      if (_url.indexOf('?') == -1) {
+         return _url;
+      } else {
+         return _url.substring(0, _url.indexOf('?'));
+      }
    }
 
    public StringBuffer getRequestURL() {

@@ -377,28 +377,43 @@ public class HTTPServletHandler {
       String inputLine;
       String url = null;
       char[] contentData = null;
-      String inContentType = null;
+      Map inHeaders = new HashMap();
       int contentLength = -1;
+      String inContentType = null;
       boolean inputRead = false;
       boolean getMethod = false;
 
       while (!inputRead && (inputLine = input.readLine()) != null) {
-         // System.err.println(": " + inputLine);
+         //System.err.println(": " + inputLine);
+
+         // Read the URL received with HTTP GET
          if (inputLine.startsWith("GET ")) {
             url = inputLine.substring(4);
             url = url.replace(',', '&');
-            inputRead = true;
             getMethod = true;
-         }
 
-         // POST method
-         if (url == null && inputLine.startsWith("POST ")) {
+         // Read the URL received with HTTP POST
+         } else if (inputLine.startsWith("POST ")) {
             url = inputLine.substring(5);
-         } else if (inputLine.startsWith("Content-Type: ")) {
-            inContentType = inputLine.substring(14);
-         } else if (inputLine.startsWith("Content-Length: ")) {
-            contentLength = Integer.parseInt(inputLine.substring(16));
-         } else if (contentLength != -1 && inputLine.trim().equals("")) {
+
+         // Read the HTTP headers
+         } else if (inputLine.indexOf(": ") != -1) {
+            int colonPos = inputLine.indexOf(": ");
+            String headerKey = inputLine.substring(0, colonPos);
+            String headerValue = inputLine.substring(colonPos + 2);
+            inHeaders.put(headerKey, headerValue);
+            if (headerKey.equals("Content-Length")) {
+               contentLength = Integer.parseInt(headerValue);
+            } else if (headerKey.equals("Content-Type")) {
+               inContentType = headerValue;
+            }
+
+         // Headers read for HTTP GET
+         } else if (getMethod && inputLine.equals("")) {
+            inputRead = true;
+
+         // Headers read for HTTP POST, then read the content
+         } else if (contentLength != -1 && inputLine.equals("")) {
             if (inContentType == null) {
                input.readLine();
             }
@@ -414,16 +429,16 @@ public class HTTPServletHandler {
       // Normalize the URL
       if (url != null && url.indexOf(' ') != -1) {
          url = url.substring(0, url.indexOf(' '));
+         if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
+            url += "index.html";
+         }
       }
 
       if (url == null) {
          httpResult = "HTTP/1.1 400 Bad Request\r\n";
 
-      // Some browsers also request for a favicon.ico, this query should be ignored
-      //} else if (url.startsWith("/favicon.ico ")) {
-      //   httpResult = "HTTP/1.1 404 " + HttpStatus.getStatusText(404).replace(' ', '_') + "\n\n";
       // Handle the case that a web page is requested
-      } else if (getMethod && url.indexOf('?') == -1) {
+      } else if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/")) {
          httpResult = readWebPage(url);
       } else {
          
@@ -455,38 +470,32 @@ public class HTTPServletHandler {
          } else {
             
             // Query the Servlet
-            XINSServletResponse response = servlet.query(url, contentData, inContentType);
+            XINSServletResponse response = servlet.query(url, contentData, inHeaders);
             
-            // If result == null, the Servlet failed with an HTTP error
-            String result = response.getResult();
-            if (result == null) {
-               httpResult = "HTTP/1.1 " + response.getStatus() + " " +
-                     HttpStatus.getStatusText(response.getStatus()) + "\n\n";
-            } else {
-               
-               // Create the HTTP answer
-               PropertyReader headers = response.getHeaders();
-               Iterator itHeaderNames = headers.getNames();
-               httpResult = "HTTP/1.1 " + response.getStatus() + " " + 
-                     HttpStatus.getStatusText(response.getStatus()) + "\r\n";
-               httpResult += "Content-Type: " + response.getContentType() + "\r\n";
-               while (itHeaderNames.hasNext()) {
-                  String nextHeader = (String) itHeaderNames.next();
-                  String headerValue = headers.get(nextHeader);
-                  if (headerValue != null) {
-                     httpResult += nextHeader + ": " + headerValue + "\r\n";
-                  }
+            // Create the HTTP answer
+            httpResult = "HTTP/1.1 " + response.getStatus() + " " +
+                  HttpStatus.getStatusText(response.getStatus()) + "\r\n";
+            PropertyReader headers = response.getHeaders();
+            Iterator itHeaderNames = headers.getNames();
+            while (itHeaderNames.hasNext()) {
+               String nextHeader = (String) itHeaderNames.next();
+               String headerValue = headers.get(nextHeader);
+               if (headerValue != null) {
+                  httpResult += nextHeader + ": " + headerValue + "\r\n";
+                  //System.err.println(": " + nextHeader + ": " + headerValue);
                }
-
+            }
+            
+            String result = response.getResult();
+            if (result != null) {
                encoding = response.getCharacterEncoding();
-
                int length = result.getBytes(encoding).length + 1;
                httpResult += "Content-Length: " + length + "\r\n";
                httpResult += "Connection: close\r\n";
                httpResult += "\r\n";
                httpResult += result + "\n";
-               httpResult += "\n";
             }
+            httpResult += "\n";
          }
       }
 
@@ -505,11 +514,6 @@ public class HTTPServletHandler {
     */
    private String readWebPage(String url) throws IOException {
       String httpResult = null;
-      System.err.println("url " + url);
-      if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
-         url += "index.html";
-      }
-
       if (getClass().getResource(url) != null) {
          InputStream urlInputStream = getClass().getResourceAsStream(url);
          ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();

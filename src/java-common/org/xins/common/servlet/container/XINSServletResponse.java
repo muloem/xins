@@ -8,6 +8,7 @@ package org.xins.common.servlet.container;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -85,12 +86,12 @@ public class XINSServletResponse implements HttpServletResponse {
       throw new UnsupportedOperationException();
    }
 
-   public String encodeUrl(String str) {
-      throw new UnsupportedOperationException();
+   public String encodeUrl(String url) {
+      return url;
    }
 
-   public String encodeURL(String str) {
-      throw new UnsupportedOperationException();
+   public String encodeURL(String url) {
+      return url;
    }
 
    public String encodeRedirectUrl(String str) {
@@ -102,15 +103,16 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public boolean containsHeader(String str) {
-      throw new UnsupportedOperationException();
+      return _headers.get(str) != null;
    }
 
-   public void sendRedirect(String str) {
-      throw new UnsupportedOperationException();
+   public void sendRedirect(String location) {
+      setStatus(302);
+      setHeader("Location", location);
    }
 
    public void setContentType(String type) {
-      _contentType = type;
+      setHeader("Content-Type", type);
 
       String search = "charset=";
       int i = type.indexOf(search);
@@ -132,11 +134,11 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public void setContentLength(int param) {
-      throw new UnsupportedOperationException();
+      setIntHeader("Content-Length", param);
    }
 
    public void addCookie(Cookie cookie) {
-      throw new UnsupportedOperationException();
+      setHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue());
    }
 
    public void setLocale(Locale locale) {
@@ -148,11 +150,11 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public void setIntHeader(String str, int param) {
-      throw new UnsupportedOperationException();
+      setHeader(str, "" + param);
    }
 
    public void addIntHeader(String str, int param) {
-      throw new UnsupportedOperationException();
+      setHeader(str, "" + param);
    }
 
    public void sendError(int sc, String msg) {
