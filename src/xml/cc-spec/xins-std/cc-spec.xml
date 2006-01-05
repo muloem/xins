@@ -32,7 +32,6 @@
 			<rule>A request <keyword term="MUST"/> set the parameter <code>_function</code> to the name of the function to be invoked.</rule>
 			<rule>A request <keyword term="SHOULD"/> set the parameter <code>_convention</code> to the value <code>_xins-std</code>.</rule>
 			<rule>A request <keyword term="MUST NOT"/> set the parameter <code>_convention</code> to a value other than <code>_xins-std</code>.</rule>
-			<rule>A request <keyword term="MUST"/> contain all input parameters that are set.</rule>
 			<rule>A request <keyword term="SHOULD NOT"/> contain any input parameters that are unset.</rule>
 		</group>
 		<group side="client" prefix="CRS">
