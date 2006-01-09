@@ -7,7 +7,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 
 * XINS/Java Common Library:
-  - Improved the Servlet container to handle HTTP headers escepcially for
+  - Improved the Servlet container to handle HTTP headers escpecially for
     cookies.
   - Handle redirection in the Servlet container.
 
