@@ -141,7 +141,7 @@ public class ServletRequestPropertyReaderTests extends TestCase {
 		p.put("b", "2");
 		p.put("c", "");
 		p.put("d", "");
-		p.put("e", "   ");
+		p.put("e", "  \u00a9");
       assertEquals(p, PropertyReaderConverter.toProperties(pr));
 
 		// Invalid URL-encoded stuff
