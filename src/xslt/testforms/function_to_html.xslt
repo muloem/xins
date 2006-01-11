@@ -196,6 +196,12 @@
 
 		<xsl:variable name="isenum" select="not(starts-with($type, '_')) and boolean(document($type_file)/type/enum)" />
 
+		<xsl:variable name="input_form_name">
+			<xsl:if test="@name = 'action' or @name = 'target' or @name = 'method'">
+				<xsl:text>_</xsl:text>
+			</xsl:if>
+			<xsl:value-of select="@name" />
+		</xsl:variable>
 		<!-- TODO: Deprecated parameters -->
 
 		<tr>
@@ -221,7 +227,7 @@
 			<td class="value">
 				<xsl:choose>
 					<xsl:when test="$isenum">
-						<select name="{@name}">
+						<select name="{$input_form_name}">
 							<xsl:attribute name="class">
 								<xsl:choose>
 									<xsl:when test="@required = 'true'">required</xsl:when>
@@ -237,14 +243,14 @@
 						</select>
 					</xsl:when>
 					<xsl:when test="$type = '_boolean'">
-						<select name="{@name}">
+						<select name="{$input_form_name}">
 							<option></option>
 							<option value="true">true</option>
 							<option value="false">false</option>
 						</select>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="text" name="{@name}">
+						<input type="text" name="{$input_form_name}">
 							<xsl:attribute name="class">
 								<xsl:choose>
 									<xsl:when test="@required = 'true'">required</xsl:when>
@@ -301,7 +307,14 @@
 					}
 
 					if (value) {
-						value = escape(value);
+						if (name == '_action' || name == '_method' || name == '_target') {
+							name = name.substring(1);
+						}
+						if (window.encodeURIComponent) {
+							value = encodeURIComponent(value);
+						} else {
+							value = escape(value);
+						}
 						requestParams[requestParams.length] = name + '=' + value;
 						if (formattedRequestString) {
 							formattedRequestString += '&amp;amp;';
