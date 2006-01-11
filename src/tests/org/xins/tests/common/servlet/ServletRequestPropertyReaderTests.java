@@ -93,7 +93,7 @@ public class ServletRequestPropertyReaderTests extends TestCase {
       }
    }
 
-   public void testServletRequestPropertyReader_HTTP()
+   public void testServletRequestPropertyReaderHTTPParameters()
 	throws Exception {
 
 		// Pass null to the constructor
@@ -134,7 +134,7 @@ public class ServletRequestPropertyReaderTests extends TestCase {
       assertEquals(p, PropertyReaderConverter.toProperties(pr));
 
 		// Query string with some special situations
-      r = new ServletRequestMockup("&a=1&b=2&c=&d&&a=1&e=%20+%u0020&&");
+      r = new ServletRequestMockup("&a=1&b=2&c=&d&&a=1&e=%20+%C2%a9&&");
       pr = new ServletRequestPropertyReader(r);
 		p = new Properties();
 		p.put("a", "1");

@@ -8,18 +8,23 @@ package org.xins.common.collections;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.ProgrammingException;
+import org.xins.common.Utils;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
+import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.LogdocStringBuffer;
 
@@ -301,9 +306,14 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(URLEncoding.encode(name));
-         buffer.append('=');
-         buffer.append(URLEncoding.encode(value));
+         try {
+            buffer.append(URLEncoder.encode(name, "UTF-8"));
+            buffer.append('=');
+            buffer.append(URLEncoder.encode(value, "UTF-8"));
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
+            
       }
    }
 
@@ -373,9 +383,13 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(URLEncoding.encode(name));
-         buffer.append('=');
-         buffer.append(URLEncoding.encode(value));
+         try {
+            buffer.append(URLEncoder.encode(name, "UTF-8"));
+            buffer.append('=');
+            buffer.append(URLEncoder.encode(value, "UTF-8"));
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
       }
    }
 
@@ -596,9 +610,13 @@ extends Object {
             }
 
             // Append the key and the value, separated by an equals sign
-            buffer.append(URLEncoding.encode(name));
-            buffer.append('=');
-            buffer.append(URLEncoding.encode(value));
+            try {
+               buffer.append(URLEncoder.encode(name, "UTF-8"));
+               buffer.append('=');
+               buffer.append(URLEncoder.encode(value, "UTF-8"));
+            } catch (UnsupportedEncodingException uee) {
+               throw Utils.logProgrammingError(uee);
+            }
          } while (names.hasNext());
 
          return buffer.toString();

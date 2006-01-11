@@ -6,9 +6,13 @@
  */
 package org.xins.common.types.standard;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import org.xins.common.Utils;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
@@ -123,12 +127,16 @@ public class Properties extends Type {
          String propValue = value.get(propName);
 
          // Append the name encoded
-         buffer.append(URLEncoding.encode(propName));
-         buffer.append('=');
+         try {
+            buffer.append(URLEncoder.encode(propName, "UTF-8"));
+            buffer.append('=');
 
-         // Append the value encoded, iff it is not null
-         if (propValue != null) {
-            buffer.append(URLEncoding.encode(propValue));
+            // Append the value encoded, iff it is not null
+            if (propValue != null) {
+               buffer.append(URLEncoder.encode(propValue, "UTF-8"));
+            }
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
          }
       }
 
@@ -210,23 +218,27 @@ public class Properties extends Type {
          } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
             return false;
          } else {
-            String name  = URLEncoding.decode(token.substring(0, index));
-            if (propertyKeys.contains(name)) {
-               return false;
-            }
-            propertyKeys.add(name);
-            String value = token.substring(index + 1);
-            if (value.length() < 1) {
-               value = null;
-            } else {
-               value = URLEncoding.decode(value);
-            }
+            try {
+               String name  = URLDecoder.decode(token.substring(0, index), "UTF-8");
+               if (propertyKeys.contains(name)) {
+                  return false;
+               }
+               propertyKeys.add(name);
+               String value = token.substring(index + 1);
+               if (value.length() < 1) {
+                  value = null;
+               } else {
+                  value = URLDecoder.decode(value, "UTF-8");
+               }
 
-            if (!_nameType.isValidValue(name)) {
-               return false;
-            }
-            if (!_valueType.isValidValue(value)) {
-               return false;
+               if (!_nameType.isValidValue(name)) {
+                  return false;
+               }
+               if (!_valueType.isValidValue(value)) {
+                  return false;
+               }
+            } catch (UnsupportedEncodingException uee) {
+               throw Utils.logProgrammingError(uee);
             }
          }
       }
@@ -252,22 +264,28 @@ public class Properties extends Type {
          } else if (token.length() > (index + 1) && token.indexOf('=', index + 1) >= 0) {
             throw new TypeValueException(SINGLETON, string);
          } else {
-            String name  = URLEncoding.decode(token.substring(0, index));
-            if (propertyKeys.contains(name)) {
-               throw new TypeValueException(SINGLETON, string, "The key \"" + name + "\" is already set.");
-            }
-            propertyKeys.add(name);
-            String value = token.substring(index + 1);
-            if (value.length() < 1) {
-               value = null;
-            } else {
-               value = URLEncoding.decode(value);
-            }
+            try {
+               String name  = URLDecoder.decode(token.substring(0, index), "UTF-8");
+               if (propertyKeys.contains(name)) {
+                  throw new TypeValueException(SINGLETON, string, "The key \"" + name + "\" is already set.");
+               }
+               propertyKeys.add(name);
+               String value = token.substring(index + 1);
+               if (value.length() < 1) {
+                  value = null;
+               } else {
+                  value = URLDecoder.decode(value, "UTF-8");
+               }
 
-            _nameType.checkValue(name);
-            _valueType.checkValue(value);
+               _nameType.checkValue(name);
+               _valueType.checkValue(value);
 
-            pr.set(name, value);
+               pr.set(name, value);
+            } catch (IllegalArgumentException iae) {
+               throw new TypeValueException(SINGLETON, string, iae.getMessage());
+            } catch (UnsupportedEncodingException uee) {
+               throw Utils.logProgrammingError(uee);
+            }
          }
       }
 

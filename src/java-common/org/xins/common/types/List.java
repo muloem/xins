@@ -6,6 +6,9 @@
  */
 package org.xins.common.types;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.StringTokenizer;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -93,9 +96,13 @@ public class List extends Type {
       StringTokenizer tokenizer = new StringTokenizer(string, "&");
       while (tokenizer.hasMoreTokens()) {
          String token = tokenizer.nextToken();
-         String item = URLEncoding.decode(token);
-         if (!_itemType.isValidValue(item)) {
-            return false;
+         try {
+            String item = URLDecoder.decode(token, "UTF-8");
+            if (!_itemType.isValidValue(item)) {
+               return false;
+            }
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
          }
       }
       return true;
@@ -133,9 +140,13 @@ public class List extends Type {
       StringTokenizer tokenizer = new StringTokenizer(string, "&");
       while (tokenizer.hasMoreTokens()) {
          String token = tokenizer.nextToken();
-         String itemString = URLEncoding.decode(token);
-         Object item = _itemType.fromString(itemString);
-         list.addItem(item);
+         try {
+            String itemString = URLDecoder.decode(token, "UTF-8");
+            Object item = _itemType.fromString(itemString);
+            list.addItem(item);
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
       }
 
       return list;
@@ -189,7 +200,11 @@ public class List extends Type {
             // Should never happens as only add() is able to add items in the list.
             throw new IllegalArgumentException("Incorrect value for type: " + nextItem);
          }
-         buffer.append(URLEncoding.encode(stringItem));
+         try {
+            buffer.append(URLEncoder.encode(stringItem, "UTF-8"));
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
       }
 
       return buffer.toString();

@@ -8,7 +8,6 @@ package org.xins.common.servlet.container;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URLEncoder;
 import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
