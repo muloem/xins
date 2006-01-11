@@ -255,11 +255,11 @@ public class CallingConventionTests extends TestCase {
     */
    public void testXSLTCallingConvention() throws Throwable {
       String html = getHTMLVersion(false);
-      assertTrue("The returned data is not an HTML file.", html.startsWith("<html>"));
+      assertTrue("The returned data is not an HTML file: " + html, html.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html.indexOf("XINS version") != -1);
 
       String html2 = getHTMLVersion(true);
-      assertTrue("The returned data is not an HTML file.", html2.startsWith("<html>"));
+      assertTrue("The returned data is not an HTML file: " + html2, html2.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html2.indexOf("API version") != -1);
    }
 
