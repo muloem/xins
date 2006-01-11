@@ -6,7 +6,10 @@
  */
 package org.xins.server;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
+import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;
@@ -100,9 +103,13 @@ extends AbstractLogdocSerializable {
          }
 
          // Append the key and the value, separated by an equals sign
-         buffer.append(URLEncoding.encode(name));
-         buffer.append('=');
-         buffer.append(URLEncoding.encode(value));
+         try {
+            buffer.append(URLEncoder.encode(name, "UTF-8"));
+            buffer.append('=');
+            buffer.append(URLEncoder.encode(value, "UTF-8"));
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
       } while (names.hasNext());
 
       return buffer.toString();
