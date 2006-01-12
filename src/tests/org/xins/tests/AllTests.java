@@ -127,6 +127,12 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.ElementTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
+      
+      suite.addTestSuite(org.xins.tests.xslt.FirstlineXSLTTestCase.class);
+      suite.addTestSuite(org.xins.tests.xslt.JavaXSLTTestCase.class);
+      suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
+      suite.addTestSuite(org.xins.tests.xslt.ResultcodeUniquenessTestCase.class);
+      suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
 
 
       // XXX: Perform just a single test

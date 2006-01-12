@@ -107,6 +107,7 @@ ${version.file}</fail>
 		<delete dir="docs/javadoc" />
 		<delete dir="docs/javadoc-private" />
 		<delete dir="docs/logdoc" />
+		<delete dir="docs/xsltdoc" />
 		<delete dir="src/tests/build" />
 	</target>
 

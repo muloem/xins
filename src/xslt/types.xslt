@@ -11,30 +11,43 @@
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:xd="http://www.pnp-software.com/XSLTdoc">
+
+	<xd:doc type="stylesheet">
+		<xd:short>
+			Utility XSLT that provides templates to convert a <code>type</code> to
+			something else.
+			XSLT provides multiple functions which converts the input <code>type</code>
+			to some other required <code>type</code>.  <b>Example</b> some example...
+		</xd:short>
+
+		<xd:author>Anthony Goubard</xd:author>
+		<xd:author>Ernst De Haan</xd:author>
+		<xd:copyright>Copyright 2003-2006 Wanadoo Nederland B.V.</xd:copyright>
+		<xd:cvsId>$Id$</xd:cvsId>
+	</xd:doc>
 
 	<xsl:include href="standard_types.xslt"  />
 	<xsl:include href="firstline.xslt"       />
 	<xsl:include href="package_for_api.xslt" />
 
-	<!--
-	* Returns the name of the file for the specified type in the specified
-	* API.
-	*
-	* @param specsdir
-	*    the specification directory for the concerning XINS project, must be
-	*    specified.
-	*
-	* @param api
-	*    the name of the API to which the type belongs, must be specified.
-	*
-	* @param type
-	*    the name of the type, must be specified.
-	*
-	* @return
-	*    the name of the file that should contain the definition of the
-	*    specified type in the specified API.
-	-->
+	<xd:doc>
+		<xd:short>
+			Returns the name of the file for the specified type in the specified API.
+			The should contain the definition of the specified type in the specified 
+			API.
+		</xd:short>
+		<xd:param name="specsdir" type="string">
+			the specification directory for the concerning XINS project, must be
+			specified.
+		</xd:param>
+		<xd:param name="api" type="string">
+			the name of the API to which the type belongs, must be specified.
+		</xd:param>
+		<xd:param name="type" type="string">
+			the name of the type, must be specified.
+		</xd:param>
+	</xd:doc>
 	<xsl:template name="file_for_type">
 		<xsl:param name="specsdir" />
 		<xsl:param name="api"      />

@@ -7,7 +7,7 @@
 -->
 
 <project name="xins-extra" basedir=".">
-
+	
 	<!--
 	Defines the 'junit' task. This target fails if the required class for
 	this task is not available.
@@ -864,4 +864,21 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 		<antcall target="testreports" />
 	</target>
+
+	<target name="xsltdoc">
+		<path id="classpath">
+			<pathelement location="lib/saxon8.jar" />
+			<pathelement path="${java.class.path}" />
+		</path>
+		<delete dir="docs/xsltdoc" />
+		<copy todir="docs/xsltdoc">
+			<fileset dir="src/css/xsltdoc">
+				<filename name="*.css" />
+			</fileset>
+		</copy>
+		<xslt force="true" style="src/xslt/xsltdoc/xsl/xsltdoc.xsl" in="src/config/xsltdoc/config.xml" out="docs/xsltdoc/log.xml">
+			<classpath refid="classpath" />
+		</xslt>
+	</target>
+
 </project>
