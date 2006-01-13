@@ -26,7 +26,7 @@
     <xsl:apply-templates>
       <xsl:with-param name="config" tunnel="yes" as="element()">
         <config>
-          <htmlTemplate href="../../../css/xsltdoc/htmlTemplates/standard.tpl.html"/>
+          <htmlTemplate href="../../css/xsltdoc/htmlTemplates/standard.tpl.html"/>
           <page id="mainPage" menu="yes" label="Main Page" targetFilename="index.html"/>
           <page id="stylesheetList" menu="yes" label="Stylesheet List"/>
           <page id="functionTemplateList" menu="yes" label="Function/Template List"/>

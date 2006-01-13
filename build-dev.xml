@@ -876,7 +876,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<filename name="*.css" />
 			</fileset>
 		</copy>
-		<xslt force="true" style="src/xslt/xsltdoc/xsl/xsltdoc.xsl" in="src/config/xsltdoc/config.xml" out="docs/xsltdoc/log.xml">
+		<xslt force="true" style="src/xslt/xsltdoc/xsltdoc.xsl" in="src/config/xsltdoc/config.xml" out="docs/xsltdoc/log.xml">
 			<classpath refid="classpath" />
 		</xslt>
 	</target>
