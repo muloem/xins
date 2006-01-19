@@ -447,8 +447,12 @@ public class Element implements Cloneable {
     *
     * @throws ParseException
     *    if no child was found or more than one child was found.
+    *
+    * @since XINS 1.4.0
     */
-   public Element getUniqueChildElement(String elementName) throws ParseException {
+   public Element getUniqueChildElement(String elementName)
+   throws ParseException {
+
       List childList = null;
       if (elementName == null) {
          childList = getChildElements();
