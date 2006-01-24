@@ -19,14 +19,14 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 
 * Test forms:
   - Unicode encoding of parameters is done according to RFC 2718.
-  - Fixed SF.net bug#1352259: Problem if an input parameter is named action.
+  - Fixed SF.net bug #1352259: Problem if an input parameter is named action.
 
 * XSLT:
   - Merged branch BRANCH_XSLTDOCS to the head. A tool added to generate the 
     XSLT documentation. Some sample documentation added in type.xslt.
 
 * Unit Tests:
-  - Merged branch BRANCH_XSLTDOCS to the head. Libraries added to wrtie and
+  - Merged branch BRANCH_XSLTDOCS to the head. Libraries added to write and
     execute XSLT unit tests. Sample tests are added for some XSLTs.
 
 ______________________________________________________________________________
