@@ -122,7 +122,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="${javac.encoding}">
+		encoding="${javac.encoding}">
 			<classpath>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
