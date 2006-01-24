@@ -135,6 +135,9 @@
 not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 						</xsl:message>
 					</xsl:if>
+					<xsl:comment>
+						<xsl:value-of select="description/text()" />
+					</xsl:comment>
 					<init-param>
 						<param-name>
 							<xsl:value-of select="@name" />
