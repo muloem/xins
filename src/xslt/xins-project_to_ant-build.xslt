@@ -346,7 +346,7 @@ APIs in this project are:
 					</xsl:for-each>
 					<xsl:for-each select="api">
 						<!-- If old API -->
-						<xsl:variable name="api"      select="@name" />
+						<xsl:variable name="api" select="@name" />
 						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
 							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
 								<xsl:if test="position() &gt; 1 or count(//project/api/impl) &gt; 0">,</xsl:if>
@@ -489,7 +489,7 @@ APIs in this project are:
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 			<dependset>
 				<srcfilelist   dir="{$api_specsdir}"    files="{$functionIncludes}" />
-				<srcfilelist   dir="{$api_specsdir}"    files="*.typ"         />
+				<srcfilelist   dir="{$api_specsdir}"    files="{$typeIncludes}"     />
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 			</dependset>
 			<dependset>
@@ -704,7 +704,7 @@ APIs in this project are:
 					<param name="api" expression="{$api}" />
 				</style>
 				<xmlvalidate warn="false">
-					<fileset dir="{$copiedTypesDir}" includes="**/*.typ"/>
+					<fileset dir="{$copiedTypesDir}" includes="{$typeIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
 				<style
@@ -891,14 +891,14 @@ APIs in this project are:
 				<dependset>
 					<xsl:choose>
 						<xsl:when test="local-name() = 'impl'">
-							<srcfilelist   dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
+							<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
 						</xsl:when>
 						<xsl:otherwise>
-							<srcfilelist   dir="{$api_specsdir}" files="api.xml" />
+							<srcfilelist dir="{$api_specsdir}" files="api.xml" />
 						</xsl:otherwise>
 					</xsl:choose>
-					<srcfileset    dir="{$api_specsdir}">
-						<include name="*.fnc *.typ *.rcd" />
+					<srcfileset dir="{$api_specsdir}">
+						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
 				</dependset>
@@ -1121,7 +1121,7 @@ APIs in this project are:
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java" />
-					<zipfileset dir="{$api_specsdir}" includes="*.xml *.fnc *.typ *.rcd" prefix="specs" />
+					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
 				</war>
 				<checksum file="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
@@ -1206,12 +1206,12 @@ APIs in this project are:
 				<xsl:variable name="javaImplDir"    select="concat($javaImplDir, '/', $packageAsDir)" />
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
-					<fileset dir="{$api_specsdir}" includes="*.fnc" />
+					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}" />
 				</xmlvalidate>
 				<available file="{$javaImplDir}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
 				<style basedir="{$api_specsdir}" 
-				includes="*.fnc" 
+				includes="{$functionIncludes}" 
 				destdir="{$javaImplDir}"
 				extension="Impl.java"
 				style="{$xins_home}/src/xslt/java-server-framework/function_to_stub.xslt">
@@ -1307,10 +1307,10 @@ APIs in this project are:
 				</style>
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
-					<fileset dir="{$api_specsdir}" includes="*.fnc" />
+					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}" />
 				</xmlvalidate>
 				<style basedir="{$api_specsdir}"
-				includes="*.fnc"
+				includes="{$functionIncludes}"
 				destdir="{$javaTestDir}"
 				extension="Tests.java"
 				style="{$xins_home}/src/xslt/tests/function_to_test.xslt">
@@ -1436,7 +1436,7 @@ APIs in this project are:
 			destfile="{$project_home}/build/capis/{$api}-capi.jar"
 			manifest="{$project_home}/build/capis/{$api}-MANIFEST.MF">
 				<fileset dir="{$project_home}/build/classes-capi/{$api}" includes="**/*.class" />
-				<zipfileset dir="{$api_specsdir}" includes="*.xml *.fnc *.typ *.rcd" prefix="specs" />
+				<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" prefix="specs" />
 			</jar>
 		</target>
 
