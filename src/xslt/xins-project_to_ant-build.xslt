@@ -1439,6 +1439,7 @@ APIs in this project are:
 				<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" prefix="specs" />
 			</jar>
 		</target>
+		<target name="capi-{$api}" depends="jar-{$api}" />
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">

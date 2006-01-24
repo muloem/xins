@@ -28,6 +28,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 * Generated build file:
   - Restricted the validation and generation of Java files to the functions,
     types and result codes declared in the api.xml file.
+  - Added capi-<api> target that refers to the jar-<api> target.
 
 * Test forms:
   - Unicode encoding of parameters is done according to RFC 2718.
