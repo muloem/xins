@@ -524,10 +524,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
     * function using the specified request object.
-    * ]]></xsl:text>
+    * 
+    * <p>Description: ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
     <xsl:text><![CDATA[
-    * If the request object is <code>null</code>, then an exception is thrown.
     *
     * <p>Generated from function specification version ]]></xsl:text>
 		<xsl:call-template name="revision2string">
@@ -635,7 +635,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
     * function with the specified parameters.
-    * ]]></xsl:text>
+    *
+    * <p>Description: ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
     <xsl:text><![CDATA[
     *
@@ -794,11 +795,18 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			</xsl:choose>
 		</xsl:variable>
 
+		<!-- Determine the Java variable name -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<!-- Perform the actual printing -->
 		<xsl:text>
     *
     * @param </xsl:text>
-		<xsl:value-of select="@name" />
+		<xsl:value-of select="$javaVariable" />
 		<xsl:text>
     *    </xsl:text>
 		<xsl:value-of select="$description" />

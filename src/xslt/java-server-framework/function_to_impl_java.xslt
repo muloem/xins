@@ -48,7 +48,8 @@ package ]]></xsl:text>
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</code> function.
- * ]]></xsl:text>
+ * 
+ * <p>Description: ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
 		<xsl:text><![CDATA[
  *
