@@ -524,6 +524,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
     * function using the specified request object.
+    * ]]></xsl:text>
+		<xsl:value-of select="description/text()" />
+    <xsl:text><![CDATA[
     * If the request object is <code>null</code>, then an exception is thrown.
     *
     * <p>Generated from function specification version ]]></xsl:text>
@@ -632,6 +635,9 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
     * function with the specified parameters.
+    * ]]></xsl:text>
+		<xsl:value-of select="description/text()" />
+    <xsl:text><![CDATA[
     *
     * <p>Generated from function specification version ]]></xsl:text>
 		<xsl:call-template name="revision2string">
