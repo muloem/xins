@@ -32,6 +32,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     types and result codes declared in the api.xml file. This fixes the
     SF.net bug #1371700.
   - Added capi-<api> target that refers to the jar-<api> target.
+  - Fixed SF.net bug#1371781: Stub generation overwrites existing impl.xml.
 
 * Test forms:
   - Unicode encoding of parameters is done according to RFC 2718.

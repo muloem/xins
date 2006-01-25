@@ -1196,7 +1196,7 @@ APIs in this project are:
 			<target name="create-impl-{$api}{$implName2}" unless="impl.exists">
 				<mkdir dir="{$api_specsdir}/../impl{$implName2}" />
 				<echo file="{$api_specsdir}/../impl{$implName2}/impl.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.2//EN" "http://xins.sourceforge.net/dtd/impl_1_2.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://xins.sourceforge.net/dtd/impl_1_4.dtd">
 
 <impl>
 </impl>]]></echo>
@@ -1208,7 +1208,7 @@ APIs in this project are:
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}" />
 				</xmlvalidate>
-				<available file="{$javaImplDir}/impl.xml" property="impl.exists" />
+				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
 				<style basedir="{$api_specsdir}" 
 				includes="{$functionIncludes}" 
