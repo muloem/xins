@@ -16,8 +16,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 
     implementation class.
-  - Fixed bug #1414626: defining a data section in a resultcode file does 
-    not work.
+  - Fixed SF.net bug #1414626: defining a data section in a resultcode file
+    does not work.
 
 * Generation of client-side Java code:
   - Added the description of the functions in the javadoc of call methods
@@ -29,7 +29,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 
 * Generated build file:
   - Restricted the validation and generation of Java files to the functions,
-    types and result codes declared in the api.xml file.
+    types and result codes declared in the api.xml file. This fixes the
+    SF.net bug #1371700.
   - Added capi-<api> target that refers to the jar-<api> target.
 
 * Test forms:
