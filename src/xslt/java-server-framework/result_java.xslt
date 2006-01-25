@@ -282,6 +282,9 @@ implements Result {
 		<xsl:if test="ancestor::input">
 			<xsl:text>Request</xsl:text>
 		</xsl:if>
+		<xsl:if test="ancestor::resultcode">
+			<xsl:text>Result</xsl:text>
+		</xsl:if>
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> </xsl:text>
@@ -315,6 +318,9 @@ implements Result {
    </xsl:text>
 		<xsl:if test="ancestor::input">
 			<xsl:text>public static final </xsl:text>
+		</xsl:if>
+		<xsl:if test="ancestor::resultcode">
+			<xsl:text>static final </xsl:text>
 		</xsl:if>
 		<xsl:text>class </xsl:text>
 		<xsl:value-of select="$objectName" />

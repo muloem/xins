@@ -49,29 +49,44 @@ public class ResultCodeImpl extends ResultCode  {
    //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
-      String parameter = request.getInputText();
+      
+      if (!request.getUseDefault() && !request.isSetInputText()) {
+         MissingInputResult invalidResult = new MissingInputResult();
+         MissingInputResult.InputParameter parameter = new MissingInputResult.InputParameter();
+         parameter.setName("inputText");
+         parameter.setDetails("If the default is not enabled, a value should be passed.");
+         invalidResult.addInputParameter(parameter);
+         return invalidResult;
+      }
+      
+      String inputValue = null;
+      if (request.isSetInputText()) {
+         inputValue = request.getInputText();
+      } else {
+         inputValue = "XINS";
+      }
 
       // Test in the local map
-      if (paramsCount.containsKey(parameter)) {
-         int count = ((Integer) paramsCount.get(parameter)).intValue();
+      if (paramsCount.containsKey(inputValue)) {
+         int count = ((Integer) paramsCount.get(inputValue)).intValue();
          AlreadySetResult invalidResult = new AlreadySetResult();
          invalidResult.setCount(count);
          count++;
-         paramsCount.put(parameter, new Integer(count));
+         paramsCount.put(inputValue, new Integer(count));
          return invalidResult;
       }
 
       // Lookup in the shared map
-      if (_sharedInstance.get(parameter) != null) {
+      if (_sharedInstance.get(inputValue) != null) {
          AlreadySetResult invalidResult = new AlreadySetResult();
          invalidResult.setCount(-1);
          return invalidResult;
       }
 
-      paramsCount.put(parameter, new Integer(1));
+      paramsCount.put(inputValue, new Integer(1));
 
       SuccessfulResult result = new SuccessfulResult();
-      result.setOutputText(parameter + " added.");
+      result.setOutputText(inputValue + " added.");
       return result;
    }
 }

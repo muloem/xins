@@ -123,13 +123,12 @@ final class </xsl:text>
    //-------------------------------------------------------------------------
 </xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
-		<xsl:apply-templates select="output">
-		</xsl:apply-templates>
+		<xsl:apply-templates select="output" />
+		
+		<xsl:apply-templates select="output/data/element" mode="addElementClass" />
 		<xsl:text>
 }
 </xsl:text>
-		<xsl:apply-templates select="ouput/data/element" mode="addElementClass">
-		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template name="constructor">

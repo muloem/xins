@@ -119,7 +119,7 @@ public class InvalidResponseTests extends TestCase {
 
    public void testInvalidErrorCode() throws Exception {
       try {
-         _capi.callResultCode("hello");
+         _capi.callResultCode(false, "hello");
          fail("Expected UnacceptableErrorCodeXINSCallException");
       } catch (UnacceptableErrorCodeXINSCallException exception) {
          // as expected

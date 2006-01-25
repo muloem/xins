@@ -272,10 +272,11 @@ public class FunctionTests extends TestCase {
       String functionName1 = "ResultCode";
       List errorCodes = new ArrayList();
       errorCodes.add("AlreadySet");
+      errorCodes.add("MissingInput");
       //TODO need to check the function with multiple error codes.
       FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'AlreadySet' has an incorrect number of error codes: "
-         + function1.getErrorCodes().size(), 1, function1.getErrorCodes().size());
+         + function1.getErrorCodes().size(), 2, function1.getErrorCodes().size());
 
       Map functionErrorCodes = function1.getErrorCodes();
       Iterator itFunctionErrorCodes = functionErrorCodes.keySet().iterator();

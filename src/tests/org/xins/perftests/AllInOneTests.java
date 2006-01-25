@@ -196,7 +196,7 @@ public class AllInOneTests extends TestCase {
       }
 
       try {
-         allInOne.callResultCode("hello");
+         allInOne.callResultCode(false, "hello");
       } catch (UnsuccessfulXINSCallException exception) {
          // Expected after the first call
       }

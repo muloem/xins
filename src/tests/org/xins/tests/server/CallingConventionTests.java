@@ -181,6 +181,7 @@ public class CallingConventionTests extends TestCase {
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/allinone/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "ResultCode");
+      params.set("useDefault",  "false");
       params.set("inputText",  inputText);
       if (convention != null) {
          params.set("_convention", convention);
@@ -225,6 +226,7 @@ public class CallingConventionTests extends TestCase {
       String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xml";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request function=\"ResultCode\">" +
+              "  <param name=\"useDefault\">false</param>" +
               "  <param name=\"inputText\">" + randomFive + "</param>" +
               "</request>";
       Element result = postXML(destination, data);
@@ -312,6 +314,7 @@ public class CallingConventionTests extends TestCase {
               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
               "    <ns0:ResultCodeRequest>" +
+              "      <useDefault>false</useDefault>" +
               "      <inputText>" + randomFive + "</inputText>" +
               "    </ns0:ResultCodeRequest>" +
               "  </soap:Body>" +

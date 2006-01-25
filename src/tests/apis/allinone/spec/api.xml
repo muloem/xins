@@ -30,6 +30,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<resultcode name="AlreadySet"     />
 	<resultcode name="InvalidNumber"  />
+	<resultcode name="MissingInput" />
 
 	<category name="DataSections" />
 </api>

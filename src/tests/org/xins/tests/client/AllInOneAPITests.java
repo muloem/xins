@@ -281,10 +281,10 @@ public class AllInOneAPITests extends TestCase {
     * Tests a function that should returned a defined result code.
     */
    public void testResultCode() throws Exception {
-      String result1 = _capi.callResultCode("hello").getOutputText();
+      String result1 = _capi.callResultCode(false, "hello").getOutputText();
       assertEquals("The first call to ResultCode returned an incorrect result", "hello added.", result1);
       try {
-         _capi.callResultCode("hello");
+         _capi.callResultCode(false, "hello");
          fail("The second call with the same parameter should return an AlreadySet error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("AlreadySet", exception.getErrorCode());
@@ -313,11 +313,13 @@ public class AllInOneAPITests extends TestCase {
       // Call once with key, should succeed
       request = new ResultCodeRequest();
       final String key = "johny";
+      request.setUseDefault(false);
       request.setInputText(key);
       _capi.callResultCode(request);
 
       // Call again with same key, should fail
       request = new ResultCodeRequest(); // XXX: Can we re-use request object?
+      request.setUseDefault(false);
       request.setInputText(key);
       try {
          _capi.callResultCode(request);
@@ -328,6 +330,23 @@ public class AllInOneAPITests extends TestCase {
          assertNotNull(exception.getParameters());
          assertEquals("Incorrect value for the count parameter.", "1", exception.getParameter("count"));
          assertNull(exception.getDataElement());
+      }
+   }
+
+   /**
+    * Tests a function that should returned a defined result code with a data section.
+    */
+   public void testResultCode3() throws Exception {
+      try {
+         _capi.callResultCode(false, null);
+         fail("The second call with the same parameter should return a MissingInput error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("MissingInput", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNotNull(exception.getDataElement());
+         Element inputParam = exception.getDataElement().toXMLElement().getUniqueChildElement("inputParameter");
+         assertNotNull(inputParam);
+         assertEquals("Incorrect value for the name parameter.", "inputText", inputParam.getAttribute("name"));
       }
    }
 

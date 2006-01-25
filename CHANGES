@@ -16,6 +16,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 
     implementation class.
+  - Fixed bug #1414626: defining a data section in a resultcode file does 
+    not work.
 
 * Generation of client-side Java code:
   - Added the description of the functions in the javadoc of call methods
@@ -41,6 +43,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 * Unit Tests:
   - Merged branch BRANCH_XSLTDOCS to the head. Libraries added to write and
     execute XSLT unit tests. Sample tests are added for some XSLTs.
+
+* DTD:
+  - Added the possibility to define data elements in the error code files
+    the same way as it is done for functions.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:

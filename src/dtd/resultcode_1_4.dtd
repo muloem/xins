@@ -19,20 +19,19 @@
           type       NMTOKEN #IMPLIED
 >
 <!ELEMENT deprecated (#PCDATA|em)*>
-<!ELEMENT data (element+)>
+<!ELEMENT data (contains?, element+)>
 <!ATTLIST data
-          contains   CDATA #REQUIRED
-          multiplicity CDATA #IMPLIED
+          contains   CDATA #IMPLIED
 >
 <!ELEMENT element (description, deprecated?, contains?, attribute*)>
 <!ATTLIST element
           name       NMTOKEN #REQUIRED
 >
-<!ELEMENT contains (contained*)>
+<!ELEMENT contains (pcdata | contained*)>
+<!ELEMENT pcdata EMPTY>
 <!ELEMENT contained EMPTY>
 <!ATTLIST contained
           element    NMTOKEN #REQUIRED
-          multiplicity CDATA #IMPLIED
 >
 <!ELEMENT attribute (description, deprecated?)>
 <!ATTLIST attribute

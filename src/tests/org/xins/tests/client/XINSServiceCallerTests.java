@@ -146,6 +146,7 @@ public class XINSServiceCallerTests extends TestCase {
       assertNotNull("No java version specified.", parameters.get("java.version"));
       
       BasicPropertyReader parameters2 = new BasicPropertyReader();
+      parameters2.set("useDefault", "false");
       parameters2.set("inputText", "bonjour");
       XINSCallRequest request2 = new XINSCallRequest("ResultCode", parameters2);
       request2.setXINSCallConfig(config);
