@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     RFC 2718.
   - Added WarnDoubleProperties which logs a warning message in the log system
     if a property value is overwritten.
+  - Implemented SF.net RFE #1088277 and #1088278: Keep HTTP connections open.
 
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 

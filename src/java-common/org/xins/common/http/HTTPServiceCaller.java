@@ -11,17 +11,17 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.UnsupportedCharsetException;
-
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.HttpRecoverableException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -36,10 +36,8 @@ import org.apache.log4j.NDC;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
-
 import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
@@ -58,7 +56,6 @@ import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
@@ -182,10 +179,63 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private static final Object CALL_EXECUTOR_COUNT_LOCK = new Object();
 
+   /**
+    * The Map with HttpClient objects.
+    */
+   private static HashMap HTTP_CLIENTS = new HashMap();
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the {@link HttpClient} to use to contact the given target.
+    *
+    * @param target
+    *    the target of the service.
+    *
+    * @return 
+    *    the HttpClient shared instance.
+    */
+   public static HttpClient getHttpClient(TargetDescriptor target) {
+      if (HTTP_CLIENTS.containsKey(target)) {
+         return (HttpClient) HTTP_CLIENTS.get(target);
+      }
+
+      MultiThreadedHttpConnectionManager connectionManager =
+         new MultiThreadedHttpConnectionManager();
+
+      HttpClient httpClient= new HttpClient(connectionManager);
+
+      // Add support for proxies
+      int proxyPort = 80;
+      if ("true".equals(System.getProperty("proxySet")) && System.getProperty("proxyHost") != null) {
+         String proxyHost = System.getProperty("proxyHost");
+         if (System.getProperty("proxyPort") != null) {
+            proxyPort = Integer.parseInt(System.getProperty("proxyPort"));
+         }
+         httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
+      } else if (System.getProperty("http.proxyHost") != null) {
+         String proxyHost = System.getProperty("http.proxyHost");
+         if (System.getProperty("http.proxyPort") != null) {
+            proxyPort = Integer.parseInt(System.getProperty("http.proxyPort"));
+         }
+         httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
+      }
+
+      int connectionTimeOut = target.getConnectionTimeOut();
+      int socketTimeOut     = target.getSocketTimeOut();
+
+      // Configure connection time-out and socket time-out
+      // For compatibility with HTTPClient 2.0, the deprecated methods are still used.
+      httpClient.setHttpConnectionFactoryTimeout(connectionTimeOut);
+      httpClient.setTimeout(socketTimeOut);
+
+      HTTP_CLIENTS.put(target, httpClient);
+
+      return httpClient;
+   }
 
    /**
     * Creates an appropriate <code>HttpMethodBase</code> object for the
@@ -1082,34 +1132,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
             NDC.push(_context);
          }
 
-         // Construct new HttpClient object
-         HttpClient client = new HttpClient();
-
-         // Add support for proxies
-         int proxyPort = 80;
-         if ("true".equals(System.getProperty("proxySet")) && System.getProperty("proxyHost") != null) {
-            String proxyHost = System.getProperty("proxyHost");
-            if (System.getProperty("proxyPort") != null) {
-               proxyPort = Integer.parseInt(System.getProperty("proxyPort"));
-            }
-            client.getHostConfiguration().setProxy(proxyHost, proxyPort);
-         } else if (System.getProperty("http.proxyHost") != null) {
-            String proxyHost = System.getProperty("http.proxyHost");
-            if (System.getProperty("http.proxyPort") != null) {
-               proxyPort = Integer.parseInt(System.getProperty("http.proxyPort"));
-            }
-            client.getHostConfiguration().setProxy(proxyHost, proxyPort);
-         }
+         // Get the HttpClient object
+         HttpClient client = getHttpClient(_target);
 
          // Determine URL and time-outs
-         String url               = _target.getURL();
-         int    connectionTimeOut = _target.getConnectionTimeOut();
-         int    socketTimeOut     = _target.getSocketTimeOut();
-
-         // Configure connection time-out and socket time-out
-         // For compatibility with HTTPClient 2.0, the deprecated methods are still used.
-         client.setHttpConnectionFactoryTimeout(connectionTimeOut);
-         client.setTimeout(socketTimeOut);
+         String url = _target.getURL();
 
          // Construct the method object
          HttpMethodBase method = createMethod(url, _request, _callConfig);

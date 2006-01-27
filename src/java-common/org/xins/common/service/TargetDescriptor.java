@@ -310,7 +310,8 @@ public final class TargetDescriptor extends Descriptor {
       _connectionTimeOut = connectionTimeOut;
       _socketTimeOut     = socketTimeOut;
       _crc               = computeCRC32(url);
-
+      _hashCode          =  new String(_url + "; " + _timeOut + "; " +
+            _socketTimeOut + "; " + _connectionTimeOut).hashCode();
       // NOTE: _asString is lazily initialized
    }
 
@@ -359,6 +360,11 @@ public final class TargetDescriptor extends Descriptor {
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
    private final int _crc;
+
+   /**
+    * The hash code of this object.
+    */
+   private final int _hashCode;
 
 
    //-------------------------------------------------------------------------
@@ -479,6 +485,14 @@ public final class TargetDescriptor extends Descriptor {
     */
    public TargetDescriptor getTargetByCRC(int crc) {
       return (_crc == crc) ? this : null;
+   }
+
+   public int hashCode() {
+       return _hashCode;
+   }
+   
+   public boolean equals(Object obj) {
+       return (obj instanceof TargetDescriptor) && (_hashCode == obj.hashCode());
    }
 
    /**
