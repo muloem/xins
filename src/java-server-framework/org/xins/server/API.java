@@ -567,11 +567,8 @@ implements DefaultResultCodes {
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
 
-      // Initialize ACL subsystem
-      //
       // TODO: Investigate whether we can take the configuration file reload
       //       interval from somewhere (ConfigManager? Engine?).
-      String acl = runtimeSettings.get(ACL_PROPERTY);
       String propName  = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
       String propValue = runtimeSettings.get(propName);
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
@@ -590,6 +587,10 @@ implements DefaultResultCodes {
                "Negative interval not allowed. Use 0 to disable reloading.");
          }
       }
+
+      // Initialize ACL subsystem
+      //
+      String acl = runtimeSettings.get(ACL_PROPERTY);
 
       // Dispose the old access control list
       if (_accessRuleList != null) {
