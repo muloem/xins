@@ -186,7 +186,14 @@
 		</entry>
 	</group>
 
-	<group id="collections" name="Generic collection classes" />
+	<group id="collections" name="Generic collection classes">
+		<entry id="1350" level="WARNING">
+			<description>A property value has cahnged.</description>
+			<param name="key" type="text" nullable="false" />
+			<param name="oldValue" type="text" nullable="false" />
+			<param name="newValue" type="text" />
+		</entry>
+	</group>
 
 	<group id="collections.expiry" name="Expiry-related collection classes">
 		<entry id="1400" level="DEBUG">

@@ -27,6 +27,7 @@ import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.StatsPropertyReader;
+import org.xins.common.collections.WarnDoubleProperties;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.LogCentral;
@@ -226,7 +227,7 @@ final class ConfigManager extends Object {
 
          synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
 
-            Properties properties = new Properties();
+            Properties properties = new WarnDoubleProperties();
             FileInputStream in = null;
             try {
 

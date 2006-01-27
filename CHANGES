@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - Handle redirection in the Servlet container.
   - Unicode encoding and decoding of parameters is done according to
     RFC 2718.
+  - Added WarnDoubleProperties which logs a warning message in the log system
+    if a property value is overwritten.
 
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 
