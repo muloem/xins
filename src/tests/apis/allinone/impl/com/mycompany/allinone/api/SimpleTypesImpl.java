@@ -59,7 +59,11 @@ public class SimpleTypesImpl extends SimpleTypes  {
       result.setOutputLong(14L);
       result.setOutputFloat(3.5F);
       result.setOutputDouble(3.1415);
-      result.setOutputText("Hello ~!@#$%^&*()_+<>?[]\\;',./ \u20AC\u0630&");
+      if (request.getInputText().equals("perftests")) {
+        result.setOutputText("hello");
+      } else {
+        result.setOutputText("Hello ~!@#$%^&*()_+<>?[]\\;',./ \u20AC\u0630&");
+      }
       Date.Value outputDate = new Date.Value(2004,6,21);
       result.setOutputDate(outputDate);
 
