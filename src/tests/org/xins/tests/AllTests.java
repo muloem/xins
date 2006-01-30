@@ -46,7 +46,7 @@ public class AllTests extends TestSuite {
       // Add all tests
       //
 
-      /*suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
+      suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
 
@@ -107,7 +107,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.TimestampTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);
 
-      suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);*/
+      suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.CAPITests.class);
