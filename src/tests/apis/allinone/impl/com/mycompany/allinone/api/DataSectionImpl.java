@@ -50,6 +50,9 @@ public class DataSectionImpl extends DataSection  {
       User su = new User();
       su.setName("superuser");
       su.setAddress("12 Madison Avenue");
+      if (!su.getAddress().equals("12 Madison Avenue")) {
+         throw new Exception("Incorrect address set.");
+      }
       su.pcdata("This user has the root authorisation.");
       result.addUser(su);
 

@@ -64,8 +64,14 @@ public class SimpleTypesImpl extends SimpleTypes  {
       } else {
         result.setOutputText("Hello ~!@#$%^&*()_+<>?[]\\;',./ \u20AC\u0630&");
       }
+      if (result.getOutputDate() != null) {
+         throw new Exception("the outputDate parameter should be null.");
+      }
       Date.Value outputDate = new Date.Value(2004,6,21);
       result.setOutputDate(outputDate);
+      if (!result.getOutputDate().equals(outputDate)) {
+         throw new Exception("Incorrect outputDate parameter.");
+      }
 
       if (request.isSetInputBinary()) {
          byte[] inputBinary = request.getInputBinary();

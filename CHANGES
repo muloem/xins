@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     implementation class.
   - Fixed SF.net bug #1414626: defining a data section in a resultcode file
     does not work.
+  - Added get methods in the generated result files.
+  - Added get methods for the attributes of the generated data element objects.
 
 * Generation of client-side Java code:
   - Added the description of the functions in the javadoc of call methods

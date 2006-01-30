@@ -132,7 +132,6 @@ implements Result {
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="methodName">
-			<xsl:text>set</xsl:text>
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
@@ -143,6 +142,15 @@ implements Result {
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
 				<xsl:with-param name="required"     select="'true'"        />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="javaobjecttype">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="'false'"        />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -165,23 +173,35 @@ implements Result {
 				<xsl:with-param name="text" select="$javasimpletype" />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="parameterText">
+			<xsl:choose>
+				<xsl:when test="@required = 'true'">
+					<xsl:text>required </xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>optional </xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="name()='attribute'">
+					<xsl:text>attribute</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>output parameter</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text><![CDATA[ <em>]]></xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text><![CDATA[</em>]]></xsl:text>
+		</xsl:variable>
 
 		<!-- Write the set methods -->
-		<xsl:text><![CDATA[
+		<xsl:text>
 
    /**
-    * Sets the value of the ]]></xsl:text>
-		<xsl:choose>
-			<xsl:when test="@required = 'true'">
-				<xsl:text>required</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>optional</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text><![CDATA[ output parameter <em>]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em>.
+    * Sets the value of the </xsl:text>
+		<xsl:value-of select="parameterText" />
+		<xsl:text><![CDATA[.
     * This method ]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="@required = 'true'">
@@ -196,10 +216,10 @@ implements Result {
     *
     * @param </xsl:text>
 		<xsl:value-of select="$javaVariable" />
-		<xsl:text><![CDATA[
-    *    the value of the <em>]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em> output parameter,
+		<xsl:text>
+    *    the value of the </xsl:text>
+		<xsl:value-of select="parameterText" />
+		<xsl:text><![CDATA[,
     *      can be <code>null</code>.
     *      The value is not added to the result if the value is <code>null</code>
     *      or its <code>String</code> representation is an empty
@@ -213,7 +233,7 @@ implements Result {
 		</xsl:if>
 		<xsl:text>
     */
-   public void </xsl:text>
+   public void set</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$javasimpletype" />
@@ -241,6 +261,57 @@ implements Result {
 		</xsl:if>
 		<xsl:text>
    }</xsl:text>
+	 
+		<xsl:text>
+
+   /**
+    * Gets the value of the </xsl:text>
+		<xsl:value-of select="parameterText" />
+		<xsl:text><![CDATA[.
+    * If unset, <code>null</code> is returned.
+    *
+    * @return
+    *    the value of the ]]></xsl:text>
+		<xsl:value-of select="parameterText" />
+		<xsl:text><![CDATA[, or <code>null</code> if unset.
+    *
+    * @since XINS 1.4.0
+    */
+   public ]]></xsl:text>
+		<xsl:value-of select="$javaobjecttype" />
+		<xsl:text> get</xsl:text>
+		<xsl:value-of select="$methodName" />
+		<xsl:text>() {
+      try {
+         return </xsl:text>
+		<xsl:choose>
+			<xsl:when test="name()='attribute'">
+				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="required" select="'false'" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="variable" select="concat('_elementBuilder.createElement().getAttribute(&quot;', @name, '&quot;)')" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="required" select="'false'" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="variable" select="concat('getParameter(&quot;', @name, '&quot;)')" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>;
+      } catch(org.xins.common.types.TypeValueException tve) {
+
+         // Should never happen
+         return null;
+      }
+   }</xsl:text>
+
 	</xsl:template>
 
 	<!-- ************************************************************* -->
