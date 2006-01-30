@@ -266,7 +266,12 @@ implements DefaultResultCodes {
    private String _apiVersion;
 
    /**
-    * The access rule list.
+    * The API specific access rule list.
+    */
+   private AccessRuleList _apiAccessRuleList;
+
+   /**
+    * The general access rule list.
     */
    private AccessRuleList _accessRuleList;
 
@@ -589,44 +594,18 @@ implements DefaultResultCodes {
       }
 
       // Initialize ACL subsystem
-      //
-      String acl = runtimeSettings.get(ACL_PROPERTY);
+      
+      // First with the API specific access rule list
+      if (_apiAccessRuleList != null) {
+         _apiAccessRuleList.dispose();
+      }
+      _apiAccessRuleList = createAccessRuleList(runtimeSettings, ACL_PROPERTY + '.' + _name, interval);
 
-      // Dispose the old access control list
+      // Then read the generic access rule list
       if (_accessRuleList != null) {
          _accessRuleList.dispose();
       }
-
-      // New access control list is empty
-      if (acl == null || acl.trim().length() < 1) {
-         _accessRuleList = AccessRuleList.EMPTY;
-         Log.log_3426(ACL_PROPERTY);
-
-      // New access control list is non-empty
-      } else {
-
-         // Parse the new ACL
-         try {
-            _accessRuleList =
-               AccessRuleList.parseAccessRuleList(acl, interval);
-            int ruleCount = _accessRuleList.getRuleCount();
-            Log.log_3427(ruleCount);
-
-         // Parsing failed
-         } catch (ParseException exception) {
-            String exceptionMessage = exception.getMessage();
-            if (exceptionMessage != null) {
-               exceptionMessage = exceptionMessage.trim();
-               if (exceptionMessage.length() < 1) {
-                  exceptionMessage = null;
-               }
-            }
-            Log.log_3428(ACL_PROPERTY, acl, exceptionMessage);
-            throw new InvalidPropertyValueException(ACL_PROPERTY,
-                                                    acl,
-                                                    exceptionMessage);
-         }
-      }
+      _accessRuleList = createAccessRuleList(runtimeSettings, ACL_PROPERTY, interval);
 
       // Initialize the RuntimeProperties object.
       getProperties().init(runtimeSettings);
@@ -715,6 +694,53 @@ implements DefaultResultCodes {
       // TODO: Call initImpl2(PropertyReader) ?
 
       Log.log_3406(_name);
+   }
+
+   /**
+    * Creates the access rule list for the given property.
+    *
+    * @param runtimeSettings
+    *    the runtime properties, never <code>null</code>.
+    *
+    * @param aclProperty
+    *    the ACL property, never <code>null</code>
+    *
+    * @return
+    *    the access rule list created from the property value, never <code>null</code>.
+    *
+    * @throws InvalidPropertyValueException
+    *    if the value for the property is invalid.
+    */
+   private AccessRuleList createAccessRuleList(PropertyReader runtimeSettings, 
+         String aclProperty, int interval) 
+   throws InvalidPropertyValueException {
+      String acl = runtimeSettings.get(aclProperty);
+
+      // New access control list is empty
+      if (acl == null || acl.trim().length() < 1) {
+         Log.log_3426(aclProperty);
+         return AccessRuleList.EMPTY;
+
+      // New access control list is non-empty
+      } else {
+
+         // Parse the new ACL
+         try {
+            AccessRuleList accessRuleList =
+               AccessRuleList.parseAccessRuleList(acl, interval);
+            int ruleCount = accessRuleList.getRuleCount();
+            Log.log_3427(ruleCount);
+            return accessRuleList;
+
+         // Parsing failed
+         } catch (ParseException exception) {
+            String exceptionMessage = exception.getMessage();
+            Log.log_3428(aclProperty, acl, exceptionMessage);
+            throw new InvalidPropertyValueException(aclProperty,
+                                                    acl,
+                                                    exceptionMessage);
+         }
+      }
    }
 
    /**
@@ -918,7 +944,8 @@ implements DefaultResultCodes {
    throws IllegalArgumentException {
 
       // If no property is defined only localhost is allowed
-      if (_accessRuleList == AccessRuleList.EMPTY &&
+      if (_apiAccessRuleList == AccessRuleList.EMPTY &&
+          _accessRuleList == AccessRuleList.EMPTY &&
           (ip.equals("127.0.0.1") || ip.equals(_localIPAddress))) {
          return true;
       }
@@ -926,7 +953,12 @@ implements DefaultResultCodes {
       // Match an access rule
       Boolean allowed;
       try {
-         allowed = _accessRuleList.isAllowed(ip, functionName);
+         
+         // First check with the API specific one, then use the generic one.
+         allowed = _apiAccessRuleList.isAllowed(ip, functionName);
+         if (allowed == null) {
+            allowed = _accessRuleList.isAllowed(ip, functionName);
+         }
 
       // If the IP address cannot be parsed there is a programming error
       // somewhere
