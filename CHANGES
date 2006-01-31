@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 
 * XINS/Java Server Framework:
   - Added the possibility to set ACL's specifically for an API.
+  - The details are logged in case of an invalid response is returned.
 
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 

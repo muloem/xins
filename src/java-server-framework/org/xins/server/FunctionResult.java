@@ -8,6 +8,7 @@ package org.xins.server;
 
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.xml.ElementBuilder;
 
 /**
@@ -210,5 +211,21 @@ public class FunctionResult extends Object {
       } else {
          return _dataElementBuilder.createElement();
       }
+   }
+   
+   public String toString() {
+      String asString = "";
+      if (_code != null) {
+         asString += "Error code: " + _code + "; ";
+      } else {
+         asString += "Successful result; ";
+      }
+      asString += PropertyReaderUtils.toString(_parameters, "no parameters") + "; ";
+      if (_dataElementBuilder == null) {
+         asString += "no data section";
+      } else {
+         asString += _dataElementBuilder.createElement().toString();
+      }
+      return asString;
    }
 }

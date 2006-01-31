@@ -519,6 +519,7 @@
 			<description>Function attempted to return invalid response.</description>
 			<param name="function" type="text"  nullable="false" />
 			<param name="callID"   type="int32" nullable="false" />
+			<param name="details"  type="text" />
 		</entry>
 		<entry id="3502" level="DEBUG" exception="true">
 			<description>Exception result message while checking a URL.</description>

@@ -255,7 +255,8 @@ implements DefaultResultCodes {
          InvalidResponseResult invalidResponse = result.checkOutputParameters();
          if (invalidResponse != null) {
             result = invalidResponse;
-            Log.log_3501(functionRequest.getFunctionName(), callID);
+            String details = invalidResponse.toString();
+            Log.log_3501(functionRequest.getFunctionName(), callID, details);
          }
 
       } catch (Throwable exception) {
