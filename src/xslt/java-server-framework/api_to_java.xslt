@@ -20,7 +20,6 @@
 	<xsl:param name="specsdir"     />
 	<xsl:param name="impl_file"    />
 	<xsl:param name="package"      />
-	<xsl:param name="enable_statistics">true</xsl:param>
 
 	<!-- Perform includes -->
 	<xsl:include href="../casechange.xslt" />

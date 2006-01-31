@@ -27,6 +27,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     does not work.
   - Added get methods in the generated result files.
   - Added get methods for the attributes of the generated data element objects.
+  - Optimized the generation of the result code used in the functions of
+    the api.
 
 * Generation of client-side Java code:
   - Added the description of the functions in the javadoc of call methods

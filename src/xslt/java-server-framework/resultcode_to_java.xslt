@@ -39,13 +39,15 @@
 		<xsl:variable name="className" select="concat($resultcode, 'Result')" />
 
 		<xsl:variable name="resultcodeIncludes">
-			<xsl:for-each select="$api_node/function">
-				<xsl:call-template name="search-matching-resultcode">
-					<xsl:with-param name="functionName" select="@name" />
-					<xsl:with-param name="resultcode" select="$resultcode" />
-				</xsl:call-template>
+			<xsl:variable name="resultcodes_file" select="concat($project_home, '/build/java-fundament/', $api, '/resultcodes.xml')" />
+			<xsl:variable name="resultcodes_node" select="document($resultcodes_file)/api" />
+			<xsl:for-each select="$resultcodes_node/function/resultcode[@name=$resultcode]">
+				<xsl:text>, </xsl:text>
+				<xsl:value-of select="../@name" />
+				<xsl:text>.UnsuccessfulResult</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
+		
 		<!-- Truncate the first ", " -->
 		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
 

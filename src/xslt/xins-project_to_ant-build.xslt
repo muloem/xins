@@ -901,6 +901,7 @@ APIs in this project are:
 						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
+					<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml"/>
 				</dependset>
 				<xsl:variable name="impl_file">
 					<xsl:choose>
@@ -969,6 +970,7 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 					<param name="impl_file"    expression="{$impl_file}"    />
 				</style>
+
 				<!-- Generation of the result code files. -->
 				<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
 				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
@@ -980,6 +982,13 @@ APIs in this project are:
 						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
+					<style
+					in="{$api_file}"
+					out="{$javaDestDir}/resultcodes.xml"
+					style="{$xins_home}/src/xslt/java-server-framework/api_to_resultcodes.xslt">
+						<xmlcatalog refid="all-dtds" />
+						<param name="specsdir"     expression="{$api_specsdir}" />
+					</style>
 					<style
 					basedir="{$api_specsdir}"
 					destdir="{$javaDestDir}/{$packageAsDir}"
