@@ -555,7 +555,7 @@
 			<description>Request does not specify any calling convention.</description>
 		</entry>
 		<entry id="3509" level="DEBUG">
-			<description>Calling convention chosen for request that does not specify any calling convention.</description>
+			<description>A calling convention has been selected for a request that did not specify one explicitly.</description>
 			<param name="conventionClassName" />
 		</entry>
 		<entry id="3510" level="INFO">
