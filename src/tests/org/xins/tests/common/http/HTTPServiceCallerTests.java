@@ -41,7 +41,7 @@ public class HTTPServiceCallerTests extends TestCase {
    /**
     * Total time-out to use for HTTP connections.
     */
-   private final static int TOTAL_TO = 60000;
+   private final static int TOTAL_TO = 30000;
 
    /**
     * Connection time-out to use when making HTTP connections.
