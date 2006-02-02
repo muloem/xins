@@ -982,6 +982,7 @@ APIs in this project are:
 						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
+					<!-- An intermediate file containing all the functions/result codes is created for performance reasons. -->
 					<style
 					in="{$api_file}"
 					out="{$javaDestDir}/resultcodes.xml"
