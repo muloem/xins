@@ -36,6 +36,7 @@ import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
+import org.xins.common.spec.ErrorCodeSpec;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
@@ -381,7 +382,14 @@ public final class XINSServiceCaller extends ServiceCaller {
          String             function  = request.getFunctionName();
          PropertyReader     p         = request.getParameters();
          LogdocSerializable params    = PropertyReaderUtils.serialize(p, "", "&");
-         Log.log_2113(function, params, duration);
+         
+         // Log functional error code at INFO level
+         if (exception instanceof UnsuccessfulXINSCallException && 
+               ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL) {
+            Log.log_2116(function, params, duration);
+         } else {
+            Log.log_2113(function, params, duration);
+         }
 
          if (exception instanceof GenericCallException) {
             throw (GenericCallException) exception;
@@ -660,8 +668,24 @@ public final class XINSServiceCaller extends ServiceCaller {
       String errorCode = resultData.getErrorCode();
       if (errorCode != null) {
 
+         boolean functionalError = false;
+         ErrorCodeSpec.Type type = null;
+         try {
+            if (_capi != null) {
+               type = _capi.getAPISpecification().getFunction(function).
+                     getErrorCode(errorCode).getType();
+               functionalError = (type == ErrorCodeSpec.FUNCTIONAL);
+            }
+         } catch (Exception ex) {
+            // Ignore, the default is the technical error code
+         }
+                 
          // Log this
-         Log.log_2112(url, function, params, duration, errorCode);
+         if (functionalError) {
+            Log.log_2115(url, function, params, duration, errorCode);
+         } else {
+            Log.log_2112(url, function, params, duration, errorCode);
+         }
 
          // Standard error codes (start with an underscore)
          if (errorCode.charAt(0) == '_') {
@@ -694,6 +718,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                   xinsRequest, target, duration, resultData);
 
             if (ex != null) {
+               ex.setType(type);
                throw ex;
             } else {
 

@@ -6,6 +6,7 @@
 <!ELEMENT resultcode (description, output?)>
 <!ATTLIST resultcode
           name       NMTOKEN #REQUIRED
+          type       (functional|technical) "technical"
           rcsversion CDATA #IMPLIED
           rcsdate    CDATA #IMPLIED
 >

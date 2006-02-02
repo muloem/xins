@@ -11,6 +11,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.spec.ErrorCodeSpec;
 
 /**
  * Exception that indicates that a result code was returned by the API call.
@@ -148,6 +149,11 @@ implements XINSCallResultData {
     */
    private final XINSCallResultData _result;
 
+   /**
+    * The type of the error.
+    */
+   private ErrorCodeSpec.Type _type;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -204,5 +210,25 @@ implements XINSCallResultData {
     */
    public final DataElement getDataElement() {
       return _result.getDataElement();
+   }
+
+   /**
+    * Sets the type of the error code.
+    *
+    * @param type
+    *    the type of the error (functionnal or technical).
+    */
+   void setType(ErrorCodeSpec.Type type) {
+      _type = type;
+   }
+   
+   /**
+    * Returns the type of the error code.
+    *
+    * @return
+    *    the type as a {@link ErrorCodeSpec.Type}, can be <code>null</code> if it's unknown.
+    */
+   public final ErrorCodeSpec.Type getType() {
+      return _type;
    }
 }

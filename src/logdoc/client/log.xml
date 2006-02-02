@@ -113,6 +113,20 @@
 			<param name="buildVersion"   type="text" nullable="false" />
 			<param name="runtimeVersion" type="text" nullable="false" />
 		</entry>
+		<entry id="2115" level="INFO">
+			<description>Unsuccessful XINS result received with a functional error code.</description>
+			<param name="url"        type="text"         nullable="false" />
+			<param name="function"   type="text"         nullable="false" />
+			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="duration"   type="int64"        nullable="false" />
+			<param name="errorCode"  type="text"         nullable="false" />
+		</entry>
+		<entry id="2116" level="INFO" exception="false">
+			<description>XINS call request completely failed due to a functional error code.</description>
+			<param name="function"   type="text"         nullable="false" />
+			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="duration"   type="int64"        nullable="false" />
+		</entry>
 	</group>
 
 	<group id="parse" name="XINS call result parsing">

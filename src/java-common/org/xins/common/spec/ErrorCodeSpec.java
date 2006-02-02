@@ -35,6 +35,17 @@ public final class ErrorCodeSpec extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   /**
+    * Type indicating that the error code is functional.
+    */
+   public final static Type FUNCTIONAL = new Type();
+
+   /**
+    * Type indicating that the error code is technical.
+    */
+   public final static Type TECHNICAL = new Type();
+
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -94,6 +105,11 @@ public final class ErrorCodeSpec extends Object {
     * The output data section elements of the function.
     */
    private Map _outputDataSectionElements;
+
+   /**
+    * The type of the error code.
+    */
+   private Type _type;
 
 
    //-------------------------------------------------------------------------
@@ -199,11 +215,21 @@ public final class ErrorCodeSpec extends Object {
     * The key is the name of the element, the value is the {@link DataSectionElementSpec} object.
     *
     * @return
-    *   The specification of the output data section, never <code>null</code>.
+    *   the specification of the output data section, never <code>null</code>.
     */
    public Map getOutputDataSectionElements() {
 
       return _outputDataSectionElements;
+   }
+
+   /**
+    * Gets the type of the error code.
+    *
+    * @return
+    *    the type of the error code.
+    */
+   public Type getType() {
+      return _type;
    }
 
    /**
@@ -236,6 +262,17 @@ public final class ErrorCodeSpec extends Object {
          throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName + "] Cannot parse error code.",  pe);
       }
 
+      // Get the type of the error code.
+      String typeAsString = errorCode.getAttribute("type");
+      if (typeAsString == null || typeAsString.equals("technical")) {
+         _type = TECHNICAL;
+      } else if (typeAsString.equals("functional")) {
+         _type = FUNCTIONAL;
+      } else {
+         throw new InvalidSpecificationException("[ErrorCode: " + _errorCodeName
+               + "] Incorrect type specified.");
+      }
+
       // Get the result from the parsed error code specification.
       List descriptionElementList = errorCode.getChildElements("description");
       if (descriptionElementList.isEmpty()) {
@@ -258,6 +295,12 @@ public final class ErrorCodeSpec extends Object {
             Element dataSection = (Element) dataSections.get(0);
             _outputDataSectionElements = FunctionSpec.parseDataSectionElements(reference, dataSection, dataSection);
          }
+      }
+   }
+   
+   public static class Type {
+      
+      private Type() {
       }
    }
 }

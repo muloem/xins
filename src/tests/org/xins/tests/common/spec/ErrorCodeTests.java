@@ -114,6 +114,15 @@ public class ErrorCodeTests extends TestCase {
    }
 
    /**
+    * Tests that the {@link ErrorCodeSpec#getType() getType()}
+    * returns the correct type of the error code of a function of the API.
+    */
+   public void testErrorCodeGetType() throws Exception {
+      assertTrue("The type of the error code is not functional as expected.",
+         _errorCode.getType() == ErrorCodeSpec.FUNCTIONAL);
+   }
+
+   /**
     * Tests that the  {@link ErrorCodeSpec#getOutputParameter(String) getOutputParameter(String)}
     * returns the correct output parameters of the error code of a function of
     * the API when given an output parameter name.
