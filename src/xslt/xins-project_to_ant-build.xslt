@@ -738,6 +738,9 @@ APIs in this project are:
 			<property file="{$project_home}/build.properties" />
 			<property name="wsdl.endpoint" value="" />
 			<mkdir dir="{$builddir}/wsdl" />
+			<tstamp>
+				<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
+			</tstamp>
 			<style
 			in="{$api_specsdir}/api.xml"
 			out="{$builddir}/wsdl/{$api}.wsdl"
@@ -747,6 +750,8 @@ APIs in this project are:
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
+				<param name="xins_version" expression="{$xins_version}" />
+				<param name="timestamp"    expression="${{timestamp}}"  />
 			</style>
 			<replace file="{$builddir}/wsdl/{$api}.wsdl">
 				<replacefilter token="urn:apiname" value="urn:{$api}" />
