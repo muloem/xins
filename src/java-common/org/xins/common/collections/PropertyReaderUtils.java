@@ -410,7 +410,7 @@ extends Object {
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty) {
-      return serialize(p, valueIfEmpty, null);
+      return serialize(p, valueIfEmpty, null, null);
    }
 
    /**
@@ -429,13 +429,18 @@ extends Object {
     *    the prefix to add to the value if the <code>PropertyReader</code>
     *    is not empty, can be <code>null</code>.
     *
+    * @param suffix
+    *    the suffix to add to the value, can be <code>null</code>. The suffix
+    *    will be added even if the PropertyReaderis empty.
+    *
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty,
-                                              String         prefixIfNotEmpty) {
-      return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty);
+                                              String         prefixIfNotEmpty,
+                                              String         suffix) {
+      return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty, suffix);
    }
 
    /**
@@ -529,11 +534,13 @@ extends Object {
        */
       SerializedPropertyReader(PropertyReader p,
                                String         valueIfEmpty,
-                               String         prefixIfNotEmpty) {
+                               String         prefixIfNotEmpty,
+                               String         suffix) {
 
          _propertyReader = p;
          _valueIfEmpty   = valueIfEmpty;
-         _prefixIfNotEmpty   = prefixIfNotEmpty;
+         _prefixIfNotEmpty = prefixIfNotEmpty;
+         _suffix = suffix;
       }
 
 
@@ -557,11 +564,15 @@ extends Object {
        */
       private final String _prefixIfNotEmpty;
 
+      /**
+       * The suffix to add at the end of the Logdoc serializable.
+       */
+      private final String _suffix;
+
 
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
-
 
       /**
        * Initializes this <code>AbstractLogdocSerializable</code> object.
@@ -575,14 +586,22 @@ extends Object {
 
          // If the property set if null, return the fallback
          if (_propertyReader == null) {
-            return _valueIfEmpty;
+            if (_suffix != null) {
+               return _suffix;
+            } else {
+               return _valueIfEmpty;
+            }
          }
 
          Iterator names = _propertyReader.getNames();
 
          // If there are no parameters, then return the fallback
          if (! names.hasNext()) {
-            return _valueIfEmpty;
+            if (_suffix != null) {
+               return _suffix;
+            } else {
+               return _valueIfEmpty;
+            }
          }
 
          FastStringBuffer buffer = new FastStringBuffer(299);
@@ -618,6 +637,11 @@ extends Object {
                throw Utils.logProgrammingError(uee);
             }
          } while (names.hasNext());
+         
+         if (_suffix != null) {
+            buffer.append('&');
+            buffer.append(_suffix);
+         }
 
          return buffer.toString();
       }

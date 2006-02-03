@@ -686,7 +686,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Get the parameters for logging
       PropertyReader     p      = request.getParameters();
-      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "?");
+      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "?", null);
 
       // Prepare a thread for execution of the call
       // NOTE: Preconditions are checked by the CallExecutor constructor

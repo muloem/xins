@@ -1065,11 +1065,11 @@ implements DefaultResultCodes {
          }
 
          // Prepare for transaction logging
-         LogdocSerializable serStart  = new FormattedDate(start);
-         LogdocSerializable inParams  =
-            new FormattedParameters(functionRequest.getParameters());
+         LogdocSerializable serStart = new FormattedDate(start);
+         LogdocSerializable inParams =
+            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
          LogdocSerializable outParams =
-            new FormattedParameters(result.getParameters());
+            new FormattedParameters(result.getParameters(), result.getDataElement());
 
          // Log transaction before returning the result
          Log.log_3540(serStart, ip, functionName, duration, code, inParams,

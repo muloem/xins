@@ -336,8 +336,8 @@ implements DefaultResultCodes {
 
       // Serialize the date, input parameters and output parameters
       LogdocSerializable serStart  = new FormattedDate(start);
-      LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters());
-      LogdocSerializable outParams = new FormattedParameters(result.getParameters());
+      LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+      LogdocSerializable outParams = new FormattedParameters(result.getParameters(), result.getDataElement());
 
       // Perform transaction logging, with and without parameters
       Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);

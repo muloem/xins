@@ -98,7 +98,7 @@ abstract class CallingConvention extends Manageable {
       Iterator names = parameters.getNames();
 
       // Loop through all parameters
-      ArrayList toRemove = null;
+      ArrayList toRemove = new ArrayList();
       while (names.hasNext()) {
 
          // Determine parameter name and value
@@ -109,19 +109,19 @@ abstract class CallingConvention extends Manageable {
          // "function", then mark the parameter as 'to be removed'
          if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) ||
              "function".equals(name)) {
-            if (toRemove == null) {
-               toRemove = new ArrayList();
-            }
+            toRemove.add(name);
+         
+         // Parameters starting with an underscore are reserved for XINS
+         } else if (name.charAt(0) == '_') {
             toRemove.add(name);
          }
       }
 
       // If there is anything to remove, then do so
-      if (toRemove != null) {
-         for (int i = (toRemove.size() - 1); i >= 0; i--) {
-            String name = (String) toRemove.get(i);
-            parameters.set(secretKey, name, null);
-         }
+      Iterator itRemove = toRemove.iterator();
+      while (itRemove.hasNext()) {
+         String name = (String) itRemove.next();
+         parameters.set(secretKey, name, null);
       }
    }
 

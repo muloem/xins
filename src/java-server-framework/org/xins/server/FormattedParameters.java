@@ -14,6 +14,7 @@ import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.URLEncoding;
+import org.xins.common.xml.Element;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 
@@ -47,7 +48,21 @@ extends AbstractLogdocSerializable {
     *    the parameters, can be <code>null</code>.
     */
    public FormattedParameters(PropertyReader parameters) {
+      this(parameters, null);
+   }
+
+   /**
+    * Constructs a new <code>FormattedParameters</code> object.
+    *
+    * @param parameters
+    *    the parameters, can be <code>null</code>.
+    *
+    * @param dataSection
+    *    the data section, can be <code>null</code>.
+    */
+   public FormattedParameters(PropertyReader parameters, Element dataSection) {
       _parameters = parameters;
+      _dataSection = dataSection;
    }
 
 
@@ -59,6 +74,11 @@ extends AbstractLogdocSerializable {
     * The parameters to serialize. This field can be <code>null</code>.
     */
    private final PropertyReader _parameters;
+
+   /**
+    * The data section.
+    */
+   private final Element _dataSection;
 
 
    //------------------------------------------------------------------------
@@ -77,14 +97,14 @@ extends AbstractLogdocSerializable {
       Iterator names = (_parameters == null) ? null : _parameters.getNames();
 
       // If there are no parameters, then just return a hyphen
-      if (names == null || ! names.hasNext()) {
+      if ((names == null || ! names.hasNext()) && _dataSection == null) {
          return "-";
       }
 
       FastStringBuffer buffer = new FastStringBuffer(80 + _parameters.size() * 40);
 
       boolean first = true;
-      do {
+      while (names != null && names.hasNext()) {
 
          // Get the name and value
          String name  = (String) names.next();
@@ -110,7 +130,19 @@ extends AbstractLogdocSerializable {
          } catch (UnsupportedEncodingException uee) {
             throw Utils.logProgrammingError(uee);
          }
-      } while (names.hasNext());
+      }
+
+      if (_dataSection != null) {
+         if (!first) {
+            buffer.append('&');
+         }
+         buffer.append("_data=");
+         try {
+            buffer.append(URLEncoder.encode(_dataSection.toString(), "UTF-8"));
+         } catch (UnsupportedEncodingException uee) {
+            throw Utils.logProgrammingError(uee);
+         }
+      }
 
       return buffer.toString();
    }

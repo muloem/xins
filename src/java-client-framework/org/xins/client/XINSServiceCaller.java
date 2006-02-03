@@ -381,7 +381,11 @@ public final class XINSServiceCaller extends ServiceCaller {
          long               duration  = System.currentTimeMillis() - start;
          String             function  = request.getFunctionName();
          PropertyReader     p         = request.getParameters();
-         LogdocSerializable params    = PropertyReaderUtils.serialize(p, "", "&");
+         String dataSection = null;
+         if (request.getDataSection() != null) {
+            dataSection = "_data=" + request.getDataSection().toString();
+         }
+         LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection);
          
          // Log functional error code at INFO level
          if (exception instanceof UnsuccessfulXINSCallException && 
@@ -527,7 +531,11 @@ public final class XINSServiceCaller extends ServiceCaller {
       String             url       = target.getURL();
       String             function  = xinsRequest.getFunctionName();
       PropertyReader     p         = xinsRequest.getParameters();
-      LogdocSerializable params    = PropertyReaderUtils.serialize(p, "", "&");
+      String dataSection = null;
+      if (xinsRequest.getDataSection() != null) {
+         dataSection = "_data=" + xinsRequest.getDataSection().toString();
+      }
+      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection);
 
       // Get the time-out values (for logging)
       int totalTimeOut      = target.getTotalTimeOut();

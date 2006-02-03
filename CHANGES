@@ -21,9 +21,13 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 * XINS/Java Server Framework:
   - Added the possibility to set ACL's specifically for an API.
   - The details are logged in case of an invalid response is returned.
+  - Added data section in the logs.
+  - The parameters starting with an underscore are cleaned up in in the 
+    CallingConvention#cleanUpParameters method.
 
 * XINS/Java Client Framework:
   - Functional error code are logged at the INFO level.
+  - Added input data section in the logs.
 
 * Generation of server-side Java code:
   - Added the description of the function in the javadoc of the 
