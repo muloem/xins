@@ -3,7 +3,7 @@
  project by adding the following line at the top of the file :
 <!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://www.xins.org/dtd/impl_1_4.dtd">
 -->
-<!ELEMENT impl (logdoc?, bootstrap-properties?, runtime-properties?, content*, dependency*, calling-convention?, instance*)>
+<!ELEMENT impl (logdoc?, bootstrap-properties?, runtime-properties?, content*, dependency*, calling-convention*, instance*)>
 <!ATTLIST impl
           web-path    CDATA #IMPLIED
 >
@@ -40,6 +40,7 @@
 <!ATTLIST calling-convention
           name       CDATA #REQUIRED
           class      CDATA #IMPLIED
+          default    (true|false) #IMPLIED
 >
 <!ELEMENT instance EMPTY>
 <!ATTLIST instance

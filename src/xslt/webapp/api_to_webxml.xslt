@@ -110,22 +110,63 @@
 						<xsl:value-of select="$timestamp" />
 					</param-value>
 				</init-param>
-				<xsl:if test="count(calling-convention) > 0">
-					<init-param>
-						<param-name>org.xins.api.calling.convention</param-name>
-						<param-value>
-							<xsl:value-of select="calling-convention/@name" />
-						</param-value>
-					</init-param>
-					<xsl:if test="calling-convention/@class">
+				<xsl:if test="count(calling-convention[@default='true']) > 1">
+					<xsl:message terminate="yes">
+						<xsl:text>Only one calling convention can be defined as the default one.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+				<xsl:if test="count(calling-convention) > 1 and count(calling-convention[@default='true']) != 1">
+					<xsl:message terminate="yes">
+						<xsl:text>More than one calling convention has been defined, 
+one of them should be defined as the default one.</xsl:text>
+					</xsl:message>
+				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="count(calling-convention) = 1">
 						<init-param>
-							<param-name>org.xins.api.calling.convention.class</param-name>
+							<param-name>org.xins.api.calling.convention</param-name>
 							<param-value>
-								<xsl:value-of select="calling-convention/@class" />
+								<xsl:value-of select="calling-convention/@name" />
 							</param-value>
 						</init-param>
-					</xsl:if>
-				</xsl:if>
+						<xsl:if test="calling-convention/@class">
+							<init-param>
+								<param-name>org.xins.api.calling.convention.class</param-name>
+								<param-value>
+									<xsl:value-of select="calling-convention/@class" />
+								</param-value>
+							</init-param>
+						</xsl:if>
+					</xsl:when>
+					<xsl:otherwise>
+						<init-param>
+							<param-name>org.xins.api.calling.convention</param-name>
+							<param-value>
+								<xsl:value-of select="calling-convention[@default='true']/@name" />
+							</param-value>
+						</init-param>
+						<xsl:if test="calling-convention[@default='true']/@class">
+							<init-param>
+								<param-name>org.xins.api.calling.convention.class</param-name>
+								<param-value>
+									<xsl:value-of select="calling-convention[@default='true']/@class" />
+								</param-value>
+							</init-param>
+						</xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:for-each select="calling-convention[@class!='']">
+					<init-param>
+						<param-name>
+							<xsl:text>org.xins.api.calling.convention.</xsl:text>
+							<xsl:value-of select="@name" />
+							<xsl:text>.class</xsl:text>
+						</param-name>
+						<param-value>
+							<xsl:value-of select="@class" />
+						</param-value>
+					</init-param>
+				</xsl:for-each>
 				<xsl:for-each select="bootstrap-properties/bootstrap-property">
 					<xsl:if test="starts-with(@name, 'org.xins.') and @name != 'org.xins.server.config'">
 						<xsl:message terminate="yes">
@@ -177,4 +218,6 @@ not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 		</web-app>
 	</xsl:template>
 
+	<xsl:template match="calling-convention">
+	</xsl:template>
 </xsl:stylesheet>
