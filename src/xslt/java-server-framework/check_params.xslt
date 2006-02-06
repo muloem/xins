@@ -195,18 +195,21 @@
 		<!-- Check 'inclusive-or' combos                                   -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param-combo[@type='inclusive-or']">
+		<xsl:if test="param-combo[@type='inclusive-or'] | attribute-combo[@type='inclusive-or']">
 			<xsl:text>
 
-      // Check inclusive-or parameter combinations</xsl:text>
-			<xsl:for-each select="param-combo[@type='inclusive-or']">
+      // Check inclusive-or combinations</xsl:text>
+			<xsl:for-each select="param-combo[@type='inclusive-or'] | attribute-combo[@type='inclusive-or']">
 				<xsl:text>
       if (</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
@@ -220,15 +223,26 @@
 				</xsl:call-template>
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:text>
          _invalidComboElements.add("</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>");</xsl:text>
 				</xsl:for-each>
-				<xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'param-combo'">
+						<xsl:text>
          _errorResult.addParamCombo("inclusive-or", _invalidComboElements);
       }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+         _errorResult.addAttributeCombo("inclusive-or", _invalidComboElements, </xsl:text>
+						<xsl:value-of select="$context" />
+						<xsl:text>getLocalName());
+      }</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:for-each>
 		</xsl:if>
 
@@ -237,18 +251,21 @@
 		<!-- Check 'exclusive-or' combos                                   -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param-combo[@type='exclusive-or']">
+		<xsl:if test="param-combo[@type='exclusive-or'] | attribute-combo[@type='exclusive-or']">
 			<xsl:text>
 
-      // Check exclusive-or parameter combinations</xsl:text>
-			<xsl:for-each select="param-combo[@type='exclusive-or']">
+      // Check exclusive-or combinations</xsl:text>
+			<xsl:for-each select="param-combo[@type='exclusive-or'] | attribute-combo[@type='exclusive-or']">
 				<xsl:text>
       if (</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
@@ -262,7 +279,7 @@
 				</xsl:call-template>
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 				<xsl:text>
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
@@ -271,22 +288,28 @@
 				<xsl:text>
          _errorResult.addParamCombo("exclusive-or", _invalidComboElements);
       }</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 					<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> != null &amp;&amp; (</xsl:text>
-					<xsl:for-each select="../param-ref[not(@name = $active)]">
+					<xsl:for-each select="../param-ref[not(@name = $active)] | ../attribute-ref[not(@name = $active)]">
 						<xsl:variable name="localJavaVariable2">
 							<xsl:call-template name="hungarianLower">
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
+							<xsl:if test="local-name() = 'attribute-ref'">
+								<xsl:text>Attribute</xsl:text>
+							</xsl:if>
 						</xsl:variable>
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
 						<xsl:value-of select="$localJavaVariable2" />
@@ -302,11 +325,14 @@
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="$active" />
 					<xsl:text>");</xsl:text>
-					<xsl:for-each select="../param-ref[not(@name = $active)]">
+					<xsl:for-each select="../param-ref[not(@name = $active)] | ../attribute-ref[not(@name = $active)]">
 						<xsl:variable name="localJavaVariable2">
 							<xsl:call-template name="hungarianLower">
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
+							<xsl:if test="local-name() = 'attribute-ref'">
+								<xsl:text>Attribute</xsl:text>
+							</xsl:if>
 						</xsl:variable>
 						<xsl:text>
          if (</xsl:text>
@@ -317,9 +343,20 @@
 					<xsl:text>");
          }</xsl:text>
 					</xsl:for-each>
-					<xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'param-ref'">
+						<xsl:text>
          _errorResult.addParamCombo("exclusive-or", _invalidComboElements);
       }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+         _errorResult.addAttributeCombo("exclusive-or", _invalidComboElements, </xsl:text>
+						<xsl:value-of select="$context" />
+						<xsl:text>getLocalName());
+      }</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:if>
@@ -328,29 +365,35 @@
 		<!-- Check 'all-or-none' combos                                    -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param-combo[@type='all-or-none']">
+		<xsl:if test="param-combo[@type='all-or-none'] | attribute-combo[@type='all-or-none']">
 			<xsl:text>
 
-      // Check all-or-none parameter combinations</xsl:text>
-			<xsl:for-each select="param-combo[@type='all-or-none']">
+      // Check all-or-none combinations</xsl:text>
+			<xsl:for-each select="param-combo[@type='all-or-none'] | attribute-combo[@type='all-or-none']">
 				<xsl:text>
       if (!(</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
 					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) &amp;&amp; (</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> || </xsl:if>
 					<xsl:value-of select="$localJavaVariable" />
@@ -363,15 +406,26 @@
 				</xsl:call-template>
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:text>
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'param-combo'">
 				<xsl:text>
          _errorResult.addParamCombo("all-or-none", _invalidComboElements);
       }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+         _errorResult.addAttributeCombo("all-or-none", _invalidComboElements, </xsl:text>
+						<xsl:value-of select="$context" />
+						<xsl:text>getLocalName());
+      }</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 
 			</xsl:for-each>
 		</xsl:if>
@@ -380,18 +434,21 @@
 		<!-- Check 'not-all' combos                                        -->
 		<!-- ************************************************************* -->
 
-		<xsl:if test="param-combo[@type='not-all']">
+		<xsl:if test="param-combo[@type='not-all'] | attribute-combo[@type='not-all']">
 			<xsl:text>
 
       // Check not-all parameter combinations</xsl:text>
-			<xsl:for-each select="param-combo[@type='not-all']">
+			<xsl:for-each select="param-combo[@type='not-all'] | attribute-combo[@type='not-all']">
 				<xsl:text>
       if (</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="localJavaVariable">
 						<xsl:call-template name="hungarianLower">
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
+						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:text>Attribute</xsl:text>
+						</xsl:if>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1">
           &amp;&amp; </xsl:if>
@@ -407,15 +464,26 @@
 				</xsl:call-template>
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
-				<xsl:for-each select="param-ref">
+				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:text>
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
-				<xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'param-combo'">
+						<xsl:text>
          _errorResult.addParamCombo("not-all", _invalidComboElements);
       }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+         _errorResult.addAttributeCombo("not-all", _invalidComboElements, </xsl:text>
+						<xsl:value-of select="$context" />
+						<xsl:text>getLocalName());
+      }</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 
 			</xsl:for-each>
 		</xsl:if>

@@ -101,16 +101,25 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
     in order to handle the Unicode characters correctly.
   - Implemented SF.net RFE #1183604: Return 400 Bad Request on duplicate
     parameter values.
+  - Added attribute-combo.
+
+* XINS/Java Client Framework:
+  - Added attribute-combo.
 
 * Generation of server-side Java code:
   - The generation of the result code doesn't check for the result code
     uniqueness anymore as the value attribute of the result code is 
     deprecated since XINS 1.0.0.
+  - Added attribute-combo.
 
 * Generation of client-side Java code:
   - The generation of the result code doesn't check for the result code
     uniqueness anymore as the value attribute of the result code is 
     deprecated since XINS 1.0.0.
+  - Added attribute-combo.
+
+* Generatation of specdocs:
+  - Added attribute-combo.
 
 * Generated tests:
   - If the servlet.port property is set, then the Servlet container will 

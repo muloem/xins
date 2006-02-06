@@ -194,117 +194,10 @@
 			<xsl:with-param name="class">inputparameters</xsl:with-param>
 		</xsl:call-template>
 		<xsl:apply-templates select="note" />
-		<xsl:call-template name="additional-constraints">
-			<xsl:with-param name="side" select="'input'" />
-		</xsl:call-template>
+		<xsl:call-template name="additional-constraints" />
 		<xsl:call-template name="datasection">
 			<xsl:with-param name="side" select="'input'" />
 		</xsl:call-template>
-	</xsl:template>
-
-	<xsl:template name="additional-constraints">
-		<xsl:if test="param-combo">
-			<h4>Additional constraints</h4>
-			<xsl:text>The following constraint</xsl:text>
-			<xsl:choose>
-				<xsl:when test="count(param-combo) &lt; 2">
-					<xsl:text> applies to the </xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>s apply to the </xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:value-of select="local-name()" />
-			<xsl:text> parameters, additional to the </xsl:text>
-			<xsl:value-of select="local-name()" />
-			<xsl:text> parameters marked as required. A violation of </xsl:text>
-			<xsl:choose>
-				<xsl:when test="count(param-combo) &lt; 2">
-					<xsl:text>this constraint</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>any of these constraints</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text> will result in an unsuccessful result with the error code </xsl:text>
-			<xsl:choose>
-				<xsl:when test="local-name() = 'input'">
-					<em>_InvalidRequest</em>
-				</xsl:when>
-				<xsl:when test="local-name() = 'output'">
-					<em>_InvalidResponse</em>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						Invalid node.
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>.</xsl:text>
-			<ul>
-				<xsl:apply-templates select="param-combo" />
-			</ul>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="param-combo[@type='exclusive-or']">
-		<li>
-			<em>Exactly</em>
-			<xsl:text> one of these parameters must be set: </xsl:text>
-			<xsl:apply-templates select="." mode="textlist" />
-			<xsl:text>.</xsl:text>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="param-combo[@type='inclusive-or']">
-		<li>
-			<xsl:text>At </xsl:text>
-			<em>least</em>
-			<xsl:text> one of these parameters must be set: </xsl:text>
-			<xsl:apply-templates select="." mode="textlist" />
-			<xsl:text>.</xsl:text>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="param-combo[@type='all-or-none']">
-		<li>
-			<xsl:text>Either </xsl:text>
-			<em>all</em>
-			<xsl:text> of these parameters must be set, or </xsl:text>
-			<em>none</em>
-			<xsl:text> of them can be set: </xsl:text>
-			<xsl:apply-templates select="." mode="textlist" />
-			<xsl:text>.</xsl:text>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="param-combo[@type='not-all']">
-		<li>
-			<xsl:text>The following parameters cannot all be set at the same time: </xsl:text>
-			<xsl:apply-templates select="." mode="textlist" />
-			<xsl:text>.</xsl:text>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="param-combo" priority="-1">
-		<xsl:message terminate="yes">Unrecognized type of param-combo.</xsl:message>
-	</xsl:template>
-
-	<xsl:template match="param-combo" mode="textlist">
-		<xsl:variable name="count" select="count(param-ref)" />
-		<xsl:for-each select="param-ref">
-			<xsl:choose>
-				<xsl:when test="position() = $count">
-					<xsl:text> and </xsl:text>
-				</xsl:when>
-				<xsl:when test="position() &gt; 1">
-					<xsl:text>, </xsl:text>
-				</xsl:when>
-			</xsl:choose>
-			<em>
-				<xsl:value-of select="@name" />
-			</em>
-		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="function/example">
@@ -1002,9 +895,7 @@
 			<xsl:with-param name="class">outputparameters</xsl:with-param>
 		</xsl:call-template>
 
-		<xsl:call-template name="additional-constraints">
-			<xsl:with-param name="side" select="'output'" />
-		</xsl:call-template>
+		<xsl:call-template name="additional-constraints" />
 		<xsl:call-template name="datasection">
 			<xsl:with-param name="side" select="'output'" />
 		</xsl:call-template>

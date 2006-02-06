@@ -165,23 +165,54 @@ extends RuntimeException {
     * @param type
     *    the type of the combination.
     *
-    * @param elements
-    *    list of the elements in the combination passed as a list of
+    * @param parameters
+    *    list of the parameters in the combination passed as a list of
     *    {@link String} objects.
     */
-   public void addParamCombo(String type, List elements) {
+   public void addParamCombo(String type, List parameters) {
 
       DataElement paramCombo = new DataElement(null, "param-combo");
       paramCombo.setAttribute(null, "type", type);
 
-      // Iterate over all elements
-      Iterator itElements = elements.iterator();
-      while(itElements.hasNext()) {
+      // Iterate over all parameters
+      Iterator itParameters = parameters.iterator();
+      while(itParameters.hasNext()) {
          DataElement param = new DataElement(null, "param");
-         param.setAttribute(null, "name", (String) itElements.next());
+         param.setAttribute(null, "name", (String) itParameters.next());
          paramCombo.addChild(param);
       }
 
       _errors.addChild(paramCombo);
+   }
+
+   /**
+    * Adds an invalid combination of attributes.
+    *
+    * @param type
+    *    the type of the combination.
+    *
+    * @param attributes
+    *    list of the attributes in the combination passed as a list of
+    *    {@link String} objects.
+    *
+    * @param elementName
+    *    the name of the element to which these attributes belong.
+    *
+    * @since XINS 1.4.0
+    */
+   public void addAttributeCombo(String type, List attributes, String elementName) {
+
+      DataElement attributeCombo = new DataElement(null, "attribute-combo");
+      attributeCombo.setAttribute(null, "type", type);
+
+      // Iterate over all attributes
+      Iterator itAttributes = attributes.iterator();
+      while(itAttributes.hasNext()) {
+         DataElement attribute = new DataElement(null, "attribute");
+         attribute.setAttribute(null, "name", (String) itAttributes.next());
+         attributeCombo.addChild(attribute);
+      }
+
+      _errors.addChild(attributeCombo);
    }
 }

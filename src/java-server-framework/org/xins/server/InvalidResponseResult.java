@@ -119,23 +119,54 @@ public class InvalidResponseResult extends FunctionResult {
     * @param type
     *    the type of the combination.
     *
-    * @param elements
-    *    list of the elements in the combination passed as a list of
+    * @param parameters
+    *    list of the parameters in the combination passed as a list of
     *    {@link String} objects.
     */
-   public void addParamCombo(String type, List elements) {
+   public void addParamCombo(String type, List parameters) {
 
       ElementBuilder paramCombo = new ElementBuilder("param-combo");
       paramCombo.setAttribute("type", type);
 
-      // Iterate ober all elements
-      Iterator itElements = elements.iterator();
-      while(itElements.hasNext()) {
+      // Iterate over all parameters
+      Iterator itParameters = parameters.iterator();
+      while(itParameters.hasNext()) {
          ElementBuilder param = new ElementBuilder("param");
-         param.setAttribute("name", (String) itElements.next());
+         param.setAttribute("name", (String) itParameters.next());
          paramCombo.addChild(param.createElement());
       }
 
       add(paramCombo.createElement());
+   }
+
+   /**
+    * Adds an invalid combination of attributes.
+    *
+    * @param type
+    *    the type of the combination.
+    *
+    * @param attributes
+    *    list of the attributes in the combination passed as a list of
+    *    {@link String} objects.
+    *
+    * @param elementName
+    *    the name of the element to which these attributes belong.
+    *
+    * @since XINS 1.4.0
+    */
+   public void addAttributeCombo(String type, List attributes, String elementName) {
+
+      ElementBuilder attributeCombo = new ElementBuilder("attribute-combo");
+      attributeCombo.setAttribute("type", type);
+
+      // Iterate over all attributes
+      Iterator itAttributes = attributes.iterator();
+      while(itAttributes.hasNext()) {
+         ElementBuilder attribute = new ElementBuilder("attribute");
+         attribute.setAttribute("name", (String) itAttributes.next());
+         attributeCombo.addChild(attribute.createElement());
+      }
+
+      add(attributeCombo.createElement());
    }
 }

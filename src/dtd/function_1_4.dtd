@@ -27,6 +27,14 @@
 <!ATTLIST param-ref
           name       NMTOKEN #REQUIRED
 >
+<!ELEMENT attribute-combo (attribute-ref, attribute-ref+)>
+<!ATTLIST attribute-combo
+          type       (exclusive-or|inclusive-or|all-or-none|not-all) #REQUIRED
+>
+<!ELEMENT attribute-ref EMPTY>
+<!ATTLIST attribute-ref
+          name       NMTOKEN #REQUIRED
+>
 <!ELEMENT output (resultcode-ref*, param*, param-combo*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
@@ -36,7 +44,7 @@
 <!ATTLIST data
           contains   CDATA #IMPLIED
 >
-<!ELEMENT element (description, deprecated?, contains?, attribute*)>
+<!ELEMENT element (description, deprecated?, contains?, attribute*, attribute-combo*)>
 <!ATTLIST element
           name       NMTOKEN #REQUIRED
 >

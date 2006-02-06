@@ -190,6 +190,7 @@
 				</td>
 			</tr>
 		</table>
+		<xsl:call-template name="additional-constraints" />
 	</xsl:template>
 
 	<xsl:template match="data/element/attribute">
@@ -256,6 +257,144 @@
 				<xsl:apply-templates select="deprecated" />
 			</em>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="additional-constraints">
+		<xsl:variable name="part">
+			<xsl:choose>
+				<xsl:when test="param-combo">
+					<xsl:text> parameters</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text> attributes</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:if test="param-combo | attribute-combo">
+			<h4>Additional constraints</h4>
+			<xsl:text>The following constraint</xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(param-combo | attribute-combo) &lt; 2">
+					<xsl:text> applies to the </xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>s apply to the </xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="local-name()" />
+			<xsl:value-of select="$part" />
+			<xsl:text>, additional to the </xsl:text>
+			<xsl:value-of select="local-name()" />
+			<xsl:value-of select="$part" />
+			<xsl:text> marked as required. A violation of </xsl:text>
+			<xsl:choose>
+				<xsl:when test="count(param-combo | attribute-combo) &lt; 2">
+					<xsl:text>this constraint</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>any of these constraints</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text> will result in an unsuccessful result with the error code </xsl:text>
+			<xsl:choose>
+				<xsl:when test="local-name() = 'input' or local-name(../..) = 'input'">
+					<em>_InvalidRequest</em>
+				</xsl:when>
+				<xsl:when test="local-name() = 'output' or local-name(../..) = 'output'">
+					<em>_InvalidResponse</em>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						Invalid node.
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>.</xsl:text>
+			<ul>
+				<xsl:apply-templates select="param-combo | attribute-combo">
+					<xsl:with-param name="part" select="$part" />
+				</xsl:apply-templates>
+			</ul>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='exclusive-or'] | attribute-combo[@type='exclusive-or']">
+		<xsl:param name="part" />
+
+		<li>
+			<em>Exactly</em>
+			<xsl:text> one of these</xsl:text>
+			<xsl:value-of select="$part" />
+			<xsl:text> must be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='inclusive-or'] | attribute-combo[@type='inclusive-or']">
+		<xsl:param name="part" />
+
+		<li>
+			<xsl:text>At </xsl:text>
+			<em>least</em>
+			<xsl:text> one of these</xsl:text>
+			<xsl:value-of select="$part" />
+			<xsl:text> must be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='all-or-none'] | attribute-combo[@type='all-or-none']">
+		<xsl:param name="part" />
+		<li>
+			<xsl:text>Either </xsl:text>
+			<em>all</em>
+			<xsl:text> of these</xsl:text>
+			<xsl:value-of select="$part" />
+			<xsl:text> must be set, or </xsl:text>
+			<em>none</em>
+			<xsl:text> of them can be set: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='not-all'] | attribute-combo[@type='not-all']">
+		<xsl:param name="part" />
+		<li>
+			<xsl:text>The following</xsl:text>
+			<xsl:value-of select="$part" />
+			<xsl:text> cannot all be set at the same time: </xsl:text>
+			<xsl:apply-templates select="." mode="textlist" />
+			<xsl:text>.</xsl:text>
+		</li>
+	</xsl:template>
+
+	<xsl:template match="param-combo | attribute-combo" priority="-1">
+		<xsl:message terminate="yes">
+			<xsl:text>Unrecognized type of </xsl:text>
+			<xsl:value-of select="local-name()" />
+			<xsl:text>.</xsl:text>
+		</xsl:message>
+	</xsl:template>
+
+	<xsl:template match="param-combo | attribute-combo" mode="textlist">
+		<xsl:variable name="count" select="count(param-ref)" />
+		<xsl:for-each select="param-ref | attribute-ref">
+			<xsl:choose>
+				<xsl:when test="position() = $count">
+					<xsl:text> and </xsl:text>
+				</xsl:when>
+				<xsl:when test="position() &gt; 1">
+					<xsl:text>, </xsl:text>
+				</xsl:when>
+			</xsl:choose>
+			<em>
+				<xsl:value-of select="@name" />
+			</em>
+		</xsl:for-each>
 	</xsl:template>
 
 </xsl:stylesheet>
