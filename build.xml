@@ -191,7 +191,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="${javac.encoding}">
+		encoding="${javac.encoding}">
 			<src path="build/src/java-${src.side}" />
 			<include name="org/xins/${side}/Library.java" />
 			<classpath>
@@ -207,7 +207,7 @@ ${version.file}</fail>
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="${javac.encoding}">
+		encoding="${javac.encoding}">
 			<src path="src/java-${src.side}" />
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />
