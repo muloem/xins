@@ -6,6 +6,7 @@
  */
 package org.xins.common.spec;
 
+import java.util.List;
 import java.util.Map;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -50,10 +51,14 @@ public final class DataSectionElementSpec {
     * @param attributes
     *    the possible attributes for this element, cannot be <code>null</code>.
     *
+    * @param attributeCombos
+    *    the attribute combos for this element, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>name == null || description == null || subElements == null || attributes == null</code>.
     */
-   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, Map subElements, Map attributes)
+   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, 
+         Map subElements, Map attributes, List attributeCombos)
    throws IllegalArgumentException {
 
       MandatoryArgumentChecker.check("name", name, "description", description,
@@ -63,6 +68,7 @@ public final class DataSectionElementSpec {
       _isPCDataAllowed = isPCDataAllowed;
       _attributes = attributes;
       _subElements = subElements;
+      _attributeCombos = attributeCombos;
    }
 
    //-------------------------------------------------------------------------
@@ -93,6 +99,11 @@ public final class DataSectionElementSpec {
     * The attributes of the element, cannot be <code>null</code>.
     */
    private final Map _attributes;
+
+   /**
+    * The attribute combos of the element, cannot be <code>null</code>.
+    */
+   private final List _attributeCombos;
 
 
    //-------------------------------------------------------------------------
@@ -214,5 +225,17 @@ public final class DataSectionElementSpec {
    public boolean isPCDataAllowed() {
 
       return _isPCDataAllowed;
+   }
+
+   /**
+    * Gets the attribute combos defined for the element.
+    * A list of {@link AttributeComboSpec} object.
+    *
+    * @return
+    *    the list of the attribute combos define for the element, never <code>null</code>.
+    */
+   public List getAttributeCombos() {
+
+      return _attributeCombos;
    }
 }

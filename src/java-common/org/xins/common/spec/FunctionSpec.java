@@ -429,7 +429,7 @@ public final class FunctionSpec extends Object {
          _inputParameters = parseParameters(reference, inputElement);
 
          // Param combos
-         _inputParamCombos = parseParamCombos(inputElement, _inputParameters);
+         _inputParamCombos = parseCombos(inputElement, _inputParameters, true);
 
          // Data section
          List dataSections = inputElement.getChildElements("data");
@@ -461,7 +461,7 @@ public final class FunctionSpec extends Object {
          _outputParameters = parseParameters(reference, outputElement);
 
          // Param combos
-         _outputParamCombos = parseParamCombos(outputElement, _outputParameters);
+         _outputParamCombos = parseCombos(outputElement, _outputParameters, true);
 
          // Data section
          List dataSections = outputElement.getChildElements("data");
@@ -576,8 +576,9 @@ public final class FunctionSpec extends Object {
                attributes.put(attribute.getName(), attribute);
             }
 
+            List attributeCombos = parseCombos(nextElement, attributes, false);
             DataSectionElementSpec result = new DataSectionElementSpec(nextName,
-                  description, isPcdataEnable, subElements, attributes);
+                  description, isPcdataEnable, subElements, attributes, attributeCombos);
             return result;
          }
       }
@@ -661,7 +662,11 @@ public final class FunctionSpec extends Object {
     *    the input or output element, cannot be <code>null</code>.
     *
     * @param parameters
-    *    the list of the input or output parameters, cannot be <code>null</code>.
+    *    the list of the input or output parameters or attributes, cannot be <code>null</code>.
+    *
+    * @param paramCombo
+    *    <code>true</code> if a param-combo should be parsed, <code>false</code>
+    *    if an attribute-combo should be parsed.
     *
     * @return
     *    the list of the param-combo elements or an empty array if no
@@ -673,36 +678,43 @@ public final class FunctionSpec extends Object {
     * @throws InvalidSpecificationException
     *    if the format of the param-combo is incorrect.
     */
-   static List parseParamCombos(Element topElement, Map parameters)
+   static List parseCombos(Element topElement, Map parameters, boolean paramCombo)
    throws IllegalArgumentException, InvalidSpecificationException {
       MandatoryArgumentChecker.check("topElement", topElement, "parameters", parameters);
-      List paramCombosList = topElement.getChildElements("param-combo");
+      String comboTag = paramCombo ? "param-combo" : "attribute-combo";
+      String referenceTag = paramCombo ? "param-ref" : "attribute-ref";
+      List paramCombosList = topElement.getChildElements(comboTag);
       List paramCombos = new ArrayList(paramCombosList.size());
       Iterator itParamCombos = paramCombosList.iterator();
       while (itParamCombos.hasNext()) {
          Element nextParamCombo = (Element) itParamCombos.next();
          String type = nextParamCombo.getAttribute("type");
          if (type == null) {
-            throw new InvalidSpecificationException("No type defined for a param-combo.");
+            throw new InvalidSpecificationException("No type defined for " + comboTag + ".");
          }
-         List paramDefs = nextParamCombo.getChildElements("param-ref");
+         List paramDefs = nextParamCombo.getChildElements(referenceTag);
          Iterator itParamDefs = paramDefs.iterator();
          Map paramComboParameters = new ChainedMap();
          while (itParamDefs.hasNext()) {
             Element paramDef = (Element) itParamDefs.next();
             String parameterName = paramDef.getAttribute("name");
             if (parameterName == null) {
-               throw new InvalidSpecificationException("Missing name for a parameter in a param-combo.");
+               throw new InvalidSpecificationException("Missing name for a parameter in " + comboTag + ".");
             }
             ParameterSpec parameter = (ParameterSpec) parameters.get(parameterName);
             if (parameterName == null) {
                throw new InvalidSpecificationException("Incorrect parameter name \"" +
-                     parameterName + "\" in a param-combo.");
+                     parameterName + "\" in " + comboTag + ".");
             }
             paramComboParameters.put(parameterName, parameter);
          }
-         ParamComboSpec paramCombo = new ParamComboSpec(type, paramComboParameters);
-         paramCombos.add(paramCombo);
+         if (paramCombo) {
+            ParamComboSpec paramComboSpec = new ParamComboSpec(type, paramComboParameters);
+            paramCombos.add(paramComboSpec);
+         } else {
+            AttributeComboSpec paramComboSpec = new AttributeComboSpec(type, paramComboParameters);
+            paramCombos.add(paramComboSpec);
+         }
       }
       return paramCombos;
    }

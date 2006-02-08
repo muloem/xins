@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - Implemented SF.net RFE #1088277 and #1088278: Keep HTTP connections open.
   - Updated the ErrorCodeSpec to return the type of the error code 
     (functional or technical).
+  - Added AttributeCompoSpec in the org.xins.common.spec package.
 
 * XINS/Java Server Framework:
   - Added the possibility to set ACL's specifically for an API.
