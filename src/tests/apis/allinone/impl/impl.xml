@@ -4,9 +4,7 @@
 <impl>
 	<logdoc accesslevel="public" />
 	<bootstrap-properties>
-		<bootstrap-property name="username" value="superuser">
-			<description>A bootstrap property set for testing purpose.</description>
-		</bootstrap-property>
+		<bootstrap-property name="username">superuser</bootstrap-property>
 	</bootstrap-properties>
 	<runtime-properties>
 		<property name="allinone.rate" type="_float32" required="true">

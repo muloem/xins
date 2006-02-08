@@ -12,10 +12,9 @@
           accesslevel (package|public) #IMPLIED
 >
 <!ELEMENT bootstrap-properties (bootstrap-property*)>
-<!ELEMENT bootstrap-property (description)>
+<!ELEMENT bootstrap-property (#PCDATA)>
 <!ATTLIST bootstrap-property
           name       CDATA #REQUIRED
-          value      CDATA #REQUIRED
 >
 <!ELEMENT runtime-properties (property*)>
 <!ELEMENT property (description)>

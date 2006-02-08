@@ -176,15 +176,12 @@ one of them should be defined as the default one.</xsl:text>
 not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 						</xsl:message>
 					</xsl:if>
-					<xsl:comment>
-						<xsl:value-of select="description/text()" />
-					</xsl:comment>
 					<init-param>
 						<param-name>
 							<xsl:value-of select="@name" />
 						</param-name>
 						<param-value>
-							<xsl:value-of select="@value" />
+							<xsl:value-of select="text()" />
 						</param-value>
 					</init-param>
 				</xsl:for-each>

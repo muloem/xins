@@ -51,10 +51,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     of the generated CAPI class.
 
 * Generation of the WAR file:
-  - The description of the bootstrap property is added as XML comment to the
-    generated web.xml file.
   - The bootstrap property "org.xins.server.config" is allowed as defined
     bootstrap property in impl.xml.
+  - The value of the bootstrap property is defined as pcdata.
 
 * Generated build file:
   - Restricted the validation and generation of Java files to the functions,
