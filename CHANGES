@@ -27,6 +27,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
     CallingConvention#cleanUpParameters method.
   - Added support for multiple custom calling conventions. The default calling
     convention can also be specified in the impl.xml file.
+  - If no runtime properties is defined, the server will use the
+    xins.properties file located in the generated WAR file if it exists.
 
 * XINS/Java Client Framework:
   - Functional error code are logged at the INFO level.

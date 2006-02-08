@@ -10,11 +10,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
@@ -189,12 +191,9 @@ final class ConfigManager extends Object {
       // If the name of the configuration file is not set in a system property
       // (typically passed on the command-line) try to get it from the servlet
       // initialization properties (typically set in a web.xml file)
-      if (configFile == null || configFile.trim().length() < 1) {
+      if (configFile == null || configFile.length() < 1) {
          Log.log_3231(prop);
          configFile = _config.getInitParameter(prop);
-
-         // If it is still not set, then assume null
-         configFile = TextUtils.trim(configFile, null);
       }
 
       // Store the name of the configuration file
@@ -210,66 +209,82 @@ final class ConfigManager extends Object {
     */
    void readRuntimeProperties() {
 
+      Properties properties = new WarnDoubleProperties();
+      InputStream in = null;
+
       // If the value is not set only localhost can access the API.
       // NOTE: Don't trim the configuration file name, since it may start
       //       with a space or other whitespace character.
-      if (_configFile == null || _configFile.length() < 1) {
-         Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
-         _runtimeProperties = null;
+      if (_configFile == null) {
+         
+         // Try to find a xins.properties file in the WEB-INF directory
+         ServletConfig  config  = _engine.getServletConfig();
+         ServletContext context = config.getServletContext();
+         in = context.getResourceAsStream("WEB-INF/xins.properties");
+         if (in == null) {
+
+            // Use the default settings
+            Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
+            _runtimeProperties = null;
+            return;
+         } else {
+            Log.log_3248();
+         }
+         
       } else {
 
          // Unify the file separator character
          _configFile = _configFile.replace('/',  File.separatorChar);
          _configFile = _configFile.replace('\\', File.separatorChar);
+      }
+
+      synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
+
+         try {
+
+            // Open file, load properties, close file
+            if (in == null) {
+               in = new FileInputStream(_configFile);
+            }
+            properties.load(in);
+
+         // No such file
+         } catch (FileNotFoundException exception) {
+            String detail = TextUtils.trim(exception.getMessage(), null);
+            Log.log_3301(_configFile, detail);
+
+         // Security issue
+         } catch (SecurityException exception) {
+            Log.log_3302(exception, _configFile);
+
+         // Other I/O error
+         } catch (IOException exception) {
+            Log.log_3303(exception, _configFile);
+
+         // Always close the input stream
+         } finally {
+            if (in != null) {
+               try {
+                  in.close();
+               } catch (Throwable exception) {
+                  Utils.logIgnoredException(ConfigManager.class.getName(),
+                                            "readRuntimeProperties()",
+                                            in.getClass().getName(),
+                                            "close()",
+                                            exception);
+               }
+            }
+         }
 
          // Initialize the logging subsystem
          Log.log_3300(_configFile);
 
-         synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
+         // Attempt to configure Log4J
+         configureLogger(properties);
 
-            Properties properties = new WarnDoubleProperties();
-            FileInputStream in = null;
-            try {
-
-               // Open file, load properties, close file
-               in = new FileInputStream(_configFile);
-               properties.load(in);
-
-            // No such file
-            } catch (FileNotFoundException exception) {
-               String detail = TextUtils.trim(exception.getMessage(), null);
-               Log.log_3301(_configFile, detail);
-
-            // Security issue
-            } catch (SecurityException exception) {
-               Log.log_3302(exception, _configFile);
-
-            // Other I/O error
-            } catch (IOException exception) {
-               Log.log_3303(exception, _configFile);
-
-            // Always close the input stream
-            } finally {
-               if (in != null) {
-                  try {
-                     in.close();
-                  } catch (Throwable exception) {
-                     Utils.logIgnoredException(ConfigManager.class.getName(),
-                                               "readRuntimeProperties()",
-                                               in.getClass().getName(),
-                                               "close()",
-                                               exception);
-                  }
-               }
-            }
-
-            // Attempt to configure Log4J
-            configureLogger(properties);
-
-            // Convert to a PropertyReader
-            PropertyReader pr = new PropertiesPropertyReader(properties);
-            _runtimeProperties = new StatsPropertyReader(pr);
-         }
+         // Convert to a PropertyReader
+         PropertyReader pr = new PropertiesPropertyReader(properties);
+         _runtimeProperties = new StatsPropertyReader(pr);
       }
    }
 
@@ -589,7 +604,11 @@ final class ConfigManager extends Object {
        */
       private void reinit() {
 
-         Log.log_3407(_configFile);
+         if (_configFile != null) {
+            Log.log_3407(_configFile);
+         } else {
+            Log.log_3407("WEB-INF/xins.properties");
+         }
 
          boolean reinitialized;
 
@@ -598,20 +617,11 @@ final class ConfigManager extends Object {
             // Apply the new runtime settings to the logging subsystem
             readRuntimeProperties();
 
-            // Determine the interval
-            int newInterval;
-            try {
-               newInterval = determineConfigReloadInterval();
-            } catch (InvalidPropertyValueException exception) {
-               // Logging is already done in determineConfigReloadInterval()
-               return;
-            }
-
             // Re-initialize the API
             reinitialized = _engine.initAPI();
 
             // Update the file watch interval
-            updateFileWatcher(newInterval);
+            updateFileWatcher();
          }
 
          // API re-initialized successfully, so log each unused property...
@@ -626,18 +636,20 @@ final class ConfigManager extends Object {
       /**
        * Updates the file watch interval and initializes the file watcher if
        * needed.
-       *
-       * @param newInterval The new interval to watch the config file
-       *
-       * @throws IllegalStateException
-       *    if there is no configuration file watcher.
        */
-      private void updateFileWatcher(int newInterval)
-      throws IllegalStateException {
+      private void updateFileWatcher() {
 
-         // Check state
          if (_configFileWatcher == null) {
-            throw new IllegalStateException("There is no configuration file watcher.");
+            return;
+         }
+         
+         // Determine the interval
+         int newInterval;
+         try {
+            newInterval = determineConfigReloadInterval();
+         } catch (InvalidPropertyValueException exception) {
+            // Logging is already done in determineConfigReloadInterval()
+            return;
          }
 
          // Update the file watch interval

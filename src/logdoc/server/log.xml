@@ -176,7 +176,7 @@
 			<param name="currentVersion" />
 		</entry>
 		<entry id="3230" level="WARNING" exception="true">
-			<description>Unable to get system property that defines the runtime properties file to use, due to a security restriction.</description>
+			<description>Unable to get the system property that defines the runtime properties file to use, due to a security restriction.</description>
 			<param name="propertyName" />
 		</entry>
 		<entry id="3231" level="DEBUG">
@@ -250,6 +250,9 @@
 			<param name="property"  />
 			<param name="name"      />
 			<param name="className" />
+		</entry>
+		<entry id="3248" level="INFO">
+			<description>The runtime properties file has not been defined, the system will use the xins.properties file found in the WEB-INF directory of the WAR file.</description>
 		</entry>
 	</group>
 

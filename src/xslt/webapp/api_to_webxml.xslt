@@ -204,7 +204,8 @@ not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 							<xsl:value-of select="@web-path" />
 							<xsl:text>/</xsl:text>
 						</xsl:when>
-						<xsl:when test="not(@web-path) and content">
+						<!-- It's authorized to put files in the WEB-INF directory sush as the xins.properties -->
+						<xsl:when test="not(@web-path) and content[web-path != 'WEB-INF']">
 							<xsl:message terminate="yes">
 								<xsl:text>The attribute web-path to the impl element is mandatory if a content element is specified.</xsl:text>
 							</xsl:message>
