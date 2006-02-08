@@ -19,6 +19,8 @@ import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 
+import org.xins.common.service.CallException;
+import org.xins.common.service.ConnectionRefusedCallException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.GroupDescriptor;
 import org.xins.common.service.SocketTimeOutCallException;
@@ -253,5 +255,39 @@ public class HTTPServiceCallerTests extends TestCase {
          assertEquals(request, exception.getRequest());
          assertEquals(target,  exception.getTarget());
       }
+   }
+
+   public void testCallExceptionLinking() throws Exception {
+
+      // Define targets
+      TargetDescriptor target1 = new TargetDescriptor("http://127.0.0.1:5/", 7000, 5500, 5500);
+      TargetDescriptor target2 = new TargetDescriptor("http://xins.sf.net/", 2000, 1500, 1);
+      Descriptor members[] =  new Descriptor[] { target1, target2 };
+      GroupDescriptor group = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, members);
+
+      // Construct a caller and a request
+      HTTPServiceCaller caller = new HTTPServiceCaller(group);
+      HTTPCallRequest request = new HTTPCallRequest();
+
+      // Perform the call
+      CallException exception;
+      try {
+         caller.call(request);
+         fail("Expected ConnectionRefusedCallException.");
+         return;
+      } catch (ConnectionRefusedCallException e) {
+         exception = e;
+      }
+
+      // Test some aspects of the exception
+      assertEquals(request, exception.getRequest());
+      assertEquals(target1, exception.getTarget());
+
+      // Test the next CallException
+      CallException next = exception.getNext();
+      assertNotNull(next);
+      assertTrue("Next exception is an instance of class " + next.getClass().getName(), next instanceof SocketTimeOutCallException);
+      assertEquals(request, next.getRequest());
+      assertEquals(target2, next.getTarget());
    }
 }
