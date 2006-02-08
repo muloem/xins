@@ -227,8 +227,8 @@ public final class Utils extends Object {
     * message.
     *
     * @param detectingClass
-    *    the name of the class that caught the exception, or
-    *    <code>null</code> if unknown.
+    *    the name of the class that caught the exception, cannot be
+    *    <code>null</code>.
     *
     * @param detectingMethod
     *    the name of the method within the <code>detectingClass</code> that
@@ -281,8 +281,8 @@ public final class Utils extends Object {
     * Logs an exception that will be ignored.
     *
     * @param detectingClass
-    *    the name of the class that caught the exception, or
-    *    <code>null</code> if unknown.
+    *    the name of the class that caught the exception, cannot be
+    *    <code>null</code>.
     *
     * @param detectingMethod
     *    the name of the method within the <code>detectingClass</code> that
