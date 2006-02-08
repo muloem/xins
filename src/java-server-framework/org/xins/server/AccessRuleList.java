@@ -375,6 +375,11 @@ extends Object implements AccessRuleContainer {
          throw new IllegalStateException(detail);
       }
 
+      // Do not dispose the EMPTY list
+      if (this == EMPTY) {
+         return;
+      }
+
       // Mark this object as disposed
       _disposed = true;
 
