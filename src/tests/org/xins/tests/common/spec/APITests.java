@@ -102,6 +102,7 @@ public class APITests extends TestCase {
     */
    public void testAPIGetFunctions() {
       ArrayList list = new ArrayList();
+      list.add("AttributeCombo");
       list.add("DataSection");
       list.add("DataSection2");
       list.add("DataSection3");

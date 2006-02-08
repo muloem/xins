@@ -25,6 +25,8 @@ import org.xins.client.XINSCallConfig;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
+import org.xins.common.ProgrammingException;
+import org.xins.common.Utils;
 import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.http.StatusCodeHTTPCallException;
@@ -36,6 +38,7 @@ import org.xins.common.types.standard.Timestamp;
 
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
+import org.xins.logdoc.ExceptionUtils;
 
 /**
  * Tests the functions in the <em>allinone</em> API using the generated CAPI
@@ -728,6 +731,66 @@ public class AllInOneAPITests extends TestCase {
             assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
          } else {
             fail("No param combo element found.");
+         }
+      }
+   }
+
+  /**
+   * Tests the attribute-combo constraints, which should throw an UnacceptableRequestException.
+   */
+   public void testAttributeCombo1() throws Exception {
+
+      // Prepare an empty request
+      AttributeComboRequest request = new AttributeComboRequest();
+      AttributeComboRequest.Person person = new AttributeComboRequest.Person();
+      person.setBirthYear(2006);
+      // not setting birthMonth
+      person.setBirthDay(20);
+      person.setBirthCountry("France");
+      person.setBirthCity("Paris");
+      request.addPerson(person);
+
+      // Attempt the call
+      try {
+         _capi.callAttributeCombo(request);
+         fail("Expected UnacceptableRequestException.");
+
+      // Call failed as it should
+      } catch (UnacceptableRequestException exception) {
+         // as expected
+         Utils.logIgnoredException("AllinOneAPITests", "testAttributeCombo1", 
+               "CAPI", "callAttributeCombo", exception);
+      }
+
+      // Prepare a request
+      request = new AttributeComboRequest();
+      AttributeComboRequest.Person person2 = new AttributeComboRequest.Person();
+      person2.setBirthYear(2008);
+      person2.setBirthMonth(5);
+      person2.setBirthDay(20);
+      person2.setBirthCountry("France");
+      person2.setBirthCity("Paris");
+      request.addPerson(person2);
+
+      // Attempt the call
+      try {
+         _capi.callAttributeCombo(request);
+         fail("Expected InternalErrorException.");
+
+      // Call failed as it should
+      } catch (InternalErrorException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("attribute-combo", paramCombo1.getLocalName());
+            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No attribute combo element found.");
          }
       }
    }

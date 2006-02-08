@@ -33,26 +33,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				<attribute name="deathdate" required="false" type="_date">
 					<description>The death date of the person.</description>
 				</attribute>
-				<attribute-combo type="inclusive-or">
-					<attribute-ref name="birthdate" />
-					<attribute-ref name="deathdate" />
-					<attribute-ref name="age" />
-				</attribute-combo>
-				<attribute-combo type="exclusive-or">
-					<attribute-ref name="birthdate" />
-					<attribute-ref name="deathdate" />
-					<attribute-ref name="age" />
-				</attribute-combo>
-				<attribute-combo type="all-or-none">
-					<attribute-ref name="gender" />
-					<attribute-ref name="name" />
-					<attribute-ref name="age" />
-				</attribute-combo>
-				<attribute-combo type="not-all">
-					<attribute-ref name="birthdate" />
-					<attribute-ref name="deathdate" />
-					<attribute-ref name="age" />
-				</attribute-combo>
 			</element>
 			<element name="address">
 				<description>The address.</description>

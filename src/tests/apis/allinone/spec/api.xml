@@ -6,7 +6,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 
 	<description>API that uses all the features included in XINS.</description>
 
-	<function name="ParamComboNotAll" />
+	<function name="AttributeCombo"  />
 	<function name="DataSection"     />
 	<function name="DataSection2" freeze="1.1" />
 	<function name="DataSection3"    />
@@ -17,6 +17,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->
 	<function name="Logdoc"          />
 	<function name="ParamCombo"      />
+	<function name="ParamComboNotAll" />
 	<function name="ResultCode"      />
 	<function name="RuntimeProps"    />
 	<function name="SimpleOutput"    />
