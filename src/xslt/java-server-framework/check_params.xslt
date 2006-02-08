@@ -280,14 +280,25 @@
 				<xsl:text>
          java.util.List _invalidComboElements = new java.util.ArrayList();</xsl:text>
 				<xsl:for-each select="param-ref | attribute-ref">
-				<xsl:text>
+					<xsl:text>
          _invalidComboElements.add("</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>");</xsl:text>
 				</xsl:for-each>
-				<xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'param-combo'">
+						<xsl:text>
          _errorResult.addParamCombo("exclusive-or", _invalidComboElements);
       }</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>
+         _errorResult.addAttributeCombo("exclusive-or", _invalidComboElements, </xsl:text>
+						<xsl:value-of select="$context" />
+						<xsl:text>getLocalName());
+      }</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:for-each select="param-ref | attribute-ref">
 					<xsl:variable name="active" select="@name" />
 					<xsl:variable name="localJavaVariable">
