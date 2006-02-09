@@ -11,6 +11,11 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
 
+* Generation of the specification in open document format:
+  - Improved indentation of the result.
+  - Improved fonts.
+  - Added meta.xml containing the meta information of the document.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 

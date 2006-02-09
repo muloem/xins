@@ -763,7 +763,7 @@
 		
 		<xsl:choose>
 			<xsl:when test="string-length($type) = 0 or starts-with($type, '_')">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:call-template name="description_for_standardtype">
 						<xsl:with-param name="type" select="$type" />
 					</xsl:call-template>
@@ -777,7 +777,7 @@
 
 				<xsl:choose>
 					<xsl:when test="$type_node/pattern">
-						<text:p text:style-name="P1">
+						<text:p text:style-name="Standard">
 							<xsl:text>Pattern: </xsl:text>
 							<text:span text:style-name="Code">
 								<xsl:value-of select="$type_node/pattern/text()" />
@@ -785,7 +785,7 @@
 						</text:p>
 					</xsl:when>
 					<xsl:when test="$type_node/enum">
-						<text:p text:style-name="P1">
+						<text:p text:style-name="Standard">
 							<xsl:text>One of the value: </xsl:text>
 						</text:p>
 						<text:p text:style-name="Standard">
@@ -800,7 +800,7 @@
 						</text:p>
 					</xsl:when>
 					<xsl:when test="$type_node/int8 | $type_node/int16 | $type_node/int32 | $type_node/int64 | $type_node/float32 | $type_node/float64">
-						<text:p text:style-name="P1">
+						<text:p text:style-name="Standard">
 							<xsl:variable name="basetype">
 								<xsl:call-template name="basetype_for_type">
 									<xsl:with-param name="specsdir" select="$specsdir" />
@@ -826,7 +826,7 @@
 						</text:p>
 					</xsl:when>
 					<xsl:when test="$type_node/base64">
-						<text:p text:style-name="P1">
+						<text:p text:style-name="Standard">
 							<xsl:call-template name="description_for_standardtype">
 								<xsl:with-param name="type" select="'_base64'" />
 							</xsl:call-template>

@@ -63,7 +63,7 @@
 	<xsl:template match="api" mode="title">
 		<text:p text:style-name="Title">
 			<xsl:value-of select="@name" />
-			<xsl:text> API.</xsl:text>
+			<xsl:text> API</xsl:text>
 		</text:p>
 		<text:p text:style-name="Subtitle">- Technical Guideline -</text:p>
 	</xsl:template>

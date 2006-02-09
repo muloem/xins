@@ -22,11 +22,11 @@
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="function_node" select="document($function_file)/function" />
 
-		<text:h text:style-name="Heading1">
+		<text:h text:style-name="Heading1" text:outline-level="1">
 			<xsl:text>Function </xsl:text>
 			<xsl:value-of select="@name" />
 		</text:h>
-		<text:h text:style-name="Heading2">Description</text:h>
+		<text:h text:style-name="Heading2" text:outline-level="2">Description</text:h>
 		<text:p text:style-name="P2">
 			<xsl:value-of select="$function_node/description" />
 		</text:p>
@@ -42,7 +42,7 @@
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
-		<text:h text:style-name="Heading2">Error codes</text:h>
+		<text:h text:style-name="Heading2" text:outline-level="2">Error codes</text:h>
 		<table:table table:name="FunctionsTable" table:style-name="FunctionsTable">
 			<table:table-column table:style-name="FunctionsTable.A"/>
 			<table:table-column table:style-name="FunctionsTable.B"/>
@@ -60,7 +60,7 @@
 			</xsl:apply-templates>
 		</table:table>
 		<xsl:if test="$function_node/example">
-			<text:h text:style-name="Heading2">Examples</text:h>
+			<text:h text:style-name="Heading2" text:outline-level="2">Examples</text:h>
 			<text:p text:style-name="Standard">Below are some example requests with corresponding responses. Note that these are non-normative.</text:p>
 			<xsl:apply-templates select="$function_node/example" />
 		</xsl:if>
@@ -72,7 +72,7 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="api" />
 		
-		<text:h text:style-name="Heading2">
+		<text:h text:style-name="Heading2" text:outline-level="2">
 			<xsl:value-of select="$type-name" />
 			<xsl:text> parameters</xsl:text>
 		</text:h>
@@ -119,7 +119,7 @@
 
 		<table:table-row>
 			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:value-of select="@name" />
 				</text:p>
 			</table:table-cell>
@@ -131,12 +131,12 @@
 				</xsl:call-template>
 			</table:table-cell>
 			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:value-of select="description" />
 				</text:p>
 			</table:table-cell>
 			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:choose>
 						<xsl:when test="@required = 'true'">
 							<xsl:text>yes</xsl:text>
@@ -165,7 +165,7 @@
 					<text:p text:style-name="P2">Request</text:p>
 				</table:table-cell>
 				<table:table-cell office:value-type="string">
-					<text:p text:style-name="P1">
+					<text:p text:style-name="Standard">
 						<xsl:text>http://API_HOST/</xsl:text>
 						<text:line-break/>
 						<xsl:text>?_function=</xsl:text>
@@ -235,6 +235,7 @@
 						</xsl:choose>
 						<xsl:for-each select="output-example">
 							<text:line-break/>
+							<text:s text:c="2" />
 							<xsl:text>&lt;</xsl:text>
 							<text:span text:style-name="Elem">param</text:span>
 							<xsl:call-template name="print-attr">
@@ -251,11 +252,13 @@
 						</xsl:for-each>
 						<xsl:if test="output-data-example or data-example">
 							<text:line-break/>
+							<text:s text:c="2" />
 							<xsl:text>&lt;</xsl:text>
 							<text:span text:style-name="Elem">data</text:span>
 							<xsl:text>&gt;</xsl:text>
 							<xsl:apply-templates select="output-data-example/element-example | data-example/element-example" />
 							<text:line-break/>
+							<text:s text:c="2" />
 							<xsl:text>&lt;/</xsl:text>
 							<text:span text:style-name="Elem">data</text:span>
 							<xsl:text>&gt;</xsl:text>
@@ -273,11 +276,12 @@
 <!-- element examples -->
 
 	<xsl:template match="element-example">
-		<xsl:param name="indent" />
+		<xsl:param name="indent" select="4" />
 
 		<xsl:variable name="text" select="pcdata-example/text()" />
 
 		<text:line-break/>
+		<text:s text:c="{$indent}" />
 		<xsl:text>&lt;</xsl:text>
 		<text:span text:style-name="Elem">
 				<xsl:value-of select="@name" />
@@ -298,12 +302,12 @@
 		</xsl:if>
 
 		<xsl:apply-templates select="element-example">
-			<xsl:with-param name="indent" select="concat('  ', $indent)" />
+			<xsl:with-param name="indent" select="$indent + 2" />
 		</xsl:apply-templates>
 
 		<xsl:if test="boolean(element-example)">
-			<xsl:text>
-</xsl:text>
+			<text:line-break />
+			<text:s text:c="{$indent}" />
 			<xsl:value-of disable-output-escaping="yes" select="$indent" />
 		</xsl:if>
 
@@ -376,12 +380,12 @@
 		<xsl:for-each select="$resultcodes_node/code">
 			<table:table-row>
 				<table:table-cell office:value-type="string">
-					<text:p text:style-name="P1">
+					<text:p text:style-name="Standard">
 						<xsl:value-of select="@name" />
 					</text:p>
 				</table:table-cell>
 				<table:table-cell office:value-type="string">
-					<text:p text:style-name="P1">
+					<text:p text:style-name="Standard">
 						<xsl:value-of select="description/text()" />
 					</text:p>
 				</table:table-cell>
@@ -396,12 +400,12 @@
 		<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode"/>
 		<table:table-row>
 			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:value-of select="$rcd_node/@name" />
 				</text:p>
 			</table:table-cell>
 			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+				<text:p text:style-name="Standard">
 					<xsl:value-of select="$rcd_node/description/text()" />
 				</text:p>
 			</table:table-cell>

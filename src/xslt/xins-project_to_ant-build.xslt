@@ -734,7 +734,7 @@ APIs in this project are:
 			</target>
 		</xsl:if>
 
-		<target name="wsdl-{$api}">
+		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
 			<property file="{$project_home}/build.properties" />
 			<property name="wsdl.endpoint" value="" />
 			<mkdir dir="{$builddir}/wsdl" />
@@ -759,7 +759,7 @@ APIs in this project are:
 			</replace>
 		</target>
 
-		<target name="opendoc-{$api}">
+		<target name="opendoc-{$api}" description="Generates the specification document for the '{$api}' API">
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
 			<style
 			in="{$api_specsdir}/api.xml"
@@ -771,8 +771,16 @@ APIs in this project are:
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="api"          expression="{$api}"          />
 			</style>
+			<copy file="{$xins_home}/src/opendoc/meta.xml" tofile="{$builddir}/opendoc/{$api}/meta.xml" />
+			<tstamp>
+				<format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+			</tstamp>
+			<replace file="{$builddir}/opendoc/{$api}/meta.xml">
+				<replacefilter token="#version#" value="{$xins_version}" />
+				<replacefilter token="#date#" value="${{timestamp}}" />
+			</replace>
 			<zip destfile="{$builddir}/opendoc/{$api}/{$api}-specs.odt">
-				<fileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
+				<fileset dir="{$builddir}/opendoc/{$api}" includes="content.xml meta.xml" />
 				<fileset dir="{$xins_home}/src/opendoc" includes="mimetype styles.xml" />
 				<zipfileset dir="{$xins_home}/src/opendoc" includes="manifest.xml" prefix="META-INF" />
 			</zip>
