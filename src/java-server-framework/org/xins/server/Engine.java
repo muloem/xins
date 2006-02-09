@@ -26,7 +26,6 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.InitializationException;
-import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;

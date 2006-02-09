@@ -705,6 +705,10 @@ implements DefaultResultCodes {
     * @param aclProperty
     *    the ACL property, never <code>null</code>
     *
+    * @param interval
+    *    the interval in seconds to chack if the ACL file has changed and
+    *    should be reloaded.
+    *
     * @return
     *    the access rule list created from the property value, never <code>null</code>.
     *
@@ -936,9 +940,6 @@ implements DefaultResultCodes {
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
-    *
-    * @throws ParseException
-    *    if the specified IP address is malformed.
     */
    public boolean allow(String ip, String functionName)
    throws IllegalArgumentException {

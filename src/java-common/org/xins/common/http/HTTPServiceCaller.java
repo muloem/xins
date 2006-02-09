@@ -15,7 +15,6 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
 import java.util.Iterator;
 

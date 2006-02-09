@@ -280,6 +280,9 @@ public final class URLEncoding extends Object {
     * @param index
     *    the position of the character within the String.
     *
+    * @return
+    *    the converted character converted to an int.
+    *
     * @throws FormatException
     *    if c is not a numerical digit or a letter between 'a' and 'f' or
     *    'A' or 'F'.

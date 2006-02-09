@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.logdoc.ExceptionUtils;
 
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.

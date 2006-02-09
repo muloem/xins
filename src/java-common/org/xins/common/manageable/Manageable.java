@@ -433,7 +433,7 @@ public abstract class Manageable extends Object {
     *
     * @return
     *    <code>true</code> if this object is usable,
-    *    </code>false</code> if it is not.
+    *    <code>false</code> if it is not.
     */
    public final boolean isUsable() {
       State state;

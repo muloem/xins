@@ -7,9 +7,6 @@
 package org.xins.client.async;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.xins.client.AbstractCAPI;
 import org.xins.client.AbstractCAPICallRequest;
 import org.xins.client.AbstractCAPICallResult;
@@ -61,7 +58,7 @@ public class CallCAPIThread extends Thread {
     * @param capi
     *    the CAPI to use to call the function.
     *
-    * @param functionName
+    * @param function
     *    the name of the function to call.
     *
     * @param request

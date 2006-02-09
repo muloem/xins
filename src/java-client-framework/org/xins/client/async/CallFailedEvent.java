@@ -8,7 +8,6 @@ package org.xins.client.async;
 
 import org.xins.client.AbstractCAPI;
 import org.xins.client.AbstractCAPICallRequest;
-import org.xins.client.AbstractCAPICallResult;
 
 /**
  * Event fired and a succeeded result is returned from the call to the function.

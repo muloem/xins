@@ -6,7 +6,6 @@
  */
 package org.xins.common.servlet;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.AbstractPropertyReader;
-import org.xins.common.text.FormatException;
 import org.xins.common.text.ParseException;
 
 /**
@@ -48,7 +46,7 @@ extends AbstractPropertyReader {
 	 * <p>This function is used during parsing of a HTTP query string, which is
 	 * why a {@link ParseException} is thrown in case of conflicting values.
 	 *
-	 * @param parameters
+	 * @param properties
 	 *    the set of parameters, should not be <code>null</code>.
 	 *
 	 * @param key

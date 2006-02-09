@@ -117,7 +117,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * @param data
     *    the content of the request.
     *
-    * @param header
+    * @param headers
     *    the HTTP headers of the request. The key and the value of the Map
     *    is a String.
     *

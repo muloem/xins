@@ -14,20 +14,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.FileNameMap;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.jar.JarFile;
 
 import javax.servlet.ServletException;
 
@@ -370,7 +366,7 @@ public class HTTPServletHandler {
     *    client.
     *
     * @throws IOException
-    *    If the query is not handled correctly.
+    *    if the query is not handled correctly.
     */
    public void httpQuery(BufferedReader input,
                          BufferedOutputStream outbound) throws IOException {
@@ -513,6 +509,9 @@ public class HTTPServletHandler {
     *
     * @return
     *    the HTTP response to return, never <code>null</code>.
+    *
+    * @throws IOException
+    *    if an error occcurs when reading the URL.
     */
    private String readWebPage(String url) throws IOException {
       String httpResult = null;

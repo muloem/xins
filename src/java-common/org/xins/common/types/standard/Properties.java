@@ -12,13 +12,13 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+
 import org.xins.common.Utils;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.text.URLEncoding;
 import org.xins.common.text.FastStringBuffer;
 
 /**

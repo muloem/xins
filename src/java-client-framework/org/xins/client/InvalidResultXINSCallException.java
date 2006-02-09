@@ -50,6 +50,9 @@ public final class InvalidResultXINSCallException extends XINSCallException {
     * @param duration
     *    the call duration in milliseconds, must be &gt;= 0.
     *
+    * @return
+    *    the exception indicating that no HTTP data was received.
+    *
     * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
@@ -96,6 +99,9 @@ public final class InvalidResultXINSCallException extends XINSCallException {
     *
     * @param cause
     *    the cause exception, or <code>null</code> if there is none.
+    *
+    * @return
+    *    the exception indicating that the HTTP data could not be parsed.
     *
     * @throws IllegalArgumentException
     *    if <code>httpData        ==   null

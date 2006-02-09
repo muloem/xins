@@ -178,7 +178,7 @@ public final class ExceptionUtils extends Object {
       // On Java 1.4 (and up) use the Throwable.initCause() method
       if (SET_CAUSE != null) {
          try {
-            Object args[] = new Object[] { cause };
+            Object args[] = { cause };
             SET_CAUSE.invoke(exception, args);
          } catch (IllegalAccessException e) {
             throw new RuntimeException("Unable to invoke Throwable.initCause() method. Caught IllegalAccessException.");

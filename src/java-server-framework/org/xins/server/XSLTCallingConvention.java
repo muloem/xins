@@ -213,9 +213,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
     *
     * @param runtimeProperties
     *    the runtime properties, cannot be <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>runtimeProperties == null</code>.
     */
    private void initXSLTLocation(PropertyReader runtimeProperties) {
 

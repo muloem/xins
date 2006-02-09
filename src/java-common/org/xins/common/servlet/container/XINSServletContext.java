@@ -78,7 +78,7 @@ public class XINSServletContext implements ServletContext {
    private LocalServletConfig _config;
 
    /**
-    * The root URL for the servlet
+    * The root URL for the servlet.
     */
    private String _rootURL;
 

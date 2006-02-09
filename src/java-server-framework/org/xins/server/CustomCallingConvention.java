@@ -11,8 +11,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.xins.common.Utils;
-
 /**
  * Abstraction of a custom calling convention.
  *

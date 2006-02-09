@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
 
 import org.xins.common.text.FastStringBuffer;
@@ -24,7 +23,6 @@ import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
-import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.LogdocStringBuffer;
 
@@ -313,7 +311,7 @@ extends Object {
          } catch (UnsupportedEncodingException uee) {
             throw Utils.logProgrammingError(uee);
          }
-            
+
       }
    }
 
@@ -531,6 +529,9 @@ extends Object {
        *    the prefix to add to the value if the <code>PropertyReader</code>
        *    is not empty, can be <code>null</code>.
        *
+       * @param suffix
+       *    the suffix to add to the value even if the <code>PropertyReader</code>
+       *    is empty, can be <code>null</code>.
        */
       SerializedPropertyReader(PropertyReader p,
                                String         valueIfEmpty,

@@ -306,9 +306,6 @@ extends Manageable {
     * @return
     *    the name of the {@link CallingConvention} class that matches the
     *    specified calling convention name, or <code>null</code> if unknown.
-    *
-    * @throws NullPointerException
-    *    if <code>name == null</code>.
     */
    private String classNameForRegular(String name) {
 
@@ -577,9 +574,6 @@ extends Manageable {
     * @return
     *    the calling convention to use, never <code>null</code>.
     *
-    * @throws NullPointerException
-    *    if <code>request == null</code>.
-    *
     * @throws InvalidRequestException
     *    if the request is considered invalid, for example because the calling
     *    convention specified in the request is unknown.
@@ -726,9 +720,6 @@ extends Manageable {
     *
     * @return
     *    the calling convention to use, never <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>request == null</code>.
     *
     * @throws InvalidRequestException
     *    if the request is considered invalid, for example because the calling

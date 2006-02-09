@@ -313,7 +313,7 @@ public final class Utils extends Object {
                                           Throwable exception)
    throws IllegalArgumentException {
 
-		// Call alternative method with detail set to null 
+      // Call alternative method with detail set to null
       logIgnoredException(detectingClass, detectingMethod,
                           subjectClass,   subjectMethod,
                           null,           exception);
