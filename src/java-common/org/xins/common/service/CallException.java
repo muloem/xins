@@ -13,17 +13,12 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
- * Exception thrown to indicate that a <code>ServiceCaller</code> call failed.
- * This exception is typically only called from {@link ServiceCaller} and
- * subclasses.
+ * Root class for all exceptions that indicate a <code>ServiceCaller</code>
+ * call failed. This exception is typically only thrown by class
+ * {@link ServiceCaller} and subclasses.
  *
- * <p>When a cause exception is passed to any of the constructors, then the
- * root cause of that exception is passed up to the {@link Exception} class.
- * The root cause of an exception can be determined using
- * {@link ExceptionUtils#getRootCause(Throwable)}.
- *
- * <p>Call exceptions are linked. The first thrown exception is normally
- * returned. The next exception can then be retrieved using
+ * <p>Call exceptions can be linked. The first exception is then actually
+ * thrown to the caller. The caller can get the linked exceptions using
  * {@link #getNext()}.
  *
  * @version $Revision$ $Date$
