@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
+
+* XINS/Java Common Library:
+  - Added unit test for CallException linking, in HTTPServiceCallerTests.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 
 * XINS/Java Common Library:
@@ -18,7 +24,6 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - Updated the ErrorCodeSpec to return the type of the error code 
     (functional or technical).
   - Added AttributeCompoSpec in the org.xins.common.spec package.
-  - Added unit test for CallException linking, in HTTPServiceCallerTests.
 
 * XINS/Java Server Framework:
   - Added the possibility to set ACL's specifically for an API.
