@@ -105,6 +105,7 @@ public class HTTPServiceCallerTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
+   /*
    public void testConstructor() throws Exception {
 
       TargetDescriptor descriptor;
@@ -256,6 +257,7 @@ public class HTTPServiceCallerTests extends TestCase {
          assertEquals(target,  exception.getTarget());
       }
    }
+   */
 
    public void testCallExceptionLinking() throws Exception {
 
@@ -286,8 +288,24 @@ public class HTTPServiceCallerTests extends TestCase {
       // Test the next CallException
       CallException next = exception.getNext();
       assertNotNull(next);
-      assertTrue("Next exception is an instance of class " + next.getClass().getName(), next instanceof SocketTimeOutCallException);
       assertEquals(request, next.getRequest());
       assertEquals(target2, next.getTarget());
+      assertTrue("Next exception is an instance of class " + next.getClass().getName() + " instead of " + SocketTimeOutCallException.class.getName(),
+                 next instanceof SocketTimeOutCallException);
+
+      // Test the exception message on the first exception
+      String em1 = exception.getMessage();
+      assertNotNull("Expected message for first exception to be not null.", em1);
+      String start1 = "Connection refused in ";
+      assertTrue("Expected first exception message \"" + em1 + "\" to start with \"" + start1 + '"', em1.startsWith(start1));
+
+      // Test the exception message on the second exception
+      String em2 = next.getMessage();
+      assertNotNull("Expected message for second exception to be not null.", em2);
+      String start2 = "Socket time-out in ";
+      assertTrue("Expected second exception message \"" + em2 + "\" to start with \"" + start2 + '"', em2.startsWith(start2));
+
+      // First exception message must contain second one
+      assertTrue("Expected first exception message \"" + em1 + "\" to contain second exception message \"" + em2 + '"', em1.indexOf(em2) >= 0);
    }
 }
