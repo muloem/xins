@@ -7,6 +7,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 
 * XINS/Java Common Library:
+  - Improved class description for CallException.
   - Added unit test for CallException linking, in HTTPServiceCallerTests.
 
 ______________________________________________________________________________
