@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Improved class description for CallException.
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
+  - Implemented RFE #1236553 in class CallException.
 
 * Generation of the specification in open document format:
   - Improved indentation of the result.

@@ -44,97 +44,6 @@ public abstract class CallException extends Exception {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates an exception message for the constructor based on a short
-    * reason, the original request, target called, call duration and detail
-    * message.
-    *
-    * @param shortReason
-    *    the short reason, cannot be <code>null</code>.
-    *
-    * @param request
-    *    the original request, cannot be <code>null</code>.
-    *
-    * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the call duration in milliseconds, must be &gt;= 0.
-    *
-    * @param detail
-    *    a detailed description of the problem, can be <code>null</code> if
-    *    there is no more detail.
-    *
-    * @return
-    *    the exception message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>shortReason == null
-    *          || request == null
-    *          || target == null
-    *          || duration &lt; 0</code>.
-    */
-   private static final String createMessage(String           shortReason,
-                                             CallRequest      request,
-                                             TargetDescriptor target,
-                                             long             duration,
-                                             String           detail)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("shortReason", shortReason,
-                                     "request",     request,
-                                     "target",      target);
-      if (duration < 0) {
-         throw new IllegalArgumentException(
-            "duration (" + duration + ") < 0");
-      }
-
-      FastStringBuffer buffer = new FastStringBuffer(495, shortReason);
-      buffer.append(" in ");
-      buffer.append(duration);
-      buffer.append(" ms while executing ");
-      buffer.append(request.describe());
-
-      buffer.append(" at ");
-      buffer.append(target.getURL());
-
-      buffer.append(" with connection time-out ");
-      int connectionTimeOut = target.getConnectionTimeOut();
-      if (connectionTimeOut < 1) {
-         buffer.append("disabled, with socket time-out ");
-      } else {
-         buffer.append(connectionTimeOut);
-         buffer.append(" ms, with socket time-out ");
-      }
-
-      int socketTimeOut = target.getSocketTimeOut();
-      if (socketTimeOut < 1) {
-         buffer.append("disabled and with total time-out ");
-      } else {
-         buffer.append(socketTimeOut);
-         buffer.append(" ms and with total time-out ");
-      }
-
-      int totalTimeOut = target.getTotalTimeOut();
-      if (totalTimeOut < 1) {
-         buffer.append("disabled");
-      } else {
-         buffer.append(totalTimeOut);
-         buffer.append(" ms");
-      }
-
-      if (detail == null) {
-         buffer.append('.');
-      } else {
-         buffer.append(": ");
-         buffer.append(detail);
-      }
-
-      return buffer.toString();
-   }
-
-   /**
     * Determines the root cause for the specified exception. If the argument
     * is <code>null</code>, then <code>null</code> is returned.
     *
@@ -197,21 +106,35 @@ public abstract class CallException extends Exception {
                            Throwable        cause)
    throws IllegalArgumentException {
 
-      // Trace, construct message and then call superconstructor
-      super(createMessage(shortReason, request, target, duration, detail));
+      // Check preconditions
+      MandatoryArgumentChecker.check("shortReason", shortReason,
+                                     "request",     request,
+                                     "target",      target);
+      if (duration < 0) {
+         throw new IllegalArgumentException(
+            "duration (" + duration + ") < 0");
+      }
+
+      // Associate this exception with the root cause
       ExceptionUtils.setCause(this, rootCauseFor(cause));
 
       // Store information in fields
-      _request  = request;
-      _target   = target;
-      _duration = duration;
-      _detail   = detail;
+      _shortReason = shortReason;
+      _request     = request;
+      _target      = target;
+      _duration    = duration;
+      _detail      = detail;
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * Short description of the reason. Cannot be <code>null</code>.
+    */
+   private final String _shortReason;
 
    /**
     * The original request. Cannot be <code>null</code>.
@@ -232,20 +155,91 @@ public abstract class CallException extends Exception {
    private final long _duration;
 
    /**
+    * A detailed description of the problem. Can be <code>null</code>.
+    */
+   private String _detail;
+
+   /**
     * The next linked <code>CallException</code>. Can be <code>null</code> if
     * there is none or if it has not been set yet.
     */
    private CallException _next;
 
    /**
-    * A detailed description of the problem. Can be <code>null</code>.
+    * The exception message. Is <code>null</code> if unset.
     */
-   private String _detail;
+   private String _message;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the detail message string of this exception.
+    *
+    * @return
+    *    the detail message string of this exception, never <code>null</code>.
+    */
+   public final String getMessage() {
+
+      // Initialize the message if necessary
+      if (_message == null) {
+
+         FastStringBuffer buffer = new FastStringBuffer(495, _shortReason);
+         buffer.append(" in ");
+         buffer.append(_duration);
+         buffer.append(" ms while executing ");
+         buffer.append(_request.describe());
+
+         buffer.append(" at ");
+         buffer.append(_target.getURL());
+
+         buffer.append(" with connection time-out ");
+         int connectionTimeOut = _target.getConnectionTimeOut();
+         if (connectionTimeOut < 1) {
+            buffer.append("disabled, with socket time-out ");
+         } else {
+            buffer.append(connectionTimeOut);
+            buffer.append(" ms, with socket time-out ");
+         }
+
+         int socketTimeOut = _target.getSocketTimeOut();
+         if (socketTimeOut < 1) {
+            buffer.append("disabled and with total time-out ");
+         } else {
+            buffer.append(socketTimeOut);
+            buffer.append(" ms and with total time-out ");
+         }
+
+         int totalTimeOut = _target.getTotalTimeOut();
+         if (totalTimeOut < 1) {
+            buffer.append("disabled");
+         } else {
+            buffer.append(totalTimeOut);
+            buffer.append(" ms");
+         }
+
+         if (_detail == null) {
+            buffer.append('.');
+         } else {
+            buffer.append(": ");
+            buffer.append(_detail);
+         }
+
+         _message = buffer.toString();
+      }
+
+      if (_next != null) {
+         if (_message.endsWith(".")) {
+            return _message + " Followed by: " + _next.toString();
+         } else {
+            return _message + ". Followed by: " + _next.toString();
+         }
+      } else {
+         return _message;
+      }
+   }
 
    /**
     * Returns the original request.
