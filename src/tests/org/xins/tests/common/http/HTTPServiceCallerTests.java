@@ -105,7 +105,6 @@ public class HTTPServiceCallerTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /* FIXME
    public void testConstructor() throws Exception {
 
       TargetDescriptor descriptor;
@@ -257,7 +256,6 @@ public class HTTPServiceCallerTests extends TestCase {
          assertEquals(target,  exception.getTarget());
       }
    }
-   */
 
    public void testCallExceptionLinking() throws Exception {
 
