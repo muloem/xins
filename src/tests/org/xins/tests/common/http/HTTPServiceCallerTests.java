@@ -105,7 +105,7 @@ public class HTTPServiceCallerTests extends TestCase {
    // Methods
    //-------------------------------------------------------------------------
 
-   /*
+   /* FIXME
    public void testConstructor() throws Exception {
 
       TargetDescriptor descriptor;
@@ -306,6 +306,6 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Expected second exception message \"" + em2 + "\" to start with \"" + start2 + '"', em2.startsWith(start2));
 
       // First exception message must contain second one
-      assertTrue("Expected first exception message \"" + em1 + "\" to contain second exception message \"" + em2 + '"', em1.indexOf(em2) >= 0);
+      assertTrue("Expected first exception message to contain second one. First one is: \"" + em1 + "\" and second one is \"" + em2 + '"', em1.indexOf(em2) >= 0);
    }
 }
