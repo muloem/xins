@@ -272,13 +272,13 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			</taskdef>
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
-			<input addproperty="function.name"
-						 message="Please, enter the name of the function:" />
 			<input addproperty="request.url"
 			       message="Please, enter the full URL to query the API function:" />
 			<createexample requestURL="${{request.url}}"
 			               xslLocation="{$xins_home}/src/xslt/create_example.xslt"
+			               functionProperty="function.name"
 			               exampleProperty="example.xml" />
+			<!-- remove later this echo line as the example is added to the file. -->
 			<echo message="${{example.xml}}" />
 			<replace file="apis/${{api.name}}/spec/${{function.name}}.fnc">
 				<replacetoken><![CDATA[

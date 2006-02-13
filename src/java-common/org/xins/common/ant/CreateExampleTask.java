@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.StringTokenizer;
+
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
@@ -21,9 +22,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
@@ -67,6 +70,11 @@ public class CreateExampleTask extends Task {
    private String _exampleProperty;
 
    /**
+    * The name of the property in which the name of the function should be stored.
+    */
+   private String _functionProperty;
+
+   /**
     * The location of the XSL style sheet to use to create the example.
     */
    private String _xslLocation;
@@ -97,6 +105,16 @@ public class CreateExampleTask extends Task {
    }
 
    /**
+    * Sets the name of the property in which the name of the function should be stored.
+    *
+    * @param functionProperty
+    *    the name of the property in which the result should be stored.
+    */
+   public void setFunctionProperty(String functionProperty) {
+      _functionProperty = functionProperty;
+   }
+
+   /**
     * Sets the location of the XSL style sheet to use to create the example.
     *
     * @param xslLocation
@@ -114,21 +132,7 @@ public class CreateExampleTask extends Task {
     */
    public void execute() throws BuildException {
 
-      if (_requestURL == null) {
-         throw new BuildException("A property value needs to be specified.");
-      }
-
-      if (_exampleProperty == null) {
-         throw new BuildException("A property value needs to be specified.");
-      }
-
-      if (getProject().getUserProperty(_exampleProperty) != null) {
-         String message = "Override ignored for property \""
-                        + _exampleProperty
-                        + "\".";
-         log(message, Project.MSG_VERBOSE);
-         return;
-      }
+      checkAttributes();
 
       try {
          // Transform the URL request to XML
@@ -147,6 +151,41 @@ public class CreateExampleTask extends Task {
          getProject().setUserProperty(_exampleProperty, example);
       } catch (Exception ex) {
          throw new BuildException("Error: " + ex.getMessage());
+      }
+   }
+
+   /**
+    * Checks the attributes of the task.
+    *
+    * @throws BuildException
+    *    if a required attribute is missing.
+    */
+   private void checkAttributes() throws BuildException {
+
+      if (_requestURL == null) {
+         throw new BuildException("The requestUrl attribute needs to be specified.");
+      }
+
+      if (_exampleProperty == null) {
+         throw new BuildException("A exampleProperty attribute needs to be specified.");
+      }
+
+      if (_xslLocation == null) {
+         throw new BuildException("A xslLocation attribute needs to be specified.");
+      }
+
+      if (getProject().getUserProperty(_exampleProperty) != null) {
+         String message = "Override ignored for property \""
+                        + _exampleProperty
+                        + "\".";
+         log(message, Project.MSG_VERBOSE);
+      }
+
+      if (_functionProperty != null && getProject().getUserProperty(_functionProperty) != null) {
+         String message = "Override ignored for property \""
+                        + _functionProperty
+                        + "\".";
+         log(message, Project.MSG_VERBOSE);
       }
    }
 
@@ -171,6 +210,9 @@ public class CreateExampleTask extends Task {
          String paramValue = (equalPos == nextParam.length() - 1) ? "" : nextParam.substring(equalPos + 1);
          if (paramName.equals("_function")) {
             requestBuilder.setAttribute("function", paramValue);
+            if (_functionProperty != null) {
+               getProject().setUserProperty(_functionProperty, paramValue);
+            }
          } else if (paramName.equals("_data")) {
             String dataSectionXML = URLDecoder.decode(paramValue, "UTF-8");
             requestBuilder.addXMLChild(dataSectionXML);
