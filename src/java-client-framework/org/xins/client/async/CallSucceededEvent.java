@@ -11,7 +11,8 @@ import org.xins.client.AbstractCAPICallRequest;
 import org.xins.client.AbstractCAPICallResult;
 
 /**
- * Event fired and a succeeded result is returned from the call to the function.
+ * Event fired when the call is finished and a succeeded result is returned 
+ * from the call to the function.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)

@@ -13,7 +13,10 @@ import org.xins.client.AbstractCAPICallResult;
 import org.xins.common.service.CallException;
 
 /**
- * Event fired and a succeeded result is returned from the call to the function.
+ * Class used to call an API in a separate thread.
+ * To call the API, you will need to invoke the {@link #start()} method.
+ * If you want to wait for the result at a certain point in your program, 
+ * invoke the {@link #join()} method.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)

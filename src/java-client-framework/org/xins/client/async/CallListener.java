@@ -9,7 +9,8 @@ package org.xins.client.async;
 import java.util.EventListener;
 
 /**
- * Event fired and the result of the call is returned.
+ * Listener notified when the call to an API is finished whether it has
+ * succeeded or failed.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)

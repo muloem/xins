@@ -14,7 +14,8 @@ import org.xins.client.AbstractCAPI;
 import org.xins.client.AbstractCAPICallRequest;
 
 /**
- * Event fired and a succeeded result is returned from the call to the function.
+ * Class used to register the {@link CallListener}s and to call the API
+ * asynchronously.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)

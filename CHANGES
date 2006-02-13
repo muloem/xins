@@ -12,7 +12,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
     HTTPServiceCallerTests.
   - Implemented RFE #1236553 in class CallException.
 
-* Generation of the specification in open document format:
+* XINS/Java Client Framework:
+  - Fixed incorrect Javadoc of the org.xins.client.async package.
+
+* Generation of the open document format:
   - Improved indentation of the result.
   - Improved fonts.
   - Added meta.xml containing the meta information of the document.
