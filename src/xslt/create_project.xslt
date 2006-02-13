@@ -259,4 +259,35 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			</replace>
 		</target>
 	</xsl:template>
+
+	<xsl:template name="createexample">
+		<xsl:param name="xins_home" />
+
+		<target name="create-example" description="Generates the specification of an exmaple.">
+			<taskdef name="createexample" classname="org.xins.common.ant.CreateExampleTask">
+				<classpath>
+					<fileset dir="{$xins_home}/build" includes="*.jar"/>
+					<fileset dir="{$xins_home}/lib" includes="*.jar"/>
+				</classpath>
+			</taskdef>
+			<input addproperty="api.name"
+						 message="Please, enter the name of the api:" />
+			<input addproperty="function.name"
+						 message="Please, enter the name of the function:" />
+			<input addproperty="request.url"
+			       message="Please, enter the full URL to query the API function:" />
+			<createexample requestURL="${{request.url}}"
+			               xslLocation="{$xins_home}/src/xslt/create_example.xslt"
+			               exampleProperty="example.xml" />
+			<echo message="${{example.xml}}" />
+			<replace file="apis/${{api.name}}/spec/${{function.name}}.fnc">
+				<replacetoken><![CDATA[
+</function>]]></replacetoken>
+				<replacevalue><![CDATA[
+]]>${example.xml}<![CDATA[
+</function>]]></replacevalue>
+			</replace>
+			<replace file="apis/${{api.name}}/spec/${{function.name}}.fnc" token="$${{example.xml}}" value="${{example.xml}}" />
+		</target>
+	</xsl:template>
 </xsl:stylesheet>

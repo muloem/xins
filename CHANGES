@@ -20,6 +20,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Improved fonts.
   - Added meta.xml containing the meta information of the document.
 
+* Generated build file:
+  - Added a create-example target that creates the specification of an 
+    example.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 

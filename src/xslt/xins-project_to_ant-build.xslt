@@ -89,6 +89,8 @@ The following commands assist in authoring specifications:
 - create-rcd          Generates a new error code specification
                       file.
 - create-type         Generates a new type specification file.
+- create-example      Generates a new example for a function.
+- create-logdoc       Generates the basic logdoc files for an API.
 
 The following targets are specific for a single API, 
 replace <api> with the name of an existing API:
@@ -148,6 +150,10 @@ APIs in this project are:
 			</target>
 
 			<xsl:call-template name="createproject" />
+
+			<xsl:call-template name="createexample">
+				<xsl:with-param name="xins_home" select="$xins_home" />
+			</xsl:call-template>
 
 			<target name="-prepare" />
 
