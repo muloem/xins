@@ -14,15 +14,14 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:output method="xml" indent="yes" omit-xml-declaration="true" />
+	<xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
 
 	<xsl:strip-space elements="*" />
 
 	<xsl:variable name="indentation" select="'&#x9;'" />
 
 	<xsl:template match="/combined">
-			<xsl:text>
-	</xsl:text>
+		<xsl:text>	</xsl:text>
 		<example>
 			<xsl:if test="result/@errorcode">
 				<xsl:attribute name="resultcode">
@@ -99,7 +98,7 @@
 	<xsl:template match="*">
 		<xsl:variable name="indent">
 			<xsl:call-template name="indent">
-				<xsl:with-param name="count" select="count(ancestor::*) + 1" />
+				<xsl:with-param name="count" select="count(ancestor::*)" />
 				<xsl:with-param name="indent" select="$indentation" />
 			</xsl:call-template>
 		</xsl:variable>

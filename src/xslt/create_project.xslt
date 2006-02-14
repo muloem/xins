@@ -284,8 +284,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 				<replacetoken><![CDATA[
 </function>]]></replacetoken>
 				<replacevalue><![CDATA[
-]]>${example.xml}<![CDATA[
-</function>]]></replacevalue>
+]]>${example.xml}<![CDATA[</function>]]></replacevalue>
 			</replace>
 			<replace file="apis/${{api.name}}/spec/${{function.name}}.fnc" token="$${{example.xml}}" value="${{example.xml}}" />
 		</target>
