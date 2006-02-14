@@ -24,6 +24,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Added a create-example target that creates the specification of an 
     example.
 
+* Build- and release-process:
+  - Added the impl.xml file used for the stub of the allinone API.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
 

@@ -482,7 +482,7 @@ ${sf.file}</fail>
 				<include name="xins-project/**/*.java" />
 				<exclude name="build" />
 				<exclude name="xins-project/build/**/*" />
-				<exclude name="xins-project/apis/allinone/impl-stub/**/*" />
+				<exclude name="xins-project/apis/allinone/impl-stub/com/**/*" />
 				<exclude name="xins-project/apis/allinone/test/**/*" />
 			</fileset>
 		</copy>
