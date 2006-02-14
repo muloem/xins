@@ -300,7 +300,7 @@
 						continue;
 					}
 
-					if (elems[i].type == 'text' || elems[i].type == 'hidden') {
+					if (elems[i].type == 'text' || elems[i].type == 'hidden' || elems[i].type == 'textarea') {
 						value = elems[i].value;
 					} else if (elems[i].type == 'select-one') {
 						value = elems[i].options[elems[i].selectedIndex].value;

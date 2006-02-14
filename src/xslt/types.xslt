@@ -73,7 +73,7 @@
 
 		<xsl:choose>
 			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
-				<span>
+				<span xsl:exclude-result-prefixes="text xd">
 					<xsl:attribute name="title">
 						<xsl:call-template name="firstline">
 							<xsl:with-param name="text">
@@ -118,7 +118,7 @@
 			</xsl:message>
 		</xsl:if>
 
-		<a>
+		<a xsl:exclude-result-prefixes="text xd">
 			<xsl:attribute name="href">
 				<xsl:value-of select="$type_url" />
 			</xsl:attribute>

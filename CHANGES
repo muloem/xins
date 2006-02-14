@@ -15,6 +15,11 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
 
+* Test forms:
+  - Fixed the textarea used for the input data section was not handled
+    correctly.
+  - Fixed incorrect namespace declaration in an element.
+
 * Generation of the open document format:
   - Improved indentation of the result.
   - Improved fonts.
