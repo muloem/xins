@@ -919,8 +919,7 @@ APIs in this project are:
 					<srcfileset dir="{$api_specsdir}">
 						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
 					</srcfileset>
-					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java"/>
-					<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml"/>
+					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
 				</dependset>
 				<xsl:variable name="impl_file">
 					<xsl:choose>
@@ -995,7 +994,8 @@ APIs in this project are:
 				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 					<dependset>
 						<srcfilelist   dir="{$api_specsdir}" files="{$functionIncludes}" />
-						<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java"/>
+						<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java" />
+						<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml" />
 					</dependset>
 					<xmlvalidate warn="false">
 						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>

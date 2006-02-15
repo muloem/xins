@@ -32,6 +32,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 * Build- and release-process:
   - Added the impl.xml file used for the stub of the allinone API.
   - Added opendoc directory in the distribution.
+  - Remove the generated resultcodes.xml if a function specification has
+    changed.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
@@ -2131,6 +2133,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     changed [a-zA-Z] range into [a-z], using the
     Perl5Compiler.CASE_INSENSITIVE_MASK in the call to the
     Perl5Compiler.compile() method instead to enable case-insensitive matches.
+
 
 * XINS/Java Client Framework:
   - Changed some classes to throw a ProgrammingError instead of an Error, if
