@@ -33,7 +33,7 @@ import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
 
 /**
- * Apache Ant task that generates the spcification code of an example based
+ * Apache Ant task that generates the specification code of an example based
  * on the request URL.
  *
  * @version $Revision$ $Date$
@@ -163,15 +163,15 @@ public class CreateExampleTask extends Task {
    private void checkAttributes() throws BuildException {
 
       if (_requestURL == null) {
-         throw new BuildException("The requestUrl attribute needs to be specified.");
+         throw new BuildException("The \"requestUrl\" attribute needs to be specified.");
       }
 
       if (_exampleProperty == null) {
-         throw new BuildException("A exampleProperty attribute needs to be specified.");
+         throw new BuildException("An \"exampleProperty\" attribute needs to be specified.");
       }
 
       if (_xslLocation == null) {
-         throw new BuildException("A xslLocation attribute needs to be specified.");
+         throw new BuildException("An \"xslLocation\" attribute needs to be specified.");
       }
 
       if (getProject().getUserProperty(_exampleProperty) != null) {
@@ -190,7 +190,7 @@ public class CreateExampleTask extends Task {
    }
 
    /**
-    * Transforms the request URL to an XMl element.
+    * Transforms the request URL to an XML element.
     *
     * @return
     *    the query URL as XML.
@@ -199,7 +199,7 @@ public class CreateExampleTask extends Task {
     *    if the query is not a correct URL.
     */
    private Element getRequestAsXML() throws Exception {
-      
+
       String queryString = _requestURL.substring(_requestURL.indexOf('?') + 1);
       ElementBuilder requestBuilder = new ElementBuilder("request");
       StringTokenizer stQuery = new StringTokenizer(queryString, "&");
@@ -208,14 +208,20 @@ public class CreateExampleTask extends Task {
          int equalPos = nextParam.indexOf('=');
          String paramName = nextParam.substring(0, equalPos);
          String paramValue = (equalPos == nextParam.length() - 1) ? "" : nextParam.substring(equalPos + 1);
+
+         // Handle the _function parameter
          if (paramName.equals("_function")) {
             requestBuilder.setAttribute("function", paramValue);
             if (_functionProperty != null) {
                getProject().setUserProperty(_functionProperty, paramValue);
             }
+
+         // Handle the _data parameter
          } else if (paramName.equals("_data")) {
             String dataSectionXML = URLDecoder.decode(paramValue, "UTF-8");
             requestBuilder.addXMLChild(dataSectionXML);
+
+         // Handle the input parameters of the function
          } else if (paramName.charAt(0) != '_') {
             String paramXML = "<param name=\"" + paramName + "\">" + 
                   URLDecoder.decode(paramValue, "UTF-8") + "</param>";
@@ -266,10 +272,14 @@ public class CreateExampleTask extends Task {
     *    if the XSLT cannot be read or the transformation fails.
     */
    private String transformElement(Element combined) throws Exception {
+
+      // Creates the XSLT Transformer
       TransformerFactory factory = TransformerFactory.newInstance();
       Templates templates = factory.newTemplates(new StreamSource(
             new FileInputStream(_xslLocation)));
       Transformer xformer = templates.newTransformer();
+
+      // Read the source and process it with the XSLT file
       Source source = new StreamSource(new StringReader(combined.toString()));
       Writer buffer = new FastStringWriter(1024);
       Result resultExample = new StreamResult(buffer);
