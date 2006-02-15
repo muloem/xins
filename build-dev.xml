@@ -536,6 +536,7 @@ ${sf.file}</fail>
 			<include name="src/logdoc/client/*"            />
 			<include name="src/logdoc/common/*"            />
 			<include name="src/logdoc/server/*"            />
+			<include name="src/opendoc/**/*"               />
 			<include name="src/package-lists/**/*"         />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />

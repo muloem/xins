@@ -31,6 +31,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 
 * Build- and release-process:
   - Added the impl.xml file used for the stub of the allinone API.
+  - Added opendoc directory in the distribution.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
