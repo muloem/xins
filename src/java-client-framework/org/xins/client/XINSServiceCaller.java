@@ -399,7 +399,7 @@ public final class XINSServiceCaller extends ServiceCaller {
             String         s           = dataSection != null
                                        ? ("_data=" + dataSection.toString())
                                        : null;
-            LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", s);
+            LogdocSerializable params = PropertyReaderUtils.serialize(p, "(null)", "&", s);
 
             // Serialize the exception chain
             LogdocSerializable chain = new SerializedException(exception);
