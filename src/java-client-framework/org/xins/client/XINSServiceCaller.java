@@ -381,27 +381,28 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Handle failures
       } catch (Throwable exception) {
-         
-         // Determine how long the call took
-         long duration = System.currentTimeMillis() - start;
-         
-         // Serialize all parameters, including the data section, for logging
-         PropertyReader p           = request.getParameters();
-         Element        dataSection = request.getDataSection();
-         String         s           = dataSection != null
-                                    ? ("_data=" + dataSection.toString())
-                                    : null;
-         LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", s);
-         
-         // TODO: Will dataSection.toString() serialize the dataSection
-         //       appropriately? For example, will '=' be escaped properly?
-         
+
          // Log that the call completely failed, unless the back-end returned
          // a functional error code. We assume that a functional error code
-         // can never fail-over, so this issue has already been logged at the
-         // correct (non-error) level.
+         // can never fail-over, so this issue will have been logged at the
+         // correct (non-error) level already.
          if (! (exception instanceof UnsuccessfulXINSCallException &&
                ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL)) {
+
+            // Determine how long the call took
+            long duration = System.currentTimeMillis() - start;
+
+            // Serialize all parameters, including the data section, for logging
+            PropertyReader p           = request.getParameters();
+            Element        dataSection = request.getDataSection();
+            String         s           = dataSection != null
+                                       ? ("_data=" + dataSection.toString())
+                                       : null;
+            LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", s);
+
+            // TODO: Will dataSection.toString() serialize the dataSection
+            //       appropriately? For example, will '=' be escaped properly?
+
             Log.log_2113(request.getFunctionName(), params, duration, null);
          }
 
