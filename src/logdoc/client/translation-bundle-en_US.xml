@@ -17,8 +17,7 @@
 	<translation entry="2112">Received unsuccessful XINS result (error code <value-of-param name="errorCode" />) while calling <value-of-param name="url" />?_function=<value-of-param name="function" /><value-of-param name="parameters" />.</translation>
 	<translation entry="2113">Call request for function <value-of-param name="function" /> with parameters <value-of-param name="parameters" /> failed completely after <value-of-param name="duration" /> ms. Reason: <value-of-param name="reason" format="quoted" /></translation>
 	<translation entry="2114">The build-time XINS version for the <value-of-param name="apiName" format="quoted" /> CAPI (<value-of-param name="buildVersion" />) differs from the runtime version of the XINS/Java Client Framework (<value-of-param name="runtimeVersion" />).</translation>
-	<translation entry="2115">Received unsuccessful XINS result (functional error code <value-of-param name="errorCode" />) while calling <value-of-param name="url" />?_function=<value-of-param name="function" /><value-of-param name="parameters" />.</translation>
-	<translation entry="2116">Call request for function <value-of-param name="function" /> with parameters <value-of-param name="parameters" /> failed completely due to a functional error code after <value-of-param name="duration" /> ms.</translation>
+	<translation entry="2115">Received functional error code <value-of-param name="errorCode" /> within <value-of-param name="duration" /> ms while calling <value-of-param name="url" />?_function=<value-of-param name="function" /><value-of-param name="parameters" />.</translation>
 
 	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" format="quoted" /> instead of "result" with namespace (null).</translation>
 	<translation entry="2201">Found output parameter with name nor value.</translation>
