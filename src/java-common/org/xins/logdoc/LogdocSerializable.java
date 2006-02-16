@@ -19,6 +19,15 @@ public interface LogdocSerializable {
    /**
     * Serializes this object for logging to the specified string buffer.
     *
+    * <p>If the argument is null, then a <code>NullPointerException</code>
+    * should be thrown by the implementation. This can just be accomplished by
+    * dereferencing it, for example:
+    *
+    * <blockquote><pre>buffer.append("Something");</pre></blockquote>
+    *
+    * <p>Implementations should use {@link LogCentral#getLocale()} to 
+    * determine which locale (language) to choose.
+    *
     * @param buffer
     *    the {@link LogdocStringBuffer} to serialize to, cannot be
     *    <code>null</code>.

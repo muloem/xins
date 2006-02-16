@@ -7,10 +7,11 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 
 * XINS/Java Common Library:
-  - Improved class description for CallException.
+  - Implemented RFE #1236553 in class CallException. Also improved the class
+    description for this class.
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
-  - Implemented RFE #1236553 in class CallException.
+  - Improved Javadoc comments for LogdocSerializable, method serialize.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
