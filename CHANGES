@@ -22,6 +22,11 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
     superfluous, log message 2115 is enough.
   - Slightly improved the description and translations for log message 2115.
 
+* XINS/Java Server Framework:
+  - Implemented RFE #1346752: Have log messages 3200 and 3227 in the log.
+    These messages are now logged after the runtime configuration file is read
+    and the log settings have been applied.
+
 * Test forms:
   - Fixed the textarea used for the input data section was not handled
     correctly.

@@ -129,6 +129,9 @@ final class Engine extends Object {
       // Read configuration details
       _configManager.determineConfigFile();
       _configManager.readRuntimeProperties();
+      
+      // Log boot messages
+      _starter.logBootMessages();
 
       // Construct and bootstrap the API
       _state.setState(EngineState.CONSTRUCTING_API);
