@@ -392,7 +392,7 @@ public final class XINSServiceCaller extends ServiceCaller {
                ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL) {
             Log.log_2116(function, params, duration);
          } else {
-            Log.log_2113(function, params, duration);
+            Log.log_2113(function, params, duration, null);
          }
 
          if (exception instanceof GenericCallException) {

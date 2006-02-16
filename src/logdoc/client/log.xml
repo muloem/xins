@@ -102,10 +102,10 @@
 		</entry>
 		<entry id="2113" level="ERROR" exception="false">
 			<description>XINS call request completely failed.</description>
-			<!-- TODO: Extend parameters -->
 			<param name="function"   type="text"         nullable="false" />
 			<param name="parameters" type="serializable" nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
+			<param name="reason"     type="serializable" nullable="true"  />
 		</entry>
 		<entry id="2114" level="WARNING">
 			<description>The CAPI has been compiled with a different XINS version.</description>

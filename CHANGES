@@ -15,6 +15,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
+  - Changed log message 2113 to accept a reason. This is in preparation for
+    RFE #1236554.
 
 * Test forms:
   - Fixed the textarea used for the input data section was not handled
