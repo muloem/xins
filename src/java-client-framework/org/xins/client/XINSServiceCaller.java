@@ -43,6 +43,7 @@ import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 
 import org.xins.common.xml.Element;
+import org.xins.logdoc.AbstractLogdocSerializable;
 
 import org.xins.logdoc.LogdocSerializable;
 
@@ -400,10 +401,13 @@ public final class XINSServiceCaller extends ServiceCaller {
                                        : null;
             LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", s);
 
+            // Serialize the exception chain
+            LogdocSerializable chain = new SerializedException(exception);
+            
             // TODO: Will dataSection.toString() serialize the dataSection
             //       appropriately? For example, will '=' be escaped properly?
 
-            Log.log_2113(request.getFunctionName(), params, duration, null);
+            Log.log_2113(request.getFunctionName(), params, duration, chain);
          }
 
          // Allow only GenericCallException, HTTPCallException and
@@ -881,5 +885,54 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       return should;
+   }
+   
+   
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+   
+   /**
+    * Logdoc serializable that will serialize a chain of exceptions.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   private static final class SerializedException
+   extends AbstractLogdocSerializable {
+      
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+      
+      /**
+       * Constructs a new <code>SerializedException</code> instance with the
+       * specified exception being the first exception in the chain.
+       * 
+       * @param first
+       *    the first exception in the chain, should not be <code>null</code>.
+       */
+      private SerializedException(Throwable first) {
+         _first = first;
+      }
+
+      
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+      
+      /**
+       * The first exception in the chain. Should not be <code>null</code>.
+       */
+      private Throwable _first;
+      
+      
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      protected String initialize() {
+         return _first.getMessage();
+      }
    }
 }
