@@ -42,6 +42,8 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 
+import org.xins.common.xml.Element;
+
 import org.xins.logdoc.LogdocSerializable;
 
 /**
@@ -369,32 +371,42 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
+      // Determine when we started the call
       long start = System.currentTimeMillis();
 
+      // Perform the call
       XINSCallResult result;
       try {
          result = (XINSCallResult) doCall(request,callConfig);
 
-      // Allow only GenericCallException, HTTPCallException and
-      // XINSCallException to proceed
+      // Handle failures
       } catch (Throwable exception) {
-         long               duration  = System.currentTimeMillis() - start;
-         String             function  = request.getFunctionName();
-         PropertyReader     p         = request.getParameters();
-         String dataSection = null;
-         if (request.getDataSection() != null) {
-            dataSection = "_data=" + request.getDataSection().toString();
-         }
-         LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection);
          
-         // Log functional error code at INFO level
-         if (exception instanceof UnsuccessfulXINSCallException && 
-               ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL) {
-            Log.log_2116(function, params, duration);
-         } else {
-            Log.log_2113(function, params, duration, null);
+         // Determine how long the call took
+         long duration = System.currentTimeMillis() - start;
+         
+         // Serialize all parameters, including the data section, for logging
+         PropertyReader p           = request.getParameters();
+         Element        dataSection = request.getDataSection();
+         String         s           = dataSection != null
+                                    ? ("_data=" + dataSection.toString())
+                                    : null;
+         LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", s);
+         
+         // TODO: Will dataSection.toString() serialize the dataSection
+         //       appropriately? For example, will '=' be escaped properly?
+         
+         // Log that the call completely failed, unless the back-end returned
+         // a functional error code. We assume that a functional error code
+         // can never fail-over, so this issue has already been logged at the
+         // correct (non-error) level.
+         if (! (exception instanceof UnsuccessfulXINSCallException &&
+               ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL)) {
+            Log.log_2113(request.getFunctionName(), params, duration, null);
          }
 
+         // Allow only GenericCallException, HTTPCallException and
+         // XINSCallException to proceed
          if (exception instanceof GenericCallException) {
             throw (GenericCallException) exception;
          } if (exception instanceof HTTPCallException) {
