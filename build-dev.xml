@@ -132,7 +132,7 @@ ${sf.file}</fail>
 		deprecation="${tests.deprecation}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}"
-        encoding="${javac.encoding}">
+		encoding="${javac.encoding}">
 			<src path="src/tests" />
 			<classpath>
 				<pathelement location="build/xins-common.jar" />
@@ -838,7 +838,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 
-		<java fork="true" classname="junit.textui.TestRunner">
+		<java fork="true" classname="junit.swingui.TestRunner">
 			<jvmarg value="-Xdebug" />
 			<jvmarg value="-Xnoagent" />
 			<jvmarg value="-Djava.compiler=none" />
@@ -860,8 +860,6 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</java>
-
-		<antcall target="testreports" />
 	</target>
 
 	<target name="xsltdoc">
