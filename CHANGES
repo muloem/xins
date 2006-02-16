@@ -17,7 +17,6 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
   - Implemented RFE #1236554, in class XINSServiceCaller. Changed log message
     2113 to accept a reason (of type 'serializable').
-    
   - Removed log message 2116 (introduced after XINS 1.3.0) because a
     functional error code will never trigger fail-over. So 2116 was
     superfluous, log message 2115 is enough.
