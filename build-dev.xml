@@ -841,15 +841,14 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 
-		<junit printsummary="true" failureproperty="tests.failed" fork="true">
+		<junit printsummary="true" failureproperty="tests.failed" fork="true" showoutput="true">
 			<jvmarg value="-Xdebug" />
 			<jvmarg value="-Xnoagent" />
 			<jvmarg value="-Djava.compiler=none" />
 			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
 
 			<sysproperty key="user.dir" value="${basedir}"/>
-			<formatter type="xml" />
-			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
+			<test name="${testclass}" />
 			<classpath>
 				<pathelement location="build/classes/tests" />
 				<pathelement location="build/classes/java-common" />
