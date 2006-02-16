@@ -297,9 +297,24 @@ public final class ErrorCodeSpec extends Object {
          }
       }
    }
-   
+
+   //-------------------------------------------------------------------------
+   // Inner class
+   //-------------------------------------------------------------------------
+
+   /**
+    * Type of an error code.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    *
+    * @since XINS 1.4.0
+    */
    public static class Type {
-      
+
+      /**
+       * Creates a new type.
+       */
       private Type() {
       }
    }
