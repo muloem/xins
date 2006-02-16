@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
   - Improved Javadoc comments for LogdocSerializable, method serialize.
+  - Added support for sessions in the servlet container.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.

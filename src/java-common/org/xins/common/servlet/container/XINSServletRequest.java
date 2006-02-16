@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +50,11 @@ public class XINSServletRequest implements HttpServletRequest {
     * The localhost address.
     */
    private static String LOCALHOST_ADDRESS;
+
+   /**
+    * The HTTP sessions of the servlet container. 
+    */
+   private static Map SESSIONS = new HashMap();
 
 
    //-------------------------------------------------------------------------
@@ -441,11 +447,17 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public HttpSession getSession() {
-      return getSession(true);
+      return (HttpSession) SESSIONS.get(getRemoteAddr() + getRemoteUser());
    }
 
    public HttpSession getSession(boolean create) {
-      throw new UnsupportedOperationException();
+      String sessionKey = getRemoteAddr() + getRemoteUser();
+      HttpSession session = (HttpSession) SESSIONS.get(sessionKey);
+      if (session == null) {
+         session = new XINSHttpSession();
+         SESSIONS.put(sessionKey, session);
+      }
+      return session;
    }
 
    public Principal getUserPrincipal() {
