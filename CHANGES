@@ -29,6 +29,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
     and the log settings have been applied.
 
 * Test forms:
+  - Implemented RFE #1408170: Display enum names on test form. Tested this
+    manually.
   - Fixed the textarea used for the input data section was not handled
     correctly.
   - Fixed incorrect namespace declaration in an element.

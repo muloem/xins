@@ -236,8 +236,18 @@
 							</xsl:attribute>
 							<option></option>
 							<xsl:for-each select="document($type_file)/type/enum/item">
+								<xsl:variable name="label">
+									<xsl:choose>
+										<xsl:when test="string-length(@name) &gt; 0">
+											<xsl:value-of select="@name" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="@value" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
 								<option value="{@value}">
-									<xsl:value-of select="@value" />
+									<xsl:value-of select="$label" />
 								</option>
 							</xsl:for-each>
 						</select>
