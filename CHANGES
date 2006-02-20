@@ -4,7 +4,7 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
+CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
 
 * XINS/Java Common Library:
   - Fixed bug #1435274: TargetDescriptor.equals(Object) only looked at the
