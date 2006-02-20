@@ -229,7 +229,7 @@ extends Object {
     * {@link ExpiryStrategy#getTimeOut()} milliseconds, plus at maximum
     * {@link ExpiryStrategy#getPrecision()} milliseconds.
     */
-   private Map _recentlyAccessed;
+   private HashMap _recentlyAccessed;
 
    /**
     * Number of active slots. Always equals
@@ -248,7 +248,7 @@ extends Object {
     * accessed. The further back in the array, the sooner the entries will
     * expire.
     */
-   private Map[] _slots;
+   private HashMap[] _slots;
 
    /**
     * The set of listeners. May be empty, but never is <code>null</code>.
@@ -317,8 +317,8 @@ extends Object {
       // Check state
       assertStrategyNotStopped();
 
-      Map toBeExpired;
-      Map refMap = null;
+      HashMap toBeExpired;
+      HashMap refMap = null;
       synchronized (_lock) {
 
          // Shift the slots
@@ -330,12 +330,17 @@ extends Object {
 
          // Removed the entries expired in the last slot
          if (!_slots[_lastSlot].isEmpty()) {
-            Iterator keyIterator = _slots[_lastSlot].keySet().iterator();
-            while (keyIterator.hasNext()) {
-               Object key   = keyIterator.next();
-               Entry  entry = (Entry) _slots[_lastSlot].get(key);
+            Iterator iterator = _slots[_lastSlot].entrySet().iterator();
+            while (iterator.hasNext()) {
+               
+               // Get the next Map.Entry from the iterator
+               Map.Entry me = (Map.Entry) iterator.next();
+               
+               // Determine key and entry object
+               Object key   = me.getKey();
+               Entry  entry = (Entry) me.getValue();
                if (entry.isExpired()) {
-                  keyIterator.remove();
+                  iterator.remove();
                   if (refMap == null) {
                      refMap = new HashMap();
                   }
@@ -346,10 +351,16 @@ extends Object {
 
          // Copy all references from the wrapping Entry objects
          if (!toBeExpired.isEmpty()) {
-            Iterator keyIterator = toBeExpired.keySet().iterator();
-            while (keyIterator.hasNext()) {
-               Object key   = keyIterator.next();
-               Entry  entry = (Entry) toBeExpired.get(key);
+            Iterator iterator = toBeExpired.entrySet().iterator();
+            while (iterator.hasNext()) {
+               
+               // Get the next Map.Entry from the iterator
+               Map.Entry me = (Map.Entry) iterator.next();
+               
+               // Get the key and the entry
+               Object key   = me.getKey();
+               Entry  entry = (Entry) me.getValue();
+               
                if (entry.isExpired()) {
 
                   // Create a map for the object references, if necessary
@@ -488,10 +499,15 @@ extends Object {
       int size = 0;
 
       synchronized (_lock) {
-         Iterator keyIterator = map.keySet().iterator();
-         while (keyIterator.hasNext()) {
-            Object key   = keyIterator.next();
-            Entry  entry = (Entry) map.get(key);
+         Iterator iterator = map.entrySet().iterator();
+         while (iterator.hasNext()) {
+            
+            // Get the next Map.Entry from the iterator
+            Map.Entry me = (Map.Entry) iterator.next();
+            
+            // Get the key and the entry
+            Object key   = me.getKey();
+            Entry  entry = (Entry) me.getValue();
             if (!entry.isExpired()) {
                size++;
             }

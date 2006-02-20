@@ -20,9 +20,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Slightly improved the TargetDescriptor class. Improved the Javadoc
     comments. Now using the CRC-32 of the URL as the hash code.
     Consequently the field _hashCode could be removed.
-  - Slightly improved the efficiency of the ElementSerializer by using the
-    Iterator returned from entrySet() instead of the one from keySet(), on a
-    Map.
+  - Slightly improved the efficiency of the ElementSerializer and ExpiryFolder
+    classes by applying the following changes:
+    . using the Map.entrySet() instead of the Map.keySet()
+    . referring directly to HashMap instead of Map for internal objects
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
