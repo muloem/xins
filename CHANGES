@@ -35,6 +35,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
     correctly.
   - Fixed incorrect namespace declaration in an element.
 
+* Generation of client-side Java code:
+  - Fixed SF.net bug#1435066: Getting an attribute value may throw an
+    exception.
+
 * Generation of the open document format:
   - Improved indentation of the result.
   - Improved fonts.

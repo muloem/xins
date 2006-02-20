@@ -169,15 +169,11 @@
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
-	<!-- Generates the get methods. -->
-	<xsl:template match="input/param | input/data/element/attribute | output/data/element/attribute" mode="method">
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-			</xsl:call-template>
-		</xsl:variable>
+	<!-- 
+	  Generates the get methods for the parameters and the attributes.
+		If the parameter or attribute is optional an isSet method is created.
+	 -->
+	<xsl:template match="input/param | input/data/element/attribute" mode="method">
 		<!-- Get the name of the get method. -->
 		<xsl:variable name="hungarianName">
 			<xsl:call-template name="hungarianUpper">
@@ -190,16 +186,6 @@
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<!-- Get the return type of the variable. -->
-		<xsl:variable name="javatype">
-			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_node" select="$project_node" />
-				<xsl:with-param name="api"          select="$api"          />
-				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
-				<xsl:with-param name="type"         select="@type"         />
-			</xsl:call-template>
-		</xsl:variable>
 		<!-- Get the return type of the get method. -->
 		<xsl:variable name="javasimpletype">
 			<xsl:call-template name="javatype_for_type">
@@ -210,11 +196,7 @@
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="javaobjecttype">
-			<xsl:call-template name="hungarianUpper">
-				<xsl:with-param name="text" select="$javasimpletype" />
-			</xsl:call-template>
-		</xsl:variable>
+		<!-- Get whether the return type is a primary type. -->
 		<xsl:variable name="typeIsPrimary">
 			<xsl:call-template name="is_java_datatype">
 				<xsl:with-param name="text" select="$javasimpletype" />
@@ -283,7 +265,7 @@
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> input parameter]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="not($basetype = '_text')">.</xsl:when>
+			<xsl:when test="$typeIsPrimary = 'true'">.</xsl:when>
 			<xsl:otherwise>
 				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
 			</xsl:otherwise>
@@ -304,9 +286,6 @@
 		<xsl:text>
        */
       </xsl:text>
-		<xsl:if test="ancestor::output">
-			<xsl:text>public </xsl:text>
-		</xsl:if>
 		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
@@ -365,8 +344,103 @@
       }</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="output/data/element/attribute" mode="method">
+		<!-- Get the name of the get method. -->
+		<xsl:variable name="hungarianName">
+			<xsl:call-template name="hungarianUpper">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+		<!-- Get the name of the variable. -->
+		<xsl:variable name="javaVariable">
+			<xsl:call-template name="hungarianLower">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+		<!-- Get the return type of the get method. -->
+		<xsl:variable name="javaObjectType">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
+		</xsl:variable>
+		<!-- Get whether the return type is a primary type. -->
+		<xsl:variable name="typeIsPrimary">
+			<xsl:call-template name="is_java_datatype">
+				<xsl:with-param name="text" select="$javaObjectType" />
+			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- Generates the get method. -->
+		<xsl:text><![CDATA[
+
+      /**
+       * Gets the value of the ]]></xsl:text>
+		<xsl:choose>
+			<xsl:when test="@required = 'true'">
+				<xsl:text>required</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>optional</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text><![CDATA[ output attribute <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em>,
+       * which is ]]></xsl:text>
+		<xsl:value-of select="description/text()" />
+		<xsl:text><![CDATA[
+       *
+       * @return
+       *    the value of the <em>]]></xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[</em> output attribute]]></xsl:text>
+		<xsl:choose>
+			<xsl:when test="$typeIsPrimary = 'true' and @required = 'true'">.</xsl:when>
+			<xsl:when test="@required = 'true'">
+				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text><![CDATA[, can be <code>null</code>.]]></xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:if test="deprecated">
+			<xsl:text>
+       *
+       * @deprecated
+       *    </xsl:text>
+			<xsl:value-of select="deprecated/text()" />
+		</xsl:if>
+		<xsl:text>
+       */
+      public </xsl:text>
+		<xsl:value-of select="$javaObjectType" />
+		<xsl:text> get</xsl:text>
+		<xsl:value-of select="$hungarianName" />
+		<xsl:text>() {
+         try {
+            return </xsl:text>
+		<xsl:call-template name="javatype_from_string_for_type">
+			<xsl:with-param name="api"      select="$api"      />
+			<xsl:with-param name="required" select="@required" />
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="type"     select="@type"     />
+			<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+		</xsl:call-template>
+		<xsl:text>;
+         } catch (org.xins.common.types.TypeValueException tve) {
+
+            // Should never happen as it was already checked.
+            throw org.xins.common.Utils.logProgrammingError(tve);
+         }
+      }</xsl:text>
+	</xsl:template>
+
 	<!-- ************************************************************* -->
-	<!-- Generate the list data/element methods                         -->
+	<!-- Generate the list data/element methods                        -->
 	<!-- ************************************************************* -->
 
 	<xsl:template match="input/data/element | output/data/element" mode="listMethod">
