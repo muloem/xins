@@ -18,7 +18,7 @@ import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.Element;
 
 /**
- * Tests for class <code>ElementParserTests</code>
+ * Tests for class <code>ElementParser</code>.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
