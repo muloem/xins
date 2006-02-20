@@ -444,6 +444,8 @@ public class AllInOneAPITests extends TestCase {
       assertTrue("No product specified.", products.size() > 0);
       DataElement product1 = (DataElement) products.get(0);
       assertEquals("Incorrect price for product1", "12", product1.get("price"));
+      DataElement product12 = (DataElement) products.get(1);
+      assertNull("Incorrect price for product1", product12.get("price"));
 
       DataElement packet2 = (DataElement) packets.get(1);
       assertEquals("Incorrect elements.", "packet", packet2.getName());

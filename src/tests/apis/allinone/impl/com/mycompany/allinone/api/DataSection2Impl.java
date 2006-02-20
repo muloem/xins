@@ -52,7 +52,6 @@ public class DataSection2Impl extends DataSection2  {
       product1.setPrice(12);
       Product product2 = new Product();
       product2.setId(321654);
-      product2.setPrice(23);
 
       // Create the packet
       Packet packet1 = new Packet();
