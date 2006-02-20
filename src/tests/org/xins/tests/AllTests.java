@@ -66,6 +66,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
 
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.ElementSerializerTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.SAXParserProviderTests.class);
 
       suite.addTestSuite(org.xins.tests.common.spec.AttributeComboTests.class);

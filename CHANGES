@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
     description for this class.
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
+  - Added unit test for ElementSerializer and for bug #1435268.
   - Improved Javadoc comments for LogdocSerializable, method serialize.
   - Added support for sessions in the servlet container.
   - Slightly improved the TargetDescriptor class. Improved the Javadoc
