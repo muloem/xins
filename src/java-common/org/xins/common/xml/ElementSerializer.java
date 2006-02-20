@@ -84,7 +84,7 @@ public final class ElementSerializer extends Object {
     * Map that links namespaces to their prefixes. Each key is a namespace and
     * the corresponding value is the associated prefix.
     */
-   private Map _namespaces;
+   private HashMap _namespaces;
 
 
    //-------------------------------------------------------------------------
@@ -151,6 +151,7 @@ public final class ElementSerializer extends Object {
       // Always close the FastStringWriter
       } finally {
          fsw.close();
+         _namespaces.clear();
          _inUse = false;
       }
 

@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 * XINS/Java Common Library:
   - Fixed bug #1435274: TargetDescriptor.equals(Object) only looked at the
     hash code, not at the internal properties.
+  - Fixed bug #1435268: ElementSerializer remembers namespaces when reused.
   - Implemented RFE #1236553 in class CallException. Also improved the class
     description for this class.
   - Added unit test for CallException linking and for RFE #1236553, in
