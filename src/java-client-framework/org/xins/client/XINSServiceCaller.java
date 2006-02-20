@@ -402,7 +402,7 @@ public final class XINSServiceCaller extends ServiceCaller {
             LogdocSerializable params = PropertyReaderUtils.serialize(p, "(null)", "&", s);
 
             // Serialize the exception chain
-            LogdocSerializable chain = new SerializedException(exception);
+            LogdocSerializable chain = new ExceptionFormatter(exception);
             
             // TODO: Will dataSection.toString() serialize the dataSection
             //       appropriately? For example, will '=' be escaped properly?
@@ -898,7 +898,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @version $Revision$ $Date$
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
-   private static final class SerializedException
+   private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {
       
       //----------------------------------------------------------------------
@@ -906,13 +906,14 @@ public final class XINSServiceCaller extends ServiceCaller {
       //----------------------------------------------------------------------
       
       /**
-       * Constructs a new <code>SerializedException</code> instance with the
+       * Constructs a new <code>ExceptionFormatter</code> instance with the
        * specified exception being the first exception in the chain.
+       * 
        * 
        * @param first
        *    the first exception in the chain, should not be <code>null</code>.
        */
-      private SerializedException(Throwable first) {
+      private ExceptionFormatter(Throwable first) {
          _first = first;
       }
 
