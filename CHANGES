@@ -7,17 +7,17 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 4:
 
 * XINS/Java Common Library:
+  - Fixed bug #1435274: TargetDescriptor.equals(Object) only looked at the
+    hash code, not at the internal properties.
   - Implemented RFE #1236553 in class CallException. Also improved the class
     description for this class.
   - Added unit test for CallException linking and for RFE #1236553, in
     HTTPServiceCallerTests.
   - Improved Javadoc comments for LogdocSerializable, method serialize.
   - Added support for sessions in the servlet container.
-  - Slightly improved the TargetDescriptor class. Corrected a minor bug in the
-    equals method that would cause 2 TargetDescriptor objects to be considered
-    equal if they had the same hash code, even if their properties were
-    different. Improved the Javadoc comments. Now using the CRC-32 of the URL
-    as the hash code. Consequently the field _hashCode could be removed.
+  - Slightly improved the TargetDescriptor class. Improved the Javadoc
+    comments. Now using the CRC-32 of the URL as the hash code.
+    Consequently the field _hashCode could be removed.
   - Slightly improved the efficiency of the ElementSerializer by using the
     Iterator returned from entrySet() instead of the one from keySet(), on a
     Map.
