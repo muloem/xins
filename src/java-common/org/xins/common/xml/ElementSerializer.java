@@ -110,8 +110,6 @@ public final class ElementSerializer extends Object {
 
       final String THIS_METHOD = "serialize(" + Element.class.getName() + ')';
 
-      // TODO: TRACE logging
-
       synchronized (_lock) {
 
          // Make sure this serializer is not yet in use
@@ -157,8 +155,6 @@ public final class ElementSerializer extends Object {
       }
 
       String xml = fsw.toString();
-
-      // TODO: TRACE logging
 
       return xml;
    }
@@ -215,14 +211,17 @@ public final class ElementSerializer extends Object {
 
       // Loop through all attributes
       Map attributes = element.getAttributeMap();
-      Iterator names = attributes.keySet().iterator();
-      while (names.hasNext()) {
+      Iterator entries = attributes.entrySet().iterator();
+      while (entries.hasNext()) {
+
+         // Get the next Map.Entry from the iterator
+         Map.Entry entry = (Map.Entry) entries.next();
 
          // Get the namespace, local name and value
-         Element.QualifiedName qn  = (Element.QualifiedName) names.next();
+         Element.QualifiedName qn = (Element.QualifiedName) entry.getKey();
          String attrNamespaceURI  = qn.getNamespaceURI();
          String attrLocalName     = qn.getLocalName();
-         String attrValue         = (String) attributes.get(qn);
+         String attrValue         = (String) entry.getValue();
 
          // Write an attribute with namespace
          if (attrNamespaceURI != null) {
