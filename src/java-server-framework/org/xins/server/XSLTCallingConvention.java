@@ -294,22 +294,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          xformer.transform(source, result);
 
          // Determine the MIME type for the output.
-         Properties outputProperties = templates.getOutputProperties();
-         String mimeType = outputProperties.getProperty("media-type");
-         if (mimeType == null) {
-            String method = outputProperties.getProperty("method");
-            if ("xml".equals(method)) {
-               mimeType = "text/xml";
-            } else if ("html".equals(method)) {
-               mimeType = "text/html";
-            } else if ("text".equals(method)) {
-               mimeType = "text/plain";
-            }
-         }
-         String encoding = outputProperties.getProperty("encoding");
-         if (mimeType != null && encoding != null) {
-            mimeType += ";charset=" + encoding;
-         }
+         String mimeType = getContentType(templates.getOutputProperties());
          if (mimeType != null) {
             httpResponse.setContentType(mimeType);
          }
@@ -331,6 +316,34 @@ class XSLTCallingConvention extends StandardCallingConvention {
             throw ioe;
          }
       }
+   }
+
+   /**
+    * Gets the MIME type and the character encoding to return for the HTTP response.
+    *
+    * @param outputProperties
+    *    the output properties defined in the XSLT, never <code>null</code>.
+    *
+    * @return
+    *    the content type, never <code>null</code>.
+    */
+   private String getContentType(Properties outputProperties) {
+      String mimeType = outputProperties.getProperty("media-type");
+      if (mimeType == null) {
+         String method = outputProperties.getProperty("method");
+         if ("xml".equals(method)) {
+            mimeType = "text/xml";
+         } else if ("html".equals(method)) {
+            mimeType = "text/html";
+         } else if ("text".equals(method)) {
+            mimeType = "text/plain";
+         }
+      }
+      String encoding = outputProperties.getProperty("encoding");
+      if (mimeType != null && encoding != null) {
+         mimeType += ";charset=" + encoding;
+      }
+      return mimeType;
    }
 
 
