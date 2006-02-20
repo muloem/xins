@@ -310,8 +310,7 @@ public final class TargetDescriptor extends Descriptor {
       _connectionTimeOut = connectionTimeOut;
       _socketTimeOut     = socketTimeOut;
       _crc               = computeCRC32(url);
-      _hashCode          =  new String(_url + "; " + _timeOut + "; " +
-            _socketTimeOut + "; " + _connectionTimeOut).hashCode();
+
       // NOTE: _asString is lazily initialized
    }
 
@@ -360,11 +359,6 @@ public final class TargetDescriptor extends Descriptor {
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
    private final int _crc;
-
-   /**
-    * The hash code of this object.
-    */
-   private final int _hashCode;
 
 
    //-------------------------------------------------------------------------
@@ -439,7 +433,7 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
-    * Returns the CRC-32 checksum for the URL of this function caller.
+    * Returns the CRC-32 checksum for the URL of this target descriptor.
     *
     * @return
     *    the CRC-32 checksum.
@@ -486,20 +480,65 @@ public final class TargetDescriptor extends Descriptor {
    public TargetDescriptor getTargetByCRC(int crc) {
       return (_crc == crc) ? this : null;
    }
-
-   public int hashCode() {
-       return _hashCode;
-   }
    
+   /**
+    * Returns a hash code value for the object.
+    *
+    * @return
+    *    a hash code value for this object.
+    *
+    * @see Object#hashCode()
+    * @see equals(Object)
+    */
+   public int hashCode() {
+       return _crc;
+   }
+
+   /**
+    * Indicates whether some other object is "equal to" this one. This method
+    * considers <code>obj</code> equals if and only if it matches the
+    * following conditions:
+    *
+    * <ul>
+    *    <li><code>obj instanceof TargetDescriptor</code>
+    *    <li>URL is equal
+    *    <li>total time-out is equal
+    *    <li>connection time-out is equal
+    *    <li>socket time-out is equal
+    * </ul>
+    *
+    * @param obj
+    *    the reference object with which to compare.
+    *
+    * @return
+    *    <code>true</code> if this object is the same as the <code>obj</code>
+    *    argument; <code>false</code> otherwise.
+    *
+    * @see #hashCode()
+    */
    public boolean equals(Object obj) {
-       return (obj instanceof TargetDescriptor) && (_hashCode == obj.hashCode());
+      
+      boolean equal = false;
+      
+      if (obj instanceof TargetDescriptor) {
+         TargetDescriptor that = (TargetDescriptor) obj;
+         equal = (_url.equals(that._url))
+              && (_timeOut           == that._timeOut)
+              && (_connectionTimeOut == that._connectionTimeOut)
+              && (_socketTimeOut     == that._socketTimeOut);
+      }
+
+      return equal;
    }
 
    /**
     * Textual description of this object. The string includes the URL and all
     * time-out values. For example:
     *
-    * <blockquote><code>TargetDescriptor(url="http://api.google.com/some_api/"; total-time-out is 5300 ms; connection time-out is 1000 ms; socket time-out is disabled)</code></blockquote>
+    * <blockquote><code>TargetDescriptor(url="http://api.google.com/some_api/";
+    * total-time-out is 5300 ms;
+    * connection time-out is 1000 ms;
+    * socket time-out is disabled)</code></blockquote>
     *
     * @return
     *    this <code>TargetDescriptor</code> as a {@link String}, never
