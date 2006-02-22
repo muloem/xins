@@ -6,6 +6,10 @@
  */
 package org.xins.common.text;
 
+import java.util.Enumeration;
+import java.util.Properties;
+import org.xins.common.MandatoryArgumentChecker;
+
 /**
  * Text-related utility functions.
  *
@@ -115,6 +119,69 @@ public final class TextUtils extends Object {
       }
 
       return ifEmpty;
+   }
+
+   /**
+    * Replaces substrings in a string. The substrings to be replaced are
+    * passed in a {@link Properties} object. A prefix and a suffix can be
+    * specified. These are prepended/appended to each of the search keys.
+    *
+    * <p />Example: If you have a string <code>"Hello ${name}"</code> and you
+    * would like to replace <code>"${name}"</code> with <code>"John"</code>
+    * and you would like to replace <code>${surname}</code> with
+    * <code>"Doe"</code>, use the following code:
+    *
+    * <p /><blockquote><code>String s = "Hello ${name}";
+    * <br />Properties replacements = new Properties();
+    * <br />replacements.put("name", "John");
+    * <br />replacements.put("surname", "Doe");
+    * <br />
+    * <br />StringUtils.replace(s, replacements, "${", "}");</code></blockquote>
+    *
+    * <p />The result string will be <code>"Hello John"</code>.
+    *
+    * @param s
+    *    the text string to which replacements should be applied, not <code>null</code>.
+    *
+    * @param replacements
+    *    the replacements to apply, not <code>null</code>.
+    *
+    * @param prefix
+    *    the optional prefix for the search keys, or <code>null</code>.
+    *
+    * @param suffix
+    *    the optional prefix for the search keys, or <code>null</code>.
+    *
+    * @return the String with the replacements.
+    *
+    * @throws IllegalArgumentException
+    *    if one of the mandatory arguments is missing.
+    *
+    * @since XINS 1.4.0.
+    */
+   public static String replace(String s, Properties replacements, String prefix, String suffix)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("s", s, "replacements", replacements);
+
+      // Make sure prefix and suffix are not null
+      prefix = (prefix == null) ? "" : prefix;
+      suffix = (suffix == null) ? "" : suffix;
+
+      Enumeration keys = replacements.propertyNames();
+      while (keys.hasMoreElements()) {
+         String key    = (String) keys.nextElement();
+         String search = prefix + key + suffix;
+         int index = s.indexOf(search);
+         while (index >= 0) {
+            String replacement = replacements.getProperty(key);
+            s = s.substring(0, index) + replacement + s.substring(index + search.length());
+            index = s.indexOf(search);
+         }
+      }
+
+      return s;
    }
 
 

@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
     classes by applying the following changes:
     . using the Map.entrySet() instead of the Map.keySet()
     . referring directly to HashMap instead of Map for internal objects
+  - Added replace() method in TextUtils.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
