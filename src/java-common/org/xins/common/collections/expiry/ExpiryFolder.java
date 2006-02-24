@@ -95,8 +95,8 @@ extends Object {
     *
     * @since XINS 1.0.1
     */
-   public ExpiryFolder(String         name,
-                       ExpiryStrategy strategy)
+   public ExpiryFolder(final String         name,
+                       final ExpiryStrategy strategy)
    throws IllegalArgumentException, IllegalStateException {
 
       // Determine instance number
@@ -301,7 +301,7 @@ extends Object {
     *
     * @see Object#equals(Object)
     */
-   public boolean equals(Object obj) {
+   public boolean equals(final Object obj) {
       
       boolean equal = false;
       
@@ -314,14 +314,15 @@ extends Object {
          Object secondLock = (_instanceNum < that._instanceNum) ? that._lock : _lock;
          synchronized (firstLock) {
             synchronized (secondLock) {
-               if (_slotCount == that._slotCount
-                && _strategy.equals(that._strategy)
-                && _name.equals(that._name)
-                && _recentlyAccessed.equals(that._recentlyAccessed)) {
-                  equal = true;
-                  for (int i = 0; i < _slotCount && equal; i++) {
-                     if (! _slots[i].equals(that._slots[i])) {
-                        equal = false;
+               if (_strategy.equals(that._strategy)) {
+                  if (_name.equals(that._name)) {
+                     if (_recentlyAccessed.equals(that._recentlyAccessed)) {
+                        equal = true;
+                        for (int i = 0; i < _slotCount && equal; i++) {
+                           if (! _slots[i].equals(that._slots[i])) {
+                              equal = false;
+                           }
+                        }
                      }
                   }
                }
@@ -484,7 +485,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>listener == null</code>.
     */
-   public void addListener(ExpiryListener listener)
+   public void addListener(final ExpiryListener listener)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -512,7 +513,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>listener == null</code>.
     */
-   public void removeListener(ExpiryListener listener)
+   public void removeListener(final ExpiryListener listener)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -542,7 +543,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>map == null</code>.
     */
-   private int sizeOf(Map map)
+   private int sizeOf(final Map map)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -619,7 +620,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
-   public Object get(Object key)
+   public Object get(final Object key)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -697,7 +698,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
-   public Object find(Object key)
+   public Object find(final Object key)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -747,7 +748,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>key == null || value == null</code>.
     */
-   public void put(Object key, Object value)
+   public void put(final Object key, final Object value)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -780,7 +781,7 @@ extends Object {
     * @throws IllegalArgumentException
     *    if <code>key == null</code>.
     */
-   public Object remove(Object key)
+   public Object remove(final Object key)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
@@ -834,7 +835,7 @@ extends Object {
     *    or if the precision of <code>newFolder</code> is not the same as for
     *    this <code>ExpiryFolder</code>.
     */
-   public void copy(ExpiryFolder newFolder)
+   public void copy(final ExpiryFolder newFolder)
    throws IllegalStateException, IllegalArgumentException {
 
       final String THIS_METHOD = "copy(" + CLASSNAME + ')';
@@ -930,8 +931,8 @@ extends Object {
        *    reference to the object, should not be <code>null</code> (although
        *    it is not checked).
        */
-      private Entry(Object reference) {
-         _reference  = reference;
+      private Entry(final Object reference) {
+         _reference = reference;
          touch();
       }
 
@@ -954,6 +955,45 @@ extends Object {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+      
+      /**
+       * Returns a hash code value for the object.
+       *
+       * @return
+       *    a hash code value for this object.
+       *
+       * @see Object#hashCode()
+       * @see #equals(Object)
+       */      
+      public int hashCode() {
+         return _reference.hashCode();
+      }
+      
+      /**
+       * Checks whether this object is considered equal to the argument.
+       *
+       * @param obj
+       *    the object to compare with.
+       *
+       * @return
+       *    <code>true</code> if this object is considered equal to
+       *    <code>obj</code>, or <code>false</code> otherwise.
+       *
+       * @see Object#equals(Object)
+       */
+      public boolean equals(final Object obj) {
+         
+         boolean equal;
+         
+         if (obj instanceof Entry) {
+            Entry that = (Entry) obj;
+            equal = _reference.equals(that._reference);
+         } else {
+            equal = false;
+         }
+         
+         return equal;
+      }
 
       /**
        * Retrieves the reference to the object.
