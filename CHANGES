@@ -41,6 +41,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
     functional error code will never trigger fail-over. So 2116 was
     superfluous, log message 2115 is enough.
   - Slightly improved the description and translations for log message 2115.
+  - Marked inner class Handler, in class XINSCallResultParser, as static.
 
 * XINS/Java Server Framework:
   - Implemented RFE #1346752: Have log messages 3200 and 3227 in the log.

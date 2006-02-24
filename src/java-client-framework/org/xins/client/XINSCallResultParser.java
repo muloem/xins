@@ -230,7 +230,7 @@ extends Object {
     * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
     */
-   private class Handler
+   private static class Handler
    extends DefaultHandler
    implements XINSCallResultData {
 
@@ -410,7 +410,7 @@ extends Object {
                _errorCode = code2;
 
             // Two error code attribute set
-            } else if (code1 == null && code2 == null) {
+            } else if (code1 == null) {
                _errorCode = null;
             } else if (code1.equals(code2)) {
                _errorCode = code1;
