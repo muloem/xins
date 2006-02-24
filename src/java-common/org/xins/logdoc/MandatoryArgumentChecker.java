@@ -41,6 +41,7 @@ public final class MandatoryArgumentChecker extends Object {
 
       if (argumentName == null) {
          check("argumentName", argumentName);
+         return;
       }
 
       if (argumentValue == null) {
@@ -75,6 +76,7 @@ public final class MandatoryArgumentChecker extends Object {
 
       if (argumentName1 == null || argumentName2 == null) {
          check("argumentName1", argumentName1, "argumentName2", argumentName2);
+         return;
       }
 
       if (argumentValue1 == null || argumentValue2 == null) {
