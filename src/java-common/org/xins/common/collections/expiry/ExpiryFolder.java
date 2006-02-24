@@ -280,17 +280,72 @@ extends Object {
     * it was stopped.
     */
    void strategyStopped() {
-
-      _strategyStopped = true;
-
       synchronized (_lock) {
+         _strategyStopped = true;
          _strategy         = null;
          _recentlyAccessed = null;
          _slots            = null;
          _listeners        = null;
       }
    }
+   
+   /**
+    * Checks whether this object is considered equal to the argument.
+    *
+    * @param obj
+    *    the object to compare with.
+    *
+    * @return
+    *    <code>true</code> if this object is considered equal to
+    *    <code>obj</code>, or <code>false</code> otherwise.
+    *
+    * @see Object#equals(Object)
+    */
+   public boolean equals(Object obj) {
+      
+      boolean equal = false;
+      
+      if (obj instanceof ExpiryFolder) {
+         ExpiryFolder that = (ExpiryFolder) obj;
 
+         // Avoid a potential deadlock by always locking on the instance with
+         // the lowest instance number first
+         Object firstLock  = (_instanceNum < that._instanceNum) ? _lock : that._lock;
+         Object secondLock = (_instanceNum < that._instanceNum) ? that._lock : _lock;
+         synchronized (firstLock) {
+            synchronized (secondLock) {
+               if (_slotCount == that._slotCount
+                && _strategy.equals(that._strategy)
+                && _name.equals(that._name)
+                && _recentlyAccessed.equals(that._recentlyAccessed)) {
+                  equal = true;
+                  for (int i = 0; i < _slotCount && equal; i++) {
+                     if (! _slots[i].equals(that._slots[i])) {
+                        equal = false;
+                     }
+                  }
+               }
+            }
+         }
+      }
+      
+      return equal;
+   }
+
+
+   /**
+    * Returns a hash code value for the object.
+    *
+    * @return
+    *    a hash code value for this object.
+    *
+    * @see Object#hashCode()
+    * @see #equals(Object)
+    */
+   public int hashCode() {
+       return _strategy.hashCode() & _name.hashCode();
+   }
+   
    /**
     * Returns the name given to this expiry folder.
     *
@@ -532,7 +587,6 @@ extends Object {
       // Check state
       assertStrategyNotStopped();
 
-      // Always get the lock for _recentlyAccessed first
       synchronized (_lock) {
 
          int size = sizeOf(_recentlyAccessed);
@@ -764,7 +818,7 @@ extends Object {
    }
 
    /**
-    * Copies the entries of this ExpiryFolder into another one.
+    * Copies the entries of this <code>ExpiryFolder</code> into another one.
     * This method does not perform a deep copy, so if a key is added or
     * removed, both folders will be modified.
     *
@@ -777,7 +831,8 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>newFolder == null</code> or <code>newFolder == this</code>
-    *    or the precision is the newFolder is not the same as for this folder.
+    *    or if the precision of <code>newFolder</code> is not the same as for
+    *    this <code>ExpiryFolder</code>.
     */
    public void copy(ExpiryFolder newFolder)
    throws IllegalStateException, IllegalArgumentException {
@@ -803,8 +858,12 @@ extends Object {
          throw new IllegalArgumentException(DETAIL);
       }
 
-      synchronized (_lock) {
-         synchronized (newFolder._lock) {
+      // Avoid a potential deadlock by always locking on the instance with the
+      // lowest instance number first
+      Object firstLock  = (_instanceNum < newFolder._instanceNum) ? _lock : newFolder._lock;
+      Object secondLock = (_instanceNum < newFolder._instanceNum) ? newFolder._lock : _lock;
+      synchronized (firstLock) {
+         synchronized (secondLock) {
 
             // Copy the recentlyAccessed
             newFolder._recentlyAccessed = new HashMap(_recentlyAccessed);
