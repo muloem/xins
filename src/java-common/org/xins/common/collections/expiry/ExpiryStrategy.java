@@ -190,6 +190,45 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Checks whether this object is considered equal to the argument.
+    *
+    * @param obj
+    *    the object to compare with.
+    *
+    * @return
+    *    <code>true</code> if this object is considered equal to
+    *    <code>obj</code>, or <code>false</code> otherwise.
+    *
+    * @see Object#equals(Object)
+    */
+   public boolean equals(Object obj) {
+      
+      boolean equal = false;
+      
+      if (obj instanceof ExpiryStrategy) {
+         ExpiryStrategy that = (ExpiryStrategy) obj;
+         
+         equal = that._timeOut   == _timeOut
+              && that._precision == _precision;
+      }
+      
+      return equal;
+   }
+
+   /**
+    * Returns a hash code value for the object.
+    *
+    * @return
+    *    a hash code value for this object.
+    *
+    * @see Object#hashCode()
+    * @see #equals(Object)
+    */
+   public int hashCode() {
+       return ("" + _timeOut + _precision).hashCode();
+   }
+   
+   /**
     * Returns the time-out.
     *
     * @return
