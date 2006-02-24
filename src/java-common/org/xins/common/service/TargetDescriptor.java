@@ -488,7 +488,7 @@ public final class TargetDescriptor extends Descriptor {
     *    a hash code value for this object.
     *
     * @see Object#hashCode()
-    * @see equals(Object)
+    * @see #equals(Object)
     */
    public int hashCode() {
        return _crc;
