@@ -91,9 +91,9 @@ public class ExpiryFolderTests extends TestCase {
    public void testExpiryFolderEquals() throws Exception {
 
       // Construct ExpiryStrategy instances
-      ExpiryStrategy strategy1a = new ExpiryStrategy(DURATION, PRECISION);
-      ExpiryStrategy strategy1b = new ExpiryStrategy(DURATION, PRECISION);
-      ExpiryStrategy strategy2  = new ExpiryStrategy(DURATION, PRECISION + 1);
+      ExpiryStrategy strategy1a = new ExpiryStrategy(4000, 2000);
+      ExpiryStrategy strategy1b = new ExpiryStrategy(4000, 2000);
+      ExpiryStrategy strategy2  = new ExpiryStrategy(4000, 2001);
 
       try {
          // Construct ExpiryFolder instances
@@ -113,8 +113,8 @@ public class ExpiryFolderTests extends TestCase {
          // Put something in both folders
          folder1a.put("name", "Ernst Le Coq");
          folder1b.put("name", "Ernst Le Coq");
-         assertEquals("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1a, folder1b);
-         assertEquals("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1b, folder1a);
+         assertTrue("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1a.equals(folder1b));
+         assertTrue("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1b.equals(folder1a));
          assertEquals("Expected hash codes to be equal for ExpiryFolders instances that are considered equal", folder1a.hashCode(), folder1b.hashCode());
          assertNotSame(folder1a, folder2a);
          assertNotSame(folder2a, folder1a);
