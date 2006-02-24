@@ -53,7 +53,8 @@ public final class ExpiryStrategy extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ExpiryStrategy</code>.
+    * Constructs a new <code>ExpiryStrategy</code> and starts the
+    * corresponding thread.
     *
     * @param timeOut
     *    the time-out, in milliseconds.
@@ -134,6 +135,9 @@ public final class ExpiryStrategy extends Object {
       _timerThread = new TimerThread();
       _timerThread.setDaemon(false);
       _timerThread.start();
+      
+      // Compute a hash code
+      _hashCode = ("" + _timeOut + ":" + _precision).hashCode();
    }
 
 
@@ -179,11 +183,16 @@ public final class ExpiryStrategy extends Object {
    private final TimerThread _timerThread;
 
    /**
+    * Hash code for this object. The hash code is a constant.
+    */
+   private final int _hashCode;
+
+   /**
     * Flag that indicates if the time thread should stop or not. Initially
     * <code>false</code>, ofcourse.
     */
    private boolean _stop;
-
+   
 
    //-------------------------------------------------------------------------
    // Methods
@@ -191,6 +200,10 @@ public final class ExpiryStrategy extends Object {
 
    /**
     * Checks whether this object is considered equal to the argument.
+    *
+    * <p>Two <code>ExpiryStrategy</code> objects are considered equal if they
+    * have the same time-out (see {@link #getTimeOut()} and the same precision
+    * (see {@link #getPrecision()}.
     *
     * @param obj
     *    the object to compare with.
@@ -201,7 +214,7 @@ public final class ExpiryStrategy extends Object {
     *
     * @see Object#equals(Object)
     */
-   public boolean equals(Object obj) {
+   public boolean equals(final Object obj) {
       
       boolean equal = false;
       
@@ -225,7 +238,7 @@ public final class ExpiryStrategy extends Object {
     * @see #equals(Object)
     */
    public int hashCode() {
-       return ("" + _timeOut + _precision).hashCode();
+       return _hashCode;
    }
    
    /**
@@ -273,7 +286,7 @@ public final class ExpiryStrategy extends Object {
     * @throws IllegalArgumentException
     *    if <code>folder == null</code>.
     */
-   void folderAdded(ExpiryFolder folder)
+   void folderAdded(final ExpiryFolder folder)
    throws IllegalStateException, IllegalArgumentException {
 
       // Check state
