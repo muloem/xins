@@ -85,6 +85,99 @@ public class ExpiryFolderTests extends TestCase {
       } finally {
          strategy.stop();
       }
+      
+   }
+
+   public void testExpiryFolderEquals() throws Exception {
+
+      // Construct ExpiryStrategy instances
+      ExpiryStrategy strategy1a = new ExpiryStrategy(DURATION, PRECISION);
+      ExpiryStrategy strategy1b = new ExpiryStrategy(DURATION, PRECISION);
+      ExpiryStrategy strategy2  = new ExpiryStrategy(DURATION, PRECISION + 1);
+
+      try {
+         // Construct ExpiryFolder instances
+         ExpiryFolder folder1a = new ExpiryFolder("Folder1",  strategy1a);
+         ExpiryFolder folder1b = new ExpiryFolder("Folder1",  strategy1b);
+         ExpiryFolder folder2a = new ExpiryFolder("Folder2a", strategy2);
+
+         // Test equals(Object) method
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy to be equal", folder1a, folder1b);
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy to be equal", folder1b, folder1a);
+         assertEquals("Expected hash codes to be equal for ExpiryFolders instances that are considered equal", folder1a.hashCode(), folder1b.hashCode());
+         assertNotSame(folder1a, folder2a);
+         assertNotSame(folder2a, folder1a);
+         assertNotSame(folder1b, folder2a);
+         assertNotSame(folder2a, folder1b);
+         
+         // Put something in both folders
+         folder1a.put("name", "Ernst Le Coq");
+         folder1b.put("name", "Ernst Le Coq");
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1a, folder1b);
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy and content to be equal", folder1b, folder1a);
+         assertEquals("Expected hash codes to be equal for ExpiryFolders instances that are considered equal", folder1a.hashCode(), folder1b.hashCode());
+         assertNotSame(folder1a, folder2a);
+         assertNotSame(folder2a, folder1a);
+         assertNotSame(folder1b, folder2a);
+         assertNotSame(folder2a, folder1b);
+      } finally {
+         strategy1a.stop();
+         strategy1b.stop();
+         strategy2.stop();
+      }
+   }
+
+   public void testExpiryFolderCopy() throws Exception {
+
+      // Construct ExpiryStrategy instances
+      ExpiryStrategy strategy1 = new ExpiryStrategy(DURATION, PRECISION);
+      ExpiryStrategy strategy2 = new ExpiryStrategy(DURATION, PRECISION + 1);
+
+      try {
+         // Construct ExpiryFolder instances
+         ExpiryFolder folder1a = new ExpiryFolder("Folder1", strategy1);
+         ExpiryFolder folder1b = new ExpiryFolder("Folder1", strategy1);
+         ExpiryFolder folder2a = new ExpiryFolder("Folder2a", strategy2);
+
+         // Test equals(Object) method
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy to be equal, initially.", folder1b, folder1a);
+
+         // Put something in the first expiry folder
+         folder1a.put("name", "Ernst Le Coq");
+
+         // Pass null to copy(ExpiryFolder)
+         try {
+            folder1a.copy(null);
+            fail("Expected ExpiryFolder.copy(<null>) to throw IllegalArgumentException.");
+            return;
+         } catch (IllegalArgumentException exception) {
+            // as expected
+         }
+
+         // Pass same object to copy method
+         try {
+            folder1a.copy(folder1a);
+            fail("Expected ExpiryFolder.copy(<self>) to throw IllegalArgumentException.");
+            return;
+         } catch (IllegalArgumentException exception) {
+            // as expected
+         }
+
+         // Pass folder with different precision to copy method
+         try {
+            folder1a.copy(folder2a);
+            fail("Expected ExpiryFolder.copy(<folder with different precision>) to throw IllegalArgumentException.");
+            return;
+         } catch (IllegalArgumentException exception) {
+            // as expected
+         }
+
+         folder1a.copy(folder1b);
+         assertEquals("Expected ExpiryFolders with same ExpiryStrategy to be equal after copy operation.", folder1b, folder1a);
+      } finally {
+         strategy1.stop();
+         strategy2.stop();
+      }
    }
 
    public void doTestExpiryFolder(ExpiryStrategy strategy)
@@ -110,31 +203,31 @@ public class ExpiryFolderTests extends TestCase {
       // Test get, find and put with null values
       try {
          folder.get(null);
-         fail("IllegalArgumentException accepted.");
+         fail("IllegalArgumentException expected.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          folder.find(null);
-         fail("IllegalArgumentException accepted.");
+         fail("IllegalArgumentException expected.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          folder.put(KEY_1, null);
-         fail("IllegalArgumentException accepted.");
+         fail("IllegalArgumentException expected.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          folder.put(null, VAL_1);
-         fail("IllegalArgumentException accepted.");
+         fail("IllegalArgumentException expected.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }
       try {
          folder.remove(null);
-         fail("IllegalArgumentException accepted.");
+         fail("IllegalArgumentException expected.");
       } catch (IllegalArgumentException exception) {
          // as expected
       }

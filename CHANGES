@@ -24,6 +24,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
     classes by applying the following changes:
     . using the Map.entrySet() instead of the Map.keySet()
     . referring directly to HashMap instead of Map for internal objects
+  - Added 2 new unit tests for class ExpiryFolder. One tests the copy
+    operation and one tests the equal(Object) function.
+  - Added a new unit test for class ExpiryStrategy that tests the
+    equal(Object) function.
   - Added replace() method in TextUtils.
 
 * XINS/Java Client Framework:
