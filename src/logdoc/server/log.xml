@@ -211,7 +211,7 @@
 		<entry id="3239" level="ERROR" exception="true">
 			<description>Error while creating calling convention.</description>
 			<param name="name"      nullable="false" />
-			<param name="className" nullable="false" />
+			<param name="className" nullable="true"  />
 		</entry>
 		<entry id="3240" level="DEBUG">
 			<description>Bootstrapping calling convention.</description>

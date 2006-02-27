@@ -55,6 +55,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Slightly improved the efficiency of the XMLRPCCallingConvention and
     SOAPCallingConvention classes by using Map.entrySet() instead of the
     Map.keySet(), where applicable.
+  - Fixed a minor issue regarding log message 3239. Marked the classname
+    parameter as nullable, since checking the code reveals it can be null.
 
 * Test forms:
   - Implemented RFE #1408170: Display enum names on test form. Tested this
