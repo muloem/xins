@@ -12,6 +12,7 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 
@@ -47,7 +48,7 @@ public class XINSServletResponse implements HttpServletResponse {
    //-------------------------------------------------------------------------
 
    /**
-    * The content type of the result.
+    * The content type of the result. Initially <code>null</code>.
     */
    private String _contentType;
 
@@ -110,7 +111,20 @@ public class XINSServletResponse implements HttpServletResponse {
       setHeader("Location", location);
    }
 
-   public void setContentType(String type) {
+   /**
+    * Sets the content type.
+    *
+    * @param type
+    *    the content type, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null</code>.
+    */
+   public void setContentType(String type)
+   throws IllegalArgumentException {
+      
+      MandatoryArgumentChecker.check("type", type);
+      
       setHeader("Content-Type", type);
 
       String search = "charset=";
@@ -229,10 +243,12 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    /**
-    * Gets the context type of the returned text.
+    * Gets the type of the returned content.
     *
     * @return
-    *    the content type, cannot be <code>null</code>.
+    *    the content type, can be <code>null</code>.
+    *
+    * @see #setContentType(String)
     */
    public String getContentType() {
       return _contentType;
