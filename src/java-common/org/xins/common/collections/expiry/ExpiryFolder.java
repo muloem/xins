@@ -135,6 +135,9 @@ extends Object {
       // Notify the strategy that we listen to it. If the strategy has already
       // stopped, then this will throw an IllegalStateException
       strategy.folderAdded(this);
+      
+      // Constructed ExpiryFolder
+      Log.log_1408(_instanceNum, _name);
    }
 
    /**
@@ -356,6 +359,18 @@ extends Object {
    public String getName() {
       return _name;
    }
+   
+   /**
+    * Returns the unique instance number.
+    *
+    * @return
+    *    the unique instance number, which is <code>0</code> for the first
+    *    <code>ExpiryFolder</code> instance, <code>1</code> for the second,
+    *    etc.
+    */
+   int getInstanceNum() {
+      return _instanceNum;
+   }
 
    /**
     * Notifies this map that the precision time frame has passed since the
@@ -449,7 +464,7 @@ extends Object {
                            : refMap.size();
 
       // Log this
-      Log.log_1400(_asString, refMapSize);
+      Log.log_1400(_instanceNum, _name, refMapSize);
 
       // If set of objects for listeners is empty, then short-circuit
       if (refMapSize < 1 || _listeners.size() < 1) {

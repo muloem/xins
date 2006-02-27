@@ -32,6 +32,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Added a new unit test for class ExpiryStrategy that tests the
     equal(Object) function.
   - Added replace() method in TextUtils.
+  - Improved logging related to the ExpiryFolder and ExpiryStrategy
+    classes.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.

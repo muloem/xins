@@ -197,37 +197,54 @@
 
 	<group id="collections.expiry" name="Expiry-related collection classes">
 		<entry id="1400" level="DEBUG">
-			<description>Tick processed.</description>
-			<param name="folderName" type="text"  nullable="false" />
-			<param name="expired"    type="int32" nullable="false" />
+			<description>Tick processed by expiry folder.</description>
+			<param name="folderInstanceNumber" type="int32" nullable="false" />
+			<param name="folderName"           type="text"  nullable="false" />
+			<param name="expired"              type="int32" nullable="false" />
 		</entry>
 		<entry id="1401" level="DEBUG">
 			<description>Associating expiry folder with expiry stategy thread.</description>
-			<param name="folder"   type="text" nullable="false" />
-			<param name="strategy" type="text" nullable="false" />
+			<param name="folderInstanceNumber"   type="int32" nullable="false" />
+			<param name="folderName"             type="text"  nullable="false" />
+			<param name="strategyInstanceNumber" type="int32" nullable="false" />
 		</entry>
 		<entry id="1402" level="DEBUG">
 			<description>Expiry strategy thread started.</description>
-			<param name="name" type="text" nullable="false" />
+			<param name="instanceNumber" type="int32" nullable="false" />
 		</entry>
 		<entry id="1403" level="DEBUG">
 			<description>Expiry strategy thread stopped.</description>
-			<param name="name" type="text" nullable="false" />
+			<param name="instanceNumber" type="int32" nullable="false" />
 		</entry>
 		<entry id="1404" level="DEBUG">
 			<description>Sleeping in expiry strategy thread.</description>
+			<param name="instanceNumber" type="int32" nullable="false" />
 			<param name="duration" type="int64" nullable="false" />
 		</entry>
 		<entry id="1405" level="DEBUG">
 			<description>Sleep interrupted in expiry strategy thread.</description>
-			<param name="duration" type="int64" nullable="false" />
+			<param name="instanceNumber" type="int32" nullable="false" />
+			<param name="duration"       type="int64" nullable="false" />
 		</entry>
 		<entry id="1406" level="DEBUG">
 			<description>Woke up after sleeping in expiry strategy thread.</description>
-			<param name="duration" type="int64" nullable="false" />
+			<param name="instanceNumber" type="int32" nullable="false" />
+			<param name="duration"       type="int64" nullable="false" />
 		</entry>
 		<entry id="1407" level="DEBUG">
 			<description>Triggering tick in expiry strategy thread.</description>
+			<param name="instanceNumber" type="int32" nullable="false" />
+		</entry>
+		<entry id="1408" level="DEBUG">
+			<description>Constructed a new expiry folder</description>
+			<param name="instanceNumber" type="int32" nullable="false" />
+			<param name="name"           type="text"  nullable="false" />
+		</entry>
+		<entry id="1409" level="DEBUG">
+			<description>Constructed a new expiry strategy.</description>
+			<param name="instanceNumber" type="int32" nullable="false" />
+			<param name="timeOut"        type="int64" nullable="false" />
+			<param name="precision"      type="int64" nullable="false" />
 		</entry>
 	</group>
 

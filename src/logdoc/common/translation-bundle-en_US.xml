@@ -45,14 +45,16 @@
 
 	<translation entry="1350">The value of the property <value-of-param name="key" format="quoted" /> has changed from <value-of-param name="oldValue" format="quoted" /> to <value-of-param name="newValue" format="quoted" />.</translation>
 
-	<translation entry="1400">Expiry folder <value-of-param name="folderName" format="quoted" />: Tick processed. Entries expired: <value-of-param name="expired" />.</translation>
-	<translation entry="1401"><value-of-param name="folder" /> associated with <value-of-param name="strategy" />.</translation>
-	<translation entry="1402">Expiry strategy thread <value-of-param name="name" format="quoted" /> started.</translation>
-	<translation entry="1403">Expiry strategy thread <value-of-param name="name" format="quoted" /> stopped.</translation>
-	<translation entry="1404">Sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1405">Sleep interrupted after <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1406">Woke up after sleeping <value-of-param name="duration" /> ms in expiry strategy thread.</translation>
-	<translation entry="1407">Triggering tick in expiry strategy thread.</translation>
+	<translation entry="1400">Expiry folder #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />): Tick processed. Entries expired: <value-of-param name="expired" />.</translation>
+	<translation entry="1401">Associated expiry folder #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />) with expiry strategy #<value-of-param name="strategyInstanceNumber" />.</translation>
+	<translation entry="1402">Expiry strategy thread #<value-of-param name="instanceNumber" /> started.</translation>
+	<translation entry="1403">Expiry strategy thread #<value-of-param name="instanceNumber" /> stopped.</translation>
+	<translation entry="1404">Sleeping <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1405">Sleep interrupted after <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1406">Woke up after sleeping <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1407">Triggering tick in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1408">Expiry folder #<value-of-param name="instanceNumber" /> (<value-of-param name="name" format="quoted" />) constructed.</translation>
+	<translation entry="1409">Expiry strategy #<value-of-param name="instanceNumber" /> constructed. Time-out is <value-of-param name="timeOut" /> ms. Precision is <value-of-param name="precision" /> ms.</translation>
 	
 	<translation entry="1500">Starting the Servlet container on port <value-of-param name="port" />.</translation>
 	<translation entry="1501">The HTTP Servlet container has thrown an I/O exception.</translation>

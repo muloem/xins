@@ -128,6 +128,12 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
       _asString  = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
+      
+      // Compute a hash code
+      _hashCode = ("" + _timeOut + ":" + _precision).hashCode();
+      
+      // Constructed an ExpiryStrategy instance
+      Log.log_1409(_instanceNum, _timeOut, _precision);
 
       // Create and start the timer thread. If no other threads are active,
       // then neither should this timer thread, so do not mark as a daemon
@@ -135,9 +141,6 @@ public final class ExpiryStrategy extends Object {
       _timerThread = new TimerThread();
       _timerThread.setDaemon(false);
       _timerThread.start();
-      
-      // Compute a hash code
-      _hashCode = ("" + _timeOut + ":" + _precision).hashCode();
    }
 
 
@@ -297,8 +300,8 @@ public final class ExpiryStrategy extends Object {
       // Check arguments
       MandatoryArgumentChecker.check("folder", folder);
 
-      // XXX: Review this log message. Generally, toString() is not wise.
-      Log.log_1401(folder.toString(), toString());
+      // Associating expiry folder with expiry stategy thread
+      Log.log_1401(folder.getInstanceNum(), folder.getName(), _instanceNum);
 
       synchronized (_folders) {
          _folders.add(new WeakReference(folder));
@@ -421,7 +424,7 @@ public final class ExpiryStrategy extends Object {
        */
       public void run() {
 
-         Log.log_1402(getName());
+         Log.log_1402(_instanceNum);
 
          long now  = System.currentTimeMillis();
          long next = now + _precision;
@@ -430,7 +433,7 @@ public final class ExpiryStrategy extends Object {
             boolean interrupted;
             long sleep = next - now;
             if (sleep > 0) {
-               Log.log_1404(sleep);
+               Log.log_1404(_instanceNum, sleep);
                try {
                   Thread.sleep(sleep);
                   interrupted = false;
@@ -447,9 +450,9 @@ public final class ExpiryStrategy extends Object {
 
                // Perform logging
                if (interrupted) {
-                  Log.log_1405(slept);
+                  Log.log_1405(_instanceNum, slept);
                } else {
-                  Log.log_1406(slept);
+                  Log.log_1406(_instanceNum, slept);
                }
             }
 
@@ -459,14 +462,14 @@ public final class ExpiryStrategy extends Object {
             }
 
             while (next <= now) {
-               Log.log_1407();
+               Log.log_1407(_instanceNum);
                doTick();
                now = System.currentTimeMillis();
                next += _precision;
             }
          }
 
-         Log.log_1403(getName());
+         Log.log_1403(_instanceNum);
       }
 
       /**
