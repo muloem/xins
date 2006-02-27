@@ -1,4 +1,4 @@
-This file contains the XINS 1.4.0-alpha4 release notes.
+This file contains the XINS 1.4.0-beta1 release notes.
 
 Contents:
 - Introduction
@@ -8,9 +8,12 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is an alpha release. It is not guaranteed to be fully compatible with all
-previous stable releases and added classes, methods and fields may be removed
-before the release candidate stage.
+This is an beta release. It contains all the new features that will be in
+XINS 1.4.0 (final).
+
+This release should be fully compatible with all previous stable releases,
+although significant testing is planned during this beta stage, before the
+release candidate(s).
 
 
 *** PREREQUISITES ***
