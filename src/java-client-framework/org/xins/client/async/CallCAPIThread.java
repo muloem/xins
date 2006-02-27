@@ -99,6 +99,7 @@ public class CallCAPIThread extends Thread {
          _duration = _result.duration();
       } catch (Exception ex) {
 
+         _exception = ex;
          // Get the exception thrown by the call and notify the listeners
          if (ex instanceof CallException) {
             _duration = ((CallException) ex).getDuration();
