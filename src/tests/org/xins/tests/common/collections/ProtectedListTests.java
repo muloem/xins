@@ -178,4 +178,28 @@ public class ProtectedListTests extends TestCase {
       assertFalse(list.contains("hello2"));
       assertFalse(list.contains("hello3"));
    }
+   
+   public void testProtectedListClone() {
+      
+      ProtectedList p1 = new ProtectedList(SECRET_KEY);
+      ProtectedList p2 = (ProtectedList) p1.clone();
+      assertEquals(0, p1.size());
+      assertEquals(0, p2.size());
+      assertTrue("Expected ProtectedList to be equal to itself.", p1.equals(p1));
+      assertTrue("Expected ProtectedList to be equal to itself.", p2.equals(p2));
+      assertTrue("Expected cloned version of empty ProtectedList to be equal to the original.", p1.equals(p2));
+      assertTrue("Expected cloned version of empty ProtectedList to be equal to the original.", p2.equals(p1));
+      
+      p1.add(SECRET_KEY, "Hello");
+      assertEquals(1, p1.size());
+      assertEquals(0, p2.size());
+      
+      p2 = (ProtectedList) p1.clone();
+      assertEquals(1, p1.size());
+      assertEquals(1, p2.size());
+      assertTrue("Expected ProtectedList to be equal to itself.", p1.equals(p1));
+      assertTrue("Expected ProtectedList to be equal to itself.", p2.equals(p2));
+      assertTrue("Expected cloned version of ProtectedList to be equal to the original.", p1.equals(p2));
+      assertTrue("Expected cloned version of ProtectedList to be equal to the original.", p2.equals(p1));
+   }
 }

@@ -37,6 +37,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
     classes.
   - Fixed a minor issue in XINSServletResponse: Now storing the content type
     in setContentType(String).
+  - Added a unit test for ProtectedList cloning.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.
