@@ -35,6 +35,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Added replace() method in TextUtils.
   - Improved logging related to the ExpiryFolder and ExpiryStrategy
     classes.
+  - Fixed a minor issue in XINSServletResponse: Now storing the content type
+    in setContentType(String).
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.

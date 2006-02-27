@@ -132,6 +132,8 @@ public class XINSServletResponse implements HttpServletResponse {
       if (i >= 0) {
          _encoding = type.substring(i + search.length());
       }
+      
+      _contentType = type;
    }
 
    public void setStatus(int sc) {
