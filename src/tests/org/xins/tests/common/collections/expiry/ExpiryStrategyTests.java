@@ -140,8 +140,13 @@ public class ExpiryStrategyTests extends TestCase {
       // Test equality comparison method
       ExpiryStrategy es1 = new ExpiryStrategy(timeOut, precision);
       ExpiryStrategy es2 = new ExpiryStrategy(timeOut, precision);
-      assertEquals("Expected different ExpiryStrategy instances with same properties to be considered equal.", es1, es2);
-      assertEquals("Expected different ExpiryStrategy instances with same properties to be considered equal.", es2, es1);
-      assertEquals("Expected hash codes to be equal for ExpiryStrategy instances that are considered equal", es1.hashCode(), es2.hashCode());
+      try {
+         assertEquals("Expected different ExpiryStrategy instances with same properties to be considered equal.", es1, es2);
+         assertEquals("Expected different ExpiryStrategy instances with same properties to be considered equal.", es2, es1);
+         assertEquals("Expected hash codes to be equal for ExpiryStrategy instances that are considered equal", es1.hashCode(), es2.hashCode());
+      } finally {
+         es1.stop();
+         es2.stop();
+      }
    }
 }
