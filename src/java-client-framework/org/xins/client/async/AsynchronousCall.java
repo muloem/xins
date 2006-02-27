@@ -70,8 +70,11 @@ public class AsynchronousCall {
 
    /**
     * Thread that executes the call to the function.
+    *
+    * @version $Revision$ $Date$
+    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
     */
-   private class CallNotifyThread extends CallCAPIThread {
+   private static class CallNotifyThread extends CallCAPIThread {
 
       /**
        * The listeners to notify.
