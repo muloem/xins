@@ -40,7 +40,7 @@ public final class MandatoryArgumentChecker extends Object {
    throws IllegalArgumentException {
 
       if (argumentName == null) {
-         check("argumentName", argumentName);
+         check("argumentName", null);
          return;
       }
 
