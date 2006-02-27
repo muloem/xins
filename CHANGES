@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Fixed bug #1435925: ExpiryFolder.copy(ExpiryFolder) may cause deadlock.
   - Fixed bug #1435924: ExpiryFolder.equals(Object) not implemented.
   - Fixed bug #1436003: ExpiryStrategy.equals(Object) not implemented.
+  - Fixed bug #439593: Minor bug in FunctionSpec class.
   - Implemented RFE #1236553 in class CallException. Also improved the class
     description for this class.
   - Added unit test for CallException linking and for RFE #1236553, in

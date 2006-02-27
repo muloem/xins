@@ -702,7 +702,7 @@ public final class FunctionSpec extends Object {
                throw new InvalidSpecificationException("Missing name for a parameter in " + comboTag + ".");
             }
             ParameterSpec parameter = (ParameterSpec) parameters.get(parameterName);
-            if (parameterName == null) {
+            if (parameter == null) {
                throw new InvalidSpecificationException("Incorrect parameter name \"" +
                      parameterName + "\" in " + comboTag + ".");
             }
