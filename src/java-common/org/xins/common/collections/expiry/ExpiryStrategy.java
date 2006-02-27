@@ -17,6 +17,11 @@ import org.xins.common.Utils;
 /**
  * Expiry strategy. A strategy maintains a time-out and a time-out precision.
  *
+ * <p>When an <code>ExpiryStrategy</code> is constructed, then an associated
+ * thread is immediately constructed and started. This thread <em>must</em>
+ * be stopped manually by calling {@link #stop()} as soon as the strategy is
+ * no longer used.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
