@@ -277,7 +277,7 @@ public final class ProtectedList extends AbstractList implements Cloneable {
       ProtectedList clone = null;
       try {
          clone = (ProtectedList) super.clone();
-      } catch(CloneNotSupportedException e){
+      } catch (CloneNotSupportedException e) {
          // should never happen
       }
 
