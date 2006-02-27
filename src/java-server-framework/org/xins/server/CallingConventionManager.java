@@ -274,7 +274,7 @@ extends Manageable {
 
       // If the class could not be determined, then return null
       if (className == null) {
-         Log.log_3239(null, name, className);
+         Log.log_3239(null, name, null);
          return null;
       }
 
