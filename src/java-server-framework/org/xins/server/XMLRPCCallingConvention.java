@@ -597,20 +597,20 @@ final class XMLRPCCallingConvention extends CallingConvention {
 
       // Write the attributes
       Map attributesMap = dataElement.getAttributeMap();
-      Iterator itAttributes = attributesMap.keySet().iterator();
+      Iterator itAttributes = attributesMap.entrySet().iterator();
       while (itAttributes.hasNext()) {
-         Element.QualifiedName attributeQName = (Element.QualifiedName) itAttributes.next();
+         Map.Entry entry = (Map.Entry) itAttributes.next();
+         Element.QualifiedName attributeQName = (Element.QualifiedName) entry.getKey();
          String attributeName = attributeQName.getLocalName();
-         String attributeValue = (String) attributesMap.get(attributeQName);
-         String attributeTag = "string";
-
+         String attributeValue = (String) entry.getValue();
+         
+         String attributeTag;
          try {
             Type attributeType = elementSpec.getAttribute(attributeName).getType();
             attributeValue = convertOutput(attributeType, attributeValue);
             attributeTag = convertType(attributeType);
          } catch (EntityNotFoundException enfe) {
-
-            // keep the old value
+            attributeTag = "string";
          } catch (java.text.ParseException pex) {
             throw new IOException("Invalid value for parameter \"" + attributeName + "\".");
          }

@@ -45,11 +45,16 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Slightly improved the description and translations for log message 2115.
   - Marked inner class Handler, in class XINSCallResultParser, as static.
   - Marked inner class CallNotifyThread, in class AsynchronousCall, as static.
+  - Slightly improved the efficiency of the DataElement class by using
+    Map.entrySet() instead of the Map.keySet(), where applicable.
 
 * XINS/Java Server Framework:
   - Implemented RFE #1346752: Have log messages 3200 and 3227 in the log.
     These messages are now logged after the runtime configuration file is read
     and the log settings have been applied.
+  - Slightly improved the efficiency of the XMLRPCCallingConvention and
+    SOAPCallingConvention classes by using Map.entrySet() instead of the
+    Map.keySet(), where applicable.
 
 * Test forms:
   - Implemented RFE #1408170: Display enum names on test form. Tested this

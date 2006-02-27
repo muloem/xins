@@ -272,9 +272,10 @@ public class DataElement implements Cloneable {
 
       // Find all matches and put them in a lazily-initialized Set
       if (_attributes != null) {
-         Iterator it = _attributes.keySet().iterator();
+         Iterator it = _attributes.entrySet().iterator();
          while (it.hasNext()) {
-            QualifiedName qn = (QualifiedName) it.next();
+            Map.Entry     entry = (Map.Entry)     it.next();
+            QualifiedName qn    = (QualifiedName) entry.getKey();
             if (qn.getNamespaceURI() == null) {
                if (set == null) {
                   set = new HashSet();
@@ -572,10 +573,11 @@ public class DataElement implements Cloneable {
       builder.setText(elementText);
 
       // Go through the attributes
-      Iterator itAttributeNames = elementAttributes.keySet().iterator();
-      while (itAttributeNames.hasNext()) {
-         DataElement.QualifiedName attributeName = (DataElement.QualifiedName) itAttributeNames.next();
-         String attributeValue = (String) elementAttributes.get(attributeName);
+      Iterator itAttributes = elementAttributes.entrySet().iterator();
+      while (itAttributes.hasNext()) {
+         Map.Entry                 entry          = (Map.Entry) itAttributes.next();
+         DataElement.QualifiedName attributeName  = (DataElement.QualifiedName) entry.getKey();
+         String                    attributeValue = (String) entry.getValue();
          builder.setAttribute(attributeName.getNamespaceURI(), attributeName.getLocalName(), attributeValue);
       }
 

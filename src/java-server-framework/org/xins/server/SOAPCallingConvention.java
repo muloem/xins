@@ -483,11 +483,12 @@ final class SOAPCallingConvention extends CallingConvention {
          childrenSpec = elementSpec.getSubElements();
 
          // Go through the attributes
-         Iterator itAttributeNames = elementAttributes.keySet().iterator();
+         Iterator itAttributeNames = elementAttributes.entrySet().iterator();
          while (itAttributeNames.hasNext()) {
-            Element.QualifiedName attributeQName = (Element.QualifiedName) itAttributeNames.next();
-            String attributeName = attributeQName.getLocalName();
-            String attributeValue = (String) elementAttributes.get(attributeQName);
+            Map.Entry             entry          = (Map.Entry) itAttributeNames.next();
+            Element.QualifiedName attributeQName = (Element.QualifiedName) entry.getKey();
+            String                attributeName  = attributeQName.getLocalName();
+            String                attributeValue = (String) entry.getValue();
             try {
 
                // Convert the value if needed
