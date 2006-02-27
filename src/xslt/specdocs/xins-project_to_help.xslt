@@ -44,21 +44,21 @@
 				</xsl:call-template>
 
 				<h1>Help</h1>
-				<p>This page explains how the information presented in these
-				specifications should be interpreted.</p>
+				<p>This page explains how the information presented in these specifications should be interpreted.</p>
 
-				<xsl:apply-templates select="document('../../xml/cc-spec/xins-std/cc-spec.xml')/cc-spec" />
-
-				<h2>Notes on the examples</h2>
-				<p>The examples are non-normative and should not be
-				interpreted literally. However, both clients are server must
-				respect the outlined requirements.</p>
-				<p>For example, the encoding in the result XML document may be
-				different from the one displayed in the example, there can be
-				additional or less ignorable whitespace, there can be
-				ignorable attributes or elements, etc.</p>
-				<p>An XML parser should be used to interpret the
-				response.</p>
+				<h2>Examples</h2>
+				<p>The examples are not normative and should not be interpreted literally.</p>
+ 
+				<p>Examples of how real result documents can be different from the examples include:</p>
+				<ul>
+					<li>the encoding in the result XML document may be different from the one displayed in the example</li>
+					<li>there can be different (additional or less) ignorable whitespace</li>
+					<li>there can be additional undescribed attributes set</li>
+					<li>there can be additional undescribed elements</li>
+				</ul>				
+				
+				<h2>Parsing</h2>
+				<p>An XML parser should be used to interpret the response.</p>
 
 				<xsl:call-template name="footer">
 					<xsl:with-param name="xins_version" select="$xins_version" />

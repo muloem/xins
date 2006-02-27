@@ -59,10 +59,14 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Fixed SF.net bug#1435066: Getting an attribute value may throw an
     exception.
 
-* Generation of the open document format:
+* Generation of the OpenDocument format:
   - Improved indentation of the result.
   - Improved fonts.
   - Added meta.xml containing the meta information of the document.
+
+* Generation of the specdocs:
+  - Changed the Help page to be more informal. Not describing all individual
+    rules anymore.
 
 * Generated build file:
   - Added a create-example target that creates the specification of an 
