@@ -226,7 +226,7 @@ implements XINSCallResultData {
     * Returns the type of the error code.
     *
     * @return
-    *    the type as a {@link ErrorCodeSpec.Type}, can be <code>null</code> if it's unknown.
+    *    the type as a {@link ErrorCodeSpec ErrorCodeSpec.Type}, can be <code>null</code> if it's unknown.
     */
    public final ErrorCodeSpec.Type getType() {
       return _type;
