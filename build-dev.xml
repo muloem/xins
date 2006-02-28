@@ -475,10 +475,12 @@ ${sf.file}</fail>
 				<include name="xins-project/**/*.rcd" />
 				<include name="xins-project/**/*.cat" />
 				<include name="xins-project/**/*.java" />
+				<include name="xins-project/apis/petstore/**/*" />
 				<exclude name="build" />
 				<exclude name="xins-project/build/**/*" />
 				<exclude name="xins-project/apis/allinone/impl-stub/com/**/*" />
 				<exclude name="xins-project/apis/allinone/test/**/*" />
+				<exclude name="xins-project/apis/petstore/database/*.DBF" />
 			</fileset>
 		</copy>
 		<!-- Create and copy the documentation -->
@@ -548,7 +550,6 @@ ${sf.file}</fail>
 			<include name="demo/capis/**/*"                />
 			<include name="demo/xins-project/**/*"         />
 			<include name="demo/*.xml"                     />
-			<include name="demo/*.properties"              />
 			<include name="build.xml"                      />
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
@@ -559,6 +560,7 @@ ${sf.file}</fail>
 			<exclude name="src/xslt/tests/perftests.xslt"  />
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
+			<exclude name="demo/xins-project/petstore/lib/tinySQL.jar" />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">

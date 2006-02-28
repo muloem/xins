@@ -93,6 +93,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Added opendoc directory in the distribution.
   - Remove the generated resultcodes.xml if a function specification has
     changed.
+  - Added the petstore blueprint to the release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
