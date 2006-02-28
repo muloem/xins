@@ -38,6 +38,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
   - Fixed a minor issue in XINSServletResponse: Now storing the content type
     in setContentType(String).
   - Added a unit test for ProtectedList cloning.
+  - Properly closing sockets and in- and output streams in the
+    HTTPServletHandler. This may avoid some resource drain issues.
 
 * XINS/Java Client Framework:
   - Fixed incorrect Javadoc of the org.xins.client.async package.

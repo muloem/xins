@@ -34,6 +34,7 @@ import org.apache.log4j.helpers.NullEnumeration;
 import org.xins.common.Library;
 
 import org.xins.common.Log;
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 
@@ -324,28 +325,47 @@ public class HTTPServletHandler {
     * This method is invoked when a client connects to the server.
     *
     * @param client
-    *    the connection with the client.
+    *    the connection with the client, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>client == null</code>.
     *
     * @throws IOException
     *    If the query is not handled correctly.
     */
-   public void serviceClient(Socket client) throws IOException {
+   public void serviceClient(Socket client)
+   throws IllegalArgumentException, IOException {
+      
+      // Check argument
+      MandatoryArgumentChecker.check("client", client);
+      
+      BufferedReader       inbound  = null;
       BufferedOutputStream outbound = null;
       try {
          // Acquire the streams for IO
-         BufferedReader inbound = new BufferedReader(new InputStreamReader(client.getInputStream()));
+         inbound  = new BufferedReader(new InputStreamReader(client.getInputStream()));
          outbound = new BufferedOutputStream(client.getOutputStream());
 
          httpQuery(inbound, outbound);
 
       } finally{
+         
          // Clean up
-         outbound.close();
-
-         // The following close statements seem not to work on Unix.
-         // inbound.close();
-         // outbound.close();
-         // client.close();
+         if (inbound != null) {
+            try {
+               inbound.close();
+            } catch (Throwable exception) {
+               // ignore
+            }
+         }
+         
+         if (outbound != null) {
+            try {
+               outbound.close();
+            } catch (Throwable exception) {
+               // ignore
+            }
+         }
       }
    }
 
@@ -499,6 +519,7 @@ public class HTTPServletHandler {
 
       byte[] bytes = httpResult.getBytes(encoding);
       outbound.write(bytes, 0, bytes.length);
+      outbound.flush();
    }
 
    /**
@@ -573,8 +594,14 @@ public class HTTPServletHandler {
                   // Service the connection
                   serviceClient(clientSocket);
                } catch (Exception ex) {
-                  // If anything goes wrong still continue to listen to the port.
+                  // If anything goes wrong still continue accepting clients
                   Utils.logIgnoredException("SocketAcceptor", "serviceClient", "SocketAcceptor", "run", ex);
+               } finally {
+                  try {
+                     clientSocket.close();
+                  } catch (Throwable exception) {
+                     // ignore
+                  }
                }
             }
          } catch (SocketException ie) {
