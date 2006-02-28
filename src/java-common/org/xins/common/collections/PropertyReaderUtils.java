@@ -319,7 +319,7 @@ extends Object {
     * Serializes the specified <code>PropertyReader</code> to a
     * <code>FastStringBuffer</code>. For each entry, both the key and the
     * value are encoded using the URL encoding (see {@link URLEncoding}).
-    * The key and value are separated by a literal equals sign 
+    * The key and value are separated by a literal equals sign
     * (<code>'='</code>). The entries are separated using
     * an ampersand (<code>'&amp;'</code>).
     *
@@ -445,7 +445,7 @@ extends Object {
     * Serializes the specified <code>PropertyReader</code> to a
     * <code>String</code>. For each entry, both the key and the
     * value are encoded using the URL encoding (see {@link URLEncoding}).
-    * The key and value are separated by a literal equals sign 
+    * The key and value are separated by a literal equals sign
     * (<code>'='</code>). The entries are separated using
     * an ampersand (<code>'&amp;'</code>).
     *
@@ -638,7 +638,7 @@ extends Object {
                throw Utils.logProgrammingError(uee);
             }
          } while (names.hasNext());
-         
+
          if (_suffix != null) {
             buffer.append('&');
             buffer.append(_suffix);

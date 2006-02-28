@@ -11,7 +11,7 @@ import java.util.Properties;
 import org.xins.common.Log;
 
 /**
- * Class that logs a warning message in the log system if a property value 
+ * Class that logs a warning message in the log system if a property value
  * is overwritten.
  *
  * @version $Revision$ $Date$
@@ -20,7 +20,7 @@ import org.xins.common.Log;
  * @since XINS 1.4.0
  */
 public class WarnDoubleProperties extends Properties {
-    
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------

@@ -210,12 +210,18 @@ public class CreateExampleTask extends Task {
          String paramValue = (equalPos == nextParam.length() - 1) ? "" : nextParam.substring(equalPos + 1);
 
          // Handle the _function parameter
+
+         // Handle the _function parameter
          if (paramName.equals("_function")) {
             requestBuilder.setAttribute("function", paramValue);
             if (_functionProperty != null) {
+
+         // Handle the _data parameter
                getProject().setUserProperty(_functionProperty, paramValue);
             }
 
+
+         // Handle the input parameters of the function
          // Handle the _data parameter
          } else if (paramName.equals("_data")) {
             String dataSectionXML = URLDecoder.decode(paramValue, "UTF-8");
@@ -223,7 +229,7 @@ public class CreateExampleTask extends Task {
 
          // Handle the input parameters of the function
          } else if (paramName.charAt(0) != '_') {
-            String paramXML = "<param name=\"" + paramName + "\">" + 
+            String paramXML = "<param name=\"" + paramName + "\">" +
                   URLDecoder.decode(paramValue, "UTF-8") + "</param>";
             requestBuilder.addXMLChild(paramXML);
          }
@@ -243,7 +249,7 @@ public class CreateExampleTask extends Task {
    private Element getResultAsXML() throws Exception {
       // Get the result of the request
       URL url = new URL(_requestURL);
-    
+
       // Read all the text returned by the server
       BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
       String result = "";
@@ -266,10 +272,14 @@ public class CreateExampleTask extends Task {
     *    the element resulting of the combination of the request and the result.
     *
     * @return
+
+      // Creates the XSLT Transformer
     *    the result of the transformation.
     *
     * @throws Exception
     *    if the XSLT cannot be read or the transformation fails.
+
+      // Read the source and process it with the XSLT file
     */
    private String transformElement(Element combined) throws Exception {
 

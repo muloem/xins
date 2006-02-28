@@ -135,7 +135,7 @@ extends Object {
       // Notify the strategy that we listen to it. If the strategy has already
       // stopped, then this will throw an IllegalStateException
       strategy.folderAdded(this);
-      
+
       // Constructed ExpiryFolder
       Log.log_1408(_instanceNum, _name);
    }
@@ -291,7 +291,7 @@ extends Object {
          _listeners        = null;
       }
    }
-   
+
    /**
     * Checks whether this object is considered equal to the argument.
     *
@@ -305,9 +305,9 @@ extends Object {
     * @see Object#equals(Object)
     */
    public boolean equals(final Object obj) {
-      
+
       boolean equal = false;
-      
+
       if (obj instanceof ExpiryFolder) {
          ExpiryFolder that = (ExpiryFolder) obj;
 
@@ -332,7 +332,7 @@ extends Object {
             }
          }
       }
-      
+
       return equal;
    }
 
@@ -349,7 +349,7 @@ extends Object {
    public int hashCode() {
        return _strategy.hashCode() & _name.hashCode();
    }
-   
+
    /**
     * Returns the name given to this expiry folder.
     *
@@ -359,7 +359,7 @@ extends Object {
    public String getName() {
       return _name;
    }
-   
+
    /**
     * Returns the unique instance number.
     *
@@ -403,10 +403,10 @@ extends Object {
          if (!_slots[_lastSlot].isEmpty()) {
             Iterator iterator = _slots[_lastSlot].entrySet().iterator();
             while (iterator.hasNext()) {
-               
+
                // Get the next Map.Entry from the iterator
                Map.Entry me = (Map.Entry) iterator.next();
-               
+
                // Determine key and entry object
                Object key   = me.getKey();
                Entry  entry = (Entry) me.getValue();
@@ -424,14 +424,14 @@ extends Object {
          if (!toBeExpired.isEmpty()) {
             Iterator iterator = toBeExpired.entrySet().iterator();
             while (iterator.hasNext()) {
-               
+
                // Get the next Map.Entry from the iterator
                Map.Entry me = (Map.Entry) iterator.next();
-               
+
                // Get the key and the entry
                Object key   = me.getKey();
                Entry  entry = (Entry) me.getValue();
-               
+
                if (entry.isExpired()) {
 
                   // Create a map for the object references, if necessary
@@ -572,10 +572,10 @@ extends Object {
       synchronized (_lock) {
          Iterator iterator = map.entrySet().iterator();
          while (iterator.hasNext()) {
-            
+
             // Get the next Map.Entry from the iterator
             Map.Entry me = (Map.Entry) iterator.next();
-            
+
             // Get the key and the entry
             Object key   = me.getKey();
             Entry  entry = (Entry) me.getValue();
@@ -970,7 +970,7 @@ extends Object {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
-      
+
       /**
        * Returns a hash code value for the object.
        *
@@ -979,11 +979,11 @@ extends Object {
        *
        * @see Object#hashCode()
        * @see #equals(Object)
-       */      
+       */
       public int hashCode() {
          return _reference.hashCode();
       }
-      
+
       /**
        * Checks whether this object is considered equal to the argument.
        *
@@ -997,16 +997,16 @@ extends Object {
        * @see Object#equals(Object)
        */
       public boolean equals(final Object obj) {
-         
+
          boolean equal;
-         
+
          if (obj instanceof Entry) {
             Entry that = (Entry) obj;
             equal = _reference.equals(that._reference);
          } else {
             equal = false;
          }
-         
+
          return equal;
       }
 

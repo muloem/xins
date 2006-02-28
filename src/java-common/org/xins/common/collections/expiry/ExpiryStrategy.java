@@ -133,10 +133,10 @@ public final class ExpiryStrategy extends Object {
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
       _asString  = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
-      
+
       // Compute a hash code
       _hashCode = ("" + _timeOut + ":" + _precision).hashCode();
-      
+
       // Constructed an ExpiryStrategy instance
       Log.log_1409(_instanceNum, _timeOut, _precision);
 
@@ -200,7 +200,7 @@ public final class ExpiryStrategy extends Object {
     * <code>false</code>, ofcourse.
     */
    private boolean _stop;
-   
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -223,16 +223,16 @@ public final class ExpiryStrategy extends Object {
     * @see Object#equals(Object)
     */
    public boolean equals(final Object obj) {
-      
+
       boolean equal = false;
-      
+
       if (obj instanceof ExpiryStrategy) {
          ExpiryStrategy that = (ExpiryStrategy) obj;
-         
+
          equal = that._timeOut   == _timeOut
               && that._precision == _precision;
       }
-      
+
       return equal;
    }
 
@@ -248,7 +248,7 @@ public final class ExpiryStrategy extends Object {
    public int hashCode() {
        return _hashCode;
    }
-   
+
    /**
     * Returns the time-out.
     *

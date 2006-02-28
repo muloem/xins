@@ -194,7 +194,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @param target
     *    the target of the service.
     *
-    * @return 
+    * @return
     *    the HttpClient shared instance.
     */
    public static HttpClient getHttpClient(TargetDescriptor target) {
@@ -1165,12 +1165,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
             } else {
                _throwingMethod    = "getResponseContentLength()";
                int contentLength = 4096;
-               
+
                // This method fails with HTTPClient 2.0.
                try {
                   contentLength = (int) method.getResponseContentLength();
                } catch (NoSuchMethodError nsme) {
-                  
                   // Ignore
                }
 
@@ -1366,7 +1365,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          return _data;
       }
    }
-   
+
    /**
     * Post method that encode the Unicode characters above 255 as %uxxxx
     * where xxxx is the hexadecimal value of the character.
@@ -1377,7 +1376,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @since XINS 1.4.0
     */
    private static class UnicodePostMethod extends PostMethod {
-      
+
       //-------------------------------------------------------------------------
       // Constructor
       //-------------------------------------------------------------------------
@@ -1385,7 +1384,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       public UnicodePostMethod(String url) {
          super(url);
       }
-      
+
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
@@ -1406,7 +1405,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                   queryString.append('=');
                   queryString.append(URLEncoder.encode(params[i].getValue(), "UTF-8"));
                }
-               return new StringRequestEntity(queryString.toString(), 
+               return new StringRequestEntity(queryString.toString(),
                      "application/x-www-form-urlencoded", "US-ASCII");
             } catch (UnsupportedEncodingException ueex) {
                // Should never happen

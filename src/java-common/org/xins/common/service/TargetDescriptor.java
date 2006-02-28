@@ -480,7 +480,7 @@ public final class TargetDescriptor extends Descriptor {
    public TargetDescriptor getTargetByCRC(int crc) {
       return (_crc == crc) ? this : null;
    }
-   
+
    /**
     * Returns a hash code value for the object.
     *
@@ -517,9 +517,9 @@ public final class TargetDescriptor extends Descriptor {
     * @see #hashCode()
     */
    public boolean equals(Object obj) {
-      
+
       boolean equal = false;
-      
+
       if (obj instanceof TargetDescriptor) {
          TargetDescriptor that = (TargetDescriptor) obj;
          equal = (_url.equals(that._url))
