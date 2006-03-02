@@ -6,6 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
+* Generated tests:
+  - Fixed incorrect characters in the generated APITests file.
+
+* Generated build file:
+  - Dependencies are also added in the classpath when running the test target.
+
+* DTD:
+  - Added possibility to have multiple implementation and test element in the
+    xins-project.xml file using the 1.0 alpha DTD.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
