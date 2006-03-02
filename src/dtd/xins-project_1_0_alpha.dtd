@@ -43,9 +43,13 @@
           packageprefix       CDATA #REQUIRED
           packagesuffix       CDATA #REQUIRED
 >
-<!ELEMENT api (impl?, environments?)>
+<!ELEMENT api (impl*, environments?, test?)>
 <!ATTLIST api
           name       NMTOKEN #REQUIRED
 >
 <!ELEMENT impl EMPTY>
+<!ATTLIST impl
+          name       NMTOKEN #IMPLIED
+>
 <!ELEMENT environments EMPTY>
+<!ELEMENT test EMPTY>
