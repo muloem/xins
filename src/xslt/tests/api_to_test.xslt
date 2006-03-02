@@ -38,7 +38,7 @@ import org.xins.common.servlet.container.HTTPServletHandler;
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[ API.
  *
- * @version $]]><![CDATA[Revision$ $]]><![CDATA[Date$
+ * @version $]]><![CDATA[Revision$ $]]>Date$
  */
 public class APITests extends TestCase {
 
@@ -74,7 +74,7 @@ public class APITests extends TestCase {
       if ("true".equals(System.getProperty("test.start.server"))) {
          suite.addTestSuite(StartServer.class);
       }
-      // Add all tests]]></xsl:text>
+      // Add all tests</xsl:text>
 		<xsl:for-each select="function">
 			<xsl:text>
       suite.addTestSuite(</xsl:text>
@@ -174,7 +174,7 @@ public class APITests extends TestCase {
 		<xsl:text>.war".replace('/', File.separatorChar);
          File warFile = new File(System.getProperty("user.dir"), warLocation);
          int port = 8080;
-         if (System.getProperty("servlet.port") != null && !System.getProperty("servlet.port").equals("")) {
+         if (System.getProperty("servlet.port") != null &amp;&amp; !System.getProperty("servlet.port").equals("")) {
             port = Integer.parseInt(System.getProperty("servlet.port"));
          }
 
