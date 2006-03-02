@@ -1306,6 +1306,11 @@ APIs in this project are:
 						<pathelement path="build/classes-tests/{$api}" />
 						<pathelement path="build/classes-api/{$api}" />
 						<pathelement path="build/classes-types/{$api}" />
+						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+						<xsl:if test="impl">
+							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+						</xsl:if>
 					</classpath>
 				</junit>
 				<mkdir dir="build/testresults/html" />
