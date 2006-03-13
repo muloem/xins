@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
 * Generated build file:
   - Dependencies are also added in the classpath when running the test target.
+  - Added description of the test target in the help.
 
 * DTD:
   - Added possibility to have multiple implementation and test element in the

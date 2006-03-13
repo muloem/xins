@@ -110,6 +110,7 @@ replace <api> with the name of an existing API:
 - all-<api>           Generates everything for the API.
 - wsdl-<api>          Generates the WSDL for the API.
 - stub-<api>          Generates the stub for the API.
+- test-<api>          Generates (if needed) and runs the tests.
 - opendoc-<api>       Generates the specifications in Opendoc format for the API.
 
 APIs in this project are:
