@@ -56,6 +56,7 @@ public class CustomTestConvention extends CustomCallingConvention {
       String query = httpRequest.getParameter("query");
       BasicPropertyReader properties = new BasicPropertyReader();
       properties.set("inputText", query);
+      properties.set("useDefault", "false");
       return new FunctionRequest("ResultCode", properties, null);
    }
 

@@ -29,8 +29,8 @@
 			<description>A property with a link to test with should succeed.</description>
 		</property>
 	</runtime-properties>
-	<!--content web-path="WEB-INF" dir="." includes="xins.properties" /-->
-	<!--calling-convention name="xins-tests" class="org.xins.tests.server.CustomTestConvention" /-->
-	<calling-convention name="_xins-soap" />
+	<content web-path="WEB-INF" dir="." includes="xins.properties" />
+	<calling-convention name="_xins-soap" default="true"/>
+	<calling-convention name="xins-tests" class="org.xins.tests.server.CustomTestConvention" />
 	<instance name="_sharedInstance" getter="getSharedInstance" class="SharedInstance" />
 </impl>

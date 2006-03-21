@@ -116,7 +116,7 @@ public class ElementParserTests extends TestCase {
       assertTrue(element.getUniqueChildElement("e") == eChild);
       try {
          element.getUniqueChildElement("test");
-         fail("getUniquehild did not throw any exception when getting a non existing child.");
+         fail("getUniqueChild did not throw any exception when getting a non existing child.");
       } catch (ParseException pex) {
          
          // as expected.

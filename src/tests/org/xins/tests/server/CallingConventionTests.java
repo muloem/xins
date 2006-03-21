@@ -8,6 +8,8 @@ package org.xins.tests.server;
 
 import java.io.File;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import java.util.List;
 import java.util.Random;
@@ -526,8 +528,8 @@ public class CallingConventionTests extends TestCase {
    /**
     * Test the custom calling convention.
     */
-   /*public void testCustomCallingConvention() throws Exception {
-      URL url = new URL("http://localhost:8080/?query=hello%20Custom");
+   public void testCustomCallingConvention() throws Exception {
+      URL url = new URL("http://localhost:8080/?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.connect();
       assertEquals(200, connection.getResponseCode());
@@ -535,7 +537,7 @@ public class CallingConventionTests extends TestCase {
       HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
       connection2.connect();
       assertEquals(400, connection2.getResponseCode());
-   }*/
+   }
 
    /**
     * Posts the XML data the the given destination.
