@@ -546,7 +546,7 @@ extends Object {
          _state = ERROR;
 
          // Make sure namespaceURI is either null or non-empty
-         namespaceURI = "".equals(namespaceURI.trim())
+         namespaceURI = (namespaceURI != null && "".equals(namespaceURI.trim()))
                       ? null
                       : namespaceURI;
 
@@ -736,8 +736,6 @@ extends Object {
        */
       public void characters(char[] ch, int start, int length)
       throws IndexOutOfBoundsException, SAXException {
-
-         final String THIS_METHOD = "characters(char[],int,int)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
