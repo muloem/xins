@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the code used to check the input and output parameters.
  The code will check that the required parameters are set, that the parameters
  contains a value compliant with the type and that the param-combo
@@ -47,7 +44,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when test="$side='server' and local-name() = 'input'">

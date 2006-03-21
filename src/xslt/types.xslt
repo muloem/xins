@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  Utility XSLT that provides templates to convert a type to something else.
 
  $Id$
@@ -34,7 +31,7 @@
 	<xd:doc>
 		<xd:short>
 			Returns the name of the file for the specified type in the specified API.
-			The should contain the definition of the specified type in the specified 
+			The should contain the definition of the specified type in the specified
 			API.
 		</xd:short>
 		<xd:param name="specsdir" type="string">
@@ -660,7 +657,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<!--
 	* Returns the SOAP type for the specified XINS type.
 	* The type could be a standard type or a defined type.
@@ -690,7 +687,7 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
-		
+
 		<xsl:variable name="paramtype">
 			<xsl:choose>
 				<xsl:when test="string-length($type) = 0 or starts-with($type, '_')">
@@ -706,7 +703,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<!-- Note that boolean, date and timestamp values should be translated. -->
 		<xsl:choose>
 			<xsl:when test="string-length($paramtype) = 0 or $paramtype = '_text'">string</xsl:when>
@@ -760,7 +757,7 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
-		
+
 		<xsl:choose>
 			<xsl:when test="string-length($type) = 0 or starts-with($type, '_')">
 				<text:p text:style-name="Standard">
@@ -770,7 +767,7 @@
 				</text:p>
 			</xsl:when>
 			<xsl:otherwise>
-			
+
 				<!-- Determine file that defines type -->
 				<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
 				<xsl:variable name="type_node" select="document($type_file)/type" />
@@ -851,5 +848,5 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-		
+
 </xsl:stylesheet>

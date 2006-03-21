@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  $Id$
 
  Copyright 2003-2006 Wanadoo Nederland B.V.
@@ -26,7 +23,7 @@
 
 	<!-- Global variable -->
 	<xsl:variable name="log_node" select="document($log_file)/log" />
-	
+
 	<!-- Match the root element 'translation-bundle' -->
 	<xsl:template match="translation-bundle">
 		<xsl:variable name="classname" select="concat('TranslationBundle_', $locale)" />

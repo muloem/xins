@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the runtimeProperties.html files that contains
- the list and description of the properties used by the implementation of 
+ the list and description of the properties used by the implementation of
  the API.
 
  $Id$
@@ -42,7 +39,7 @@
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
 	<xsl:template match="impl/runtime-properties">
-	
+
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>
@@ -67,7 +64,7 @@
 						<xsl:value-of select="$api" />
 					</em>.
 				</h1>
-				
+
 				<blockquote>
 					<xsl:choose>
 						<xsl:when test="property">

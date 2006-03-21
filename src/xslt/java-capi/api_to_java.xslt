@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the CAPI.java class.
 
  $Id$
@@ -524,7 +521,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$name" />
 		<xsl:text><![CDATA[</em>
     * function using the specified request object.
-    * 
+    *
     * <p>Description: ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
     <xsl:text><![CDATA[

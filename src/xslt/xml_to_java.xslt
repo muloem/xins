@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
   Utility XSLT that provide a template that return a string with the
  " and \ character escaped.
 
 $Id$
 -->
 
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:template name="xml_to_java_string">
@@ -84,16 +81,16 @@ $Id$
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Transform a PCDATA text to a Java string. -->	
+	<!-- Transform a PCDATA text to a Java string. -->
 	<xsl:template name="pcdata_to_java_string">
 		<xsl:param name="text" />
-		
+
 		<xsl:variable name="normalized-text">
 			<xsl:call-template name="normalize">
 				<xsl:with-param name="text" select="$text" />
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:call-template name="xml_to_java_string">
 			<xsl:with-param name="text" select="$normalized-text" />
 		</xsl:call-template>

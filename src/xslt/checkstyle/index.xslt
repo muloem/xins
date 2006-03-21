@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT stylesheet that converts a Checkstyle XML report to HTML.
 
  $Id$

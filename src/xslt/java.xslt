@@ -1,8 +1,5 @@
 <?xml version="1.0"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the header of the generated java files.
 
  $Id$

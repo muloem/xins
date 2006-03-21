@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the web.xml file that is included in the WAR file.
 
  $Id$
@@ -117,7 +114,7 @@
 				</xsl:if>
 				<xsl:if test="count(calling-convention) > 1 and count(calling-convention[@default='true']) != 1">
 					<xsl:message terminate="yes">
-						<xsl:text>More than one calling convention has been defined, 
+						<xsl:text>More than one calling convention has been defined,
 one of them should be defined as the default one.</xsl:text>
 					</xsl:message>
 				</xsl:if>

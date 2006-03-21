@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  Utility XSLT that converts a word to the hungarian notation.
 
  $Id$
@@ -20,9 +17,9 @@
 	<xsl:template name="hungarianUpper">
 		<xsl:param name="text" />
 		<xsl:param name="startWithUpperCase" select="true()" />
-		
+
 		<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
-		
+
 		<xsl:if test="string-length($firstChar) &gt; 0">
 			<xsl:variable name="skipChar" select="$firstChar = '.' or $firstChar = '-'" />
 			<xsl:if test="not($skipChar)">
@@ -49,10 +46,10 @@
 	-->
 	<xsl:template name="hungarianLower">
 		<xsl:param name="text" />
-		
+
 		<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
 		<xsl:variable name="rest" select="substring($text, 2)" />
-		
+
 		<xsl:value-of select="translate($firstChar,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
 		<xsl:call-template name="hungarianUpper">
 			<xsl:with-param name="text"               select="$rest"  />

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the index.html of the specification documentation.
 
  $Id$
@@ -65,13 +62,13 @@
 			<xsl:apply-templates select="$function_node/example" />
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template name="parameter-section">
 		<xsl:param name="type-name" />
 		<xsl:param name="type-node" />
 		<xsl:param name="specsdir" />
 		<xsl:param name="api" />
-		
+
 		<text:h text:style-name="Heading2" text:outline-level="2">
 			<xsl:value-of select="$type-name" />
 			<xsl:text> parameters</xsl:text>
@@ -112,7 +109,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template match="param" mode="parameters-table">
 		<xsl:param name="specsdir" />
 		<xsl:param name="api"      />
@@ -149,7 +146,7 @@
 			</table:table-cell>
 		</table:table-row>
 	</xsl:template>
-	
+
 	<xsl:template match="example">
 		<text:p text:style-name="P2">
 			<xsl:text>Example </xsl:text>
@@ -272,7 +269,7 @@
 			</table:table-row>
 		</table:table>
 	</xsl:template>
-	
+
 <!-- element examples -->
 
 	<xsl:template match="element-example">
@@ -362,7 +359,7 @@
 	<xsl:template name="print-attr">
 		<xsl:param name="name" />
 		<xsl:param name="value" />
-		
+
 		<xsl:text> </xsl:text>
 		<text:span text:style-name="Name">
 			<xsl:value-of select="$name" />
@@ -374,7 +371,7 @@
 			<xsl:text>"</xsl:text>
 		</text:span>
 	</xsl:template>
-	
+
 	<xsl:template name="standard-errorcodes">
 		<xsl:variable name="resultcodes_node" select="document('../../xml/default_resultcodes.xml')/resultcodes" />
 		<xsl:for-each select="$resultcodes_node/code">
@@ -395,7 +392,7 @@
 
 	<xsl:template match="resultcode-ref">
 		<xsl:param name="specsdir" />
-		
+
 		<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')"/>
 		<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode"/>
 		<table:table-row>

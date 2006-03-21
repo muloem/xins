@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the type.html files that conatins
  the description of the type.
 

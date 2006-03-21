@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generated an XML file containing the list of all result codes
  per function.
 
@@ -33,7 +30,7 @@
 				</function>
 			</xsl:for-each>
 		</api>
-		
+
 	</xsl:template>
 
 </xsl:stylesheet>

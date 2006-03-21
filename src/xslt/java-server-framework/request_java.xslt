@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  This stylesheet transform the input parameters of a function
  to a Request object with get method that will be used by the user
  in the call method of the implementation.
@@ -78,7 +75,7 @@
 			<xsl:variable name="elementName" select="@element" />
 			<xsl:apply-templates select="../../element[@name=$elementName]" mode="listMethod" />
 		</xsl:for-each>
-		
+
 		<xsl:apply-templates select="input/data/element" mode="listElementClass" />
 		<xsl:text>
    }
@@ -169,7 +166,7 @@
 		<xsl:text>;</xsl:text>
 	</xsl:template>
 
-	<!-- 
+	<!--
 	  Generates the get methods for the parameters and the attributes.
 		If the parameter or attribute is optional an isSet method is created.
 	 -->

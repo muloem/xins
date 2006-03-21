@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the main index.html which link to the different APIs.
 
  $Id$

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
- XSLT that transforms the combination of the XML request and the result 
+ XSLT that transforms the combination of the XML request and the result
  returned from a XINS API to the specification of an example.
 
  $Id$

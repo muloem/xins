@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the Result classes.
 
  $Id$
@@ -116,7 +113,7 @@ extends org.xins.client.AbstractCAPICallResult {
 			<xsl:variable name="elementName" select="@element" />
 			<xsl:apply-templates select="../../element[@name=$elementName]" mode="listMethod" />
 		</xsl:for-each>
-		
+
 		<xsl:text><![CDATA[
 
    /**

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the help page.
 
  $Id$
@@ -48,15 +45,15 @@
 
 				<h2>Examples</h2>
 				<p>The examples are not normative and should not be interpreted literally.</p>
- 
+
 				<p>Examples of how real result documents can be different from the examples include:</p>
 				<ul>
 					<li>the encoding in the result XML document may be different from the one displayed in the example</li>
 					<li>there can be different (additional or less) ignorable whitespace</li>
 					<li>there can be additional undescribed attributes set</li>
 					<li>there can be additional undescribed elements</li>
-				</ul>				
-				
+				</ul>
+
 				<h2>Parsing</h2>
 				<p>An XML parser should be used to interpret the response.</p>
 

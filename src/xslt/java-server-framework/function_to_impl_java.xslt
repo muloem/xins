@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the skeleton for the implementation of the function.
 
  $Id$
@@ -48,7 +45,7 @@ package ]]></xsl:text>
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</code> function.
- * 
+ *
  * <p>Description: ]]></xsl:text>
 		<xsl:value-of select="description/text()" />
 		<xsl:text><![CDATA[
@@ -172,7 +169,7 @@ public final class ]]></xsl:text>
 		<xsl:text>DO
       return result;</xsl:text>
 	</xsl:template>
-	
+
 	<!-- Write the text that should be generated after the call method -->
 	<xsl:template name="aftercall" />
 </xsl:stylesheet>

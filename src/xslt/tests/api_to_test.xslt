@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the unit tests of the function examples.
 
  $Id$
@@ -80,7 +77,7 @@ public class APITests extends TestCase {
       suite.addTestSuite(</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text>Tests.class);</xsl:text>
-		</xsl:for-each>	
+		</xsl:for-each>
 		<xsl:text>
       if ("true".equals(System.getProperty("test.start.server"))) {
          suite.addTestSuite(StopServer.class);

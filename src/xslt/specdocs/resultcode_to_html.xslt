@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the resultcode.html files which contains
  the description of the result code.
 
@@ -41,13 +38,13 @@
 	<xsl:include href="../urlencode.xslt"   />
 	<xsl:include href="../warning.xslt"     />
 	<xsl:include href="../resultcode_uniqueness.xslt"     />
-				
+
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode_name" select="@name" />
 
 		<xsl:call-template name="resultcodeValidity">
-			<xsl:with-param name="resultcode_name" select="@name" /> 
+			<xsl:with-param name="resultcode_name" select="@name" />
 			<xsl:with-param name="resultcode_value" select="@value" />
 			<xsl:with-param name="specsdir" select="$specsdir" />
 			<xsl:with-param name="api_node" select="$api_node" />

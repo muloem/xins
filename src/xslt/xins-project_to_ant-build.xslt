@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the build.xml used to compile the different APIs.
 
  $Id$
@@ -92,7 +89,7 @@ The following commands assist in authoring specifications:
 - create-example      Generates a new example for a function.
 - create-logdoc       Generates the basic logdoc files for an API.
 
-The following targets are specific for a single API, 
+The following targets are specific for a single API,
 replace <api> with the name of an existing API:
 - run-<api>           Runs the WAR file for the API.
 - war-<api>           Creates the WAR file for the API.
@@ -1231,7 +1228,7 @@ APIs in this project are:
 <impl>
 </impl>]]></echo>
 			</target>
-			
+
 			<target name="stub-{$api}{$implName2}">
 				<xsl:variable name="javaImplDir"    select="concat($javaImplDir, '/', $packageAsDir)" />
 				<xmlvalidate warn="false">
@@ -1240,8 +1237,8 @@ APIs in this project are:
 				</xmlvalidate>
 				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
-				<style basedir="{$api_specsdir}" 
-				includes="{$functionIncludes}" 
+				<style basedir="{$api_specsdir}"
+				includes="{$functionIncludes}"
 				destdir="{$javaImplDir}"
 				extension="Impl.java"
 				style="{$xins_home}/src/xslt/java-server-framework/function_to_stub.xslt">
@@ -1255,7 +1252,7 @@ APIs in this project are:
 					<param name="package"      expression="{$package}"      />
 				</style>
 			</target>
-			
+
 			<target name="server-{$api}{$implName2}"
 							depends="specdocs-{$api}, javadoc-api-{$api}{$implName2}, war-{$api}{$implName2}"
 							description="Generates the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}{$implName2}' API.">
@@ -1274,7 +1271,7 @@ APIs in this project are:
 					<xsl:text>jar-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:attribute>
-				
+
 				<available property="test.generated" file="apis/{$api}/test" type="dir" />
 				<antcall target="generatetest-{$api}" />
 				<mkdir dir="build/classes-tests/{$api}" />
@@ -1328,7 +1325,7 @@ APIs in this project are:
 				<xsl:variable name="javaTestDir">
 					<xsl:value-of select="concat('apis/', $api, '/test/', $packageAsDir)" />
 				</xsl:variable>
-				
+
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="api.xml" />
@@ -1355,7 +1352,7 @@ APIs in this project are:
 				</style>
 			</target>
 		</xsl:if>
-		
+
 		<target name="-stubs-capi-{$api}" depends="-prepare-classes" >
 			<mkdir dir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}" />
 			<xmlvalidate file="{$api_file}" warn="false">

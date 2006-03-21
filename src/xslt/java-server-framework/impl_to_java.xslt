@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the RuntimeProperties class. This class contains methods
  to access the avlue of the runtime properties.
 
@@ -67,9 +64,9 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
    /**
     * The list of descriptors with one or more target descriptors.
     */
-   private java.util.List _descriptors; 
-   
-   
+   private java.util.List _descriptors;
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -80,20 +77,20 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 
       // Initializing descriptor list.
       _descriptors = new java.util.ArrayList();
-      
+
       // Get the properties</xsl:text>
 
 		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="check" />
 
 		<xsl:text>
-		
+
       // The list is made unmodifiable so that no one can change it.
       _descriptors = java.util.Collections.unmodifiableList(_descriptors);
    }</xsl:text>
 		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="method" />
 
    /**
-    * Gets the descriptor list. The list is created by getting all the 
+    * Gets the descriptor list. The list is created by getting all the
     * properties which are marked as <i>_descriptor</i> in runtime properties
     * file.
     *
@@ -113,7 +110,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test="@type = '_descriptor'">
 				<xsl:text>
@@ -156,7 +153,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 					<xsl:value-of select="$variableName" />
 					<xsl:text>.equals("")) {</xsl:text>
 				</xsl:if>
-		
+
 				<xsl:if test="not(starts-with(@type, '_')) and not(string-length(@type) = 0)">
 					<xsl:variable name="class">
 						<xsl:call-template name="javatype_for_customtype">

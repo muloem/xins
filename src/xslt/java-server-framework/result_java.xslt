@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the different classes used to specify the result of a function.
 
  $Id$
@@ -261,7 +258,7 @@ implements Result {
 		</xsl:if>
 		<xsl:text>
    }</xsl:text>
-	 
+
 		<xsl:text>
 
    /**

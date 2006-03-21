@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the Request classes.
 
  $Id$
@@ -418,11 +415,11 @@ extends org.xins.client.AbstractCAPICallRequest {
 	</xsl:template>
 
 	<xsl:template match="input/data" mode="methods">
-	
+
 		<xsl:text><![CDATA[
 
    /**
-    * Sets the data section. 
+    * Sets the data section.
     * If the value is <code>null</code> any previous data section set is removed.
     * If a previous value was entered, the value will be overridden by this new
     * value.

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the index.html of the specification documentation.
 
  $Id$
@@ -137,7 +134,7 @@
 						<xsl:apply-templates select="category" />
 					</table>
 				</xsl:if>
-				
+
 				<h2>Functions</h2>
 				<xsl:choose>
 					<xsl:when test="count(function) = 0">
@@ -585,9 +582,9 @@
 				<xsl:apply-templates select="$category_node/description" />
 			</td>
 		</tr>
-	
+
 	</xsl:template>
-	
+
 	<xsl:template match="function/description | type/description | resultcode/description | category/description">
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />

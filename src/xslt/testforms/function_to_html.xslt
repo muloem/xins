@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the function-testform-environment HTML form.
  This form is use to test an API on a given environment.
 
@@ -79,7 +76,7 @@
 					<xsl:text> test form</xsl:text>
 				</h1>
 
-				<form method="GET" action="{$init_environment}" target="xmlOutputFrame" 
+				<form method="GET" action="{$init_environment}" target="xmlOutputFrame"
 				onsubmit="this.action=this._environment.value;return doRequest(this)">
 					<p>
 						<input name="_function" type="hidden">
@@ -290,7 +287,7 @@
 			</td>
 		</tr>
 	</xsl:template>
-	
+
 	<!--
 		Write the Javascript section
 	-->
@@ -339,7 +336,7 @@
 						formattedRequestString += '<span class="name">' + name + '</span>';
 						formattedRequestString += '=<span class="value">' + value + '</span>';
 						formattedRequestString += '</span>';
-					}	
+					}
 				}
 
 				requestString = form.action + '?' + requestParams.join('&amp;');

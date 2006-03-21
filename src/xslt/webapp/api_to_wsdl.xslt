@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the WSDL file from the API.
 
  $Id$
@@ -12,14 +9,14 @@
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 								xmlns="http://schemas.xmlsoap.org/wsdl/"
 								xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 								xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
 								version="1.0">
 
 	<xsl:include href="../types.xslt"  />
-	
+
 	<xsl:param name="project_home" />
 	<xsl:param name="project_file" />
 	<xsl:param name="specsdir"     />
@@ -30,9 +27,9 @@
 	<xsl:output method="xml" indent="yes" />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
-	
+
 	<xsl:template match="api">
-	
+
 		<xsl:variable name="apiname" select="@name" />
 		<xsl:variable name="location">
 			<xsl:choose>
@@ -51,7 +48,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<definitions name="{$apiname}"
 			targetNamespace="urn:{$apiname}"
 			xmlns="http://schemas.xmlsoap.org/wsdl/"
@@ -70,14 +67,14 @@
 			<types>
 				<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 										targetNamespace="urn:{$apiname}">
-					
+
 					<!-- Write the elements -->
 					<xsl:apply-templates select="function" mode="elements">
 						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="specsdir"     select="$specsdir"     />
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
-					
+
 					<!-- Write the defined types -->
 					<xsl:apply-templates select="type" mode="types">
 						<xsl:with-param name="project_node" select="$project_node" />
@@ -86,7 +83,7 @@
 					</xsl:apply-templates>
 				</xsd:schema>
 			</types>
-					
+
 			<!-- Write the messages -->
 			<xsl:apply-templates select="function" mode="messages">
 				<xsl:with-param name="specsdir" select="$specsdir" />
@@ -96,7 +93,7 @@
 			<portType name="{$apiname}PortType">
 				<xsl:apply-templates select="function" mode="porttypes" />
 			</portType>
-			
+
 			<!-- Write the bindings -->
 			<binding name="{$apiname}SOAPBinding" type="tns:{$apiname}PortType">
 				<documentation>
@@ -108,7 +105,7 @@
 				</xsl:apply-templates>
         <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 			</binding>
-			
+
 			<!-- Write the services -->
 			<service name="{$apiname}Service">
 				<port name="{$apiname}Port" binding="tns:{$apiname}SOAPBinding">
@@ -117,13 +114,13 @@
 			</service>
 		</definitions>
 	</xsl:template>
-	
+
 	<xsl:template match="function" mode="elements">
-		
+
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
-		
+
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 
 		<xsl:apply-templates select="document($function_file)/function/input" mode="elements">
@@ -139,14 +136,14 @@
 			<xsl:with-param name="elementname"  select="concat(@name, 'Response')" />
 		</xsl:apply-templates>
 	</xsl:template>
-	
+
 	<xsl:template match="input | output" mode="elements">
 
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="elementname"  />
-		
+
 		<!-- The input or output parameters of the function -->
 		<xsd:element name="{$elementname}">
 			<xsd:complexType>
@@ -197,13 +194,13 @@
 			</xsd:complexType>
 		</xsd:element>
 	</xsl:template>
-	
+
 	<xsl:template match="element" mode="datasection">
-	
+
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
-		
+
 		<xsd:element name="{@name}" minOccurs="0" maxOccurs="unbounded">
 			<xsd:complexType>
 				<xsl:if test="contains/contained">
@@ -250,14 +247,14 @@
 			</xsd:complexType>
 		</xsd:element>
 	</xsl:template>
-	
+
 	<xsl:template match="function" mode="messages">
-	
+
 		<xsl:param name="specsdir" />
-		
+
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="functionname" select="@name" />
-		
+
 		<message name="{$functionname}Input">
 			<part name="parameters" element="tns:{$functionname}Request" />
 		</message>
@@ -265,12 +262,12 @@
 			<part name="parameters" element="tns:{$functionname}Response" />
 		</message>
 	</xsl:template>
-	
+
 	<xsl:template match="function" mode="porttypes">
-	
+
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
-		
+
 		<operation name="{$functionname}">
 			<documentation>
 				<xsl:value-of select="document($function_file)/function/description" />
@@ -279,15 +276,15 @@
 			<output message="tns:{$functionname}Output" />
 		</operation>
 	</xsl:template>
-	
+
 	<xsl:template match="function" mode="bindings">
-	
+
 		<xsl:param name="location" />
 		<xsl:param name="apiname" />
-		
+
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
-		
+
 		<operation name="{$functionname}">
 			<documentation>
 				<xsl:value-of select="document($function_file)/function/description" />
@@ -310,13 +307,13 @@
 			</xsl:for-each>
 		</operation>
 	</xsl:template>
-	
+
 	<xsl:template match="type" mode="types">
-	
+
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
-		
+
 		<xsl:variable name="type_name" select="@name" />
 		<xsl:variable name="type_file" select="concat($specsdir, '/', $type_name, '.typ')" />
 		<xsl:variable name="type_node" select="document($type_file)/type" />
@@ -336,7 +333,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsd:simpleType name="{$type_name}Type">
 			<xsd:annotation>
 				<xsd:documentation>
@@ -373,9 +370,9 @@
 			</xsd:restriction>
 		</xsd:simpleType>
 	</xsl:template>
-	
+
 	<xsl:template name="elementtype">
-		
+
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />

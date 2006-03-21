@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the result code used in the functions of the api.
 
  $Id$
@@ -47,7 +44,7 @@
 				<xsl:text>.UnsuccessfulResult</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
-		
+
 		<!-- Truncate the first ", " -->
 		<xsl:variable name="resultcodeIncludes2"    select="concat('implements ', substring($resultcodeIncludes, 2))" />
 
@@ -126,7 +123,7 @@ final class </xsl:text>
 </xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
 		<xsl:apply-templates select="output" />
-		
+
 		<xsl:apply-templates select="output/data/element" mode="addElementClass" />
 		<xsl:text>
 }

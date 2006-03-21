@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the index.html of the specification documentation.
 
  $Id$
@@ -28,7 +25,7 @@
 	<xsl:include href="../types.xslt" />
 	<xsl:include href="../urlencode.xslt"   />
 	<xsl:include href="function_to_content.xslt" />
-	
+
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="api">
@@ -59,7 +56,7 @@
 			</office:body>
 		</office:document-content>
 	</xsl:template>
-	
+
 	<xsl:template match="api" mode="title">
 		<text:p text:style-name="Title">
 			<xsl:value-of select="@name" />
@@ -67,12 +64,12 @@
 		</text:p>
 		<text:p text:style-name="Subtitle">- Technical Guideline -</text:p>
 	</xsl:template>
-	
+
 	<xsl:template match="api" mode="functions-table">
 		<xsl:param name="type-node" />
 		<xsl:param name="type-name" />
 		<xsl:param name="extension" />
-		
+
 		<text:h text:style-name="Heading2">
 			<xsl:value-of select="$type-name" />
 			<xsl:text>s</xsl:text>
@@ -108,7 +105,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template match="function | type | resultcode" mode="functions-table">
 		<xsl:param name="type-node" />
 		<xsl:param name="type-name" />
@@ -126,7 +123,7 @@
 				<xsl:text>'.</xsl:text>
 			</xsl:message>
 		</xsl:if>
-		
+
 		<table:table-row>
 			<table:table-cell office:value-type="string">
 				<text:p text:style-name="P1">
@@ -141,7 +138,7 @@
 		</table:table-row>
 
 	</xsl:template>
-	
+
 	<xsl:template match="function/description | type/description | resultcode/description | category/description">
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />

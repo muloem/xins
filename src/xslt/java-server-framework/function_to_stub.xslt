@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the stub implementation from the examples in the function.
 
  $Id$
@@ -24,7 +21,7 @@
 		<xsl:text>
       throw new Exception("Not implemented in stub.");</xsl:text>
 	</xsl:template>
-	
+
 	<!-- Write the text that should be generated after the call method -->
 	<xsl:template name="aftercall">
 		<xsl:apply-templates select="example" mode="method">
@@ -68,16 +65,16 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<!-- Write the methods -->
 	<xsl:template match="example" mode="method">
 		<xsl:param name="api" />
 		<xsl:param name="specsdir" />
-		
+
 		<xsl:choose>
 			<xsl:when test="@resultcode and starts-with(@resultcode, '_')" />
 			<xsl:otherwise>
-			
+
 				<xsl:variable name="resultclass">
 					<xsl:choose>
 						<xsl:when test="@resultcode">
@@ -89,7 +86,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				
+
 				<xsl:text>
 
    public Result example</xsl:text>
@@ -119,7 +116,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					
+
 					<xsl:text>
       result.set</xsl:text>
 					<xsl:value-of select="$hungarianName" />
@@ -146,7 +143,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<!-- Examples with output data section -->
 	<xsl:template match="output-data-example//element-example | data-example//element-example">
 		<xsl:param name="parent" />

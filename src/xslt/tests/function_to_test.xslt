@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
- -*- mode: Fundamental; tab-width: 4; -*-
- ex:ts=4
-
  XSLT that generates the unit tests of the function examples.
 
  $Id$
@@ -19,7 +16,7 @@
 	<xsl:param name="package" />
 
 	<xsl:include href="../xml_to_java.xslt"  />
-	
+
 	<xsl:template match="function">
 		<xsl:text><![CDATA[/*
  * $]]><![CDATA[Id$
@@ -186,14 +183,14 @@ public class ]]></xsl:text>
 				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>	
+		<xsl:text>
    }</xsl:text>
 	</xsl:template>
-	
+
 	<!-- Check the result -->
 	<xsl:template match="output-example">
 		<xsl:param name="resultVariable" />
-		
+
 		<xsl:text>
       assertEquals("The returned parameter \"</xsl:text>
 		<xsl:value-of select="@name" />
@@ -207,7 +204,7 @@ public class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>"));</xsl:text>
 	</xsl:template>
-	
+
 	<!-- Check the returned data section -->
 	<xsl:template match="data-example//element-example | output-data-example//element-example">
 		<xsl:param name="parent" />
@@ -222,7 +219,7 @@ public class ]]></xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:text>
       DataElement </xsl:text>
 		<xsl:value-of select="$elementVariable" />
@@ -264,7 +261,7 @@ public class ]]></xsl:text>
 			<xsl:with-param name="parent" select="$elementVariable" />
 		</xsl:apply-templates>
 	</xsl:template>
-	
+
 	<!-- Set the input data section in the request -->
 	<xsl:template match="input-data-example//element-example">
 		<xsl:param name="parent" />
