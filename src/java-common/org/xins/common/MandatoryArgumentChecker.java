@@ -346,7 +346,7 @@ public final class MandatoryArgumentChecker extends Object {
             message = "argName4 == null";
          }
          throw Utils.logProgrammingError(
-            CLASSNAME,               METHOD_3_NAME,
+            CLASSNAME,               METHOD_4_NAME,
             Utils.getCallingClass(), Utils.getCallingMethod(),
             message
          );
