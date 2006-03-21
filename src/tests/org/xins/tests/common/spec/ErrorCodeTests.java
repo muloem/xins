@@ -6,18 +6,21 @@
  */
 package org.xins.tests.common.spec;
 
-import com.mycompany.allinone.capi.CAPI;
 import java.util.Map;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
-import org.xins.common.service.TargetDescriptor;
+import junit.framework.TestSuite;
 
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.ErrorCodeSpec;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.standard.Int32;
+
+import com.mycompany.allinone.capi.CAPI;
 
 /**
  * ErrorCode spec TestCase. The testcases use the <i>allinone</i> API
@@ -37,9 +40,32 @@ public class ErrorCodeTests extends TestCase {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ErrorCodeTests.class);
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>ErrorCodeTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public ErrorCodeTests(String name) {
+      super(name);
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields

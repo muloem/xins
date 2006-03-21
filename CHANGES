@@ -10,6 +10,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
   - The test for the custom calling convention has been enabled again now
     that APIs support multiple calling convention.
   - Added new test for the generated CAPI request.
+  - Added proper constructor and suite() method to the tests for the spec
+    package and FastStringBufferTest.
 
 * Generated tests:
   - Fixed incorrect characters in the generated APITests file.

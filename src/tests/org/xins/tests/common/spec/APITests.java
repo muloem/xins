@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.APISpec;
@@ -37,9 +39,32 @@ public class APITests extends TestCase {
    // Class functions
    //-------------------------------------------------------------------------
 
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(APITests.class);
+   }
+
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
+
+   /**
+    * Constructs a new <code>APITests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public APITests(String name) {
+      super(name);
+   }
+
 
    //-------------------------------------------------------------------------
    // Fields
