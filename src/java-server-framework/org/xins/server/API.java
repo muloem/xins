@@ -103,10 +103,6 @@ implements DefaultResultCodes {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -578,7 +574,7 @@ implements DefaultResultCodes {
       String propValue = runtimeSettings.get(propName);
       int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
       if (propValue != null && propValue.trim().length() > 0) {
-         try {         
+         try {
             interval = Integer.parseInt(propValue);
          } catch (NumberFormatException e) {
             String detail = "Invalid interval. Must be a non-negative integer"
@@ -594,7 +590,7 @@ implements DefaultResultCodes {
       }
 
       // Initialize ACL subsystem
-      
+
       // First with the API specific access rule list
       if (_apiAccessRuleList != null) {
          _apiAccessRuleList.dispose();
@@ -715,8 +711,8 @@ implements DefaultResultCodes {
     * @throws InvalidPropertyValueException
     *    if the value for the property is invalid.
     */
-   private AccessRuleList createAccessRuleList(PropertyReader runtimeSettings, 
-         String aclProperty, int interval) 
+   private AccessRuleList createAccessRuleList(PropertyReader runtimeSettings,
+         String aclProperty, int interval)
    throws InvalidPropertyValueException {
       String acl = runtimeSettings.get(aclProperty);
 
@@ -954,7 +950,7 @@ implements DefaultResultCodes {
       // Match an access rule
       Boolean allowed;
       try {
-         
+
          // First check with the API specific one, then use the generic one.
          allowed = _apiAccessRuleList.isAllowed(ip, functionName);
          if (allowed == null) {

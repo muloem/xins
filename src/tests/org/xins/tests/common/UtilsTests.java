@@ -38,10 +38,6 @@ public class UtilsTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -56,10 +52,6 @@ public class UtilsTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -117,7 +109,7 @@ public class UtilsTests extends TestCase {
       assertEquals("int[]",              Utils.getClassName(new int[0]));
       assertEquals("int[]",              Utils.getClassName(new int[1]));
    }
-   
+
    public void testGetJavaVersion() {
       double version = Utils.getJavaVersion();
       String message = "Incorrect Java version: " + version;

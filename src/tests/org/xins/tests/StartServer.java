@@ -38,10 +38,6 @@ public class StartServer extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -58,15 +54,11 @@ public class StartServer extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
    public void testStartServer() throws Exception {
-      
+
       File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);

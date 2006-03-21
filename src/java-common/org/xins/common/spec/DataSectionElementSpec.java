@@ -22,14 +22,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class DataSectionElementSpec {
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -57,7 +49,7 @@ public final class DataSectionElementSpec {
     * @throws IllegalArgumentException
     *    if <code>name == null || description == null || subElements == null || attributes == null</code>.
     */
-   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed, 
+   DataSectionElementSpec(String name, String description, boolean isPCDataAllowed,
          Map subElements, Map attributes, List attributeCombos)
    throws IllegalArgumentException {
 

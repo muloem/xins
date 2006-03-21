@@ -31,10 +31,6 @@ public class Int8Tests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -77,7 +73,7 @@ public class Int8Tests extends TestCase {
          // As expected
       }
    }
-   
+
    public void testFromStringForRequired() throws Throwable {
 
       try {

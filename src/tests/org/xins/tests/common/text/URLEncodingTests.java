@@ -41,10 +41,6 @@ public class URLEncodingTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -59,10 +55,6 @@ public class URLEncodingTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -175,12 +167,12 @@ public class URLEncodingTests extends TestCase {
       failDecode("AA\u0080");
       failDecode("\u0080 ");
       failDecode("\u0080 1");
-      
+
       compareDecode("%80", "\u0080");
       failDecode("%u80");
       compareDecode("A%80", "A\u0080");
       failDecode("%80 ");
-      
+
       // Before-last character cannot be a percentage sign
       failDecode("abcd%a");
 
@@ -208,7 +200,7 @@ public class URLEncodingTests extends TestCase {
       assertEquals(URLDecoder.decode(result), input);
       assertEquals(URLDecoder.decode(result), URLEncoding.decode(result));
    }
-   
+
    /**
     * Compares if the input String is decoded as expected.
     */

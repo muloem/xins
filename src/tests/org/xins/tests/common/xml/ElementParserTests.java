@@ -41,10 +41,6 @@ public class ElementParserTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -59,10 +55,6 @@ public class ElementParserTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -111,14 +103,14 @@ public class ElementParserTests extends TestCase {
       assertEquals(null, hChild.getNamespaceURI());
       assertEquals(0,    hChild.getChildElements().size());
       assertEquals(null, hChild.getText());
-      
+
       // Test the getUniqueChildElement
       assertTrue(element.getUniqueChildElement("e") == eChild);
       try {
          element.getUniqueChildElement("test");
          fail("getUniqueChild did not throw any exception when getting a non existing child.");
       } catch (ParseException pex) {
-         
+
          // as expected.
       }
    }

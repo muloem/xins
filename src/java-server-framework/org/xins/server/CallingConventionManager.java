@@ -71,10 +71,6 @@ extends Manageable {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -158,7 +154,7 @@ extends Manageable {
 
       // Create a list with all known calling convention names
       ArrayList conventions = new ArrayList(CONVENTIONS);
-      
+
       // Append the defined calling conventions
       Iterator itCustomCC = properties.getNames();
       while (itCustomCC.hasNext()) {
@@ -183,15 +179,15 @@ extends Manageable {
          if (cc != null) {
             _conventions.put(name, cc);
             bootstrap(name, cc, properties);
-            
+
             if (defaultConvention && cc.getState() != Manageable.BOOTSTRAPPED) {
                throw new BootstrapException("Failed to bootstrap the default calling convention.");
             }
-            
+
          // Otherwise, if it's the default calling convention, fails
          } else if (defaultConvention) {
             throw new BootstrapException("Failed to create the default calling convention.");
-            
+
          // Otherwise remember we know this one, but it failed to create
          } else {
             _conventions.put(name, CREATION_FAILED);
@@ -493,7 +489,7 @@ extends Manageable {
          // If creation of CallingConvention succeeded, then initialize it
          if (cc != CREATION_FAILED) {
             init(name, (CallingConvention) cc, properties);
-            
+
             // Fails if the default calling convention fails to initialize
             if (((CallingConvention) cc).getState() != Manageable.USABLE &&
                   name.equals(_defaultConventionName)) {

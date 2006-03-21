@@ -35,10 +35,6 @@ public class CAPIRequestTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -54,10 +50,6 @@ public class CAPIRequestTests extends TestCase {
    }
 
    //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-   
-   //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
@@ -67,9 +59,9 @@ public class CAPIRequestTests extends TestCase {
    public void testGetMethods() {
       DefinedTypesRequest request1 = new DefinedTypesRequest();
       assertNull("Incorrect initial value for age in the CAPI request", request1.getInputAge());
-      
+
       request1.setInputAge((byte)8);
-      assertEquals("The age value returned by the request is not the same as the one set.", 
+      assertEquals("The age value returned by the request is not the same as the one set.",
             8, request1.getInputAge().intValue());
 
       request1.setInputAge(null);

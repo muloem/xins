@@ -66,10 +66,6 @@ public class AllInOneAPITests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -760,7 +756,7 @@ public class AllInOneAPITests extends TestCase {
       // Call failed as it should
       } catch (UnacceptableRequestException exception) {
          // as expected
-         Utils.logIgnoredException("AllinOneAPITests", "testAttributeCombo1", 
+         Utils.logIgnoredException("AllinOneAPITests", "testAttributeCombo1",
                "CAPI", "callAttributeCombo", exception);
       }
 
@@ -996,7 +992,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(l, request.getInputLong().longValue());
       request.setInputLong(null);
       assertNull(request.getInputLong());
-      
+
       float f = 32.5F;
       request.setInputFloat(f);
       assertEquals(f, request.getInputFloat().floatValue(), 0.0F);
@@ -1047,8 +1043,8 @@ public class AllInOneAPITests extends TestCase {
       result = _capi.callEcho(request);
       assertNull("Bug 1362875: Overriding Request input value with empty string ignored.", result.getOut());
    }
-   
-   private void dataSectionTests(String inputText) 
+
+   private void dataSectionTests(String inputText)
    throws Exception {
       DataElement element = _capi.callDataSection(inputText).dataElement();
       List users = element.getChildElements();

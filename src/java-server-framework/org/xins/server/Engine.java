@@ -89,10 +89,6 @@ final class Engine extends Object {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -129,7 +125,7 @@ final class Engine extends Object {
       // Read configuration details
       _configManager.determineConfigFile();
       _configManager.readRuntimeProperties();
-      
+
       // Log boot messages
       _starter.logBootMessages();
 
@@ -315,7 +311,7 @@ final class Engine extends Object {
 
       // Create the calling convention manager
       _conventionManager = new CallingConventionManager(_api);
-   
+
       // Bootstrap the calling convention manager
       try {
          _conventionManager.bootstrap(bootProps);
@@ -375,7 +371,7 @@ final class Engine extends Object {
          _state.setState(EngineState.API_INITIALIZATION_FAILED);
          return false;
       }
-      
+
       // Determine at what level should the stack traces be displayed
       String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
       if ("true".equals(stackTraceAtMessageLevel)) {

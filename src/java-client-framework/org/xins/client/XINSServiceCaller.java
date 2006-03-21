@@ -140,10 +140,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -403,7 +399,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
             // Serialize the exception chain
             LogdocSerializable chain = new ExceptionFormatter(exception);
-            
+
             // TODO: Will dataSection.toString() serialize the dataSection
             //       appropriately? For example, will '=' be escaped properly?
 
@@ -704,7 +700,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          } catch (Exception ex) {
             // Ignore, the default is the technical error code
          }
-                 
+
          // Log this
          if (functionalError) {
             Log.log_2115(url, function, params, duration, errorCode);
@@ -886,12 +882,12 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       return should;
    }
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
-   
+
    /**
     * Logdoc serializable that will serialize a chain of exceptions.
     *
@@ -900,16 +896,16 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {
-      
+
       //----------------------------------------------------------------------
       // Constructors
       //----------------------------------------------------------------------
-      
+
       /**
        * Constructs a new <code>ExceptionFormatter</code> instance with the
        * specified exception being the first exception in the chain.
-       * 
-       * 
+       *
+       *
        * @param first
        *    the first exception in the chain, should not be <code>null</code>.
        */
@@ -917,17 +913,17 @@ public final class XINSServiceCaller extends ServiceCaller {
          _first = first;
       }
 
-      
+
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
-      
+
       /**
        * The first exception in the chain. Should not be <code>null</code>.
        */
       private Throwable _first;
-      
-      
+
+
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------

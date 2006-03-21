@@ -65,10 +65,6 @@ extends CallingConvention {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -79,10 +75,6 @@ extends CallingConvention {
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -142,7 +134,7 @@ extends CallingConvention {
 
       // Remove all invalid parameters
       cleanUpParameters(functionParams, SECRET_KEY);
-      
+
       // Determine function name
       String functionName = httpRequest.getParameter("_function");
       if (TextUtils.isEmpty(functionName)) {

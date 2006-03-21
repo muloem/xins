@@ -21,10 +21,6 @@ import org.xins.common.collections.expiry.ExpiryStrategy;
 public class ExpiryStrategyTests extends TestCase {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -53,10 +49,6 @@ public class ExpiryStrategyTests extends TestCase {
    public ExpiryStrategyTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -136,7 +128,7 @@ public class ExpiryStrategyTests extends TestCase {
          }
          strategy = null;
       }
-      
+
       // Test equality comparison method
       ExpiryStrategy es1 = new ExpiryStrategy(timeOut, precision);
       ExpiryStrategy es2 = new ExpiryStrategy(timeOut, precision);

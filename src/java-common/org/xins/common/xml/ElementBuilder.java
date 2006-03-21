@@ -52,10 +52,6 @@ public class ElementBuilder extends Object {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -229,7 +225,7 @@ public class ElementBuilder extends Object {
       }
 
       ElementParser parser = new ElementParser();
-      
+
       try {
          Element parsedElement = parser.parse(new StringReader(xmlChild));
          _element.addChild(parsedElement);

@@ -26,14 +26,6 @@ import org.xins.common.collections.PropertyReader;
 public class XINSServletResponse implements HttpServletResponse {
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -122,9 +114,9 @@ public class XINSServletResponse implements HttpServletResponse {
     */
    public void setContentType(String type)
    throws IllegalArgumentException {
-      
+
       MandatoryArgumentChecker.check("type", type);
-      
+
       setHeader("Content-Type", type);
 
       String search = "charset=";
@@ -132,7 +124,7 @@ public class XINSServletResponse implements HttpServletResponse {
       if (i >= 0) {
          _encoding = type.substring(i + search.length());
       }
-      
+
       _contentType = type;
    }
 

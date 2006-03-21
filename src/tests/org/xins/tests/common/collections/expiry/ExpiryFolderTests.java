@@ -67,10 +67,6 @@ public class ExpiryFolderTests extends TestCase {
    }
 
    //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
@@ -85,7 +81,7 @@ public class ExpiryFolderTests extends TestCase {
       } finally {
          strategy.stop();
       }
-      
+
    }
 
    public void testExpiryFolderEquals() throws Exception {
@@ -109,7 +105,7 @@ public class ExpiryFolderTests extends TestCase {
          assertNotSame(folder2a, folder1a);
          assertNotSame(folder1b, folder2a);
          assertNotSame(folder2a, folder1b);
-         
+
          // Put something in both folders
          folder1a.put("name", "Ernst Le Coq");
          folder1b.put("name", "Ernst Le Coq");

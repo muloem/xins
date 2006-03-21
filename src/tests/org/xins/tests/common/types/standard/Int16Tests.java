@@ -31,10 +31,6 @@ public class Int16Tests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -77,7 +73,7 @@ public class Int16Tests extends TestCase {
          // As expected
       }
    }
-   
+
    public void testFromStringForRequired() throws Throwable {
       /* This should cause the specified error. However for some reason it
        * isn't. To prevent the rest of the tests failing this test is commented out.

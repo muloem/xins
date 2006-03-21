@@ -47,10 +47,6 @@ public class XINSServiceCallerTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -65,10 +61,6 @@ public class XINSServiceCallerTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -115,7 +107,7 @@ public class XINSServiceCallerTests extends TestCase {
       caller.setDescriptor(descriptor);
       assertEquals(descriptor, caller.getDescriptor());
    }
-   
+
    /**
     * Test using the XINSServiceCaller with https
     */
@@ -130,7 +122,7 @@ public class XINSServiceCallerTests extends TestCase {
          // as expected
       }
    }
-   
+
    /**
     * Test the XINSServiceCaller with HTTP GET
     */
@@ -144,7 +136,7 @@ public class XINSServiceCallerTests extends TestCase {
       XINSCallResult result = caller.call(request);
       PropertyReader parameters = result.getParameters();
       assertNotNull("No java version specified.", parameters.get("java.version"));
-      
+
       BasicPropertyReader parameters2 = new BasicPropertyReader();
       parameters2.set("useDefault", "false");
       parameters2.set("inputText", "bonjour");

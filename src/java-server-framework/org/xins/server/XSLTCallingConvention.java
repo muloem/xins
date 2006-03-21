@@ -43,9 +43,9 @@ import org.xins.logdoc.ExceptionUtils;
  * convention. The XSLT calling convention output is the result of the XML
  * normally returned by the standard calling convention and the specified
  * XSLT.
- * The Mime type of the return data can be specified in the XSLT using the 
+ * The Mime type of the return data can be specified in the XSLT using the
  * media-type or method attribute of the XSL output element.
- * More information about the XSLT calling conventino can be found in the 
+ * More information about the XSLT calling conventino can be found in the
  * <a href="http://www.xins.org/docs/index.html">user guide</a>.
  *
  * @version $Revision$ $Date$
@@ -93,10 +93,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -174,7 +170,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
     */
    private void initCacheEnabled(String cacheEnabled)
    throws InvalidPropertyValueException {
-      
+
       // By default, the template cache is enabled
       if (TextUtils.isEmpty(cacheEnabled)) {
          _cacheTemplates = true;
@@ -199,10 +195,10 @@ class XSLTCallingConvention extends StandardCallingConvention {
          Log.log_3441();
       }
    }
-   
+
    /**
     * Initializes the location for the XSLT templates. Examples include:
-    * 
+    *
     * <ul>
     *    <li><code>http://xslt.mycompany.com/myapi/</code></li>
     *    <li><code>file:///c:/home/</code></li>
@@ -247,7 +243,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
       // Log the base directory for XSLT templates
       Log.log_3442(_location);
    }
-   
+
    protected void convertResultImpl(FunctionResult      xinsResult,
                                     HttpServletResponse httpResponse,
                                     HttpServletRequest  httpRequest)
@@ -272,9 +268,9 @@ class XSLTCallingConvention extends StandardCallingConvention {
       if (xsltLocation == null) {
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
       }
-      
+
       try {
-         
+
          // Load the template or get it from the cache.
          Templates templates = null;
          if (_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
@@ -285,7 +281,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
                _templateCache.put(xsltLocation, templates);
             }
          }
-         
+
          // Proceed to the transformation.
          Transformer xformer = templates.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
@@ -402,13 +398,13 @@ class XSLTCallingConvention extends StandardCallingConvention {
          // If no base is specified, use the last location.
          if (base == null) {
             base = _base;
-            
+
          // The base should always ends with a slash.
          } else if (! base.endsWith("/")) {
             base += '/';
          }
          _base = base;
-         
+
          // Result the URL
          String url = null;
          if (href.indexOf(":/") == -1) {

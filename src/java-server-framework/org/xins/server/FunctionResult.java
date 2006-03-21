@@ -22,14 +22,6 @@ import org.xins.common.xml.ElementBuilder;
 public class FunctionResult extends Object {
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -212,7 +204,7 @@ public class FunctionResult extends Object {
          return _dataElementBuilder.createElement();
       }
    }
-   
+
    public String toString() {
       String asString = "";
       if (_code != null) {

@@ -10,7 +10,7 @@ import org.xins.common.MandatoryArgumentChecker;
 
 /**
  * URL encoding utility functions with Unicode support. This class supports
- * both encoding and decoding. All characters higher than 127 will be encoded 
+ * both encoding and decoding. All characters higher than 127 will be encoded
  * as %uxxxx where xxxx is the Unicode value of the character in hexadecimal.
  *
  * @version $Revision$ $Date$
@@ -239,7 +239,7 @@ public final class URLEncoding extends Object {
                decodedValue += digit(charAsInt, s, index);
                decodedValue *= 16;
                charAsInt = (int) string[++index];
-            } else if (charAsInt < CHAR_ZERO || 
+            } else if (charAsInt < CHAR_ZERO ||
                   (charAsInt > CHAR_NINE && charAsInt < CHAR_UPPER_A) ||
                   (charAsInt > CHAR_UPPER_F && charAsInt < CHAR_LOWER_A) ||
                   charAsInt > CHAR_LOWER_F) {
@@ -255,7 +255,7 @@ public final class URLEncoding extends Object {
          // Catch invalid characters
          } else if (!VALID_ENCODED_CHAR[c]) {
             throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
-            
+
          // Append the character
          } else {
             buffer.append(c);
@@ -313,10 +313,6 @@ public final class URLEncoding extends Object {
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods

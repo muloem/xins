@@ -31,10 +31,6 @@ public class URLTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -113,7 +109,7 @@ public class URLTests extends TestCase {
       assertTrue("ldap://www.test.com/ is considered invalid.", URL.SINGLETON.isValidValue("ldap://www.test.com/"));
 
       assertTrue("URL.SINGLETON.isValidValue(null) is considered invalid.", URL.SINGLETON.isValidValue(null));
-      
+
       assertFalse("fred is considered invalid.", URL.SINGLETON.isValidValue("fred"));
    }
 

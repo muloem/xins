@@ -42,10 +42,6 @@ public class ElementSerializerTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -62,10 +58,6 @@ public class ElementSerializerTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
 
@@ -73,7 +65,7 @@ public class ElementSerializerTests extends TestCase {
     * Tests the <code>ElementSerializer</code> class.
     */
    public void testElementSerializer() throws Exception {
-      
+
       // Build an element
       ElementBuilder builder = new ElementBuilder("b", "a");
       builder.setAttribute("c", "2");
@@ -85,7 +77,7 @@ public class ElementSerializerTests extends TestCase {
       String expected = "<ns0:a xmlns:ns0=\"b\" c=\"2\"/>";
       String actual   = serializer.serialize(element);
       assertEquals(expected, actual);
-      
+
       // Repeat that
       actual = serializer.serialize(element);
       assertEquals(expected, actual);

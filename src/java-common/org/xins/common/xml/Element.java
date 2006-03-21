@@ -57,10 +57,6 @@ public class Element implements Cloneable {
 
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -459,7 +455,7 @@ public class Element implements Cloneable {
       } else {
          childList = getChildElements(elementName);
       }
-      
+
       if (childList.size() == 0) {
          throw new ParseException("No \"" + elementName +
                "\" children found in the \"" + getLocalName() +

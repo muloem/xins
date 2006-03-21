@@ -43,10 +43,6 @@ public class DateConverterTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -61,10 +57,6 @@ public class DateConverterTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
@@ -169,7 +161,7 @@ public class DateConverterTests extends TestCase {
    /**
     * Tests a possible JDK bug in {@link java.util.Date#after}.
     */
-   /* This is not a XINS bug but a JDK bug. 
+   /* This is not a XINS bug but a JDK bug.
    public void testIncorrectDateAfter() {
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss.SSS");
       try {

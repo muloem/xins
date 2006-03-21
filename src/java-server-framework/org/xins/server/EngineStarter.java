@@ -34,10 +34,6 @@ import org.xins.logdoc.UnsupportedLocaleError;
 final class EngineStarter extends Object {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -364,7 +360,7 @@ final class EngineStarter extends Object {
       } else if ("false".equals(stackTraceAtMessageLevel)) {
          LogCentral.setStackTraceAtMessageLevel(false);
       } else if (stackTraceAtMessageLevel != null) {
-         throw new ServletException("Incorrect value for the " + 
+         throw new ServletException("Incorrect value for the " +
                LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL + " bootstrap property.");
       }
 

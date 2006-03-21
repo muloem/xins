@@ -20,14 +20,6 @@ import org.xins.common.MandatoryArgumentChecker;
 class ComboSpec {
 
    //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -114,7 +106,7 @@ class ComboSpec {
 
    /**
     * Gets the parameters or attributes defined in the combo.
-    * The key is the name of the parameter or of the attributes, 
+    * The key is the name of the parameter or of the attributes,
     * the value is the {@link ParameterSpec} object.
     *
     * @return

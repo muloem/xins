@@ -32,10 +32,6 @@ public class DescriptorTests extends TestCase {
 
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
@@ -112,7 +108,7 @@ public class DescriptorTests extends TestCase {
       assertTrue("\"descriptor=service, http://www.test.com, 5000\" is considered invalid.", Descriptor.SINGLETON.isValidValue("descriptor=service, http://www.test.com, 5000"));
 
       assertTrue("Descriptor.SINGLETON.isValidValue(null) is considered invalid.", Descriptor.SINGLETON.isValidValue(null));
-      
+
       assertFalse("fred is considered valid.", Descriptor.SINGLETON.isValidValue("fred"));
    }
 

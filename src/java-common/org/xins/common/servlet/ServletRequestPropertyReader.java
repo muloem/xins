@@ -32,10 +32,6 @@ public final class ServletRequestPropertyReader
 extends AbstractPropertyReader {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -121,7 +117,7 @@ extends AbstractPropertyReader {
 
 		// Initially allocate a complete HashMap already
       super(new HashMap(20));
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
@@ -154,10 +150,6 @@ extends AbstractPropertyReader {
 		}
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods
