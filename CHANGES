@@ -8,12 +8,18 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
 * XINS/Java Common Library:
   - Removed the header comment of empty sections in Java code.
+  - Fixed incorrect logged method in case of an error in the
+    MandatoryArgumentChecker.
+  - Removed unused imports and variables.
 
 * XINS/Java Client Framework:
   - Removed the header comment of empty sections in Java code.
+  - Avoid NullPointerException is the namespaceURI in the result parser 
+    is null.
 
 * XINS/Java Server Framework:
   - Removed the header comment of empty sections in Java code.
+  - Removed unused imports and variables.
 
 * Unit Tests:
   - The test for the custom calling convention has been enabled again now

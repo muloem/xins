@@ -20,7 +20,6 @@ import org.xins.common.Utils;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
-import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;

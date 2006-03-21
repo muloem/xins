@@ -19,7 +19,6 @@ import org.xins.common.Utils;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.TextUtils;
 import org.xins.common.text.ParseException;
-import org.xins.logdoc.ExceptionUtils;
 
 /**
  * A set of access rules in a separate file.
@@ -152,7 +151,6 @@ implements AccessRuleContainer {
 
       // First try parsing the file as it is
       _file = nextToken(descriptor, tokenizer);
-      IOException exception;
       try {
          parseAndApply(_file, interval);
 

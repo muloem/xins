@@ -7,9 +7,7 @@
 package org.xins.common.servlet.container;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.ServletContext;
@@ -23,17 +21,17 @@ import javax.servlet.http.HttpSessionContext;
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class XINSHttpSession implements HttpSession {
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of XINSHttpSession.
     */
    XINSHttpSession() {
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------

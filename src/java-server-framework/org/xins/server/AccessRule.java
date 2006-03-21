@@ -13,7 +13,6 @@ import org.apache.oro.text.regex.Perl5Pattern;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.SimplePatternParser;
 
@@ -345,7 +344,7 @@ implements AccessRuleContainer {
       // First check if the IP filter matches
       Perl5Matcher patternMatcher = new Perl5Matcher();
       if (_ipFilter.match(ip)) {
-         
+
          // Then check if the function name matches
          if (patternMatcher.matches(functionName, _functionNameRegex)) {
             return _allow ? Boolean.TRUE : Boolean.FALSE;

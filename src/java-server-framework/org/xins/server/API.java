@@ -1046,7 +1046,7 @@ implements DefaultResultCodes {
 
          // Call the meta-function
          try {
-            result = callMetaFunction(start, functionName, functionRequest, ip);
+            result = callMetaFunction(functionName, functionRequest);
          } catch (Throwable exception) {
             result = handleFunctionException(start, functionRequest, ip,
                                              callID, exception);
@@ -1087,10 +1087,6 @@ implements DefaultResultCodes {
    /**
     * Handles a call to a meta-function.
     *
-    * @param start
-    *    the start time of the request, in milliseconds since midnight January
-    *    1, 1970.
-    *
     * @param functionName
     *    the name of the meta-function, cannot be <code>null</code> and must
     *    start with the underscore character <code>'_'</code>.
@@ -1098,19 +1094,14 @@ implements DefaultResultCodes {
     * @param functionRequest
     *    the function request, never <code>null</code>.
     *
-    * @param ip
-    *    the IP address of the requester, never <code>null</code>.
-    *
     * @return
     *    the result of the function call, never <code>null</code>.
     *
     * @throws NoSuchFunctionException
     *    if there is no meta-function by the specified name.
     */
-   private FunctionResult callMetaFunction(long            start,
-                                           String          functionName,
-                                           FunctionRequest functionRequest,
-                                           String          ip)
+   private FunctionResult callMetaFunction(String          functionName,
+                                           FunctionRequest functionRequest)
    throws NoSuchFunctionException {
 
       // Check preconditions

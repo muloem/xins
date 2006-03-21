@@ -232,7 +232,7 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (! _enabled) {
-         performedCall(functionRequest, ip, start, callID,
+         performedCall(functionRequest, ip, start,
                        DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
@@ -262,7 +262,7 @@ implements DefaultResultCodes {
 
       // Update function statistics
       // We assume that this method will never throw any exception
-      performedCall(functionRequest, ip, start, callID, result);
+      performedCall(functionRequest, ip, start, result);
 
       return result;
    }
@@ -300,9 +300,6 @@ implements DefaultResultCodes {
     * @param start
     *    the start time, as a number of milliseconds since January 1, 1970.
     *
-    * @param callID
-    *    the assigned call ID.
-    *
     * @param result
     *    the call result, should not be <code>null</code>.
     *
@@ -312,7 +309,6 @@ implements DefaultResultCodes {
    private final void performedCall(FunctionRequest functionRequest,
                                     String          ip,
                                     long            start,
-                                    int             callID,
                                     FunctionResult  result)
    throws NullPointerException {
 
