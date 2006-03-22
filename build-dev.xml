@@ -562,6 +562,7 @@ ${sf.file}</fail>
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
 			<exclude name="demo/xins-project/petstore/lib/tinySQL.jar" />
+			<exclude name="demo/xins-project/petstore/nb*" />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
