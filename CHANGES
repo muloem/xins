@@ -44,6 +44,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
   - Added possibility to have multiple implementation and test element in the
     xins-project.xml file using the 1.0 alpha DTD.
 
+* Build- and release-process:
+  - Removed XSLT doc from the release.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
 

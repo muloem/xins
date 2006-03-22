@@ -558,6 +558,7 @@ ${sf.file}</fail>
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/perftests.xslt"  />
+			<exclude name="src/xslt/xsltdoc/**/*"          />
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
 			<exclude name="demo/xins-project/petstore/lib/tinySQL.jar" />
