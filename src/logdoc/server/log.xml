@@ -625,7 +625,7 @@
 	</group>
 
 	<group id="runtime.acl" name="Access rule matching">
-		<entry id="3550" level="INFO">
+		<entry id="3550" level="DEBUG">
 			<description>Access rule matches. Allowing function call.</description>
 			<param name="ip" nullable="false" />
 			<param name="function" nullable="false" />

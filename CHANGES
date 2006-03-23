@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 * XINS/Java Server Framework:
   - Removed the header comment of empty sections in Java code.
   - Removed unused imports and variables.
+  - The log 3550 is logged at DEBUG level instead of at INFO level.
 
 * Unit Tests:
   - The test for the custom calling convention has been enabled again now
