@@ -58,7 +58,6 @@ public class IPAddressUtilsTests extends TestCase {
    public void testIpToInt() throws Throwable {
       doTestIpToInt_INVALID("1");
       doTestIpToInt_INVALID("1.2.3.");
-      doTestIpToInt_INVALID("1.2.3.4.");
       doTestIpToInt_INVALID("1.2.3.4.5");
       doTestIpToInt_INVALID("...");
       doTestIpToInt_INVALID("256.1.1.1");

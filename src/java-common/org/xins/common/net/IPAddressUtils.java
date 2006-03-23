@@ -8,6 +8,7 @@ package org.xins.common.net;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -54,40 +55,31 @@ public final class IPAddressUtils extends Object {
       int value = 0;
 
       // Tokenize the string
-      StringTokenizer tokenizer = new StringTokenizer(ip, ".", true);
-      if (tokenizer.countTokens() != 7) {
+      StringTokenizer tokenizer = new StringTokenizer(ip, ".", false);
+
+      try {
+
+         // Token 1 must be an IP address part
+         value = ipPartToInt(ip, tokenizer.nextToken());
+
+         // Token 3 must be an IP address part
+         value <<= 8;
+         value += ipPartToInt(ip, tokenizer.nextToken());
+
+         // Token 5 must be an IP address part
+         value <<= 8;
+         value += ipPartToInt(ip, tokenizer.nextToken());
+
+         // Token 7 must be an IP address part
+         value <<= 8;
+         value += ipPartToInt(ip, tokenizer.nextToken());
+
+      } catch (NoSuchElementException nsee) {
          throw newParseException(ip);
       }
-
-      // Token 1 must be an IP address part
-      value = ipPartToInt(ip, tokenizer.nextToken());
-
-      // Token 2 must be a dot
-      if (!".".equals(tokenizer.nextToken())) {
+      if (tokenizer.hasMoreTokens()) {
          throw newParseException(ip);
       }
-
-      // Token 3 must be an IP address part
-      value <<= 8;
-      value += ipPartToInt(ip, tokenizer.nextToken());
-
-      // Token 4 must be a dot
-      if (!".".equals(tokenizer.nextToken())) {
-         throw newParseException(ip);
-      }
-
-      // Token 5 must be an IP address part
-      value <<= 8;
-      value += ipPartToInt(ip, tokenizer.nextToken());
-
-      // Token 6 must be a dot
-      if (!".".equals(tokenizer.nextToken())) {
-         throw newParseException(ip);
-      }
-
-      // Token 7 must be an IP address part
-      value <<= 8;
-      value += ipPartToInt(ip, tokenizer.nextToken());
 
       return value;
    }

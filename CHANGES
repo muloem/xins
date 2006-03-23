@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
     http://www.w3.org/International/O-URL-code.html
   - Replaced URLEncoder and URLDecoder with URLEncoding for performance
     reasons.
+  - Improved the performance of IPAddressUtils.ipToInt().
 
 * XINS/Java Client Framework:
   - Removed the header comment of empty sections in Java code.
