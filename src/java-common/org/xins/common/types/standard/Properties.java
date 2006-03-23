@@ -7,13 +7,13 @@
 package org.xins.common.types.standard;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.xins.common.Utils;
+import org.xins.common.text.FormatException;
+import org.xins.common.text.URLEncoding;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
 import org.xins.common.MandatoryArgumentChecker;
@@ -127,16 +127,12 @@ public class Properties extends Type {
          String propValue = value.get(propName);
 
          // Append the name encoded
-         try {
-            buffer.append(URLEncoder.encode(propName, "UTF-8"));
-            buffer.append('=');
+         buffer.append(URLEncoding.encode(propName));
+         buffer.append('=');
 
-            // Append the value encoded, iff it is not null
-            if (propValue != null) {
-               buffer.append(URLEncoder.encode(propValue, "UTF-8"));
-            }
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
+         // Append the value encoded, iff it is not null
+         if (propValue != null) {
+            buffer.append(URLEncoding.encode(propValue));
          }
       }
 
@@ -219,7 +215,7 @@ public class Properties extends Type {
             return false;
          } else {
             try {
-               String name  = URLDecoder.decode(token.substring(0, index), "UTF-8");
+               String name  = URLEncoding.decode(token.substring(0, index));
                if (propertyKeys.contains(name)) {
                   return false;
                }
@@ -228,7 +224,7 @@ public class Properties extends Type {
                if (value.length() < 1) {
                   value = null;
                } else {
-                  value = URLDecoder.decode(value, "UTF-8");
+                  value = URLEncoding.decode(value);
                }
 
                if (!_nameType.isValidValue(name)) {
@@ -237,8 +233,8 @@ public class Properties extends Type {
                if (!_valueType.isValidValue(value)) {
                   return false;
                }
-            } catch (UnsupportedEncodingException uee) {
-               throw Utils.logProgrammingError(uee);
+            } catch (Exception decodingException) {
+               throw Utils.logProgrammingError(decodingException);
             }
          }
       }
@@ -265,7 +261,7 @@ public class Properties extends Type {
             throw new TypeValueException(SINGLETON, string);
          } else {
             try {
-               String name  = URLDecoder.decode(token.substring(0, index), "UTF-8");
+               String name  = URLEncoding.decode(token.substring(0, index));
                if (propertyKeys.contains(name)) {
                   throw new TypeValueException(SINGLETON, string, "The key \"" + name + "\" is already set.");
                }
@@ -274,17 +270,17 @@ public class Properties extends Type {
                if (value.length() < 1) {
                   value = null;
                } else {
-                  value = URLDecoder.decode(value, "UTF-8");
+                  value = URLEncoding.decode(value);
                }
 
                _nameType.checkValue(name);
                _valueType.checkValue(value);
 
                pr.set(name, value);
+            } catch (FormatException fe) {
+               throw new TypeValueException(SINGLETON, string, fe.getReason());
             } catch (IllegalArgumentException iae) {
-               throw new TypeValueException(SINGLETON, string, iae.getMessage());
-            } catch (UnsupportedEncodingException uee) {
-               throw Utils.logProgrammingError(uee);
+               throw Utils.logProgrammingError(iae);
             }
          }
       }

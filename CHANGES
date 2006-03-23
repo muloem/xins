@@ -11,16 +11,25 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
   - Fixed incorrect logged method in case of an error in the
     MandatoryArgumentChecker.
   - Removed unused imports and variables.
+  - Changed the URLEncoding to code and decode URL as specified at
+    http://www.w3.org/International/O-URL-code.html
+  - Replaced URLEncoder and URLDecoder with URLEncoding for performance
+    reasons.
 
 * XINS/Java Client Framework:
   - Removed the header comment of empty sections in Java code.
   - Avoid NullPointerException is the namespaceURI in the result parser 
     is null.
+  - Replaced URLEncoder and URLDecoder with URLEncoding for performance
+    reasons.
 
 * XINS/Java Server Framework:
   - Removed the header comment of empty sections in Java code.
   - Removed unused imports and variables.
-  - The log 3550 is logged at DEBUG level instead of at INFO level.
+  - The log 3550 is logged at DEBUG level instead of at INFO level. This
+    increases the performance of the server.
+  - Replaced URLEncoder and URLDecoder with URLEncoding for performance
+    reasons.
 
 * Unit Tests:
   - The test for the custom calling convention has been enabled again now

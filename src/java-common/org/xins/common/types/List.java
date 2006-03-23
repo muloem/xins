@@ -7,13 +7,13 @@
 package org.xins.common.types;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.FormatException;
+import org.xins.common.text.URLEncoding;
 import org.xins.common.types.standard.Text;
 
 /**
@@ -89,12 +89,14 @@ public class List extends Type {
       while (tokenizer.hasMoreTokens()) {
          String token = tokenizer.nextToken();
          try {
-            String item = URLDecoder.decode(token, "UTF-8");
+            String item = URLEncoding.decode(token);
             if (!_itemType.isValidValue(item)) {
                return false;
             }
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
+         } catch (FormatException fe) {
+            return false;
+         } catch (IllegalArgumentException iae) {
+            return false;
          }
       }
       return true;
@@ -133,11 +135,13 @@ public class List extends Type {
       while (tokenizer.hasMoreTokens()) {
          String token = tokenizer.nextToken();
          try {
-            String itemString = URLDecoder.decode(token, "UTF-8");
+            String itemString = URLEncoding.decode(token);
             Object item = _itemType.fromString(itemString);
             list.addItem(item);
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
+         } catch (FormatException fe) {
+            throw new TypeValueException(this, string, fe.getReason());
+         } catch (IllegalArgumentException iae) {
+            throw Utils.logProgrammingError(iae);
          }
       }
 
@@ -192,11 +196,7 @@ public class List extends Type {
             // Should never happens as only add() is able to add items in the list.
             throw new IllegalArgumentException("Incorrect value for type: " + nextItem);
          }
-         try {
-            buffer.append(URLEncoder.encode(stringItem, "UTF-8"));
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
-         }
+         buffer.append(URLEncoding.encode(stringItem));
       }
 
       return buffer.toString();

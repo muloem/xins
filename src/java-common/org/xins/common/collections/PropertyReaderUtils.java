@@ -9,7 +9,6 @@ package org.xins.common.collections;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -20,6 +19,7 @@ import org.xins.common.Utils;
 
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
+import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.LogdocSerializable;
@@ -303,14 +303,9 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         try {
-            buffer.append(URLEncoder.encode(name, "UTF-8"));
-            buffer.append('=');
-            buffer.append(URLEncoder.encode(value, "UTF-8"));
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
-         }
-
+         buffer.append(URLEncoding.encode(name));
+         buffer.append('=');
+         buffer.append(URLEncoding.encode(value));
       }
    }
 
@@ -380,13 +375,9 @@ extends Object {
          }
 
          // Append the key and the value, separated by an equals sign
-         try {
-            buffer.append(URLEncoder.encode(name, "UTF-8"));
-            buffer.append('=');
-            buffer.append(URLEncoder.encode(value, "UTF-8"));
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
-         }
+         buffer.append(URLEncoding.encode(name));
+         buffer.append('=');
+         buffer.append(URLEncoding.encode(value));
       }
    }
 
@@ -621,13 +612,9 @@ extends Object {
             }
 
             // Append the key and the value, separated by an equals sign
-            try {
-               buffer.append(URLEncoder.encode(name, "UTF-8"));
-               buffer.append('=');
-               buffer.append(URLEncoder.encode(value, "UTF-8"));
-            } catch (UnsupportedEncodingException uee) {
-               throw Utils.logProgrammingError(uee);
-            }
+            buffer.append(URLEncoding.encode(name));
+            buffer.append('=');
+            buffer.append(URLEncoding.encode(value));
          } while (names.hasNext());
 
          if (_suffix != null) {

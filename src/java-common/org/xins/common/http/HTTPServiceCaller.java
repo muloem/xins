@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +56,7 @@ import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
+import org.xins.common.text.URLEncoding;
 
 import org.xins.logdoc.LogdocSerializable;
 
@@ -326,13 +326,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
                   if (query.getLength() > 0) {
                      query.append("&");
                   }
-                  try {
-                     query.append(URLEncoder.encode(key, "UTF-8"));
-                     query.append("=");
-                     query.append(URLEncoder.encode(value, "UTF-8"));
-                  } catch (UnsupportedEncodingException uee) {
-                     // TODO
-                  }
+                  query.append(URLEncoding.encode(key));
+                  query.append("=");
+                  query.append(URLEncoding.encode(value));
                }
             }
             if (query.getLength() > 0) {
@@ -1392,15 +1388,15 @@ public final class HTTPServiceCaller extends ServiceCaller {
             return super.generateRequestEntity();
          } else {
             StringBuffer queryString = new StringBuffer();
-            try {
-               for (int i = 0; i < paramsCount; i++) {
-                  if (i > 0) {
-                     queryString.append('&');
-                  }
-                  queryString.append(URLEncoder.encode(params[i].getName(), "UTF-8"));
-                  queryString.append('=');
-                  queryString.append(URLEncoder.encode(params[i].getValue(), "UTF-8"));
+            for (int i = 0; i < paramsCount; i++) {
+               if (i > 0) {
+                  queryString.append('&');
                }
+               queryString.append(URLEncoding.encode(params[i].getName()));
+               queryString.append('=');
+               queryString.append(URLEncoding.encode(params[i].getValue()));
+            }
+            try {
                return new StringRequestEntity(queryString.toString(),
                      "application/x-www-form-urlencoded", "US-ASCII");
             } catch (UnsupportedEncodingException ueex) {

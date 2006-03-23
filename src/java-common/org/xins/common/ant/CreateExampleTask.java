@@ -12,7 +12,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.StringTokenizer;
 
 import javax.xml.transform.Result;
@@ -28,6 +27,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import org.xins.common.io.FastStringWriter;
+import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
@@ -212,13 +212,13 @@ public class CreateExampleTask extends Task {
          // Handle the input parameters of the function
          // Handle the _data parameter
          } else if (paramName.equals("_data")) {
-            String dataSectionXML = URLDecoder.decode(paramValue, "UTF-8");
+            String dataSectionXML = URLEncoding.decode(paramValue);
             requestBuilder.addXMLChild(dataSectionXML);
 
          // Handle the input parameters of the function
          } else if (paramName.charAt(0) != '_') {
             String paramXML = "<param name=\"" + paramName + "\">" +
-                  URLDecoder.decode(paramValue, "UTF-8") + "</param>";
+                  URLEncoding.decode(paramValue) + "</param>";
             requestBuilder.addXMLChild(paramXML);
          }
       }

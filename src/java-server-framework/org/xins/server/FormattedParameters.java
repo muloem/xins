@@ -7,12 +7,12 @@
 package org.xins.server;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;
+import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
@@ -122,13 +122,9 @@ extends AbstractLogdocSerializable {
          }
 
          // Append the key and the value, separated by an equals sign
-         try {
-            buffer.append(URLEncoder.encode(name, "UTF-8"));
-            buffer.append('=');
-            buffer.append(URLEncoder.encode(value, "UTF-8"));
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
-         }
+         buffer.append(URLEncoding.encode(name));
+         buffer.append('=');
+         buffer.append(URLEncoding.encode(value));
       }
 
       if (_dataSection != null) {
@@ -136,11 +132,7 @@ extends AbstractLogdocSerializable {
             buffer.append('&');
          }
          buffer.append("_data=");
-         try {
-            buffer.append(URLEncoder.encode(_dataSection.toString(), "UTF-8"));
-         } catch (UnsupportedEncodingException uee) {
-            throw Utils.logProgrammingError(uee);
-         }
+         buffer.append(URLEncoding.encode(_dataSection.toString()));
       }
 
       return buffer.toString();

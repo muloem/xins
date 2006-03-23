@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.Collection;
@@ -27,6 +26,8 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.xins.common.text.FormatException;
+import org.xins.common.text.URLEncoding;
 
 /**
  * This class is an implementation of the HTTPServletRequest that can be
@@ -216,10 +217,10 @@ public class XINSServletRequest implements HttpServletRequest {
          int equalPos = parameter.indexOf('=');
          if (equalPos != -1 && equalPos != parameter.length()-1) {
             try {
-               String paramName = URLDecoder.decode(parameter.substring(0, equalPos), "UTF-8");
-               String paramValue = URLDecoder.decode(parameter.substring(equalPos + 1), "UTF-8");
+               String paramName = URLEncoding.decode(parameter.substring(0, equalPos));
+               String paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
                _parameters.setProperty(paramName, paramValue);
-            } catch (UnsupportedEncodingException uee) {
+            } catch (FormatException fe) {
                // Ignore parameter
             } catch (IllegalArgumentException iae) {
                // Ignore parameter

@@ -90,8 +90,7 @@ public class URLEncodingTests extends TestCase {
 
       // Test non-ASCII
       String[] nonAscii = new String[] {
-         "abcd%ff", "abcd%FF", "%ff", "%FF", "%80", "abcd%80", "%80abcd",
-         "%a0", "abcd%a0", "%a1aaaaa"
+         "abcd%c3%a7", "abcd%C3%A7", "%c3%a7", "%c3%a7", "%40", "abcd%40", "%40abcd", "%c3%a7%c3%a7aaaaa"
       };
       for (int i = 0; i < nonAscii.length; i++) {
          String url = nonAscii[i];
@@ -134,9 +133,9 @@ public class URLEncodingTests extends TestCase {
       } catch (IllegalArgumentException exception) { /* as expected */ }
 
       // Test Unicode character
-      String input  = "\u0080";
+      String input  = "\u0090";
       String result = URLEncoding.encode(input);
-      assertEquals("Incorrect result:" + result, "%80", result);
+      assertEquals("Incorrect result:" + result, "%c2%90", result);
 
       input  = "HelloThere0999";
       result = URLEncoding.encode(input);
@@ -168,20 +167,18 @@ public class URLEncodingTests extends TestCase {
       failDecode("\u0080 ");
       failDecode("\u0080 1");
 
-      compareDecode("%80", "\u0080");
       failDecode("%u80");
-      compareDecode("A%80", "A\u0080");
       failDecode("%80 ");
 
       // Before-last character cannot be a percentage sign
       failDecode("abcd%a");
 
       // Test unicode characters
-      compareDecode("%u0080", "\u0080");
-      compareDecode("a%u0080", "a\u0080");
-      compareDecode("aa%U0080", "aa\u0080");
-      compareDecode("%u0080a", "\u0080a");
-      compareDecode("%u0080aa", "\u0080aa");
+      compareDecode("%c2%80", "\u0080");
+      compareDecode("a%c2%80", "a\u0080");
+      compareDecode("aa%C2%80", "aa\u0080");
+      compareDecode("%c2%80a", "\u0080a");
+      compareDecode("%c2%80aa", "\u0080aa");
 
       compareDecode("HelloThere0999", "HelloThere0999");
       compareDecode("+", " ");

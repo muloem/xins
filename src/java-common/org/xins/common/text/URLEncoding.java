@@ -6,7 +6,11 @@
  */
 package org.xins.common.text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.UnsupportedEncodingException;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 
 /**
  * URL encoding utility functions with Unicode support. This class supports
@@ -113,7 +117,8 @@ public final class URLEncoding extends Object {
    }
 
    /**
-    * URL encodes the specified character string.
+    * URL encodes the specified character string as specified by W3C.
+    * http://www.w3.org/International/O-URL-code.html
     *
     * @param s
     *    the string to URL encode, not <code>null</code>.
@@ -141,19 +146,25 @@ public final class URLEncoding extends Object {
       FastStringBuffer buffer = new FastStringBuffer(length * 2);
 
       // Loop through the string and just append whatever we find
-      // in UNENCODED_TO_ENCODED or if c > 255, append %u and the
-      // value of the Unicode character in hexadecimal with 4 digits/letters.
+      // in UNENCODED_TO_ENCODED or if c > 127, encode the UTF-8 value
+      // of the character (cf http://www.w3.org/International/O-URL-code.html).
       char[] content = s.toCharArray();
       for (int i = 0; i < length; i++) {
          int c = (int) content[i];
-         if (c < 256) {
+         if (c < 128) {
             buffer.append(UNENCODED_TO_ENCODED[c]);
-         } else {
-            buffer.append("%u");
-            buffer.append(Character.toUpperCase(Character.forDigit((c >> 12) & 0xF, 16)));
-            buffer.append(Character.toUpperCase(Character.forDigit((c >> 8)  & 0xF, 16)));
-            buffer.append(Character.toUpperCase(Character.forDigit((c >> 4)  & 0xF, 16)));
-            buffer.append(Character.toUpperCase(Character.forDigit( c        & 0xF, 16)));
+         } else if (c <= 0x07FF) {		// non-ASCII <= 0x7FF
+             buffer.append('%');
+             buffer.append(Integer.toHexString(0xc0 | (c >> 6)));
+             buffer.append('%');
+             buffer.append(Integer.toHexString(0x80 | (c & 0x3F)));
+         } else {					// 0x7FF < c <= 0xFFFF
+             buffer.append('%');
+             buffer.append(Integer.toHexString(0xe0 | (c >> 12)));
+             buffer.append('%');
+             buffer.append(Integer.toHexString(0x80 | ((c >> 6) & 0x3F)));
+             buffer.append('%');
+             buffer.append(Integer.toHexString(0x80 | (c & 0x3F)));
          }
       }
 
@@ -162,6 +173,7 @@ public final class URLEncoding extends Object {
 
    /**
     * Decodes the specified URL encoded character string.
+    * http://www.w3.org/International/O-URL-code.html
     *
     * @param s
     *    the URL encoded string to decode, not <code>null</code>.
@@ -222,35 +234,29 @@ public final class URLEncoding extends Object {
 
          // Catch encoded characters
          } else if (c == '%') {
-            int decodedValue = 0;
-
-            if (index >= length - 2) {
-                throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
-            }
-            charAsInt = (int) string[++index];
-            if (charAsInt == CHAR_LOWER_U || charAsInt == CHAR_UPPER_U) {
-                if (index >= length - 4) {
-                    throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
-                }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            while (index < length && string[index] == '%') {
+               if (index >= length - 2) {
+                   throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
+               }
                charAsInt = (int) string[++index];
+               int decodedValue = 0;
                decodedValue += digit(charAsInt, s, index);
                decodedValue *= 16;
                charAsInt = (int) string[++index];
                decodedValue += digit(charAsInt, s, index);
-               decodedValue *= 16;
-               charAsInt = (int) string[++index];
-            } else if (charAsInt < CHAR_ZERO ||
-                  (charAsInt > CHAR_NINE && charAsInt < CHAR_UPPER_A) ||
-                  (charAsInt > CHAR_UPPER_F && charAsInt < CHAR_LOWER_A) ||
-                  charAsInt > CHAR_LOWER_F) {
-               throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
+               
+               baos.write((int) decodedValue);
+               
+               index++;
             }
-            decodedValue += digit(charAsInt, s, index);
-            decodedValue *= 16;
-            charAsInt = (int) string[++index];
-            decodedValue += digit(charAsInt, s, index);
-
-            buffer.append((char) decodedValue);
+            try {
+               buffer.append(baos.toString("UTF-8"));
+            } catch (UnsupportedEncodingException uee) {
+               Utils.logProgrammingError(uee);
+            }
+            // Back to the last position
+            index--;
 
          // Catch invalid characters
          } else if (!VALID_ENCODED_CHAR[c]) {

@@ -6,7 +6,6 @@
  */
 package org.xins.common.servlet;
 
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.AbstractPropertyReader;
 import org.xins.common.text.ParseException;
+import org.xins.common.text.URLEncoding;
 
 /**
  * Implementation of a <code>PropertyReader</code> that returns the
@@ -133,8 +133,8 @@ extends AbstractPropertyReader {
             String token = st.nextToken();
             int equalsPos = token.indexOf('=');
             if (equalsPos != -1) {
-               String parameterKey = URLDecoder.decode(token.substring(0, equalsPos), "UTF-8");
-               String parameterValue = URLDecoder.decode(token.substring(equalsPos + 1), "UTF-8");
+               String parameterKey = URLEncoding.decode(token.substring(0, equalsPos));
+               String parameterValue = URLEncoding.decode(token.substring(equalsPos + 1));
                add(properties, parameterKey, parameterValue);
             } else {
                add(properties, token, "");
