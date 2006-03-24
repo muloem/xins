@@ -189,7 +189,7 @@ implements Result {
 
    /**
     * Sets the value of the </xsl:text>
-		<xsl:value-of select="parameterText" />
+		<xsl:value-of select="$parameterText" />
 		<xsl:text><![CDATA[.
     * This method ]]></xsl:text>
 		<xsl:choose>
@@ -207,7 +207,7 @@ implements Result {
 		<xsl:value-of select="$javaVariable" />
 		<xsl:text>
     *    the value of the </xsl:text>
-		<xsl:value-of select="parameterText" />
+		<xsl:value-of select="$parameterText" />
 		<xsl:text><![CDATA[,
     *      can be <code>null</code>.
     *      The value is not added to the result if the value is <code>null</code>
@@ -255,13 +255,13 @@ implements Result {
 
    /**
     * Gets the value of the </xsl:text>
-		<xsl:value-of select="parameterText" />
+		<xsl:value-of select="$parameterText" />
 		<xsl:text><![CDATA[.
     * If unset, <code>null</code> is returned.
     *
     * @return
     *    the value of the ]]></xsl:text>
-		<xsl:value-of select="parameterText" />
+		<xsl:value-of select="$parameterText" />
 		<xsl:text><![CDATA[, or <code>null</code> if unset.
     *
     * @since XINS 1.4.0
