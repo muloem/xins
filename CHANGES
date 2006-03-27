@@ -57,6 +57,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
 * Build- and release-process:
   - Removed XSLT doc from the release.
+  - The installer should execute the demo in the demo directory.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:

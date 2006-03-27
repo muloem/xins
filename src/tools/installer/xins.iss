@@ -36,7 +36,7 @@ Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; Value
 
 [Run]
 Filename: "{app}\README.html"; Description: "View the README file."; Flags: postinstall nowait shellexec skipifsilent
-Filename: "{app}\demo\rundemo.bat"; Description: "Compile and run demo."; Flags: postinstall nowait skipifsilent unchecked
+Filename: "{app}\demo\rundemo.bat"; WorkingDir: "{app}\demo"; Description: "Compile and run demo."; Flags: postinstall nowait skipifsilent unchecked
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\demo\xins-project\build\*"
