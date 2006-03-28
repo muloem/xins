@@ -562,7 +562,7 @@ ${sf.file}</fail>
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
 			<exclude name="demo/xins-project/petstore/lib/tinySQL.jar" />
-			<exclude name="demo/xins-project/petstore/nb*" />
+			<exclude name="demo/xins-project/petstore/nbproject/private/**/*" />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
@@ -582,6 +582,9 @@ ${sf.file}</fail>
 			<include name="bin/xins.bat" />
 			<include name="demo/rundemo.bat" />
 		</fixcrlf>
+		<replace file="demo/xins-project/api/petstore/nbproject/project.xml"
+			token="../../../../xins/"
+			value="../../../../" />
 
 		<!-- Tar the release file -->
 		<tar tarfile="build/${package-basename}.tar" longfile="gnu">

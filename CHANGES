@@ -72,6 +72,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
   - Removed XSLT doc from the release.
   - The installer should execute the demo in the demo directory.
   - Added profile target.
+  - Added NetBeans file of the petstore project.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
