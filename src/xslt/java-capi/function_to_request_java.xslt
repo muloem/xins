@@ -26,6 +26,7 @@
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="function">
+		<xsl:variable name="project_node" select="document($project_file)/project" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision" select="//function/@rcsversion" />

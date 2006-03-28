@@ -38,6 +38,8 @@
 
 	<xsl:template match="type">
 
+		<xsl:variable name="project_node" select="document($project_file)/project" />
+		<xsl:variable name="api_node" select="document($api_file)/api" />
 		<xsl:variable name="type_name"    select="@name" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
