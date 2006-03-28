@@ -40,12 +40,25 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
     package and FastStringBufferTest.
   - Removed the header comment of empty sections in Java code.
 
+* Generation of client-side Java code:
+  - Declared XSLT global variables also inside the template to prevent the
+    XSLT transformation to fail with Java 1.4.1.
+
+* Generation of server-side Java code:
+  - Fixed incorrect Javadoc for generated SuccessfulResult class.
+
+* Generation of specification documentation:
+  - Declared XSLT global variables also inside the template to prevent the
+    XSLT transformation to fail with Java 1.4.1.
+
 * Generated tests:
   - Fixed incorrect characters in the generated APITests file.
 
 * Generated build file:
   - Dependencies are also added in the classpath when running the test target.
   - Added description of the test target in the help.
+  - Avoid loading the api.xml twice when making the build.xml.
+  - Removed unused variable.
 
 * XSLT:
   - Removed special vi comments.
