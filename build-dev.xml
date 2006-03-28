@@ -561,8 +561,8 @@ ${sf.file}</fail>
 			<exclude name="src/xslt/xsltdoc/**/*"          />
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
-			<exclude name="demo/xins-project/petstore/lib/tinySQL.jar" />
-			<exclude name="demo/xins-project/petstore/nbproject/private/**/*" />
+			<exclude name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
+			<exclude name="demo/xins-project/apis/petstore/nbproject/private/**/*" />
 		</patternset>
 		<mkdir dir="build/lf" />
 		<copy todir="build/lf" includeEmptyDirs="false">
@@ -593,6 +593,7 @@ ${sf.file}</fail>
 			prefix="${name}-${version}"
 			mode="644">
 				<include name="build/*.jar"                    />
+				<include name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
 				<include name="docs/XINSGuide.pdf"             />
 				<include name="docs/protocol/XINSProtocol.pdf" />
 				<include name="docs/primer/*.png"              />
