@@ -582,7 +582,7 @@ ${sf.file}</fail>
 			<include name="bin/xins.bat" />
 			<include name="demo/rundemo.bat" />
 		</fixcrlf>
-		<replace file="demo/xins-project/api/petstore/nbproject/project.xml"
+		<replace file="demo/xins-project/apis/petstore/nbproject/project.xml"
 			token="../../../../xins/"
 			value="../../../../" />
 
