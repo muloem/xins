@@ -797,12 +797,11 @@ APIs in this project are:
 					<xsl:value-of select="concat('-', $implName)" />
 				</xsl:if>
 			</xsl:variable>
-			<!-- This test is not garanted to work with all XSLT processors. -->
 			<xsl:variable name="javaImplDir">
 				<xsl:value-of select="$project_home" />
 				<xsl:text>/</xsl:text>
 				<xsl:choose>
-					<xsl:when test="document($new_api_file)">
+					<xsl:when test="$project_node/api[@name=$api]/impl">
 						<xsl:value-of select="concat('apis/', $api, '/impl', $implName2)" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -817,20 +816,8 @@ APIs in this project are:
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<!-- xsl:variable name="javaImplDir"     select="concat($javaImplBaseDir, '/',                      $api)" /-->
 			<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api, $implName2)" />
 			<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api, $implName2)" />
-			<!-- XXX: This test is not guaranteed to work with all XSLT processors. -->
-			<xsl:variable name="logdoc_dir">
-				<xsl:choose>
-					<xsl:when test="document($new_api_file)">
-						<xsl:value-of select="$javaImplDir" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="concat($project_home, '/src/logdoc/', $api)" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
 			<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
 
 			<target name="-impl-{$api}{$implName2}-existencechecks">
