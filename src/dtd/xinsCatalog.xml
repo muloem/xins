@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+
+<!-- see http://www.oasis-open.org/committees/entity/spec.html -->
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+         "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">                
+
+	<public publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
+			 uri="xins-project_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
+			 uri="api_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD Function 1.0 alpha//EN"
+			 uri="function_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD Type 1.0 alpha//EN"
+			 uri="type_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
+			 uri="resultcode_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN"
+			 uri="log_1_0_alpha.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
+			 uri="translation-bundle_1_0_alpha.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 1.0//EN"
+			 uri="xins-project_1_0.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.0//EN"
+			 uri="api_1_0.dtd" />
+	<public publicId="-//XINS//DTD Function 1.0//EN"
+			 uri="function_1_0.dtd" />
+	<public publicId="-//XINS//DTD Type 1.0//EN"
+			 uri="type_1_0.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.0//EN"
+			 uri="resultcode_1_0.dtd" />
+	<public publicId="-//XINS//DTD Implementation 1.0//EN"
+			 uri="impl_1_0.dtd" />
+	<public publicId="-//XINS//DTD Environments 1.0//EN"
+			 uri="environments_1_0.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
+			 uri="log_1_0.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN"
+			 uri="translation-bundle_1_0.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 1.1//EN"
+			 uri="xins-project_1_1.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.1//EN"
+			 uri="api_1_1.dtd" />
+	<public publicId="-//XINS//DTD Function 1.1//EN"
+			 uri="function_1_1.dtd" />
+	<public publicId="-//XINS//DTD Type 1.1//EN"
+			 uri="type_1_1.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.1//EN"
+			 uri="resultcode_1_1.dtd" />
+	<public publicId="-//XINS//DTD Implementation 1.1//EN"
+			 uri="impl_1_1.dtd" />
+	<public publicId="-//XINS//DTD Environments 1.1//EN"
+			 uri="environments_1_1.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.1//EN"
+			 uri="log_1_1.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN"
+			 uri="translation-bundle_1_1.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 1.2//EN"
+			 uri="xins-project_1_2.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.2//EN"
+			 uri="api_1_2.dtd" />
+	<public publicId="-//XINS//DTD Function 1.2//EN"
+			 uri="function_1_2.dtd" />
+	<public publicId="-//XINS//DTD Type 1.2//EN"
+			 uri="type_1_2.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.2//EN"
+			 uri="resultcode_1_2.dtd" />
+	<public publicId="-//XINS//DTD Implementation 1.2//EN"
+			 uri="impl_1_2.dtd" />
+	<public publicId="-//XINS//DTD Environments 1.2//EN"
+			 uri="environments_1_2.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.2//EN"
+			 uri="log_1_2.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.2//EN"
+			 uri="translation-bundle_1_2.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 1.3//EN"
+			 uri="xins-project_1_3.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.3//EN"
+			 uri="api_1_3.dtd" />
+	<public publicId="-//XINS//DTD Function 1.3//EN"
+			 uri="function_1_3.dtd" />
+	<public publicId="-//XINS//DTD Category 1.3//EN"
+			 uri="category_1_3.dtd" />
+	<public publicId="-//XINS//DTD Type 1.3//EN"
+			 uri="type_1_3.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.3//EN"
+			 uri="resultcode_1_3.dtd" />
+	<public publicId="-//XINS//DTD Implementation 1.3//EN"
+			 uri="impl_1_3.dtd" />
+	<public publicId="-//XINS//DTD Environments 1.3//EN"
+			 uri="environments_1_3.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.3//EN"
+			 uri="log_1_3.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.3//EN"
+			 uri="translation-bundle_1_3.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 1.4//EN"
+			 uri="xins-project_1_4.dtd" />
+	<public publicId="-//XINS//DTD XINS API 1.4//EN"
+			 uri="api_1_4.dtd" />
+	<public publicId="-//XINS//DTD Function 1.4//EN"
+			 uri="function_1_4.dtd" />
+	<public publicId="-//XINS//DTD Category 1.4//EN"
+			 uri="category_1_4.dtd" />
+	<public publicId="-//XINS//DTD Type 1.4//EN"
+			 uri="type_1_4.dtd" />
+	<public publicId="-//XINS//DTD Result Code 1.4//EN"
+			 uri="resultcode_1_4.dtd" />
+	<public publicId="-//XINS//DTD Implementation 1.4//EN"
+			 uri="impl_1_4.dtd" />
+	<public publicId="-//XINS//DTD Environments 1.4//EN"
+			 uri="environments_1_4.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 1.4//EN"
+			 uri="log_1_4.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 1.4//EN"
+			 uri="translation-bundle_1_4.dtd" />
+</catalog>
