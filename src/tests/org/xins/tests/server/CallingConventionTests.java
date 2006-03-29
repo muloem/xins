@@ -7,6 +7,7 @@
 package org.xins.tests.server;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -532,7 +533,11 @@ public class CallingConventionTests extends TestCase {
       URL url2 = new URL("http://localhost:8080/?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
       connection2.connect();
-      assertEquals(400, connection2.getResponseCode());
+      try {
+         assertEquals(400, connection2.getResponseCode());
+      } catch (IOException ioe) {
+         assertTrue(ioe.getMessage(), ioe.getMessage().indexOf(" 400") != -1);
+      }
    }
 
    /**

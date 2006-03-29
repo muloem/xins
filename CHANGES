@@ -13,6 +13,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
 * XINS/Java Client Framework:
   - Fixed style issues reported by checkstyle.
 
+* XINS/Java Server Framework:
+  - Fixed incompatibility with Java 1.3 when creating the 
+    InvalidRequestException.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
@@ -2128,6 +2132,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 * Logdoc:
   - The missing accesslevel variable problem has been fixed. This bug has been
     in XINS since version 1.1.0 alpha 6.
+
 
 * XINS/Java Common Library:
   - Added tests for class PropertyReaderUtils.

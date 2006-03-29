@@ -6,6 +6,8 @@
  */
 package org.xins.server;
 
+import org.xins.logdoc.ExceptionUtils;
+
 /**
  * Exception that indicates that an incoming request is considered invalid.
  *
@@ -30,7 +32,10 @@ extends Exception {
     *    the cause exception, can be <code>null</code>.
     */
    public InvalidRequestException(String message, Throwable cause) {
-      super(message, cause);
+      super(message);
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
    }
 
    /**

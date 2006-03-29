@@ -105,7 +105,9 @@ extends Exception {
     */
    public InitializationException(String detail, Throwable cause) {
       super(createMessage(detail, cause));
-      ExceptionUtils.setCause(this, cause);
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
    }
 
 
