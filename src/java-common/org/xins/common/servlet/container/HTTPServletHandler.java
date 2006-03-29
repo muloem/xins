@@ -546,7 +546,7 @@ public class HTTPServletHandler {
          }
          contentOutputStream.close();
          urlInputStream.close();
-         String content = contentOutputStream.toString();
+         String content = contentOutputStream.toString("ISO-8859-1");
 
          httpResult = "HTTP/1.1 200 OK\r\n";
          String fileName = url.substring(url.lastIndexOf('/') + 1);
