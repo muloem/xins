@@ -225,6 +225,8 @@ public final class DataSectionElementSpec {
     *
     * @return
     *    the list of the attribute combos define for the element, never <code>null</code>.
+    *
+    * @since XINS 1.4.0
     */
    public List getAttributeCombos() {
 

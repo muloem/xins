@@ -17,8 +17,10 @@ import javax.servlet.http.HttpSessionContext;
 /**
  * A user session.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.4.0
  */
 public class XINSHttpSession implements HttpSession {
 

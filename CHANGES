@@ -11,9 +11,11 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
   - Fixed style issues reported by checkstyle.
   - Set the getMessage() method of CallException non final to keep the binary
     compatibility with XINS 1.3.0.
+  - Marked new methods with @since 1.4.0.
 
 * XINS/Java Client Framework:
   - Fixed style issues reported by checkstyle.
+  - Marked new public methods since XINS 1.3.0 with @since 1.4.0.
 
 * XINS/Java Server Framework:
   - Fixed incompatibility with Java 1.3 when creating the 

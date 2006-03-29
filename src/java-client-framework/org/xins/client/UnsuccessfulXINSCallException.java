@@ -223,6 +223,8 @@ implements XINSCallResultData {
     *
     * @return
     *    the type as a {@link ErrorCodeSpec ErrorCodeSpec.Type}, can be <code>null</code> if it's unknown.
+    *
+    * @since XINS 1.4.0
     */
    public final ErrorCodeSpec.Type getType() {
       return _type;

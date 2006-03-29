@@ -29,6 +29,8 @@ public final class LogCentral {
 
    /**
     * The name of the property that specifies if the stack traces should be displayed at the message level.
+    *
+    * @since XINS 1.4.0
     */
    public final static String LOG_STACK_TRACE_AT_MESSAGE_LEVEL = "org.xins.logdoc.stackTraceAtMessageLevel";
 
@@ -219,6 +221,8 @@ public final class LogCentral {
     * @param sameLevel
     *    <code>true</code> if the stack trace should be at the same level,
     *    <code>false</code> if the stack trace should be at DEBUG level.
+    *
+    * @since XINS 1.4.0
     */
    public static void setStackTraceAtMessageLevel(boolean sameLevel) {
        STACK_TRACE_AT_MESSAGE_LEVEL = sameLevel;
@@ -231,6 +235,8 @@ public final class LogCentral {
     * @return
     *    <code>true</code> if the stack trace should be at the same level,
     *    <code>false</code> if the stack trace should be at DEBUG level.
+    *
+    * @since XINS 1.4.0
     */
    public static boolean isStackTraceAtMessageLevel() {
        return STACK_TRACE_AT_MESSAGE_LEVEL;

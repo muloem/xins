@@ -33,11 +33,15 @@ public final class ErrorCodeSpec extends Object {
 
    /**
     * Type indicating that the error code is functional.
+    *
+    * @since XINS 1.4.0
     */
    public final static Type FUNCTIONAL = new Type();
 
    /**
     * Type indicating that the error code is technical.
+    *
+    * @since XINS 1.4.0
     */
    public final static Type TECHNICAL = new Type();
 
@@ -223,6 +227,8 @@ public final class ErrorCodeSpec extends Object {
     *
     * @return
     *    the type of the error code.
+    *
+    * @since XINS 1.4.0
     */
    public Type getType() {
       return _type;

@@ -37,6 +37,8 @@ implements PropertyReader {
     *
     * @throws IllegalArgumentException
     *    if <code>map == null</code>.
+    *
+    * @since XINS 1.4.0
     */
    protected AbstractPropertyReader(Map map)
    throws IllegalArgumentException {
@@ -113,6 +115,8 @@ implements PropertyReader {
     * @return
     *    the {@link Map} used to store the properties in, cannot be
     *    <code>null</code>.
+    *
+    * @since XINS 1.4.0
     */
    protected Map getPropertiesMap() {
       return _properties;

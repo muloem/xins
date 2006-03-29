@@ -423,6 +423,8 @@ extends Object {
     *
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
+    *
+    * @since XINS 1.4.0
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty,

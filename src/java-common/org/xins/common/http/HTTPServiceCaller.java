@@ -197,7 +197,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @return
     *    the HttpClient shared instance.
     */
-   public static HttpClient getHttpClient(TargetDescriptor target) {
+   private static HttpClient getHttpClient(TargetDescriptor target) {
       if (HTTP_CLIENTS.containsKey(target)) {
          return (HttpClient) HTTP_CLIENTS.get(target);
       }
