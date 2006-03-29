@@ -181,7 +181,7 @@ public abstract class CallException extends Exception {
     * @return
     *    the detail message string of this exception, never <code>null</code>.
     */
-   public final String getMessage() {
+   public String getMessage() {
 
       // Initialize the message if necessary
       if (_message == null) {
