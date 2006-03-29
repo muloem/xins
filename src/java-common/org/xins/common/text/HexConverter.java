@@ -214,7 +214,7 @@ public class HexConverter extends Object {
 
          int n = (int) input[i];
          chars[pos++] = DIGITS[(n & 0x000000f0) >> 4];
-         chars[pos++] = DIGITS[(n & 0x0000000f) >> 0];
+         chars[pos++] = DIGITS[(n & 0x0000000f)];
       }
 
       return new String(chars, 0, length * 2);
@@ -239,9 +239,9 @@ public class HexConverter extends Object {
 
       char[] chars = new char[BYTE_LENGTH];
       chars[0] = DIGITS[(i & 0x000000f0) >> 4];
-      chars[1] = DIGITS[(i & 0x0000000f) >> 0];
+      chars[1] = DIGITS[(i & 0x0000000f)];
 
-      return new String(chars, 0, BYTE_LENGTH);
+      return new String(chars);
    }
 
    /**

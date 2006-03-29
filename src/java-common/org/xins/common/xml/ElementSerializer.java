@@ -251,7 +251,7 @@ public final class ElementSerializer extends Object {
 
       // Process all contained elements
       List content = element.getChildElements();
-      int count = content == null ? 0 : content.size();
+      int count = content.size();
       for (int i = 0; i < count; i++) {
          Object o = content.get(i);
          output(out, (Element) o);

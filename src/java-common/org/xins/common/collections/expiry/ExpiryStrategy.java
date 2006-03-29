@@ -218,7 +218,7 @@ public final class ExpiryStrategy extends Object {
     *
     * @see Object#equals(Object)
     */
-   public boolean equals(final Object obj) {
+   public boolean equals(Object obj) {
 
       boolean equal = false;
 

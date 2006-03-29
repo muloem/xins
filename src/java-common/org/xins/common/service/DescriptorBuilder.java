@@ -344,7 +344,7 @@ public final class DescriptorBuilder extends Object {
 
       // Parse target descriptor
       if (TARGET_DESCRIPTOR_TYPE.equals(descriptorType)) {
-         if (tokenCount < 3 || tokenCount > 5) {
+         if (tokenCount > 5) {
             throw new InvalidPropertyValueException(propertyName, value, "Expected URL and time-out.");
          }
 

@@ -1424,7 +1424,7 @@ public abstract class ServiceCaller extends Object {
    protected boolean shouldFailOver(CallRequest       request,
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
-
+      MandatoryArgumentChecker.check("request", request, "callConfig", callConfig, "exceptions", exceptions);
       // This method should only be called if the subclass uses the new style
       if (! _newStyle) {
          final String THIS_METHOD    = "shouldFailOver("
