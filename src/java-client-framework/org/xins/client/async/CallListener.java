@@ -26,7 +26,7 @@ public interface CallListener extends EventListener {
     *    the call event that has the result of the call.
     */
    void callSucceeded(CallSucceededEvent event);
-   
+
    /**
     * Invoked when the call to the function failed.
     *

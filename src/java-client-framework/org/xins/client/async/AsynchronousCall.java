@@ -88,7 +88,7 @@ public class AsynchronousCall {
        * The listeners to notify.
        */
       private final List _listeners;
-      
+
       /**
        * Calls a CAPI function on a separate thread and notifies the listeners
        * of the result.
@@ -104,10 +104,10 @@ public class AsynchronousCall {
        *
        * @param listeners
        *    the listeners to notify of the result of the call.
-       */ 
+       */
       CallNotifyThread(AbstractCAPI capi, String function, AbstractCAPICallRequest request, List listeners) {
          super(capi, function, request);
-         
+
          // Notify the listeners registered at the moment of the call and not
          // when the result is received.
          _listeners = Collections.unmodifiableList(listeners);
@@ -120,7 +120,7 @@ public class AsynchronousCall {
 
          // Get the result and notify the listeners
          if (getException() == null) {
-            CallSucceededEvent event = new CallSucceededEvent(getCAPI(), 
+            CallSucceededEvent event = new CallSucceededEvent(getCAPI(),
                   getRequest(), getDuration(), getResult());
             Iterator itListeners = _listeners.iterator();
             while (itListeners.hasNext()) {

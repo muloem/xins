@@ -53,9 +53,9 @@ public class ServletClassLoader {
       if (mode == USE_CURRENT_CLASSPATH) {
          return ServletClassLoader.class.getClassLoader();
       }
-      
+
       List urlList = new ArrayList();
-      
+
       // Add the WAR file so that it can locate web pages included in the WAR file
       urlList.add(warFile.toURL());
 

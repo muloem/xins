@@ -35,46 +35,46 @@ extends AbstractPropertyReader {
    // Class functions
    //-------------------------------------------------------------------------
 
-	/**
-	 * Sets a parameter to the specified value. If the parameter is already set
-	 * to a different value, then an exception is thrown.
-	 *
-	 * <p>This function is used during parsing of a HTTP query string, which is
-	 * why a {@link ParseException} is thrown in case of conflicting values.
-	 *
-	 * @param properties
-	 *    the set of parameters, should not be <code>null</code>.
-	 *
-	 * @param key
-	 *    the parameter key, should not be <code>null</code>.
-	 *
-	 * @param value
-	 *    the parameter value, should not be <code>null</code>.
-	 *
-	 * @throws NullPointerException
-	 *    if <code>properties == null</code>.
-	 *
-	 * @throws ParseException
-	 *    if a conflicting value is found for a certain parameter.
-	 */
-	private static void add(Map properties, String key, String value)
+   /**
+    * Sets a parameter to the specified value. If the parameter is already set
+    * to a different value, then an exception is thrown.
+    *
+    * <p>This function is used during parsing of a HTTP query string, which is
+    * why a {@link ParseException} is thrown in case of conflicting values.
+    *
+    * @param properties
+    *    the set of parameters, should not be <code>null</code>.
+    *
+    * @param key
+    *    the parameter key, should not be <code>null</code>.
+    *
+    * @param value
+    *    the parameter value, should not be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>properties == null</code>.
+    *
+    * @throws ParseException
+    *    if a conflicting value is found for a certain parameter.
+    */
+   private static void add(Map properties, String key, String value)
    throws NullPointerException, ParseException {
 
       Object existingValue = properties.get(key);
-		if (existingValue != null && ! existingValue.equals(value)) {
+      if (existingValue != null && ! existingValue.equals(value)) {
          String detail = "Conflicting values found for parameter \""
-				           + key
-							  + "\": \""
-							  + (String) existingValue
-							  + "\" versus \""
-							  + value
-							  + "\".";
-			throw new ParseException("Failed to parse HTTP query string.",
-					                   (Throwable) null, detail);
-		}
+                       + key
+                       + "\": \""
+                       + (String) existingValue
+                       + "\" versus \""
+                       + value
+                       + "\".";
+         throw new ParseException("Failed to parse HTTP query string.",
+                                  (Throwable) null, detail);
+      }
 
-		properties.put(key, value);
-	}
+      properties.put(key, value);
+   }
 
 
    //-------------------------------------------------------------------------
@@ -83,7 +83,7 @@ extends AbstractPropertyReader {
 
    /**
     * Constructs a new <code>ServletRequestPropertyReader</code> for a
-	 * <code>ServletRequest</code>.
+    * <code>ServletRequest</code>.
     *
     * @param request
     *    the {@link ServletRequest} object, cannot be <code>null</code>.
@@ -98,24 +98,24 @@ extends AbstractPropertyReader {
 
    /**
     * Constructs a new <code>ServletRequestPropertyReader</code> for an
-	 * <code>HttpServletRequest</code>.
-	 *
+    * <code>HttpServletRequest</code>.
+    *
     * @param request
     *    the {@link HttpServletRequest} object, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>request == null</code>.
-	 *
-	 * @throws ParseException
-	 *    if the query string in the specified servlet request cannot be
-	 *    parsed.
-	 *
-	 * @since XINS 1.4.0
+    *
+    * @throws ParseException
+    *    if the query string in the specified servlet request cannot be
+    *    parsed.
+    *
+    * @since XINS 1.4.0
     */
    public ServletRequestPropertyReader(HttpServletRequest request)
    throws IllegalArgumentException, ParseException {
 
-		// Initially allocate a complete HashMap already
+      // Initially allocate a complete HashMap already
       super(new HashMap(20));
 
       // Check preconditions
@@ -123,7 +123,7 @@ extends AbstractPropertyReader {
 
       Map properties = getPropertiesMap();
 
-		// Get the HTTP query string
+      // Get the HTTP query string
       String query = request.getQueryString();
 
       // Parse the parameters in the HTTP query string
@@ -143,11 +143,11 @@ extends AbstractPropertyReader {
 
       // URLEncoder.decode(String url, String enc) may throw an UnsupportedEncodingException
       // or an IllegalArgumentException
-		} catch (Exception cause) {
+      } catch (Exception cause) {
          throw new ParseException("Failed to parse HTTP query string.",
                                   cause,
                                   "URL decoding failed.");
-		}
+      }
    }
 
 

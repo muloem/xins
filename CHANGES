@@ -8,6 +8,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
 
 * XINS/Java Common Library:
   - Fixed small issues pointed out by the code analizer JLint.
+  - Fixed style issues reported by checkstyle.
+
+* XINS/Java Client Framework:
+  - Fixed style issues reported by checkstyle.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:

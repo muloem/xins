@@ -11,7 +11,7 @@ import org.xins.client.AbstractCAPICallRequest;
 import org.xins.client.AbstractCAPICallResult;
 
 /**
- * Event fired when the call is finished and a succeeded result is returned 
+ * Event fired when the call is finished and a succeeded result is returned
  * from the call to the function.
  *
  * @version $Revision$ $Date$

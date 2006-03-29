@@ -15,7 +15,7 @@ import org.xins.common.service.CallException;
 /**
  * Class used to call an API in a separate thread.
  * To call the API, you will need to invoke the {@link #start()} method.
- * If you want to wait for the result at a certain point in your program, 
+ * If you want to wait for the result at a certain point in your program,
  * invoke the {@link #join()} method.
  *
  * @version $Revision$ $Date$
@@ -155,12 +155,12 @@ public class CallCAPIThread extends Thread {
     * Gets the exception thrown by the CAPI call.
     *
     * @return
-    *    the exception, most probably a sub class of the 
+    *    the exception, most probably a sub class of the
     *    {@link org.xins.common.service.CallException CallException}.
     */
    public Exception getException() {
       return _exception;
-   }   
+   }
 
    /**
     * Gets the time it took to call the function.

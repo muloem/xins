@@ -7,7 +7,6 @@
 package org.xins.common.text;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.UnsupportedEncodingException;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -245,9 +244,9 @@ public final class URLEncoding extends Object {
                decodedValue *= 16;
                charAsInt = (int) string[++index];
                decodedValue += digit(charAsInt, s, index);
-               
+
                baos.write((int) decodedValue);
-               
+
                index++;
             }
             try {

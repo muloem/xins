@@ -38,7 +38,7 @@ public final class CallFailedEvent extends CallEvent {
     * @param exception
     *    the exception thrown by the CAPI call.
     */
-   public CallFailedEvent(AbstractCAPI capi, AbstractCAPICallRequest request, 
+   public CallFailedEvent(AbstractCAPI capi, AbstractCAPICallRequest request,
                           long duration, Exception exception) {
       super(capi, request, duration);
       _exception = exception;
@@ -61,10 +61,10 @@ public final class CallFailedEvent extends CallEvent {
     * Gets the exception thrown by the CAPI call.
     *
     * @return
-    *    the exception, most probably a sub class of the 
+    *    the exception, most probably a sub class of the
     *    {@link org.xins.common.service.CallException CallException}.
     */
    public Exception getException() {
       return _exception;
-   }   
+   }
 }

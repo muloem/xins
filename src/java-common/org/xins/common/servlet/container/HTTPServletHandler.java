@@ -78,7 +78,7 @@ public class HTTPServletHandler {
     * The map containing the MIME type information.
     */
    private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
@@ -335,10 +335,10 @@ public class HTTPServletHandler {
     */
    public void serviceClient(Socket client)
    throws IllegalArgumentException, IOException {
-      
+
       // Check argument
       MandatoryArgumentChecker.check("client", client);
-      
+
       BufferedReader       inbound  = null;
       BufferedOutputStream outbound = null;
       try {
@@ -349,7 +349,7 @@ public class HTTPServletHandler {
          httpQuery(inbound, outbound);
 
       } finally{
-         
+
          // Clean up
          if (inbound != null) {
             try {
@@ -358,7 +358,7 @@ public class HTTPServletHandler {
                // ignore
             }
          }
-         
+
          if (outbound != null) {
             try {
                outbound.close();
@@ -443,7 +443,7 @@ public class HTTPServletHandler {
 
       String httpResult;
       String encoding = "ISO-8859-1";
-      
+
       // Normalize the URL
       if (url != null && url.indexOf(' ') != -1) {
          url = url.substring(0, url.indexOf(' '));
@@ -459,7 +459,7 @@ public class HTTPServletHandler {
       } else if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/")) {
          httpResult = readWebPage(url);
       } else {
-         
+
          if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
             url += '?' + new String(contentData);
             contentData = null;
@@ -473,23 +473,23 @@ public class HTTPServletHandler {
          if (virtualPath.endsWith("/") && virtualPath.length() > 1) {
             virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
          }
-         
+
          // Get the Servlet according to the path
          LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
-         
+
          // If not found the root Servlet is used
          if (servlet == null) {
             servlet = (LocalServletHandler) _servlets.get("/");
          }
-         
+
          // If no servlet is found return 404
          if (servlet == null) {
             httpResult = "HTTP/1.1 404 Not Found\r\n";
          } else {
-            
+
             // Query the Servlet
             XINSServletResponse response = servlet.query(url, contentData, inHeaders);
-            
+
             // Create the HTTP answer
             httpResult = "HTTP/1.1 " + response.getStatus() + " " +
                   HttpStatus.getStatusText(response.getStatus()) + "\r\n";
@@ -503,7 +503,7 @@ public class HTTPServletHandler {
                   //System.err.println(": " + nextHeader + ": " + headerValue);
                }
             }
-            
+
             String result = response.getResult();
             if (result != null) {
                encoding = response.getCharacterEncoding();

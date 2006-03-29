@@ -8,7 +8,6 @@ package org.xins.common.servlet.container;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
@@ -53,7 +52,7 @@ public class XINSServletRequest implements HttpServletRequest {
    private static String LOCALHOST_ADDRESS;
 
    /**
-    * The HTTP sessions of the servlet container. 
+    * The HTTP sessions of the servlet container.
     */
    private static Map SESSIONS = new HashMap();
 
