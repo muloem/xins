@@ -112,6 +112,9 @@ public class TargetDescriptorTests extends TestCase {
       doTestProtocol("FILE",      "C/Documents%20and%20Settings/");
       doTestProtocol("ftp",       "someserver.co.au/");
       doTestProtocol("jdbc:odbc", "dataserv:80/mydomain");
+      
+      TargetDescriptor td = new TargetDescriptor("http://xins.sf.net");
+      assertTrue("Incorrect description.", td.toString().indexOf("xins.sf.net") != -1);
    }
 
    private void doTestProtocol(String protocol, String rest)
