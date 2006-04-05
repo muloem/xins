@@ -74,11 +74,6 @@ public final class URLEncoding extends Object {
     */
    private static final String[] UNENCODED_TO_ENCODED;
 
-   /**
-    * Table which indicates the valid encoded characters.
-    */
-   private static final boolean[] VALID_ENCODED_CHAR;
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -86,7 +81,6 @@ public final class URLEncoding extends Object {
 
    static {
       UNENCODED_TO_ENCODED = new String[255];
-      VALID_ENCODED_CHAR = new boolean[255];
       for (int i = 0; i < 255; i++) {
          char c = (char) i;
          if ((c >= 'a' && c <= 'z') ||
@@ -97,17 +91,14 @@ public final class URLEncoding extends Object {
              (c == '.')             ||
              (c == '*')) {
             UNENCODED_TO_ENCODED[i] = String.valueOf(c);
-            VALID_ENCODED_CHAR[i] = true;
          } else if (c == ' ') {
             UNENCODED_TO_ENCODED[i] = "+";
-            VALID_ENCODED_CHAR[i] = false;
          } else {
             char[] data = new char[3];
             data[0] = '%';
             data[1] = Character.toUpperCase(Character.forDigit((i >> 4) & 0xF, 16));
             data[2] = Character.toUpperCase(Character.forDigit( i       & 0xF, 16));
             UNENCODED_TO_ENCODED[i] = new String(data);
-            VALID_ENCODED_CHAR[i] = false;
          }
       }
 
@@ -187,8 +178,6 @@ public final class URLEncoding extends Object {
     * @throws FormatException
     *    if any of the following conditions is true:
     *    <ul>
-    *        <li><code>s.{@link String#charAt(int) charAt}(<em>i</em>) &gt; (char) 127</code>
-    *            (non-ASCII character in encoded string, where <code>0 &lt;= <em>i</em> &lt; s.length</code>).
     *        <li><code>s.{@link String#charAt(int) charAt}(s.{@link String#length() length}() - 1)</code>
     *            (last character is a percentage sign)
     *        <li><code>s.{@link String#charAt(int) charAt}(s.{@link String#length() length}() - 2)</code>
@@ -223,12 +212,8 @@ public final class URLEncoding extends Object {
          char c = string[index];
          int charAsInt = (int) c;
 
-         // Encoded character must be ASCII
-         if (charAsInt > 127) {
-            throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
-
          // Special case: Recognize plus sign as a space
-         } else if (c == '+') {
+         if (c == '+') {
             buffer.append(' ');
 
          // Catch encoded characters
@@ -256,10 +241,6 @@ public final class URLEncoding extends Object {
             }
             // Back to the last position
             index--;
-
-         // Catch invalid characters
-         } else if (!VALID_ENCODED_CHAR[c]) {
-            throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
 
          // Append the character
          } else {

@@ -160,12 +160,18 @@ public class URLEncodingTests extends TestCase {
          fail("URLEncoding.decode(null) should throw an IllegalArgumentException.");
       } catch (IllegalArgumentException exception) { /* as expected */ }
 
-      // Make sure that characters higher than 255 make the conversion fail
-      failDecode("\u0080");
+      // Special characters and characters higher than 127 are decoded as is
+      compareDecode("\u0080", "\u0080");
+      compareDecode("A\u0080", "A\u0080");
+      compareDecode("AA\u0080", "AA\u0080");
+      compareDecode("\u0080 ", "\u0080 ");
+      compareDecode("\u0080 1", "\u0080 1");
+      compareDecode("@", "@");
+      /*failDecode("\u0080");
       failDecode("A\u0080");
       failDecode("AA\u0080");
       failDecode("\u0080 ");
-      failDecode("\u0080 1");
+      failDecode("\u0080 1");*/
 
       failDecode("%u80");
       failDecode("%80 ");
