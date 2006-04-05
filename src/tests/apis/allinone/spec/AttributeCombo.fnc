@@ -33,18 +33,18 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				<attribute name="age" required="false" type="Age">
 					<description>An example of input for a int8 type with a minimum and maximum.</description>
 				</attribute>
-				<!-- One and only one of the three attributeeters must be filled -->
+				<!-- One and only one of the three attributes must be filled -->
 				<attribute-combo type="exclusive-or">
 					<attribute-ref name="birthDate" />
 					<attribute-ref name="birthYear" />
 					<attribute-ref name="age"       />
 				</attribute-combo>
-				<!-- At least one of the two attributeeters must be filled -->
+				<!-- At least one of the two attributes must be filled -->
 				<attribute-combo type="inclusive-or">
 					<attribute-ref name="birthCountry" />
 					<attribute-ref name="birth-city"    />
 				</attribute-combo>
-				<!-- These attributeeters must be filled together or not filled at all -->
+				<!-- These attributes must be filled together or not filled at all -->
 				<attribute-combo type="all-or-none">
 					<attribute-ref name="birthYear"  />
 					<attribute-ref name="birthMonth" />
