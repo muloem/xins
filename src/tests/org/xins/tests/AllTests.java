@@ -61,13 +61,12 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryFolderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.expiry.ExpiryStrategyTests.class);
 
+      suite.addTestSuite(org.xins.tests.common.http.HTTPCallConfigTests.class);
+      suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
+
       suite.addTestSuite(org.xins.tests.common.manageable.InitializationExceptionTests.class);
 
       suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
-
-      suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
-      suite.addTestSuite(org.xins.tests.common.xml.ElementSerializerTests.class);
-      suite.addTestSuite(org.xins.tests.common.xml.SAXParserProviderTests.class);
 
       suite.addTestSuite(org.xins.tests.common.spec.AttributeComboTests.class);
       suite.addTestSuite(org.xins.tests.common.spec.APITests.class);
@@ -92,6 +91,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.text.PatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.text.ParseExceptionTests.class);
       suite.addTestSuite(org.xins.tests.common.text.SimplePatternParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.text.TextUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.text.URLEncodingTests.class);
       suite.addTestSuite(org.xins.tests.common.text.WhislEncodingTests.class);
 
@@ -109,7 +109,10 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.TimestampTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);
 
-      suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.ElementBuilderTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.ElementSerializerTests.class);
+      suite.addTestSuite(org.xins.tests.common.xml.SAXParserProviderTests.class);
 
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.CAPIRequestTests.class);
@@ -118,9 +121,13 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.InvalidRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.InvalidResponseTests.class);
       suite.addTestSuite(org.xins.tests.client.UnacceptableResultXINSCallExceptionTests.class);
+      suite.addTestSuite(org.xins.tests.client.XINSCallConfigTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSCallResultParserTests.class);
       suite.addTestSuite(org.xins.tests.client.XINSServiceCallerTests.class);
+
+      suite.addTestSuite(org.xins.tests.client.async.CallCAPIThreadTests.class);
+      suite.addTestSuite(org.xins.tests.client.async.AsynchronousCallTests.class);
 
       suite.addTestSuite(org.xins.tests.server.AccessRuleListTests.class);
       suite.addTestSuite(org.xins.tests.server.AccessRuleTests.class);
