@@ -174,7 +174,6 @@ public class URLEncodingTests extends TestCase {
       failDecode("\u0080 1");*/
 
       failDecode("%u80");
-      failDecode("%80 ");
 
       // Before-last character cannot be a percentage sign
       failDecode("abcd%a");
