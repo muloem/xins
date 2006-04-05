@@ -6,6 +6,7 @@
  */
 package org.xins.client.async;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.xins.client.AbstractCAPI;
 import org.xins.client.AbstractCAPICallRequest;
@@ -35,15 +36,11 @@ public class CallCAPIThread extends Thread {
     * @param capi
     *    the CAPI to use to call the function.
     *
-    * @param function
-    *    the name of the function to call.
-    *
     * @param request
     *    the input parameters for this call.
     */
-   CallCAPIThread(AbstractCAPI capi, String function, AbstractCAPICallRequest request) {
+   public CallCAPIThread(AbstractCAPI capi, AbstractCAPICallRequest request) {
       _capi = capi;
-      _function = function;
       _request = request;
    }
 
@@ -55,11 +52,6 @@ public class CallCAPIThread extends Thread {
     * The CAPI.
     */
    private AbstractCAPI _capi;
-
-   /**
-    * The name of the function to call.
-    */
-   private String _function;
 
    /**
     * The request of the function.
@@ -89,23 +81,26 @@ public class CallCAPIThread extends Thread {
       long startTime = System.currentTimeMillis();
       try {
          // Execute the function
-         String functionName = "call" + _function;
-         Class[] callArgumentsClass = {AbstractCAPICallRequest.class};
+         String functionName = "call" + _request.functionName();
+         Class[] callArgumentsClass = {_request.getClass()};
          Object[] callArguments = {_request};
          Method callMethod = _capi.getClass().getMethod(functionName, callArgumentsClass);
          _result = (AbstractCAPICallResult) callMethod.invoke(_capi, callArguments);
 
          // Get the result of the call and notify the listeners
          _duration = _result.duration();
-      } catch (Exception ex) {
-
-         _exception = ex;
+      } catch (InvocationTargetException itex) {
+         _exception = (Exception) itex.getTargetException();
+         
          // Get the exception thrown by the call and notify the listeners
-         if (ex instanceof CallException) {
-            _duration = ((CallException) ex).getDuration();
+         if (_exception instanceof CallException) {
+            _duration = ((CallException) _exception).getDuration();
          } else {
             _duration = System.currentTimeMillis() - startTime;
          }
+      } catch (Exception ex) {
+         _exception = ex;
+         _duration = -1L;
       }
    }
 
@@ -127,16 +122,6 @@ public class CallCAPIThread extends Thread {
     */
    public AbstractCAPICallRequest getRequest() {
       return _request;
-   }
-
-   /**
-    * Gets the name of the function called.
-    *
-    * @return
-    *    the name of the function called.
-    */
-   public String getFunctionName() {
-      return _function;
    }
 
    /**
