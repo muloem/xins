@@ -493,7 +493,9 @@ APIs in this project are:
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
 			<dependset>
 				<srcfilelist   dir="{$api_specsdir}"    files="{$functionIncludes}" />
-				<srcfilelist   dir="{$api_specsdir}"    files="{$typeIncludes}"     />
+				<xsl:if test="$apiHasTypes">
+					<srcfilelist   dir="{$api_specsdir}"    files="{$typeIncludes}" />
+				</xsl:if>
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 			</dependset>
 			<dependset>
@@ -1247,6 +1249,14 @@ APIs in this project are:
 		</xsl:for-each>
 
 		<xsl:if test="test">
+			<xsl:variable name="packageTests">
+				<xsl:call-template name="package_for_tests">
+					<xsl:with-param name="project_node" select="$project_node" />
+					<xsl:with-param name="api" select="$api" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="packageTestsAsDir" select="translate($packageTests, '.','/')" />
+
 			<target name="test-{$api}" description="Generates (if needed) and run the tests for the {$api} API.">
 				<xsl:attribute name="depends">
 					<xsl:text>-prepare-classes,</xsl:text>
@@ -1260,7 +1270,7 @@ APIs in this project are:
 				</xsl:attribute>
 
 				<available property="test.generated" file="apis/{$api}/test" type="dir" />
-				<antcall target="generatetest-{$api}" />
+				<antcall target="generatetests-{$api}" />
 				<mkdir dir="build/classes-tests/{$api}" />
 				<javac
 				destdir="build/classes-tests/{$api}"
@@ -1284,14 +1294,13 @@ APIs in this project are:
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
 					<formatter type="xml" />
-					<test name="{$package}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
+					<test name="{$packageTests}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
 						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
 						<pathelement path="build/classes-tests/{$api}" />
 						<pathelement path="build/classes-api/{$api}" />
 						<pathelement path="build/classes-types/{$api}" />
-						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						<xsl:if test="impl">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
@@ -1308,9 +1317,9 @@ APIs in this project are:
 				todir="build/testresults/html" />
 			</target>
 
-			<target name="generatetest-{$api}" unless="test.generated">
+			<target name="generatetests-{$api}" unless="test.generated">
 				<xsl:variable name="javaTestDir">
-					<xsl:value-of select="concat('apis/', $api, '/test/', $packageAsDir)" />
+					<xsl:value-of select="concat('apis/', $api, '/test/', $packageTestsAsDir)" />
 				</xsl:variable>
 
 				<xmlvalidate warn="false">
@@ -1322,7 +1331,7 @@ APIs in this project are:
 				out="{$javaTestDir}/APITests.java"
 				style="{$xins_home}/src/xslt/tests/api_to_test.xslt">
 					<xmlcatalog refid="all-dtds" />
-					<param name="package"      expression="{$package}"      />
+					<param name="package"      expression="{$packageTests}"      />
 				</style>
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
@@ -1335,7 +1344,7 @@ APIs in this project are:
 				style="{$xins_home}/src/xslt/tests/function_to_test.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="api"          expression="{$api}"          />
-					<param name="package"      expression="{$package}"      />
+					<param name="package"      expression="{$packageTests}" />
 				</style>
 			</target>
 		</xsl:if>
