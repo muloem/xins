@@ -217,6 +217,9 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
       String text = result.getString();
       assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
+      
+      // Check that the request does not have side effect on the HTTPServiceCaller object
+      assertEquals("Incorrect HTTP method.", HTTPMethod.POST, caller.getHTTPCallConfig().getMethod());
    }
 
    public void testFailOverPost() throws Exception {
