@@ -65,14 +65,11 @@ public class AsynchronousCall {
     * @param capi
     *    the CAPI to use to call the function.
     *
-    * @param functionName
-    *    the name of the function to call.
-    *
     * @param request
     *    the input parameters for this call.
     */
-   public void call(AbstractCAPI capi, String functionName, AbstractCAPICallRequest request) {
-      CallNotifyThread thread = new CallNotifyThread(capi, functionName, request, _listeners);
+   public void call(AbstractCAPI capi, AbstractCAPICallRequest request) {
+      CallNotifyThread thread = new CallNotifyThread(capi, request, _listeners);
       thread.start();
    }
 
@@ -96,17 +93,14 @@ public class AsynchronousCall {
        * @param capi
        *    the CAPI to use to call the function.
        *
-       * @param function
-       *    the name of the function to call.
-       *
        * @param request
        *    the input parameters for this call.
        *
        * @param listeners
        *    the listeners to notify of the result of the call.
        */
-      CallNotifyThread(AbstractCAPI capi, String function, AbstractCAPICallRequest request, List listeners) {
-         super(capi, function, request);
+      CallNotifyThread(AbstractCAPI capi, AbstractCAPICallRequest request, List listeners) {
+         super(capi, request);
 
          // Notify the listeners registered at the moment of the call and not
          // when the result is received.
