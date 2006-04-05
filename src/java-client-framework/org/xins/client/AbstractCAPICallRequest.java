@@ -211,6 +211,18 @@ public abstract class AbstractCAPICallRequest {
    }
 
    /**
+    * Gets the name of the function to call.
+    *
+    * @return
+    *    The name of the function to call, never <code>null</code>.
+    *
+    * @since XINS 1.4.0
+    */
+   public final String functionName() {
+      return _functionName;
+   }
+
+   /**
     * Add a new Element to the data element.
     * Any previous value was entered with the method {@link #putDataSection},
     * will be removed.
