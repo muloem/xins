@@ -479,12 +479,13 @@ extends Manageable {
           InitializationException {
 
       // Loop through all CallingConvention instances
-      Iterator iterator = _conventions.keySet().iterator();
+      Iterator iterator = _conventions.entrySet().iterator();
       while (iterator.hasNext()) {
 
          // Determine the name and get the CallingConvention instance
-         String name = (String) iterator.next();
-         Object cc   = _conventions.get(name);
+         Map.Entry entry = (Map.Entry) iterator.next();
+         String name = (String) entry.getKey();
+         Object cc   = entry.getValue();
 
          // If creation of CallingConvention succeeded, then initialize it
          if (cc != CREATION_FAILED) {
@@ -784,18 +785,14 @@ extends Manageable {
          Object    value =             entry.getValue();
 
          // Skip all values that are not CallingConvention instances
-         if (! (value instanceof CallingConvention)) {
+         // Skip also the default and the standard calling conventions, we
+         // already established that they cannot handle the request
+         if (value == CREATION_FAILED || value == defCC || value == stdCC) {
             continue;
          }
 
          // Convert the value to a CallingConvention
          CallingConvention cc = (CallingConvention) value;
-
-         // Skip the default and the standard calling conventions, we
-         // already established that they cannot handle the request
-         if (cc == defCC || cc == stdCC) {
-            continue;
-         }
 
          // Determine whether this one can handle it
          if (cc.matchesRequest(request)) {
