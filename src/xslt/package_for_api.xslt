@@ -49,6 +49,18 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	<!-- Determines the name for the Java package that will contain the tests -->
+	<xsl:template name="package_for_tests">
+		<xsl:param name="project_node" />
+		<xsl:param name="api"          />
+
+		<xsl:call-template name="package_for">
+			<xsl:with-param name="project_node" select="$project_node" />
+			<xsl:with-param name="api"          select="$api"          />
+			<xsl:with-param name="suffix"       select="'tests'"       />
+		</xsl:call-template>
+	</xsl:template>
+
 	<!-- Determines a Java package name based on a project file, an API and a
 	     suffix to use. -->
 	<xsl:template name="package_for">
