@@ -112,7 +112,9 @@ public class XINSServletContext implements ServletContext {
    }
 
    public String getRealPath(String str) {
-      throw new UnsupportedOperationException();
+      
+      // The WAR file is not unpacked
+      return null;
    }
 
    public RequestDispatcher getRequestDispatcher(String str) {
