@@ -425,6 +425,12 @@ final class ConfigManager extends Object {
       // Reset Log4J configuration
       LogManager.getLoggerRepository().resetConfiguration();
 
+      // Make possible to have an API specific logger
+      String apiLogger = properties.getProperty("log4j.rootLogger." + _config.getServletName());
+      if (apiLogger != null) {
+         properties.setProperty("log4j.rootLogger", apiLogger);
+      }
+      
       // Reconfigure Log4J
       PropertyConfigurator.configure(properties);
 
