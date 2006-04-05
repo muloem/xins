@@ -192,7 +192,7 @@ public class List extends Type {
          try {
             stringItem = _itemType.toString(nextItem);
          } catch (Exception ex) {
-            ex.printStackTrace();
+
             // Should never happens as only add() is able to add items in the list.
             throw new IllegalArgumentException("Incorrect value for type: " + nextItem);
          }
