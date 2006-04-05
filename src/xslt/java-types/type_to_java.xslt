@@ -561,13 +561,14 @@ public final class ]]></xsl:text>
 			<xsl:value-of select="$javasimpletype" />
 			<xsl:text>.
 	 */
-   public static final class Value extends org.xins.common.types.ItemList {
+   public static final class Value extends org.xins.common.types.ItemList {</xsl:text>
 
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------</xsl:text>
 			<xsl:if test="$kind = 'set'">
 	      <xsl:text>
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
       /**
        * Creates a new set.
        */
@@ -579,10 +580,6 @@ public final class ]]></xsl:text>
 			<xsl:text>
 
       //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
 
@@ -592,7 +589,7 @@ public final class ]]></xsl:text>
 			<xsl:text>.
        *
        * @param value
-			 *    the new value to add</xsl:text>
+       *    the new value to add</xsl:text>
 			<xsl:if test="$typeIsPrimary = 'fasle'">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>.
        *

@@ -156,6 +156,26 @@ public abstract class EnumType extends Type {
    }
 
    /**
+    * Converts the specified <code>EnumItem</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public String toString(EnumItem value) {
+
+      // Short-circuit if the argument is null
+      if (value == null) {
+         return null;
+      } else {
+         return value.getValue();
+      }
+   }
+
+   /**
     * Generates a string representation of the specified value for this type.
     * The specified value must be an instance of the value class for this type
     * (see {@link #getValueClass()}). Also, it has to fall within the range of

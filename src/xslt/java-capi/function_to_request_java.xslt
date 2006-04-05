@@ -79,14 +79,6 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>&quot;);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------</xsl:text>
-
-		<xsl:apply-templates select="input/param" mode="fields" />
-        <xsl:text>
-
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------</xsl:text>
@@ -137,62 +129,6 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>
 }
 </xsl:text>
-	</xsl:template>
-
-	<xsl:template match="input/param" mode="fields">
-
-		<!-- Determine the Java class or primary data type -->
-		<xsl:variable name="javatype">
-			<xsl:call-template name="javatype_for_type">
-				<xsl:with-param name="project_node" select="$project_node" />
-				<xsl:with-param name="api"          select="$api"          />
-				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="'true'"        />
-				<xsl:with-param name="type"         select="@type"         />
-			</xsl:call-template>
-		</xsl:variable>
-
-		<!-- Determine if $javatype is a Java primary data type -->
-		<xsl:variable name="isJavaDatatype">
-			<xsl:call-template name="is_java_datatype">
-				<xsl:with-param name="text" select="$javatype" />
-			</xsl:call-template>
-		</xsl:variable>
-
-		<!-- If $javatype is a primary data type, determine class -->
-		<xsl:variable name="javaclass">
-			<xsl:choose>
-				<xsl:when test="$isJavaDatatype = 'true'">
-					<xsl:call-template name="javaclass_for_javatype">
-						<xsl:with-param name="javatype" select="$javatype" />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$javatype" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
-		<!-- The name of the variable used in code for this parameter -->
-		<xsl:variable name="javaVariable">
-			<xsl:call-template name="hungarianLower">
-				<xsl:with-param name="text" select="@name" />
-			</xsl:call-template>
-		</xsl:variable>
-
-		<xsl:text><![CDATA[
-
-   /**
-    * The current value of the <em>]]></xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[</em> parameter.
-    * Is <code>null</code> if unset.
-    */
-   private ]]></xsl:text>
-		<xsl:value-of select="$javaclass" />
-		<xsl:text> _param_</xsl:text>
-		<xsl:value-of select="$javaVariable" />
-		<xsl:text>;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="input/param" mode="methods">
@@ -257,6 +193,17 @@ extends org.xins.client.AbstractCAPICallRequest {
 			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- Determine the method that transform the String to a value -->
+		<xsl:variable name="stringToType">
+			<xsl:call-template name="javatype_from_string_for_type">
+				<xsl:with-param name="api"      select="$api" />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="required" select="'false'" />
+				<xsl:with-param name="type"     select="@type" />
+				<xsl:with-param name="variable" select="'typeValue'" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<!-- Determine the names of the methods -->
 		<xsl:variable name="methodTail">
 			<xsl:call-template name="hungarianUpper">
@@ -290,9 +237,18 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$getMethod" />
 		<xsl:text>() {
-      return _param_</xsl:text>
-		<xsl:value-of select="$javaVariable" />
+      String typeValue = getParameter("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>");
+      try {
+         return </xsl:text>
+		<xsl:value-of select="$stringToType" />
 		<xsl:text>;
+      } catch (org.xins.common.types.TypeValueException tvex) {
+
+         // Should never happens
+         return null;
+      }
    }
 
    /**
@@ -333,30 +289,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>", </xsl:text>
 		<xsl:value-of select="$typeToString" />
 		<xsl:text>);
-      _param_</xsl:text>
-		<xsl:value-of select="$javaVariable" />
-
-		<xsl:choose>
-			<xsl:when test="$isJavaDatatype = 'true'">
-				<xsl:variable name="wraptype">
-					<xsl:call-template name="javaclass_for_javatype">
-						<xsl:with-param name="javatype" select="$javatype" />
-					</xsl:call-template>
-				</xsl:variable>
-		    	<xsl:text> = new </xsl:text>
-		    	<xsl:value-of select="$wraptype" />
-		    	<xsl:text>(</xsl:text>
-		    	<xsl:value-of select="$javaVariable" />
-		    	<xsl:text>);
    }</xsl:text>
-	    	</xsl:when>
-			<xsl:otherwise>
-		    	<xsl:text> = </xsl:text>
-		    	<xsl:value-of select="$javaVariable" />
-		    	<xsl:text>;
-   }</xsl:text>
-			</xsl:otherwise>
-	    </xsl:choose>
 
 		<xsl:if test="$isJavaDatatype = 'true'">
 			<xsl:variable name="wraptype">
@@ -397,11 +330,6 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>", </xsl:text>
 		<xsl:value-of select="$typeToString" />
 		<xsl:text>);
-      _param_</xsl:text>
-		<xsl:value-of select="$javaVariable" />
-		<xsl:text> = </xsl:text>
-		<xsl:value-of select="$javaVariable" />
-		<xsl:text>;
    }</xsl:text>
 		</xsl:if>
 

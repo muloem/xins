@@ -44,6 +44,10 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
     in order to work also with Tomcat.
   - Improved the way the CallingConventionManager iterates over CC.
 
+* Generation of client-side Java code:
+  - Call a set method with a null parameter would throw a NullPointerException
+    if the type was an enumeration type.
+
 * Generated build file:
   - Fixed incorrect dependset generated if the API does not contain any types.
   - Fixed SF.net bug #1463561: Tests generated and run in incorrect directory.

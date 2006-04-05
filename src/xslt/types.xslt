@@ -476,14 +476,8 @@
 
 			<!-- TODO: Determine Java type for pattern type ???? -->
 
-			<!-- Determine Java type for enum type -->
-			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
-				<xsl:value-of select="$variable" />
-				<xsl:text>.getValue()</xsl:text>
-			</xsl:when>
-
 			<!-- Determine Java type for list type or set type -->
-			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
+			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set or document($type_file)/type/enum">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
 						<xsl:with-param name="project_node" select="$project_node" />
