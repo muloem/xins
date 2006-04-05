@@ -6,8 +6,10 @@
  */
 package org.xins.server;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -906,7 +908,12 @@ implements DefaultResultCodes {
          ServletConfig  config  = _engine.getServletConfig();
          ServletContext context = config.getServletContext();
          try {
-            baseURL = context.getResource("specs/").toExternalForm();
+            String realPath = context.getRealPath("specs/");
+            if (realPath != null) {
+               baseURL = new File(realPath).toURL().toExternalForm();
+            } else {
+               baseURL = context.getResource("specs/").toExternalForm();
+            }
          } catch (MalformedURLException muex) {
             // Let the base URL be null
          }
