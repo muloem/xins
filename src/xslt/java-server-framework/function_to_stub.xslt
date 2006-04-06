@@ -54,7 +54,9 @@
 					<xsl:text>String.valueOf(request.get</xsl:text>
 					<xsl:value-of select="$hungarianName" />
 					<xsl:text>()).equals("</xsl:text>
-					<xsl:value-of select="text()" />
+						<xsl:call-template name="pcdata_to_java_string">
+							<xsl:with-param name="text" select="text()" />
+						</xsl:call-template>
 					<xsl:text>")</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
@@ -116,6 +118,11 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
+					<xsl:variable name="resultText">
+						<xsl:call-template name="pcdata_to_java_string">
+							<xsl:with-param name="text" select="text()" />
+						</xsl:call-template>
+					</xsl:variable>
 
 					<xsl:text>
       result.set</xsl:text>
@@ -126,7 +133,7 @@
 						<xsl:with-param name="required" select="'true'" />
 						<xsl:with-param name="specsdir" select="$specsdir" />
 						<xsl:with-param name="type"     select="$type"     />
-						<xsl:with-param name="variable" select="concat('&quot;', text(), '&quot;')" />
+						<xsl:with-param name="variable" select="concat('&quot;', $resultText, '&quot;')" />
 					</xsl:call-template>
 					<xsl:text>);</xsl:text>
 				</xsl:for-each>
@@ -194,6 +201,11 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
+			<xsl:variable name="resultText">
+				<xsl:call-template name="pcdata_to_java_string">
+					<xsl:with-param name="text" select="text()" />
+				</xsl:call-template>
+			</xsl:variable>
 
 			<xsl:text>
       </xsl:text>
@@ -206,20 +218,22 @@
 				<xsl:with-param name="required" select="'true'" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="type"     select="$type"     />
-				<xsl:with-param name="variable" select="concat('&quot;', text(), '&quot;')" />
+				<xsl:with-param name="variable" select="concat('&quot;', $resultText, '&quot;')" />
 			</xsl:call-template>
 			<xsl:text>);</xsl:text>
 		</xsl:for-each>
+
 		<xsl:if test="pcdata-example">
 			<xsl:text>
       </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.pcdata("</xsl:text>
-			<xsl:call-template name="xml_to_java_string">
+			<xsl:call-template name="pcdata_to_java_string">
 				<xsl:with-param name="text" select="pcdata-example/text()" />
 			</xsl:call-template>
 			<xsl:text>");</xsl:text>
 		</xsl:if>
+
 		<xsl:apply-templates select="element-example">
 			<xsl:with-param name="parent" select="$elementVariable" />
 			<xsl:with-param name="api" select="$api" />

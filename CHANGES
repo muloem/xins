@@ -48,6 +48,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
   - Call a set method with a null parameter would throw a NullPointerException
     if the type was an enumeration type.
 
+* Generation of the stub code:
+  - Fixed SF.net bug #1465567: javac uses default encoding instead of UTF-8.
+
 * Generated build file:
   - Fixed incorrect dependset generated if the API does not contain any types.
   - Fixed SF.net bug #1463561: Tests generated and run in incorrect directory.
