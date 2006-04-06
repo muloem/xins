@@ -54,6 +54,8 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
 * Generated build file:
   - Fixed incorrect dependset generated if the API does not contain any types.
   - Fixed SF.net bug #1463561: Tests generated and run in incorrect directory.
+  - Removed the owner attribute from the create-api target as it may be
+    invalid.
 
 * Demo:
   - Improved XSLT layout done by Jan-Willem.
