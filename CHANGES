@@ -61,6 +61,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
   - Improved XSLT layout done by Jan-Willem.
   - Adapted the allinone example with some of the new XINS 1.4 features.
 
+* Build- and release-process:
+  - Fixed a replace task which was not pointing to the correct file.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
 
