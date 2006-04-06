@@ -13,7 +13,6 @@ $Id$
 		<xsl:param name="text" />
 
 		<xsl:variable name="firstchar" select="substring($text, 1, 1)" />
-
 		<xsl:variable name="rest" select="substring($text, 2)" />
 
 		<xsl:choose>
@@ -94,5 +93,41 @@ $Id$
 		<xsl:call-template name="xml_to_java_string">
 			<xsl:with-param name="text" select="$normalized-text" />
 		</xsl:call-template>
+	</xsl:template>
+
+	<!-- Transform the XML to HTML for the Javadoc -->
+	<xsl:template name="xml_to_html_string">
+		<xsl:param name="text" />
+
+		<xsl:variable name="firstchar" select="substring($text, 1, 1)" />
+		<xsl:variable name="rest" select="substring($text, 2)" />
+
+		<xsl:choose>
+			<xsl:when test="string-length($text) &lt; 1" />
+			<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="$firstchar='&#xDF;'">&amp;#xDF;</xsl:when>
+					<xsl:when test="$firstchar='&#xE0;'">&amp;#xE0;</xsl:when>
+					<xsl:when test="$firstchar='&#xE6;'">&amp;#xE6;</xsl:when>
+					<xsl:when test="$firstchar='&#xE7;'">&amp;#xE7;</xsl:when>
+					<xsl:when test="$firstchar='&#xE8;'">&amp;#xE8;</xsl:when>
+					<xsl:when test="$firstchar='&#xE9;'">&amp;#xE9;</xsl:when>
+					<xsl:when test="$firstchar='&#xEA;'">&amp;#xEA;</xsl:when>
+					<xsl:when test="$firstchar='&#xEB;'">&amp;#xEB;</xsl:when>
+					<xsl:when test="$firstchar='&#xEC;'">&amp;#xEC;</xsl:when>
+					<xsl:when test="$firstchar='&#xEF;'">&amp;#xEF;</xsl:when>
+					<xsl:when test="$firstchar='&#xF3;'">&amp;#xF3;</xsl:when>
+					<xsl:when test="$firstchar='&#xF4;'">&amp;#xF4;</xsl:when>
+					<xsl:when test="$firstchar='&#xF9;'">&amp;#xF9;</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$firstchar" />
+					</xsl:otherwise>
+				</xsl:choose>
+
+				<xsl:call-template name="xml_to_html_string">
+					<xsl:with-param name="text" select="$rest" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
