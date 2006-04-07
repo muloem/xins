@@ -328,7 +328,6 @@ ${sf.file}</fail>
 		<echo level="verbose" message="Creating TAR GZ file for Javadoc HTML" />
 		<tar tarfile="build/javadoc.tar" longfile="gnu">
 			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
-			<tarfileset dir="docs/javadoc-private" mode="664" dirmode="775" prefix="javadoc-private/${version}" />
 		</tar>
 		<gzip src="build/javadoc.tar" destfile="build/javadoc.tgz" />
 		<delete file="build/javadoc.tar" />
@@ -348,7 +347,7 @@ ${sf.file}</fail>
 		username="${sf.user}"
 		password="${sf.password}"
 		trust="true"
-		command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp; cd ../javadoc-private &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
+		command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp;" />
 	</target>
 
 	<target

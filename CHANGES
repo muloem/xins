@@ -63,6 +63,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
 
 * Build- and release-process:
   - Fixed a replace task which was not pointing to the correct file.
+  - The private Javadoc is no longer uploaded to sf.net.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
