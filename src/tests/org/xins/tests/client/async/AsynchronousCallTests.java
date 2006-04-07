@@ -114,7 +114,7 @@ public class AsynchronousCallTests extends TestCase {
             assertNotNull(result);
             assertEquals(20.6f, result.getTaxes(), 0.01f);
             assertEquals("Euros", result.getCurrency());
-            assertTrue(result.duration() > 0L);
+            assertTrue(result.duration() >= 0L);
             successfulTestOkay = Boolean.TRUE;
          } catch (Throwable ex) {
             assertionSuccessfulTestException = ex;
