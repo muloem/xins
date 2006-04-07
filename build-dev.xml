@@ -347,7 +347,7 @@ ${sf.file}</fail>
 		username="${sf.user}"
 		password="${sf.password}"
 		trust="true"
-		command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest &amp;&amp;" />
+		command="cd ${www.dir} &amp;&amp; tar zxf javadoc.tgz &amp;&amp; rm javadoc.tgz &amp;&amp; cd javadoc &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
 	<target
