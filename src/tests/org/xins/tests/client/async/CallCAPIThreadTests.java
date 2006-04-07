@@ -78,7 +78,7 @@ public class CallCAPIThreadTests extends TestCase {
       assertNotNull(result);
       assertEquals(20.6f, result.getTaxes(), 0.01f);
       assertEquals("Euros", result.getCurrency());
-      assertTrue(capiThread.getDuration() > 0L);
+      assertTrue(capiThread.getDuration() >= 0L);
    }
 
    public void testUnsuccessfulCallCAPIThread() throws Throwable {
