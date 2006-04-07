@@ -1,4 +1,4 @@
-This file contains the XINS 1.4.0-beta3 release notes.
+This file contains the XINS 1.4.0-rc1 release notes.
 
 Contents:
 - Introduction
@@ -8,13 +8,11 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is a beta release. It contains all the new features that will be in
-XINS 1.4.0 (final).
+This is a release candidate release. It is expected to be stable and will not
+undergo any major changes.
 
-This release should be fully compatible with all previous stable releases,
-although significant testing is planned during this beta stage, before the
-release candidate(s).
-
+This release is considered fully compatible with all previous stable releases.
+An exception is logging; log messages can change between individual releases.
 
 *** PREREQUISITES ***
 
