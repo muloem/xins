@@ -720,7 +720,9 @@ implements DefaultResultCodes {
 
       // New access control list is empty
       if (acl == null || acl.trim().length() < 1) {
-         Log.log_3426(aclProperty);
+         if (aclProperty.equals(ACL_PROPERTY)) {
+            Log.log_3426(aclProperty);
+         }
          return AccessRuleList.EMPTY;
 
       // New access control list is non-empty
