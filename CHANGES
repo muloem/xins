@@ -10,6 +10,9 @@ CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
   - Fixed: a warning was logged when the API specific ACL property was not
     set.
 
+* Notes
+  - Added the list of the platform on which it has been tested.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
 
