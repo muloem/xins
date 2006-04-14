@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 1:
+
+NOTE: This release is based on XINS 1.4.0-rc1.
+
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
 
 * XINS/Java Server Framework:
