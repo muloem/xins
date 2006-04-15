@@ -8,6 +8,7 @@ package org.xins.common.servlet.container;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
@@ -83,7 +84,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * Creates a new Servlet request.
     *
     * @param url
-    *    the request url or the list of the parameters (name=value) separated
+    *    the request URL or the list of the parameters (name=value) separated
     *    with comma's.
     */
    public XINSServletRequest(String url) {
@@ -95,7 +96,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * Creates a new Servlet request.
     *
     * @param url
-    *    the request url or the list of the parameters (name=value) separated
+    *    the request URL or the list of the parameters (name=value) separated
     *    with comma's.
     *
     * @param data
@@ -117,7 +118,7 @@ public class XINSServletRequest implements HttpServletRequest {
     * Creates a new Servlet request.
     *
     * @param url
-    *    the request url or the list of the parameters (name=value) separated
+    *    the request URL or the list of the parameters (name=value) separated
     *    with ampersands.
     *
     * @param data
@@ -139,14 +140,15 @@ public class XINSServletRequest implements HttpServletRequest {
       parseURL(url);
    }
 
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
 
    /**
-    * The requested URL included the optional parameters.
+    * The requested URL including the optional parameters.
     */
-   private String _url;
+   private final String _url;
 
    /**
     * The parameters retrieved from the URL.
@@ -188,6 +190,13 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private Cookie[] _cookies;
 
+   /**
+    * Status of the retrieval. Value is -1 if {@link #getInputStream()} has
+    * been called, it is 1 if {@link #getReader()} has been called or 0 if
+    * none of them have been called yet.
+    */
+   private int _retrievalStatus;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -201,6 +210,7 @@ public class XINSServletRequest implements HttpServletRequest {
     *    with ampersands.
     */
    private void parseURL(String url) {
+
       // Parse the URL
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos != -1) {
@@ -242,8 +252,13 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public int getIntHeader(String str) {
-      if (_headers.get(str) != null) {
-         return Integer.parseInt(str);
+      String value = (String) _headers.get(str);
+      if (value != null) {
+         try {
+            return Integer.parseInt(value);
+         } catch (NumberFormatException exception) {
+            return -1;
+         }
       } else {
          return -1;
       }
@@ -387,10 +402,21 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public ServletInputStream getInputStream() {
-      throw new UnsupportedOperationException();
+
+      if (_retrievalStatus == 1) {
+         throw new IllegalStateException("The method getReader() has already been called on this request.");
+      }
+
+      return new InputStream(_postData);
    }
 
-   public BufferedReader getReader() {
+   public BufferedReader getReader()
+   throws IllegalStateException {
+
+      if (_retrievalStatus == -1) {
+         throw new IllegalStateException("The method getInputStream() has already been called on this request.");
+      }
+
       return new BufferedReader(new StringReader(new String(_postData)));
    }
 
@@ -482,5 +508,111 @@ public class XINSServletRequest implements HttpServletRequest {
 
    public boolean isSecure() {
       return false;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Implementation of a <code>ServletInputStream</code> for this request.
+    *
+    * <p>This implementation is <strong>not thread-safe</strong>.
+    *
+    * @version $Revision$ $Date$
+    * @author <a href="mailto:ernst.dehaan@nl.wanadoo.com">Ernst de Haan</a>
+    */
+   private static class InputStream
+   extends ServletInputStream {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new <code>InputStream</code> instance for the specified
+       * data.
+       *
+       * @param data
+       *    the data, as a set of bytes, can be <code>null</code>.
+       */
+      private InputStream(char[] data) {
+         final String ENCODING = "ISO-8859-1";
+         try {
+            _data = new String(data).getBytes(ENCODING);
+         } catch (UnsupportedEncodingException exception) {
+            throw new RuntimeException("Failed to convert char[] to byte[] using encoding \"" + ENCODING + "\".");
+         }
+
+         // XXX: This conversion is not guaranteed to succeed!
+      }
+
+
+      //----------------------------------------------------------------------
+      // Fields
+      //----------------------------------------------------------------------
+
+      /**
+       * The data. Is <code>null</code> if there is no data.
+       */
+      private final byte[] _data;
+
+      /**
+       * The index into the data. Initially <code>0</code>.
+       */
+      private int _index;
+
+
+      //----------------------------------------------------------------------
+      // Methods
+      //----------------------------------------------------------------------
+
+      public int read() {
+         if (_index >= _data.length) {
+            return -1;
+         } else {
+            return _data[_index++];
+         }
+      }
+
+      public int read(byte[] b) {
+         return read(b, 0, b.length);
+      }
+
+      public int read(byte[] b, int off, int len) {
+
+         // Error: Index out of bounds
+         // NullPointerException if b == null
+         if (off < 0 || len < 0 || (off + len > b.length)) {
+            throw new IndexOutOfBoundsException();
+         }
+
+         // Number of bytes to read is 0
+         if (len == 0) {
+            return 0;
+         }
+
+         // At EOF (end-of-file)
+         if (_index >= _data.length) {
+            return -1;
+         }
+
+         // Determine how many bytes should be copied
+         int count = Math.min(len, _data.length - _index);
+
+         // Perform copy
+         System.arraycopy(_data, _index, b, off, count);
+
+         // Update the index
+         _index += count;
+
+         // Return the number of character copied
+         return count;
+      }
+
+      public int available() {
+         return Math.max(_data.length - _index, 0);
+      }
    }
 }

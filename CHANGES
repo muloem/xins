@@ -8,6 +8,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 1:
 
 NOTE: This release is based on XINS 1.4.0-rc1.
 
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1470848. The built-in servlet container now supports
+    getInputStream() on the ServletRequest.
+  - Fixed SF.net bug #1470545. The built-in servlet container now properly
+    implements getContentLength(). The problem was in the getIntHeader()
+    method.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
