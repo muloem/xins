@@ -37,11 +37,6 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The fully-qualified name of this class.
-    */
-   static final String CLASSNAME = StandardCallingConvention.class.getName();
-
-   /**
     * The enconding for the data section.
     */
    static final String DATA_ENCODING = "UTF-8";
@@ -153,15 +148,14 @@ extends CallingConvention {
 
          // I/O error, should never happen on a StringReader
          } catch (IOException exception) {
+            String thisClass  = StandardCallingConvention.class.getName();
             String thisMethod = "convertRequestImpl("
                               + HttpServletRequest.class.getName()
                               + ')';
-            String subjectClass  = "java.lang.String";
-            String subjectMethod = "getBytes(java.lang.String)";
-            String detail        = "Encoding \""
-                                 + DATA_ENCODING
-                                 + "\" is not supported.";
-            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+            String subjectClass  = ElementParser.class.getName();
+            String subjectMethod = "parse(java.io.Reader)";
+            String detail        = null;
+            throw Utils.logProgrammingError(thisClass,    thisMethod,
                                             subjectClass, subjectMethod,
                                             detail,       exception);
          // Parsing error

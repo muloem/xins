@@ -15,6 +15,10 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     implements getContentLength(). The problem was in the getIntHeader()
     method.
 
+* XINS/Java Server Framework:
+  - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
+    StandardCallingConvention class.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
 
