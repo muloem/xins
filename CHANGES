@@ -19,6 +19,12 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
     StandardCallingConvention class.
 
+* Tests:
+  - Added an example CustomCallingConvention implementation. This
+    implementation supports multipart (RFC 1876) form submissions. As part of
+    this example, two libraries have been added under src/tests/lib:
+    Commons IO and Commons Fileupload.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
 
