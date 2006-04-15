@@ -10,20 +10,29 @@ NOTE: This release is based on XINS 1.4.0-rc1.
 
 * XINS/Java Common Library:
   - Fixed SF.net bug #1470848. The built-in servlet container now supports
-    getInputStream() on the ServletRequest.
+    getInputStream() on the ServletRequest implementation.
+    This only affects the XINSServletRequest class.
   - Fixed SF.net bug #1470545. The built-in servlet container now properly
     implements getContentLength(). The problem was in the getIntHeader()
     method.
+    This only affects the XINSServletRequest class.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
-    StandardCallingConvention class.
+    implementation standard calling convention.
+    This only affects the StandardCallingConvention class.
 
 * Tests:
   - Added an example CustomCallingConvention implementation:
     MultipartCallingConvention. This implementation supports multipart
     (RFC 1876) form submissions. As part of this example, two libraries have
     been added under src/tests/lib: Commons IO and Commons Fileupload.
+    Files affected:
+    . src/tests/apis/allinone/impl/impl.xml
+    . src/tests/lib/commons-io.jar
+    . src/tests/lib/commons-fileupload.jar
+    . src/tests/impl/com/mycompany/allinone/cc/MultipartCallingConvention.java
+    . src/tests/impl/com/mycompany/allinone/cc/CallResultOutputter.java
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
