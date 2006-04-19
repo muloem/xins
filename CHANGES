@@ -22,6 +22,9 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     implementation standard calling convention.
     This only affects the StandardCallingConvention class.
 
+* Generation of server-side Java code:
+  - Fixed incorrect name of the class for the _url type.
+
 * Tests:
   - Added an example CustomCallingConvention implementation:
     MultipartCallingConvention. This implementation supports multipart
