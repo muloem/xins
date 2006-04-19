@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 
 <project name="xins-extra" basedir=".">
-	
+
 	<!--
 	Defines the 'junit' task. This target fails if the required class for
 	this task is not available.
@@ -549,6 +549,7 @@ ${sf.file}</fail>
 			<include name="demo/capis/**/*"                />
 			<include name="demo/xins-project/**/*"         />
 			<include name="demo/*.xml"                     />
+			<include name="demo/xins.properties"           />
 			<include name="build.xml"                      />
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
