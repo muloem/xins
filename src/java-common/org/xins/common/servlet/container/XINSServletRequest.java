@@ -7,6 +7,8 @@
 package org.xins.common.servlet.container;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -191,11 +193,14 @@ public class XINSServletRequest implements HttpServletRequest {
    private Cookie[] _cookies;
 
    /**
-    * Status of the retrieval. Value is -1 if {@link #getInputStream()} has
-    * been called, it is 1 if {@link #getReader()} has been called or 0 if
-    * none of them have been called yet.
+    * Flags indicating that the input stream has been used.
     */
-   private int _retrievalStatus;
+   private boolean _inputStreamUsed = false;
+
+   /**
+    * Flags indicating that the reader has been used.
+    */
+   private boolean _readerUsed = false;
 
 
    //-------------------------------------------------------------------------
@@ -402,21 +407,18 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public ServletInputStream getInputStream() {
-
-      if (_retrievalStatus == 1) {
+      if (_readerUsed) {
          throw new IllegalStateException("The method getReader() has already been called on this request.");
       }
-
+      _inputStreamUsed = true;
       return new InputStream(_postData);
    }
 
-   public BufferedReader getReader()
-   throws IllegalStateException {
-
-      if (_retrievalStatus == -1) {
+   public BufferedReader getReader() {
+      if (_inputStreamUsed) {
          throw new IllegalStateException("The method getInputStream() has already been called on this request.");
       }
-
+      _readerUsed = true;
       return new BufferedReader(new StringReader(new String(_postData)));
    }
 
@@ -522,9 +524,9 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst.dehaan@nl.wanadoo.com">Ernst de Haan</a>
+    * @author <a href="mailto:anthony.goubard@nl.wanadoo.com">Anthony Goubard</a>
     */
-   private static class InputStream
-   extends ServletInputStream {
+   private static class InputStream extends ServletInputStream {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -538,14 +540,13 @@ public class XINSServletRequest implements HttpServletRequest {
        *    the data, as a set of bytes, can be <code>null</code>.
        */
       private InputStream(char[] data) {
-         final String ENCODING = "ISO-8859-1";
+         String encoding = "ISO-8859-1";
          try {
-            _data = new String(data).getBytes(ENCODING);
+            byte[] dataAsByte = new String(data).getBytes(encoding);
+            _stream = new ByteArrayInputStream(dataAsByte);
          } catch (UnsupportedEncodingException exception) {
-            throw new RuntimeException("Failed to convert char[] to byte[] using encoding \"" + ENCODING + "\".");
+            throw new RuntimeException("Failed to convert char[] to byte[] using encoding \"" + encoding + "\".");
          }
-
-         // XXX: This conversion is not guaranteed to succeed!
       }
 
 
@@ -556,63 +557,39 @@ public class XINSServletRequest implements HttpServletRequest {
       /**
        * The data. Is <code>null</code> if there is no data.
        */
-      private final byte[] _data;
-
-      /**
-       * The index into the data. Initially <code>0</code>.
-       */
-      private int _index;
+      private final ByteArrayInputStream _stream;
 
 
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
 
-      public int read() {
-         if (_index >= _data.length) {
-            return -1;
-         } else {
-            return _data[_index++];
-         }
+      public int read() throws IOException {
+         return _stream.read();
       }
 
-      public int read(byte[] b) {
-         return read(b, 0, b.length);
+      public int read(byte[] b) throws IOException {
+         return _stream.read(b);
       }
 
-      public int read(byte[] b, int off, int len) {
-
-         // Error: Index out of bounds
-         // NullPointerException if b == null
-         if (off < 0 || len < 0 || (off + len > b.length)) {
-            throw new IndexOutOfBoundsException();
-         }
-
-         // Number of bytes to read is 0
-         if (len == 0) {
-            return 0;
-         }
-
-         // At EOF (end-of-file)
-         if (_index >= _data.length) {
-            return -1;
-         }
-
-         // Determine how many bytes should be copied
-         int count = Math.min(len, _data.length - _index);
-
-         // Perform copy
-         System.arraycopy(_data, _index, b, off, count);
-
-         // Update the index
-         _index += count;
-
-         // Return the number of character copied
-         return count;
+      public int read(byte[] b, int off, int len) throws IOException {
+         return _stream.read(b, off, len);
       }
 
-      public int available() {
-         return Math.max(_data.length - _index, 0);
+      public boolean markSupported() {
+         return _stream.markSupported();
+      }
+
+      public void mark(int readlimit) {
+         _stream.mark(readlimit);
+      }
+
+      public long skip(long n) throws IOException {
+         return _stream.skip(n);
+      }
+
+      public void reset() throws IOException {
+         _stream.reset();
       }
    }
 }
