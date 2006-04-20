@@ -124,14 +124,14 @@
 	<translation entry="3505">Le thread vérifiant l'URL: <value-of-param name="url" format="quoted" /> est toujours actif.</translation>
 	<translation entry="3506">La convention d'appel <value-of-param name="conventionClassName" format="quoted" /> ne peut pas convertir le résultat à cause d'une erreur d'E/S.</translation>
 	<translation entry="3507">Impossible d'obtenir la convention d'appel <value-of-param name="name" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
-<!-- FIXME TODO -->	<translation entry="3508">Request does not specify any calling convention.</translation>
-<!-- FIXME TODO -->	<translation entry="3509">Using matching calling convention <value-of-param name="conventionClassName" format="quoted" /> for request, since it did not specify any calling convention.</translation>
-<!-- FIXME TODO -->	<translation entry="3510">Unable to detect calling convention for request. None of the calling conventions matches.</translation>
-<!-- FIXME TODO -->	<translation entry="3511">Unable to detect calling convention for request. Multiple calling conventions match.</translation>
-<!-- FIXME TODO -->	<translation entry="3512">Cache miss for parsed request XML.</translation>
-<!-- FIXME TODO -->	<translation entry="3513">Cache hit for parsed request XML.</translation>
-<!-- FIXME TODO -->	<translation entry="3514">Caching parsed request XML.</translation>
-<!-- FIXME TODO -->	<translation entry="3515">Not caching parsed request XML since the content-type is not "text/xml".</translation>
+	<translation entry="3508">La requête ne spécificie pas de convention d'appel.</translation>
+	<translation entry="3509">Utilisation de la conventoni d'appel <value-of-param name="conventionClassName" format="quoted" /> convenant à la requête, puisqu'aucune convention d'appel ne fut spécifié.</translation>
+	<translation entry="3510">Impossible de détecter la convention d'appel. Aucune convention d'appel ne convient.</translation>
+	<translation entry="3511">Impossible de détecter la convention d'appel poour la requête. Plusieurs conventions d'appel conviennent.</translation>
+	<translation entry="3512">Cache non utilisé pour l'analyse de la requête XML.</translation>
+	<translation entry="3513">Cache utilisé pour l'analyse de la requête XML.</translation>
+	<translation entry="3514">Mise en cache de l'analyse de la requête XML.</translation>
+	<translation entry="3515">L'analyse de la requête XML n'est pas mise en cache car le type MIME de la requête n'est pas "text/xml".</translation>
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>

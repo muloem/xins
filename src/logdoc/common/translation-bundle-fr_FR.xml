@@ -45,28 +45,16 @@
 
 	<translation entry="1350">La valeur de la propriété <value-of-param name="key" format="quoted" /> à changé de <value-of-param name="oldValue" format="quoted" /> à <value-of-param name="newValue" format="quoted" />.</translation>
 
-	<!-- TODO FIXME: Translate 1400-1409, below here -->
-	<translation entry="1400">Expiry folder #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />): Tick processed. Entries expired: <value-of-param name="expired" />.</translation>
-	<translation entry="1401">Associated expiry folder #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />) with expiry strategy #<value-of-param name="strategyInstanceNumber" />.</translation>
-	<translation entry="1402">Expiry strategy thread #<value-of-param name="instanceNumber" /> started.</translation>
-	<translation entry="1403">Expiry strategy thread #<value-of-param name="instanceNumber" /> stopped.</translation>
-	<translation entry="1404">Sleeping <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
-	<translation entry="1405">Sleep interrupted after <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
-	<translation entry="1406">Woke up after sleeping <value-of-param name="duration" /> ms in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
-	<translation entry="1407">Triggering tick in expiry strategy thread #<value-of-param name="instanceNumber" />.</translation>
-	<translation entry="1408">Expiry folder #<value-of-param name="instanceNumber" /> (<value-of-param name="name" format="quoted" />) constructed.</translation>	
-	<translation entry="1409">Expiry strategy #<value-of-param name="instanceNumber" /> constructed. Time-out is <value-of-param name="timeOut" /> ms. Precision is <value-of-param name="precision" /> ms.</translation>
-	
-	<!-- TODO: Old translations for 1400-1407 are below here
-	<translation entry="1400">Dossier d'expiration <value-of-param name="folderName" format="quoted" />: tic-tac effectué. Entrées expirées: <value-of-param name="expired" />.</translation>
-	<translation entry="1401"><value-of-param name="folder" /> associé avec <value-of-param name="strategy" />.</translation>
-	<translation entry="1402">Thread de la stratégie d'expiration <value-of-param name="name" format="quoted" /> démarré.</translation>
-	<translation entry="1403">Thread de la stratégie d'expiration <value-of-param name="name" format="quoted" /> arrêté.</translation>
-	<translation entry="1404">Pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
-	<translation entry="1405">Pause interrompue après <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
-	<translation entry="1406">Reprise après une pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration.</translation>
-	<translation entry="1407">Execution d'un tic-tac dans le thread de la stratégie d'expiration.</translation>
-	-->
+	<translation entry="1400">Dossier d'expiration #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />): ti-tac effectué. Entrées expirées: <value-of-param name="expired" />.</translation>
+	<translation entry="1401">Dossier d'expiration #<value-of-param name="folderInstanceNumber" /> (<value-of-param name="folderName" format="quoted" />) est associé à la stratégie d'expiration #<value-of-param name="strategyInstanceNumber" />.</translation>
+	<translation entry="1402">Thread de la stratégie d'expiration #<value-of-param name="instanceNumber" /> démarré.</translation>
+	<translation entry="1403">Thread de la stratégie d'expiration #<value-of-param name="instanceNumber" /> arrêté.</translation>
+	<translation entry="1404">Pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1405">Pause interrompue après <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1406">Reprise après une pause de <value-of-param name="duration" /> ms dans le thread de la stratégie d'expiration #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1407">Execution d'un tic-tac dans le thread de la stratégie d'expiration #<value-of-param name="instanceNumber" />.</translation>
+	<translation entry="1408">Dossier d'expiration #<value-of-param name="instanceNumber" /> (<value-of-param name="name" format="quoted" />) construit.</translation>	
+	<translation entry="1409">Stratégie d'expiration #<value-of-param name="instanceNumber" /> construite. Le time-out est de <value-of-param name="timeOut" /> ms. La précision est de <value-of-param name="precision" /> ms.</translation>
 
 	<translation entry="1500">Demarrage du conteneur de la Servlet sur le port <value-of-param name="port" />.</translation>
 	<translation entry="1501">Le conteneur HTTP de la Servlet a provoqué une exception E/S.</translation>

@@ -23,7 +23,7 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     This only affects the StandardCallingConvention class.
 
 * Logdoc:
-  - Fixed some french translations in client, common and server.
+  - Fixed some French translations in client, common and server.
 
 * Generation of server-side Java code:
   - Fixed incorrect name of the class for the _url type.
