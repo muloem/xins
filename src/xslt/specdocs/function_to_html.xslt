@@ -42,7 +42,7 @@
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
-	<xsl:preserve-space elements="function/examples" />
+	<xsl:preserve-space elements="examples" />
 
 	<xsl:template match="function">
 
