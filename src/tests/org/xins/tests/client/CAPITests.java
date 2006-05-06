@@ -239,7 +239,7 @@ public class CAPITests extends TestCase {
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.MyProjectServlet", "/myproject");
 
       try {
-         TargetDescriptor descriptor = new TargetDescriptor("http://localhost:8080/myproject");
+         TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/myproject");
          com.mycompany.myproject.capi.CAPI capi = new com.mycompany.myproject.capi.CAPI(descriptor);
          capi.callMyFunction(com.mycompany.myproject.types.Gender.MALE, "Bnd");
          fail("callMyFunction succeeded even with a invalid name");
