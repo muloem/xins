@@ -88,9 +88,14 @@ public class XINSServletRequest implements HttpServletRequest {
     * @param url
     *    the request URL or the list of the parameters (name=value) separated
     *    with comma's.
+    *
+    * @deprecated
+    *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
+    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
     */
    public XINSServletRequest(String url) {
-      _url = url;
+      _method = "GET";
+      _url    = url;
       parseURL(url);
    }
 
@@ -108,16 +113,21 @@ public class XINSServletRequest implements HttpServletRequest {
     *    the content type of the request.
     *
     * @since XINS 1.3.0
+    *
+    * @deprecated
+    *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
+    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
     */
    public XINSServletRequest(String url, char[] data, String contentType) {
-      _url = url;
-      _postData = data;
+      _method      = (_postData == null) ? "GET" : "POST";
+      _url         = url;
+      _postData    = data;
       _contentType = contentType;
       parseURL(url);
    }
 
    /**
-    * Creates a new Servlet request.
+    * Creates a new servlet request.
     *
     * @param url
     *    the request URL or the list of the parameters (name=value) separated
@@ -131,9 +141,45 @@ public class XINSServletRequest implements HttpServletRequest {
     *    is a String.
     *
     * @since XINS 1.4.0
+    *
+    * @deprecated
+    *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
+    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
     */
    public XINSServletRequest(String url, char[] data, Map headers) {
-      _url = url;
+      _method   = (_postData == null) ? "GET" : "POST";
+      _url      = url;
+      _postData = data;
+      _headers.putAll(headers);
+
+      if (headers.get("Content-Type") != null) {
+         _contentType = (String) headers.get("Content-Type");
+      }
+      parseURL(url);
+   }
+
+   /**
+    * Creates a new servlet request with the specified method.
+    *
+    * @param method
+    *    the request method, cannot be <code>null</code>.
+    *
+    * @param url
+    *    the request URL or the list of the parameters (name=value) separated
+    *    with ampersands.
+    *
+    * @param data
+    *    the content of the request.
+    *
+    * @param headers
+    *    the HTTP headers of the request. The key and the value of the Map
+    *    is a String.
+    *
+    * @since XINS 1.5.0
+    */
+   public XINSServletRequest(String method, String url, char[] data, Map headers) {
+      _method   = method;
+      _url      = url;
       _postData = data;
       _headers.putAll(headers);
       if (headers.get("Content-Type") != null) {
@@ -146,6 +192,11 @@ public class XINSServletRequest implements HttpServletRequest {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
+
+   /**
+    * The HTTP request method.
+    */
+   private final String _method;
 
    /**
     * The requested URL including the optional parameters.
@@ -335,11 +386,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getMethod() {
-      if (_postData == null) {
-         return "GET";
-      } else {
-         return "POST";
-      }
+      return _method;
    }
 
    public Enumeration getLocales() {

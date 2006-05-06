@@ -153,15 +153,14 @@ public class LocalServletHandler {
    }
 
    /**
-    * Queries the Servlet with the specified URL with the specific content
-    * and the specified MIME type.
+    * Queries the servlet with the specified URL, content and MIME type.
     *
     * @param url
     *    the url query for the request, if <code>null</code> then the /
     *    path is used as default with no parameters.
     *
     * @param data
-    *    the data post for the request. <code>null</code> for HTTP GET queries.
+    *    the data post for the request, can be <code>null</code>.
     *
     * @param contentType
     *    the content type of the request, can be <code>null</code>.
@@ -173,6 +172,10 @@ public class LocalServletHandler {
     *    If the query is not handled correctly by the servlet.
     *
     * @since XINS 1.3.0
+    *
+    * @deprecated
+    *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
+    *    Use {@link #query(String,String,char[],Map)} instead.
     */
    public XINSServletResponse query(String url,
                                     char[] data,
@@ -215,6 +218,10 @@ public class LocalServletHandler {
     *    If the query is not handled correctly by the servlet.
     *
     * @since XINS 1.4.0
+    *
+    * @deprecated
+    *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
+    *    Use {@link #query(String,String,char[],Map)} instead.
     */
    public XINSServletResponse query(String url,
                                     char[] data,
@@ -224,6 +231,52 @@ public class LocalServletHandler {
       Log.log_1504(url);
 
       XINSServletRequest request = new XINSServletRequest(url, data, headers);
+      XINSServletResponse response = new XINSServletResponse();
+      try {
+         _apiServlet.service(request, response);
+      } catch (ServletException ex) {
+         Log.log_1505(ex);
+         throw new IOException(ex.getMessage());
+      }
+      Log.log_1506(response.getResult(), response.getStatus());
+      return response;
+   }
+
+   /**
+    * Queries the servlet with the specified method, URL, content and HTTP
+    * headers.
+    *
+    * @param method
+    *    the request method, cannot be <code>null</code>.
+    *
+    * @param url
+    *    the url query for the request, if <code>null</code> then the /
+    *    path is used as default with no parameters.
+    *
+    * @param data
+    *    the data post for the request. <code>null</code> for HTTP GET queries.
+    *
+    * @param headers
+    *    the HTTP headers passed with the query, cannot be <code>null</code>.
+    *    The key and the value of the Map is String.
+    *
+    * @return
+    *    the servlet response.
+    *
+    * @throws IOException
+    *    If the query is not handled correctly by the servlet.
+    *
+    * @since XINS 1.5.0
+    */
+   public XINSServletResponse query(String method,
+                                    String url,
+                                    char[] data,
+                                    Map headers)
+   throws IOException {
+
+      Log.log_1504(url);
+
+      XINSServletRequest request = new XINSServletRequest(method, url, data, headers);
       XINSServletResponse response = new XINSServletResponse();
       try {
          _apiServlet.service(request, response);

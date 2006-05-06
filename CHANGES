@@ -16,6 +16,8 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     implements getContentLength(). The problem was in the getIntHeader()
     method.
     This only affects the XINSServletRequest class.
+  - Improved the built-in servlet container. Added support for request
+    methods other than GET and POST.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the

@@ -38,9 +38,8 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 
-
 /**
- * HTTP Server used to invoke the XINS Servlet.
+ * HTTP Server used to invoke the XINS servlet.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -392,30 +391,50 @@ public class HTTPServletHandler {
                          BufferedOutputStream outbound) throws IOException {
 
       // Read the input
-      String inputLine;
       String url = null;
       char[] contentData = null;
       Map inHeaders = new HashMap();
       int contentLength = -1;
       String inContentType = null;
       boolean inputRead = false;
+      String encoding = "ISO-8859-1";
+      String method;
+      String httpResult;
       boolean getMethod = false;
 
+      // Read the first line
+      String inputLine = input.readLine();
+      if (inputLine == null || inputLine.length() < 1) {
+         httpResult = "HTTP/1.1 400 Bad Request\r\n";
+         byte[] bytes = httpResult.getBytes(encoding);
+         outbound.write(bytes, 0, bytes.length);
+         outbound.flush();
+         return;
+      }
+
+      // Find the space
+      int spaceIndex = inputLine.indexOf(' ');
+      if (spaceIndex < 1) {
+         httpResult = "HTTP/1.1 400 Bad Request\r\n";
+         byte[] bytes = httpResult.getBytes(encoding);
+         outbound.write(bytes, 0, bytes.length);
+         outbound.flush();
+         return;
+      }
+
+      // Determine the method
+      method = inputLine.substring(0, spaceIndex).toUpperCase();
+
+      url = inputLine.substring(spaceIndex + 1);
+      if ("GET".equals(method) || "HEAD".equals(method)) {
+         url = url.replace(',', '&');
+         getMethod = true;
+      }
+
       while (!inputRead && (inputLine = input.readLine()) != null) {
-         //System.err.println(": " + inputLine);
-
-         // Read the URL received with HTTP GET
-         if (inputLine.startsWith("GET ")) {
-            url = inputLine.substring(4);
-            url = url.replace(',', '&');
-            getMethod = true;
-
-         // Read the URL received with HTTP POST
-         } else if (inputLine.startsWith("POST ")) {
-            url = inputLine.substring(5);
 
          // Read the HTTP headers
-         } else if (inputLine.indexOf(": ") != -1) {
+         if (inputLine.indexOf(": ") > 0) {
             int colonPos = inputLine.indexOf(": ");
             String headerKey = inputLine.substring(0, colonPos);
             String headerValue = inputLine.substring(colonPos + 2);
@@ -441,10 +460,8 @@ public class HTTPServletHandler {
          }
       }
 
-      String httpResult;
-      String encoding = "ISO-8859-1";
 
-      // Normalize the URL
+      // Normalize the URL (removing the " HTTP/1.1" suffix)
       if (url != null && url.indexOf(' ') != -1) {
          url = url.substring(0, url.indexOf(' '));
          if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
@@ -488,7 +505,7 @@ public class HTTPServletHandler {
          } else {
 
             // Query the Servlet
-            XINSServletResponse response = servlet.query(url, contentData, inHeaders);
+            XINSServletResponse response = servlet.query(method, url, contentData, inHeaders);
 
             // Create the HTTP answer
             httpResult = "HTTP/1.1 " + response.getStatus() + " " +
@@ -500,7 +517,7 @@ public class HTTPServletHandler {
                String headerValue = headers.get(nextHeader);
                if (headerValue != null) {
                   httpResult += nextHeader + ": " + headerValue + "\r\n";
-                  //System.err.println(": " + nextHeader + ": " + headerValue);
+                  //System.out.println(": " + nextHeader + ": " + headerValue);
                }
             }
 
