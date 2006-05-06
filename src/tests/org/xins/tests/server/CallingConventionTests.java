@@ -19,6 +19,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.xins.common.collections.BasicPropertyReader;
@@ -37,6 +38,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class CallingConventionTests extends TestCase {
 
@@ -526,11 +528,11 @@ public class CallingConventionTests extends TestCase {
     * Test the custom calling convention.
     */
    public void testCustomCallingConvention() throws Exception {
-      URL url = new URL("http://localhost:8080/?query=hello%20Custom&_convention=xins-tests");
+      URL url = new URL("http://127.0.0.1:8080/?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.connect();
       assertEquals(200, connection.getResponseCode());
-      URL url2 = new URL("http://localhost:8080/?query=hello%20Custom&_convention=xins-tests");
+      URL url2 = new URL("http://127.0.0.1:8080/?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
       connection2.connect();
       try {
@@ -538,6 +540,42 @@ public class CallingConventionTests extends TestCase {
       } catch (IOException ioe) {
          assertTrue(ioe.getMessage(), ioe.getMessage().indexOf(" 400") != -1);
       }
+   }
+
+   /**
+    * Tests the HTTP OPTIONS method.
+    */
+   public void testOptionsMethod() throws Exception {
+
+      // Prepare a connection
+      OptionsMethod method = new OptionsMethod("http://127.0.0.1:8080/");
+      HttpClient client = new HttpClient();
+      client.setConnectionTimeout(5000);
+      client.setTimeout(5000);
+
+      // Perform the call and release the connection
+      int code;
+      byte[] returnedData;
+      try {
+         code = client.executeMethod(method);
+         returnedData = method.getResponseBody();
+      } finally {
+         method.releaseConnection();
+      }
+
+      // Expect "200 OK"
+      assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request.",
+                   200, code);
+
+      // Expect empty body
+      assertTrue("Expected no body in response to an HTTP OPTIONS request.",
+                 returnedData == null || returnedData.length == 0);
+
+      /*
+      // Expect "Accept" field
+      String acceptField = connection.getHeaderField("accept");
+      assertNotNull("Expected \"Accept\" field in response to an HTTP OPTIONS request.", acceptField);
+      */
    }
 
    /**

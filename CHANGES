@@ -21,6 +21,7 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
     implementation standard calling convention.
     This only affects the StandardCallingConvention class.
+  - Added a unit test for testing the OPTIONS method.
 
 * Logdoc:
   - Fixed some French translations in client, common and server.
