@@ -5,13 +5,13 @@
 #
 # $Id$
 
-# Make sure XINS_HOME is set
-if [ "${XINS_HOME}" = "" ]
-then
+# Determine whether XINS_HOME is set
+if [ "${XINS_HOME}" = "" ]; then
+
    # Determine script directory
    __DIRNAME__=`dirname $0`
 
-   # Assume parent of script directory is XINS home
+   # Assume the parent of the script directory is the XINS home directory
    XINS_HOME=`dirname ${__DIRNAME__}`
    if [ "${XINS_VERBOSE}" = "true" ]; then
       echo "XINS_HOME not set, assuming: ${XINS_HOME}"
