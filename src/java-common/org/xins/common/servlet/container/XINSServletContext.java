@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Set;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
@@ -136,9 +137,15 @@ public class XINSServletContext implements ServletContext {
    public InputStream getResourceAsStream(String str) {
       try {
          JarFile warFile = new JarFile(_config.getWarFile());
-         return warFile.getInputStream(warFile.getJarEntry(str));
+         JarEntry entry = warFile.getJarEntry(str);
+         if (entry == null) {
+            Log.log_1514(str, "No entry.");
+            return null;
+         } else {
+            return warFile.getInputStream(entry);
+         }
       } catch (IOException ioe) {
-         Log.log_1514(ioe, str);
+         Log.log_1514(str, ioe.getMessage());
          return null;
       }
    }
