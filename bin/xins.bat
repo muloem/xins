@@ -16,9 +16,9 @@ IF NOT ""%XINS_HOME%"" == """" GOTO test_version
 IF NOT "%OS%" == "Windows_NT" GOTO show_error
 for %%x in (%0) do set XINS_HOME=%%~dpsx
 for %%x in (%XINS_HOME%) do set XINS_HOME=%%~dpsx
-set XINS_HOME=%XINS_HOME%..\
+set XINS_HOME=%XINS_HOME%..
 
-IF NOT EXIST %XINS_HOME%\build.xml GOTO show_error
+IF NOT EXIST "%XINS_HOME%\build.xml" GOTO show_error
 
 ECHO XINS_HOME not set, Setting the scripts directory as XINS_HOME=%XINS_HOME%
 
@@ -33,7 +33,7 @@ GOTO end
 
 :: Generate the Ant build file
 :start_build
-CALL ant -f %XINS_HOME%\src\ant\make-build.xml -Dxins_home=%XINS_HOME%
+CALL ant -f "%XINS_HOME%\src\ant\make-build.xml" -Dxins_home=%XINS_HOME%
 IF ERRORLEVEL 1 GOTO end
 
 :: Execute the Ant build file

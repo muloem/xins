@@ -30,7 +30,7 @@ Name: "{group}\Primer"; Filename: "{app}\docs\primer\primer.html"; WorkingDir: "
 ;Name: "{group}\{cm:UninstallProgram,XINS}"; Filename: "{uninstallexe}"
 
 [Registry]
-Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: "{code:AddQuotes|{app}}"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XINS_HOME"; ValueData: "{app}"; Flags: uninsdeletevalue
 Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "PATH"; ValueData: "{code:GetNewPath|{app}\bin}"; Flags: preservestringtype
 ;"{app}\bin;{reg:HKCU\Environment,PATH|""}"; Flags: preservestringtype
 
