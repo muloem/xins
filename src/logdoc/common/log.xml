@@ -299,9 +299,10 @@
 			<description>Incorrect URL.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
-		<entry id="1514" level="WARNING" exception="true">
+		<entry id="1514" level="WARNING">
 			<description>Resource not found.</description>
 			<param name="location" type="text" nullable="false" />
+			<param name="reason" type="text" />
 		</entry>
 	</group>
 	

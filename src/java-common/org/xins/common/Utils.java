@@ -272,6 +272,49 @@ public final class Utils extends Object {
    /**
     * Logs an exception that will be ignored.
     *
+    * @param exception
+    *    the exception to log, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>exception == null</code>.
+    *
+    * @since XINS 1.5.0
+    */
+   public static void logIgnoredException(Throwable exception)
+   throws IllegalArgumentException {
+
+      String sourceClass;
+      String sourceMethod;
+
+      try {
+
+         // Determine the source of the exception
+         StackTraceElement[] trace  = exception.getStackTrace();
+         StackTraceElement   source = trace[trace.length - 1];
+
+         // Determine source class and method
+         sourceClass  = source.getClassName();
+         sourceMethod = source.getMethodName();
+
+      // If there's any exception, then fallback to default values
+      } catch (Throwable t) {
+         sourceClass  = "<unknown>";
+         sourceMethod = "<unknown>";
+      }
+
+      // Determine detecting class and method
+      String detectingClass  = getCallingClass();
+      String detectingMethod = getCallingMethod();
+
+      // Call alternative method with detail set to null
+      logIgnoredException(detectingClass, detectingMethod,
+                          sourceClass,    sourceMethod,
+                          null,           exception);
+   }
+
+   /**
+    * Logs an exception that will be ignored.
+    *
     * @param detectingClass
     *    the name of the class that caught the exception, cannot be
     *    <code>null</code>.
