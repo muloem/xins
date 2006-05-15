@@ -248,7 +248,7 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="-prepare-coverage" depends="clean-coverage">
-		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties"/>
+		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties" />
 		<cobertura-instrument todir="build/instrumented-classes/java-client">
 			<fileset dir="build/classes/java-client" includes="**/*.class" />
 		</cobertura-instrument>
