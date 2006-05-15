@@ -6,7 +6,9 @@
  */
 package org.xins.client;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.CodeSource;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -320,7 +322,23 @@ public abstract class AbstractCAPI extends Object {
 
       // Lazily initialize _apiSpecification
       if (_apiSpecification == null) {
-         URL specsURL = getClass().getResource("/specs/");
+         URL specsURL = null;
+         CodeSource source = getClass().getProtectionDomain().getCodeSource();
+         if (source != null) {
+            URL sourceURL = source.getLocation();
+            try {
+               if (sourceURL.getPath().endsWith(".jar")) {
+                  specsURL = new URL("jar:" + sourceURL.toExternalForm() + "!/specs/");
+               } else {
+                  specsURL  = new URL(sourceURL.toExternalForm() + "/specs/");
+               }
+            } catch (MalformedURLException murlex) {
+               Utils.logIgnoredException(murlex);
+               specsURL = getClass().getResource("/specs/");
+            }
+         } else {
+            specsURL = getClass().getResource("/specs/");
+         }
          _apiSpecification = new APISpec(getClass(), specsURL.toExternalForm());
       }
 
