@@ -52,7 +52,7 @@ public class AllTests extends TestSuite {
 
       suite.addTestSuite(org.xins.tests.common.ant.CallXINSTaskTests.class);
 
-      /*suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
+      suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.ChainedMapTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.CollectionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.PropertyReaderUtilsTests.class);
@@ -144,7 +144,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.JavaXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.ResultcodeUniquenessTestCase.class);
-      suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);*/
+      suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
 
 
       // XXX: Perform just a single test
