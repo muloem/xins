@@ -6,7 +6,10 @@
  */
 package org.xins.server;
 
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -501,5 +504,27 @@ final class EngineStarter extends Object {
       }
 
       return apiName;
+   }
+
+   /**
+    * Registers the API MBean.
+    *
+    * @param api
+    *    the API, never <code>null</code>.
+    */
+   void registerMBean(API api) {
+      try {
+         APIManager mbean = new APIManager(api);
+         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+         ObjectName name = new ObjectName("org.xins.server:type=APIManager");
+         mbs.registerMBean(mbean, name);
+
+      // If for any reason it doesn't work, ignore.
+      // For example if the server is running on Java 1.4 a ClassNotFoundException
+      // may be thrown.
+      } catch (Throwable ex) {
+         // Utils.logIgnoredException(ex);
+         ex.printStackTrace();
+      }
    }
 }

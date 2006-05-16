@@ -80,7 +80,7 @@ implements DefaultResultCodes {
    /**
     * The name of the build property that specifies the version of the API.
     */
-   private static final String API_VERSION_PROPERTY = "org.xins.api.version";
+   static final String API_VERSION_PROPERTY = "org.xins.api.version";
 
    /**
     * The name of the build property that specifies the hostname of the
@@ -306,12 +306,35 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Gets the properties specified in the implementation.
+    * Gets the bootstrap properties specified for the API.
+    *
+    * @return
+    *   the bootstrap properties, cannot be <code>null</code>.
+    */
+   PropertyReader getBootstrapProperties() {
+      return _buildSettings;
+   }
+
+   /**
+    * Gets the API runtime properties.
+    *
+    * @return
+    *   the bootstrap properties, cannot be <code>null</code>.
+    */
+   PropertyReader getRuntimeProperties() {
+      return _runtimeSettings;
+   }
+
+   /**
+    * Gets the runtime properties specified in the implementation.
     *
     * @return
     *    the runtime properties for the API, cannot be <code>null</code>.
     */
    public RuntimeProperties getProperties() {
+
+      // This method is overridden by the APIImpl to return the generated 
+      // RuntimeProperties class which contains the runtime properties.
       return _emptyProperties;
    }
 
@@ -1294,7 +1317,7 @@ implements DefaultResultCodes {
     * @return
     *    the date string, never <code>null</code>.
     */
-   private final String toDateString(long millis) {
+   final String toDateString(long millis) {
       return DateConverter.toDateString(_timeZone, millis);
    }
 

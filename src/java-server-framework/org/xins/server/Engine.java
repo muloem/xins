@@ -140,6 +140,7 @@ final class Engine extends Object {
       if (! bootstrapAPI()) {
          throw new ServletException(); // XXX
       }
+      _starter.registerMBean(_api);
 
       // Done bootstrapping the framework
       Log.log_3225(Library.getVersion());
