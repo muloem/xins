@@ -127,7 +127,7 @@ public class CreateExampleTask extends Task {
          Element requestXML = getRequestAsXML();
          log("request: " + requestXML.toString(), Project.MSG_VERBOSE);
 
-         Element resultXML = getResultAsXML();
+         Element resultXML = getResultAsXML(_requestURL);
          log("result: " + resultXML.toString(), Project.MSG_VERBOSE);
 
          ElementBuilder builder = new ElementBuilder("combined");
@@ -138,7 +138,7 @@ public class CreateExampleTask extends Task {
          String example = transformElement(combined);
          getProject().setUserProperty(_exampleProperty, example);
       } catch (Exception ex) {
-         throw new BuildException("Error: " + ex.getMessage());
+         throw new BuildException(ex);
       }
    }
 
@@ -198,18 +198,12 @@ public class CreateExampleTask extends Task {
          String paramValue = (equalPos == nextParam.length() - 1) ? "" : nextParam.substring(equalPos + 1);
 
          // Handle the _function parameter
-
-         // Handle the _function parameter
          if (paramName.equals("_function")) {
             requestBuilder.setAttribute("function", paramValue);
             if (_functionProperty != null) {
-
-         // Handle the _data parameter
                getProject().setUserProperty(_functionProperty, paramValue);
             }
 
-
-         // Handle the input parameters of the function
          // Handle the _data parameter
          } else if (paramName.equals("_data")) {
             String dataSectionXML = URLEncoding.decode(paramValue);
@@ -228,15 +222,18 @@ public class CreateExampleTask extends Task {
    /**
     * Gets the result from the API.
     *
+    * @param requestURL
+    *    The URL used to call the API, including the parameters. Cannot be <code>null</code>.
+    *
     * @return
     *    the result returned by the API when the request is performed.
     *
     * @throws Exception
     *    if the communication with the API fails or does not return an XMl element.
     */
-   private Element getResultAsXML() throws Exception {
+   static Element getResultAsXML(String requestURL) throws Exception {
       // Get the result of the request
-      URL url = new URL(_requestURL);
+      URL url = new URL(requestURL);
 
       // Read all the text returned by the server
       BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
