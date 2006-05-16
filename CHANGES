@@ -18,12 +18,15 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     This only affects the XINSServletRequest class.
   - Improved the built-in servlet container. Added support for request
     methods other than GET and POST.
+  - Added a new ANT task named callxins to call a XINS API.
+  - Added a new ANT task named xins to call a XINS target.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
     implementation standard calling convention.
     This only affects the StandardCallingConvention class.
   - Added a unit test for testing the OPTIONS method.
+  - Added JMX support with a simple MBean.
 
 * Logdoc:
   - Fixed some French translations in client, common and server.
