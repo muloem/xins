@@ -200,6 +200,7 @@ ${sf.file}</fail>
 				<pathelement location="src/tests/build/classes-api/allinone" />
 				<pathelement location="src/tests/build/classes-types/allinone" />
 				<pathelement location="src/tests/myproject-capi.jar" />
+				<pathelement location="${ant.home}/lib/ant.jar" />
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
 		</java>
@@ -248,7 +249,7 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="-prepare-coverage" depends="clean-coverage">
-		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties" />
+		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties"/>
 		<cobertura-instrument todir="build/instrumented-classes/java-client">
 			<fileset dir="build/classes/java-client" includes="**/*.class" />
 		</cobertura-instrument>
