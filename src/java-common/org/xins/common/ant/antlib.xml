@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<antlib>
+	<taskdef name="callxins" classname="org.xins.common.ant.CallXINSTask"/>
+	<taskdef name="hostname" classname="org.xins.common.ant.Hostname"/>
+	<taskdef name="createexample" classname="org.xins.common.ant.CreateExampleTask" />
+	<taskdef name="calltargets" classname="org.xins.common.ant.CallTargetsTask" />
+	<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" />
+	<macrodef name="xins">
+		<attribute name="api" />
+		<attribute name="target" />
+		<attribute name="projectdir" default="${basedir}"/>
+		<sequential>
+		<property environment="env" />
+			<available property="xins.home" value="${env.XINS_HOME}"
+								 file="${env.XINS_HOME}" type="dir" />
+			<fail message="Please set the XINS_HOME variable correctly" unless="xins.home" />
+			<ant antfile="${xins.home}/src/ant/make-build.xml" dir="@{projectdir}">
+				<property name="xins_home" value="${xins.home}" />
+				<property name="user.dir" value="@{projectdir}" />
+			</ant>
+			<ant antfile="${basedir}/build/build.xml"
+					 dir="${basedir}"
+					 target="@{target}-@{api}">
+				<property name="user.dir" value="@{projectdir}" />
+			</ant>
+		</sequential>
+	</macrodef>
+</antlib>
