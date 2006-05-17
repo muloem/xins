@@ -57,6 +57,9 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     . src/tests/impl/com/mycompany/allinone/cc/MultipartCallingConvention.java
     . src/tests/impl/com/mycompany/allinone/cc/CallResultOutputter.java
 
+* Generated build file:
+  - Added new tools targets.
+
 * Build- and release-process:
   - Fixed missing xins.properties in the demo directory.
 
