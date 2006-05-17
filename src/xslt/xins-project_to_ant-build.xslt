@@ -20,6 +20,7 @@
 	<xsl:include href="hungarian.xslt"       />
 	<xsl:include href="package_for_api.xslt" />
 	<xsl:include href="create_project.xslt"  />
+	<xsl:include href="tools.xslt"  />
 
 	<xsl:output indent="yes" />
 
@@ -153,6 +154,10 @@ APIs in this project are:
 				<xsl:with-param name="xins_home" select="$xins_home" />
 			</xsl:call-template>
 
+			<xsl:call-template name="tools">
+				<xsl:with-param name="xins_home" select="$xins_home" />
+			</xsl:call-template>
+			
 			<target name="-prepare" />
 
 			<target name="-prepare-specdocs" depends="-prepare, -load-dtds">
@@ -1288,18 +1293,20 @@ APIs in this project are:
 				<property name="test.start.server" value="false" />
 				<property name="org.xins.server.config" value="" />
 				<property name="servlet.port" value="8080" />
+				<property name="classes.tests.dir" value="build/classes-tests/{$api}" />
 				<junit fork="true" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
 					<sysproperty key="test.environment" value="${{test.environment}}" />
 					<sysproperty key="test.start.server" value="${{test.start.server}}" />
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
+					<sysproperty key="net.sourceforge.cobertura.datafile"	file="build/coverage/{$api}/cobertura.ser" />
 					<formatter type="xml" />
 					<test name="{$packageTests}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
 						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
-						<pathelement path="build/classes-tests/{$api}" />
+						<pathelement path="${{classes.tests.dir}}" />
 						<pathelement path="build/classes-api/{$api}" />
 						<pathelement path="build/classes-types/{$api}" />
 						<xsl:if test="impl">
