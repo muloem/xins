@@ -18,6 +18,9 @@ NOTE: This release is based on XINS 1.4.0-rc1.
     This only affects the XINSServletRequest class.
   - Improved the built-in servlet container. Added support for request
     methods other than GET and POST.
+  - Added a new facility method to log ignored exception.
+  - Fixed SF.net bug #1470309: API fails with no logs when no runtime
+    properties file is specified.
   - Added a new ANT task named callxins to call a XINS API.
   - Added a new ANT task named xins to call a XINS target.
 
@@ -28,12 +31,15 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Added a unit test for testing the OPTIONS method.
   - Added JMX support with a simple MBean.
 
+* XINS/Java Client Framework:
+  - Fixed SF.net bug #1476707: Functional errors logged as ERROR.
+
 * Logdoc:
   - Fixed some French translations in client, common and server.
 
 * Generation of specdocs:
   - Fixed SF.net bug #1478969. There was an XSLT bug in function_to_html.xslt
-    which was not detected by Java versions before 1.6.0, bu it was detected
+    which was not detected by Java versions before 1.6.0, but it was detected
     by 1.6.0 EA build 82.
 
 * Generation of server-side Java code:
@@ -53,6 +59,10 @@ NOTE: This release is based on XINS 1.4.0-rc1.
 
 * Build- and release-process:
   - Fixed missing xins.properties in the demo directory.
+
+* Shell script / batch file:
+  - Fixed SF.net bug #1476892. Now the XINS_HOME property set by the installer
+    will not contain quotes. The xins.bat script has been adapted accordingly.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
@@ -309,7 +319,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - Added the possibility to set ACL's specifically for an API.
   - The details are logged in case of an invalid response is returned.
   - Added data section in the logs.
-  - The parameters starting with an underscore are cleaned up in in the
+  - The parameters starting with an underscore are cleaned up in the
     CallingConvention#cleanUpParameters method.
   - Added support for multiple custom calling conventions. The default calling
     convention can also be specified in the impl.xml file.

@@ -33,8 +33,7 @@ public final class APIManager implements APIManagerMBean {
       try {
          _ip = InetAddress.getLocalHost().getHostAddress();
       } catch (UnknownHostException uhex) {
-         // Utils.logIgnoredException(uhex);
-         uhex.printStackTrace();
+         Log.log_3250(uhex);
          _ip = "127.0.0.1";
       }
    }

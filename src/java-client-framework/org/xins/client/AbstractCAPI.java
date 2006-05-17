@@ -333,7 +333,7 @@ public abstract class AbstractCAPI extends Object {
                   specsURL  = new URL(sourceURL.toExternalForm() + "/specs/");
                }
             } catch (MalformedURLException murlex) {
-               Utils.logIgnoredException(murlex);
+               Log.log_2116(murlex, getAPIName());
                specsURL = getClass().getResource("/specs/");
             }
          } else {

@@ -121,6 +121,10 @@
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="errorCode"  type="text"         nullable="false" />
 		</entry>
+		<entry id="2116" level="WARNING" exception="true">
+			<description>Unable to find the API specifications, trying with the ClassLoader.</description>
+			<param name="apiName" type="text" />
+		</entry>
 	</group>
 
 	<group id="parse" name="XINS call result parsing">

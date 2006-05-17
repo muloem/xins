@@ -520,11 +520,9 @@ final class EngineStarter extends Object {
          mbs.registerMBean(mbean, name);
 
       // If for any reason it doesn't work, ignore.
-      // For example if the server is running on Java 1.4 a ClassNotFoundException
-      // may be thrown.
+      // For example if the server is running on Java 1.4 a ClassNotFoundException may be thrown.
       } catch (Throwable ex) {
-         // Utils.logIgnoredException(ex);
-         ex.printStackTrace();
+         Log.log_3249(ex.getMessage());
       }
    }
 }

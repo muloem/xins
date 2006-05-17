@@ -254,6 +254,13 @@
 		<entry id="3248" level="INFO">
 			<description>The runtime properties file has not been defined, the system will use the xins.properties file found in the WEB-INF directory of the WAR file.</description>
 		</entry>
+		<entry id="3249" level="WARNING">
+			<description>Unable to register the management bean.</description>
+			<param name="details" />
+		</entry>
+		<entry id="3250" level="WARNING" exception="true">
+			<description>Unknown host, using localhost as default.</description>
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
