@@ -13,6 +13,7 @@
 	<!-- Print the footer -->
 	<xsl:template name="tools">
 		<xsl:param name="xins_home" />
+		<xsl:param name="cvsweb" />
 
 		<target name="-init-tools">
 			<path id="tools-cp">
@@ -40,7 +41,7 @@
 				</fileset>
 			</java2html>
 			<!--copy
-			file="${xins_home}/src/j2h/front.html"
+			file="{$xins_home}/src/j2h/front.html"
 			todir="build/j2h/${{api.name}}"
 			overwrite="true" /-->
 			<copy file="{$xins_home}/src/css/j2h/style.css"
@@ -68,7 +69,7 @@
 				<classpath refid="tools-cp" />
 			</taskdef>
 			<mkdir dir="build/checkstyle/${{api.name}}" />
-			<checkstyle config="${xins_home}/src/config/checkstyle/config.xml" failOnViolation="false">
+			<checkstyle config="{$xins_home}/src/config/checkstyle/config.xml" failOnViolation="false">
 				<formatter type="xml" tofile="build/checkstyle/${{api.name}}/results.xml"/>
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java"/>
@@ -77,9 +78,9 @@
 			<style
 			in="build/checkstyle/${{api.name}}/results.xml"
 			out="build/checkstyle/${{api.name}}/index.html"
-			style="${xins_home}/src/xslt/checkstyle/index.xslt" />
+			style="{$xins_home}/src/xslt/checkstyle/index.xslt" />
 			<copy
-			file="${xins_home}/src/css/checkstyle/style.css"
+			file="{$xins_home}/src/css/checkstyle/style.css"
 			tofile="build/checkstyle/${{api.name}}/stylesheet.css" />
 		</target>
 
@@ -92,7 +93,7 @@
 			</taskdef>
 			<delete dir="build/coverage/${{api.name}}" />
 			<mkdir dir="build/coverage/${{api.name}}" />
-			<antcall target="classes-${{api.name}}" />
+			<antcall target="classes-api-${{api.name}}" />
 			<cobertura-instrument todir="build/coverage/${{api.name}}/instrumented-classes">
 				<fileset dir="build/classes-api/${{api.name}}" includes="**/*.class" />
 			</cobertura-instrument>
@@ -100,7 +101,7 @@
 				<param name="test.start.server" value="true" />
 				<param name="classes.tests.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
-			<cobertura-report format="html"	datafile="build/coverage/${{api.name}}/cobertura.ser" destdir="build/coverage/${{api.name}}">
+			<cobertura-report format="html"	destdir="build/coverage/${{api.name}}"> <!-- datafile="build/coverage/${{api.name}}/cobertura.ser" -->
 				<fileset dir="${{api.source.dir}}" includes="**/*.java" />
 			</cobertura-report>
 		</target>
@@ -123,20 +124,43 @@
 
 		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generate the JDepend report for an API.">
 			<mkdir dir="build/jdepend/${{api.name}}" />
-			<jdepend classpathref="xins.classpath" outputfile="build/jdepend/${{api.name}}/${{api.name}}-jdepend.txt">
+			<jdepend classpathref="xins.classpath" format="xml" outputfile="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
 				<classespath>
 					<pathelement location="build/classes-api/${{api.name}}"/>
 				</classespath>
 			</jdepend>
+			<style in="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
+			out="build/jdepend/${{api.name}}/index.html"
+			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
 
-		<target name="cvschangelogs" depends="-init-tools" description="Generate the CVS change logs report an API.">
-			<mkdir dir="build/jdepend/${{api.name}}" />
-			<jdepend classpathref="xins.classpath" outputfile="build/jdepend/${{api.name}}/${{api.name}}-jdepend.txt">
-				<classespath>
-					<pathelement location="build/classes-api/${{api.name}}"/>
-				</classespath>
-			</jdepend>
+		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report an API.">
+			<mkdir dir="build/cvschangelog/${{api.name}}" />
+			<cvschangelog dir="${{api.source.dir}}/.." destfile="build/cvschangelog/${{api.name}}/changelog.xml" />
+			<style in="build/cvschangelog/${{api.name}}/changelog.xml"
+			out="index.html"
+			style="${{ant.home}}/etc/changelog.xsl">
+				<param name="title" expression="Change Log for ${{api.name}} API"/>
+				<param name="module" expression="${{api.name}}"/>
+				<param name="cvsweb" expression="{$cvsweb}/apis/${{api.name}}"/>
+			</style>
+		</target>
+
+		<target name="jmeter" depends="-init-tools" description="Execute some JMeter tests.">
+			<mkdir dir="build/jmeter/${{api.name}}" />
+			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
+			<jmeter jmeterhome="${{jmeter.home}}"
+			testplan="${{jmeter.test}}.jmx"
+			resultlog="${{jmeter.test}}.jlt">
+				<property name="jmeter.save.saveservice.output_format" value="xml"/>
+				<property name="jmeter.save.saveservice.assertion_results" value="all"/>
+				<property name="file_format.testlog" value="2.0"/>
+			</jmeter>
+			<style force="true"
+			in="${{jmeter.test}}.jlt"
+			out="build/jmeter/${{api.name}}/index.html"
+			style="${{jmeter.home}}/extras/jmeter-results-detail-report.xsl">
+			</style>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
