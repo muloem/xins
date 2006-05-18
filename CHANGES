@@ -67,6 +67,11 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Fixed SF.net bug #1476892. Now the XINS_HOME property set by the installer
     will not contain quotes. The xins.bat script has been adapted accordingly.
 
+* Demos:
+  - Fixed the copy-nb-files target to copy the NetBeans project files for an
+    existing project.
+  - Fixed the location of the cvsweb URL to the new SouceForge location.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
 
