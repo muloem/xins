@@ -1122,6 +1122,7 @@ APIs in this project are:
 					<attribute name="XINS-Version" value="{$xins_version}" />
 					<attribute name="API-Version" value="${{api.version}}" />
 				</manifest>
+				<property name="classes.api.dir" value="{$classesDestDir}" />
 				<war
 					webxml="build/webapps/{$api}{$implName2}/web.xml"
 					destfile="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war"
@@ -1138,7 +1139,7 @@ APIs in this project are:
 						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 						<xsl:apply-templates select="document($impl_file)/impl/content" />
 					</xsl:if>
-					<classes dir="{$classesDestDir}" includes="**/*.class" />
+					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
 					<xsl:if test="$apiHasTypes">
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
@@ -1294,21 +1295,21 @@ APIs in this project are:
 				<property name="test.start.server" value="false" />
 				<property name="org.xins.server.config" value="" />
 				<property name="servlet.port" value="8080" />
-				<property name="classes.tests.dir" value="build/classes-tests/{$api}" />
+				<property name="classes.api.dir" value="build/classes-api/{$api}" />
 				<junit fork="true" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
 					<sysproperty key="test.environment" value="${{test.environment}}" />
 					<sysproperty key="test.start.server" value="${{test.start.server}}" />
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
-					<sysproperty key="net.sourceforge.cobertura.datafile"	file="build/coverage/{$api}/cobertura.ser" />
+					<!--sysproperty key="net.sourceforge.cobertura.datafile"	file="build/coverage/{$api}/cobertura.ser" /-->
 					<formatter type="xml" />
 					<test name="{$packageTests}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
 						<path refid="xins.classpath" />
 						<pathelement path="build/capis/{$api}-capi.jar" />
-						<pathelement path="${{classes.tests.dir}}" />
-						<pathelement path="build/classes-api/{$api}" />
+						<pathelement path="build/classes-tests/{$api}" />
+						<pathelement path="${{classes.api.dir}}" />
 						<pathelement path="build/classes-types/{$api}" />
 						<xsl:if test="impl">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />

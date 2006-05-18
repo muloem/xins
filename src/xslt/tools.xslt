@@ -97,12 +97,19 @@
 			<cobertura-instrument todir="build/coverage/${{api.name}}/instrumented-classes">
 				<fileset dir="build/classes-api/${{api.name}}" includes="**/*.class" />
 			</cobertura-instrument>
+			<copy todir="build/coverage/${{api.name}}/instrumented-classes" overwrite="false">
+				<fileset dir="build/classes-api/${{api.name}}" includes="**/*.class" />
+			</copy>
+			<antcall target="war-${{api.name}}">
+				<param name="classes.api.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
+			</antcall>
 			<antcall target="test-${{api.name}}">
 				<param name="test.start.server" value="true" />
-				<param name="classes.tests.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
+				<param name="classes.api.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
 			<cobertura-report format="html"	destdir="build/coverage/${{api.name}}"> <!-- datafile="build/coverage/${{api.name}}/cobertura.ser" -->
 				<fileset dir="${{api.source.dir}}" includes="**/*.java" />
+				<fileset dir="build/java-fundament/${{api.name}}" includes="**/*.java" />
 			</cobertura-report>
 		</target>
 
