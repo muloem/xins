@@ -71,6 +71,7 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Upgraded asm.jar to version 2.2.1.
   - Upgraded cobertura.jar to version 1.8.
   - Upgraded http-client.jar to version 3.0.1.
+  - Added jmxri.jar version 1.2.1.
 
 * Demos:
   - Fixed the copy-nb-files target to copy the NetBeans project files for an
