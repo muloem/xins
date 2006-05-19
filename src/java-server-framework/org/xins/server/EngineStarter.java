@@ -6,9 +6,9 @@
  */
 package org.xins.server;
 
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
 import javax.servlet.ServletConfig;
@@ -22,6 +22,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.servlet.ServletConfigPropertyReader;
 import org.xins.common.text.TextUtils;
+
 import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
@@ -514,8 +515,15 @@ final class EngineStarter extends Object {
     */
    void registerMBean(API api) {
       try {
+         MBeanServer mbs = null;
+         try {
+            mbs = (MBeanServer) Class.forName("java.lang.management.ManagementFactory").getMethod("getPlatformMBeanServer", null).invoke(null, null);
+         } catch (ClassNotFoundException cnfe) {
+
+            // Try with the JDK 1.4 compatible JMX reference implementation
+            mbs = MBeanServerFactory.createMBeanServer();
+         }
          APIManager mbean = new APIManager(api);
-         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
          ObjectName name = new ObjectName("org.xins.server:type=APIManager");
          mbs.registerMBean(mbean, name);
 
