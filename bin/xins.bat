@@ -10,7 +10,7 @@
 if "%OS%" == "Windows_NT" setlocal
 
 :: Make sure XINS_HOME is set
-IF NOT ""%XINS_HOME%"" == """" GOTO test_version
+IF NOT "%XINS_HOME%" == "" GOTO test_version
 
 :: If XINS_HOME is not set, it should be the directory of the script.
 IF NOT "%OS%" == "Windows_NT" GOTO show_error
@@ -28,12 +28,12 @@ IF "%1" == "-version" GOTO show_version
 IF "%1" == "version"  GOTO show_version
 GOTO start_build
 :show_version
-CALL ant -q -f %XINS_HOME%\build.xml version
+CALL ant -q -f "%XINS_HOME%\build.xml" version
 GOTO end
 
 :: Generate the Ant build file
 :start_build
-CALL ant -f "%XINS_HOME%\src\ant\make-build.xml" -Dxins_home=%XINS_HOME%
+CALL ant -f "%XINS_HOME%\src\ant\make-build.xml" "-Dxins_home=%XINS_HOME%"
 IF ERRORLEVEL 1 GOTO end
 
 :: Execute the Ant build file

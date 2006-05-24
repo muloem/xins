@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 * Generated build file:
   - Fixed SF.net bug #1437390: Log.java generated in the incorrect directory.
 
+* Shell script / batch file:
+  - Adapted the xins.bat in case XINS is installed in a directory with spaces.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 1:
 
