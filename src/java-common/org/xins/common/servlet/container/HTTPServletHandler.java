@@ -426,7 +426,7 @@ public class HTTPServletHandler {
       method = inputLine.substring(0, spaceIndex).toUpperCase();
 
       url = inputLine.substring(spaceIndex + 1);
-      if ("GET".equals(method) || "HEAD".equals(method)) {
+      if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
          url = url.replace(',', '&');
          getMethod = true;
       }

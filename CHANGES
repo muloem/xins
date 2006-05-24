@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1483127: HTTP OPTIONS method causes hang.
+
 * Generated build file:
   - Fixed SF.net bug #1437390: Log.java generated in the incorrect directory.
 
