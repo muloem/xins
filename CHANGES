@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 
+* Generated build file:
+  - Fixed SF.net bug #1437390: Log.java generated in the incorrect directory.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 1:
 

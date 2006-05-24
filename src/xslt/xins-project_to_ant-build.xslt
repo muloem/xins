@@ -665,6 +665,7 @@ APIs in this project are:
 					</style>
 				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
+					<xsl:variable name="javaDestFileDir" select="concat($project_home, '/build/java-fundament/', $api, $implName2, '/', $packageAsDir)" />
 					<echo message="Generating the logdoc for {$api}{$implName2}" />
 					<mkdir dir="build/logdoc/{$api}{$implName2}" />
 					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
@@ -679,7 +680,7 @@ APIs in this project are:
 						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
 						<param name="sourcedir"       expression="{$impl_dir}" />
 						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
-						<param name="java_destdir"    expression="{$project_home}/build/java-fundament/{$api}{$implName2}" />
+						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
 					</style>
 					<copy file="{$xins_home}/src/css/logdoc/style.css" todir="build/specdocs/{$api}/logdoc{$implName2}" />
