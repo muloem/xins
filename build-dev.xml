@@ -475,6 +475,7 @@ ${sf.file}</fail>
 				<include name="xins-project/**/*.rcd" />
 				<include name="xins-project/**/*.cat" />
 				<include name="xins-project/**/*.java" />
+				<include name="xins-project/**/*.html" />
 				<include name="xins-project/apis/petstore/**/*" />
 				<exclude name="build" />
 				<exclude name="xins-project/build/**/*" />
@@ -562,6 +563,7 @@ ${sf.file}</fail>
 			<exclude name="src/xslt/xsltdoc/**/*"          />
 			<exclude name="docs/javadoc-private/**/*.html" />
 			<exclude name="docs/javadoc-private/**/*.css"  />
+			<exclude name="demo/xins-project/apis/fileupload/lib/*.jar" />
 			<exclude name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
 			<exclude name="demo/xins-project/apis/petstore/nbproject/private" />
 		</patternset>
