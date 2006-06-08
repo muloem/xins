@@ -31,7 +31,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
-final class CallResultOutputter extends Object {
+public final class CallResultOutputter {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -127,6 +127,28 @@ final class CallResultOutputter extends Object {
     * @param result
     *    the call result to convert to XML, cannot be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>out      == null
+    *          || result   == null</code>.
+    *
+    * @throws IOException
+    *    if there was an I/O error while writing to the output stream.
+    */
+   public static void output(Writer out, FunctionResult result)
+   throws IllegalArgumentException, IOException {
+      output(out, result, false);
+   }
+
+   /**
+    * Generates XML for the specified call result. The XML is sent to the
+    * specified output stream.
+    *
+    * @param out
+    *    the output stream to send the XML to, cannot be <code>null</code>.
+    *
+    * @param result
+    *    the call result to convert to XML, cannot be <code>null</code>.
+    *
     * @param oldStyle
     *    flag that indicates if old-style output should be generated or not.
     *
@@ -137,9 +159,7 @@ final class CallResultOutputter extends Object {
     * @throws IOException
     *    if there was an I/O error while writing to the output stream.
     */
-   public static void output(Writer         out,
-                             FunctionResult result,
-                             boolean        oldStyle)
+   static void output(Writer out, FunctionResult result, boolean oldStyle)
    throws IllegalArgumentException, IOException {
 
       // XXX: Using OutputStream instead of Writer will boost performance
