@@ -72,14 +72,17 @@
 					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:call-template name="hungarianUpper">
+							<xsl:with-param name="text" select="../@name" />
+						</xsl:call-template>
+						<xsl:text>Attribute</xsl:text>
+					</xsl:if>
 				</xsl:variable>
 
 				<xsl:text>
       String </xsl:text>
 				<xsl:value-of select="$localJavaVariable" />
-				<xsl:if test="local-name() = 'attribute'">
-					<xsl:text>Attribute</xsl:text>
-				</xsl:if>
 				<xsl:text> = </xsl:text>
 				<xsl:value-of select="$context" />
 				<xsl:choose>
@@ -116,14 +119,17 @@
 					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:call-template name="hungarianUpper">
+							<xsl:with-param name="text" select="../@name" />
+						</xsl:call-template>
+						<xsl:text>Attribute</xsl:text>
+					</xsl:if>
 				</xsl:variable>
 
 				<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="$localJavaVariable" />
-					<xsl:if test="local-name() = 'attribute'">
-						<xsl:text>Attribute</xsl:text>
-					</xsl:if>
 					<xsl:text> == null) {</xsl:text>
 					<xsl:call-template name="create-error">
 						<xsl:with-param name="side" select="$side" />
@@ -154,6 +160,12 @@
 					<xsl:call-template name="hungarianLower">
 						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
+					<xsl:if test="local-name() = 'attribute'">
+						<xsl:call-template name="hungarianUpper">
+							<xsl:with-param name="text" select="../@name" />
+						</xsl:call-template>
+						<xsl:text>Attribute</xsl:text>
+					</xsl:if>
 				</xsl:variable>
 
 				<xsl:text>
@@ -166,9 +178,6 @@
 				</xsl:call-template>
 				<xsl:text>.SINGLETON.isValidValue(</xsl:text>
 				<xsl:value-of select="$localJavaVariable" />
-				<xsl:if test="local-name() = 'attribute'">
-					<xsl:text>Attribute</xsl:text>
-				</xsl:if>
 				<xsl:text>)) {</xsl:text>
 				<xsl:call-template name="create-error">
 					<xsl:with-param name="side" select="$side" />
@@ -205,6 +214,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
@@ -261,6 +273,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
@@ -303,6 +318,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
@@ -316,6 +334,9 @@
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
 							<xsl:if test="local-name() = 'attribute-ref'">
+								<xsl:call-template name="hungarianUpper">
+									<xsl:with-param name="text" select="../../@name" />
+								</xsl:call-template>
 								<xsl:text>Attribute</xsl:text>
 							</xsl:if>
 						</xsl:variable>
@@ -339,6 +360,9 @@
 								<xsl:with-param name="text" select="@name" />
 							</xsl:call-template>
 							<xsl:if test="local-name() = 'attribute-ref'">
+								<xsl:call-template name="hungarianUpper">
+									<xsl:with-param name="text" select="../../@name" />
+								</xsl:call-template>
 								<xsl:text>Attribute</xsl:text>
 							</xsl:if>
 						</xsl:variable>
@@ -386,6 +410,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
@@ -400,6 +427,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
@@ -455,6 +485,9 @@
 							<xsl:with-param name="text" select="@name" />
 						</xsl:call-template>
 						<xsl:if test="local-name() = 'attribute-ref'">
+							<xsl:call-template name="hungarianUpper">
+								<xsl:with-param name="text" select="../../@name" />
+							</xsl:call-template>
 							<xsl:text>Attribute</xsl:text>
 						</xsl:if>
 					</xsl:variable>
