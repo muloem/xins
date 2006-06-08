@@ -375,14 +375,7 @@ implements Result {
 		<xsl:value-of select="$objectName" />
 		<xsl:text> element.
     */
-   </xsl:text>
-		<xsl:if test="ancestor::input">
-			<xsl:text>public static final </xsl:text>
-		</xsl:if>
-		<xsl:if test="ancestor::resultcode">
-			<xsl:text>static final </xsl:text>
-		</xsl:if>
-		<xsl:text>class </xsl:text>
+		public static final class </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[ {
       //-------------------------------------------------------------------------
@@ -394,10 +387,7 @@ implements Result {
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code> instance.
        */
-      ]]></xsl:text>
-		<xsl:if test="ancestor::input">
-			<xsl:text>public </xsl:text>
-		</xsl:if>
+      public ]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
       }
@@ -440,15 +430,11 @@ implements Result {
        * @param data
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
-      ]]></xsl:text>
-		<xsl:if test="ancestor::input">
-			<xsl:text>public </xsl:text>
-		</xsl:if>
-		<xsl:text>final void pcdata(String data) {
+      public final void pcdata(String data) {
          _elementBuilder.setText(data);
       }
 
-</xsl:text>
+]]></xsl:text>
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute">
