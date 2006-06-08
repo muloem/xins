@@ -28,6 +28,7 @@
 			<xsl:when test="$type = '_float32'">Signed floating number, 32 bit.</xsl:when>
 			<xsl:when test="$type = '_float64'">Signed floating number, 64 bit.</xsl:when>
 			<xsl:when test="$type = '_base64'">Byte Array, Base 64 encoded.</xsl:when>
+			<xsl:when test="$type = '_hex'">Byte Array, Hex encoded.</xsl:when>
 			<xsl:when test="$type = '_url'">Unified Resource Location (URL).</xsl:when>
 			<xsl:when test="$type = '_descriptor'">Descriptor.</xsl:when>
 			<xsl:otherwise>
@@ -59,6 +60,7 @@
 					<xsl:when test="$type = '_float32'">java.lang.Float</xsl:when>
 					<xsl:when test="$type = '_float64'">java.lang.Double</xsl:when>
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
+					<xsl:when test="$type = '_hex'">byte[]</xsl:when>
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
@@ -83,6 +85,7 @@
 					<xsl:when test="$type = '_float32'">float</xsl:when>
 					<xsl:when test="$type = '_float64'">double</xsl:when>
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
+					<xsl:when test="$type = '_hex'">byte[]</xsl:when>
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">

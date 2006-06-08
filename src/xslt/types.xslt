@@ -272,7 +272,7 @@
 	* @return
 	*    the base type for the specified type, always starting with an
 	*    underscore; either _boolean, _int8, _int16, _int32, _int64, _float32,
-	*    _float64, _base64 or _text.
+	*    _float64, _base64 _hex or _text.
 	-->
 	<xsl:template name="basetype_for_type">
 		<xsl:param name="specsdir" />
@@ -327,6 +327,9 @@
 					</xsl:when>
 					<xsl:when test="$type_node/base64">
 						<xsl:text>_base64</xsl:text>
+					</xsl:when>
+					<xsl:when test="$type_node/hex">
+						<xsl:text>_hex</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>_text</xsl:text>
@@ -709,6 +712,7 @@
 			<xsl:when test="$paramtype = '_float32'">float</xsl:when>
 			<xsl:when test="$paramtype = '_float64'">double</xsl:when>
 			<xsl:when test="$paramtype = '_base64'">base64Binary</xsl:when>
+			<xsl:when test="$paramtype = '_hex'">hexBinary</xsl:when>
 			<xsl:when test="$paramtype = '_url'">anyURI</xsl:when>
 			<xsl:when test="$paramtype = '_date'">date</xsl:when>
 			<xsl:when test="$paramtype = '_timestamp'">dateTime</xsl:when>

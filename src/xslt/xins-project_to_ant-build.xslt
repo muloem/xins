@@ -283,6 +283,9 @@ APIs in this project are:
 					     location="log_1_4.dtd" />
 					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.4//EN"
 					     location="translation-bundle_1_4.dtd" />
+
+					<dtd publicId="-//XINS//DTD Type 1.5//EN"
+					     location="type_1_5.dtd" />
 				</xmlcatalog>
 			</target>
 

@@ -49,6 +49,7 @@
 				<xsl:when test="float32">float32</xsl:when>
 				<xsl:when test="float64">float64</xsl:when>
 				<xsl:when test="base64">base64</xsl:when>
+				<xsl:when test="hex">hex</xsl:when>
 				<xsl:when test="list">list</xsl:when>
 				<xsl:when test="set">set</xsl:when>
 			</xsl:choose>
@@ -65,6 +66,7 @@
 				<xsl:when test="$kind = 'float32'">org.xins.common.types.standard.Float32</xsl:when>
 				<xsl:when test="$kind = 'float64'">org.xins.common.types.standard.Float64</xsl:when>
 				<xsl:when test="$kind = 'base64'">org.xins.common.types.standard.Base64</xsl:when>
+				<xsl:when test="$kind = 'hex'">org.xins.common.types.standard.Hex</xsl:when>
 				<xsl:when test="$kind = 'list'">org.xins.common.types.List</xsl:when>
 				<xsl:when test="$kind = 'set'">org.xins.common.types.List</xsl:when>
 			</xsl:choose>
@@ -465,13 +467,32 @@ public final class ]]></xsl:text>
 						<xsl:value-of select="base64/@min" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:text>Integer.MIN_VALUE</xsl:text>
+						<xsl:text>0</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>, </xsl:text>
 				<xsl:choose>
 					<xsl:when test="base64/@max">
 						<xsl:value-of select="base64/@max" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>Integer.MAX_VALUE</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$kind = 'hex'">
+				<xsl:choose>
+					<xsl:when test="hex/@min">
+						<xsl:value-of select="hex/@min" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>0</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>, </xsl:text>
+				<xsl:choose>
+					<xsl:when test="hex/@max">
+						<xsl:value-of select="hex/@max" />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>Integer.MAX_VALUE</xsl:text>
@@ -590,7 +611,7 @@ public final class ]]></xsl:text>
        *
        * @param value
        *    the new value to add</xsl:text>
-			<xsl:if test="$typeIsPrimary = 'fasle'">
+			<xsl:if test="$typeIsPrimary = 'false'">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>.
        *
        * @throws java.lang.IllegalArgumentException
