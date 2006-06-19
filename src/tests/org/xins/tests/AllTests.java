@@ -107,6 +107,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.Float32Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Float64Tests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.Base64Tests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.HexTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.TimestampTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);

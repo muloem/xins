@@ -443,6 +443,9 @@ final class SOAPCallingConvention extends CallingConvention {
             Utils.logProgrammingError(pe);
          }
       }
+      if (parameterType instanceof org.xins.common.types.standard.Hex) {
+         return value.toUpperCase();
+      }
       return value;
    }
 

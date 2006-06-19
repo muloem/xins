@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <!--
- XSLT that generates the type.html files that conatins
+ XSLT that generates the type.html files that contains
  the description of the type.
 
  $Id$
@@ -102,6 +102,7 @@
 				<xsl:apply-templates select="float32"    />
 				<xsl:apply-templates select="float64"    />
 				<xsl:apply-templates select="base64"     />
+				<xsl:apply-templates select="hex"        />
 				<xsl:apply-templates select="list"       />
 				<xsl:apply-templates select="set"        />
 
@@ -213,7 +214,7 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="base64">
+	<xsl:template match="base64 | hex">
 		<p />
 		This is a <em>
 		<xsl:value-of select="name()" />
