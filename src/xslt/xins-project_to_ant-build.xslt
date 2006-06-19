@@ -1094,6 +1094,12 @@ APIs in this project are:
 						</xsl:if>
 					</classpath>
 				</javac>
+
+				<!-- Try to load the API specific .version.properties -->
+				<property prefix="api." file="{$api_specsdir}/../.version.properties" />
+				<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
+					<isset property="api.version.major" />
+				</condition>
 			</target>
 
 			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version" description="Creates the WAR for the '{$api}{$implName2}' API">
@@ -1437,6 +1443,12 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"      />
 				</style>
 			</xsl:if>
+
+			<!-- Try to load the API specific .version.properties -->
+			<property prefix="api." file="{$api_specsdir}/../.version.properties" />
+			<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
+				<isset property="api.version.major" />
+			</condition>
 		</target>
 
 		<target name="jar-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
