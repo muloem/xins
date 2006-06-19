@@ -6,8 +6,9 @@
  */
 package org.xins.client;
 
-import org.xins.common.MandatoryArgumentChecker;
+import java.io.Serializable;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.TargetDescriptor;
 
@@ -22,8 +23,7 @@ import org.xins.common.service.TargetDescriptor;
  *
  * @since XINS 1.0.0
  */
-public abstract class AbstractCAPICallResult
-extends Object {
+public abstract class AbstractCAPICallResult implements Serializable {
 
    //-------------------------------------------------------------------------
    // Constructors

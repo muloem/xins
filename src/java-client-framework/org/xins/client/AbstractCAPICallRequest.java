@@ -6,6 +6,7 @@
  */
 package org.xins.client;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,7 +27,7 @@ import org.xins.common.xml.ElementBuilder;
  *
  * @since XINS 1.2.0
  */
-public abstract class AbstractCAPICallRequest {
+public abstract class AbstractCAPICallRequest implements Serializable {
 
    //-------------------------------------------------------------------------
    // Fields
