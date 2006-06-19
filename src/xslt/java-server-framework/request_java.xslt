@@ -19,7 +19,7 @@
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
     */
-   public final static class Request extends Object {
+   public final static class Request extends Object implements java.io.Serializable {
 
       //----------------------------------------------------------------------
       // Constructors

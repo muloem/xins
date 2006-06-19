@@ -20,7 +20,7 @@
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
  */
-public interface Result {
+public interface Result extends java.io.Serializable {
 }
 ]]></xsl:text>
 
