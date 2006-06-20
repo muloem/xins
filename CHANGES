@@ -34,6 +34,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
   - Added the possibility to have a .version.properties defined only for an
     API.
 
+* Tests:
+  - Moved the Multipart calling convention to the fileupload demo.
+
 * Build- and release-process:
   - Added fileupload demo.
 
