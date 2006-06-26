@@ -70,7 +70,7 @@ public class TargetDescriptorTests extends TestCase {
       // Test some invalid URLs
       String[] invalidURLs = new String[] {
          "", " ", "\n", "http:8", "http:/8", "blablabla",
-         "http://example%20com/", "http://", "http%3A%2F%2Fwww.example.com",
+         "http://example%20com/", "http%3A%2F%2Fwww.example.com",
          "http:///index.html", "/usr/local/something", "C:\\xins\\src",
          "file://C:\\xins\\src", "http://http://www.example.com",
          "http://www.example.com /index.html"
