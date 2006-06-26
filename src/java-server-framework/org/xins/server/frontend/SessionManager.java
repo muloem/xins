@@ -90,6 +90,9 @@ public class SessionManager extends Manageable {
    /**
     * Method called when the request is received.
     *
+    * This method will take care of creating a sessionId if needed and
+    * putting the input parameters in the session.
+    *
     * @param request
     *    the HTTP request, cannot be <code>null</code>.
     */
@@ -112,7 +115,7 @@ public class SessionManager extends Manageable {
 
       // If the session ID is not found in the cookies, create a new one
       if (sessionId == null) {
-         
+
          sessionId = session.getId();
          setProperty(sessionId, Boolean.FALSE);
       }
@@ -125,7 +128,7 @@ public class SessionManager extends Manageable {
          String value = request.getParameter(name);
          inputParameters.put(name, value);
       }
-      session.setAttribute("_inputs", inputParameters);
+      setProperty("_inputs", inputParameters);
    }
 
    /**
@@ -138,7 +141,7 @@ public class SessionManager extends Manageable {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null && successful) {
          HashMap inputParameters = (HashMap) session.getAttribute("_inputs");
-         
+
          // Only valid inputs of an existing function will be added.
          String command = (String) inputParameters.get("command");
          String action = (String) inputParameters.get("action");
@@ -160,7 +163,7 @@ public class SessionManager extends Manageable {
             // Ignore
          }
       }
-      
+
       // Clear the _inputs attribute from the session.
       if (session != null) {
          session.removeAttribute("_inputs");
@@ -182,7 +185,7 @@ public class SessionManager extends Manageable {
       HashMap inputParameters = (HashMap) session.getAttribute("_inputs");
       String command = (String) inputParameters.get("command");
       if (command != null &&
-            (_unrestrictedPages.contains("*") || 
+            (_unrestrictedPages.contains("*") ||
             _unrestrictedPages.contains(command) ||
             command.startsWith("_"))) {
          return false;
@@ -305,7 +308,7 @@ public class SessionManager extends Manageable {
    public void removeProperties() {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
-         
+
          // Removing the attributes directly throws a ConcurentModificationException in Tomcat
          ArrayList attributeNames = new ArrayList();
          Enumeration enuAttributes = session.getAttributeNames();

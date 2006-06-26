@@ -51,6 +51,7 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.DescriptorBuilder;
 import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.FunctionSpec;
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
@@ -113,10 +114,16 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
+   /**
+    * Argument used when calling function with no parameters using the reflection API.
+    */
+   private final static Object[] NO_ARGS = {};
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
+   /**
+    * Argument used when finding a function with no parameters using the reflection API.
+    */
+   private final static Class[] NO_ARGS_CLASS = {};
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -142,7 +149,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Get the session manager manageable from the API
       try {
-         _session = (SessionManager) api.getClass().getMethod("getSessionManager", (Class[])null).invoke(api, (Object[])null);
+         _session = (SessionManager) api.getClass().getMethod("getSessionManager", NO_ARGS_CLASS).invoke(api, NO_ARGS);
       } catch (Exception ex) {
          ex.printStackTrace();
       }
@@ -167,6 +174,11 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * Location of the XSLT transformation Style Sheet.
     */
    private String _baseXSLTDir;
+
+   /**
+    * The last XSLT dir used to resolve an URL.
+    */
+   private String _lastXSLTDir;
 
    /**
     * The XSLT transformer.
@@ -294,8 +306,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
    /**
     * Converts an HTTP request to a XINS request (implementation method). This
-    * method should only be called from class {@link CustomCallingConvention}. 
-    * Only then it is guaranteed that the <code>httpRequest</code> argument is 
+    * method should only be called from class {@link CustomCallingConvention}.
+    * Only then it is guaranteed that the <code>httpRequest</code> argument is
     * not <code>null</code>.
     *
     * @param httpRequest
@@ -341,7 +353,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Reset any previous value
       _redirection.set(null);
-      
+
       // Redirect to the login page if not logged in
       if (_session.shouldLogIn()) {
          _redirection.set(_loginPage);
@@ -354,20 +366,22 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          try {
             _api.getAPISpecification().getFunction(functionName);
          } catch (Exception enfe) {
-            
+
             // There is no specs or the function was not defined defined
             // Go directly to the result
             return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
          }
       }
-      
+
       // Determine function parameters
       ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
       Enumeration params = httpRequest.getParameterNames();
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
+         // TODO remove the next line when no longer needed.
+         String realName = getRealParameter(name, functionName);
          String value = httpRequest.getParameter(name);
-         functionParams.set(SECRET_KEY, name, value);
+         functionParams.set(SECRET_KEY, realName, value);
       }
 
       // Get data section
@@ -476,7 +490,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
                Iterator itCommandNames = _api.getAPISpecification().getFunctions().keySet().iterator();
                while (itCommandNames.hasNext()) {
                   String nextCommand = (String) itCommandNames.next();
+                  _lastXSLTDir = _baseXSLTDir;
                   String xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
+
                   Templates template = _factory.newTemplates(new StreamSource(new URL(xsltLocation).openStream()));
                   _templateCache.put(xsltLocation, template);
                }
@@ -511,6 +527,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          if (xsltFileName.endsWith("Show") || xsltFileName.endsWith("Okay")) {
             xsltFileName = xsltFileName.substring(0, xsltFileName.length() - 4);
          }
+         _lastXSLTDir = _baseXSLTDir;
          String xsltLocation = _baseXSLTDir + xsltFileName + ".xslt";
          try {
             Templates template = getTemplate(xsltLocation);
@@ -550,6 +567,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       ElementBuilder builder = new ElementBuilder("commandresult");
       builder.setAttribute("command", httpRequest.getParameter("command"));
       //builder.setAttribute("description", "Description of " + httpRequest.getParameter("command") + '.');
+      ElementBuilder dataSection = new ElementBuilder("data");
 
       // Put all the sessions in the XML
       _session.result(xinsResult.getErrorCode() == null);
@@ -559,11 +577,32 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          while (itSessionProperties.hasNext()) {
             Map.Entry nextEntry = (Map.Entry) itSessionProperties.next();
             String nextProperty = (String) nextEntry.getKey();
-            if (nextEntry.getValue() instanceof String) {
+            Object propValue = nextEntry.getValue();
+            if (propValue == null) {
+               // continue
+            } else if (propValue instanceof String) {
                ElementBuilder builderParam = new ElementBuilder("parameter");
                builderParam.setAttribute("name", "session." + nextProperty);
-               builderParam.setText((String) nextEntry.getValue());
+               builderParam.setText((String) propValue);
                builder.addChild(builderParam.createElement());
+            } else if ("org.jdom.Element".equals(propValue.getClass().getName())) {
+               //org.jdom.Element propElem = (org.jdom.Element) propValue;
+               // TODO dataSection.addChild(Utils.convertFromJDOM(propValue));
+            } else if (propValue instanceof Element) {
+               dataSection.addChild((Element) propValue);
+            } else if (propValue instanceof List) {
+               Iterator itPropValue = ((List) propValue).iterator();
+               while (itPropValue.hasNext()) {
+                  Object nextPropertyInList = itPropValue.next();
+                  if (nextPropertyInList == null) {
+                     // continue
+                  } else if ("org.jdom.Element".equals(nextPropertyInList.getClass().getName())) {
+                     //org.jdom.Element propElem = (org.jdom.Element) nextPropertyInList;
+                     // TODO dataSection.addChild(Utils.convertFromJDOM(nextPropertyInList));
+                  } else if (nextPropertyInList instanceof Element) {
+                     dataSection.addChild((Element) nextPropertyInList);
+                  }
+               }
             }
          }
       }
@@ -598,7 +637,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          if (xinsResult.getErrorCode().equals("_InvalidRequest") ||
                xinsResult.getErrorCode().equals("InvalidRequest")) {
             addParameter(builder, "error.type", "FieldError");
-            ElementBuilder dataSection = new ElementBuilder("data");
             ElementBuilder errorSection = new ElementBuilder("errorlist");
             Iterator incorrectParams = xinsResult.getDataElement().getChildElements().iterator();
             while (incorrectParams.hasNext()) {
@@ -625,9 +663,14 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
 
       // Store the data section as it is
-      if (xinsResult.getDataElement() != null) {
-         builder.addChild(xinsResult.getDataElement());
+      Element resultElement = xinsResult.getDataElement();
+      if (resultElement != null) {
+         Iterator itChildren = resultElement.getChildElements().iterator();
+         while (itChildren.hasNext()) {
+            dataSection.addChild((Element) itChildren.next());
+         }
       }
+      builder.addChild(dataSection.createElement());
       return builder.createElement();
    }
 
@@ -692,6 +735,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
          // Use the template to create a transformer
          Transformer xformer = template.newTransformer();
+         xformer.setURIResolver(new XsltURIResolver());
 
          // Prepare the input and output files
          Source source = new StreamSource(new StringReader(xmlInput));
@@ -714,11 +758,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          // An error occurred while applying the XSL file
          // Get location of error in input file
          SourceLocator locator = e.getLocator();
-         int col = locator.getColumnNumber();
-         int line = locator.getLineNumber();
-         String publicId = locator.getPublicId();
-         String systemId = locator.getSystemId();
-         // TODO log
+         if (locator != null) {
+            int col = locator.getColumnNumber();
+            int line = locator.getLineNumber();
+            String publicId = locator.getPublicId();
+            String systemId = locator.getSystemId();
+            // TODO log
+         }
          throw e;
       }
    }
@@ -737,7 +783,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     *    if the URL is not found or the XSLT cannot be read correctly.
     */
    private Templates getTemplate(String xsltUrl) throws Exception {
-      
+
       // Use the factory to create a template containing the xsl file
       // Load the template or get it from the cache.
       Templates template = null;
@@ -784,6 +830,41 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
    }
 
+
+   /**
+    * Gets the real parameter name.
+    *
+    * @param receivedParameter
+    *    the name of the parameter as received.
+    *
+    * @param functionName
+    *    the name of the function.
+    *
+    * @return
+    *    the name of the parameter as specified in the function.
+    *
+    * @deprecated
+    *    no mapping should be needed and the forms should send directly the correct parameters.
+    */
+   private String getRealParameter(String receivedParameter, String functionName) {
+      if (receivedParameter.indexOf("_") != -1) {
+         receivedParameter = receivedParameter.replaceAll("_", "");
+      }
+      try {
+         FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
+         Iterator itParameters = function.getInputParameters().keySet().iterator();
+         while (itParameters.hasNext()) {
+            String nextParameterName = (String) itParameters.next();
+            if (nextParameterName.equalsIgnoreCase(receivedParameter)) {
+               return nextParameterName;
+            }
+         }
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+      return receivedParameter;
+   }
+
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
@@ -793,6 +874,10 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * another XSLT file using a relative URL.
     */
    class XsltURIResolver implements URIResolver {
+
+      //-------------------------------------------------------------------------
+      // Methods
+      //-------------------------------------------------------------------------
 
       /**
        * Revolve a hyperlink reference.
@@ -810,21 +895,20 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
        *    If an error occurs when trying to resolve the URI.
        */
       public Source resolve(String href, String base) throws TransformerException {
-         if (base == null) {
-            base = _baseXSLTDir;
-         }
+         String location = href;
          if (href.startsWith("../")) {
-            int lastSlash = _baseXSLTDir.lastIndexOf('/');
-            int secondLastSlash = _baseXSLTDir.lastIndexOf('/', lastSlash - 1);
-            href = _baseXSLTDir.substring(0, secondLastSlash) + href.substring(2);
+            int lastSlash = _lastXSLTDir.lastIndexOf('/');
+            int secondLastSlash = _lastXSLTDir.lastIndexOf('/', lastSlash - 1);
+            location = _lastXSLTDir.substring(0, secondLastSlash) + href.substring(2);
          } else if (href.indexOf(":/") == -1) {
-            href = _baseXSLTDir + href;
+            location = _lastXSLTDir + href;
          }
+         _lastXSLTDir = location.substring(0, location.lastIndexOf('/') + 1);
          try {
-            return new StreamSource(new URL(href).openStream());
+            return new StreamSource(new URL(location).openStream());
          } catch (IOException ioe) {
             ioe.printStackTrace();
-            throw new TransformerException("Error while loading the XSLT \"" + 
+            throw new TransformerException("Error while loading the XSLT \"" +
                   href + "\": " + ioe.getMessage());
          }
       }
