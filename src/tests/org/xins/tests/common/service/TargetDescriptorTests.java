@@ -71,7 +71,7 @@ public class TargetDescriptorTests extends TestCase {
       String[] invalidURLs = new String[] {
          "", " ", "\n", "http:8", "http:/8", "blablabla",
          "http://example%20com/", "http%3A%2F%2Fwww.example.com",
-         "http:///index.html", "/usr/local/something", "C:\\xins\\src",
+         "/usr/local/something", "C:\\xins\\src",
          "file://C:\\xins\\src", "http://http://www.example.com",
          "http://www.example.com /index.html"
       };
@@ -100,7 +100,8 @@ public class TargetDescriptorTests extends TestCase {
          "jdbc:odbc://dataserv:80/mydomain",
          "http://www.example.com/some%20file",
          "http://www.example.com:8080/",
-         "http://www.example.com/somedir/../index.html"
+         "http://www.example.com/somedir/../index.html",
+         "http:///index.html"
       };
       for (int i = 0; i < validURLs.length; i++) {
          String url = validURLs[i];
