@@ -9,6 +9,13 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 * XINS/Java Common Library:
   - Fixed SF.net bug #1483127: HTTP OPTIONS method causes hang.
   - Added _hex type. Thanks Georgios.
+  - Added the FileServiceCaller that can call an API without using the 
+    network.
+  - Changed method ServiceCaller#doCallImpl(CallRequest, CallConfig,
+    TargetDescriptor) from protected to public.
+  - Changed the regular expression used to check a URL as it does not
+    necessary contains an IP address.
+  - Made the constructor of the StatusCodeHTTPCallException public.
 
 * XINS/Java Server Framework:
   - Made the CallResultOutputter class public in order to offer the possibility
@@ -18,6 +25,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 * XINS/Java Client Framework:
   - Made the AbstractCAPICallRequest and the AbstractCAPICallResult 
     serializable in order to better fit the Java Beans specifications.
+  - The XINSServiceCaller redirect the call to the HTTPServiceCaller or the
+    FileServiceCaller depending on the TargetDescriptor.
 
 * Generation of server-side Java code:
   - Fixed possible variable conflict if an element has the same attribute as

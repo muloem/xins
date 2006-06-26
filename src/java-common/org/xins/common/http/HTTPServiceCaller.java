@@ -148,10 +148,6 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  */
 public final class HTTPServiceCaller extends ServiceCaller {
 
-   // NOTE: This class requires Jakarta Commons HttpClient 3.0+
-   //
-   // XXX: Detected HttpClient version and fail if lower than 3.0 ?
-
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -306,34 +302,32 @@ public final class HTTPServiceCaller extends ServiceCaller {
          GetMethod getMethod = new GetMethod(url);
 
          // Loop through the parameters
-         if (parameters != null) {
-            FastStringBuffer query = new FastStringBuffer(255);
-            Iterator keys = parameters.getNames();
-            while (keys.hasNext()) {
+         FastStringBuffer query = new FastStringBuffer(255);
+         Iterator keys = parameters.getNames();
+         while (keys.hasNext()) {
 
-               // Get the parameter key
-               String key = (String) keys.next();
+            // Get the parameter key
+            String key = (String) keys.next();
 
-               // Get the value
-               String value = parameters.get(key);
-               if (value == null) {
-                  value = "";
-               }
-
-               // Add this parameter key/value combination.
-               if (key != null) {
-
-                  if (query.getLength() > 0) {
-                     query.append("&");
-                  }
-                  query.append(URLEncoding.encode(key));
-                  query.append("=");
-                  query.append(URLEncoding.encode(value));
-               }
+            // Get the value
+            String value = parameters.get(key);
+            if (value == null) {
+               value = "";
             }
-            if (query.getLength() > 0) {
-               getMethod.setQueryString(query.toString());
+
+            // Add this parameter key/value combination.
+            if (key != null) {
+
+               if (query.getLength() > 0) {
+                  query.append("&");
+               }
+               query.append(URLEncoding.encode(key));
+               query.append("=");
+               query.append(URLEncoding.encode(value));
             }
+         }
+         if (query.getLength() > 0) {
+            getMethod.setQueryString(query.toString());
          }
 
          return getMethod;
@@ -516,7 +510,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.1.0
     */
-   protected Object doCallImpl(CallRequest      request,
+   public Object doCallImpl(CallRequest      request,
                                CallConfig       callConfig,
                                TargetDescriptor target)
    throws ClassCastException, IllegalArgumentException, CallException {

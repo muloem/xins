@@ -109,8 +109,10 @@ implements HTTPCallResultData {
     *          || succeededTarget ==   null
     *          || data            ==   null
     *          || duration        &lt; 0L</code>.
+    *
+    * @since XINS 1.5.0
     */
-   HTTPCallResult(HTTPCallRequest    request,
+   public HTTPCallResult(HTTPCallRequest    request,
                   TargetDescriptor   succeededTarget,
                   long               duration,
                   CallExceptionList  exceptions,

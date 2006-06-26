@@ -56,8 +56,10 @@ extends HTTPCallException {
     *    if <code>request == null
     *          || target == null
     *          || duration &lt; 0</code>.
+    *
+    * @since XINS 1.5.0.
     */
-   StatusCodeHTTPCallException(HTTPCallRequest  request,
+   public StatusCodeHTTPCallException(HTTPCallRequest  request,
                                TargetDescriptor target,
                                long             duration,
                                int              code)

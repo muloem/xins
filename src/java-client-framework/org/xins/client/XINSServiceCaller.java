@@ -6,11 +6,14 @@
  */
 package org.xins.client;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.file.FileServiceCaller;
 
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
@@ -172,7 +175,6 @@ public final class XINSServiceCaller extends ServiceCaller {
 
       // Initialize the fields
       _parser      = new XINSCallResultParser();
-      _httpCaller  = new HTTPServiceCaller(descriptor);
    }
 
    /**
@@ -215,18 +217,18 @@ public final class XINSServiceCaller extends ServiceCaller {
    private final XINSCallResultParser _parser;
 
    /**
-    * An HTTP service caller instance. This is used to actually perform the
-    * request towards a XINS API using HTTP. This field cannot be
-    * <code>null</code>.
-    */
-   private final HTTPServiceCaller _httpCaller;
-
-   /**
     * The <code>CAPI</code> object that uses this caller. This field is
     * <code>null</code> if this caller is not used by a <code>CAPI</code>
     * class.
     */
    private AbstractCAPI _capi;
+
+   /**
+    * The map containing the service caller to call for the descriptor.
+    * The key of the {@link Map} is a {@link TargetDescriptor} and the value
+    * is a {@link ServiceCaller}.
+    */
+   private HashMap _serviceCallers;
 
 
    //-------------------------------------------------------------------------
@@ -253,7 +255,32 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @since XINS 1.2.0
     */
    protected boolean isProtocolSupportedImpl(String protocol) {
-      return "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol);
+      return "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)  || "file".equalsIgnoreCase(protocol);
+   }
+
+   public void setDescriptor(Descriptor descriptor) {
+      super.setDescriptor(descriptor);
+      
+      // Create the ServiceCaller for each descriptor
+      if (_serviceCallers == null) {
+         _serviceCallers = new HashMap();
+      }
+      if (descriptor != null) {
+         Iterator targets = descriptor.iterateTargets();
+         while (targets.hasNext()) {
+            TargetDescriptor nextTarget = (TargetDescriptor) targets.next();
+            String protocol = nextTarget.getProtocol();
+            if ("http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol)) {
+               HTTPServiceCaller serviceCaller = new HTTPServiceCaller(nextTarget);
+               _serviceCallers.put(nextTarget, serviceCaller);
+            } else if ("file".equalsIgnoreCase(protocol)) {
+               FileServiceCaller serviceCaller = new FileServiceCaller(nextTarget);
+               _serviceCallers.put(nextTarget, serviceCaller);
+            }
+         }
+      } else {
+         _serviceCallers.clear();
+      }
    }
 
    /**
@@ -516,9 +543,9 @@ public final class XINSServiceCaller extends ServiceCaller {
     * @throws XINSCallException
     *    if the call attempt failed due to a XINS-related reason.
     */
-   protected Object doCallImpl(CallRequest      request,
-                               CallConfig       callConfig,
-                               TargetDescriptor target)
+   public Object doCallImpl(CallRequest      request,
+                            CallConfig       callConfig,
+                            TargetDescriptor target)
    throws IllegalArgumentException,
           ClassCastException,
           GenericCallException,
@@ -580,7 +607,8 @@ public final class XINSServiceCaller extends ServiceCaller {
                                   + TargetDescriptor.class.getName()
                                   + ')';
       try {
-         httpResult = _httpCaller.call(httpRequest, httpConfig, target);
+         ServiceCaller serviceCaller = (ServiceCaller) _serviceCallers.get(target);
+         httpResult = (HTTPCallResult) serviceCaller.doCallImpl(httpRequest, httpConfig, target);
 
       // Call failed due to a generic service calling error
       } catch (GenericCallException exception) {

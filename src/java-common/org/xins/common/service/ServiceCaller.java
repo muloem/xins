@@ -630,7 +630,7 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 1.2.0
     */
-   public final void setDescriptor(Descriptor descriptor)
+   public void setDescriptor(Descriptor descriptor)
    throws UnsupportedProtocolException {
 
       // Test the protocol for all TargetDescriptors
@@ -733,9 +733,7 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 1.1.0
     */
-   protected CallConfig getDefaultCallConfig() {
-      throw new MethodNotImplementedError();
-   }
+   protected abstract CallConfig getDefaultCallConfig();
 
    /**
     * Attempts to execute the specified call request on one of the target
@@ -1196,12 +1194,10 @@ public abstract class ServiceCaller extends Object {
     *
     * @since XINS 1.1.0
     */
-   protected Object doCallImpl(CallRequest      request,
+   public abstract Object doCallImpl(CallRequest      request,
                                CallConfig       callConfig,
                                TargetDescriptor target)
-   throws ClassCastException, IllegalArgumentException, CallException {
-      throw new MethodNotImplementedError();
-   }
+   throws ClassCastException, IllegalArgumentException, CallException;
 
    /**
     * Calls the specified target using the specified subject. This method must

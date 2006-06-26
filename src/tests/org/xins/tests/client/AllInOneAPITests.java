@@ -103,10 +103,8 @@ public class AllInOneAPITests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
-      _target = new TargetDescriptor("http://127.0.0.1:8080/",
-                                     5000,
-                                     1000,
-                                     4000);
+      _target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      //_target = new TargetDescriptor("file://./src/tests/build/webapps/allinone/allinone.war", 5000, 1000, 4000);
       _capi   = new CAPI(_target);
    }
 
