@@ -309,7 +309,7 @@ public class FileServiceCaller extends ServiceCaller {
     *    all the other call attempts failed as well.
     */
    public HTTPCallResult call(HTTPCallRequest request,
-                              FileCallConfig  callConfig)
+                              HTTPCallConfig  callConfig)
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
@@ -363,7 +363,7 @@ public class FileServiceCaller extends ServiceCaller {
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
-      return call(request, (FileCallConfig) null);
+      return call(request, (HTTPCallConfig) null);
    }
 
    //-------------------------------------------------------------------------
