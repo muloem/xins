@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
   - Made the CallResultOutputter class public in order to offer the possibility
     for custom CC to use it.
   - Added the XINS front-end framework as core of the XINS plateforme.
+  - Improved JMX support.
 
 * XINS/Java Client Framework:
   - Made the AbstractCAPICallRequest and the AbstractCAPICallResult 

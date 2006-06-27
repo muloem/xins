@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 import org.xins.common.collections.PropertyReader;
 
@@ -73,7 +74,7 @@ public interface APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   PropertyReader getRuntimeProperties() throws IOException;
+   Map getRuntimeProperties() throws IOException;
 
    /**
     * Gets the time at which the API was started.
@@ -86,6 +87,17 @@ public interface APIManagerMBean {
     */
    String getStartupTime() throws IOException;
     
+   /**
+    * Gets the list of the API functions.
+    *
+    * @return
+    *    the list of the API function names.
+    *
+    * @throws IOException
+    *    if the connection to the MBean fails.
+    */
+   public String[] getFunctionNames() throws IOException;
+
    /**
     * Executes the _NoOp meta function.
     *

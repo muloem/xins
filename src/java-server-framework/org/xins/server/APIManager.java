@@ -9,9 +9,12 @@ package org.xins.server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 
 /**
@@ -118,8 +121,8 @@ public final class APIManager implements APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   public PropertyReader getRuntimeProperties() throws IOException {
-      return _api.getRuntimeProperties();
+   public Map getRuntimeProperties() throws IOException {
+      return PropertyReaderConverter.toProperties(_api.getRuntimeProperties());
    }
 
    /**
@@ -133,6 +136,26 @@ public final class APIManager implements APIManagerMBean {
     */
    public String getStartupTime() throws IOException {
       return _api.toDateString(_api.getStartupTimestamp());
+   }
+    
+
+   /**
+    * Gets the list of the API functions.
+    *
+    * @return
+    *    the list of the API function names.
+    *
+    * @throws IOException
+    *    if the connection to the MBean fails.
+    */
+   public String[] getFunctionNames() throws IOException {
+      List functions =  _api.getFunctionList();
+      String[] functionNames = new String[functions.size()];
+      for (int i = 0; i < functions.size(); i++) {
+         Function nextFunction = (Function) functions.get(i);
+         functionNames[i] = nextFunction.getName();
+      }
+      return functionNames;
    }
     
    /**

@@ -306,6 +306,16 @@ implements DefaultResultCodes {
    }
 
    /**
+    * Gets the list of the functions of this API.
+    *
+    * @return
+    *    the function of this API as a list of {@link Function}, never <code>null</code>.
+    */
+   final List getFunctionList() {
+      return _functionList;
+   }
+
+   /**
     * Gets the bootstrap properties specified for the API.
     *
     * @return
