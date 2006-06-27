@@ -538,7 +538,7 @@
 			<xsl:value-of select="$context" />
 			<xsl:text>getDataElement() != null) {</xsl:text>
 			<xsl:apply-templates select="data/contains/contained" mode="checkParams">
-				<xsl:with-param name="parentelement" select="concat($context, 'getDataElement()')" />
+				<xsl:with-param name="parentelement" select="concat($context, 'getDataElement().')" />
 				<xsl:with-param name="side" select="$side" />
 			</xsl:apply-templates>
 			<xsl:text>
@@ -546,7 +546,7 @@
 		</xsl:if>
 
 		<xsl:apply-templates select="contains/contained" mode="checkParams">
-			<xsl:with-param name="parentelement" select="concat(@name, 'NextElement')" />
+			<xsl:with-param name="parentelement" select="$context" />
 			<xsl:with-param name="side" select="$side" />
 			<xsl:with-param name="level" select="$level" />
 		</xsl:apply-templates>
@@ -584,7 +584,7 @@
 		<xsl:value-of select="$level" />
 		<xsl:text>Iterator = </xsl:text>
 		<xsl:value-of select="$parentelement" />
-		<xsl:text>.getChildElements("</xsl:text>
+		<xsl:text>getChildElements("</xsl:text>
 		<xsl:value-of select="$elementname" />
 		<xsl:text>").iterator();
       while (</xsl:text>
