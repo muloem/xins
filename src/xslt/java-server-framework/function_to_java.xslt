@@ -21,6 +21,7 @@
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
 	<xsl:param name="impl_file"    />
+	<xsl:param name="generics"     />
 
 	<!-- Perform includes -->
 	<xsl:include href="../java.xslt" />

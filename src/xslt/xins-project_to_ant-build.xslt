@@ -338,6 +338,16 @@ APIs in this project are:
 				<!-- If not set by the user set it to true. -->
 				<property name="build.deprecation" value="true" />
 				<property name="build.java.version" value="${{ant.java.version}}" />
+				<condition property="build.generics">
+					<and>
+						<not>
+							<equals arg1="${{build.java.version}}" arg2="1.3" />
+						</not>
+						<not>
+							<equals arg1="${{build.java.version}}" arg2="1.4" />
+						</not>
+					</and>
+				</condition>
 				<path id="xins.classpath">
 					<pathelement path="{$xins_home}/build/logdoc.jar" />
 					<pathelement path="{$xins_home}/build/xins-common.jar" />
@@ -978,14 +988,15 @@ APIs in this project are:
 				extension=".java"
 				includes="{$functionIncludes}">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="package"      expression="{$package}"      />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
-					<param name="impl_file"    expression="{$impl_file}"    />
+					<param name="xins_version" expression="{$xins_version}"     />
+					<param name="project_home" expression="{$project_home}"     />
+					<param name="project_file" expression="{$project_file}"     />
+					<param name="specsdir"     expression="{$api_specsdir}"     />
+					<param name="package"      expression="{$package}"          />
+					<param name="api"          expression="{$api}"              />
+					<param name="api_file"     expression="{$api_file}"         />
+					<param name="impl_file"    expression="{$impl_file}"        />
+					<param name="generics"     expression="${{build.generics}}" />
 				</style>
 
 				<!-- Generation of the result code files. -->
@@ -1410,13 +1421,14 @@ APIs in this project are:
 				extension="Result.java"
 				includes="{$functionIncludes}">
 					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}"  />
-					<param name="project_home" expression="{$project_home}"  />
-					<param name="project_file" expression="{$project_file}"  />
-					<param name="specsdir"     expression="{$api_specsdir}"  />
-					<param name="api"          expression="{$api}"           />
-					<param name="api_file"     expression="{$api_file}"      />
-					<param name="package"      expression="{$clientPackage}" />
+					<param name="xins_version" expression="{$xins_version}"     />
+					<param name="project_home" expression="{$project_home}"     />
+					<param name="project_file" expression="{$project_file}"     />
+					<param name="specsdir"     expression="{$api_specsdir}"     />
+					<param name="api"          expression="{$api}"              />
+					<param name="api_file"     expression="{$api_file}"         />
+					<param name="package"      expression="{$clientPackage}"    />
+					<param name="generics"     expression="${{build.generics}}" />
 				</style>
 				<style
 				basedir="{$api_specsdir}"

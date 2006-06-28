@@ -16,6 +16,7 @@
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
+	<xsl:param name="generics"     />
 
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />

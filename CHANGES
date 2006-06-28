@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
     a new build.java.version build property.
+  - Added generated classes uses Java generics where possible if the version
+    of Java is equal or higher than 1.5.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:

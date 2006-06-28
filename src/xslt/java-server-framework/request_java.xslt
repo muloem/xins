@@ -470,12 +470,12 @@
 		<xsl:text><![CDATA[
 
    /**
-    * Gets the list of <code>Request.]]></xsl:text>
+    * Gets the list of <code>]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code> included the data section.
     *
     * @return
-    *    A list of <code>Request.]]></xsl:text>
+    *    A list of <code>]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code>, cannot be <code>null</code>.]]></xsl:text>
 		<xsl:if test="deprecated">
@@ -487,7 +487,13 @@
 		</xsl:if>
 		<xsl:text>
     */
-   public java.util.List list</xsl:text>
+   public java.util.List</xsl:text>
+		<xsl:if test="$generics = 'true'">
+			<xsl:text>&lt;</xsl:text>
+			<xsl:value-of select="$objectName" />
+			<xsl:text>&gt;</xsl:text>
+		</xsl:if>
+		<xsl:text> list</xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text>() {
       if (</xsl:text>
@@ -611,12 +617,12 @@
 		<xsl:text><![CDATA[
 
    /**
-    * Gets the list of <code>Request.]]></xsl:text>
+    * Gets the list of <code>]]></xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text><![CDATA[</code> included in this element.
     *
     * @return
-    *    A list of <code>Request.]]></xsl:text>
+    *    A list of <code>]]></xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text><![CDATA[</code>, cannot be <code>null</code>.]]></xsl:text>
 		<xsl:if test="deprecated">
@@ -628,7 +634,13 @@
 		</xsl:if>
 		<xsl:text>
     */
-   public java.util.List list</xsl:text>
+   public java.util.List</xsl:text>
+		<xsl:if test="$generics = 'true'">
+			<xsl:text>&lt;</xsl:text>
+			<xsl:value-of select="$methodName" />
+			<xsl:text>&gt;</xsl:text>
+		</xsl:if>
+		<xsl:text> list</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>() {
       if (_element == null) {
