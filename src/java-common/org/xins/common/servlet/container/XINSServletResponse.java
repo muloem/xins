@@ -217,7 +217,7 @@ public class XINSServletResponse implements HttpServletResponse {
     * Gets the returned message from the servlet.
     *
     * @return
-    *    the returned message.
+    *    the returned message or <code>null</code> if no message is returned.
     */
    public String getResult() {
       if (_writer == null) {

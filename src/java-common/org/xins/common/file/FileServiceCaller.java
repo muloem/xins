@@ -255,7 +255,12 @@ public class FileServiceCaller extends ServiceCaller {
       // Retrieve the data returned from the call
       HTTPCallResultData data = null;
       try {
-         data = new HTTPCallResultDataHandler(response.getStatus(), response.getResult().getBytes(response.getCharacterEncoding()));
+         String result = response.getResult();
+         byte[] resultData = null;
+         if (result != null) {
+            resultData = result.getBytes(response.getCharacterEncoding());
+         }
+         data = new HTTPCallResultDataHandler(response.getStatus(), resultData);
       } catch (UnsupportedEncodingException ueex) {
          throw Utils.logProgrammingError(ueex);
       }
