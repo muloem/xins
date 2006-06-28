@@ -741,7 +741,9 @@ APIs in this project are:
 				srcdir="{$javaDestDir}"
 				destdir="{$typeClassesDir}"
 				debug="true"
-				deprecation="${{build.deprecation}}">
+				deprecation="${{build.deprecation}}"
+				source="${{build.java.version}}"
+				target="${{build.java.version}}">
 					<classpath>
 						<pathelement path="{$xins_home}/build/logdoc.jar" />
 						<pathelement path="{$xins_home}/build/xins-common.jar" />
@@ -1079,7 +1081,9 @@ APIs in this project are:
 				<javac
 				destdir="{$classesDestDir}"
 				debug="true"
-				deprecation="${{build.deprecation}}">
+				deprecation="${{build.deprecation}}"
+				source="${{build.java.version}}"
+				target="${{build.java.version}}">
 					<src path="{$javaDestDir}" />
 					<src path="{$javaImplDir}" />
 					<classpath>
@@ -1293,7 +1297,9 @@ APIs in this project are:
 				<javac
 				destdir="build/classes-tests/{$api}"
 				debug="true"
-				deprecation="${{build.deprecation}}">
+				deprecation="${{build.deprecation}}"
+				source="${{build.java.version}}"
+				target="${{build.java.version}}">
 					<src path="apis/{$api}/test" />
 					<classpath>
 						<path refid="xins.classpath" />
@@ -1468,7 +1474,9 @@ APIs in this project are:
 			srcdir="{$project_home}/build/java-capi/{$api}/"
 			destdir="{$project_home}/build/classes-capi/{$api}"
 			debug="true"
-			deprecation="${{build.deprecation}}">
+			deprecation="${{build.deprecation}}"
+			source="${{build.java.version}}"
+			target="${{build.java.version}}">
 				<classpath>
 					<path refid="xins.classpath" />
 					<xsl:if test="$apiHasTypes">

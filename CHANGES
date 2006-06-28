@@ -4,6 +4,13 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
+
+* Generated build file:
+  - Added the possibility to set the Java version of the compiled code using
+    a new build.java.version build property.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 
 * XINS/Java Common Library:
