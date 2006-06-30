@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
@@ -20,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.xml.transform.URIResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.SourceLocator;
@@ -48,11 +45,7 @@ import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
-import org.xins.common.service.Descriptor;
-import org.xins.common.service.DescriptorBuilder;
-import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -176,11 +169,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
    private String _baseXSLTDir;
 
    /**
-    * The last XSLT dir used to resolve an URL.
-    */
-   private String _lastXSLTDir;
-
-   /**
     * The XSLT transformer.
     */
    private TransformerFactory _factory;
@@ -268,7 +256,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Creates the transformer factory
       _factory = TransformerFactory.newInstance();
-      _factory.setURIResolver(new XsltURIResolver());
    }
 
    /**
@@ -490,10 +477,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
                Iterator itCommandNames = _api.getAPISpecification().getFunctions().keySet().iterator();
                while (itCommandNames.hasNext()) {
                   String nextCommand = (String) itCommandNames.next();
-                  _lastXSLTDir = _baseXSLTDir;
                   String xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
 
-                  Templates template = _factory.newTemplates(new StreamSource(new URL(xsltLocation).openStream()));
+                  Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                   _templateCache.put(xsltLocation, template);
                }
                Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
@@ -501,7 +487,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
                   Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
                   String xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
                   if (nextFunction.getValue().equals("-")) {
-                     Templates template = _factory.newTemplates(new StreamSource(new URL(xsltLocation).openStream()));
+                     Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                      _templateCache.put(xsltLocation, template);
                   }
                }
@@ -527,7 +513,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          if (xsltFileName.endsWith("Show") || xsltFileName.endsWith("Okay")) {
             xsltFileName = xsltFileName.substring(0, xsltFileName.length() - 4);
          }
-         _lastXSLTDir = _baseXSLTDir;
          String xsltLocation = _baseXSLTDir + xsltFileName + ".xslt";
          try {
             Templates template = getTemplate(xsltLocation);
@@ -735,7 +720,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
          // Use the template to create a transformer
          Transformer xformer = template.newTransformer();
-         xformer.setURIResolver(new XsltURIResolver());
 
          // Prepare the input and output files
          Source source = new StreamSource(new StringReader(xmlInput));
@@ -790,9 +774,15 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       if (_cacheTemplates && _templateCache.containsKey(xsltUrl)) {
          template = (Templates) _templateCache.get(xsltUrl);
       } else {
-         template = _factory.newTemplates(new StreamSource(new URL(xsltUrl).openStream()));
+         try {
+         template = _factory.newTemplates(new StreamSource(xsltUrl));
          if (_cacheTemplates) {
             _templateCache.put(xsltUrl, template);
+         }
+         } catch (Exception ex) {
+            System.err.println("url " + xsltUrl);
+            ex.printStackTrace();
+            throw ex;
          }
       }
       return template;
@@ -863,54 +853,5 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          ex.printStackTrace();
       }
       return receivedParameter;
-   }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Class used to revolved URL locations when an XSLT file refers to
-    * another XSLT file using a relative URL.
-    */
-   class XsltURIResolver implements URIResolver {
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
-
-      /**
-       * Revolve a hyperlink reference.
-       *
-       * @param href
-       *    The hyperlink to resolve.
-       * @param base
-       *    The base URI in effect when the href attribute was encountered.
-       *
-       * @return
-       *    A Source object, or <code>null</code> if the href cannot be resolved,
-       *    and the processor should try to resolve the URI itself.
-       *
-       * @throws TransformerException
-       *    If an error occurs when trying to resolve the URI.
-       */
-      public Source resolve(String href, String base) throws TransformerException {
-         String location = href;
-         if (href.startsWith("../")) {
-            int lastSlash = _lastXSLTDir.lastIndexOf('/');
-            int secondLastSlash = _lastXSLTDir.lastIndexOf('/', lastSlash - 1);
-            location = _lastXSLTDir.substring(0, secondLastSlash) + href.substring(2);
-         } else if (href.indexOf(":/") == -1) {
-            location = _lastXSLTDir + href;
-         }
-         _lastXSLTDir = location.substring(0, location.lastIndexOf('/') + 1);
-         try {
-            return new StreamSource(new URL(location).openStream());
-         } catch (IOException ioe) {
-            ioe.printStackTrace();
-            throw new TransformerException("Error while loading the XSLT \"" +
-                  href + "\": " + ioe.getMessage());
-         }
-      }
    }
 }

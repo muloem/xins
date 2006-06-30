@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 
+* XINS/Java Server Framework:
+  - Improved the detection of relative files in the XSLT used by the 
+    FrontendCallingConvention.
+
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
     a new build.java.version build property.
