@@ -510,13 +510,6 @@ final class EngineStarter extends Object {
 
    /**
     * Registers the API MBean.
-    * This method heavily uses Java reflection API in order to work with both
-    * Java 1.5 JMX implementation and the JMX RI package (for earlier Java versions).
-    * Without the reflection the code would be like this:
-    *    MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-    *    APIManager mBean = new APIManager(api);
-    *    ObjectName objectName = new ObjectName("org.xins.server:type=APIManager");
-    *    mBeanServer.registerMBean(mBean, objectName);
     *
     * @param api
     *    the API, never <code>null</code>.
@@ -532,23 +525,8 @@ final class EngineStarter extends Object {
             mBeanServer = MBeanServerFactory.createMBeanServer();
          }
          APIManager mBean = new APIManager(api);
-         /*Class[] constrClasses = {String.class};
-         Object[] constrArgs = {"org.xins.server:type=APIManager"};
-         Object objectName = Class.forName("javax.management.ObjectName").getConstructor(constrClasses).newInstance(constrArgs);*/
          ObjectName objectName = new ObjectName("org.xins.server:type=APIManager");
 
-         /*Method[] mBeanServerMethods = mBeanServer.getClass().getMethods();
-         Method registerMBeanMethod = null;
-         for (int i = 0; i < mBeanServerMethods.length && registerMBeanMethod == null; i++) {
-            if (mBeanServerMethods[i].getName().equals("registerMBean")) {
-               registerMBeanMethod = mBeanServerMethods[i];
-            }
-         }
-         if (registerMBeanMethod == null) {
-            throw new NoSuchMethodException("registerMBean");
-         }
-         Object[] registerArgs = {mBean, objectName};
-         registerMBeanMethod.invoke(mBeanServer, registerArgs);*/
          mBeanServer.registerMBean(mBean, objectName);
 
       // If for any reason it doesn't work, ignore.
