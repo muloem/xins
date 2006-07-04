@@ -105,7 +105,6 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       // Create the transformer factory
       _factory = TransformerFactory.newInstance();
-      _factory.setURIResolver(new URIResolver());
 
       // Initialize the template cache
       _templateCache = new HashMap(89);
@@ -276,7 +275,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          if (_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
             templates = (Templates) _templateCache.get(xsltLocation);
          } else {
-            templates = _factory.newTemplates(_factory.getURIResolver().resolve(xsltLocation, _location));
+            templates = _factory.newTemplates(new StreamSource(xsltLocation));
             if (_cacheTemplates) {
                _templateCache.put(xsltLocation, templates);
             }
@@ -340,86 +339,5 @@ class XSLTCallingConvention extends StandardCallingConvention {
          mimeType += ";charset=" + encoding;
       }
       return mimeType;
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   /**
-    * Class used to revolved URL locations when an SLT file refers to another
-    * XSLT file using a relative URL.
-    *
-    * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
-    */
-   static class URIResolver implements javax.xml.transform.URIResolver {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The base directory of the previous call to resolve, if any. Cannot be <code>null</code>.
-       */
-      private String _base = "";
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Revolves a hyperlink reference.
-       *
-       * @param href
-       *    the hyperlink to resolve, cannot be <code>null</code>.
-       *
-       * @param base
-       *    the base URI in effect when the href attribute was encountered,
-       *    can be <code>null</code>.
-       *
-       * @return
-       *    a {@link Source} object, or <code>null</code> if the href cannot
-       *    be resolved, and the processor should try to resolve the URI
-       *    itself.
-       *
-       * @throws TransformerException
-       *    if an error occurs when trying to resolve the URI.
-       */
-      public Source resolve(String href, String base)
-      throws TransformerException {
-
-         // If no base is specified, use the last location.
-         if (base == null) {
-            base = _base;
-
-         // The base should always ends with a slash.
-         } else if (! base.endsWith("/")) {
-            base += '/';
-         }
-         _base = base;
-
-         // Result the URL
-         String url = null;
-         if (href.indexOf(":/") == -1) {
-            url = base + href;
-         } else {
-            url = href;
-            _base = href.substring(0, href.lastIndexOf('/') + 1);
-         }
-
-         // Return the source of the resolved XSLT.
-         try {
-            return new StreamSource(new URL(url).openStream());
-         } catch (IOException ioe) {
-            throw new TransformerException(ioe);
-         }
-      }
    }
 }
