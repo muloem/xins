@@ -91,7 +91,7 @@ public class CallXINSTask extends Task {
    /**
     * Sets the URL location of the API.
     *
-    * @param location
+    * @param apiLocation
     *    the URL location of the API without any parameters, cannot be <code>null</code>.
     */
    public void setApiLocation(String apiLocation) {

@@ -62,7 +62,7 @@ public class FileServiceCaller extends ServiceCaller {
 
    /**
     * The pool of the loaded XINS APIs. The key is the location of the WAR
-    * file, as a {@TargetDescriptor}, the value is the {@link LocalServletHandler}.
+    * file, as a {@link TargetDescriptor}, the value is the {@link LocalServletHandler}.
     */
    private static HashMap SERVLETS = new HashMap();
 
@@ -128,10 +128,8 @@ public class FileServiceCaller extends ServiceCaller {
     * by the <code>ServiceCaller</code> constructor if no
     * <code>CallConfig</code> object was given.
     *
-    * <p>The implementation of this method in class {@link HTTPServiceCaller}
-    * returns a standard {@link HTTPCallConfig} object which has unconditional
-    * fail-over disabled and the HTTP method set to
-    * {@link HTTPMethod#POST POST}.
+    * <p>The implementation of this method in class {@link FileServiceCaller}
+    * returns a standard {@link HTTPCallConfig}.
     *
     * @return
     *    a new {@link HTTPCallConfig} instance, never <code>null</code>.

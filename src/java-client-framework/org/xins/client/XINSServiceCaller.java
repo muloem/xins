@@ -225,7 +225,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    /**
     * The map containing the service caller to call for the descriptor.
-    * The key of the {@link Map} is a {@link TargetDescriptor} and the value
+    * The key of the {@link HashMap} is a {@link TargetDescriptor} and the value
     * is a {@link ServiceCaller}.
     */
    private HashMap _serviceCallers;

@@ -540,9 +540,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * @param xinsResult
     *    the result returned by the function, cannot be <code>null</code>.
     *
-    * @param ssoProperties
-    *    the session properties, can be <code>null</code>.
-    *
     * @return
     *    The XML Element containing the GPF XML result.
     */
