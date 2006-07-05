@@ -6,11 +6,18 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 
+* XINS/Java Common Library:
+  - Added a new method in DateConverter to convert a long in a human readable
+    String.
+
 * XINS/Java Server Framework:
   - Improved the detection of relative files in the XSLT used by the 
     FrontendCallingConvention.
   - Improved the detection of relative files in the XSLT used by the 
     XSLTCallingConvention.
+  - Added more information for the Control command of the front-end framework.
+  - Created the XSLT to render the Control command of the front-end framework.
+  - the getBootstrapProperties() method in the API class is now public.
 
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
