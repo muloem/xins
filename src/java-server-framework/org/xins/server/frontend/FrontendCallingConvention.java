@@ -206,6 +206,11 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private Map _templateCache = new HashMap();
 
+   /**
+    * The template used for the Control command.
+    */
+   private Templates _templateControl;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -256,6 +261,14 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Creates the transformer factory
       _factory = TransformerFactory.newInstance();
+
+      // Store the template used for the Control command
+      try {
+         StringReader controlXSLT = new StringReader(ControlResult.getControlTemplate());
+         _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
    }
 
    /**
@@ -319,6 +332,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          functionName = _defaultCommand;
       }
 
+      _session.request(httpRequest);
+
       // Control command has a special behaviour
       if (functionName.equals("Control")) {
          String action = httpRequest.getParameter("action");
@@ -335,8 +350,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       if (actionName != null && !actionName.equals("") && !actionName.toLowerCase().equals("show")) {
          functionName += actionName.substring(0,1).toUpperCase() + actionName.substring(1);
       }
-
-      _session.request(httpRequest);
 
       // Reset any previous value
       _redirection.set(null);
@@ -419,9 +432,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       httpResponse.addCookie(cookie);
 
       String mode = httpRequest.getParameter("mode");
+      String command = httpRequest.getParameter("command");
       if ("template".equalsIgnoreCase(mode)) {
-         String xsltFileName = httpRequest.getParameter("command");
-         String xsltLocation = _baseXSLTDir + xsltFileName + ".xslt";
+         String xsltLocation = _baseXSLTDir + command + ".xslt";
          //httpResponse.sendRedirect(xsltLocation);
          InputStream inputXSLT = new URL(xsltLocation).openStream();
          OutputStream output = httpResponse.getOutputStream();
@@ -439,7 +452,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             "NotLoggedIn".equals(xinsResult.getErrorCode())) {
          String redirection = xinsResult.getParameter("redirect");
          if (redirection == null && "NotLoggedIn".equals(xinsResult.getErrorCode())) {
-            redirection = _loginPage + "&targetcommand=" + httpRequest.getParameter("command");
+            redirection = _loginPage + "&targetcommand=" + command;
          }
          if (redirection == null && xinsResult.getErrorCode() == null) {
             redirection = (String) _redirection.get();
@@ -465,7 +478,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             httpResponse.sendRedirect(redirection);
          }
          return;
-      } else if (httpRequest.getParameter("command").equals("Control")) {
+      } else if (command.equals("Control")) {
          String action = httpRequest.getParameter("action");
          if ("RemoveSessionProperties".equals(action)) {
             _session.removeProperties();
@@ -502,20 +515,24 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       String commandResultXML = serializeResult(commandResult);
 
-      if ("source".equalsIgnoreCase(mode) || httpRequest.getParameter("command").equals("Control")) {
+      if ("source".equalsIgnoreCase(mode)) {
          PrintWriter out = httpResponse.getWriter();
          httpResponse.setContentType(XML_CONTENT_TYPE);
          httpResponse.setStatus(HttpServletResponse.SC_OK);
          out.print(commandResultXML);
          out.close();
       } else {
-         String xsltFileName = httpRequest.getParameter("command");
-         if (xsltFileName.endsWith("Show") || xsltFileName.endsWith("Okay")) {
-            xsltFileName = xsltFileName.substring(0, xsltFileName.length() - 4);
+         if (command.endsWith("Show") || command.endsWith("Okay")) {
+            command = command.substring(0, command.length() - 4);
          }
-         String xsltLocation = _baseXSLTDir + xsltFileName + ".xslt";
+         String xsltLocation = _baseXSLTDir + command + ".xslt";
          try {
-            Templates template = getTemplate(xsltLocation);
+            Templates template = null;
+            if (command.equals("Control")) {
+               template = _templateControl;
+            } else {
+               template = getTemplate(xsltLocation);
+            }
             String resultHTML = translate(commandResultXML, template);
             String contentType = getContentType(template.getOutputProperties());
             PrintWriter out = httpResponse.getWriter();
