@@ -320,8 +320,10 @@ implements DefaultResultCodes {
     *
     * @return
     *   the bootstrap properties, cannot be <code>null</code>.
+    *
+    * @since XINS 1.5.0.
     */
-   PropertyReader getBootstrapProperties() {
+   public PropertyReader getBootstrapProperties() {
       return _buildSettings;
    }
 
@@ -1319,19 +1321,6 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Converts the specified timestamp to a date string.
-    *
-    * @param millis
-    *    the timestamp, as a number of milliseconds since the Epoch.
-    *
-    * @return
-    *    the date string, never <code>null</code>.
-    */
-   final String toDateString(long millis) {
-      return DateConverter.toDateString(_timeZone, millis);
-   }
-
-   /**
     * Returns the call statistics for all functions in this API.
     *
     * @param detailed
@@ -1347,9 +1336,9 @@ implements DefaultResultCodes {
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
 
-      builder.param("startup",   toDateString(_startupTimestamp));
-      builder.param("lastReset", toDateString(_lastStatisticsReset));
-      builder.param("now",       toDateString(System.currentTimeMillis()));
+      builder.param("startup",   DateConverter.toDateString(_timeZone, _startupTimestamp));
+      builder.param("lastReset", DateConverter.toDateString(_timeZone, _lastStatisticsReset));
+      builder.param("now",       DateConverter.toDateString(_timeZone, System.currentTimeMillis()));
 
       // Currently available processors
       Runtime rt = Runtime.getRuntime();
