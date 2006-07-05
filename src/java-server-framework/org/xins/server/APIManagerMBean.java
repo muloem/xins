@@ -9,6 +9,8 @@ package org.xins.server;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.TabularDataSupport;
 import org.xins.common.collections.PropertyReader;
 
 /**
@@ -63,7 +65,7 @@ public interface APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   PropertyReader getBootstrapProperties() throws IOException;
+   CompositeDataSupport getBootstrapProperties() throws IOException;
 
    /**
     * Gets the runtime properties.
@@ -74,7 +76,7 @@ public interface APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   Map getRuntimeProperties() throws IOException;
+   CompositeDataSupport getRuntimeProperties() throws IOException;
 
    /**
     * Gets the time at which the API was started.

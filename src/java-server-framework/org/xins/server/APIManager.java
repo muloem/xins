@@ -12,6 +12,12 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.OpenType;
+import javax.management.openmbean.SimpleType;
+import javax.management.openmbean.TabularDataSupport;
+import javax.management.openmbean.TabularType;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
@@ -71,7 +77,7 @@ public final class APIManager implements APIManagerMBean {
     *    if the connection to the MBean fails.
     */
    public String getAPIVersion() throws IOException {
-      return getBootstrapProperties().get(API.API_VERSION_PROPERTY);
+      return _api.getBootstrapProperties().get(API.API_VERSION_PROPERTY);
    }
 
    /**
@@ -109,8 +115,9 @@ public final class APIManager implements APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   public PropertyReader getBootstrapProperties() throws IOException {
-      return _api.getBootstrapProperties();
+   public CompositeDataSupport getBootstrapProperties() throws IOException {
+       Properties bootstrapProps = PropertyReaderConverter.toProperties(_api.getBootstrapProperties());
+       return propertiesToCompositeData(bootstrapProps);
    }
 
    /**
@@ -122,8 +129,9 @@ public final class APIManager implements APIManagerMBean {
     * @throws IOException
     *    if the connection to the MBean fails.
     */
-   public Map getRuntimeProperties() throws IOException {
-      return PropertyReaderConverter.toProperties(_api.getRuntimeProperties());
+   public CompositeDataSupport getRuntimeProperties() throws IOException {
+      Properties runtimeProps = PropertyReaderConverter.toProperties(_api.getRuntimeProperties());
+      return propertiesToCompositeData(runtimeProps);
    }
 
    /**
@@ -181,5 +189,37 @@ public final class APIManager implements APIManagerMBean {
       FunctionRequest reloadPropertiesRequest = new FunctionRequest("_ReloadProperties",
             PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
       _api.handleCall(System.currentTimeMillis(), reloadPropertiesRequest, _ip);
+   }
+
+   /**
+    * Utility method to convert a {@link Properties} to a {@link CompositeDataSupport}
+    *
+    * @param properties
+    *    the properties to represent to the JMX agent, cannot be <code>null</code>.
+    *
+    * @return
+    *    the {@link CompositeDataSupport} containng the properties, or <code>null</code>
+    *    if an error occured.
+    */
+   private CompositeDataSupport propertiesToCompositeData(Properties properties) {
+       try {
+          //String[] itemNames = {"key", "value"};
+          String[] keys = (String[]) properties.keySet().toArray(new String[0]);
+          OpenType[] itemTypes = new OpenType[keys.length];
+          for (int i = 0; i < itemTypes.length; i++) {
+             itemTypes[i] = SimpleType.STRING;
+          }
+          CompositeType propsType = new CompositeType("Properties type", "properties", keys, keys, itemTypes);
+          //TabularType tabType = new TabularType("bootstrapProperties", "bootstrap properties", propsType, keys);
+          //TabularDataSupport tabSupport = new TabularDataSupport(tabType);
+          CompositeDataSupport propsData = new CompositeDataSupport(propsType, properties);
+          //tabSupport.putAll(bootstrapProps);
+          //tabSupport.put(propsData);
+          //return tabSupport;
+          return propsData;
+       } catch (Exception ex) {
+          ex.printStackTrace();
+          return null;
+       }
    }
 }
