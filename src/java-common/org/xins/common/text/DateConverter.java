@@ -68,6 +68,29 @@ public class DateConverter extends Object {
 
    /**
     * Convert the specified <code>long</code> to a human-readable time stamp.
+    * The current time zone is used.
+    *
+    * @param n
+    *    the time stamp to be converted to a human-readable character string,
+    *    as a number of milliseconds since the Epoch (midnight January 1,
+    *    1970), must be greater than {@link Long#MIN_VALUE} and smaller than
+    *    {@link Long#MAX_VALUE}.
+    *
+    * @return
+    *    the converted character string, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>n == {@link Long#MIN_VALUE} || n == {@link Long#MAX_VALUE}</code>.
+    *
+    * @since XINS 1.5.0
+    */
+   public static String toDateString(long time)
+   throws IllegalArgumentException {
+      return toDateString(TimeZone.getDefault(), time);
+   }
+
+   /**
+    * Convert the specified <code>long</code> to a human-readable time stamp.
     *
     * @param timeZone
     *    the time zone to use, cannot be <code>null</code>.

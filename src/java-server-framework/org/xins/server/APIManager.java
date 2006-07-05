@@ -16,6 +16,7 @@ import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.text.DateConverter;
 
 /**
  * Management bean for the API.
@@ -135,7 +136,7 @@ public final class APIManager implements APIManagerMBean {
     *    if the connection to the MBean fails.
     */
    public String getStartupTime() throws IOException {
-      return _api.toDateString(_api.getStartupTimestamp());
+      return DateConverter.toDateString(_api.getStartupTimestamp());
    }
     
 
