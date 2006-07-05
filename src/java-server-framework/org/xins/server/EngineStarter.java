@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
@@ -15,6 +16,10 @@ import javax.management.ObjectName;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.jmx.HierarchyDynamicMBean;
+import org.apache.log4j.spi.LoggerRepository;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -529,6 +534,26 @@ final class EngineStarter extends Object {
 
          mBeanServer.registerMBean(mBean, objectName);
 
+         // Register also the Log4J loggers
+
+         // Create and Register the top level Log4J MBean
+         HierarchyDynamicMBean hdm = new HierarchyDynamicMBean();
+         ObjectName mbo = new ObjectName("org.xins.server.log4j:hiearchy=default");
+         mBeanServer.registerMBean(hdm, mbo);
+
+         // Add the root logger to the Hierarchy MBean
+         Logger rootLogger = Logger.getRootLogger();
+         hdm.addLoggerMBean(rootLogger.getName());
+
+         // Get each logger from the Log4J Repository and add it to
+         // the Hierarchy MBean created above.
+         LoggerRepository r = LogManager.getLoggerRepository();
+         Enumeration loggers = r.getCurrentLoggers();
+         while (loggers.hasMoreElements()) {
+            Logger logger = (Logger) loggers.nextElement();
+            hdm.addLoggerMBean(logger.getName());
+         }
+         
       // If for any reason it doesn't work, ignore.
       // For example if the server is running on Java 1.4 a ClassNotFoundException may be thrown.
       } catch (Throwable ex) {

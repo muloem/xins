@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
   - Added more information for the Control command of the front-end framework.
   - Created the XSLT to render the Control command of the front-end framework.
   - the getBootstrapProperties() method in the API class is now public.
+  - Added Log4J MBeans to be able to maneage Log4J using JMX.
 
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
