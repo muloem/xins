@@ -13,14 +13,18 @@
 		<property environment="env" />
 			<available property="xins.home" value="${env.XINS_HOME}"
 								 file="${env.XINS_HOME}" type="dir" />
-			<fail message="Please set the XINS_HOME variable correctly" unless="xins.home" />
+			<fail message="Please set the XINS_HOME variable correctly." unless="xins.home" />
 			<ant antfile="${xins.home}/src/ant/make-build.xml" dir="@{projectdir}">
 				<property name="xins_home" value="${xins.home}" />
 				<property name="user.dir" value="@{projectdir}" />
 			</ant>
-			<ant antfile="${basedir}/build/build.xml"
-					 dir="${basedir}"
-					 target="@{target}-@{api}">
+			<condition property="xins.target" value="@{target}-@{api}">
+				<isset property="@{api}" />
+			</condition>
+			<property name="xins.target" value="@{target}" />
+			<ant antfile="@{projectdir}/build/build.xml"
+					 dir="@{projectdir}"
+					 target="${xins.target}">
 				<property name="user.dir" value="@{projectdir}" />
 			</ant>
 		</sequential>

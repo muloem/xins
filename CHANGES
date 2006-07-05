@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 * XINS/Java Common Library:
   - Added a new method in DateConverter to convert a long in a human readable
     String.
+  - Improved the xins ant task by making the api attribute optional and by
+    looking the build.xml in the correct directory.
 
 * XINS/Java Server Framework:
   - Improved the detection of relative files in the XSLT used by the 
