@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -65,6 +66,7 @@ public class CallingConventionTests extends TestCase {
     * The random number generator.
     */
    private final static Random RANDOM = new Random();
+
 
    //-------------------------------------------------------------------------
    // Constructor
@@ -573,10 +575,20 @@ public class CallingConventionTests extends TestCase {
                  returnedData == null || returnedData.length == 0);
 
       
-      // Expect "Accept" field
-      // String acceptField = connection.getHeaderField("accept");
-      // assertNotNull("Expected \"Accept\" field in response to an HTTP OPTIONS request.", acceptField);
-      
+      // Expect "Accept" field in the response
+      Header[] acceptHeaders = method.getResponseHeaders("accept");
+      assertTrue("Expected an \"Accept\" header in response to an HTTP OPTIONS request.", acceptHeaders != null && acceptHeaders.length > 0);
+      assertTrue("Expected only one \"Accept\" header in response to an HTTP OPTIONS request. Received " + acceptHeaders.length, acceptHeaders.length == 1);
+
+      String acceptHeader = acceptHeaders[0].getValue();
+      assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to have a non-empty value.", acceptHeader.trim().length() > 0);
+
+      List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
+
+      String[] shouldBeSupported = { "GET", "POST", "HEAD", };
+      for (int i = 0; i < shouldBeSupported.length; i++) {
+         assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + shouldBeSupported[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(shouldBeSupported[i]));
+      }
    }
 
    /**
