@@ -280,10 +280,13 @@ public class XINSServletRequest implements HttpServletRequest {
       while (paramsParser.hasMoreTokens()) {
          String parameter = paramsParser.nextToken();
          int equalPos = parameter.indexOf('=');
-         if (equalPos != -1 && equalPos != parameter.length()-1) {
+         if (equalPos != -1) {
             try {
                String paramName = URLEncoding.decode(parameter.substring(0, equalPos));
-               String paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
+               String paramValue = "";
+               if (equalPos != parameter.length()-1) {
+                  paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
+               }
                _parameters.setProperty(paramName, paramValue);
             } catch (FormatException fe) {
                // Ignore parameter

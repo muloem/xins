@@ -101,6 +101,17 @@ public interface APIManagerMBean {
    public String[] getFunctionNames() throws IOException;
 
    /**
+    * Gets the statistics of the functions.
+    *
+    * @return
+    *    the statistics of the functions.
+    *
+    * @throws IOException
+    *    if the connection to the MBean fails.
+    */
+   public TabularDataSupport getStatistics() throws IOException;
+
+   /**
     * Executes the _NoOp meta function.
     *
     * @throws IOException

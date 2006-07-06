@@ -9,6 +9,8 @@ package org.xins.server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -23,6 +25,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.text.DateConverter;
+import org.xins.common.xml.Element;
 
 /**
  * Management bean for the API.
@@ -167,6 +170,43 @@ public final class APIManager implements APIManagerMBean {
       return functionNames;
    }
     
+   /**
+    * Gets the statistics of the functions.
+    *
+    * @return
+    *    the statistics of the functions.
+    *
+    * @throws IOException
+    *    if the connection to the MBean fails.
+    */
+   public TabularDataSupport getStatistics() throws IOException {
+      String[] statsNames = {"count", "error code", "average"};
+      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.STRING, SimpleType.STRING};
+      try {
+         CompositeType statType = new CompositeType("Statistic", 
+               "A statistic of a function", statsNames, statsNames, statsTypes);
+         TabularType tabType = new TabularType("Function statistics", 
+               "Statistics of the functions", statType, getFunctionNames());
+         TabularDataSupport tabularData = new TabularDataSupport(tabType);
+         Iterator itFunctions =  _api.getFunctionList().iterator();
+         while (itFunctions.hasNext()) {
+            Function nextFunction = (Function) itFunctions.next();
+            Element success = nextFunction.getStatistics().getSuccessfulElement();
+            HashMap statMap = new HashMap();
+            statMap.put("count", success.getAttribute("count"));
+            statMap.put("error code", "");
+            statMap.put("average", success.getAttribute("average"));
+            CompositeDataSupport statData = new CompositeDataSupport(statType, statMap);
+            tabularData.put(statData);
+         }
+         
+         return tabularData;
+      } catch (Exception ex) {
+         ex.printStackTrace();
+         return null;
+      }
+   }
+
    /**
     * Executes the _NoOp meta function.
     *
