@@ -53,9 +53,13 @@ public class CustomTestConvention extends CustomCallingConvention {
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException, FunctionNotSpecifiedException {
-      String query = httpRequest.getParameter("query");
+      String[] query = httpRequest.getParameterValues("query");
+      if (query.length > 1) {
+         throw new InvalidRequestException("Multiple values for input parameter \"query\": \"" + query[0] + "\" and \"" + query[1] + "\".");
+      }
+
       BasicPropertyReader properties = new BasicPropertyReader();
-      properties.set("inputText", query);
+      properties.set("inputText", query[0]);
       properties.set("useDefault", "false");
       return new FunctionRequest("ResultCode", properties, null);
    }
