@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
     String.
   - Improved the xins ant task by making the api attribute optional and by
     looking the build.xml in the correct directory.
+  - Fixed the XINSServletRequest returns all the passed parameters with the
+    getParameterNames() method.
 
 * XINS/Java Server Framework:
   - Improved the detection of relative files in the XSLT used by the 
