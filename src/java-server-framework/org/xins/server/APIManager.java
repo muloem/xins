@@ -180,19 +180,20 @@ public final class APIManager implements APIManagerMBean {
     *    if the connection to the MBean fails.
     */
    public TabularDataSupport getStatistics() throws IOException {
-      String[] statsNames = {"count", "error code", "average"};
-      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.STRING, SimpleType.STRING};
+      String[] statsNames = {"function", "count", "error code", "average"};
+      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.STRING, SimpleType.STRING, SimpleType.STRING};
       try {
          CompositeType statType = new CompositeType("Statistic", 
                "A statistic of a function", statsNames, statsNames, statsTypes);
          TabularType tabType = new TabularType("Function statistics", 
-               "Statistics of the functions", statType, getFunctionNames());
+               "Statistics of the functions", statType, statsNames);
          TabularDataSupport tabularData = new TabularDataSupport(tabType);
          Iterator itFunctions =  _api.getFunctionList().iterator();
          while (itFunctions.hasNext()) {
             Function nextFunction = (Function) itFunctions.next();
             Element success = nextFunction.getStatistics().getSuccessfulElement();
             HashMap statMap = new HashMap();
+            statMap.put("function", nextFunction.getName());
             statMap.put("count", success.getAttribute("count"));
             statMap.put("error code", "");
             statMap.put("average", success.getAttribute("average"));
