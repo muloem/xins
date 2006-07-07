@@ -14,13 +14,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.servlet.RequestDispatcher;
@@ -206,7 +207,7 @@ public class XINSServletRequest implements HttpServletRequest {
    /**
     * The parameters retrieved from the URL.
     */
-   private Properties _parameters = new Properties();
+   private HashMap _parameters = new HashMap();
 
    /**
     * The date when the request was created.
@@ -287,7 +288,18 @@ public class XINSServletRequest implements HttpServletRequest {
                if (equalPos != parameter.length()-1) {
                   paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
                }
-               _parameters.setProperty(paramName, paramValue);
+               Object currValue = _parameters.get(paramName);
+               if (currValue == null) {
+                  _parameters.put(paramName, paramValue);
+               } else if (currValue instanceof String) {
+                  ArrayList values = new ArrayList();
+                  values.add(currValue);
+                  values.add(paramValue);
+                  _parameters.put(paramName, values);
+               } else {
+                  ArrayList values = (ArrayList) currValue;
+                  values.add(paramValue);
+               }
             } catch (FormatException fe) {
                // Ignore parameter
             } catch (IllegalArgumentException iae) {
@@ -302,12 +314,20 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String[] getParameterValues(String str) {
-      Collection values = _parameters.values();
-      return (String[]) values.toArray(new String[0]);
+      Object values = _parameters.get(str);
+      if (values == null) {
+         return null;
+      } else if (values instanceof String) {
+         return new String[] { (String) values };
+      } else {
+         ArrayList list = (ArrayList) values;
+         return (String[]) list.toArray(new String[0]);
+      }
    }
 
    public String getParameter(String str) {
-      return _parameters.getProperty(str);
+      String[] values = getParameterValues(str);
+      return (values == null) ? null : values[0];
    }
 
    public int getIntHeader(String str) {
@@ -381,7 +401,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public Enumeration getParameterNames() {
-      return _parameters.keys();
+      return Collections.enumeration(_parameters.keySet());
    }
 
    public Map getParameterMap() {

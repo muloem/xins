@@ -199,6 +199,16 @@ public final class APIManager implements APIManagerMBean {
             statMap.put("average", success.getAttribute("average"));
             CompositeDataSupport statData = new CompositeDataSupport(statType, statMap);
             tabularData.put(statData);
+            Element[] unsuccess = nextFunction.getStatistics().getUnsuccessfulElement(true);
+            for (int i = 0; i < unsuccess.length; i++) {
+               HashMap statMap2 = new HashMap();
+               statMap2.put("function", nextFunction.getName());
+               statMap2.put("count", unsuccess[i].getAttribute("count"));
+               statMap2.put("error code", unsuccess[i].getAttribute("errorcode"));
+               statMap2.put("average", unsuccess[i].getAttribute("average"));
+               CompositeDataSupport statData2 = new CompositeDataSupport(statType, statMap2);
+               tabularData.put(statData2);
+            }
          }
          
          return tabularData;

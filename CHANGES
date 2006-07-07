@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
     looking the build.xml in the correct directory.
   - Fixed the XINSServletRequest returns all the passed parameters with the
     getParameterNames() method.
+  - Fixed SF.net bug #1518381: Error in getParameterValues (internal servlet 
+    container).
 
 * XINS/Java Server Framework:
   - Improved the detection of relative files in the XSLT used by the 
