@@ -29,6 +29,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
   - The bootstrap and the runtime properties are accessible using JMX.
   - Added the statistics to the JMX MBean.
 
+* Tests:
+  - Re-enabled and extended a unit test for the OPTIONS method.
+
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
     a new build.java.version build property.
