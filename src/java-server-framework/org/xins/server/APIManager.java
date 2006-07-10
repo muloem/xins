@@ -11,6 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -266,21 +267,28 @@ public final class APIManager implements APIManagerMBean {
    private HashMap statisticsToMap(Element statElement, String functionName) {
       HashMap statMap = new HashMap();
       statMap.put("Function", functionName);
-      statMap.put("Count", statElement.getAttribute("count"));
+      statMap.put("Count", new Long(statElement.getAttribute("count")));
       if (!TextUtils.isEmpty(statElement.getAttribute("errorcode"))) {
          statMap.put("Error Code", statElement.getAttribute("errorcode"));
       } else if (statElement.getLocalName().equals("unsuccessful")) {
          statMap.put("Error Code", "<unsuccessful>");
+      } else if (statElement.getLocalName().equals("successful")) {
+         statMap.put("Error Code", "<successful>");
       }
       if (!"N/A".equals(statElement.getAttribute("average"))) {
          statMap.put("Average", new Long(statElement.getAttribute("average")));
+      } else {
+          statMap.put("Average", new Long(-1L));
       }
       try {
          Element minStat = statElement.getUniqueChildElement("min");
          if (!"N/A".equals(minStat.getAttribute("duration"))) {
             statMap.put("Min Date", DATE_FORMATTER.parse(minStat.getAttribute("start")));
             statMap.put("Min Duration", new Long(minStat.getAttribute("duration")));
-         }
+         } else {
+            statMap.put("Min Date", new Date());
+            statMap.put("Min Duration", new Long(-1));
+         } 
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
       }
@@ -289,6 +297,9 @@ public final class APIManager implements APIManagerMBean {
          if (!"N/A".equals(maxStat.getAttribute("duration"))) {
             statMap.put("Max Date", DATE_FORMATTER.parse(maxStat.getAttribute("start")));
             statMap.put("Max Duration", new Long(maxStat.getAttribute("duration")));
+         } else {
+            statMap.put("Max Date", new Date());
+            statMap.put("Max Duration", new Long(-1));
          }
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
@@ -298,6 +309,9 @@ public final class APIManager implements APIManagerMBean {
          if (!"N/A".equals(lastStat.getAttribute("duration"))) {
             statMap.put("Last Date", DATE_FORMATTER.parse(lastStat.getAttribute("start")));
             statMap.put("Last Duration", new Long(lastStat.getAttribute("duration")));
+         } else {
+            statMap.put("Last Date", new Date());
+            statMap.put("Last Duration", new Long(-1));
          }
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
