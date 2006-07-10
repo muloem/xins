@@ -9,6 +9,8 @@ package org.xins.server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +27,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.text.DateConverter;
+import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
 
 /**
@@ -37,6 +40,16 @@ import org.xins.common.xml.Element;
  */
 public final class APIManager implements APIManagerMBean {
 
+   //-------------------------------------------------------------------------
+   // Static Fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * Formatter to convert {@link String} to {@link java.util.Date}.
+    */
+   private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
+
+   
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -180,8 +193,11 @@ public final class APIManager implements APIManagerMBean {
     *    if the connection to the MBean fails.
     */
    public TabularDataSupport getStatistics() throws IOException {
-      String[] statsNames = {"function", "count", "error code", "average"};
-      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.STRING, SimpleType.STRING, SimpleType.STRING};
+      String[] statsNames = {"Function", "Count", "Error Code", "Average", "Min Date", 
+            "Min Duration", "Max Date", "Max Duration", "Last Date", "Last Duration"};
+      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.LONG, SimpleType.STRING, 
+            SimpleType.LONG, SimpleType.DATE, SimpleType.LONG, SimpleType.DATE, SimpleType.LONG,
+            SimpleType.DATE, SimpleType.LONG};
       try {
          CompositeType statType = new CompositeType("Statistic", 
                "A statistic of a function", statsNames, statsNames, statsTypes);
@@ -192,20 +208,12 @@ public final class APIManager implements APIManagerMBean {
          while (itFunctions.hasNext()) {
             Function nextFunction = (Function) itFunctions.next();
             Element success = nextFunction.getStatistics().getSuccessfulElement();
-            HashMap statMap = new HashMap();
-            statMap.put("function", nextFunction.getName());
-            statMap.put("count", success.getAttribute("count"));
-            statMap.put("error code", "");
-            statMap.put("average", success.getAttribute("average"));
+            HashMap statMap = statisticsToMap(success, nextFunction.getName());
             CompositeDataSupport statData = new CompositeDataSupport(statType, statMap);
             tabularData.put(statData);
             Element[] unsuccess = nextFunction.getStatistics().getUnsuccessfulElement(true);
             for (int i = 0; i < unsuccess.length; i++) {
-               HashMap statMap2 = new HashMap();
-               statMap2.put("function", nextFunction.getName());
-               statMap2.put("count", unsuccess[i].getAttribute("count"));
-               statMap2.put("error code", unsuccess[i].getAttribute("errorcode"));
-               statMap2.put("average", unsuccess[i].getAttribute("average"));
+               HashMap statMap2 = statisticsToMap(unsuccess[i], nextFunction.getName());
                CompositeDataSupport statData2 = new CompositeDataSupport(statType, statMap2);
                tabularData.put(statData2);
             }
@@ -240,6 +248,62 @@ public final class APIManager implements APIManagerMBean {
       FunctionRequest reloadPropertiesRequest = new FunctionRequest("_ReloadProperties",
             PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
       _api.handleCall(System.currentTimeMillis(), reloadPropertiesRequest, _ip);
+   }
+
+   /**
+    * Put the data of a function statistic in a {@link HashMap}.
+    *
+    * @param statElement
+    *    the XML element containing the data about the successful or unsuccessful call,
+    *    cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function of this statistic, cannot be <code>null</code>.
+    *
+    * @return
+    *    a {@link HashMap} containing the statistics.
+    */
+   private HashMap statisticsToMap(Element statElement, String functionName) {
+      HashMap statMap = new HashMap();
+      statMap.put("Function", functionName);
+      statMap.put("Count", statElement.getAttribute("count"));
+      if (!TextUtils.isEmpty(statElement.getAttribute("errorcode"))) {
+         statMap.put("Error Code", statElement.getAttribute("errorcode"));
+      } else if (statElement.getLocalName().equals("unsuccessful")) {
+         statMap.put("Error Code", "<unsuccessful>");
+      }
+      if (!"N/A".equals(statElement.getAttribute("average"))) {
+         statMap.put("Average", new Long(statElement.getAttribute("average")));
+      }
+      try {
+         Element minStat = statElement.getUniqueChildElement("min");
+         if (!"N/A".equals(minStat.getAttribute("duration"))) {
+            statMap.put("Min Date", DATE_FORMATTER.parse(minStat.getAttribute("start")));
+            statMap.put("Min Duration", new Long(minStat.getAttribute("duration")));
+         }
+      } catch (Exception ex) {
+         Utils.logProgrammingError(ex);
+      }
+      try {
+         Element maxStat = statElement.getUniqueChildElement("max");
+         if (!"N/A".equals(maxStat.getAttribute("duration"))) {
+            statMap.put("Max Date", DATE_FORMATTER.parse(maxStat.getAttribute("start")));
+            statMap.put("Max Duration", new Long(maxStat.getAttribute("duration")));
+         }
+      } catch (Exception ex) {
+         Utils.logProgrammingError(ex);
+      }
+      try {
+         Element lastStat = statElement.getUniqueChildElement("last");
+         if (!"N/A".equals(lastStat.getAttribute("duration"))) {
+            statMap.put("Last Date", DATE_FORMATTER.parse(lastStat.getAttribute("start")));
+            statMap.put("Last Duration", new Long(lastStat.getAttribute("duration")));
+         }
+      } catch (Exception ex) {
+         Utils.logProgrammingError(ex);
+      }
+
+      return statMap;
    }
 
    /**

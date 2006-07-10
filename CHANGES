@@ -26,7 +26,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
   - the getBootstrapProperties() method in the API class is now public.
   - Added Log4J MBeans to be able to maneage Log4J using JMX.
   - The bootstrap and the runtime properties are accessible using JMX.
-  - Added a preview version of the statistics to the JMX MBean.
+  - Added the statistics to the JMX MBean.
 
 * Generated build file:
   - Added the possibility to set the Java version of the compiled code using
