@@ -278,7 +278,7 @@ public final class APIManager implements APIManagerMBean {
       if (!"N/A".equals(statElement.getAttribute("average"))) {
          statMap.put("Average", new Long(statElement.getAttribute("average")));
       } else {
-          statMap.put("Average", new Long(-1L));
+          statMap.put("Average", null);
       }
       try {
          Element minStat = statElement.getUniqueChildElement("min");
@@ -286,8 +286,8 @@ public final class APIManager implements APIManagerMBean {
             statMap.put("Min Date", DATE_FORMATTER.parse(minStat.getAttribute("start")));
             statMap.put("Min Duration", new Long(minStat.getAttribute("duration")));
          } else {
-            statMap.put("Min Date", new Date());
-            statMap.put("Min Duration", new Long(-1));
+            statMap.put("Min Date", null);
+            statMap.put("Min Duration", null);
          } 
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
@@ -298,8 +298,8 @@ public final class APIManager implements APIManagerMBean {
             statMap.put("Max Date", DATE_FORMATTER.parse(maxStat.getAttribute("start")));
             statMap.put("Max Duration", new Long(maxStat.getAttribute("duration")));
          } else {
-            statMap.put("Max Date", new Date());
-            statMap.put("Max Duration", new Long(-1));
+            statMap.put("Max Date", null);
+            statMap.put("Max Duration", null);
          }
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
@@ -310,8 +310,8 @@ public final class APIManager implements APIManagerMBean {
             statMap.put("Last Date", DATE_FORMATTER.parse(lastStat.getAttribute("start")));
             statMap.put("Last Duration", new Long(lastStat.getAttribute("duration")));
          } else {
-            statMap.put("Last Date", new Date());
-            statMap.put("Last Duration", new Long(-1));
+            statMap.put("Last Date", null);
+            statMap.put("Last Duration", null);
          }
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
