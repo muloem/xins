@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
   - Fixed SF.net bug #1518381: Error in getParameterValues (internal servlet 
     container).
   - Added new tests for the XINSServletRequest.
+  - Moved the FileServiceCaller to the org.xins.client package.
 
 * XINS/Java Server Framework:
   - Improved the detection of relative files in the XSLT used by the 
@@ -28,6 +29,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
   - Added Log4J MBeans to be able to maneage Log4J using JMX.
   - The bootstrap and the runtime properties are accessible using JMX.
   - Added the statistics to the JMX MBean.
+
+* XINS/Java Client Framework:
+  - Moved the FileServiceCaller to the org.xins.client package.
 
 * Tests:
   - Re-enabled and extended a unit test for the OPTIONS method.

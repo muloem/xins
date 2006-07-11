@@ -4,7 +4,7 @@
  * Copyright 2003-2006 Wanadoo Nederland B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.common.file;
+package org.xins.client;
 
 
 import java.io.File;
@@ -45,12 +45,15 @@ import org.xins.common.text.URLEncoding;
 import org.xins.logdoc.LogdocSerializable;
 
 /**
- *
+ * Call a XINS API using the internal Servlet container. This service caller
+ * doesn't send data over the network but directly invoke the Servlet method.
  *
  * @version $Revision$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ *
+ * @since XINS 1.5.0
  */
-public class FileServiceCaller extends ServiceCaller {
+class FileServiceCaller extends ServiceCaller {
    
    //-------------------------------------------------------------------------
    // Class functions
