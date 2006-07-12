@@ -25,7 +25,7 @@
 			<input addproperty="api.description"
 						 message="Please, enter the description of the new api:" />
 			<echo file="${{xml.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.4//EN" "http://www.xins.org/dtd/api_1_4.dtd">
+<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 1.5//EN" "http://www.xins.org/dtd/api_1_5.dtd">
 
 <api name="]]>${api.name}"<![CDATA[
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -64,7 +64,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="impl.exists" file="${{impl.file}}" />
 			<fail message="The file ${{impl.file}} already exists!" if="impl.exists" />
 			<echo file="${{impl.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://www.xins.org/dtd/impl_1_4.dtd">
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.5//EN" "http://www.xins.org/dtd/impl_1_5.dtd">
 
 <impl>
 </impl>
@@ -83,7 +83,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<available property="environments.exists" file="${{environments.file}}" />
 			<fail message="The file ${{environments.file}} already exists!" if="environments.exists" />
 			<echo file="${{environments.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE environments PUBLIC "-//XINS//DTD Environments 1.4//EN" "http://www.xins.org/dtd/environments_1_4.dtd">
+<!DOCTYPE environments PUBLIC "-//XINS//DTD Environments 1.5//EN" "http://www.xins.org/dtd/environments_1_5.dtd">
 
 <environments>
 
@@ -120,7 +120,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="function.description"
 						 message="Please, enter the description of the new function:" />
 			<echo file="${{fnc.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.4//EN" "http://www.xins.org/dtd/function_1_4.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.5//EN" "http://www.xins.org/dtd/function_1_5.dtd">
 
 <function name="]]>${function.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -168,7 +168,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="rcd.description"
 						 message="Please, enter the description of the new result code:" />
 			<echo file="${{rcd.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.4//EN" "http://www.xins.org/dtd/resultcode_1_4.dtd">
+<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 1.5//EN" "http://www.xins.org/dtd/resultcode_1_5.dtd">
 
 <resultcode name="]]>${rcd.name}<![CDATA["
 rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
@@ -199,7 +199,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<input addproperty="type.description"
 						 message="Please, enter the description of the new type:" />
 			<echo file="${{typ.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.4//EN" "http://www.xins.org/dtd/type_1_4.dtd">
+<!DOCTYPE type PUBLIC "-//XINS//DTD Type 1.5//EN" "http://www.xins.org/dtd/type_1_5.dtd">
 
 <type name="]]>${type.name}<![CDATA[" rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 
@@ -220,7 +220,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<fail message="The file ${{log.file}} already exists!" if="xml.exists" />
 			<fail message="The file ${{log.file2}} already exists!" if="xml.exists2" />
 			<echo file="${{log.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.4//EN" "http://www.xins.org/dtd/log_1_4.dtd">
+<!DOCTYPE log PUBLIC "-//XINS//DTD XINS Logdoc 1.5//EN" "http://www.xins.org/dtd/log_1_5.dtd">
 
 <log>
 
@@ -239,7 +239,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 </log>
 ]]></echo>
 			<echo file="${{log.file2}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.4//EN" "http://www.xins.org/dtd/translation-bundle_1_4.dtd">
+<!DOCTYPE translation-bundle PUBLIC "-//XINS//DTD XINS Translation Bundle 1.5//EN" "http://www.xins.org/dtd/translation-bundle_1_5.dtd">
 
 <translation-bundle>
 	<translation entry="10000">Example of logdoc with the parameter <value-of-param name="parameter" format="quoted" /> and <value-of-param name="number" />.</translation>
