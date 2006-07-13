@@ -6,7 +6,6 @@
  */
 package org.xins.common.servlet.container;
 
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -39,12 +38,15 @@ import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 
 /**
- * HTTP Server used to invoke the XINS servlet.
+ * HTTP server used to invoke the XINS servlet.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class HTTPServletHandler {
+
+   // TODO: This class should be cleaned up further
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -74,9 +76,10 @@ public class HTTPServletHandler {
    public final static int DEFAULT_PORT_NUMBER = 8080;
 
    /**
-    * The map containing the MIME type information.
+    * The map containing the MIME type information. Never <code>null</code>
     */
    private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
+
 
    //-------------------------------------------------------------------------
    // Constructor
@@ -89,34 +92,36 @@ public class HTTPServletHandler {
     * @param port
     *    The port of the servlet server.
     *
-    * @param deamon
+    * @param daemon
     *    <code>true</code> if the thread listening to connection should be a
-    *    deamon thread, <code>false</code> otherwise.
+    *    daemon thread, <code>false</code> otherwise.
     *
     * @throws IOException
     *    if the servlet container cannot be started.
     */
-   public HTTPServletHandler(int port, boolean deamon) throws IOException {
+   public HTTPServletHandler(int port, boolean daemon) throws IOException {
 
       // Configure log4j if not already done.
-      Enumeration appenders =
-         LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
+      Enumeration appenders = LogManager.getLoggerRepository().getRootLogger().getAllAppenders();
       if (appenders instanceof NullEnumeration) {
          configureLoggerFallback();
       }
 
       // Start the HTTP server.
-      startServer(port, deamon);
+      startServer(port, daemon);
    }
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * on port 8080 and wait for calls from the XINSServiceCaller.
-    * Note that all the libraries used by this WAR file should already be in
-    * the classpath.
+    * Creates a new <code>HTTPServletHandler</code>. This servlet handler
+    * starts a web server on port 8080 and wait for calls from the
+    * <code>XINSServiceCaller</code>.
+    *
+    * <p>Note that all the libraries used by this WAR file should already be
+    * in the classpath.
     *
     * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *    the war file of the application to deploy, cannot be
+    *    <code>null</code>.
     *
     * @throws ServletException
     *    if the servlet cannot be initialized.
@@ -131,20 +136,21 @@ public class HTTPServletHandler {
    }
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * on port 8080 and wait for calls from the XINSServiceCaller.
+    * Creates a new <code>HTTPSevletHandler</code>. This servlet handler
+    * starts a web server on the specified port and waits for calls from the XINSServiceCaller.
     * Note that all the libraries used by this WAR file should already be in
     * the classpath.
     *
     * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *    the war file of the application to deploy, cannot be
+    *    <code>null</code>.
     *
     * @param port
     *    The port of the servlet server.
     *
-    * @param deamon
+    * @param daemon
     *    <code>true</code> if the thread listening to connection should be a
-    *    deamon thread, <code>false</code> otherwise.
+    *    daemon thread, <code>false</code> otherwise.
     *
     * @throws ServletException
     *    if the servlet cannot be initialized.
@@ -152,9 +158,9 @@ public class HTTPServletHandler {
     * @throws IOException
     *    if the servlet container cannot be started.
     */
-   public HTTPServletHandler(File warFile, int port, boolean deamon)
+   public HTTPServletHandler(File warFile, int port, boolean daemon)
    throws ServletException, IOException {
-      this(port, deamon);
+      this(port, daemon);
       addWAR(warFile, "/");
    }
 
@@ -186,9 +192,9 @@ public class HTTPServletHandler {
     * @param port
     *    The port of the servlet server.
     *
-    * @param deamon
+    * @param daemon
     *    <code>true</code> if the thread listening to connection should be a
-    *    deamon thread, <code>false</code> otherwise.
+    *    daemon thread, <code>false</code> otherwise.
     *
     * @throws ServletException
     *    if the servlet cannot be initialized.
@@ -196,8 +202,8 @@ public class HTTPServletHandler {
     * @throws IOException
     *    if the servlet container cannot be started.
     */
-   public HTTPServletHandler(String servletClassName, int port, boolean deamon) throws ServletException, IOException {
-      this(port, deamon);
+   public HTTPServletHandler(String servletClassName, int port, boolean daemon) throws ServletException, IOException {
+      this(port, daemon);
       addServlet(servletClassName, "/");
    }
 
@@ -285,26 +291,26 @@ public class HTTPServletHandler {
     * Starts the web server.
     *
     * @param port
-    *    The port of the servlet server.
+    *    the port of the servlet server.
     *
-    * @param deamon
+    * @param daemon
     *    <code>true</code> if the thread listening to connection should be a
-    *    deamon thread, <code>false</code> otherwise.
+    *    daemon thread, <code>false</code> otherwise.
     *
     * @throws IOException
-    *    If the web server cannot be started.
+    *    if the web server cannot be started.
     */
-   public void startServer(int port, boolean deamon) throws IOException {
+   public void startServer(int port, boolean daemon) throws IOException {
       // Create the server socket
       _serverSocket = new ServerSocket(port, 5);
       _running = true;
 
-      _acceptor = new SocketAcceptor(deamon);
+      _acceptor = new SocketAcceptor(daemon);
       _acceptor.start();
    }
 
    /**
-    * Dispose the servlet and stops the web server.
+    * Disposes the servlet and stops the web server.
     */
    public void close() {
       _running = false;
@@ -330,7 +336,7 @@ public class HTTPServletHandler {
     *    if <code>client == null</code>.
     *
     * @throws IOException
-    *    If the query is not handled correctly.
+    *    if the query is not handled correctly.
     */
    public void serviceClient(Socket client)
    throws IllegalArgumentException, IOException {
@@ -588,12 +594,12 @@ public class HTTPServletHandler {
       /**
        * Create the thread.
        *
-       * @param deamon
-       *    <code>true</code> if the server should be a deamon thread,$
+       * @param daemon
+       *    <code>true</code> if the server should be a daemon thread,$
        *    <code>false</code> otherwise.
        */
-      public SocketAcceptor(boolean deamon) {
-         setDaemon(deamon);
+      public SocketAcceptor(boolean daemon) {
+         setDaemon(daemon);
          setName("XINS " + Library.getVersion() + " Servlet container.");
       }
 
