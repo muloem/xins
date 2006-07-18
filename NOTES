@@ -15,7 +15,7 @@ This release should be backwards compatible with all previous stable releases,
 but this is not guaranteed nor properly validated.
 An exception is logging; log messages can change between individual releases.
 
-You are advised to use XINS 1.4.1 instead.
+You are advised to use XINS 1.4.2 instead.
 
 
 *** PREREQUISITES ***
