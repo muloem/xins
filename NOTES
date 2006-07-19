@@ -1,4 +1,4 @@
-This file contains the XINS 1.5.0-alpha3 release notes.
+This file contains the XINS 1.5.0-alpha4 release notes.
 
 Contents:
 - Introduction
@@ -15,7 +15,11 @@ This release should be backwards compatible with all previous stable releases,
 but this is not guaranteed nor properly validated.
 An exception is logging; log messages can change between individual releases.
 
-You are advised to use XINS 1.4.2 instead.
+Testing this release is highly appreciated. Please report your issues through
+the bug database or via the mailing list.
+
+For production deployments, you are advised to use the most recent stable
+release of XINS instead.
 
 
 *** PREREQUISITES ***
