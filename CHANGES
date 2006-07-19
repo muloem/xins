@@ -180,6 +180,78 @@ NOTE: This release is based on XINS 1.4.0-rc1.
   - Fixed the location of the cvsweb URL to the new SouceForge location.
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.4.2 FINAL:
+
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1518818: Parameters with empty values not returned with
+    getParameterNames() method of the XINSServletRequest.
+  - Fixed SF.net bug #1518381: Error in getParameterValues (internal servlet
+    container).
+
+* Generation of server-side Java code:
+  - Fixed possible variable conflict if an element has the same attribute as
+    a sub element.
+  - Generated data elements are now public for the SuccessfulResult.
+
+* Generation of client-side Java code:
+  - Fixed SF.net bug #1511004: Code generation error with nested elements
+    starting with an uppercase in data sections.
+
+* Generated build file:
+  - Fixed SF.net bug #1437390: Log.java generated in the incorrect directory.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.4.1 FINAL:
+
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1470309: API fails with no logs when no runtime
+    properties file is specified.
+
+* XINS/Java Client Framework:
+  - Fixed SF.net bug #1476707: Functional errors logged as ERROR.
+
+* Generation of specdocs:
+  - Fixed SF.net bug #1478969. There was an XSLT bug in function_to_html.xslt
+    which was not detected by Java versions before 1.6.0, but it was detected
+    by 1.6.0 EA build 82.
+
+* Build- and release-process:
+  - Changed the location of the CVS server.
+
+* Demos:
+  - Fixed the copy-nb-files target to copy the NetBeans project files for
+    an existing API.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.4.0 FINAL:
+
+* XINS/Java Common Library:
+  - Fixed SF.net bug #1470545. The built-in servlet container now properly
+    implements getContentLength(). The problem was in the getIntHeader()
+    method.
+  - Fixed SF.net bug #1470848. The built-in servlet container now supports
+    getInputStream() on the ServletRequest implementation.
+
+* XINS/Java Server Framework:
+  - Fixed SF.net bug #1470991. Fixed an incorrect exception message in the
+    implementation standard calling convention.
+
+* Logdoc:
+  - Fixed some French translations in client, common and server.
+
+* Generation of server-side Java code:
+  - Fixed incorrect name of the class for the _url type.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.4.0 RC 2:
+
+* Build- and release-process:
+  - Fixed missing xins.properties in the demo directory.
+  - Changed the order that the files were added to the TAR file in order to
+    avoid a double 'apis' directory.
+  - Removed the NetBeans private directory.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 1:
 
 * XINS/Java Server Framework:
