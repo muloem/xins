@@ -14,6 +14,10 @@ import org.xins.logdoc.LogdocSerializable;
 /**
  * Base class for function implementation classes.
  *
+ * <p>A function can be enabled or disabled using the {@link #setEnabled()}
+ * method. A function that is enabled can be invoked, while a function that is
+ * disabled cannot. By default a function is enabled.
+ *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
