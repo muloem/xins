@@ -103,6 +103,15 @@ public class CallingConventionTests extends TestCase {
    }
 
    /**
+    * Tests that when different parameter values are passed to the
+    * _xins-std calling convention, it must return a 400 status code
+    * (invalid HTTP request).
+    */
+   public void testStandardCallingConvention3() throws Throwable {
+      doTestMultipleParamValues("_xins-std");
+   }
+
+   /**
     * Tests with an unknown calling convention.
     */
    public void testInvalidCallingConvention() throws Throwable {
@@ -162,6 +171,15 @@ public class CallingConventionTests extends TestCase {
       assertNotNull("The method did not return a code attribute for the second call.", result2.getAttribute("code"));
       assertNotNull("The method did not return a success attribute for the second call.", result2.getAttribute("success"));
       assertEquals("The code and errorcode are different.", result2.getAttribute("code"), result2.getAttribute("errorcode"));
+   }
+
+   /**
+    * Tests that when different parameter values are passed to the
+    * _xins-old calling convention, it must return a 400 status code
+    * (invalid HTTP request).
+    */
+   public void testOldCallingConvention2() throws Throwable {
+      doTestMultipleParamValues("_xins-old");
    }
 
    /**
@@ -258,7 +276,7 @@ public class CallingConventionTests extends TestCase {
    /**
     * Tests the XSLT calling convention.
     */
-   public void testXSLTCallingConvention() throws Throwable {
+   public void testXSLTCallingConvention1() throws Throwable {
       String html = getHTMLVersion(false);
       assertTrue("The returned data is not an HTML file: " + html, html.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html.indexOf("XINS version") != -1);
@@ -266,6 +284,15 @@ public class CallingConventionTests extends TestCase {
       String html2 = getHTMLVersion(true);
       assertTrue("The returned data is not an HTML file: " + html2, html2.startsWith("<html>"));
       assertTrue("Incorrect HTML data returned.", html2.indexOf("API version") != -1);
+   }
+
+   /**
+    * Tests that when different parameter values are passed to the
+    * _xins-xslt calling convention, it must return a 400 status code
+    * (invalid HTTP request).
+    */
+   public void testXSLTCallingConvention2() throws Throwable {
+      doTestMultipleParamValues("_xins-xslt");
    }
 
    private String getHTMLVersion(boolean useTemplateParam) throws Exception {
@@ -658,5 +685,74 @@ public class CallingConventionTests extends TestCase {
                "\" element of the XML-RPC request.");
       }
       return (Element) childList.get(0);
+   }
+
+   /**
+    * Tests that when different parameter values are passed to the
+    * specified calling convention, it must return a 400 status code
+    * (invalid HTTP request).
+    */
+   private void doTestMultipleParamValues(String convention)
+   throws Throwable {
+
+      String destination = "http://127.0.0.1:8080/allinone/";
+
+      HttpClient client = new HttpClient();
+      client.setConnectionTimeout(5000);
+      client.setTimeout(5000);
+
+      PostMethod post;
+      String paramName, value1, value2, message;
+      int actual, expected;
+
+      // Different values for the same parameter
+      post      = new PostMethod(destination);
+      paramName = "_function";
+      value1    = "_GetFunctionList";
+      value2    = "_GetStatistics";
+      post.addParameter("_convention", convention);
+      post.addParameter(paramName, value1);
+      post.addParameter(paramName, value2);
+      try {
+         actual = client.executeMethod(post);
+      } finally {
+         post.releaseConnection();
+      }
+      expected = 400;
+      message = "Expected the \""
+              + convention
+              + "\" calling convention to return HTTP response code "
+              + expected
+              + " instead of "
+              + actual
+              + " when two different values are given for the \""
+              + paramName
+              + "\" parameter.";
+      assertEquals(message, expected, actual);
+
+      // Equal values for the same parameter
+      post      = new PostMethod(destination);
+      paramName = "_function";
+      value1    = "_GetVersion";
+      value2    = value1;
+      post.addParameter("_convention", convention);
+      post.addParameter(paramName, value1);
+      post.addParameter(paramName, value2);
+      try {
+         actual = client.executeMethod(post);
+      } finally {
+         post.releaseConnection();
+      }
+      expected = 200;
+      message = "Expected the \""
+              + convention
+              + "\" calling convention to return HTTP response code "
+              + expected
+              + " instead of "
+              + actual
+              + " when two equal values are given for the \""
+              + paramName
+              + "\" parameter.";
+      assertEquals(message, expected, actual);
    }
 }

@@ -9,7 +9,6 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -118,17 +117,10 @@ extends CallingConvention {
           FunctionNotSpecifiedException {
 
       // Parse the parameters in the HTTP request
-      // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-      Enumeration params = httpRequest.getParameterNames();
-      while (params.hasMoreElements()) {
-         String name = (String) params.nextElement();
-         String value = httpRequest.getParameter(name);
-         functionParams.set(SECRET_KEY, name, value);
-      }
+      ProtectedPropertyReader params = gatherParams(httpRequest, SECRET_KEY);
 
       // Remove all invalid parameters
-      cleanUpParameters(functionParams, SECRET_KEY);
+      cleanUpParameters(params, SECRET_KEY);
 
       // Determine function name
       String functionName = httpRequest.getParameter("_function");
@@ -166,7 +158,7 @@ extends CallingConvention {
       }
 
       // Construct and return the request object
-      return new FunctionRequest(functionName, functionParams, dataElement);
+      return new FunctionRequest(functionName, params, dataElement);
    }
 
    /**

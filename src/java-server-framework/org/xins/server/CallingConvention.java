@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -590,5 +591,113 @@ abstract class CallingConvention extends Manageable {
       }
 
       return element;
+   }
+
+   /**
+    * Gathers all parameters from the specified request. The parameters are 
+    * returned as a {@link ProtectedPropertyReader} instance with the 
+    * specified secret key. If no parameters are found, then <code>null</code>
+    * is returned.
+    *
+    * <p>If a parameter is found to have multiple values, then an
+    * {@link InvalidRequestException} is thrown.
+    *
+    * @param httpRequest
+    *    the HTTP request to get the parameters from, cannot be 
+    *    <code>null</code>.
+    *
+    * @param secretKey
+    *    the secret key to use if and when constructing the
+    *    {@link ProtectedPropertyReader} instance, should not be 
+    *    <code>null</code>.
+    *
+    * @return
+    *    the properties found, or <code>null</code> if none were found.
+    *
+    * @throws NullPointerException
+    *    if <code>httpRequest == null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if a parameter is found that has multiple values.
+    */
+   final ProtectedPropertyReader gatherParams(HttpServletRequest httpRequest,
+                                              Object             secretKey)
+   throws NullPointerException, InvalidRequestException {
+
+      // Get the parameters from the HTTP request
+      Enumeration params = httpRequest.getParameterNames();
+
+      // The property set to return from this method
+      ProtectedPropertyReader pr;
+
+      // If there are no parameters, then return null
+      if (! params.hasMoreElements()) {
+         pr = null;
+
+      // There seem to be some parameters
+      } else {
+         pr = new ProtectedPropertyReader(secretKey);
+
+         do {
+            // Get the parameter name
+            String name = (String) params.nextElement();
+
+            // Get all parameter values (can be multiple)
+            String[] values = httpRequest.getParameterValues(name);
+
+            // Be gentle, allow nulls and zero-sized arrays
+            if (values != null && values.length != 0) {
+
+               // Get the parameter value, allowing duplicate values, but not 
+               // different ones; this may throw an InvalidRequestException
+               String value = getParamValue(name, values);
+
+               // Associate the name with the one and only value
+               pr.set(secretKey, name, value);
+            }
+         } while (params.hasMoreElements());
+      }
+      return pr;
+   }
+
+   /**
+    * Determines a single value for a parameter based on an array of values. 
+    * If there is only one value, then that value is returned. If there are 
+    * multiple equal values, then the value is returned as well. However, if 
+    * there are multiple values and at least one of them is different, then an 
+    * {@link InvalidRequestException} is thrown.
+    *
+    * @param name
+    *    the name of the parameter, only used when throwing an
+    *    {@link InvalidRequestException}, should not be <code>null</code>.
+    *
+    * @param values
+    *    the values, should not be <code>null</code> and should not have a 
+    *    size of zero.
+    *
+    * @return
+    *    the single value of the parameter, if any.
+    *
+    * @throws InvalidRequestException
+    *    if the parameter is found to have multiple different values.
+    */
+   private final String getParamValue(String name, String[] values)
+   throws InvalidRequestException {
+
+      String value = values[0];
+
+      // We only need to do some crunching if there is more than one value
+      if (values.length != 1) {
+
+         // XXX: Can the following code block throw a NullPointerException?
+
+         for (int i = 1; i < values.length; i++) {
+            String other = values[i];
+            if (! value.equals(other)) {
+               throw new InvalidRequestException("Found multiple values for the parameter named \"" + name + "\".");
+            }
+         }
+      }
+      return value;
    }
 }

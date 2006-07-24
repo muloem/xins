@@ -120,23 +120,18 @@ extends CallingConvention {
       // XXX: What if invalid URL, e.g. query string ends with percent sign?
 
       // Determine function name
-      String functionName = determineFunction(httpRequest.getParameter("_function"),
-         httpRequest.getParameter("function"));
+      String function1 = httpRequest.getParameter("_function");
+      String function2 = httpRequest.getParameter("function");
+      String functionName = determineFunction(function1, function2);
 
-      // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
-      Enumeration params = httpRequest.getParameterNames();
-      while (params.hasMoreElements()) {
-         String name = (String) params.nextElement();
-         String value = httpRequest.getParameter(name);
-         functionParams.set(SECRET_KEY, name, value);
-      }
+      // Parse the parameters in the HTTP request
+      ProtectedPropertyReader params = gatherParams(httpRequest, SECRET_KEY);
 
       // Remove all invalid parameters
-      cleanUpParameters(functionParams, SECRET_KEY);
+      cleanUpParameters(params, SECRET_KEY);
 
       // Construct and return the request object
-      return new FunctionRequest(functionName, functionParams, null);
+      return new FunctionRequest(functionName, params, null);
    }
 
    /**
