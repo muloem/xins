@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
 
+* XINS/Java Server Framework:
+  - Slightly improved the Javadoc comments for the classes Function and
+    CallContext.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
