@@ -162,6 +162,8 @@ implements DefaultResultCodes {
     * @return
     *    <code>true</code> if this function is currently accessible,
     *    <code>false</code> otherwise.
+    *
+    * @see #setEnabled(boolean)
     */
    public final boolean isEnabled() {
       return _enabled;
@@ -173,6 +175,8 @@ implements DefaultResultCodes {
     * @param enabled
     *    <code>true</code> if this function should be accessible,
     *    <code>false</code> if not.
+    *
+    * @see #isEnabled()
     */
    public final void setEnabled(boolean enabled) {
       _enabled = enabled;
