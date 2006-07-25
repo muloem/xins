@@ -19,6 +19,8 @@ import org.xins.logdoc.ExceptionUtils;
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  *
  * @since XINS 1.0.0
+ *
+ * @see Manageable#init(org.xins.common.collections.PropertyReader)
  */
 public final class InitializationException
 extends Exception {
