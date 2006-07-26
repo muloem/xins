@@ -6,16 +6,18 @@
  */
 package org.xins.tests.client.async;
 
+import com.mycompany.allinone.capi.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.mycompany.allinone.capi.*;
 import org.xins.client.InvalidRequestException;
 import org.xins.client.UnacceptableRequestException;
 import org.xins.client.async.CallCAPIThread;
 import org.xins.common.service.TargetDescriptor;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the <code>CallCAPIThread</code>.
@@ -63,7 +65,7 @@ public class CallCAPIThreadTests extends TestCase {
 
    public void testSuccessfulCallCAPIThread() throws Throwable {
 
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      TargetDescriptor target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);
       CAPI capi = new CAPI(target);
       RuntimePropsRequest request = new RuntimePropsRequest();
       request.setPrice(100);
@@ -83,7 +85,7 @@ public class CallCAPIThreadTests extends TestCase {
 
    public void testUnsuccessfulCallCAPIThread() throws Throwable {
 
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      TargetDescriptor target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);
       CAPI capi = new CAPI(target);
       RuntimePropsRequest request = new RuntimePropsRequest();
       CallCAPIThread capiThread = new CallCAPIThread(capi, request);

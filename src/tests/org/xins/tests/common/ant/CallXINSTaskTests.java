@@ -12,9 +12,12 @@ import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Property;
 import org.xins.common.ant.CallXINSTask;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests for class <code>CallXINSTask</code>.
@@ -61,7 +64,7 @@ public class CallXINSTaskTests extends TestCase {
    public void testCallEcho() throws Exception {
       CallXINSTask callTask = createCallXINSTask();
       callTask.setFunction("Echo");
-      callTask.setApiLocation("http://localhost:8080/allinone/");
+      callTask.setApiLocation(AllTests.url() + "allinone/");
       Property param = callTask.createParam();
       param.setName("in");
       param.setValue("calling via ant");
@@ -73,7 +76,7 @@ public class CallXINSTaskTests extends TestCase {
    public void testCallDataSectionWithPrefix() throws Exception {
       CallXINSTask callTask = createCallXINSTask();
       callTask.setFunction("DataSection");
-      callTask.setApiLocation("http://localhost:8080/allinone/");
+      callTask.setApiLocation(AllTests.url() + "allinone/");
       callTask.setPrefix("anttest");
       Property param = callTask.createParam();
       param.setName("inputText");

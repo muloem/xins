@@ -64,9 +64,12 @@ public class StartServer extends TestCase {
       String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
 
+      // Determine on which server socket to listen
+      int port = AllTests.getPort();
+
       // Start the web server
-      System.out.println("Starting web server.");
-      AllTests.HTTP_SERVER = new HTTPServletHandler(warFile);
-      System.out.println("Web server started.");
+      System.out.println("Starting web server on port " + port + '.');
+      AllTests.HTTP_SERVER = new HTTPServletHandler(warFile, port, false);
+      System.out.println("Web server started on port " + port + '.');
    }
 }

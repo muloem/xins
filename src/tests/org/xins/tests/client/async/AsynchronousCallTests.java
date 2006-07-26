@@ -6,12 +6,12 @@
  */
 package org.xins.tests.client.async;
 
+import com.mycompany.allinone.capi.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.mycompany.allinone.capi.*;
 import org.xins.client.InvalidRequestException;
 import org.xins.client.UnacceptableRequestException;
 import org.xins.client.async.AsynchronousCall;
@@ -20,6 +20,8 @@ import org.xins.client.async.CallFailedEvent;
 import org.xins.client.async.CallListener;
 import org.xins.client.async.CallSucceededEvent;
 import org.xins.common.service.TargetDescriptor;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the <code>AsynchronousCall</code>.
@@ -76,7 +78,7 @@ public class AsynchronousCallTests extends TestCase {
 
    public void testSuccessfulAsynchronousCall() throws Throwable {
 
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      TargetDescriptor target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);
       CAPI capi = new CAPI(target);
       RuntimePropsRequest request = new RuntimePropsRequest();
       request.setPrice(100);
@@ -93,7 +95,7 @@ public class AsynchronousCallTests extends TestCase {
 
    public void testUnsuccessfulAsynchronousCall() throws Throwable {
 
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      TargetDescriptor target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);
       CAPI capi = new CAPI(target);
       RuntimePropsRequest request = new RuntimePropsRequest();
       AsynchronousCall capiCall = new AsynchronousCall();

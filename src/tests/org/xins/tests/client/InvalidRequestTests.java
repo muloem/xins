@@ -13,14 +13,15 @@ import junit.framework.TestSuite;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSServiceCaller;
 import org.xins.client.InvalidRequestException;
-
 import org.xins.common.service.TargetDescriptor;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the <code>XINSServiceCaller</code> when it receives an invalid
  * request.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
  */
 public class InvalidRequestTests extends TestCase {
@@ -72,7 +73,7 @@ public class InvalidRequestTests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
-      String           url    = "http://127.0.0.1:8080/";
+      String           url    = AllTests.url();
       TargetDescriptor target = new TargetDescriptor(url);
       _caller = new XINSServiceCaller(target);
    }

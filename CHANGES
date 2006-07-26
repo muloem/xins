@@ -17,6 +17,11 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Slightly improved Javadoc comments for class HTTPServletStarter.
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
 
+* Unit tests:
+  - Implemented SF.net RFE #1529239: Configure port for unit tests. Change the
+    value of the DEFAULT_PORT field in the AllTests class to change the port
+    the server starts on.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 

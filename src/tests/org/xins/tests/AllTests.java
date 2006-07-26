@@ -25,10 +25,33 @@ public class AllTests extends TestSuite {
 
    public static HTTPServletHandler HTTP_SERVER;
 
+   private static final int DEFAULT_PORT = 9123;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the port (server socket) to start the server on.
+    *
+    * @return
+    *    the port to run the server on.
+    */
+   public static final int getPort() {
+      return DEFAULT_PORT;
+   }
+
+   /**
+    * Returns the URL to use to connect to the server.
+    *
+    * @return
+    *    the URL to connect to, for example 
+    *    <code>"http://127.0.0.1:8080/"</code>, never <code>null</code>.
+    */
+   public static final String url() {
+      return "http://127.0.0.1:" + HTTP_SERVER.getPort() + "/";
+   }
 
    /**
     * Returns a test suite with all test cases.

@@ -18,6 +18,7 @@ import java.util.Random;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.OptionsMethod;
@@ -33,6 +34,8 @@ import org.xins.common.text.HexConverter;
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests for XINS call convention.
@@ -115,7 +118,7 @@ public class CallingConventionTests extends TestCase {
     * Tests with an unknown calling convention.
     */
    public void testInvalidCallingConvention() throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "ResultCode");
       params.set("inputText",  "blablabla");
@@ -199,7 +202,7 @@ public class CallingConventionTests extends TestCase {
     *    if anything goes wrong.
     */
    private Element callResultCode(String convention, String inputText) throws Throwable {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/allinone/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "ResultCode");
       params.set("useDefault",  "false");
@@ -244,7 +247,7 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postXMLRequest(String randomFive, boolean success) throws Exception {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xml";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-xml";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<request function=\"ResultCode\">" +
               "  <param name=\"useDefault\">false</param>" +
@@ -296,7 +299,7 @@ public class CallingConventionTests extends TestCase {
    }
 
    private String getHTMLVersion(boolean useTemplateParam) throws Exception {
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/", 2000);
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "_GetVersion");
       params.set("_convention", "_xins-xslt");
@@ -339,7 +342,7 @@ public class CallingConventionTests extends TestCase {
     *    If anything goes wrong.
     */
    private void postSOAPRequest(String randomFive, boolean success) throws Exception {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-soap";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
@@ -376,7 +379,7 @@ public class CallingConventionTests extends TestCase {
     * Tests the SOAP calling convention for the type convertion.
     */
    public void testSOAPCallingConvention2() throws Throwable {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-soap";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
@@ -402,7 +405,7 @@ public class CallingConventionTests extends TestCase {
     * Tests the SOAP calling convention with a data section.
     */
    public void testSOAPCallingConvention3() throws Throwable {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-soap";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-soap";
       String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
               "  <soap:Body>" +
@@ -426,7 +429,7 @@ public class CallingConventionTests extends TestCase {
     * Tests the XML-RPC calling convention with an incomplete request.
     */
    public void testXMLRPCCallingConvention() throws Exception {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-xmlrpc";
 
       // Send an incorrect request
       String data = "<?xml version=\"1.0\"?>" +
@@ -462,7 +465,7 @@ public class CallingConventionTests extends TestCase {
     * Tests the XML-RPC calling convention for a successful result.
     */
    public void testXMLRPCCallingConvention2() throws Exception {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-xmlrpc";
 
       // Send a correct request
       String data = "<?xml version=\"1.0\"?>" +
@@ -515,7 +518,7 @@ public class CallingConventionTests extends TestCase {
     * Tests the XML-RPC calling convention for a data section.
     */
    public void testXMLRPCCallingConvention3() throws Exception {
-      String destination = "http://127.0.0.1:8080/allinone/?_convention=_xins-xmlrpc";
+      String destination = AllTests.url() + "allinone/?_convention=_xins-xmlrpc";
 
       // Send a correct request
       String data = "<?xml version=\"1.0\"?>" +
@@ -557,11 +560,11 @@ public class CallingConventionTests extends TestCase {
     * Test the custom calling convention.
     */
    public void testCustomCallingConvention() throws Exception {
-      URL url = new URL("http://127.0.0.1:8080/?query=hello%20Custom&_convention=xins-tests");
+      URL url = new URL(AllTests.url() + "?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.connect();
       assertEquals(200, connection.getResponseCode());
-      URL url2 = new URL("http://127.0.0.1:8080/?query=hello%20Custom&_convention=xins-tests");
+      URL url2 = new URL(AllTests.url() + "?query=hello%20Custom&_convention=xins-tests");
       HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
       connection2.connect();
       try {
@@ -578,7 +581,7 @@ public class CallingConventionTests extends TestCase {
    public void testOptionsMethod() throws Exception {
 
       // Prepare a connection
-      OptionsMethod method = new OptionsMethod("http://127.0.0.1:8080/");
+      OptionsMethod method = new OptionsMethod(AllTests.url());
       HttpClient client = new HttpClient();
       client.setConnectionTimeout(20000);
       client.setTimeout(20000);
@@ -695,7 +698,7 @@ public class CallingConventionTests extends TestCase {
    private void doTestMultipleParamValues(String convention)
    throws Throwable {
 
-      String destination = "http://127.0.0.1:8080/allinone/";
+      String destination = AllTests.url() + "allinone/";
 
       HttpClient client = new HttpClient();
       client.setConnectionTimeout(5000);

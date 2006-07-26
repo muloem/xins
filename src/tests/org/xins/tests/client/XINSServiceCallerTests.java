@@ -19,9 +19,10 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPMethod;
-
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the <code>XINSServiceCaller</code>.
@@ -97,7 +98,7 @@ public class XINSServiceCallerTests extends TestCase {
       }
 
       // Construct XINSServiceCaller with valid descriptor
-      url        = "hTtP://127.0.0.1:8080/";
+      url        = "hTtP://192.168.0.1:12345/";
       descriptor = new TargetDescriptor(url);
       caller     = new XINSServiceCaller(descriptor);
       assertEquals(descriptor, caller.getDescriptor());
@@ -131,7 +132,7 @@ public class XINSServiceCallerTests extends TestCase {
       XINSCallConfig config = new XINSCallConfig();
       config.setHTTPMethod(HTTPMethod.GET);
       request.setXINSCallConfig(config);
-      TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/");
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url());
       XINSServiceCaller caller = new XINSServiceCaller(descriptor);
       XINSCallResult result = caller.call(request);
       PropertyReader parameters = result.getParameters();

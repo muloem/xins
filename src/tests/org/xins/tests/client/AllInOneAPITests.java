@@ -28,17 +28,15 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
 import org.xins.common.http.HTTPMethod;
-
 import org.xins.common.http.StatusCodeHTTPCallException;
-
 import org.xins.common.service.TargetDescriptor;
-
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
-
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 import org.xins.logdoc.ExceptionUtils;
+
+import org.xins.tests.AllTests;
 
 /**
  * Tests the functions in the <em>allinone</em> API using the generated CAPI
@@ -103,7 +101,7 @@ public class AllInOneAPITests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
-      _target = new TargetDescriptor("http://127.0.0.1:8080/", 5000, 1000, 4000);
+      _target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);
       //_target = new TargetDescriptor("file://./src/tests/build/webapps/allinone/allinone.war", 5000, 1000, 4000);
       _capi   = new CAPI(_target);
    }

@@ -35,6 +35,8 @@ import org.xins.common.servlet.ServletRequestPropertyReader;
 import org.xins.common.servlet.container.XINSServletRequest;
 import org.xins.common.text.ParseException;
 
+import org.xins.tests.AllTests;
+
 /**
  * Tests for class <code>ServletRequestPropertyReader</code>.
  *
@@ -81,7 +83,7 @@ public class XINSServletRequestTests extends TestCase {
    //-------------------------------------------------------------------------
 
    public void testEmptyValues() {
-      XINSServletRequest request = new XINSServletRequest("http://localhost:8080/?test1=bla&test2=&test3=");
+      XINSServletRequest request = new XINSServletRequest(AllTests.url() + "?test1=bla&test2=&test3=");
       
       Enumeration enuParams = request.getParameterNames();
       boolean test1Done = false;
@@ -105,7 +107,7 @@ public class XINSServletRequestTests extends TestCase {
    }
 
    public void testMultipleValues() {
-      XINSServletRequest request = new XINSServletRequest("http://localhost:8080/?test1=bla&test1=&test1=bla2");
+      XINSServletRequest request = new XINSServletRequest(AllTests.url() + "?test1=bla&test1=&test1=bla2");
       
       String[] test1Values = request.getParameterValues("test1");
       List test1ValuesList = Arrays.asList(test1Values);

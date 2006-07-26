@@ -12,20 +12,20 @@ import com.mycompany.allinone.types.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 import org.xins.client.UnacceptableResultXINSCallException;
 import org.xins.client.UnacceptableErrorCodeXINSCallException;
 import org.xins.client.UnsuccessfulXINSCallException;
-
 import org.xins.common.service.*;
-
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
+
 import org.xins.tests.AllTests;
 
 /**
  * Tests the CAPI when it receives invalid result.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class InvalidResponseTests extends TestCase {
@@ -77,7 +77,7 @@ public class InvalidResponseTests extends TestCase {
 
    public void setUp() throws Exception {
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.InvalidResponseServlet", "/invalid");
-      TargetDescriptor target = new TargetDescriptor("http://127.0.0.1:8080/invalid", 5000, 1000, 4000);
+      TargetDescriptor target = new TargetDescriptor(AllTests.url() + "invalid", 5000, 1000, 4000);
       _capi = new CAPI(target);
    }
 
