@@ -310,6 +310,33 @@ public class HTTPServletHandler {
    }
 
    /**
+    * Returns the port the server is accepting connections on.
+    *
+    * @return
+    *    the server socket, e.g. <code>8080</code>.
+    *
+    * @throws IllegalStateException
+    *    if the port cannot be determined, for example because the server is
+    *    not started.
+    *
+    * @since XINS 1.5.0
+    */
+   public int getPort() throws IllegalStateException {
+      int port;
+      try {
+         port = _serverSocket.getLocalPort();
+      } catch (NullPointerException exception) {
+         port = -1;
+      }
+
+      if (port < 0) {
+         throw new IllegalStateException("Unable to determine port.");
+      }
+
+      return port;
+   }
+
+   /**
     * Disposes the servlet and stops the web server.
     */
    public void close() {

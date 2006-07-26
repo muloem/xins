@@ -13,6 +13,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     has multiple values. This applies to the _xins-std, _xins-old and
     _xins-xslt calling conventions. Added unit tests.
 
+* XINS/Java Common Library:
+  - Slightly improved Javadoc comments for class HTTPServletStarter.
+  - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
 
