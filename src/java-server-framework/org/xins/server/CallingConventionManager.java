@@ -69,6 +69,42 @@ extends Manageable {
     */
    private final static Object CREATION_FAILED = new Object();
 
+   /**
+    * The current <code>CallingConventionManager</code> instance. This is kept 
+    * track of so that {@link #getCurrent()} can return it to the
+    * {@link CallingConvention} constructor.
+    */
+   private final static ThreadLocal CURRENT_INSTANCE = new ThreadLocal();
+
+
+   //-------------------------------------------------------------------------
+   // Class methods
+   //-------------------------------------------------------------------------
+
+   /**
+    * Determines the current <code>CallingConventionManager</code>. This 
+    * method should only be called from the <code>CallingConvention</code> 
+    * constructor(s).
+    *
+    * @return
+    *    the current <code>CallingConventionManager</code> instance, never 
+    *    <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the current state implies the call could not have been made from 
+    *    the {@link CallingConvention} constructor.
+    */
+   static final CallingConventionManager getCurrent()
+   throws IllegalStateException {
+
+      Object obj = CURRENT_INSTANCE.get();
+      if (obj == null) {
+         throw new IllegalStateException("Current CallingConventionManager is not available.");
+      }
+
+      return (CallingConventionManager) obj;
+   }
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -130,6 +166,16 @@ extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
+    * Retrieves the current API.
+    *
+    * @return
+    *    the current {@link API}, never <code>null</code>.
+    */
+   final API getAPI() {
+      return _api;
+   }
+
+   /**
     * Performs the bootstrap procedure (actual implementation).
     *
     * @param properties
@@ -166,6 +212,9 @@ extends Manageable {
          }
       }
 
+      // Set the current CallingConvention for this thread
+      CURRENT_INSTANCE.set(this);
+
       // Construct and bootstrap all calling conventions
       Iterator itConventions = conventions.iterator();
       while (itConventions.hasNext()) {
@@ -193,6 +242,9 @@ extends Manageable {
             _conventions.put(name, CREATION_FAILED);
          }
       }
+
+      // Reset the current CallingConvention for this thread
+      CURRENT_INSTANCE.set(null);
    }
 
    /**

@@ -133,10 +133,15 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Constructs a new <code>CallingConvention</code>.
+    *
+    * @throws IllegalStateException
+    *    if this <code>CallingConvention</code> is not constructed by the 
+    *    {@link CallingConventionManager}.
     */
    protected CallingConvention() {
       _cachedRequest    = new ThreadLocal();
       _cachedRequestXML = new ThreadLocal();
+      _api              = CallingConventionManager.getCurrent().getAPI();
    }
 
 
@@ -166,10 +171,32 @@ abstract class CallingConvention extends Manageable {
     */
    private final ThreadLocal _cachedRequestXML;
 
+   /**
+    * The current API. Initialized by the constructor and returned to 
+    * interested subclasses by {@link #getAPI()}.
+    */
+   private final API _api;
+
 
    //------------------------------------------------------------------------
    // Methods
    //------------------------------------------------------------------------
+
+   /**
+    * Determines the current API. This method can only be called by subclass 
+    * constructors.
+    *
+    * @return
+    *    the current {@link API}, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this method is not called from the subclass constructor.
+    *
+    * @since XINS 1.5.0
+    */
+   protected final API getAPI() {
+      return _api;
+   }
 
    /**
     * Checks if the specified request can be handled by this calling

@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Implemented SF.net RFE #1528020: Return HTTP status code 400 if parameter
     has multiple values. This applies to the _xins-std, _xins-old and
     _xins-xslt calling conventions. Added unit tests.
+  - Implemented SF.net RFE #1528603: Add getAPI() method to class
+    CallingConvention.
 
 * XINS/Java Common Library:
   - Slightly improved Javadoc comments for class HTTPServletStarter.

@@ -8,19 +8,24 @@ package org.xins.tests.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.server.API;
 import org.xins.server.CustomCallingConvention;
 import org.xins.server.FunctionNotSpecifiedException;
 import org.xins.server.FunctionRequest;
 import org.xins.server.FunctionResult;
 import org.xins.server.InvalidRequestException;
 
+import org.xins.tests.AllTests;
+
 /**
+ * Custom calling convention for testing purposes.
  *
- *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
  */
 public class CustomTestConvention extends CustomCallingConvention {
@@ -38,9 +43,22 @@ public class CustomTestConvention extends CustomCallingConvention {
    //-------------------------------------------------------------------------
    
    /**
-    * Creates a new instance of CustomTestConvention
+    * Creates a new <code>CustomTestConvention</code> instance.
     */
    public CustomTestConvention() {
+      throw new IllegalStateException("This constructor should never be called, instead the variant that takes an API instance should be called.");
+   }
+
+   /**
+    * Creates a new <code>CustomTestConvention</code> instance, for the
+    * specified <code>API</code>.
+    */
+   public CustomTestConvention(API api) {
+      if (api == null) {
+         throw new IllegalArgumentException("api == null");
+      } else if (api != getAPI()) {
+         throw new IllegalStateException("api != getAPI()");
+      }
    }
    
    //-------------------------------------------------------------------------
