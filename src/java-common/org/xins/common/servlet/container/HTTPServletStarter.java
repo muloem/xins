@@ -12,7 +12,6 @@ import java.lang.reflect.Constructor;
 
 import javax.servlet.ServletException;
 
-
 /**
  * HTTP Server used to invoke the XINS Servlet.
  *
@@ -77,11 +76,14 @@ public class HTTPServletStarter {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * on port 8080 and wait for calls from the XINSServiceCaller.
+    * Creates a new <code>HTTPServletStarter</code> for the specified WAR
+    * file, on the default port, as a daemon thread.
+    *
+    * <p>A listener is started on the port immediately.
     *
     * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *    the WAR file of the application to deploy, cannot be
+    *    <code>null</code>.
     *
     * @throws ServletException
     *    if the servlet cannot be initialized.
@@ -91,18 +93,21 @@ public class HTTPServletStarter {
     */
    public HTTPServletStarter(File warFile)
    throws ServletException, IOException {
-      this(warFile, DEFAULT_PORT_NUMBER);
+      this(warFile, DEFAULT_PORT_NUMBER, true);
    }
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * and wait for calls from the XINSServiceCaller.
+    * Creates a new <code>HTTPServletStarter</code> for the specified WAR
+    * file, on the specified port, as a daemon thread.
+    *
+    * <p>A listener is started on the port immediately.
     *
     * @param warFile
-    *    the war file of the application to deploy, cannot be <code>null</code>.
+    *    the WAR file of the application to deploy, cannot be
+    *    <code>null</code>.
     *
     * @param port
-    *    the port of the web server, cannot be <code>null</code>.
+    *    the port to run the web server on.
     *
     * @throws ServletException
     *    if the servlet cannot be initialized.
@@ -116,8 +121,10 @@ public class HTTPServletStarter {
    }
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * and wait for calls from the XINSServiceCaller.
+    * Creates a new <code>HTTPServletStarter</code> for the specified WAR
+    * file, on the specified port, optionally as a daemon thread.
+    *
+    * <p>A listener is started on the port immediately.
     *
     * @param warFile
     *    The war file of the application to deploy, cannot be <code>null</code>.
@@ -153,8 +160,10 @@ public class HTTPServletStarter {
    }
 
    /**
-    * Creates a new HTTPSevletHandler. This Servlet handler starts a web server
-    * and wait for calls from the XINSServiceCaller.
+    * Creates a new <code>HTTPServletStarter</code> for the specified servlet
+    * class, on the specified port, optionally as a daemon thread.
+    *
+    * <p>A listener is started on the port immediately.
     *
     * @param servletClassName
     *    The name of the servlet to load, cannot be <code>null</code>.
@@ -186,10 +195,4 @@ public class HTTPServletStarter {
          ex.printStackTrace();
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
 }
