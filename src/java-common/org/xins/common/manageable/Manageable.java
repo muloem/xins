@@ -46,32 +46,32 @@ public abstract class Manageable extends Object {
    /**
     * The <em>UNUSABLE</em> state.
     */
-   public static final State UNUSABLE = new State("UNUSABLE");
+   public static final State UNUSABLE = new State(0, "UNUSABLE");
 
    /**
     * The <em>BOOTSTRAPPING</em> state.
     */
-   public static final State BOOTSTRAPPING = new State("BOOTSTRAPPING");
+   public static final State BOOTSTRAPPING = new State(2, "BOOTSTRAPPING");
 
    /**
     * The <em>BOOTSTRAPPED</em> state.
     */
-   public static final State BOOTSTRAPPED = new State("BOOTSTRAPPED");
+   public static final State BOOTSTRAPPED = new State(3, "BOOTSTRAPPED");
 
    /**
     * The <em>INITIALIZING</em> state.
     */
-   public static final State INITIALIZING = new State("INITIALIZING");
+   public static final State INITIALIZING = new State(4, "INITIALIZING");
 
    /**
     * The <em>USABLE</em> state.
     */
-   public static final State USABLE = new State("USABLE");
+   public static final State USABLE = new State(5, "USABLE");
 
    /**
     * The <em>DEINITIALIZING</em> state.
     */
-   public static final State DEINITIALIZING = new State("DEINITIALIZING");
+   public static final State DEINITIALIZING = new State(1, "DEINITIALIZING");
 
 
    //-------------------------------------------------------------------------
@@ -425,6 +425,24 @@ public abstract class Manageable extends Object {
    }
 
    /**
+    * Determines if this object is currently bootstrapped. Even if this object
+    * is already initialized, then it is still considered bootstrapped.
+    *
+    * @return
+    *    <code>true</code> if this object is bootstrapped,
+    *    <code>false</code> if it is not.
+    *
+    * @since XINS 1.5.0
+    */
+   public final boolean isBootstrapped() {
+      State state;
+      synchronized (_stateLock) {
+         state = _state;
+      }
+      return state._level >= BOOTSTRAPPED._level;
+   }
+
+   /**
     * Determines if this object is currently usable.
     *
     * @return
@@ -488,24 +506,33 @@ public abstract class Manageable extends Object {
       /**
        * Constructs a new <code>State</code> object.
        *
+       * @param level
+       *    the level of this state.
+       *
        * @param name
        *    the name of this state, cannot be <code>null</code>.
        *
        * @throws IllegalArgumentException
        *    if <code>name == null</code>.
        */
-      private State(String name) throws IllegalArgumentException {
+      private State(int level, String name) throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("name", name);
 
-         _name = name;
+         _level = level;
+         _name  = name;
       }
 
 
       //----------------------------------------------------------------------
       // Fields
       //----------------------------------------------------------------------
+
+      /**
+       * The level of this state.
+       */
+      final int _level;
 
       /**
        * The name of this state. Cannot be <code>null</code>.
