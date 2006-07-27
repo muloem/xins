@@ -43,6 +43,30 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Indicates which HTTP methods are supported by this calling convention.
+    *
+    * <p>The implementation of this method in class 
+    * <code>CustomCallingConvention</code> indicates the following HTTP 
+    * methods are supported:
+    *
+    * <ul>
+    *    <li><em>HEAD</em>
+    *    <li><em>GET</em>
+    *    <li><em>POST</em>
+    * </ul>
+    *
+    * <p>Sublasses may override this method to return a different set of 
+    * supported HTTP methods.
+    *
+    * @return
+    *    the HTTP methods supported, in a <code>String</code> array, not
+    *    <code>null</code>.
+    */
+   protected String[] getSupportedMethods() {
+      return new String[] { "HEAD", "GET", "POST" };
+   }
+
+   /**
     * Converts an HTTP request to a XINS request (implementation method).
     * This method should be implemented by your calling convention.
     *

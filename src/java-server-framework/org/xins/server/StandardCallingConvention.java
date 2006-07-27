@@ -75,6 +75,25 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Indicates which HTTP methods are supported by this calling convention
+    * (implementation method).
+    *
+    * <p>This calling convention supports the following HTTP methods:
+    * <ul>
+    *    <li><em>HEAD</em>
+    *    <li><em>GET</em>
+    *    <li><em>POST</em>
+    * </ul>
+    *
+    * @return
+    *    the HTTP methods supported, in a <code>String</code> array, not
+    *    <code>null</code>.
+    */
+   protected final String[] getSupportedMethods() {
+      return new String[] { "HEAD", "GET", "POST" };
+   }
+
+   /**
     * Checks if the specified request can be handled by this calling
     * convention.
     *

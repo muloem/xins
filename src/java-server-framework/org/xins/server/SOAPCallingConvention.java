@@ -132,6 +132,20 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Indicates which HTTP methods are supported by this calling convention
+    * (implementation method).
+    *
+    * <p>This calling convention only supports the HTTP <em>POST</em> method.
+    *
+    * @return
+    *    the HTTP methods supported, in a <code>String</code> array, not
+    *    <code>null</code>.
+    */
+   protected final String[] getSupportedMethods() {
+      return new String[] { "POST" };
+   }
+
+   /**
     * Checks if the specified request can be handled by this calling
     * convention.
     *

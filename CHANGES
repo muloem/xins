@@ -14,6 +14,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     _xins-xslt calling conventions. Added unit tests.
   - Implemented SF.net RFE #1528603: Add getAPI() method to class
     CallingConvention.
+  - Partialy implemented SF.net RFE #1483099: Support HTTP methods PUT,
+    DELETE, etc. What needs to be done is re-implement OPTIONS support and add
+    unit tests.
 
 * XINS/Java Common Library:
   - Slightly improved Javadoc comments for class HTTPServletStarter.

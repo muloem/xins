@@ -9,6 +9,7 @@ package org.xins.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedPropertyReader;
+import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
@@ -58,10 +60,28 @@ abstract class CallingConvention extends Manageable {
    private static final String SERVER_HEADER =
       "XINS/Java Server Framework " + Library.getVersion();
 
+   /**
+    * The set of recognized HTTP methods for calling convention
+    * implementations. The <em>OPTIONS</em> method explicitly and
+    * intentionally excluded.
+    *
+    * <p>All methods are in upper case.
+    */
+   private static final HashSet RECOGNIZED_HTTP_METHODS;
+
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
+
+   static {
+      RECOGNIZED_HTTP_METHODS = new HashSet();
+      RECOGNIZED_HTTP_METHODS.add("HEAD");
+      RECOGNIZED_HTTP_METHODS.add("GET");
+      RECOGNIZED_HTTP_METHODS.add("POST");
+      RECOGNIZED_HTTP_METHODS.add("PUT");
+      RECOGNIZED_HTTP_METHODS.add("DELETE");
+   }
 
    /**
     * Removes all parameters that should not be transmitted from a
@@ -111,7 +131,7 @@ abstract class CallingConvention extends Manageable {
          if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) ||
              "function".equals(name)) {
             toRemove.add(name);
-         
+
          // Parameters starting with an underscore are reserved for XINS
          } else if (name.charAt(0) == '_') {
             toRemove.add(name);
@@ -177,6 +197,12 @@ abstract class CallingConvention extends Manageable {
     */
    private final API _api;
 
+   /**
+    * The set of supported HTTP methods. Is initialized by
+    * {@link #determineSupportedMethods()}.
+    */
+   private HashSet _supportedMethods;
+
 
    //------------------------------------------------------------------------
    // Methods
@@ -197,6 +223,121 @@ abstract class CallingConvention extends Manageable {
    protected final API getAPI() {
       return _api;
    }
+
+   /**
+    * Determines which HTTP methods are supported. This method should be
+    * called right after the <code>bootstrap</code> method is called on this
+    * object, as part of the bootstrap procedure.
+    *
+    * <p>If the supported HTTP methods cannot be supported, then a
+    * {@link BootstrapException} is thrown.
+    *
+    * <p>This method uses the {@link #getSupportedMethods()} method, which
+    * must be implemented by subclasses, to determine the supported methods.
+    * When this is determined, this list is stored internally. Use
+    * {@link #isMethodSupported(String)} to determine at runtime whether an
+    * HTTP method is actually supported by this calling convention.
+    *
+    * @throws BootstrapException
+    *    if the supported HTTP methods cannot be determined.
+    */
+   final void determineSupportedMethods() throws BootstrapException {
+
+      // Call the subclass implementation
+      String[] array;
+      try {
+         array = getSupportedMethods();
+
+      // Method getSupportedMethods() should not throw any exception
+      } catch (Throwable exception) {
+         throw new BootstrapException(exception);
+      }
+
+      String baseError = "Method getSupportedMethods() in calling convention "
+                       + "implementation class \""
+                       + getClass().getName()
+                       + "\" ";
+
+      // The returned value cannot be null
+      if (array == null) {
+         throw new BootstrapException(baseError + "returns null.");
+      }
+
+      // Loop through all array items
+      HashSet set = new HashSet();
+      for (int i = 0; i < array.length; i++) {
+
+         String element = array[i];
+
+         // Null elements are not allowed
+         if (element == null) {
+            throw new BootstrapException(baseError + "returns a null array element.");
+         }
+
+         // Make sure the method is a recognized HTTP method
+         String upper = element.toUpperCase();
+         if (! RECOGNIZED_HTTP_METHODS.contains(upper)) {
+            throw new BootstrapException(baseError + "returns the unrecognized HTTP method \"" + element + "\" (case-insensitive).");
+         }
+
+         // Add to the set (ignores duplicates)
+         set.add(upper);
+      }
+
+      // Store the set of supported HTTP methods in a field
+      _supportedMethods = set;
+   }
+
+   /**
+    * Checks whether the specified HTTP method is supported.
+    *
+    * @param method
+    *    the HTTP method of which to check whether it is supported, should not
+    *    be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the HTTP method is supported, <code>false</code>
+    *    if it is not.
+    *
+    * @throws IllegalStateException
+    *    if this calling convention is not yet bootstrapped and initialized.
+    */
+   final boolean isMethodSupported(String method)
+   throws IllegalStateException {
+
+      // Make sure this Manageable object is bootstrapped and initialized
+      //
+      // NOTE: In fact this object only needs to be bootstrapped, but there is
+      //       no clean way to just determine whether this object is indeed
+      //       bootstrapped.
+      assertUsable();
+
+      String upper = method.toUpperCase();
+      return _supportedMethods.contains(upper);
+   }
+
+   /**
+    * Indicates which HTTP methods are supported by this calling convention.
+    * Each <code>String</code> in the returned array should be one supported
+    * method, case-insensitive.
+    *
+    * <p>The returned array should not be <code>null</code>, it should not
+    * contain any <code>null</code> values and it should only contain
+    * recognized HTTP methods. It may contain duplicates.
+    *
+    * <p>This method will only be called <em>after</em> this calling
+    * convention has been bootstrapped.
+    *
+    * <p>Note that <em>OPTIONS</em> must not be returned by this method, as it
+    * is not an HTTP method that can be used to invoke a XINS function.
+    *
+    * @return
+    *    the HTTP methods supported, in a <code>String</code> array, should
+    *    not be <code>null</code>.
+    *
+    * @since XINS 1.5.0
+    */
+   protected abstract String[] getSupportedMethods();
 
    /**
     * Checks if the specified request can be handled by this calling
@@ -621,8 +762,8 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Gathers all parameters from the specified request. The parameters are 
-    * returned as a {@link ProtectedPropertyReader} instance with the 
+    * Gathers all parameters from the specified request. The parameters are
+    * returned as a {@link ProtectedPropertyReader} instance with the
     * specified secret key. If no parameters are found, then <code>null</code>
     * is returned.
     *
@@ -630,12 +771,12 @@ abstract class CallingConvention extends Manageable {
     * {@link InvalidRequestException} is thrown.
     *
     * @param httpRequest
-    *    the HTTP request to get the parameters from, cannot be 
+    *    the HTTP request to get the parameters from, cannot be
     *    <code>null</code>.
     *
     * @param secretKey
     *    the secret key to use if and when constructing the
-    *    {@link ProtectedPropertyReader} instance, should not be 
+    *    {@link ProtectedPropertyReader} instance, should not be
     *    <code>null</code>.
     *
     * @return
@@ -675,7 +816,7 @@ abstract class CallingConvention extends Manageable {
             // Be gentle, allow nulls and zero-sized arrays
             if (values != null && values.length != 0) {
 
-               // Get the parameter value, allowing duplicate values, but not 
+               // Get the parameter value, allowing duplicate values, but not
                // different ones; this may throw an InvalidRequestException
                String value = getParamValue(name, values);
 
@@ -688,10 +829,10 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Determines a single value for a parameter based on an array of values. 
-    * If there is only one value, then that value is returned. If there are 
-    * multiple equal values, then the value is returned as well. However, if 
-    * there are multiple values and at least one of them is different, then an 
+    * Determines a single value for a parameter based on an array of values.
+    * If there is only one value, then that value is returned. If there are
+    * multiple equal values, then the value is returned as well. However, if
+    * there are multiple values and at least one of them is different, then an
     * {@link InvalidRequestException} is thrown.
     *
     * @param name
@@ -699,7 +840,7 @@ abstract class CallingConvention extends Manageable {
     *    {@link InvalidRequestException}, should not be <code>null</code>.
     *
     * @param values
-    *    the values, should not be <code>null</code> and should not have a 
+    *    the values, should not be <code>null</code> and should not have a
     *    size of zero.
     *
     * @return

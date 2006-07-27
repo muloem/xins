@@ -22,16 +22,10 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
  *
- * <p>This servlet supports the following HTTP request methods:
+ * <p>This servlet supports the HTTP <em>OPTIONS</em> method and other 
+ * methods, depending on the calling convention.
  *
- * <ul>
- *   <li>OPTIONS
- *   <li>HEAD
- *   <li>GET
- *   <li>POST
- * </ul>
- *
- * <p>A method with any other request method will make this servlet return the
+ * <p>A request with an unsupported method makes this servlet return the
  * HTTP status code <code>405 Method Not Allowed</code>.
  *
  * <p>If no matching function is found, then this servlet will return the HTTP

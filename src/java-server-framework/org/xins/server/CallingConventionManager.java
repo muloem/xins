@@ -489,6 +489,7 @@ extends Manageable {
 
       try {
          cc.bootstrap(properties);
+         cc.determineSupportedMethods();
          Log.log_3241(name);
 
       // Missing property
