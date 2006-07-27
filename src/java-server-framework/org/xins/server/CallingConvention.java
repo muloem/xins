@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -232,7 +233,7 @@ abstract class CallingConvention extends Manageable {
     * <p>If the supported HTTP methods cannot be supported, then a
     * {@link BootstrapException} is thrown.
     *
-    * <p>This method uses the {@link #getSupportedMethods()} method, which
+    * <p>This method uses the {@link #supportedMethods()} method, which
     * must be implemented by subclasses, to determine the supported methods.
     * When this is determined, this list is stored internally. Use
     * {@link #isMethodSupported(String)} to determine at runtime whether an
@@ -246,14 +247,14 @@ abstract class CallingConvention extends Manageable {
       // Call the subclass implementation
       String[] array;
       try {
-         array = getSupportedMethods();
+         array = supportedMethods();
 
-      // Method getSupportedMethods() should not throw any exception
+      // Method supportedMethods() should not throw any exception
       } catch (Throwable exception) {
          throw new BootstrapException(exception);
       }
 
-      String baseError = "Method getSupportedMethods() in calling convention "
+      String baseError = "Method supportedMethods() in calling convention "
                        + "implementation class \""
                        + getClass().getName()
                        + "\" ";
@@ -317,16 +318,39 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Indicates which HTTP methods are supported by this calling convention.
-    * Each <code>String</code> in the returned array should be one supported
-    * method, case-insensitive.
+    * Returns the set of supported HTTP methods.
+    *
+    * @return
+    *    the {@link Set} of supported HTTP methods, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this calling convention is not yet bootstrapped and initialized.
+    */
+   final Set getSupportedMethods() throws IllegalStateException {
+
+      // Make sure this Manageable object is bootstrapped and initialized
+      //
+      // NOTE: In fact this object only needs to be bootstrapped, but there is
+      //       no clean way to just determine whether this object is indeed
+      //       bootstrapped.
+      assertUsable();
+
+      // NOTE: We now return a mutable collection, but it's only within the 
+      //       same package, so this is not considered an issue
+      return _supportedMethods;
+   }
+
+   /**
+    * Determines which HTTP methods are supported by this calling convention.
+    * This method is called exactly once in the life-time of a 
+    * <code>CallingConvention</code>, right after the bootstrapping.
+    *
+    * <p>Each <code>String</code> in the returned array should be one
+    * supported method, case-insensitive.
     *
     * <p>The returned array should not be <code>null</code>, it should not
     * contain any <code>null</code> values and it should only contain
     * recognized HTTP methods. It may contain duplicates.
-    *
-    * <p>This method will only be called <em>after</em> this calling
-    * convention has been bootstrapped.
     *
     * <p>Note that <em>OPTIONS</em> must not be returned by this method, as it
     * is not an HTTP method that can be used to invoke a XINS function.
@@ -337,7 +361,7 @@ abstract class CallingConvention extends Manageable {
     *
     * @since XINS 1.5.0
     */
-   protected abstract String[] getSupportedMethods();
+   protected abstract String[] supportedMethods();
 
    /**
     * Checks if the specified request can be handled by this calling
@@ -348,6 +372,11 @@ abstract class CallingConvention extends Manageable {
     * <p>If this calling convention is not usable, then <code>false</code> is
     * returned, even <em>before</em> calling
     * {@link #matches(HttpServletRequest)}.
+    *
+    * <p>If this method does not support the HTTP method, then 
+    * <code>false</code> is returned, also <em>before</em> calling
+    * {@link #matches(HttpServletRequest)}. See
+    * {@link #isMethodSupported(String)}.
     *
     * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
     * this exception is ignored and <code>false</code> is returned.
@@ -367,6 +396,12 @@ abstract class CallingConvention extends Manageable {
       // First check if this CallingConvention instance is bootstrapped and
       // initialized
       if (! isUsable()) {
+         return false;
+      }
+
+      // Make sure the HTTP method is supported
+      String method = httpRequest.getMethod();
+      if (! isMethodSupported(method)) {
          return false;
       }
 
@@ -418,8 +453,9 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Converts an HTTP request to a XINS request (wrapper method). This method
-    * checks the arguments, then calls the implementation method and then
-    * checks the return value from that method.
+    * checks the arguments, checks that the HTTP method is actually supported,
+    * calls the implementation method and then checks the return value from
+    * that method.
     *
     * @param httpRequest
     *    the HTTP request, cannot be <code>null</code>.
@@ -435,7 +471,9 @@ abstract class CallingConvention extends Manageable {
     *    if <code>httpRequest == null</code>.
     *
     * @throws InvalidRequestException
-    *    if the request is considerd to be invalid.
+    *    if the request is considerd to be invalid, at least for this calling
+    *    convention; either because the HTTP method is not supported, or 
+    *    because {@link #convertRequestImpl(HttpServletRequest)} indicates so.
     *
     * @throws FunctionNotSpecifiedException
     *    if the request does not indicate the name of the function to execute.
@@ -451,6 +489,12 @@ abstract class CallingConvention extends Manageable {
 
       // Check preconditions
       MandatoryArgumentChecker.check("httpRequest", httpRequest);
+
+      // Make sure the HTTP method is supported
+      String method = httpRequest.getMethod();
+      if (! isMethodSupported(method)) {
+         throw new InvalidRequestException("HTTP method \"" + method + "\" is not supported by this calling convention.");
+      }
 
       // Delegate to the implementation method
       FunctionRequest xinsRequest;
@@ -500,9 +544,11 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Converts an HTTP request to a XINS request (implementation method). This
-    * method should only be called from class {@link CallingConvention}. Only
-    * then it is guaranteed that the <code>httpRequest</code> argument is not
-    * <code>null</code>.
+    * method should only be called from class {@link CallingConvention}.
+    *
+    * <p>It is guaranteed that the <code>httpRequest</code> argument is not
+    * <code>null</code> and that the HTTP method is in the set of supported 
+    * methods, as indicated by {@link #supportedMethods()}.
     *
     * @param httpRequest
     *    the HTTP request, will not be <code>null</code>.

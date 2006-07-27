@@ -43,7 +43,9 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Indicates which HTTP methods are supported by this calling convention.
+    * Determines which HTTP methods are supported by this calling convention.
+    * This method is called exactly once in the life-time of a 
+    * <code>CallingConvention</code>, right after the bootstrapping.
     *
     * <p>The implementation of this method in class 
     * <code>CustomCallingConvention</code> indicates the following HTTP 
@@ -59,10 +61,10 @@ public abstract class CustomCallingConvention extends CallingConvention {
     * supported HTTP methods.
     *
     * @return
-    *    the HTTP methods supported, in a <code>String</code> array, not
+    *    the HTTP methods supported, in a <code>String</code> array, never
     *    <code>null</code>.
     */
-   protected String[] getSupportedMethods() {
+   protected final String[] supportedMethods() {
       return new String[] { "HEAD", "GET", "POST" };
    }
 

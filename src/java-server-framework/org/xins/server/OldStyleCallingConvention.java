@@ -66,8 +66,9 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Indicates which HTTP methods are supported by this calling convention
-    * (implementation method).
+    * Determines which HTTP methods are supported by this calling convention.
+    * This method is called exactly once in the life-time of a 
+    * <code>CallingConvention</code>, right after the bootstrapping.
     *
     * <p>This calling convention supports the following HTTP methods:
     * <ul>
@@ -77,12 +78,13 @@ extends CallingConvention {
     * </ul>
     *
     * @return
-    *    the HTTP methods supported, in a <code>String</code> array, not
+    *    the HTTP methods supported, in a <code>String</code> array, never
     *    <code>null</code>.
     */
-   protected final String[] getSupportedMethods() {
+   protected final String[] supportedMethods() {
       return new String[] { "HEAD", "GET", "POST" };
    }
+
 
    /**
     * Checks if the specified request can be handled by this calling
