@@ -10,6 +10,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,9 @@ extends Manageable {
 
       // Create a map to store the conventions in
       _conventions = new HashMap(89);
+
+      // Initialize the set of supported methods
+      _supportedMethods = new HashSet();
    }
 
 
@@ -159,6 +163,13 @@ extends Manageable {
     * <p>This field is initialized during bootstrapping.
     */
    private final HashMap _conventions;
+
+   /**
+    * The set of supported HTTP methods. The values are initialized during the
+    * initialization stage, see {@link #initImpl(PropertyReader)}. Never 
+    * <code>null</code>.
+    */
+   private final HashSet _supportedMethods;
 
 
    //-------------------------------------------------------------------------
@@ -530,6 +541,10 @@ extends Manageable {
           InvalidPropertyValueException,
           InitializationException {
 
+      // Reset the supported HTTP methods
+      _supportedMethods.clear();
+      HashSet methods = new HashSet();
+
       // Loop through all CallingConvention instances
       Iterator iterator = _conventions.entrySet().iterator();
       while (iterator.hasNext()) {
@@ -539,17 +554,28 @@ extends Manageable {
          String name = (String) entry.getKey();
          Object cc   = entry.getValue();
 
-         // If creation of CallingConvention succeeded, then initialize it
+         // Process this CallingConvention only if it was created OK
          if (cc != CREATION_FAILED) {
-            init(name, (CallingConvention) cc, properties);
 
-            // Fails if the default calling convention fails to initialize
-            if (((CallingConvention) cc).getState() != Manageable.USABLE &&
-                  name.equals(_defaultConventionName)) {
-               throw new InitializationException("Failed to initialize the default calling convention.");
+            // Initialize the CallingConvention
+            CallingConvention conv = (CallingConvention) cc;
+            init(name, conv, properties);
+
+            // If the initialization succeeded, then add the supported methods
+            // to the set
+            if (conv.isUsable()) {
+               methods.addAll(conv.getSupportedMethods());
+
+            // Fail if the *default* calling convention fails to initialize
+            } else if (name.equals(_defaultConventionName)) {
+               throw new InitializationException("Failed to initialize the default calling convention \"" + name + "\".");
             }
          }
       }
+
+      // Only fill the set of supported methods if the initialization 
+      // completed successfully
+      _supportedMethods.addAll(methods);
    }
 
    /**
@@ -643,7 +669,6 @@ extends Manageable {
          return detectCallingConvention(request);
       }
    }
-
 
    /**
     * Gets the calling convention for the given name.
@@ -875,5 +900,28 @@ extends Manageable {
          Log.log_3510();
          throw new InvalidRequestException(noMatches);
       }
+   }
+
+   /**
+    * Returns the set of supported HTTP methods. This is the union of the 
+    * supported methods for the individual calling conventions. See
+    * {@link CallingConvention#getSupportedMethods()}.
+    *
+    * @return
+    *    the {@link Set} of supported HTTP methods, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this calling convention manager is not yet bootstrapped and
+    *    initialized or if an individual calling convention is not; the
+    *    latter <em>should</em> never happen.
+    */
+   final Set getSupportedMethods() throws IllegalStateException {
+
+      // Make sure this Manageable object is bootstrapped and initialized
+      assertUsable();
+
+      // NOTE: We now return a mutable collection, but it's only within the 
+      //       same package, so this is not considered an issue
+      return _supportedMethods;
    }
 }
