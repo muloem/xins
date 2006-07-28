@@ -70,7 +70,7 @@ public class DateConverter extends Object {
     * Convert the specified <code>long</code> to a human-readable time stamp.
     * The current time zone is used.
     *
-    * @param n
+    * @param time
     *    the time stamp to be converted to a human-readable character string,
     *    as a number of milliseconds since the Epoch (midnight January 1,
     *    1970), must be greater than {@link Long#MIN_VALUE} and smaller than
