@@ -489,7 +489,6 @@ extends Manageable {
 
       try {
          cc.bootstrap(properties);
-         cc.determineSupportedMethods();
          Log.log_3241(name);
 
       // Missing property
@@ -584,8 +583,7 @@ extends Manageable {
 
       // If the CallingConvention is not even bootstrapped, then do not even
       // attempt to initialize it
-      if (cc.getState() != Manageable.BOOTSTRAPPED &&
-          cc.getState() != Manageable.USABLE) {
+      if (! cc.isBootstrapped()) {
          return;
       }
 
@@ -594,6 +592,7 @@ extends Manageable {
 
       try {
          cc.init(properties);
+         cc.determineSupportedMethods();
          Log.log_3436(name);
 
       // Missing property

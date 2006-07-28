@@ -44,8 +44,10 @@ public abstract class CustomCallingConvention extends CallingConvention {
 
    /**
     * Determines which HTTP methods are supported by this calling convention.
-    * This method is called exactly once in the life-time of a 
-    * <code>CallingConvention</code>, right after the bootstrapping.
+    * This method is called during the initialization procedure for this
+    * <code>CallingConvention</code>, after the
+    * {@link initImpl(org.xins.common.collections.PropertyReader} method is 
+    * called.
     *
     * <p>The implementation of this method in class 
     * <code>CustomCallingConvention</code> indicates the following HTTP 

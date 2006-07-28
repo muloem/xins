@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedPropertyReader;
-import org.xins.common.manageable.BootstrapException;
+import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
@@ -227,11 +227,11 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Determines which HTTP methods are supported. This method should be
-    * called right after the <code>bootstrap</code> method is called on this
-    * object, as part of the bootstrap procedure.
+    * called right after the <code>initImpl</code> method is called on this
+    * object, as part of the initialization procedure.
     *
-    * <p>If the supported HTTP methods cannot be supported, then a
-    * {@link BootstrapException} is thrown.
+    * <p>If the supported HTTP methods cannot be supported, then an
+    * {@link InitializationException} is thrown.
     *
     * <p>This method uses the {@link #supportedMethods()} method, which
     * must be implemented by subclasses, to determine the supported methods.
@@ -239,10 +239,21 @@ abstract class CallingConvention extends Manageable {
     * {@link #isMethodSupported(String)} to determine at runtime whether an
     * HTTP method is actually supported by this calling convention.
     *
-    * @throws BootstrapException
+    * <p>Note: This method is not thread-safe. While this method is being 
+    * executed, no other method calls should be performed.
+    *
+    * @throws IllegalStateException
+    *    if the current state is incorrect
+    *
+    * @throws InitializationException
     *    if the supported HTTP methods cannot be determined.
     */
-   final void determineSupportedMethods() throws BootstrapException {
+   final void determineSupportedMethods()
+   throws IllegalStateException,
+          InitializationException {
+
+      // Make sure the current state is correct
+      assertUsable();
 
       // Call the subclass implementation
       String[] array;
@@ -251,7 +262,7 @@ abstract class CallingConvention extends Manageable {
 
       // Method supportedMethods() should not throw any exception
       } catch (Throwable exception) {
-         throw new BootstrapException(exception);
+         throw new InitializationException(exception);
       }
 
       String baseError = "Method supportedMethods() in calling convention "
@@ -261,7 +272,7 @@ abstract class CallingConvention extends Manageable {
 
       // The returned value cannot be null
       if (array == null) {
-         throw new BootstrapException(baseError + "returns null.");
+         throw new InitializationException(baseError + "returns null.");
       }
 
       // Loop through all array items
@@ -272,13 +283,13 @@ abstract class CallingConvention extends Manageable {
 
          // Null elements are not allowed
          if (element == null) {
-            throw new BootstrapException(baseError + "returns a null array element.");
+            throw new InitializationException(baseError + "returns a null array element.");
          }
 
          // Make sure the method is a recognized HTTP method
          String upper = element.toUpperCase();
          if (! RECOGNIZED_HTTP_METHODS.contains(upper)) {
-            throw new BootstrapException(baseError + "returns the unrecognized HTTP method \"" + element + "\" (case-insensitive).");
+            throw new InitializationException(baseError + "returns the unrecognized HTTP method \"" + element + "\" (case-insensitive).");
          }
 
          // Add to the set (ignores duplicates)
@@ -307,10 +318,6 @@ abstract class CallingConvention extends Manageable {
    throws IllegalStateException {
 
       // Make sure this Manageable object is bootstrapped and initialized
-      //
-      // NOTE: In fact this object only needs to be bootstrapped, but there is
-      //       no clean way to just determine whether this object is indeed
-      //       bootstrapped.
       assertUsable();
 
       String upper = method.toUpperCase();
@@ -329,10 +336,6 @@ abstract class CallingConvention extends Manageable {
    final Set getSupportedMethods() throws IllegalStateException {
 
       // Make sure this Manageable object is bootstrapped and initialized
-      //
-      // NOTE: In fact this object only needs to be bootstrapped, but there is
-      //       no clean way to just determine whether this object is indeed
-      //       bootstrapped.
       assertUsable();
 
       // NOTE: We now return a mutable collection, but it's only within the 
@@ -342,8 +345,10 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Determines which HTTP methods are supported by this calling convention.
-    * This method is called exactly once in the life-time of a 
-    * <code>CallingConvention</code>, right after the bootstrapping.
+    * This method is called during the initialization procedure for this
+    * <code>CallingConvention</code>, after the
+    * {@link initImpl(org.xins.common.collections.PropertyReader} method is 
+    * called.
     *
     * <p>Each <code>String</code> in the returned array should be one
     * supported method, case-insensitive.
