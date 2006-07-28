@@ -9,12 +9,15 @@ package org.xins.server;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * A result code. Result codes are either generic or API-specific. Result
- * codes do not automatically apply to all functions of an API if they have
- * been defined for that API.
+ * Abstraction of an error code returned by a function. Result codes are
+ * either generic or API-specific.
+ *
+ * <p>Result codes do not automatically apply to all functions of an API if
+ * they have been defined for that API. Instead they are associated with each 
+ * individual function.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

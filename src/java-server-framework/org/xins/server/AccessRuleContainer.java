@@ -9,10 +9,10 @@ package org.xins.server;
 import org.xins.common.text.ParseException;
 
 /**
- * A collection of one or more access rules.
+ * Collection of one or more access rules.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */

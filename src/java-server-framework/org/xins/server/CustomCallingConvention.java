@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Abstraction of a custom calling convention.
+ * Base class for calling convention implementations that are not part of the 
+ * core XINS framework.
  *
  * <p>Extend this class to create your own calling conventions. Make sure you
  * override {@link #matches(HttpServletRequest)}.
@@ -21,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  * use {@link #parseXMLRequest(HttpServletRequest)} to parse the request.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public abstract class CustomCallingConvention extends CallingConvention {
 

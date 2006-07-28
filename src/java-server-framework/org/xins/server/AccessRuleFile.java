@@ -21,7 +21,7 @@ import org.xins.common.text.TextUtils;
 import org.xins.common.text.ParseException;
 
 /**
- * A set of access rules in a separate file.
+ * Collection of access rules that are read from a separate file.
  *
  * <p>An <code>AccessRuleFile</code> instance is constructed using a
  * descriptor and a file watch interval. The descriptor is a character string
@@ -41,8 +41,8 @@ import org.xins.common.text.ParseException;
  * is disabled, and no automatic reloading will be performed.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */

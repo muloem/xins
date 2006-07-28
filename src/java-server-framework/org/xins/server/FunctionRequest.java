@@ -14,17 +14,18 @@ import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.xml.Element;
 
 /**
- * A function request. Consists of a function name, a set of parameters and a
+ * Function request. Consists of a function name, a set of parameters and a
  * data section. The function name is mandatory, while there may not be any
  * parameters nor data section.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.2.0
  */
-public class FunctionRequest {
+public class FunctionRequest
+extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
