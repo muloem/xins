@@ -68,7 +68,6 @@ public class AllTests extends TestSuite {
       //
       // Add all tests
       //
-/*
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
@@ -170,11 +169,9 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.ResultcodeUniquenessTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
-*/
 
       // XXX: Perform just a single test
       // suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention2"));
-      suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
 
       // Stop the server
       suite.addTestSuite(StopServer.class);
