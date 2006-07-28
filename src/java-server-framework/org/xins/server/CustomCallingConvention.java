@@ -46,11 +46,11 @@ public abstract class CustomCallingConvention extends CallingConvention {
     * Determines which HTTP methods are supported by this calling convention.
     * This method is called during the initialization procedure for this
     * <code>CallingConvention</code>, after the
-    * {@link initImpl(org.xins.common.collections.PropertyReader} method is 
+    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
     * called.
     *
-    * <p>The implementation of this method in class 
-    * <code>CustomCallingConvention</code> indicates the following HTTP 
+    * <p>The implementation of this method in class
+    * <code>CustomCallingConvention</code> indicates the following HTTP
     * methods are supported:
     *
     * <ul>
@@ -59,7 +59,7 @@ public abstract class CustomCallingConvention extends CallingConvention {
     *    <li><em>POST</em>
     * </ul>
     *
-    * <p>Sublasses may override this method to return a different set of 
+    * <p>Sublasses may override this method to return a different set of
     * supported HTTP methods.
     *
     * @return

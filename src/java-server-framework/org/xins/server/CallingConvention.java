@@ -156,7 +156,7 @@ abstract class CallingConvention extends Manageable {
     * Constructs a new <code>CallingConvention</code>.
     *
     * @throws IllegalStateException
-    *    if this <code>CallingConvention</code> is not constructed by the 
+    *    if this <code>CallingConvention</code> is not constructed by the
     *    {@link CallingConventionManager}.
     */
    protected CallingConvention() {
@@ -193,7 +193,7 @@ abstract class CallingConvention extends Manageable {
    private final ThreadLocal _cachedRequestXML;
 
    /**
-    * The current API. Initialized by the constructor and returned to 
+    * The current API. Initialized by the constructor and returned to
     * interested subclasses by {@link #getAPI()}.
     */
    private final API _api;
@@ -210,7 +210,7 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Determines the current API. This method can only be called by subclass 
+    * Determines the current API. This method can only be called by subclass
     * constructors.
     *
     * @return
@@ -239,7 +239,7 @@ abstract class CallingConvention extends Manageable {
     * {@link #isMethodSupported(String)} to determine at runtime whether an
     * HTTP method is actually supported by this calling convention.
     *
-    * <p>Note: This method is not thread-safe. While this method is being 
+    * <p>Note: This method is not thread-safe. While this method is being
     * executed, no other method calls should be performed.
     *
     * @throws IllegalStateException
@@ -338,7 +338,7 @@ abstract class CallingConvention extends Manageable {
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
-      // NOTE: We now return a mutable collection, but it's only within the 
+      // NOTE: We now return a mutable collection, but it's only within the
       //       same package, so this is not considered an issue
       return _supportedMethods;
    }
@@ -347,7 +347,7 @@ abstract class CallingConvention extends Manageable {
     * Determines which HTTP methods are supported by this calling convention.
     * This method is called during the initialization procedure for this
     * <code>CallingConvention</code>, after the
-    * {@link initImpl(org.xins.common.collections.PropertyReader} method is 
+    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
     * called.
     *
     * <p>Each <code>String</code> in the returned array should be one
@@ -378,7 +378,7 @@ abstract class CallingConvention extends Manageable {
     * returned, even <em>before</em> calling
     * {@link #matches(HttpServletRequest)}.
     *
-    * <p>If this method does not support the HTTP method, then 
+    * <p>If this method does not support the HTTP method, then
     * <code>false</code> is returned, also <em>before</em> calling
     * {@link #matches(HttpServletRequest)}. See
     * {@link #isMethodSupported(String)}.
@@ -477,7 +477,7 @@ abstract class CallingConvention extends Manageable {
     *
     * @throws InvalidRequestException
     *    if the request is considerd to be invalid, at least for this calling
-    *    convention; either because the HTTP method is not supported, or 
+    *    convention; either because the HTTP method is not supported, or
     *    because {@link #convertRequestImpl(HttpServletRequest)} indicates so.
     *
     * @throws FunctionNotSpecifiedException
@@ -552,7 +552,7 @@ abstract class CallingConvention extends Manageable {
     * method should only be called from class {@link CallingConvention}.
     *
     * <p>It is guaranteed that the <code>httpRequest</code> argument is not
-    * <code>null</code> and that the HTTP method is in the set of supported 
+    * <code>null</code> and that the HTTP method is in the set of supported
     * methods, as indicated by {@link #supportedMethods()}.
     *
     * @param httpRequest
