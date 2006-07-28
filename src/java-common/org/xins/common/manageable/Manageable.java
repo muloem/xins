@@ -14,26 +14,33 @@ import org.xins.common.collections.PropertyReaderUtils;
 
 /**
  * Abstraction of a manageable object. Abstract base class for classes that
- * support bootstrap, initialization and destruction functions.
+ * support bootstrap, initialization and deinitialization functions.
  *
  * <p>In environments where <code>Manageable</code> instances are constructed
  * dynamically, they are typically expected to have a public no-argument
  * constructor.
  *
- * <p>The {@link #bootstrap(PropertyReader)} method should be called exactly
- * once before initializing and using this object.
+ * <p>Initially the state of a manageable object is {@link #UNUSABLE}. In this
+ * state, the object should be considered unusable. To change to the
+ * {@link #USABLE} state, the {@link #bootstrap(PropertyReader)} and
+ * {@link #init(PropertyReader)} methods should be called first, as described
+ * below.
+ *
+ * <p>The {@link #bootstrap(PropertyReader)} method can only be called if the
+ * state of this object is {@link #UNUSABLE}. If it finishes successfully, the
+ * state then changes to {@link #BOOTSTRAPPED}.
  *
  * <p>After that the {@link #init(PropertyReader)} method should be called to
- * initialize or re-initialize this object. This should be done at least once
- * before this object can be used. This method should only be called after
- * {@link #bootstrap(PropertyReader)}.
+ * initialize or re-initialize this object. This method can only be called
+ * successfully if the current state is either {@link #BOOTSTRAPPED} or even
+ * {@link #USABLE}.
  *
- * <p>The {@link #deinit()} method will be called when this object is no
- * longer needed. After that, {@link #bootstrap(PropertyReader)} could be
- * called again, though.
+ * <p>The {@link #deinit()} method is called when this object is no
+ * longer needed. That changes the state back to {@link #UNUSABLE}. After
+ * that, {@link #bootstrap(PropertyReader)} could be called again, though.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */
@@ -493,7 +500,7 @@ public abstract class Manageable extends Object {
     * State of a <code>Manageable</code> object.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

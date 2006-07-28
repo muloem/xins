@@ -17,7 +17,7 @@ import org.xins.logdoc.ExceptionUtils;
  * object failed.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *
