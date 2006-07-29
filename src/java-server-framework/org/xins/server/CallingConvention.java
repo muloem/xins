@@ -236,7 +236,7 @@ abstract class CallingConvention extends Manageable {
     * <p>This method uses the {@link #supportedMethods()} method, which
     * must be implemented by subclasses, to determine the supported methods.
     * When this is determined, this list is stored internally. Use
-    * {@link #isMethodSupported(String)} to determine at runtime whether an
+    * {@link #isSupportedMethod(String)} to determine at runtime whether an
     * HTTP method is actually supported by this calling convention.
     *
     * <p>Note: This method is not thread-safe. While this method is being
@@ -314,7 +314,7 @@ abstract class CallingConvention extends Manageable {
     * @throws IllegalStateException
     *    if this calling convention is not yet bootstrapped and initialized.
     */
-   final boolean isMethodSupported(String method)
+   final boolean isSupportedMethod(String method)
    throws IllegalStateException {
 
       // Make sure this Manageable object is bootstrapped and initialized
@@ -381,7 +381,7 @@ abstract class CallingConvention extends Manageable {
     * <p>If this method does not support the HTTP method, then
     * <code>false</code> is returned, also <em>before</em> calling
     * {@link #matches(HttpServletRequest)}. See
-    * {@link #isMethodSupported(String)}.
+    * {@link #isSupportedMethod(String)}.
     *
     * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
     * this exception is ignored and <code>false</code> is returned.
@@ -406,7 +406,7 @@ abstract class CallingConvention extends Manageable {
 
       // Make sure the HTTP method is supported
       String method = httpRequest.getMethod();
-      if (! isMethodSupported(method)) {
+      if (! isSupportedMethod(method)) {
          return false;
       }
 
@@ -497,7 +497,7 @@ abstract class CallingConvention extends Manageable {
 
       // Make sure the HTTP method is supported
       String method = httpRequest.getMethod();
-      if (! isMethodSupported(method)) {
+      if (! isSupportedMethod(method)) {
          throw new InvalidRequestException("HTTP method \"" + method + "\" is not supported by this calling convention.");
       }
 
@@ -575,6 +575,9 @@ abstract class CallingConvention extends Manageable {
     * Converts a XINS result to an HTTP response (wrapper method). This method
     * checks the arguments, then calls the implementation method and then
     * checks the return value from that method.
+    *
+    * <p>Note that this method is not called if there is an error while 
+    * converting the request or if the HTTP method used is HEAD.
     *
     * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
