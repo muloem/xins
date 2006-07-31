@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     DELETE, etc. What needs to be done is re-implement OPTIONS support and add
     unit tests.
   - Improved the Javadoc comments for various classes.
+  - Added package.html to the org.xins.server.frontend package.
 
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.

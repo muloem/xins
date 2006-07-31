@@ -63,7 +63,7 @@ import org.xins.server.InvalidRequestException;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
- * GPF calling convention.
+ * XINS Front-end Framework calling convention.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
