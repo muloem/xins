@@ -230,7 +230,7 @@ abstract class CallingConvention extends Manageable {
     * called right after the <code>initImpl</code> method is called on this
     * object, as part of the initialization procedure.
     *
-    * <p>If the supported HTTP methods cannot be supported, then an
+    * <p>If the supported HTTP methods cannot be determined, then an
     * {@link InitializationException} is thrown.
     *
     * <p>This method uses the {@link #supportedMethods()} method, which
@@ -301,7 +301,8 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Checks whether the specified HTTP method is supported.
+    * Checks whether the specified HTTP method is supported. The argument will
+    * be treated case-insensitive.
     *
     * @param method
     *    the HTTP method of which to check whether it is supported, should not
@@ -498,6 +499,7 @@ abstract class CallingConvention extends Manageable {
       // Make sure the HTTP method is supported
       String method = httpRequest.getMethod();
       if (! isSupportedMethod(method)) {
+         // TODO: Make sure 403 is returned instead of 400
          throw new InvalidRequestException("HTTP method \"" + method + "\" is not supported by this calling convention.");
       }
 
