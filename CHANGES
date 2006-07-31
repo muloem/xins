@@ -7,8 +7,6 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
 
 * XINS/Java Server Framework:
-  - Slightly improved the Javadoc comments for the classes Function and
-    CallContext.
   - Implemented SF.net RFE #1528020: Return HTTP status code 400 if parameter
     has multiple values. This applies to the _xins-std, _xins-old and
     _xins-xslt calling conventions. Added unit tests.
@@ -17,11 +15,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Partialy implemented SF.net RFE #1483099: Support HTTP methods PUT,
     DELETE, etc. What needs to be done is re-implement OPTIONS support and add
     unit tests.
+  - Improved the Javadoc comments for various classes.
 
 * XINS/Java Common Library:
-  - Slightly improved Javadoc comments for class HTTPServletStarter.
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
   - Implemented SF.net RFE #1529610: Add isBootstrapped() to Manageable.
+  - Improved the Javadoc comments for various classes.
 
 * Unit tests:
   - Implemented SF.net RFE #1529239: Configure port for unit tests. Change the
