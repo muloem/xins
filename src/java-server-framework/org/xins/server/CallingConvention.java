@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,8 +37,8 @@ import org.xins.common.xml.ElementParser;
  * the <em>Singleton</em> pattern can be applied.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @see CallingConventionManager
  */
@@ -68,21 +69,14 @@ abstract class CallingConvention extends Manageable {
     *
     * <p>All methods are in upper case.
     */
-   private static final HashSet RECOGNIZED_HTTP_METHODS;
+   private static final HashSet RECOGNIZED_HTTP_METHODS = new HashSet(
+      Arrays.asList(new String[] { "HEAD", "GET",    "POST",
+                                   "PUT",  "DELETE", "CONNECT" }));
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   static {
-      RECOGNIZED_HTTP_METHODS = new HashSet();
-      RECOGNIZED_HTTP_METHODS.add("HEAD");
-      RECOGNIZED_HTTP_METHODS.add("GET");
-      RECOGNIZED_HTTP_METHODS.add("POST");
-      RECOGNIZED_HTTP_METHODS.add("PUT");
-      RECOGNIZED_HTTP_METHODS.add("DELETE");
-   }
 
    /**
     * Removes all parameters that should not be transmitted from a
@@ -579,7 +573,7 @@ abstract class CallingConvention extends Manageable {
     * checks the return value from that method.
     *
     * <p>Note that this method is not called if there is an error while 
-    * converting the request or if the HTTP method used is HEAD.
+    * converting the request.
     *
     * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
