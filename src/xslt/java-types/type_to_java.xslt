@@ -691,6 +691,21 @@ public final class ]]></xsl:text>
 		<xsl:if test="$kind = 'enum'">
 			<xsl:text><![CDATA[
 
+   public static Item fromStringForRequired(java.lang.String string)
+   throws java.lang.IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
+
+      // Check preconditions
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
+
+      return getItemByValue(string);
+	 }
+
+   public static Item fromStringForOptional(java.lang.String string)
+   throws org.xins.common.types.TypeValueException {
+      return getItemByValue(string);
+	 }
+
    /**
     * Gets the <code>Item</code> for the specified string value.
     *

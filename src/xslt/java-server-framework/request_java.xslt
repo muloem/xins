@@ -67,6 +67,14 @@
 
 		<xsl:apply-templates select="input/param" mode="method" />
 
+		<xsl:if test="input/param">
+			<xsl:call-template name="equalsMethod">
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api" select="$api" />
+				<xsl:with-param name="specsdir" select="$specsdir" />
+			</xsl:call-template>
+		</xsl:if>
+
 		<xsl:if test="input/data/@contains">
 			<xsl:variable name="elementName" select="input/data/@contains" />
 			<xsl:apply-templates select="input/data/element[@name=$elementName]" mode="listMethod" />
@@ -665,4 +673,125 @@
 </xsl:text>
 	</xsl:template>
 
+	<xsl:template name="equalsMethod">
+		<xsl:param name="project_node" />
+		<xsl:param name="api" />
+		<xsl:param name="specsdir" />
+
+		<xsl:text>
+   public int hashCode() {
+      return </xsl:text>
+		<xsl:for-each select="input/param">
+			<!-- Get the name of the declared variable. -->
+			<xsl:variable name="javaVariable">
+				<xsl:text>_</xsl:text>
+				<xsl:call-template name="hungarianLower">
+					<xsl:with-param name="text" select="@name" />
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- Get the return type variable. -->
+			<xsl:variable name="javaType">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_node" select="$project_node" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="required"     select="@required"     />
+					<xsl:with-param name="type"         select="@type"         />
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- Get whether the return type is a primary type. -->
+			<xsl:variable name="typeIsPrimary">
+				<xsl:call-template name="is_java_datatype">
+					<xsl:with-param name="text" select="$javaType" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:text>(</xsl:text>
+			<xsl:choose>
+				<xsl:when test="$typeIsPrimary = 'true'">
+					<xsl:text>String.valueOf(</xsl:text>
+					<xsl:value-of select="$javaVariable" />
+					<xsl:text>)</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$javaVariable" />
+					<xsl:text> == null ? 0 : </xsl:text>
+					<xsl:value-of select="$javaVariable" />
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>.hashCode())</xsl:text>
+			<xsl:if test="position() &lt; last()">
+				<xsl:text> + </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:text>;
+   }
+
+   public boolean equals(Object obj) {
+      if (!(obj instanceof Request)) {
+         return false;
+      }
+      Request otherRequest = (Request) obj;
+      return </xsl:text>
+		<xsl:for-each select="input/param">
+			<xsl:variable name="javaMethodSuffix">
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text" select="@name" />
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- Get the return type of the get method. -->
+			<xsl:variable name="javasimpletype">
+				<xsl:call-template name="javatype_for_type">
+					<xsl:with-param name="project_node" select="$project_node" />
+					<xsl:with-param name="api"          select="$api"          />
+					<xsl:with-param name="specsdir"     select="$specsdir"     />
+					<xsl:with-param name="required"     select="'true'"     />
+					<xsl:with-param name="type"         select="@type"         />
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- Get whether the return type is a primary type. -->
+			<xsl:variable name="typeIsPrimary">
+				<xsl:call-template name="is_java_datatype">
+					<xsl:with-param name="text" select="$javasimpletype" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:if test="not(@required = 'true')">
+				<xsl:text>((!isSet</xsl:text>
+				<xsl:value-of select="$javaMethodSuffix" />
+				<xsl:text>() &amp;&amp; !otherRequest.isSet</xsl:text>
+				<xsl:value-of select="$javaMethodSuffix" />
+				<xsl:text>()) || (isSet</xsl:text>
+				<xsl:value-of select="$javaMethodSuffix" />
+				<xsl:text>() &amp;&amp; otherRequest.isSet</xsl:text>
+				<xsl:value-of select="$javaMethodSuffix" />
+				<xsl:text>() &amp;&amp;</xsl:text>
+			</xsl:if>
+			<xsl:text> get</xsl:text>
+			<xsl:value-of select="$javaMethodSuffix" />
+			<xsl:text>()</xsl:text>
+			<xsl:choose>
+				<xsl:when test="$typeIsPrimary = 'true'">
+					<xsl:text> == </xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>.equals(</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>otherRequest.get</xsl:text>
+			<xsl:value-of select="$javaMethodSuffix" />
+			<xsl:text>()</xsl:text>
+			<xsl:if test="not($typeIsPrimary = 'true')">
+				<xsl:text>)</xsl:text>
+			</xsl:if>
+			<xsl:if test="not(@required = 'true')">
+				<xsl:text>))</xsl:text>
+			</xsl:if>
+			<xsl:if test="position() &lt; last()">
+				<xsl:text> &amp;&amp; </xsl:text>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:text>;
+   }</xsl:text>
+	</xsl:template>
 </xsl:stylesheet>

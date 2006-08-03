@@ -280,7 +280,7 @@ public class SessionManager extends Manageable {
          return false;
       }
       Object value = session.getAttribute(name);
-      return "true".equals(value) || value == Boolean.TRUE;
+      return "true".equals(value) || Boolean.TRUE.equals(value);
    }
 
    /**

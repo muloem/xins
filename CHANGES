@@ -19,11 +19,22 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Added package.html to the org.xins.server.frontend package.
   - Fixed SF.net bug # 1525182: Double param-combo tag upon exclusive-or 
     violation.
+  - Changed the condition for testing if a session property is true in the 
+    front-end CC.
 
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
   - Implemented SF.net RFE #1529610: Add isBootstrapped() to Manageable.
   - Improved the Javadoc comments for various classes.
+
+* Generation of client-side Java code:
+  - Added set methods using the Java object class for primitive types.
+  - The Request object overrides the hashCode and the equals method so that
+    two identical methods are equals.
+
+* Generation of Java code for types:
+  - Added fromStringForRequired and fromStringForOptional methods for generated
+    enum types.
 
 * Unit tests:
   - Implemented SF.net RFE #1529239: Configure port for unit tests. Change the

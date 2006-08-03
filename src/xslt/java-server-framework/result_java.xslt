@@ -225,31 +225,79 @@ implements Result {
    public void set</xsl:text>
 		<xsl:value-of select="$methodName" />
 		<xsl:text>(</xsl:text>
-		<xsl:value-of select="$javasimpletype" />
+		<xsl:value-of select="$javaobjecttype" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$javaVariable" />
 		<xsl:text>) {
       </xsl:text>
-		<xsl:if test="$typeIsPrimary = 'false'" >
-			<xsl:text>if (</xsl:text>
-			<xsl:value-of select="$javaVariable" />
-			<xsl:text> != null &amp;&amp; !</xsl:text>
-			<xsl:value-of select="$typeToString" />
-			<xsl:text>.equals("")) {
+		<xsl:text>if (</xsl:text>
+		<xsl:value-of select="$javaVariable" />
+		<xsl:text> != null &amp;&amp; !</xsl:text>
+		<xsl:value-of select="$typeToString" />
+		<xsl:text>.equals("")) {
          </xsl:text>
-		</xsl:if>
 		<xsl:value-of select="$methodImpl" />
 		<xsl:text>("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>",  </xsl:text>
 		<xsl:value-of select="$typeToString" />
 		<xsl:text>);</xsl:text>
-		<xsl:if test="$typeIsPrimary = 'false'" >
-			<xsl:text>
-      }</xsl:text>
-		</xsl:if>
+		<xsl:text>
+		}</xsl:text>
 		<xsl:text>
    }</xsl:text>
+
+		<xsl:if test="$typeIsPrimary = 'true'">
+			<xsl:text>
+
+   /**
+    * Sets the value of the </xsl:text>
+			<xsl:value-of select="$parameterText" />
+			<xsl:text><![CDATA[.
+    * This method ]]></xsl:text>
+			<xsl:choose>
+				<xsl:when test="@required = 'true'">
+					<xsl:text>has</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>does not need</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text> to be called before returning the
+    * SuccessfulResult.
+    *
+    * @param </xsl:text>
+			<xsl:value-of select="$javaVariable" />
+			<xsl:text>
+    *    the value of the </xsl:text>
+			<xsl:value-of select="$parameterText" />
+			<xsl:text>.</xsl:text>
+			<xsl:if test="deprecated">
+				<xsl:text>
+    *
+    * @deprecated
+    *    </xsl:text>
+				<xsl:value-of select="deprecated/text()" />
+			</xsl:if>
+			<xsl:text>
+    */
+   public void set</xsl:text>
+			<xsl:value-of select="$methodName" />
+			<xsl:text>(</xsl:text>
+			<xsl:value-of select="$javasimpletype" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="$javaVariable" />
+			<xsl:text>) {
+      </xsl:text>
+			<xsl:value-of select="$methodImpl" />
+			<xsl:text>("</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>",  </xsl:text>
+			<xsl:value-of select="$typeToString" />
+			<xsl:text>);</xsl:text>
+			<xsl:text>
+   }</xsl:text>
+		</xsl:if>
 
 		<xsl:text>
 

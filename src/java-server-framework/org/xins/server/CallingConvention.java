@@ -204,8 +204,7 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Determines the current API. This method can only be called by subclass
-    * constructors.
+    * Determines the current API.
     *
     * @return
     *    the current {@link API}, never <code>null</code>.

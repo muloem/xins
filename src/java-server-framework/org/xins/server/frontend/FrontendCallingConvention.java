@@ -37,6 +37,7 @@ import javax.servlet.http.HttpSession;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -117,6 +118,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private final static Class[] NO_ARGS_CLASS = {};
 
+   /**
+    * XSLT used to redirect to pages according to XPath expression.
+    */
+   private final static String REDIRECT_TEMPLATE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+         "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
+         "<xsl:template match=\"commandresult\">\n" +
+         "<xsl:if test=\"";
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -193,7 +201,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * Redirection map. The key is the command and the value is the redirection
     * command.
     */
-   private HashMap _redirectionMap = new HashMap();
+   private Map _redirectionMap = new ChainedMap();
 
    /**
     * Flag that indicates whether the templates should be cached. This field
@@ -378,6 +386,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       Enumeration params = httpRequest.getParameterNames();
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
+
          // TODO remove the next line when no longer needed.
          String realName = getRealParameter(name, functionName);
          String value = httpRequest.getParameter(name);
