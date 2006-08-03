@@ -325,7 +325,7 @@
 						</xsl:if>
 					</xsl:variable>
 					<xsl:text>
-      if (</xsl:text>
+      else if (</xsl:text>
 					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> != null &amp;&amp; (</xsl:text>
 					<xsl:for-each select="../param-ref[not(@name = $active)] | ../attribute-ref[not(@name = $active)]">

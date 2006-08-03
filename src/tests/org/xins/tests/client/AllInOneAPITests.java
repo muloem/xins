@@ -592,6 +592,11 @@ public class AllInOneAPITests extends TestCase {
          } else {
             fail("Just one param combo element was found.");
          }
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo3 = (DataElement)itParamCombos.next();
+            fail("Unexpected param combo element of type '" +
+                 paramCombo3.getAttribute("type") + "' was found.");
+         }
       }
 
       // Test 'all-or-none'
@@ -729,6 +734,43 @@ public class AllInOneAPITests extends TestCase {
       }
    }
 
+   /**
+    * Tests the param-combo for the output section.
+    */
+    public void testParamComboExclusiveOr() throws Exception {
+
+       // Test 'all-or-none'
+       try {
+          _capi.callParamCombo(Date.fromStringForRequired("20060101"), 
+                               null, 
+                               null, 
+                               null, 
+                               "Texas", 
+                               "Paris", 
+                               Byte.valueOf("21"));
+          fail("The param-combo call should return an _InvalidRequest error code.");
+       } catch (UnsuccessfulXINSCallException exception) {
+          assertEquals("_InvalidRequest", exception.getErrorCode());
+          assertEquals(_target, exception.getTarget());
+          assertNull(exception.getParameters());
+          assertNotNull(exception.getDataElement());
+          DataElement dataSection = exception.getDataElement();
+          Iterator itParamCombos = dataSection.getChildElements().iterator();
+          if (itParamCombos.hasNext()) {
+             DataElement paramCombo1 = (DataElement)itParamCombos.next();
+             assertEquals("param-combo", paramCombo1.getLocalName());
+             assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
+          } else {
+             fail("No param combo element found.");
+          }
+          if (itParamCombos.hasNext()) {
+             DataElement paramCombo2 = (DataElement)itParamCombos.next();
+             fail("Unexpected param combo element of type '" +
+                  paramCombo2.getAttribute("type") + "' was found.");
+          }
+       }
+    }
+   
   /**
    * Tests the attribute-combo constraints, which should throw an UnacceptableRequestException.
    */

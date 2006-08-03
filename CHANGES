@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     unit tests.
   - Improved the Javadoc comments for various classes.
   - Added package.html to the org.xins.server.frontend package.
+  - Fixed SF.net bug # 1525182: Double param-combo tag upon exclusive-or 
+    violation.
 
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
