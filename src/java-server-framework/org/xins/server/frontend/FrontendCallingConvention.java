@@ -6,6 +6,7 @@
  */
 package org.xins.server.frontend;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.SourceLocator;
@@ -118,13 +120,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private final static Class[] NO_ARGS_CLASS = {};
 
-   /**
-    * XSLT used to redirect to pages according to XPath expression.
-    */
-   private final static String REDIRECT_TEMPLATE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-         "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
-         "<xsl:template match=\"commandresult\">\n" +
-         "<xsl:if test=\"";
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -192,16 +187,16 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
    private String _loginPage;
 
    /**
-    * The redirection page, cannot be <code>null</code>.
-    * If there is no redirection, the value in this ThreadLocal is null.
-    */
-   private ThreadLocal _redirection = new ThreadLocal();
-
-   /**
     * Redirection map. The key is the command and the value is the redirection
     * command.
     */
    private Map _redirectionMap = new ChainedMap();
+
+   /**
+    * Conditional redirection map. The key is the command and the value is the
+    * {@link Templates} that will return the name of the redirection command.
+    */
+   private Map _conditionalRedirectionMap = new ChainedMap();
 
    /**
     * Flag that indicates whether the templates should be cached. This field
@@ -236,17 +231,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       if (_defaultCommand == null) {
          _defaultCommand = "DefaultCommand";
       }
-
-      // Get the commands automatically redirected to another one
-      Iterator itProperties = bootstrapProperties.getNames();
-      while (itProperties.hasNext()) {
-         String nextProp = (String) itProperties.next();
-         if (nextProp.startsWith("xiff.redirect.")) {
-            String command = nextProp.substring(14);
-            String redirectionPage = bootstrapProperties.get(nextProp);
-            _redirectionMap.put(command, redirectionPage);
-         }
-      }
+      
+      initRedirections(bootstrapProperties);
    }
 
    /**
@@ -359,26 +345,10 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          functionName += actionName.substring(0,1).toUpperCase() + actionName.substring(1);
       }
 
-      // Reset any previous value
-      _redirection.set(null);
-
-      // Redirect to the login page if not logged in
-      if (_session.shouldLogIn()) {
-         _redirection.set(_loginPage);
+      // Redirect to the login page if not logged in or the function is not implemented
+      if (_session.shouldLogIn() || 
+            (_redirectionMap.get(functionName) != null && !_api.getFunctionList().contains(functionName))) {
          return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
-      }
-
-      // Redirect as specified in the bootstrap properties
-      if (_redirectionMap.get(functionName) != null) {
-         _redirection.set(_redirectionMap.get(functionName));
-         try {
-            _api.getAPISpecification().getFunction(functionName);
-         } catch (Exception enfe) {
-
-            // There is no specs or the function was not defined defined
-            // Go directly to the result
-            return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
-         }
       }
 
       // Determine function parameters
@@ -442,87 +412,41 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       String mode = httpRequest.getParameter("mode");
       String command = httpRequest.getParameter("command");
+      String action = httpRequest.getParameter("action");
+      String functionName = command + action;
+      
+      // Display the XSLT
       if ("template".equalsIgnoreCase(mode)) {
-         String xsltLocation = _baseXSLTDir + command + ".xslt";
-         //httpResponse.sendRedirect(xsltLocation);
-         InputStream inputXSLT = new URL(xsltLocation).openStream();
+         byte[] xsltSource = getCommandXSLT(command);
          OutputStream output = httpResponse.getOutputStream();
-         byte[] buffer = new byte[1024];
-         while (true) {
-            int length = inputXSLT.read(buffer);
-            if (length == -1) break;
-            output.write(buffer, 0, length);
-         }
-         inputXSLT.close();
+         output.write(xsltSource);
          output.close();
          return;
-      } else if (xinsResult.getParameter("redirect") != null ||
-            (_redirection.get() != null && !_redirection.get().equals("-") && xinsResult.getErrorCode() == null) ||
-            "NotLoggedIn".equals(xinsResult.getErrorCode())) {
-         String redirection = xinsResult.getParameter("redirect");
-         if (redirection == null && "NotLoggedIn".equals(xinsResult.getErrorCode())) {
-            redirection = _loginPage + "&targetcommand=" + command;
-         }
-         if (redirection == null && xinsResult.getErrorCode() == null) {
-            redirection = (String) _redirection.get();
-         }
-         _redirection.set(null);
-         if (redirection.equals("/")) {
-            redirection = _defaultCommand;
-         }
-         if (redirection.startsWith("http://")) {
-            httpResponse.sendRedirect(redirection);
-         } else {
-            redirection = httpRequest.getRequestURI() + "?command=" + redirection;
-            PropertyReader parameters = xinsResult.getParameters();
-            if (parameters != null) {
-               Iterator parameterNames = parameters.getNames();
-               while (parameterNames.hasNext()) {
-                  String nextParameter = (String) parameterNames.next();
-                  if (!"redirect".equals(nextParameter)) {
-                     redirection += "&" + nextParameter + '=' + parameters.get(nextParameter);
-                  }
-               }
-            }
-            httpResponse.sendRedirect(redirection);
-         }
-         return;
-      } else if (command.equals("Control")) {
-         String action = httpRequest.getParameter("action");
-         if ("RemoveSessionProperties".equals(action)) {
-            _session.removeProperties();
-         } else if ("FlushCommandTemplateCache".equals(action)) {
-            _templateCache.clear();
-         } else if ("RefreshCommandTemplateCache".equals(action)) {
-            _templateCache.clear();
-            try {
-               Iterator itCommandNames = _api.getAPISpecification().getFunctions().keySet().iterator();
-               while (itCommandNames.hasNext()) {
-                  String nextCommand = (String) itCommandNames.next();
-                  String xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
-
-                  Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
-                  _templateCache.put(xsltLocation, template);
-               }
-               Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
-               while (itVirtualFunctions.hasNext()) {
-                  Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
-                  String xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
-                  if (nextFunction.getValue().equals("-")) {
-                     Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
-                     _templateCache.put(xsltLocation, template);
-                  }
-               }
-            } catch (Exception ex) {
-               ex.printStackTrace();
-            }
-         }
-         xinsResult = new ControlResult(_api, _session, _redirectionMap);
       }
 
-      Element commandResult = createXMLResult(httpRequest, xinsResult);
+      // Control command
+      if (command.equals("Control")) {
+         xinsResult = control(action);
+      }
 
-      String commandResultXML = serializeResult(commandResult);
+      Element commandResult = null;
+      String commandResultXML = null;
+      if (_conditionalRedirectionMap.get(functionName) != null) {
+         commandResult = createXMLResult(httpRequest, xinsResult);
+         commandResultXML = serializeResult(commandResult);
+      }
+
+      // Redirection
+      String redirection = getRedirection(xinsResult, command, functionName, commandResultXML);
+      if (redirection != null) {
+         httpResponse.sendRedirect(redirection);
+         return;
+      }
+
+      if (commandResult == null) {
+         commandResult = createXMLResult(httpRequest, xinsResult);
+         commandResultXML = serializeResult(commandResult);
+      }
 
       if ("source".equalsIgnoreCase(mode)) {
          PrintWriter out = httpResponse.getWriter();
@@ -531,9 +455,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          out.print(commandResultXML);
          out.close();
       } else {
-         if (command.endsWith("Show") || command.endsWith("Okay")) {
+         /*if (command.endsWith("Show") || command.endsWith("Okay")) {
             command = command.substring(0, command.length() - 4);
-         }
+         }*/
          String xsltLocation = _baseXSLTDir + command + ".xslt";
          try {
             Templates template = null;
@@ -798,10 +722,10 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          template = (Templates) _templateCache.get(xsltUrl);
       } else {
          try {
-         template = _factory.newTemplates(new StreamSource(xsltUrl));
-         if (_cacheTemplates) {
-            _templateCache.put(xsltUrl, template);
-         }
+            template = _factory.newTemplates(new StreamSource(xsltUrl));
+            if (_cacheTemplates) {
+               _templateCache.put(xsltUrl, template);
+            }
          } catch (Exception ex) {
             System.err.println("url " + xsltUrl);
             ex.printStackTrace();
@@ -809,6 +733,35 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          }
       }
       return template;
+   }
+
+   /**
+    * Gets the XSLT of the specified command.
+    *
+    * @param command
+    *    the command of which we want the XSLT, never <code>null</code>.
+    *
+    * @return
+    *    the XSLT for the command, never <code>null</code>.
+    *
+    * @throws IOException
+    *    if the XSLT cannot be found.
+    */
+   private byte[] getCommandXSLT(String command) throws IOException {
+
+      String xsltLocation = _baseXSLTDir + command + ".xslt";
+      //httpResponse.sendRedirect(xsltLocation);
+      InputStream inputXSLT = new URL(xsltLocation).openStream();
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      byte[] buffer = new byte[1024];
+      while (true) {
+         int length = inputXSLT.read(buffer);
+         if (length == -1) break;
+         output.write(buffer, 0, length);
+      }
+      inputXSLT.close();
+      output.close();
+      return output.toByteArray();
    }
 
    /**
@@ -843,7 +796,199 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
    }
 
+   /**
+    * Executes the Control command.
+    *
+    * @param action
+    *    the action associated with the Control command, can be <code>null</code>.
+    *
+    * @return
+    *    the function result of the execution of the command
+    */
+   private FunctionResult control(String action) {
+      if ("RemoveSessionProperties".equals(action)) {
+         _session.removeProperties();
+      } else if ("FlushCommandTemplateCache".equals(action)) {
+         _templateCache.clear();
+      } else if ("RefreshCommandTemplateCache".equals(action)) {
+         _templateCache.clear();
+         try {
+            Iterator itCommandNames = _api.getAPISpecification().getFunctions().keySet().iterator();
+            while (itCommandNames.hasNext()) {
+               String nextCommand = (String) itCommandNames.next();
+               String xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
 
+               Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
+               _templateCache.put(xsltLocation, template);
+            }
+            Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
+            while (itVirtualFunctions.hasNext()) {
+               Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
+               String xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
+               if (nextFunction.getValue().equals("-")) {
+                  Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
+                  _templateCache.put(xsltLocation, template);
+               }
+            }
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+      }
+      return new ControlResult(_api, _session, _redirectionMap);
+   }
+
+   /**
+    * Gets the redirection URL.
+    *
+    * @param xinsResult
+    *    the XINS result object that should be converted to an HTTP response,
+    *    cannot be <code>null</code>.
+    *
+    * @param command
+    *    the name of the command, cannot be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param xmlResult
+    *    the result of the call in case of a conditional redirection, can be <code>null</code>.
+    *
+    * @return
+    *   the location where the command should be redirected, or <code>null</code>
+    *   if the command should not be redirected.
+    */
+   private String getRedirection(FunctionResult xinsResult, String command, 
+         String functionName, String xmlResult) {
+      String redirection = xinsResult.getParameter("redirect");
+      if (_session.shouldLogIn() || (redirection == null && "NotLoggedIn".equals(xinsResult.getErrorCode()))) {
+         redirection = _loginPage + "&targetcommand=" + command;
+      }
+
+      if (redirection == null && _conditionalRedirectionMap.get(functionName) != null) {
+         Templates conditionTemplate = (Templates) _conditionalRedirectionMap.get(functionName);
+         redirection = translate(xmlResult, conditionTemplate);
+      } else if (redirection == null && xinsResult.getErrorCode() == null) {
+         redirection = (String) _redirectionMap.get(functionName);
+      }
+
+      // No redirection for this function
+      if (redirection == null || redirection.equals("-") ||
+            (xinsResult.getErrorCode() != null && "NotLoggedIn".equals(xinsResult.getErrorCode()))) {
+         return null;
+      }
+
+      // Return the location of the redirection
+      if (redirection.equals("/")) {
+         redirection = _defaultCommand;
+      } else if (!redirection.startsWith("http://")) {
+         redirection = "?command=" + redirection;
+         PropertyReader parameters = xinsResult.getParameters();
+         if (parameters != null) {
+            Iterator parameterNames = parameters.getNames();
+            while (parameterNames.hasNext()) {
+               String nextParameter = (String) parameterNames.next();
+               if (!"redirect".equals(nextParameter)) {
+                  redirection += "&" + nextParameter + '=' + parameters.get(nextParameter);
+               }
+            }
+         }
+      }
+      return redirection;
+   }
+
+   /**
+    * Initializes the redirections of the commands.
+    *
+    * @param bootstrapProperties
+    *    the bootstrap properties, cannot be <code>null</code>.
+    */
+   private void initRedirections(PropertyReader bootstrapProperties) {
+
+      TreeMap conditionalRedirectionProperties = new TreeMap();
+
+      // Get the commands automatically redirected to another one
+      Iterator itProperties = bootstrapProperties.getNames();
+      while (itProperties.hasNext()) {
+         String nextProp = (String) itProperties.next();
+         if (nextProp.startsWith("xiff.redirect.")) {
+            String command = nextProp.substring(14);
+            String redirectionPage = bootstrapProperties.get(nextProp);
+            // TODO the condition should have the same order as in the XML?
+            int conditionalPos = command.indexOf('[');
+            if (conditionalPos != -1) {
+               conditionalRedirectionProperties.put(command, redirectionPage);
+            } else {
+               _redirectionMap.put(command, redirectionPage);
+            }
+         }
+      }
+
+      // Create the conditional map
+      String startXSLT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
+            "<xsl:template match=\"commandresult\">\n" +
+            "<xsl:choose>\n";
+      Iterator itConditions = conditionalRedirectionProperties.keySet().iterator();
+      String currentCommand = null;
+      String xsltText = null;
+      while (itConditions.hasNext()) {
+
+         // Parse the line
+         String nextKey = (String) itConditions.next();
+         int conditionPos = nextKey.indexOf('[');
+         String command = nextKey.substring(0, conditionPos);
+         String condition = nextKey.substring(0, nextKey.length() - 1);
+         String redirectionPage = (String) conditionalRedirectionProperties.get(nextKey);
+
+         // Create the template object and store it
+         if (currentCommand != null && !currentCommand.equals(command)) {
+            finishConditionalTemplate(command, xsltText);
+            currentCommand = null;
+         }
+
+         // Start a new template as it is a new command
+         if (currentCommand == null) {
+            xsltText = startXSLT;
+            currentCommand = command;
+         }
+
+         // Add the condition in the XSL choose
+         xsltText += "<xsl:when test=\"" + condition + "\"><xsl:text>" + redirectionPage + "</xsl:text></xsl:when>\n";
+
+         // Close the last condition
+         if (!itConditions.hasNext()) {
+            finishConditionalTemplate(command, xsltText);
+         }
+      }
+   }
+
+   /**
+    * Finishes the creation of the XSLT, creates the {@link Templates} object
+    * and stores it in the map.
+    *
+    * @param command
+    *    the command to store, cannot be <code>null</code>.
+    *
+    * @param currentXSLT
+    *    the XSLT created before, cannot be <code>null</code>.
+    */
+   private void finishConditionalTemplate(String command, String currentXSLT) {
+      String defaultRedirection = (String) _redirectionMap.get(command);
+      if (defaultRedirection == null) {
+         defaultRedirection = "-";
+      }
+      String xsltText = currentXSLT;
+      xsltText += "<xsl:otherwise><xsl:text>" + defaultRedirection + "</xsl:text></xsl:otherwise>\n";
+      xsltText += "</xsl:choose></xsl:template></xsl:stylesheet>";
+      try {
+         StringReader conditionXSLT = new StringReader(xsltText);
+         Templates conditionTemplate = _factory.newTemplates(new StreamSource(conditionXSLT));
+         _conditionalRedirectionMap.put(command, conditionTemplate);
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+   }
+   
    /**
     * Gets the real parameter name.
     *
