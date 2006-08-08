@@ -122,14 +122,22 @@
 		<xsl:param name="api"          />
 
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_node" select="document($function_file)/function" />
 
-		<xsl:apply-templates select="document($function_file)/function/input" mode="elements">
+		<xsl:if test="not($function_node/input)">
+			<xsd:element name="{concat(@name, 'Request')}" />
+		</xsl:if>
+		<xsl:apply-templates select="$function_node/input" mode="elements">
 			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Request')" />
 		</xsl:apply-templates>
-		<xsl:apply-templates select="document($function_file)/function/output" mode="elements">
+
+		<xsl:if test="not($function_node/output)">
+			<xsd:element name="{concat(@name, 'Response')}" />
+		</xsl:if>
+		<xsl:apply-templates select="$function_node/output" mode="elements">
 			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
