@@ -310,8 +310,10 @@ implements DefaultResultCodes {
     *
     * @return
     *    the function of this API as a list of {@link Function}, never <code>null</code>.
+    *
+    * @since XINS 1.5.0.
     */
-   final List getFunctionList() {
+   public final List getFunctionList() {
       return _functionList;
    }
 
