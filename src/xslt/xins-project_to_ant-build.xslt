@@ -159,7 +159,10 @@ APIs in this project are:
 				<xsl:with-param name="cvsweb" select="cvsweb/@href" />
 			</xsl:call-template>
 			
-			<target name="-prepare" />
+			<target name="-prepare">
+				<property file="{$project_home}/build.properties" />
+				<property name="reload.stylesheet" value="false" />
+			</target>
 
 			<target name="-prepare-specdocs" depends="-prepare, -load-dtds">
 				<mkdir dir="{$builddir}/specdocs" />
@@ -352,8 +355,7 @@ APIs in this project are:
 			</target>
 
 			<target name="-prepare-classes" depends="-prepare,-load-dtds">
-				<property file="{$project_home}/build.properties" />
-				<!-- If not set by the user set it to true. -->
+				<!-- If not set by the user set the default properties. -->
 				<property name="build.deprecation" value="true" />
 				<property name="build.java.version" value="${{ant.java.version}}" />
 				<condition property="build.generics">
@@ -569,7 +571,8 @@ APIs in this project are:
 			basedir="{$api_specsdir}"
 			destdir="{$project_home}/build/specdocs/{$api}"
 			style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
-			includes="{$functionIncludes}">
+			includes="{$functionIncludes}"
+			reloadstylesheet="${{reload.stylesheet}}">
 				<xmlcatalog refid="all-dtds" />
 				<param name="xins_version" expression="{$xins_version}" />
 				<param name="project_home" expression="{$project_home}" />
@@ -587,7 +590,8 @@ APIs in this project are:
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
-				includes="{$typeIncludes}">
+				includes="{$typeIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -606,7 +610,8 @@ APIs in this project are:
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
-				includes="{$resultcodeIncludes}">
+				includes="{$resultcodeIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -638,7 +643,8 @@ APIs in this project are:
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 				includes="{$functionIncludes}"
-				extension="-testform.html">
+				extension="-testform.html"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -658,7 +664,8 @@ APIs in this project are:
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
 				includes="{$functionIncludes}"
-				extension="-testform.html">
+				extension="-testform.html"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -755,8 +762,8 @@ APIs in this project are:
 				basedir="{$copiedTypesDir}"
 				destdir="{$javaDestDir}/{$typePackageAsDir}/"
 				style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
-				reloadstylesheet="true"
-				extension=".java">
+				extension=".java"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
@@ -1004,7 +1011,8 @@ APIs in this project are:
 				destdir="{$javaDestDir}/{$packageAsDir}"
 				style="{$xins_home}/src/xslt/java-server-framework/function_to_java.xslt"
 				extension=".java"
-				includes="{$functionIncludes}">
+				includes="{$functionIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}"     />
 					<param name="project_home" expression="{$project_home}"     />
@@ -1042,7 +1050,8 @@ APIs in this project are:
 					destdir="{$javaDestDir}/{$packageAsDir}"
 					style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
 					extension="Result.java"
-					includes="{$resultcodeIncludes}">
+					includes="{$resultcodeIncludes}"
+					reloadstylesheet="${{reload.stylesheet}}">
 						<xmlcatalog refid="all-dtds" />
 						<param name="xins_version" expression="{$xins_version}" />
 						<param name="project_home" expression="{$project_home}" />
@@ -1061,7 +1070,8 @@ APIs in this project are:
 					<style
 					in="{$project_home}/src/logdoc/{$api}/log.xml"
 					out="build/logdoc/{$api}/build.xml"
-					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
+					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt"
+					reloadstylesheet="${{reload.stylesheet}}">
 						<xmlcatalog refid="all-dtds" />
 						<param name="xins_home"       expression="{$xins_home}" />
 						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
@@ -1269,7 +1279,7 @@ APIs in this project are:
 </impl>]]></echo>
 			</target>
 
-			<target name="stub-{$api}{$implName2}">
+			<target name="stub-{$api}{$implName2}" depends="-prepare-classes" description="Generates an Stub API using the defined examples">
 				<xsl:variable name="javaImplDir"    select="concat($javaImplDir, '/', $packageAsDir)" />
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
@@ -1281,7 +1291,8 @@ APIs in this project are:
 				includes="{$functionIncludes}"
 				destdir="{$javaImplDir}"
 				extension="Impl.java"
-				style="{$xins_home}/src/xslt/java-server-framework/function_to_stub.xslt">
+				style="{$xins_home}/src/xslt/java-server-framework/function_to_stub.xslt"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="project_home" expression="{$project_home}" />
@@ -1372,7 +1383,7 @@ APIs in this project are:
 				todir="build/testresults/html" />
 			</target>
 
-			<target name="generatetests-{$api}" unless="test.generated">
+			<target name="generatetests-{$api}" depends="-prepare-classes" unless="test.generated">
 				<xsl:variable name="javaTestDir">
 					<xsl:value-of select="concat('apis/', $api, '/test/', $packageTestsAsDir)" />
 				</xsl:variable>
@@ -1396,7 +1407,8 @@ APIs in this project are:
 				includes="{$functionIncludes}"
 				destdir="{$javaTestDir}"
 				extension="Tests.java"
-				style="{$xins_home}/src/xslt/tests/function_to_test.xslt">
+				style="{$xins_home}/src/xslt/tests/function_to_test.xslt"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="api"          expression="{$api}"          />
 					<param name="package"      expression="{$packageTests}" />
@@ -1437,7 +1449,8 @@ APIs in this project are:
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/function_to_result_java.xslt"
 				extension="Result.java"
-				includes="{$functionIncludes}">
+				includes="{$functionIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}"     />
 					<param name="project_home" expression="{$project_home}"     />
@@ -1453,7 +1466,8 @@ APIs in this project are:
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/function_to_request_java.xslt"
 				extension="Request.java"
-				includes="{$functionIncludes}">
+				includes="{$functionIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="project_file" expression="{$project_file}"  />
 					<param name="specsdir"     expression="{$api_specsdir}"  />
@@ -1471,7 +1485,8 @@ APIs in this project are:
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/resultcode_to_java.xslt"
 				extension="Exception.java"
-				includes="{$resultcodeIncludes}">
+				includes="{$resultcodeIncludes}"
+				reloadstylesheet="${{reload.stylesheet}}">
 					<xmlcatalog refid="all-dtds" />
 					<param name="specsdir"     expression="{$api_specsdir}"  />
 					<param name="package"      expression="{$clientPackage}" />
