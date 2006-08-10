@@ -196,7 +196,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * Conditional redirection map. The key is the command and the value is the
     * {@link Templates} that will return the name of the redirection command.
     */
-   private Map _conditionalRedirectionMap = new ChainedMap();
+   private Map _conditionalRedirectionMap = new HashMap();
 
    /**
     * Flag that indicates whether the templates should be cached. This field
