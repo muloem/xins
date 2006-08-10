@@ -33,12 +33,20 @@
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
+		<xsl:apply-templates select="$function_node/input/data">
+			<xsl:with-param name="specsdir"  select="$specsdir" />
+			<xsl:with-param name="api"       select="$api" />
+		</xsl:apply-templates>
 		<xsl:call-template name="parameter-section">
 			<xsl:with-param name="type-name" select="'output'" />
 			<xsl:with-param name="type-node" select="$function_node/output" />
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
+		<xsl:apply-templates select="$function_node/output/data">
+			<xsl:with-param name="specsdir"  select="$specsdir" />
+			<xsl:with-param name="api"       select="$api" />
+		</xsl:apply-templates>
 		<text:h text:style-name="Heading2" text:outline-level="2">Error codes</text:h>
 		<table:table table:name="FunctionsTable" table:style-name="FunctionsTable">
 			<table:table-column table:style-name="FunctionsTable.A"/>
@@ -110,7 +118,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="param" mode="parameters-table">
+	<xsl:template match="param | attribute" mode="parameters-table">
 		<xsl:param name="specsdir" />
 		<xsl:param name="api"      />
 
@@ -145,6 +153,136 @@
 				</text:p>
 			</table:table-cell>
 		</table:table-row>
+	</xsl:template>
+
+	<xsl:template match="data">
+		<xsl:param name="specsdir" />
+		<xsl:param name="api"      />
+
+		<xsl:variable name="side" select="name(..)" />
+
+		<text:h text:style-name="Heading2" text:outline-level="2">
+			<xsl:value-of select="$side" />
+			<xsl:text> data section</xsl:text>
+		</text:h>
+		<xsl:choose>
+			<xsl:when test="contains/contained">
+				<xsl:apply-templates select="contains">
+					<xsl:with-param name="part" select="'data section'" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:otherwise>
+				<text:p text:style-name="Standard">
+					<xsl:text>This function defines no </xsl:text>
+					<xsl:value-of select="$side" />
+					<xsl:text> data section.</xsl:text>
+				</text:p>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="element">
+			<xsl:with-param name="specsdir" select="$specsdir" />
+			<xsl:with-param name="api" select="$api" />
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="contains">
+		<xsl:param name="part" />
+
+		<xsl:choose>
+			<xsl:when test="count(contained) &gt; 1">
+				<text:p text:style-name="Standard">
+					<xsl:text>The </xsl:text>
+					<xsl:value-of select="$part" />
+					<xsl:text>may contain the elements </xsl:text>
+				</text:p>
+				<xsl:for-each select="contained">
+					<xsl:choose>
+						<xsl:when test="position() != 1">
+							<xsl:text>, </xsl:text>
+						</xsl:when>
+						<xsl:when test="position() = last()">
+							<text:p text:style-name="Standard"> and </text:p>
+						</xsl:when>
+					</xsl:choose>
+					<text:span text:style-name="Elem">
+						<xsl:text>&lt;</xsl:text>
+						<xsl:value-of select="@element" />
+						<xsl:text>/&gt;</xsl:text>
+					</text:span>
+				</xsl:for-each>
+				<text:p text:style-name="Standard">.</text:p>
+			</xsl:when>
+			<xsl:when test="count(contained) = 1">
+				<text:p text:style-name="Standard">
+					<xsl:text>The </xsl:text>
+					<xsl:value-of select="$part" />
+					<xsl:text>may only contain the element </xsl:text>
+				</text:p>
+				<text:span text:style-name="Elem">
+					<xsl:text>&lt;</xsl:text>
+					<xsl:value-of select="contained/@element" />
+					<xsl:text>/&gt;</xsl:text>
+				</text:span>
+				<text:p text:style-name="Standard">.</text:p>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="element">
+		<xsl:param name="specsdir" />
+		<xsl:param name="api"      />
+
+		<text:h text:style-name="Heading2" text:outline-level="2">
+			<xsl:text>Element </xsl:text>
+			<text:span text:style-name="Elem">
+				<xsl:text>&lt;</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>/&gt;</xsl:text>
+			</text:span>
+		</text:h>
+		<text:p text:style-name="P2">
+			<xsl:value-of select="description" />
+		</text:p>
+		<xsl:choose>
+			<xsl:when test="contains/contained">
+				<xsl:apply-templates select="contains">
+					<xsl:with-param name="part" select="concat(@name, ' element')" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<xsl:when test="contains/pcdata">
+				<text:p text:style-name="Standard">
+					<xsl:text>The </xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>element may contain a text.</xsl:text>
+				</text:p>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:if test="attribute">
+			<table:table table:name="ParametersTable" table:style-name="ParametersTable">
+				<table:table-column table:style-name="ParametersTable.A"/>
+				<table:table-column table:style-name="ParametersTable.B"/>
+				<table:table-column table:style-name="ParametersTable.C"/>
+				<table:table-column table:style-name="ParametersTable.D"/>
+				<table:table-row>
+					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<text:p text:style-name="P2">Attribute</text:p>
+					</table:table-cell>
+					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<text:p text:style-name="P2">Type</text:p>
+					</table:table-cell>
+					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<text:p text:style-name="P2">Description</text:p>
+					</table:table-cell>
+					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<text:p text:style-name="P2">Req.</text:p>
+					</table:table-cell>
+				</table:table-row>
+				<xsl:apply-templates select="attribute" mode="parameters-table">
+					<xsl:with-param name="specsdir"  select="$specsdir" />
+					<xsl:with-param name="api"       select="$api" />
+				</xsl:apply-templates>
+			</table:table>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="example">
