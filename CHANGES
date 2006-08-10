@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
 
 * Generation of the opendoc:
   - Added the page number in the footnote of the document.
+  - Added the data section to the description of the function.
 
 * Generation of the WSDL file:
   - Fixed an error in the generated WSDL when the function did not have an
@@ -56,6 +57,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Implemented SF.net RFE #1529239: Configure port for unit tests. Change the
     value of the DEFAULT_PORT field in the AllTests class to change the port
     the server starts on.
+
+* Other:
+  - Changed the COPYRIGHT file with the new name of Wanadoo Nederland B.V.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
