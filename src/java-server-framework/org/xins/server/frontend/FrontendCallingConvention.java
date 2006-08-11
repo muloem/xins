@@ -231,7 +231,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       if (_defaultCommand == null) {
          _defaultCommand = "DefaultCommand";
       }
-      
+
       initRedirections(bootstrapProperties);
    }
 
@@ -346,7 +346,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
 
       // Redirect to the login page if not logged in or the function is not implemented
-      if (_session.shouldLogIn() || 
+      if (_session.shouldLogIn() ||
             (_redirectionMap.get(functionName) != null && !_api.getFunctionList().contains(functionName))) {
          return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
       }
@@ -414,7 +414,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       String command = httpRequest.getParameter("command");
       String action = httpRequest.getParameter("action");
       String functionName = command + action;
-      
+
       // Display the XSLT
       if ("template".equalsIgnoreCase(mode)) {
          byte[] xsltSource = getCommandXSLT(command);
@@ -574,6 +574,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             while (incorrectParams.hasNext()) {
                Element incorrectParamElement = (Element) incorrectParams.next();
                String paramName = incorrectParamElement.getAttribute("param");
+               paramName = getOriginalParameter(paramName);
                ElementBuilder fieldError = new ElementBuilder("fielderror");
                fieldError.setAttribute("field", paramName);
                if (incorrectParamElement.getLocalName().equals("missing-param")) {
@@ -854,10 +855,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     *    the result of the call in case of a conditional redirection, can be <code>null</code>.
     *
     * @return
-    *   the location where the command should be redirected, or <code>null</code>
-    *   if the command should not be redirected.
+    *    the location where the command should be redirected, or <code>null</code>
+    *    if the command should not be redirected.
+    *
+    * @throws Exception
+    *    if the transformation of the XML result failed.
     */
-   private String getRedirection(FunctionResult xinsResult, String command, 
+   private String getRedirection(FunctionResult xinsResult, String command,
          String functionName, String xmlResult) {
       String redirection = xinsResult.getParameter("redirect");
       if (_session.shouldLogIn() || (redirection == null && "NotLoggedIn".equals(xinsResult.getErrorCode()))) {
@@ -866,7 +870,11 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       if (redirection == null && _conditionalRedirectionMap.get(functionName) != null) {
          Templates conditionTemplate = (Templates) _conditionalRedirectionMap.get(functionName);
-         redirection = translate(xmlResult, conditionTemplate);
+         try {
+            redirection = translate(xmlResult, conditionTemplate);
+         } catch (Exception ex) {
+            throw Utils.logProgrammingError(ex);
+         }
       } else if (redirection == null && xinsResult.getErrorCode() == null) {
          redirection = (String) _redirectionMap.get(functionName);
       }
@@ -988,7 +996,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          ex.printStackTrace();
       }
    }
-   
+
    /**
     * Gets the real parameter name.
     *
@@ -1021,5 +1029,30 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          ex.printStackTrace();
       }
       return receivedParameter;
+   }
+
+   /**
+    * Gets the original passed parameter name.
+    *
+    * @param parameter
+    *    the name of the parameter as specified in the function, cannot be <code>null</code>.
+    *
+    * @return
+    *    the name of the parameter as received.
+    *
+    * @deprecated
+    *    no mapping should be needed and the forms should send directly the correct parameters.
+    */
+   private String getOriginalParameter(String parameter) {
+      HashMap inputs = (HashMap) _session.getProperty("_inputs");
+      Iterator itParameterNames = inputs.keySet().iterator();
+      while (itParameterNames.hasNext()) {
+         String nextParam = (String) itParameterNames.next();
+         String flatParam = nextParam.replaceAll("_", "");
+         if (parameter.equalsIgnoreCase(flatParam)) {
+            return nextParam;
+         }
+      }
+      return parameter;
    }
 }
