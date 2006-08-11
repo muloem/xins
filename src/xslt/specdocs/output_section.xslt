@@ -391,6 +391,11 @@
 			<em>
 				<xsl:value-of select="@name" />
 			</em>
+			<xsl:if test="@value">
+				<xsl:text> with the value '</xsl:text>
+				<xsl:value-of select="@value" />
+				<xsl:text>'</xsl:text>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 

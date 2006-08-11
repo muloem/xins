@@ -222,8 +222,14 @@
 					</xsl:variable>
 
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> == null</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:value-of select="concat('&quot;', @value, '&quot;.equals(', $localJavaVariable, ')')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($localJavaVariable, ' == null')" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 				<xsl:text>) {</xsl:text>
 				<xsl:call-template name="create-error">
@@ -281,8 +287,14 @@
 					</xsl:variable>
 
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> == null</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:value-of select="concat('&quot;', @value, '&quot;.equals(', $localJavaVariable, ')')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($localJavaVariable, ' == null')" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 				<xsl:text>) {</xsl:text>
 				<xsl:call-template name="create-error">
@@ -341,8 +353,14 @@
 							</xsl:if>
 						</xsl:variable>
 						<xsl:if test="position() &gt; 1"> || </xsl:if>
-						<xsl:value-of select="$localJavaVariable2" />
-						<xsl:text> != null</xsl:text>
+						<xsl:choose>
+							<xsl:when test="@value">
+								<xsl:value-of select="concat('!&quot;', @value, '&quot;.equals(', $localJavaVariable2, ')')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat($localJavaVariable2, ' != null')" />
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:for-each>
 					<xsl:text>)) {</xsl:text>
 				<xsl:call-template name="create-error">
@@ -417,8 +435,14 @@
 						</xsl:if>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> &amp;&amp; </xsl:if>
-					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> == null</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:value-of select="concat('&quot;', @value, '&quot;.equals(', $localJavaVariable, ')')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($localJavaVariable, ' == null')" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 				<xsl:text>) &amp;&amp; (</xsl:text>
 				<xsl:for-each select="param-ref | attribute-ref">
@@ -434,8 +458,14 @@
 						</xsl:if>
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1"> || </xsl:if>
-					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> == null</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:value-of select="concat('&quot;', @value, '&quot;.equals(', $localJavaVariable, ')')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($localJavaVariable, ' == null')" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 				<xsl:text>)) {</xsl:text>
 				<xsl:call-template name="create-error">
@@ -493,9 +523,14 @@
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1">
           &amp;&amp; </xsl:if>
-					<xsl:text>(</xsl:text>
-					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> != null)</xsl:text>
+					<xsl:choose>
+						<xsl:when test="@value">
+							<xsl:value-of select="concat('!&quot;', @value, '&quot;.equals(', $localJavaVariable, ')')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($localJavaVariable, ' != null')" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 				<xsl:text>)
       {</xsl:text>

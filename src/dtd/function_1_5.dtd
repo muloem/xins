@@ -26,6 +26,7 @@
 <!ELEMENT param-ref EMPTY>
 <!ATTLIST param-ref
           name       NMTOKEN #REQUIRED
+          value      NMTOKEN #IMPLIED
 >
 <!ELEMENT attribute-combo (attribute-ref, attribute-ref+)>
 <!ATTLIST attribute-combo
@@ -34,6 +35,7 @@
 <!ELEMENT attribute-ref EMPTY>
 <!ATTLIST attribute-ref
           name       NMTOKEN #REQUIRED
+          value      NMTOKEN #IMPLIED
 >
 <!ELEMENT output (resultcode-ref*, param*, param-combo*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
