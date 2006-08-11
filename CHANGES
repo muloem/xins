@@ -17,15 +17,16 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     unit tests.
   - Improved the Javadoc comments for various classes.
   - Added package.html to the org.xins.server.frontend package.
-  - Fixed SF.net bug # 1525182: Double param-combo tag upon exclusive-or 
+  - Fixed SF.net bug # 1525182: Double param-combo tag upon exclusive-or
     violation.
-  - Changed the condition for testing if a session property is true in the 
+  - Changed the condition for testing if a session property is true in the
     front-end CC.
   - The access to the API.getFunctionList() method has been changed to public.
   - Move some block of the FrontendCallingConvention#convertResultImpl to
     private methods.
-  - Added possibility to have redirection based on some condition in the 
+  - Added possibility to have redirection based on some condition in the
     XINS front-end calling convention.
+  - Removed the session property if the input parameter is empty.
 
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.
@@ -36,10 +37,20 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Added set methods using the Java object class for primitive types.
   - The Request object overrides the hashCode and the equals method so that
     two identical methods are equals.
+  - Added possibility to specify that a pamater should be checked for a
+    specific value in a param-combo instead of if the value is set or not.
+
+* Generation of server-side Java code:
+  - Added possibility to specify that a pamater should be checked for a
+    specific value in a param-combo instead of if the value is set or not.
 
 * Generation of Java code for types:
   - Added fromStringForRequired and fromStringForOptional methods for generated
     enum types.
+
+* Generation of the specdocs:
+  - Added possibility to specify that a pamater should be checked for a
+    specific value in a param-combo instead of if the value is set or not.
 
 * Generation of the opendoc:
   - Added the page number in the footnote of the document.
