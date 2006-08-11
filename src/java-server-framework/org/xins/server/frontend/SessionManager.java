@@ -126,6 +126,10 @@ public class SessionManager extends Manageable {
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
          String value = request.getParameter(name);
+         if ("".equals(value)) {
+            value = null;
+         }
+         setProperty(name.toLowerCase(), value);
          inputParameters.put(name, value);
       }
       setProperty("_inputs", inputParameters);
@@ -233,6 +237,7 @@ public class SessionManager extends Manageable {
 
    /**
     * Adds a new session property. Any previous property is replaced.
+    * If the value is <code>null</code>, the property is removed.
     *
     * @param name
     *    the name of the session property, cannot be <code>null</code>.
@@ -243,7 +248,11 @@ public class SessionManager extends Manageable {
    public void setProperty(String name, Object value) {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
-         session.setAttribute(name, value);
+         if (value == null) {
+            removeProperty(name);
+         } else {
+            session.setAttribute(name, value);
+         }
       }
    }
 
