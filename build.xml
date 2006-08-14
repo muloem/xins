@@ -342,9 +342,9 @@ ${version.file}</fail>
 	</target>
 
 	<target name="logdoc-java-server" depends="-prepare-logdoc-server">
-		<antcall target="-logdoc-java">
-			<param name="side" value="server"/>
-		</antcall>
+		<ant dir="build/logdoc/server" target="java" inheritall="false">
+			<property name="accesslevel" value="public" />
+		</ant>
 	</target>
 
 	<target name="logdoc-java-client" depends="-prepare-logdoc-client">

@@ -58,10 +58,12 @@ import org.xins.common.xml.ElementSerializer;
 
 import org.xins.server.API;
 import org.xins.server.CustomCallingConvention;
+import org.xins.server.Function;
 import org.xins.server.FunctionNotSpecifiedException;
 import org.xins.server.FunctionRequest;
 import org.xins.server.FunctionResult;
 import org.xins.server.InvalidRequestException;
+import org.xins.server.Log;
 
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -147,7 +149,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       try {
          _session = (SessionManager) api.getClass().getMethod("getSessionManager", NO_ARGS_CLASS).invoke(api, NO_ARGS);
       } catch (Exception ex) {
-         ex.printStackTrace();
+         Log.log_3700(ex);
       }
    }
 
@@ -260,8 +262,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       try {
          StringReader controlXSLT = new StringReader(ControlResult.getControlTemplate());
          _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
-      } catch (Exception ex) {
-         ex.printStackTrace();
+      } catch (TransformerConfigurationException tcex) {
+         Log.log_3701(tcex, "control");
       }
    }
 
@@ -466,6 +468,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             } else {
                template = getTemplate(xsltLocation);
             }
+            Log.log_3704(command);
             String resultHTML = translate(commandResultXML, template);
             String contentType = getContentType(template.getOutputProperties());
             PrintWriter out = httpResponse.getWriter();
@@ -474,7 +477,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             out.print(resultHTML);
             out.close();
          } catch (Exception ex) {
-            Utils.logProgrammingError(ex);
+
+            // Logging of the specific exception is done by the method called
             throw new IOException(ex.getMessage());
          }
       }
@@ -646,7 +650,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          serializer.output(xmlout, commandResult);
          return buffer.toString();
       } catch (IOException ioe) {
-         ioe.printStackTrace();
+         Log.log_3702(ioe);
          return null;
       }
    }
@@ -681,23 +685,26 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          xformer.transform(source, result);
 
          return buffer.toString();
-      } catch (TransformerConfigurationException e) {
+      } catch (TransformerConfigurationException tcex) {
 
          // An error occurred in the XSL file
-         throw e;
-      } catch (TransformerException e) {
+         Log.log_3701(tcex, "<unknown>");
+         throw tcex;
+      } catch (TransformerException tex) {
 
          // An error occurred while applying the XSL file
          // Get location of error in input file
-         SourceLocator locator = e.getLocator();
+         SourceLocator locator = tex.getLocator();
          if (locator != null) {
-            int col = locator.getColumnNumber();
             int line = locator.getLineNumber();
+            int col = locator.getColumnNumber();
             String publicId = locator.getPublicId();
             String systemId = locator.getSystemId();
-            // TODO log
+            Log.log_3703(tex, String.valueOf(line), String.valueOf(col), publicId, systemId);
+         } else {
+            Log.log_3703(tex, "<unknown>", "<unknown>", "<unknown>", "<unknown>");
          }
-         throw e;
+         throw tex;
       }
    }
 
@@ -727,10 +734,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             if (_cacheTemplates) {
                _templateCache.put(xsltUrl, template);
             }
-         } catch (Exception ex) {
-            System.err.println("url " + xsltUrl);
-            ex.printStackTrace();
-            throw ex;
+         } catch (TransformerConfigurationException tcex) {
+            Log.log_3701(tcex, xsltUrl);
+            throw tcex;
          }
       }
       return template;
@@ -813,11 +819,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          _templateCache.clear();
       } else if ("RefreshCommandTemplateCache".equals(action)) {
          _templateCache.clear();
+         String xsltLocation = null;
          try {
-            Iterator itCommandNames = _api.getAPISpecification().getFunctions().keySet().iterator();
-            while (itCommandNames.hasNext()) {
-               String nextCommand = (String) itCommandNames.next();
-               String xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
+            Iterator itRealFunctions = _api.getFunctionList().iterator();
+            while (itRealFunctions.hasNext()) {
+               Function nextFunction = (Function) itRealFunctions.next();
+               String nextCommand = nextFunction.getName();
+               xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
 
                Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                _templateCache.put(xsltLocation, template);
@@ -825,14 +833,14 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
             while (itVirtualFunctions.hasNext()) {
                Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
-               String xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
+               xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
                if (nextFunction.getValue().equals("-")) {
                   Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                   _templateCache.put(xsltLocation, template);
                }
             }
-         } catch (Exception ex) {
-            ex.printStackTrace();
+         } catch (TransformerConfigurationException tcex) {
+            Log.log_3701(tcex, xsltLocation);
          }
       }
       return new ControlResult(_api, _session, _redirectionMap);
@@ -873,7 +881,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          try {
             redirection = translate(xmlResult, conditionTemplate);
          } catch (Exception ex) {
-            throw Utils.logProgrammingError(ex);
+            
+            // throw ex;
          }
       } else if (redirection == null && xinsResult.getErrorCode() == null) {
          redirection = (String) _redirectionMap.get(functionName);
@@ -992,8 +1001,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          StringReader conditionXSLT = new StringReader(xsltText);
          Templates conditionTemplate = _factory.newTemplates(new StreamSource(conditionXSLT));
          _conditionalRedirectionMap.put(command, conditionTemplate);
-      } catch (Exception ex) {
-         ex.printStackTrace();
+      } catch (TransformerConfigurationException tcex) {
+         Log.log_3701(tcex, "conditional redirection for " + command + " command");
       }
    }
 
@@ -1026,7 +1035,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             }
          }
       } catch (Exception ex) {
-         ex.printStackTrace();
+         
+         // No function defined for this call, continue
       }
       return receivedParameter;
    }

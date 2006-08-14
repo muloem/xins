@@ -734,4 +734,28 @@
 		</entry>
 		<!-- XXX: Removed 3611 here (@since XINS 1.3.0) -->
 	</group>
+
+	<group id="cc.frontend" name="Front-end calling convention">
+		<entry id="3700" level="ERROR" exception="true">
+			<description>Could not instantiate a session manager.</description>
+		</entry>
+		<entry id="3701" level="ERROR" exception="true">
+			<description>Incorrect XSLT transformer configuration.</description>
+			<param name="templateIdentifier" />
+		</entry>
+		<entry id="3702" level="ERROR" exception="true">
+			<description>Error during the serialisation of the command result.</description>
+		</entry>
+		<entry id="3703" level="ERROR" exception="true">
+			<description>Error during the transformation of the result element.</description>
+			<param name="lineNumber" />
+			<param name="columnNumber" />
+			<param name="publicId" />
+			<param name="systemId" />
+		</entry>
+		<entry id="3704" level="DEBUG">
+			<description>Transforming the result for a command.</description>
+			<param name="command" />
+		</entry>
+	</group>
 </log>

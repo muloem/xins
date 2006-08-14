@@ -27,6 +27,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
   - Added possibility to have redirection based on some condition in the
     XINS front-end calling convention.
   - Removed the session property if the input parameter is empty.
+  - Added correct logging for the front-end API.
 
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1529046: Add getPort() to HTTPServletHandler.

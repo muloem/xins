@@ -143,7 +143,7 @@ implements DefaultResultCodes {
     * @return
     *    the name, not <code>null</code>.
     */
-   final String getName() {
+   public final String getName() {
       return _name;
    }
 
