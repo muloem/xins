@@ -777,9 +777,9 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target
 	name="upload-changes"
-	depends="-init"
+	depends="-init-release"
 	description="Uploads the change history file to the web site">
-		<echo message="Uploading ${title} ${version} change log to ${www.host}" />
+		<echo message="Uploading ${title} ${version} change log to ${www.target}" />
 		<copy file="CHANGES" tofile="build/changes-${version}.txt" />
 		<scp
 		file="build/changes-${version}.txt"
