@@ -480,7 +480,7 @@ ${version.file}</fail>
 		<echo message="Supported options (can change at any time):"                         />
 		<echo message="1) -Dforce=true         : Skip -dev suffix check on release"         />
 		<echo message="2) -Dmajor.release=true : Skip version update on release"            />
-		<echo message="3) -Dno-upload=true     : Skip upload except package and changes"    />
+		<echo message="3) -Dno-upload=true     : Skip uploads except FTP uploads"           />
 		<echo message="4) -Dno-ftp=true        : Skip FTP upload actions"                   />
 		<echo                                                                               />
 		<echo message="To create a release the following requirements apply:"               />

@@ -70,6 +70,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
     value of the DEFAULT_PORT field in the AllTests class to change the port
     the server starts on.
 
+* Build- and release-process:
+  - If the no-upload option is set, the changes file and the package will not
+    be uploaded either.
+
 * Other:
   - Changed the COPYRIGHT file with the new name of Wanadoo Nederland B.V.
 
