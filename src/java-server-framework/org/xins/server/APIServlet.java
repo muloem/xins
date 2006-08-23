@@ -22,70 +22,20 @@ import org.xins.common.MandatoryArgumentChecker;
 /**
  * HTTP servlet that forwards requests to an <code>API</code>.
  *
- * <p>This servlet supports the HTTP <em>OPTIONS</em> method and other 
- * methods, depending on the calling convention.
+ * <h3>HTTP status codes</h3>
  *
- * <p>A request with an unsupported method makes this servlet return the
- * HTTP status code <code>405 Method Not Allowed</code>.
+ * <p>This servlet supports various HTTP methods, depending on the calling
+ * conventions. A request with an unsupported method makes this servlet
+ * return the HTTP status code <code>405 Method Not Allowed</code>.
  *
- * <p>If no matching function is found, then this servlet will return the HTTP
- * status code <code>404 Not Found</code>.
+ * <p>If no matching function is found, then this servlet returns HTTP status
+ * code <code>404 Not Found</code>.
  *
- * <p>If the state is not <em>ready</em>, then depending on the state, an HTTP
- * status code in the 5xx range will be returned:
+ * <p>If the servlet is temporarily unavailable, then the HTTP status
+ * <code>503 Service Unavailable</code> is returned.
  *
- * <table class="APIServlet_HTTP_response_codes">
- *    <tr>
- *       <th>State</th>
- *       <th>HTTP response code</th>
- *    </tr>
- *
- *    <tr>
- *       <td>Initial</td>
- *       <td><code>503 Service Unavailable</code></td>
- *    </tr>
- *    <tr>
- *       <td>Bootstrapping framework</td>
- *       <td><code>503 Service Unavailable</code></td>
- *    </tr>
- *
- *    <tr>
- *       <td>Framework bootstrap failed</td>
- *       <td><code>500 Internal Server Error</code></td>
- *       </tr>
- *    <tr>
- *       <td>Constructing API</td>
- *       <td><code>503 Service Unavailable</code></td>
- *    </tr>
- *    <tr>
- *       <td>API construction failed</td>
- *       <td><code>500 Internal Server Error</code></td>
- *    </tr>
- *    <tr>
- *       <td>Bootstrapping API</td>
- *       <td><code>503 Service Unavailable</code></td>
- *    </tr>
- *    <tr>
- *       <td>API bootstrap failed</td>
- *       <td><code>500 Internal Server Error</code></td>
- *    </tr>
- *    <tr>
- *       <td>Initializing API</td>
- *       <td><code>503 Service Unavailable</code></td>
- *    </tr>
- *    <tr>
- *       <td>API initialization failed</td>
- *       <td><code>500 Internal Server Error</code></td>
- *    </tr>
- *    <tr>
- *       <td>Disposing</td>
- *       <td><code>500 Internal Server Error</code></td>
- *    </tr>
- *    <tr>
- *       <td>Disposed</td>
- *       <td><code>500 Internal Server Error</code></td>
- *    </tr>
- * </table>
+ * <p>If the servlet encountered an initialization error, then the HTTP status
+ * code <code>500 Internal Server Error</code> is returned.
  *
  * <p>If the state is <em>ready</em> then the HTTP status code
  * <code>200 OK</code> is returned.
