@@ -144,7 +144,6 @@
 					<xsl:with-param name="errorcode" select="@resultcode" />
 				</xsl:apply-templates>
 				<xsl:text>
-
       return result;
    }</xsl:text>
 			</xsl:otherwise>
