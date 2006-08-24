@@ -34,8 +34,8 @@ extends Object {
     *    the request, never <code>null</code>.
     *
     * @param start
-    *    the start time of the call, as milliseconds since midnight January 1,
-    *    1970.
+    *    the start time of the call, as milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param function
     *    the concerning function, cannot be <code>null</code>.
@@ -90,8 +90,8 @@ extends Object {
    private final FunctionResult _builder;
 
    /**
-    * The start time of the call, as a number of milliseconds since midnight
-    * January 1, 1970 UTC.
+    * The start time of the call, as a number of milliseconds since the UNIX 
+    * Epoch.
     */
    private final long _start;
 
@@ -115,7 +115,8 @@ extends Object {
     *
     * @return
     *    the timestamp indicating when the call was started, as a number of
-    *    milliseconds since midnight January 1, 1970 UTC.
+    *    milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @see System#currentTimeMillis()
     */

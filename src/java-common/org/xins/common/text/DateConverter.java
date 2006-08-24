@@ -16,11 +16,15 @@ import java.text.SimpleDateFormat;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
- * Utility class for converting an Epoch date to a human-readable time stamp.
+ * Utility class for converting a UNIX Epoch date to a human-readable time
+ * stamp.
  *
  * <p>For example, the date 26 July 2003, time 17:03, 59 seconds and 653
  * milliseconds will convert to the string
  * <code>"2003.07.26 17:03:59.653"</code>.
+ *
+ * <p>See <a href="http://en.wikipedia.org/wiki/Unix_Epoch">the Wikipedia
+ * article about the UNIX Epoch</a> for more information.
  *
  * @version $Revision$ $Date$
  * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
@@ -72,15 +76,17 @@ public class DateConverter extends Object {
     *
     * @param time
     *    the time stamp to be converted to a human-readable character string,
-    *    as a number of milliseconds since the Epoch (midnight January 1,
-    *    1970), must be greater than {@link Long#MIN_VALUE} and smaller than
+    *    as a number of milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
+    *    must be greater than {@link Long#MIN_VALUE} and smaller than
     *    {@link Long#MAX_VALUE}.
     *
     * @return
     *    the converted character string, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>n == {@link Long#MIN_VALUE} || n == {@link Long#MAX_VALUE}</code>.
+    *    if <code>n == {@link Long#MIN_VALUE}
+    *          || n == {@link Long#MAX_VALUE}</code>.
     *
     * @since XINS 1.5.0
     */

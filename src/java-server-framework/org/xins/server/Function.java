@@ -213,8 +213,8 @@ implements DefaultResultCodes {
     * {@link #handleCall(CallContext context)}.
     *
     * @param start
-    *    the start time of the call, as milliseconds since midnight January 1,
-    *    1970.
+    *    the start time of the call, as milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param functionRequest
     *    the request, never <code>null</code>.
@@ -307,7 +307,8 @@ implements DefaultResultCodes {
     *    the ip of the requester, should not be <code>null</code>.
     *
     * @param start
-    *    the start time, as a number of milliseconds since January 1, 1970.
+    *    the start time, as a number of milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param result
     *    the call result, should not be <code>null</code>.

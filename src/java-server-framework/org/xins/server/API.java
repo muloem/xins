@@ -358,7 +358,8 @@ implements DefaultResultCodes {
     *
     * @return
     *    the time this instance was constructed, as a number of milliseconds
-    *    since midnight January 1, 1970.
+    *    since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     */
    public final long getStartupTimestamp() {
       return _startupTimestamp;
@@ -1030,8 +1031,8 @@ implements DefaultResultCodes {
     * {@link Function#handleCall(long,FunctionRequest,String)}.
     *
     * @param start
-    *    the start time of the request, in milliseconds since midnight January
-    *    1, 1970.
+    *    the start time of the request, in milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param functionRequest
     *    the function request, never <code>null</code>.
@@ -1230,8 +1231,8 @@ implements DefaultResultCodes {
     * Handles an exception caught while a function was executed.
     *
     * @param start
-    *    the start time of the call, as milliseconds since midnight January 1,
-    *    1970.
+    *    the start time of the call, as milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param functionRequest
     *    the request, never <code>null</code>.

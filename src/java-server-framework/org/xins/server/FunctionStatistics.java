@@ -90,15 +90,14 @@ class FunctionStatistics extends Object {
     * gathering is disabled, then this method should not be called.
     *
     * @param start
-    *    the start time, in milliseconds since January 1, 1970, not
-    *    <code>null</code>.
+    *    the start time, in milliseconds since the UNIX Epoch.
     *
     * @param success
     *    indication if the call was successful.
     *
     * @param errorCode
-    *    the error code returned by the function when a result is unsuccessful.
-    *    This value is <code>null</code> only when <code>success</code>
+    *    the error code returned by the function if a result is unsuccessful;
+    *    this value is <code>null</code> only when <code>success</code>
     *    is <code>true</code>.
     *
     * @return
@@ -269,11 +268,12 @@ class FunctionStatistics extends Object {
        * Records a call.
        *
        * @param start
-       *    the start time, in milliseconds since January 1, 1970, not
+       *    the start time, in milliseconds since the UNIX Epoch, not
        *    <code>null</code>.
+       *
        * @param duration
-       *    duration of the call, in milliseconds since January 1, 1970, not
-       *    <code>null</code>.
+       *    duration of the call, in milliseconds since the
+       *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
        */
       public synchronized void recordCall(long start, long duration) {
          _lastStart    = start;

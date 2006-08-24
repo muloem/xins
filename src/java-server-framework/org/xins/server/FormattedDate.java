@@ -40,7 +40,8 @@ extends AbstractLogdocSerializable {
     * Constructs a new <code>FormattedDate</code> object.
     *
     * @param date
-    *    the date, as a number of milliseconds since January 1, 1970.
+    *    the date, as a number of milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     */
    public FormattedDate(long date) {
       _epochDate = date;
@@ -52,7 +53,7 @@ extends AbstractLogdocSerializable {
    //-------------------------------------------------------------------------
 
    /**
-    * The date, as a number of milliseconds since January 1, 1970.
+    * The date, as a number of milliseconds since the UNIX Epoch.
     */
    private final long _epochDate;
 

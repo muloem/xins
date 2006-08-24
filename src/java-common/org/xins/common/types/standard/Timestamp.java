@@ -49,8 +49,8 @@ import org.xins.common.text.FastStringBuffer;
  * {@link java.util.TimeZone#getDefault()}).
  *
  * <p>A number of milliseconds can be used to indicate a specific instant in
- * time. This number of milliseconds is since the Epoch, which is the very
- * first second of January 1, 1970 in the time zone UTC.
+ * time. This number of milliseconds is since the
+ * <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
  *
  * @version $Revision$ $Date$
  * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
@@ -413,10 +413,11 @@ public class Timestamp extends Type {
 
       /**
        * Constructs a new timestamp value based on the specified number of
-       * milliseconds since the Epoch.
+       * milliseconds since the UNIX Epoch.
        *
        * @param millis
-       *    the number of milliseconds since the Epoch.
+       *    the number of milliseconds since the
+       *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
        *
        * @throws IllegalArgumentException
        *    if <code>millis &lt; 0L</code>.
