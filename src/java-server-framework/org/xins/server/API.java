@@ -21,6 +21,7 @@ import java.util.TimeZone;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -1034,11 +1035,11 @@ implements DefaultResultCodes {
     *    the start time of the request, in milliseconds since the
     *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
+    * @param httpRequest
+    *    the original HTTP request, never <code>null</code>.
+    *
     * @param functionRequest
     *    the function request, never <code>null</code>.
-    *
-    * @param ip
-    *    the IP address of the requester, never <code>null</code>.
     *
     * @return
     *    the result of the call, never <code>null</code>.
@@ -1056,9 +1057,9 @@ implements DefaultResultCodes {
     *    if access is denied for the specified combination of IP address and
     *    function name.
     */
-   final FunctionResult handleCall(long            start,
-                                   FunctionRequest functionRequest,
-                                   String          ip)
+   final FunctionResult handleCall(long               start,
+                                   HttpServletRequest httpRequest,
+                                   FunctionRequest    functionRequest)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
@@ -1071,6 +1072,7 @@ implements DefaultResultCodes {
       String functionName = functionRequest.getFunctionName();
 
       // Check the access rule list
+      String ip = httpRequest.getRemoteAddr();
       boolean allow = allow(ip, functionName);
       if (! allow) {
          throw new AccessDeniedException(ip, functionName);

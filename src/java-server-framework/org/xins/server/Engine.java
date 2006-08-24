@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,6 +27,7 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.InitializationException;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
@@ -106,7 +108,7 @@ final class Engine extends Object {
     * @throws ServletException
     *    if the engine could not be constructed.
     */
-   Engine(final ServletConfig config)
+   Engine(ServletConfig config)
    throws IllegalArgumentException, ServletException {
 
       // Check preconditions
@@ -208,6 +210,12 @@ final class Engine extends Object {
     * field is indeed <code>null</code>.
     */
    private Pattern _contextIDPattern;
+
+   /**
+    * The set of supported HTTP methods, as a comma-separated string. Is
+    * initialized by {@link #initAPI()}.
+    */
+   private String _supportedMethodsString;
 
 
    //-------------------------------------------------------------------------
@@ -398,6 +406,16 @@ final class Engine extends Object {
          // Initialize the default calling convention for this API
          _conventionManager.init(properties);
 
+         // Create the string with the supported HTTP methods
+         Iterator it = _conventionManager.getSupportedMethods().iterator();
+         FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS, ");
+         while (it.hasNext()) {
+            String next = (String) it.next();
+            buffer.append(", ");
+            buffer.append(next.toUpperCase());
+         }
+         _supportedMethodsString = buffer.toString();
+
          succeeded = true;
 
       // Missing required property
@@ -445,10 +463,10 @@ final class Engine extends Object {
     *    the servlet response, should not be <code>null</code>.
     *
     * @throws IOException
-    *    if there is an error error writing to the response output stream.
+    *    in case of an I/O error.
     */
-   void service(final HttpServletRequest  request,
-                final HttpServletResponse response)
+   void service(HttpServletRequest  request,
+                HttpServletResponse response)
    throws IOException {
 
       // Associate the current diagnostic context identifier with this thread
@@ -483,7 +501,7 @@ final class Engine extends Object {
     *    the diagnostic context identifier, never <code>null</code> and never
     *    an empty string.
     */
-   private String determineContextID(final HttpServletRequest request) {
+   private String determineContextID(HttpServletRequest request) {
 
       // See if the request already specifies a diagnostic context identifier
       // XXX: Store "_context" in a constant
@@ -555,159 +573,290 @@ final class Engine extends Object {
     *    the servlet response, should not be <code>null</code>.
     *
     * @throws IOException
-    *    if there is an error error writing to the response output stream.
+    *    in case of an I/O error.
     */
-   private void doService(final HttpServletRequest request,
-                          final HttpServletResponse response)
+   private void doService(HttpServletRequest  request,
+                          HttpServletResponse response)
    throws IOException {
 
       // Determine current time
       long start = System.currentTimeMillis();
 
-      // Determine the remote IP address and the query string
-      String remoteIP    = request.getRemoteAddr();
-      String queryString = request.getQueryString();
-
-      // Check the HTTP request method
-      String  method = request.getMethod();
-      boolean sendOutput;
-
-      // Support HTTP GET
-      if ("GET".equals(method)) {
-         sendOutput = true;
-
-      // Support HTTP POST
-      } else if ("POST".equals(method)) {
-         sendOutput = true;
-
-      // Support HTTP HEAD (returns no output)
-      } else if ("HEAD".equals(method)) {
-         sendOutput = false;
-         response.setContentLength(0);
-
-      // Support HTTP OPTIONS
-      } else if ("OPTIONS".equals(method)) {
-         Log.log_3521(remoteIP, method, request.getRequestURI(), queryString);
-         response.setContentLength(0);
-         response.setHeader("Accept", "GET, HEAD, POST");
-         response.setStatus(HttpServletResponse.SC_OK);
-         return;
-
-      // Otherwise the HTTP method is unrecognized, so return
-      // '405 Method Not Allowed'
-      } else {
-         Log.log_3520(remoteIP, method, queryString);
-         response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-         return;
-      }
-
       // Log that we have received an HTTP request
-      Log.log_3521(remoteIP, method, request.getRequestURI(), queryString);
+      String remoteIP    = request.getRemoteAddr();
+      String method      = request.getMethod().toUpperCase();
+      String requestURI  = request.getRequestURI();
+      String queryString = request.getQueryString();
+      Log.log_3521(remoteIP, method, requestURI, queryString);
+
+      // If the current state is not usable, then return an error immediately
+      EngineState state = _state.getState();
+      if (! state.allowsInvocations()) {
+         handleUnusableState(state, request, response);
+
+      // Support the HTTP method "OPTIONS" for "*"
+      } else if ("OPTIONS".equals(method) && "*".equals(queryString)) {
+         handleOptionsForAll(response);
+
+      // The request should be handled by a calling convention
+      } else {
+         delegateToCC(start, request, response);
+      }
+   }
+
+   /**
+    * Handles a request that comes in while function invocations are currently
+    * not allowed.
+    *
+    * @param state
+    *    the current state, cannot be <code>null</code>.
+    *
+    * @param request
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param response
+    *    the HTTP response to fill, cannot be <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void handleUnusableState(EngineState         state,
+                                    HttpServletRequest  request,
+                                    HttpServletResponse response)
+   throws IOException {
+
+      // TODO: Logging?
+
+      if (state.isError()) {
+         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      } else {
+         response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+      }
+   }
+
+   /**
+    * Delegates the specified incoming request to the appropriate
+    * <code>CallingConvention</code>. The request may either be a function
+    * invocation or an <em>OPTIONS</em> request.
+    *
+    * @param start
+    *    timestamp indicating when the call was received by the framework, in
+    *    milliseconds since the UNIX Epoch.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void delegateToCC(long                start,
+                             HttpServletRequest  request,
+                             HttpServletResponse response)
+   throws IOException {
+
+      // Determine the calling convention to use
+      CallingConvention cc = determineCC(request, response);
+
+      // If it is null, then there was an error. This error will have been
+      // handled completely, including logging and response output.
+      if (cc != null) {
+
+         // Handle OPTIONS calls separately
+         String method = request.getMethod().toUpperCase();
+         if ("OPTIONS".equals(method)) {
+            cc.handleOptionsRequest(request, response);
+
+         // Non-OPTIONS requests are function invocations
+         } else {
+            invokeFunction(start, cc, request, response);
+         }
+      }
+   }
+
+   /**
+    * Determines which calling convention should be used for the specified
+    * request. In case of an error, an error response will be produced and
+    * sent to the client.
+    *
+    * @param request
+    *    the HTTP request for which to determine the calling convention to use
+    *    cannot be <code>null</code>.
+    *
+    * @param response
+    *    the HTTP response, cannot be <code>null</code>.
+    *
+    * @return
+    *    the {@link CallingConvention} to use, or <code>null</code> if the
+    *    calling convention to use could not be determined.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private final CallingConvention determineCC(HttpServletRequest  request,
+                                               HttpServletResponse response)
+   throws IOException {
 
       // Determine the calling convention; if an existing calling convention
       // is specified in the request, then use that, otherwise use the default
       // calling convention for this engine
       CallingConvention cc = null;
-      FunctionRequest xinsRequest = null;
-      FunctionResult result = null;
+      try {
+         cc = _conventionManager.getCallingConvention(request);
 
-      // Call the API if the state is READY
-      EngineState state = _state.getState();
-      if (state == EngineState.READY) {
+      // Only an InvalidRequestException is expected. If a different kind of
+      // exception is received, then that is considered a programming error.
+      } catch (Throwable exception) {
+         int error;
+         if (exception instanceof InvalidRequestException) {
+            error = HttpServletResponse.SC_BAD_REQUEST;
+         } else {
+            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-         try {
-
-            // Determine which calling convention to use
-            cc = _conventionManager.getCallingConvention(request);
-
-            // Convert the HTTP request to a XINS request
-            xinsRequest = cc.convertRequest(request);
-
-            // Call the function
-            result = _api.handleCall(start, xinsRequest, remoteIP);
-
-         } catch (Throwable exception) {
-
-            String subjectClass  = null;
-            String subjectMethod = null;
-            if (cc == null) {
-               subjectClass  = _conventionManager.getClass().getName();
-               subjectMethod = "getCallingConvention(String)";
-            } else if (xinsRequest == null) {
-               subjectClass  = cc.getClass().getName();
-               subjectMethod = "convertRequest(javax.servlet.http.HttpServletRequest)";
-            } else { // (result == null) {
-               subjectClass  = _api.getClass().getName();
-               subjectMethod = "handleCall(long,"
-                             + FunctionRequest.class.getName()
-                             + ",java.lang.String)";
-            }
-            int error;
-
-            // If the function is not specified, then return '404 Not Found'
-            if (exception instanceof FunctionNotSpecifiedException) {
-               error = HttpServletResponse.SC_NOT_FOUND;
-
-            // If the request is invalid, then return '400 Bad Request'
-            } else if (exception instanceof InvalidRequestException) {
-               error = HttpServletResponse.SC_BAD_REQUEST;
-
-            // If access is denied, return '403 Forbidden'
-            } else if (exception instanceof AccessDeniedException) {
-               error = HttpServletResponse.SC_FORBIDDEN;
-
-            // If no matching function is found, return '404 Not Found'
-            } else if (exception instanceof NoSuchFunctionException) {
-               error = HttpServletResponse.SC_NOT_FOUND;
-
-            // Otherwise an unexpected exception is thrown, return
-            // '500 Internal Server Error'
-            } else {
-               error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-
-               Utils.logProgrammingError(
-                  Engine.class.getName(),
-                  "doService(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
-                  subjectClass,
-                  subjectMethod,
-                  null,
-                  exception);
-            }
-
-            Log.log_3522(exception, error);
-
-            // XXX: We could pass the result of HttpStatus.getStatusText(int)
-            //      to log message 3522, but this would introduce a dependency
-            //      from the XINS/Java Server Framework on the HttpClient
-            //      library.
-
-            response.sendError(error);
-            return;
+            Utils.logProgrammingError(
+               Engine.class.getName(),
+               "delegateToCC(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               _conventionManager.getClass().getName(),
+               "getCallingConvention(javax.servlet.http.HttpServletRequest)",
+               null,
+               exception);
          }
 
-      // Otherwise return an appropriate 50x HTTP response code
-      } else if (state == EngineState.INITIAL
-              || state == EngineState.BOOTSTRAPPING_FRAMEWORK
-              || state == EngineState.CONSTRUCTING_API
-              || state == EngineState.BOOTSTRAPPING_API
-              || state == EngineState.INITIALIZING_API) {
-         response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+         // Log that the received request cannot be parsed correctly
+         Log.log_3522(exception, error);
+
+         // Return the error to the client
+         response.sendError(error);
+      }
+
+      return cc;
+   }
+
+   /**
+    * Invokes a function, using the specified calling convention to from an
+    * HTTP request and to an HTTP response.
+    *
+    * @param start
+    *    timestamp indicating when the call was received by the framework, in
+    *    milliseconds since the UNIX Epoch.
+    *
+    * @param cc
+    *    the calling convention to use, cannot be <code>null</code>.
+    *
+    * @param request
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param response
+    *    the HTTP response, cannot be <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void invokeFunction(long                start,
+                               CallingConvention   cc,
+                               HttpServletRequest  request,
+                               HttpServletResponse response)
+   throws IOException {
+
+      // Convert the HTTP request to a XINS request
+      FunctionRequest xinsRequest;
+      try {
+         xinsRequest = cc.convertRequest(request);
+
+      // Only an InvalidRequestException or a FunctionNotSpecifiedException is
+      // expected. If a different kind of exception is received, then that is
+      // considered a programming error.
+      } catch (Throwable exception) {
+         int error;
+         if (exception instanceof InvalidRequestException) {
+            error = HttpServletResponse.SC_BAD_REQUEST;
+         } else if (exception instanceof FunctionNotSpecifiedException) {
+            error = HttpServletResponse.SC_NOT_FOUND;
+         } else {
+            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+
+            Utils.logProgrammingError(
+               Engine.class.getName(),
+               "invokeFunction(long," + CallingConvention.class.getName() + ",javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               cc.getClass().getName(),
+               "convertRequest(javax.servlet.http.HttpServletRequest)",
+               null,
+               exception);
+         }
+
+         // Log that the received request cannot be parsed correctly
+         Log.log_3522(exception, error);
+
+         // Return the error to the client
+         response.sendError(error);
          return;
-      } else {
+      }
+
+
+      // Call the function
+      FunctionResult result;
+      try {
+         result = _api.handleCall(start, request, xinsRequest);
+
+      // The only expected exceptions are NoSuchFunctionException and
+      // AccessDeniedException. Other exceptions are considered to indicate
+      // a programming error.
+      } catch (Throwable exception) {
+         int error;
+         if (exception instanceof AccessDeniedException) {
+            error = HttpServletResponse.SC_FORBIDDEN;
+         } else if (exception instanceof NoSuchFunctionException) {
+            error = HttpServletResponse.SC_NOT_FOUND;
+         } else {
+            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+
+            Utils.logProgrammingError(
+               Engine.class.getName(),
+               "invokeFunction(long," + CallingConvention.class.getName() + ",javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               _api.getClass().getName(),
+               "handleCall(long," + FunctionRequest.class.getName() + ",java.lang.String)",
+               null,
+               exception);
+         }
+
+         // TODO: Log?
+
+         // Return the error to the client
+         response.sendError(error);
+         return;
+      }
+
+
+      // Convert the XINS result to an HTTP response
+      try {
+         cc.convertResult(result, response, request);
+
+      // NOTE: If the convertResult method throws an exception, then it
+      //       will have been logged within the CallingConvention class
+      //       already.
+      } catch (Throwable exception) {
          response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
          return;
       }
+   }
 
-      // Send the output only if GET or POST; convert it from a XINS function
-      // result to an HTTP response
-      if (sendOutput) {
-         try {
-            cc.convertResult(result, response, request);
-         } catch (Throwable exception) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-         }
-      }
+   /**
+    * Handles an <em>OPTIONS</em> request for the resource <code>*</code>.
+    *
+    * @param response
+    *    the response to fill, never <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void handleOptionsForAll(HttpServletResponse response)
+   throws IOException {
+
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.setHeader("Accept", _supportedMethodsString);
+      response.setContentLength(0);
    }
 
    /**

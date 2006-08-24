@@ -20,76 +20,83 @@ final class EngineState extends Object {
    // Class fields
    //-------------------------------------------------------------------------
 
+   static final Type INTERMEDIATE_STATE = new Type();
+
+   static final Type USABLE_STATE = new Type();
+
+   static final Type ERROR_STATE = new Type();
+
    /**
     * The <em>INITIAL</em> state.
     */
-   static final EngineState INITIAL = new EngineState("INITIAL", false);
+   static final EngineState INITIAL =
+      new EngineState("INITIAL", INTERMEDIATE_STATE);
 
    /**
     * The <em>BOOTSTRAPPING_FRAMEWORK</em> state.
     */
    static final EngineState BOOTSTRAPPING_FRAMEWORK =
-      new EngineState("BOOTSTRAPPING_FRAMEWORK", false);
+      new EngineState("BOOTSTRAPPING_FRAMEWORK", INTERMEDIATE_STATE);
 
    /**
     * The <em>FRAMEWORK_BOOTSTRAP_FAILED</em> state.
     */
    static final EngineState FRAMEWORK_BOOTSTRAP_FAILED =
-      new EngineState("FRAMEWORK_BOOTSTRAP_FAILED", true);
+      new EngineState("FRAMEWORK_BOOTSTRAP_FAILED", ERROR_STATE);
 
    /**
     * The <em>CONSTRUCTING_API</em> state.
     */
    static final EngineState CONSTRUCTING_API =
-      new EngineState("CONSTRUCTING_API", false);
+      new EngineState("CONSTRUCTING_API", INTERMEDIATE_STATE);
 
    /**
     * The <em>API_CONSTRUCTION_FAILED</em> state.
     */
    static final EngineState API_CONSTRUCTION_FAILED =
-      new EngineState("API_CONSTRUCTION_FAILED", true);
+      new EngineState("API_CONSTRUCTION_FAILED", ERROR_STATE);
 
    /**
     * The <em>BOOTSTRAPPING_API</em> state.
     */
    static final EngineState BOOTSTRAPPING_API =
-      new EngineState("BOOTSTRAPPING_API", false);
+      new EngineState("BOOTSTRAPPING_API", INTERMEDIATE_STATE);
 
    /**
     * The <em>API_BOOTSTRAP_FAILED</em> state.
     */
    static final EngineState API_BOOTSTRAP_FAILED =
-      new EngineState("API_BOOTSTRAP_FAILED", true);
+      new EngineState("API_BOOTSTRAP_FAILED", ERROR_STATE);
 
    /**
     * The <em>INITIALIZING_API</em> state.
     */
    static final EngineState INITIALIZING_API =
-      new EngineState("INITIALIZING_API", false);
+      new EngineState("INITIALIZING_API", INTERMEDIATE_STATE);
 
    /**
     * The <em>API_INITIALIZATION_FAILED</em> state.
     */
    static final EngineState API_INITIALIZATION_FAILED =
-      new EngineState("API_INITIALIZATION_FAILED", true);
+      new EngineState("API_INITIALIZATION_FAILED", ERROR_STATE);
 
    /**
     * The <em>READY</em> state.
     */
    static final EngineState READY =
-      new EngineState("READY", false);
+      new EngineState("READY", USABLE_STATE);
 
    /**
     * The <em>DISPOSING</em> state.
     */
    static final EngineState DISPOSING =
-      new EngineState("DISPOSING", false);
+      new EngineState("DISPOSING", INTERMEDIATE_STATE);
 
    /**
     * The <em>DISPOSED</em> state.
     */
    static final EngineState DISPOSED
-      = new EngineState("DISPOSED", false);
+      = new EngineState("DISPOSED", INTERMEDIATE_STATE);
 
 
    //-------------------------------------------------------------------------
@@ -102,22 +109,21 @@ final class EngineState extends Object {
     * @param name
     *    the name of this state, cannot be <code>null</code>.
     *
-    * @param error
-    *    flag that indicates whether this is an error state, <code>true</code>
-    *    if it is.
+    * @param type
+    *    the type of this state, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>name == null</code>.
+    *    if <code>name == null || type == null</code>.
     */
-   EngineState(String name, boolean error)
+   EngineState(String name, Type type)
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
+      MandatoryArgumentChecker.check("name", name, "type", type);
 
       // Initialize fields
-      _name  = name;
-      _error = error;
+      _name = name;
+      _type = type;
    }
 
 
@@ -131,10 +137,9 @@ final class EngineState extends Object {
    private final String _name;
 
    /**
-    * Flag that indicates whether this is an error state. Value is
-    * <code>true</code> if it is.
+    * The type of this state. Never <code>null</code>.
     */
-   private final boolean _error;
+   private final Type _type;
 
 
    //-------------------------------------------------------------------------
@@ -152,6 +157,16 @@ final class EngineState extends Object {
    }
 
    /**
+    * Retrieves the type of this state.
+    *
+    * @return
+    *    the state type.
+    */
+   public Type getType() {
+      return _type;
+   }
+
+   /**
     * Checks if this state is an error state.
     *
     * @return
@@ -159,7 +174,18 @@ final class EngineState extends Object {
     *    otherwise.
     */
    public boolean isError() {
-      return _error;
+      return _type == ERROR_STATE;
+   }
+
+   /**
+    * Checks if this state allows function invocations.
+    *
+    * @return
+    *    <code>true</code> if this state allows function invocations,
+    *    <code>false</code> otherwise.
+    */
+   public boolean allowsInvocations() {
+      return _type == USABLE_STATE;
    }
 
    /**
@@ -170,5 +196,30 @@ final class EngineState extends Object {
     */
    public String toString() {
       return _name;
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Inner classes
+   //-------------------------------------------------------------------------
+
+   /**
+    * Categorization of an engine state.
+    *
+    * @version $Revision$ $Date$
+    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    */
+   static class Type extends Object {
+
+      //----------------------------------------------------------------------
+      // Constructors
+      //----------------------------------------------------------------------
+
+      /**
+       * Constructs a new instance.
+       */
+      private Type() {
+         // empty
+      }
    }
 }

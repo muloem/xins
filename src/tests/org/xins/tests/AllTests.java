@@ -43,6 +43,26 @@ public class AllTests extends TestSuite {
    }
 
    /**
+    * Returns the host to use to connect to the server.
+    *
+    * @return
+    *    the host, for example <code>"127.0.0.1"</code>.
+    */
+   public static final String host() {
+      return "127.0.0.1";
+   }
+
+   /**
+    * Returns the port to use to connect to the server.
+    *
+    * @return
+    *    the port, for example <code>80</code>.
+    */
+   public static final int port() {
+      return HTTP_SERVER.getPort();
+   }
+
+   /**
     * Returns the URL to use to connect to the server.
     *
     * @return
@@ -50,7 +70,7 @@ public class AllTests extends TestSuite {
     *    <code>"http://127.0.0.1:8080/"</code>, never <code>null</code>.
     */
    public static final String url() {
-      return "http://127.0.0.1:" + HTTP_SERVER.getPort() + "/";
+      return "http://" + host() + ":" + port() + "/";
    }
 
    /**
@@ -64,7 +84,7 @@ public class AllTests extends TestSuite {
 
       // Start the server
       suite.addTestSuite(StartServer.class);
-
+/*
       //
       // Add all tests
       //
@@ -169,9 +189,9 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.ResultcodeUniquenessTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
-
+*/
       // XXX: Perform just a single test
-      // suite.addTest(new org.xins.tests.server.CallingConventionTests("testSOAPCallingConvention2"));
+      suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
 
       // Stop the server
       suite.addTestSuite(StopServer.class);

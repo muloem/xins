@@ -11,6 +11,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
     "*" to the default servlet. This is in accordance with the HTTP 1.1 spec,
     allowing an OPTIONS request for "*", which represents the whole server.
 
+* XINS/Java Server Framework:
+  - Completed implementation of SF.net RFE #1483099: Support HTTP methods PUT,
+    DELETE, etc. Support for the OPTIONS method has been implemented and the
+    CallingConvention and Engine classes have been refactored. Unit tests have
+    been added.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
 

@@ -551,8 +551,8 @@ extends Manageable {
 
          // Determine the name and get the CallingConvention instance
          Map.Entry entry = (Map.Entry) iterator.next();
-         String name = (String) entry.getKey();
-         Object cc   = entry.getValue();
+         String    name  = (String) entry.getKey();
+         Object    cc    = entry.getValue();
 
          // Process this CallingConvention only if it was created OK
          if (cc != CREATION_FAILED) {
@@ -912,8 +912,7 @@ extends Manageable {
     *
     * @throws IllegalStateException
     *    if this calling convention manager is not yet bootstrapped and
-    *    initialized or if an individual calling convention is not; the
-    *    latter <em>should</em> never happen.
+    *    initialized, see {@link #isUsable()}.
     */
    final Set getSupportedMethods() throws IllegalStateException {
 

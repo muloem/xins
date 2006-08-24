@@ -22,6 +22,7 @@ import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
+import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -35,6 +36,15 @@ import org.xins.common.xml.ElementParser;
  * <p>Calling convention implementations are thread-safe. Hence if a calling
  * convention does not have any configuration parameters per instance, then
  * the <em>Singleton</em> pattern can be applied.
+ *
+ * <p>Any HTTP method except <em>OPTIONS</em> can be used to invoke functions.
+ * The method {@link #supportedMethods()} should be implemented by subclasses
+ * to indicate which HTTP methods it supports exactly.
+ *
+ * <p>All <em>OPTIONS</em> requests are picked up by the framework and are
+ * passed to the
+ * {@link #handleOptionsRequest(HttpServletRequest,HttpServletResponse)}
+ * method of the appropriate <code>CallingConvention</code>.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
@@ -51,27 +61,15 @@ abstract class CallingConvention extends Manageable {
    /**
     * Fully-qualified name of this class.
     */
-   private static final String CLASSNAME = CallingConvention.class.getName();
+   private static final String CLASSNAME;
 
    /**
     * The default value of the <code>"Server"</code> header sent with an HTTP
     * response. The actual value is
     * <code>"XINS/Java Server Framework "</code>, followed by the version of
-    * the server framework.
+    * the framework.
     */
-   private static final String SERVER_HEADER =
-      "XINS/Java Server Framework " + Library.getVersion();
-
-   /**
-    * The set of recognized HTTP methods for calling convention
-    * implementations. The <em>OPTIONS</em> method explicitly and
-    * intentionally excluded.
-    *
-    * <p>All methods are in upper case.
-    */
-   private static final HashSet RECOGNIZED_HTTP_METHODS = new HashSet(
-      Arrays.asList(new String[] { "HEAD", "GET",    "POST",
-                                   "PUT",  "DELETE", "CONNECT" }));
+   private static final String SERVER_HEADER;
 
 
    //-------------------------------------------------------------------------
@@ -79,8 +77,17 @@ abstract class CallingConvention extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * Removes all parameters that should not be transmitted from a
-	 * <code>ProtectedPropertyReader</code>.
+    * Initializes all class variables.
+    */
+   static {
+      CLASSNAME = CallingConvention.class.getName();
+
+      SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
+   }
+
+   /**
+    * Changes a parameter set to remove all parameters that should not be
+    * passed to functions.
 	 *
 	 * <p>A parameter will be removed if it matches any of the following
 	 * conditions:
@@ -88,16 +95,23 @@ abstract class CallingConvention extends Manageable {
     * <ul>
     *    <li>parameter name is <code>null</code>;
     *    <li>parameter name is empty;
+    *    <li>parameter value is <code>null</code>;
+    *    <li>parameter value is empty;
     *    <li>parameter name equals <code>"function"</code>.
     * </ul>
+    *
+    * <p>TODO: Move this method elsewhere, as this behaviour is specific for
+    * certain calling conventions, it is considered deprecated and it is
+    * likely to be changed in XINS 2.0.
     *
     * @param parameters
     *    the {@link ProtectedPropertyReader} containing the set of parameters
     *    to investigate, cannot be <code>null</code>.
     *
     * @param secretKey
-    *    the secret key required to be able to modify the parameters, cannot
-    *    be <code>null</code>.
+    *    the secret key required to be able to modify the
+    *    {@link ProtectedPropertyReader} instance, cannot be
+    *    <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>parameters == null || secretKey == null</code>.
@@ -122,13 +136,10 @@ abstract class CallingConvention extends Manageable {
          String value = parameters.get(name);
 
          // If the parameter name or value is empty, or if the name is
-         // "function", then mark the parameter as 'to be removed'
-         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) ||
-             "function".equals(name)) {
-            toRemove.add(name);
-
-         // Parameters starting with an underscore are reserved for XINS
-         } else if (name.charAt(0) == '_') {
+         // "function", then mark the parameter as 'to be removed'.
+         // Parameters starting with an underscore are reserved for XINS, so
+         // mark these as 'to be removed' as well.
+         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) || "function".equals(name) || name.charAt(0) == '_') {
             toRemove.add(name);
          }
       }
@@ -198,6 +209,12 @@ abstract class CallingConvention extends Manageable {
     */
    private HashSet _supportedMethods;
 
+   /**
+    * The set of supported HTTP methods, as a comma-separated string. Is
+    * initialized by {@link #determineSupportedMethods()}.
+    */
+   private String _supportedMethodsString;
+
 
    //------------------------------------------------------------------------
    // Methods
@@ -208,9 +225,6 @@ abstract class CallingConvention extends Manageable {
     *
     * @return
     *    the current {@link API}, never <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if this method is not called from the subclass constructor.
     *
     * @since XINS 1.5.0
     */
@@ -258,39 +272,61 @@ abstract class CallingConvention extends Manageable {
          throw new InitializationException(exception);
       }
 
+      // Prepare the base error message, which acts as the prefix for all
+      // actual error messages produced by the code below
       String baseError = "Method supportedMethods() in calling convention "
                        + "implementation class \""
                        + getClass().getName()
-                       + "\" ";
+                       + "\" returns ";
 
       // The returned value cannot be null
       if (array == null) {
-         throw new InitializationException(baseError + "returns null.");
+         String error = baseError + "null.";
+         throw new InitializationException(error);
       }
 
       // Loop through all array items
       HashSet set = new HashSet();
       for (int i = 0; i < array.length; i++) {
 
-         String element = array[i];
+         String method = array[i];
 
          // Null elements are not allowed
-         if (element == null) {
-            throw new InitializationException(baseError + "returns a null array element.");
-         }
+         if (method == null) {
+            String error = baseError + "the HTTP method (null).";
+            throw new InitializationException(error);
 
-         // Make sure the method is a recognized HTTP method
-         String upper = element.toUpperCase();
-         if (! RECOGNIZED_HTTP_METHODS.contains(upper)) {
-            throw new InitializationException(baseError + "returns the unrecognized HTTP method \"" + element + "\" (case-insensitive).");
-         }
+         // Empty strings are not allowed
+         } else if ("".equals(method.trim())) {
+            String error = baseError + "an empty HTTP method.";
+            throw new InitializationException(error);
 
-         // Add to the set (ignores duplicates)
-         set.add(upper);
+         // Handle all but the "OPTIONS" method, as it is implicitly supported
+         } else if (! "OPTIONS".equals(method)) {
+
+            // Add to the set (ignoring duplicates)
+            String upper = method.toUpperCase();
+            set.add(upper);
+         }
+      }
+
+      // At least one HTTP method must be supported
+      if (set.size() < 1) {
+         throw new InitializationException("No HTTP method is supported. At least one must be supported, separate from the OPTIONS method.");
+      }
+
+      // Convert to a string
+      Iterator it = set.iterator();
+      FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS, ");
+      while (it.hasNext()) {
+         String next = (String) it.next();
+         buffer.append(", ");
+         buffer.append(next.toUpperCase());
       }
 
       // Store the set of supported HTTP methods in a field
-      _supportedMethods = set;
+      _supportedMethods       = set;
+      _supportedMethodsString = buffer.toString();
    }
 
    /**
@@ -314,6 +350,7 @@ abstract class CallingConvention extends Manageable {
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
+      // Check if the HTTP method is supported, case-insensitive
       String upper = method.toUpperCase();
       return _supportedMethods.contains(upper);
    }
@@ -353,6 +390,9 @@ abstract class CallingConvention extends Manageable {
     *
     * <p>Note that <em>OPTIONS</em> must not be returned by this method, as it
     * is not an HTTP method that can be used to invoke a XINS function.
+    *
+    * <p>TODO: Change this method to be more generic and return meta-info
+    * about this calling convention. Then we can extend this in the future.
     *
     * @return
     *    the HTTP methods supported, in a <code>String</code> array, should
@@ -419,29 +459,33 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Checks if the specified request can be handled by this calling
+    * Checks if the specified request can possibly be handled by this calling
     * convention.
     *
-    * <p>Implementations of this method should be optimized for performance.
+    * <p>Implementations of this method should be optimized for performance,
+    * as this method may be called for each incoming request. Also, this
+    * method should not have any side-effects except possibly some caching in
+    * case there is a match.
     *
-    * <p>The default implementation of this method returns <code>true</code>.
+    * <p>The default implementation of this method always returns
+    * <code>true</code>.
     *
     * <p>If this method throws any exception, the exception is logged as an
     * ignorable exception and <code>false</code> is assumed.
     *
-    * <p>This method should just be called by the XINS/Java Server Framework.
+    * <p>This method should only be called by the XINS/Java Server Framework.
     *
     * @param httpRequest
     *    the HTTP request to investigate, never <code>null</code>.
     *
     * @return
     *    <code>true</code> if this calling convention is <em>possibly</em>
-    *    able to handle this request, or <code>false</code> if it
+    *    able to handle this request, or <code>false</code> if it is
     *    <em>definitely</em> not able to handle this request.
     *
     * @throws Exception
-    *    if analysis of the request causes an exception;
-    *    <code>false</code> will be assumed.
+    *    if analysis of the request causes an exception; in this case
+    *    <code>false</code> will be assumed by the framework.
     *
     * @since XINS 1.4.0
     */
@@ -571,7 +615,7 @@ abstract class CallingConvention extends Manageable {
     * checks the arguments, then calls the implementation method and then
     * checks the return value from that method.
     *
-    * <p>Note that this method is not called if there is an error while 
+    * <p>Note that this method is not called if there is an error while
     * converting the request.
     *
     * @param xinsResult
@@ -811,6 +855,29 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
+    * Handles the specified <em>OPTIONS</em> request.
+    *
+    * @param request
+    *    the HTTP request, never <code>null</code>.
+    *
+    * @param response
+    *    the HTTP response, never <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    *
+    * @since XINS 1.5.0
+    */
+   protected void handleOptionsRequest(HttpServletRequest  request,
+                                       HttpServletResponse response)
+   throws IOException {
+
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.setHeader("Accept", _supportedMethodsString);
+      response.setContentLength(0);
+   }
+
+   /**
     * Gathers all parameters from the specified request. The parameters are
     * returned as a {@link ProtectedPropertyReader} instance with the
     * specified secret key. If no parameters are found, then <code>null</code>
@@ -895,26 +962,39 @@ abstract class CallingConvention extends Manageable {
     * @return
     *    the single value of the parameter, if any.
     *
+    * @throws NullPointerException
+    *    if <code>values == null || values[<em>n</em>] == null</code>, where
+    *    <code>0 &lt;= <em>n</em> &lt; values.length</code>.
+    *
+    * @throws IndexOutOfBoundsException
+    *    if <code>values.length &lt; 1</code>.
+    *
     * @throws InvalidRequestException
     *    if the parameter is found to have multiple different values.
     */
    private final String getParamValue(String name, String[] values)
-   throws InvalidRequestException {
+   throws NullPointerException,
+          IndexOutOfBoundsException,
+          InvalidRequestException {
+
+      // XXX: Should we avoid the NullPointerException ?
 
       String value = values[0];
 
-      // We only need to do some crunching if there is more than one value
-      if (values.length != 1) {
-
-         // XXX: Can the following code block throw a NullPointerException?
-
+      // We only need to do crunching if there is more than one value
+      if (values.length > 1) {
          for (int i = 1; i < values.length; i++) {
             String other = values[i];
             if (! value.equals(other)) {
-               throw new InvalidRequestException("Found multiple values for the parameter named \"" + name + "\".");
+               String error = "Found multiple values for the parameter "
+                            + "named \""
+                            + name
+                            + "\".";
+               throw new InvalidRequestException(error);
             }
          }
       }
+
       return value;
    }
 }

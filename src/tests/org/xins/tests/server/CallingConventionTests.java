@@ -6,14 +6,9 @@
  */
 package org.xins.tests.server;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -576,35 +571,53 @@ public class CallingConventionTests extends TestCase {
 
    /**
     * Tests the HTTP OPTIONS method.
-    * Removed as not working - see bug #1483127
     */
    public void testOptionsMethod() throws Exception {
 
-      // Prepare a connection
-      OptionsMethod method = new OptionsMethod(AllTests.url());
-      HttpClient client = new HttpClient();
-      client.setConnectionTimeout(20000);
-      client.setTimeout(20000);
+      String[] yes = new String[] { "GET", "HEAD", "POST", "OPTIONS" };
+      String[] no  = new String[] { "CONNECT", "PUT", "DELETE" };
+      doTestOptions("*",                        yes, no);
+      doTestOptions("/?_convention=_xins-std",  yes, no);
 
-      // Perform the call and release the connection
-      int code;
-      byte[] returnedData;
-      try {
-         code = client.executeMethod(method);
-         returnedData = method.getResponseBody();
-      } finally {
-         method.releaseConnection();
-      }
+      yes = new String[] { "POST", "OPTIONS" };
+      no  = new String[] { "CONNECT", "PUT", "DELETE", "GET", "HEAD" };
+      doTestOptions("/?_convention=_xins-soap", yes, no);
+   }
+
+   private void doTestOptions(String queryString, String[] yes, String[] no)
+   throws Exception {
+
+      // Prepare a connection
+      Socket socket = new Socket(AllTests.host(), AllTests.port());
+      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+      out.println("OPTIONS " + queryString + " HTTP/1.1");
+      out.println("Host: " + AllTests.host());
+      out.println();
+      out.println();
+
+      String line = in.readLine();
 
       // Expect "200 OK"
       assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request.",
-                   200, code);
+                   "HTTP/1.1 200 OK", line);
 
       // Expect empty body
+      /*
       assertTrue("Expected no body in response to an HTTP OPTIONS request.",
                  returnedData == null || returnedData.length == 0);
+      */
 
+      line = in.readLine();
+      line = line.toUpperCase();
+      while (! line.startsWith("ACCEPT:")) {
+         line = in.readLine();
+      }
+
+      String acceptHeader = line.substring(7).trim();
       
+/*
       // Expect "Accept" field in the response
       Header[] acceptHeaders = method.getResponseHeaders("accept");
       assertTrue("Expected an \"Accept\" header in response to an HTTP OPTIONS request.", acceptHeaders != null && acceptHeaders.length > 0);
@@ -612,12 +625,16 @@ public class CallingConventionTests extends TestCase {
 
       String acceptHeader = acceptHeaders[0].getValue();
       assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to have a non-empty value.", acceptHeader.trim().length() > 0);
+*/
 
       List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
 
-      String[] shouldBeSupported = { "GET", "POST", "HEAD", };
-      for (int i = 0; i < shouldBeSupported.length; i++) {
-         assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + shouldBeSupported[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(shouldBeSupported[i]));
+      for (int i = 0; i < yes.length; i++) {
+         assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + yes[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(yes[i]));
+      }
+
+      for (int i = 0; i < no.length; i++) {
+         assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
       }
    }
 
