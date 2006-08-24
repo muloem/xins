@@ -506,7 +506,7 @@ public class HTTPServletHandler {
          httpResult = "HTTP/1.1 400 Bad Request\r\n";
 
       // Handle the case that a web page is requested
-      } else if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/")) {
+      } else if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/") && !"*".equals(url)) {
          httpResult = readWebPage(url);
       } else {
 
@@ -608,6 +608,7 @@ public class HTTPServletHandler {
          httpResult += content + "\n";
          httpResult += "\n";
       } else {
+System.err.println("Web page \"" + url + "\" not found.");
          httpResult = "HTTP/1.1 404 Not Found\r\n";
       }
       return httpResult;

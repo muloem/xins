@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
+* XINS/Java Common Library:
+  - Improved the internal servlet container so that it forwards a request for
+    "*" to the default servlet. This is in accordance with the HTTP 1.1 spec,
+    allowing an OPTIONS request for "*", which represents the whole server.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
