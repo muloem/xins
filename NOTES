@@ -1,4 +1,4 @@
-This file contains the XINS 1.5.0-beta1 release notes.
+This file contains the XINS 1.5.0-alpha5 release notes.
 
 Contents:
 - Introduction
@@ -8,11 +8,8 @@ Contents:
 
 *** INTRODUCTION ***
 
-This is a beta release.
-
-This release should be backwards compatible with all previous stable releases,
-but this is not guaranteed nor properly validated.
-An exception is logging; log messages can change between individual releases.
+This is an alpha release. Although it should be backwards compatible with all
+previous stable releases, this is not guaranteed nor properly tested.
 
 Testing this release is highly appreciated. Please report your issues through
 the bug database or via the mailing list.

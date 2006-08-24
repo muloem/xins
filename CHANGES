@@ -4,7 +4,7 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
+CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
 * XINS/Java Common Library:
   - Improved the internal servlet container so that it forwards a request for
