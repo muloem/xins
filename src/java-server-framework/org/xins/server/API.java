@@ -1277,11 +1277,9 @@ implements DefaultResultCodes {
       PrintWriter printWriter = new PrintWriter(stWriter);
       exception.printStackTrace(printWriter);
       String stackTrace = stWriter.toString();
-      if (stackTrace != null) {
-         stackTrace = stackTrace.trim();
-         if (stackTrace.length() > 0) {
-            resultParams.set("_exception.stacktrace", stackTrace);
-         }
+      stackTrace = stackTrace.trim();
+      if (stackTrace.length() > 0) {
+         resultParams.set("_exception.stacktrace", stackTrace);
       }
 
       return new FunctionResult("_InternalError", resultParams);
