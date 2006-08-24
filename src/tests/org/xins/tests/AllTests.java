@@ -84,7 +84,7 @@ public class AllTests extends TestSuite {
 
       // Start the server
       suite.addTestSuite(StartServer.class);
-/*
+
       //
       // Add all tests
       //
@@ -189,9 +189,9 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.ResultcodeUniquenessTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
-*/
+
       // XXX: Perform just a single test
-      suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
+      //suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
 
       // Stop the server
       suite.addTestSuite(StopServer.class);
