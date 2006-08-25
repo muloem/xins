@@ -516,8 +516,12 @@ abstract class CallingConvention extends Manageable {
       // Make sure the HTTP method is supported
       String method = httpRequest.getMethod();
       if (! isSupportedMethod(method)) {
-         // TODO: Make sure 403 is returned instead of 400
-         throw new InvalidRequestException("HTTP method \"" + method + "\" is not supported by this calling convention.");
+         String detail = "The HTTP method \""
+                       + method
+                       + "\" is unsupported by calling convention \""
+                       + getClass().getName()
+                       + "\".";
+         throw new UnsupportedMethodException(detail);
       }
 
       // Delegate to the implementation method
