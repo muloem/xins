@@ -45,7 +45,7 @@ import org.xins.logdoc.ExceptionUtils;
  * XSLT.
  * The Mime type of the return data can be specified in the XSLT using the
  * media-type or method attribute of the XSL output element.
- * More information about the XSLT calling conventino can be found in the
+ * More information about the XSLT calling convention can be found in the
  * <a href="http://www.xins.org/docs/index.html">user guide</a>.
  *
  * @version $Revision$ $Date$

@@ -20,7 +20,7 @@ import org.xins.common.Utils;
  * characteristics. Currently only contains the supported HTTP methods.
  *
  * <p>When a calling convention implementation provides a
- * <code>CallingConventinoInfo</code> object to the XINS framework, then the
+ * <code>CallingConventionInfo</code> object to the XINS framework, then the
  * framework will make it unmodifiable.
  *
  * <p>This class is thread-safe.
