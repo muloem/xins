@@ -579,6 +579,45 @@ final class Engine extends Object {
    }
 
    /**
+    * Handles an unprocessable request (low-level function). The response is 
+    * filled for the request.
+    *
+    * @param request
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param response
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param statusCode
+    *    the HTTP status code to return.
+    *
+    * @param reason
+    *    explanation, can be <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void handleUnprocessableRequest(HttpServletRequest  request,
+                                           HttpServletResponse response,
+                                           int                 statusCode,
+                                           String              reason)
+   throws IOException {
+
+      // Log
+      Log.log_3523(request.getRemoteAddr(),
+                   request.getMethod(),
+                   request.getRequestURI(),
+                   request.getQueryString(),
+                   statusCode,
+                   reason);
+
+      // Send the HTTP status code to the client
+      response.setStatus(statusCode);
+      response.setContentLength(0);
+      response.flushBuffer();
+   }
+
+   /**
     * Handles a request that comes in while function invocations are currently
     * not allowed.
     *
@@ -599,24 +638,14 @@ final class Engine extends Object {
                                     HttpServletResponse response)
    throws IOException {
 
-      // Determine the HTTP status code
+      // Log and respond
       int statusCode = state.isError()
                      ? HttpServletResponse.SC_INTERNAL_SERVER_ERROR
                      : HttpServletResponse.SC_SERVICE_UNAVAILABLE;
-
-      // Log
-      String reason = "XINS/Java Server Framework engine state \""
-                    + state
-                    + "\" does not allow incoming requests.";
-      Log.log_3523(request.getRemoteAddr(),
-                   request.getMethod(),
-                   request.getRequestURI(),
-                   request.getQueryString(),
-                   statusCode,
-                   reason);
-
-      // Send the HTTP status code to the client
-      response.sendError(statusCode);
+      String reason  = "XINS/Java Server Framework engine state \""
+                     + state
+                     + "\" does not allow incoming requests.";
+      handleUnprocessableRequest(request, response, statusCode, reason);
    }
 
    /**
@@ -636,21 +665,13 @@ final class Engine extends Object {
                                     HttpServletResponse response)
    throws IOException {
 
+      // Log and respond
       int statusCode = HttpServletResponse.SC_NOT_IMPLEMENTED;
-      String method = request.getMethod();
       String reason = "The HTTP method \""
-                    + method
+                    + request.getMethod()
                     + "\" is not known by any of the usable calling "
                     + "conventions.";
-      Log.log_3523(request.getRemoteAddr(),
-                   method,
-                   request.getRequestURI(),
-                   request.getQueryString(),
-                   statusCode,
-                   reason);
-
-      // Send the HTTP status code to the client
-      response.sendError(statusCode);
+      handleUnprocessableRequest(request, response, statusCode, reason);
    }
 
    /**
@@ -754,16 +775,8 @@ final class Engine extends Object {
                exception);
          }
 
-         // Log
-         Log.log_3523(request.getRemoteAddr(),
-                      request.getMethod(),
-                      request.getRequestURI(),
-                      request.getQueryString(),
-                      statusCode,
-                      reason);
-
-         // Send the HTTP status code to the client
-         response.sendError(statusCode);
+         // Log and respond
+         handleUnprocessableRequest(request, response, statusCode, reason);
       }
 
       return cc;
@@ -848,16 +861,9 @@ final class Engine extends Object {
                exception);
          }
 
-         // Log
-         Log.log_3523(request.getRemoteAddr(),
-                      request.getMethod(),
-                      request.getRequestURI(),
-                      request.getQueryString(),
-                      statusCode,
-                      reason);
+         // Log and respond
+         handleUnprocessableRequest(request, response, statusCode, reason);
 
-         // Send the HTTP status code to the client
-         response.sendError(statusCode);
          return;
       }
 
@@ -900,16 +906,9 @@ final class Engine extends Object {
                exception);
          }
 
-         // Log
-         Log.log_3523(request.getRemoteAddr(),
-                      request.getMethod(),
-                      request.getRequestURI(),
-                      request.getQueryString(),
-                      statusCode,
-                      reason);
+         // Log and respond
+         handleUnprocessableRequest(request, response, statusCode, reason);
 
-         // Send the HTTP status code to the client
-         response.sendError(statusCode);
          return;
       }
 
