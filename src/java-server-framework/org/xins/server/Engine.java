@@ -33,50 +33,13 @@ import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
 
 /**
- * XINS server engine. An <code>Engine</code> is a delegate of the
- * {@link APIServlet} that is responsible for initialization and request
- * handling.
- *
- * <p>When an <code>Engine</code> instance is constructed, it gathers
- * initialization information from different sources:
- *
- * <dl>
- *    <dt><strong>1. Build-time settings</strong></dt>
- *    <dd>The application package contains a <code>web.xml</code> file with
- *    build-time settings. Some of these settings are required in order for
- *    the XINS/Java Server Framework to start up, while others are optional.
- *    These build-time settings are passed to the servlet by the application
- *    server as a {@link ServletConfig} object. See
- *    {@link APIServlet#init(ServletConfig)}.
- *    <br>The servlet configuration is the responsibility of the
- *    <em>assembler</em>.</dd>
- *
- *    <dt><strong>2. System properties</strong></dt>
- *    <dd>The location of the configuration file must be passed to the Java VM
- *    at startup, as a system property.
- *    <br>System properties are the responsibility of the
- *    <em>system administrator</em>.
- *    <br>Example:
- *    <br><code>java -Dorg.xins.server.config=`pwd`/config/xins.properties
- *    -jar orion.jar</code></dd>
- *
- *    <dt><strong>3. Configuration file</strong></dt>
- *    <dd>The configuration file should contain runtime configuration
- *    settings, like the settings for the logging subsystem.
- *    <br>Runtime properties are the responsibility of the
- *    <em>system administrator</em>.
- *    <br>Example contents for a configuration file:
- *    <blockquote><code>log4j.rootLogger=DEBUG, console
- *    <br>log4j.appender.console=org.apache.log4j.ConsoleAppender
- *    <br>log4j.appender.console.layout=org.apache.log4j.PatternLayout
- *    <br>log4j.appender.console.layout.ConversionPattern=%d %-5p [%c]
- *    %m%n</code></blockquote>
- * </dl>
+ * XINS server engine. The engine is a delegate of the {@link APIServlet} that
+ * is responsible for initialization and request handling.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
  */
 final class Engine extends Object {
 
@@ -98,9 +61,8 @@ final class Engine extends Object {
     * Constructs a new <code>Engine</code> object.
     *
     * @param config
-    *    the {@link ServletConfig} object which contains build properties for
-    *    this servlet, as specified by the <em>assembler</em>, cannot be
-    *    <code>null</code>.
+    *    the {@link ServletConfig} object which contains build-time properties
+    *    for this servlet, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>config == null</code>.
@@ -122,7 +84,7 @@ final class Engine extends Object {
       _servletConfig = config;
 
       // Proceed to first actual stage
-      _state.setState(EngineState.BOOTSTRAPPING_FRAMEWORK);
+      _stateMachine.setState(EngineState.BOOTSTRAPPING_FRAMEWORK);
 
       // Read configuration details
       _configManager.determineConfigFile();
@@ -132,17 +94,16 @@ final class Engine extends Object {
       _starter.logBootMessages();
 
       // Construct and bootstrap the API
-      _state.setState(EngineState.CONSTRUCTING_API);
+      _stateMachine.setState(EngineState.CONSTRUCTING_API);
       try {
          _api = _starter.constructAPI();
       } catch (ServletException se) {
-         _state.setState(EngineState.API_CONSTRUCTION_FAILED);
+         _stateMachine.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw se;
       }
       if (! bootstrapAPI()) {
          throw new ServletException(); // XXX
       }
-      _starter.registerMBean(_api);
 
       // Done bootstrapping the framework
       Log.log_3225(Library.getVersion());
@@ -166,7 +127,7 @@ final class Engine extends Object {
    /**
     * The state machine for this engine. Never <code>null</code>.
     */
-   private final EngineStateMachine _state = new EngineStateMachine();
+   private final EngineStateMachine _stateMachine = new EngineStateMachine();
 
    /**
     * The starter of this engine. Never <code>null</code>.
@@ -199,8 +160,9 @@ final class Engine extends Object {
    private final ConfigManager _configManager;
 
    /**
-    * The manager for the calling conventions. Initially this
-    * field is indeed <code>null</code>.
+    * The manager for the calling conventions. This field can be and initially
+    * is <code>null</code>. This field is initialized by
+    * {@link #bootstrapAPI()}.
     */
    private CallingConventionManager _conventionManager;
 
@@ -221,6 +183,181 @@ final class Engine extends Object {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Bootstraps the API. The following steps will be performed:
+    *
+    * <ul>
+    *   <li>determine the API name;
+    *   <li>load the Logdoc, if available;
+    *   <li>bootstrap the API;
+    *   <li>construct and bootstrap the calling conventions;
+    *   <li>link the engine to the API;
+    *   <li>construct and bootstrap a context ID generator;
+    *   <li>perform JMX initialization.
+    * </ul>
+    *
+    * @return
+    *    <code>true</code> if the bootstrapping of the API succeeded,
+    *    <code>false</code> if it failed.
+    */
+   private boolean bootstrapAPI() {
+
+      // Proceed to next stage
+      _stateMachine.setState(EngineState.BOOTSTRAPPING_API);
+
+      PropertyReader bootProps;
+      try {
+
+         // Determine the name of the API
+         _apiName = _starter.determineAPIName();
+
+         // Load the Logdoc if available
+         _starter.loadLogdoc();
+
+         // Actually bootstrap the API
+         bootProps = _starter.bootstrap(_api);
+
+      // Handle any failures
+      } catch (ServletException se) {
+         _stateMachine.setState(EngineState.API_BOOTSTRAP_FAILED);
+         return false;
+      }
+
+      // Create the calling convention manager
+      _conventionManager = new CallingConventionManager(_api);
+
+      // Bootstrap the calling convention manager
+      try {
+         _conventionManager.bootstrap(bootProps);
+
+      // Missing required property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3209(exception.getPropertyName(), exception.getDetail());
+         return false;
+
+      // Invalid property value
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3210(exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+         return false;
+
+      // Other bootstrap error
+      } catch (Throwable exception) {
+         Log.log_3211(exception);
+         return false;
+      }
+
+      // Make the API have a link to this Engine
+      _api.setEngine(this);
+
+      // Construct a generator for diagnostic context IDs
+      _contextIDGenerator = new ContextIDGenerator(_api.getName());
+      try {
+         _contextIDGenerator.bootstrap(bootProps);
+      } catch (Exception exception) {
+        return false;
+      }
+
+      // Perform JMX initialization
+      _starter.registerMBean(_api);
+
+      // Succeeded
+      return true;
+   }
+
+   /**
+    * Initializes the API using the current runtime settings. This method
+    * should be called whenever the runtime properties changed.
+    *
+    * @return
+    *    <code>true</code> if the initialization succeeded, otherwise
+    *    <code>false</code>.
+    */
+   boolean initAPI() {
+
+      _stateMachine.setState(EngineState.INITIALIZING_API);
+
+      // Determine the current runtime properties
+      PropertyReader properties = _configManager.getRuntimeProperties();
+
+      boolean succeeded = false;
+
+      // Determine the locale for logging
+      boolean localeInitialized = _configManager.determineLogLocale();
+      if (! localeInitialized) {
+         _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
+         return false;
+      }
+
+      // Determine at what level should the stack traces be displayed
+      String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
+      if ("true".equals(stackTraceAtMessageLevel)) {
+          LogCentral.setStackTraceAtMessageLevel(true);
+      } else if ("false".equals(stackTraceAtMessageLevel)) {
+          LogCentral.setStackTraceAtMessageLevel(false);
+      } else if (stackTraceAtMessageLevel != null) {
+         // XXX: Report this error in some way
+         _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
+         return false;
+      }
+
+      try {
+
+         // Determine filter for incoming diagnostic context IDs
+         _contextIDPattern = determineContextIDPattern(properties);
+
+         // Initialize the diagnostic context ID generator
+         _contextIDGenerator.init(properties);
+
+         // Initialize the API
+         _api.init(properties);
+
+         // Initialize the default calling convention for this API
+         _conventionManager.init(properties);
+
+         // Create the string with the supported HTTP methods
+         Iterator it = _conventionManager.getSupportedMethods().iterator();
+         FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS");
+         while (it.hasNext()) {
+            String next = (String) it.next();
+            buffer.append(", ");
+            buffer.append(next.toUpperCase());
+         }
+         _supportedMethodsString = buffer.toString();
+
+         succeeded = true;
+
+      // Missing required property
+      } catch (MissingRequiredPropertyException exception) {
+         Log.log_3411(exception.getPropertyName(), exception.getDetail());
+
+      // Invalid property value
+      } catch (InvalidPropertyValueException exception) {
+         Log.log_3412(exception.getPropertyName(),
+                      exception.getPropertyValue(),
+                      exception.getReason());
+
+      // Initialization of API failed for some other reason
+      } catch (InitializationException exception) {
+         Log.log_3413(exception);
+
+      // Other error
+      } catch (Throwable exception) {
+         Log.log_3414(exception);
+
+      // Always leave the object in a well-known state
+      } finally {
+         if (succeeded) {
+            _stateMachine.setState(EngineState.READY);
+         } else {
+            _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
+         }
+      }
+
+      return succeeded;
+   }
 
    /**
     * Determines the filter for diagnostic context identifiers.
@@ -261,6 +398,7 @@ final class Engine extends Object {
 
          // Convert the string to a Pattern
          try {
+            // XXX: Why is the pattern made case-insensitive?
             int mask = Perl5Compiler.READ_ONLY_MASK
                      | Perl5Compiler.CASE_INSENSITIVE_MASK;
             pattern  = PATTERN_COMPILER.compile(propValue, mask);
@@ -277,178 +415,6 @@ final class Engine extends Object {
       }
 
       return pattern;
-   }
-
-   /**
-    * Bootstraps the API. The following steps will be performed:
-    *
-    * <ul>
-    *   <li>determine the API name;
-    *   <li>load the Logdoc, if available;
-    *   <li>bootstrap the API;
-    *   <li>construct and bootstrap the calling conventions;
-    *   <li>link the engine to the API;
-    *   <li>construct and bootstrap a context ID generator;
-    * </ul>
-    *
-    * @return
-    *    <code>true</code> if the bootstrapping of the API succeeded,
-    *    <code>false</code> if it failed.
-    */
-   private boolean bootstrapAPI() {
-
-      // Proceed to next stage
-      _state.setState(EngineState.BOOTSTRAPPING_API);
-
-      PropertyReader bootProps;
-      try {
-
-         // Determine the name of the API
-         _apiName = _starter.determineAPIName();
-
-         // Load the Logdoc if available
-         _starter.loadLogdoc();
-
-         // Actually bootstrap the API
-         bootProps = _starter.bootstrap(_api);
-
-      // Handle any failures
-      } catch (ServletException se) {
-         _state.setState(EngineState.API_BOOTSTRAP_FAILED);
-         return false;
-      }
-
-      // Create the calling convention manager
-      _conventionManager = new CallingConventionManager(_api);
-
-      // Bootstrap the calling convention manager
-      try {
-         _conventionManager.bootstrap(bootProps);
-
-      // Missing required property
-      } catch (MissingRequiredPropertyException exception) {
-         Log.log_3209(exception.getPropertyName(), exception.getDetail());
-         return false;
-
-      // Invalid property value
-      } catch (InvalidPropertyValueException exception) {
-         Log.log_3210(exception.getPropertyName(),
-                      exception.getPropertyValue(),
-                      exception.getReason());
-         return false;
-
-      // Other bootstrap error
-      } catch (Throwable exception) {
-         Log.log_3211(exception);
-         return false;
-      }
-
-      // Make the API have a link to this Engine
-      _api.setEngine(this);
-
-      // Construct a generator for diagnostic context IDs
-      _contextIDGenerator = new ContextIDGenerator(_api.getName());
-      try {
-         _contextIDGenerator.bootstrap(bootProps);
-      } catch (Exception exception) {
-        return false;
-      }
-
-      // Succeeded
-      return true;
-   }
-
-   /**
-    * Initializes the API using the current runtime settings. This method
-    * should be called whenever the runtime properties changed.
-    *
-    * @return
-    *    <code>true</code> if the initialization succeeded, otherwise
-    *    <code>false</code>.
-    */
-   boolean initAPI() {
-
-      _state.setState(EngineState.INITIALIZING_API);
-
-      // Determine the current runtime properties
-      PropertyReader properties = _configManager.getRuntimeProperties();
-
-      boolean succeeded = false;
-
-      boolean localeInitialized = _configManager.determineLogLocale();
-      if (! localeInitialized) {
-         _state.setState(EngineState.API_INITIALIZATION_FAILED);
-         return false;
-      }
-
-      // Determine at what level should the stack traces be displayed
-      String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
-      if ("true".equals(stackTraceAtMessageLevel)) {
-          LogCentral.setStackTraceAtMessageLevel(true);
-      } else if ("false".equals(stackTraceAtMessageLevel)) {
-          LogCentral.setStackTraceAtMessageLevel(false);
-      } else if (stackTraceAtMessageLevel != null) {
-         _state.setState(EngineState.API_INITIALIZATION_FAILED);
-         return false;
-      }
-
-      try {
-
-         // Determine filter for incoming diagnostic context IDs
-         _contextIDPattern = determineContextIDPattern(properties);
-
-         // Initialize the diagnostic context ID generator
-         _contextIDGenerator.init(properties);
-
-         // Initialize the API
-         _api.init(properties);
-
-         // Initialize the default calling convention for this API
-         _conventionManager.init(properties);
-
-         // Create the string with the supported HTTP methods
-         Iterator it = _conventionManager.getSupportedMethods().iterator();
-         FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS, ");
-         while (it.hasNext()) {
-            String next = (String) it.next();
-            buffer.append(", ");
-            buffer.append(next.toUpperCase());
-         }
-         _supportedMethodsString = buffer.toString();
-
-         succeeded = true;
-
-      // Missing required property
-      } catch (MissingRequiredPropertyException exception) {
-         Log.log_3411(exception.getPropertyName(), exception.getDetail());
-
-      // Invalid property value
-      } catch (InvalidPropertyValueException exception) {
-         Log.log_3412(exception.getPropertyName(),
-                      exception.getPropertyValue(),
-                      exception.getReason());
-
-      // Initialization of API failed for some other reason
-      } catch (InitializationException exception) {
-         Log.log_3413(exception);
-
-      // Unexpected error
-      //
-      // XXX: According to the documentation of the Manageable class, this
-      //      cannot happen.
-      } catch (Throwable exception) {
-         Log.log_3414(exception);
-
-      // Always leave the object in a well-known state
-      } finally {
-         if (succeeded) {
-            _state.setState(EngineState.READY);
-         } else {
-            _state.setState(EngineState.API_INITIALIZATION_FAILED);
-         }
-      }
-
-      return succeeded;
    }
 
    /**
@@ -590,7 +556,7 @@ final class Engine extends Object {
       Log.log_3521(remoteIP, method, requestURI, queryString);
 
       // If the current state is not usable, then return an error immediately
-      EngineState state = _state.getState();
+      EngineState state = _stateMachine.getState();
       if (! state.allowsInvocations()) {
          handleUnusableState(state, request, response);
 
@@ -625,7 +591,7 @@ final class Engine extends Object {
                                     HttpServletResponse response)
    throws IOException {
 
-      // TODO: Logging?
+      // XXX: Log?
 
       if (state.isError()) {
          response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -641,7 +607,8 @@ final class Engine extends Object {
     *
     * @param start
     *    timestamp indicating when the call was received by the framework, in
-    *    milliseconds since the UNIX Epoch.
+    *    milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param request
     *    the servlet request, should not be <code>null</code>.
@@ -717,7 +684,7 @@ final class Engine extends Object {
 
             Utils.logProgrammingError(
                Engine.class.getName(),
-               "delegateToCC(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               "determineCC(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
                _conventionManager.getClass().getName(),
                "getCallingConvention(javax.servlet.http.HttpServletRequest)",
                null,
@@ -740,7 +707,8 @@ final class Engine extends Object {
     *
     * @param start
     *    timestamp indicating when the call was received by the framework, in
-    *    milliseconds since the UNIX Epoch.
+    *    milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
     *
     * @param cc
     *    the calling convention to use, cannot be <code>null</code>.
@@ -779,7 +747,7 @@ final class Engine extends Object {
 
             Utils.logProgrammingError(
                Engine.class.getName(),
-               "invokeFunction(long," + CallingConvention.class.getName() + ",javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
                cc.getClass().getName(),
                "convertRequest(javax.servlet.http.HttpServletRequest)",
                null,
@@ -814,14 +782,14 @@ final class Engine extends Object {
 
             Utils.logProgrammingError(
                Engine.class.getName(),
-               "invokeFunction(long," + CallingConvention.class.getName() + ",javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
+               "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
                _api.getClass().getName(),
-               "handleCall(long," + FunctionRequest.class.getName() + ",java.lang.String)",
+               "handleCall(long,javax.servlet.http.HttpServletRequest,org.xins.server.FunctionRequest)",
                null,
                exception);
          }
 
-         // TODO: Log?
+         // XXX: Log?
 
          // Return the error to the client
          response.sendError(error);
@@ -872,7 +840,7 @@ final class Engine extends Object {
       Log.log_3600();
 
       // Set the state temporarily to DISPOSING
-      _state.setState(EngineState.DISPOSING);
+      _stateMachine.setState(EngineState.DISPOSING);
 
       // Destroy the configuration manager
       if (_configManager != null) {
@@ -899,7 +867,7 @@ final class Engine extends Object {
       }
 
       // Set the state to DISPOSED
-      _state.setState(EngineState.DISPOSED);
+      _stateMachine.setState(EngineState.DISPOSED);
 
       // Log: Shutdown completed
       Log.log_3602();
@@ -915,8 +883,9 @@ final class Engine extends Object {
 
    /**
     * Returns the <code>ServletConfig</code> object which contains the
-    * build properties for this servlet. The returned {@link ServletConfig}
-    * object is the one passed to the constructor.
+    * build-time properties for this servlet. The returned
+    * {@link ServletConfig} object is the one that was passed to the
+    * constructor.
     *
     * @return
     *    the {@link ServletConfig} object that was used to initialize this
