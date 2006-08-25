@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
     CallingConvention and Engine classes have been refactored. Unit tests have
     been added.
   - Replaced log message 3522 by the more generic and more elaborative 3523.
+  - Renamed xiff to xinsff in the XINS Front-end Framework properties.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:

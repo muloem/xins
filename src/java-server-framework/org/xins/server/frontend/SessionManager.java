@@ -69,12 +69,12 @@ public class SessionManager extends Manageable {
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
-      String loginPage = bootstrapProperties.get("xiff.login.page");
+      String loginPage = bootstrapProperties.get("xinsff.login.page");
       if (loginPage != null) {
          _unrestrictedPages.add(loginPage);
          _unrestrictedPages.add("Control");
          _unrestrictedPages.add("Logout");
-         String unrestrictedPages = bootstrapProperties.get("xiff.unrestricted.pages");
+         String unrestrictedPages = bootstrapProperties.get("xinsff.unrestricted.pages");
          if (unrestrictedPages != null && !unrestrictedPages.equals("")) {
             StringTokenizer stUnrestricted = new StringTokenizer(unrestrictedPages, ",", false);
             while (stUnrestricted.hasMoreTokens()) {

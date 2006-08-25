@@ -228,8 +228,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
           BootstrapException {
-      _loginPage = bootstrapProperties.get("xiff.login.page");
-      _defaultCommand = bootstrapProperties.get("xiff.default.command");
+      _loginPage = bootstrapProperties.get("xinsff.login.page");
+      _defaultCommand = bootstrapProperties.get("xinsff.default.command");
       if (_defaultCommand == null) {
          _defaultCommand = "DefaultCommand";
       }
@@ -246,7 +246,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
           InitializationException {
 
       // Get the base directory of the Style Sheet
-      _baseXSLTDir = runtimeProperties.get("templates." + _api.getName() + ".xiff.source");
+      _baseXSLTDir = runtimeProperties.get("templates." + _api.getName() + ".xinsff.source");
       Properties systemProps = System.getProperties();
       _baseXSLTDir = TextUtils.replace(_baseXSLTDir, systemProps, "${", "}");
       _baseXSLTDir = _baseXSLTDir.replace('\\', '/');
@@ -927,7 +927,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       Iterator itProperties = bootstrapProperties.getNames();
       while (itProperties.hasNext()) {
          String nextProp = (String) itProperties.next();
-         if (nextProp.startsWith("xiff.redirect.")) {
+         if (nextProp.startsWith("xinsff.redirect.")) {
             String command = nextProp.substring(14);
             String redirectionPage = bootstrapProperties.get(nextProp);
             // TODO the condition should have the same order as in the XML?
@@ -995,7 +995,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          defaultRedirection = "-";
       }
       String xsltText = currentXSLT;
-      xsltText += "<xsl:otherwise><xsl:text>" + defaultRedirection + "</xsl:text></xsl:otherwise>\n";
+      xsltText += "<xsl:when test='not(param[@name='error.type'])'><xsl:text>" + defaultRedirection + "</xsl:text></xsl:when>\n";
+      xsltText += "<xsl:otherwise><xsl:text>-</xsl:text></xsl:otherwise>\n";
       xsltText += "</xsl:choose></xsl:template></xsl:stylesheet>";
       try {
          StringReader conditionXSLT = new StringReader(xsltText);
