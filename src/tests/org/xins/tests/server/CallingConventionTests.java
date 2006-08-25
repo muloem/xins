@@ -603,7 +603,7 @@ public class CallingConventionTests extends TestCase {
          String line = in.readLine();
 
          // Expect "200 OK"
-         assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request.",
+         assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request for query string \"" + queryString + "\".",
                       "HTTP/1.1 200 OK", line);
 
       // Expect empty body
