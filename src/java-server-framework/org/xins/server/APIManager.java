@@ -339,12 +339,7 @@ public final class APIManager implements APIManagerMBean {
              itemTypes[i] = SimpleType.STRING;
           }
           CompositeType propsType = new CompositeType("Properties type", "properties", keys, keys, itemTypes);
-          //TabularType tabType = new TabularType("bootstrapProperties", "bootstrap properties", propsType, keys);
-          //TabularDataSupport tabSupport = new TabularDataSupport(tabType);
           CompositeDataSupport propsData = new CompositeDataSupport(propsType, properties);
-          //tabSupport.putAll(bootstrapProps);
-          //tabSupport.put(propsData);
-          //return tabSupport;
           return propsData;
        } catch (Exception ex) {
           ex.printStackTrace();
