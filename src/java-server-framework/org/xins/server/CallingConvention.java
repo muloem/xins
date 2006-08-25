@@ -17,6 +17,11 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedPropertyReader;
@@ -71,6 +76,12 @@ abstract class CallingConvention extends Manageable {
     */
    private static final String SERVER_HEADER;
 
+   /**
+    * The pattern object that valid HTTP method names match and invalid ones 
+    * do not.
+    */
+   private static final Pattern HTTP_METHOD_PATTERN;
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -82,7 +93,28 @@ abstract class CallingConvention extends Manageable {
    static {
       CLASSNAME = CallingConvention.class.getName();
 
+      // XXX: This should move somewhere else, as it is unrelated to the 
+      //      calling convention
       SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
+
+      String thisMethod = "<clinit>()";
+      String pattern = "[A-Za-z1-9_-]+";
+      Perl5Compiler compiler = new Perl5Compiler();
+      try {
+         HTTP_METHOD_PATTERN = compiler.compile(pattern,
+                                                Perl5Compiler.READ_ONLY_MASK);
+
+      } catch (MalformedPatternException exception) {
+         String subjectClass  = compiler.getClass().getName();
+         String subjectMethod = "compile(java.lang.String,int)";
+         String detail        = "The pattern \""
+                              + pattern
+                              + "\" is considered malformed.";
+
+         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
+                                         subjectClass, subjectMethod,
+                                         detail,       exception);
+      }
    }
 
    /**
@@ -399,8 +431,31 @@ abstract class CallingConvention extends Manageable {
     *    not be <code>null</code>.
     *
     * @since XINS 1.5.0
+    *
+    * @deprecated
+    *    Deprecated and replaced by {@link #getMetaInfo()}.
     */
    protected abstract String[] supportedMethods();
+
+   /**
+    * Returns meta information describing the characteristics of this calling 
+    * convention.
+    *
+    * <p>This method is called during the initialization procedure for this
+    * <code>CallingConvention</code>, after the
+    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
+    * called.
+    *
+    * @return
+    *    the {@link MetaInfo} for this calling convention, cannot be
+    *    <code>null</code>.
+    *
+    * @since XINS 1.5.0
+    */
+   protected MetaInfo getMetaInfo() {
+      // TODO: Make abstract
+      return null;
+   }
 
    /**
     * Checks if the specified request can be handled by this calling
@@ -1004,9 +1059,14 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Meta information about a calling convention.
+    * Meta information about a calling convention, describing some of its 
+    * characteristics. Currently only contains the supported HTTP methods.
     *
-    * <p>Currently only stores the supported HTTP methods.
+    * <p>When a <code>CallingConvention</code> implementation provides a
+    * <code>MetaInfo</code> object to the XINS framework, then the framework
+    * will make it unmodifiable.
+    *
+    * <p>This class is thread-safe.
     *
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
@@ -1024,6 +1084,7 @@ abstract class CallingConvention extends Manageable {
          _lock             = new Object();
          _unmodifiable     = false;
          _supportedMethods = new HashSet();
+         _matcher          = new Perl5Matcher();
       }
 
 
@@ -1032,8 +1093,8 @@ abstract class CallingConvention extends Manageable {
       //---------------------------------------------------------------------
 
       /**
-       * The lock object. Needs to be synchronized on before {@link #_locked}
-       * can be read or written.
+       * The lock object. Needs to be synchronized on before
+       * {@link #_unmodifiable} can be read or written.
        */
       private final Object _lock;
 
@@ -1049,6 +1110,11 @@ abstract class CallingConvention extends Manageable {
        * The set of supported HTTP methods. Never <code>null</code>.
        */
       private final HashSet _supportedMethods;
+
+      /**
+       * The pattern matcher used. Never <code>null</code>.
+       */
+      private final Perl5Matcher _matcher;
 
 
       //---------------------------------------------------------------------
@@ -1091,25 +1157,23 @@ abstract class CallingConvention extends Manageable {
                throw new IllegalArgumentException("method == null");
             }
 
-            // Convert to upper case
             String upper = method.toUpperCase();
 
             // Check whether the argument is an empty string
-            // TODO: Instead, check that the string matches a pattern
-            if ("".equals(upper)) {
-               throw new IllegalArgumentException("The specified method is an empty string.");
+            if (! _matcher.matches(upper, HTTP_METHOD_PATTERN)) {
+               throw new IllegalArgumentException("The specified method \"" + method + "\" is considered invalid.");
 
             // Disallow the OPTIONS method
-            } else if ("OPTIONS".equals(method)) {
+            } else if ("OPTIONS".equals(upper)) {
                throw new IllegalArgumentException("The \"OPTIONS\" method cannot be used for invoking functions.");
 
             // Check for duplicates
-            } else if (_supportedMethods.contains(method)) {
+            } else if (_supportedMethods.contains(upper)) {
                throw new IllegalArgumentException("The \"" + method + "\" method is already registered as a supported method.");
 
             // Indeed add the method as a supported method
             } else {
-               _supportedMethods.add(method);
+               _supportedMethods.add(upper);
             }
          }
       }
