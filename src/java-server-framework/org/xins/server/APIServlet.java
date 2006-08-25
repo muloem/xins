@@ -40,10 +40,49 @@ import org.xins.common.MandatoryArgumentChecker;
  * <p>If the state is <em>ready</em> then the HTTP status code
  * <code>200 OK</code> is returned.
  *
+ *
+ * <h3>Initialization</h3>
+ *
+ * <p>When the servlet is initialized, it gathers configuration information
+ * from different sources:
+ *
+ * <dl>
+ *    <dt><strong>1. Build-time settings</strong></dt>
+ *    <dd>The application package contains a <code>web.xml</code> file with
+ *        build-time settings. Some of these settings are required in order
+ *        for the XINS/Java Server Framework to start up, while others are
+ *        optional. These build-time settings are passed to the servlet by the
+ *        application server as a {@link ServletConfig} object. See
+ *        {@link #init(ServletConfig)}.
+ *        <br>The servlet configuration is the responsibility of the
+ *        <em>assembler</em>.</dd>
+ *
+ *    <dt><strong>2. System properties</strong></dt>
+ *    <dd>The location of the configuration file must be passed to the Java VM
+ *        at startup, as a system property.
+ *        <br>System properties are the responsibility of the
+ *        <em>system administrator</em>.
+ *        <br>Example:
+ *        <br><code>java -Dorg.xins.server.config=`pwd`/config/xins.properties
+ *        -jar orion.jar</code></dd>
+ *
+ *    <dt><strong>3. Configuration file</strong></dt>
+ *    <dd>The configuration file should contain runtime configuration
+ *        settings, like the settings for the logging subsystem.
+ *        <br>Runtime properties are the responsibility of the
+ *        <em>system administrator</em>.
+ *        <br>Example contents for a configuration file:
+ *        <blockquote><code>log4j.rootLogger=DEBUG, console
+ *           <br>log4j.appender.console=org.apache.log4j.ConsoleAppender
+ *           <br>log4j.appender.console.layout=org.apache.log4j.PatternLayout
+ *           <br>log4j.appender.console.layout.ConversionPattern=%d %-5p [%c]
+ *           %m%n</code></blockquote></dd>
+ * </dl>
+ *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
  *
  * @since XINS 1.0.0
  */
