@@ -86,7 +86,7 @@ abstract class CallingConvention extends Manageable {
    static {
       CLASSNAME = CallingConvention.class.getName();
 
-      // XXX: This should move somewhere else, as it is unrelated to the 
+      // XXX: This should move somewhere else, as it is unrelated to the
       //      calling convention
       SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
    }
@@ -371,7 +371,7 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Returns meta information describing the characteristics of this calling 
+    * Returns meta information describing the characteristics of this calling
     * convention.
     *
     * <p>This method is called during the initialization procedure for this
@@ -844,6 +844,12 @@ abstract class CallingConvention extends Manageable {
     * <code>200 OK</code> with an empty document (content length 0) and the
     * <code>Accept</code> header containing all supported HTTP methods, as
     * indicated by {@link #getInfo()}, plus the <em>OPTIONS</em> method.
+    *
+    * <p>Example implementation:
+    *
+    * <blockquote><code>response.setStatus(HttpServletResponse.SC_OK);
+    * <br>response.setHeader("Accept", "OPTIONS, HEAD, GET, POST");
+    * <br>response.setContentLength(0);</blockquote>
     *
     * @param request
     *    the HTTP request, never <code>null</code>.

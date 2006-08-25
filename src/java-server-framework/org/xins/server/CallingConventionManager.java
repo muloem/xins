@@ -576,9 +576,6 @@ extends Manageable {
       // Only fill the set of supported methods if the initialization 
       // completed successfully
       _supportedMethods.addAll(methods);
-
-      // Add OPTIONS as a supported method
-      _supportedMethods.add("OPTIONS");
    }
 
    /**
@@ -925,11 +922,12 @@ extends Manageable {
    }
 
    /**
-    * Returns the set of supported HTTP methods. This is the union of the 
-    * supported methods for the individual calling conventions, plus the 
-    * <em>OPTIONS</em> method. The latter cannot be used for function 
-    * invocations, only to determine which HTTP methods are available.
-    * See {@link CallingConvention#getSupportedMethods()}.
+    * Returns the set of HTTP methods supported for function invocations. This
+    * is the union of the methods supported by the individual calling
+    * conventions for invoking functions, so excluding the <em>OPTIONS</em>
+    * method. The latter cannot be used for function invocations, only to determine
+    * which HTTP methods are available. See
+    * {@link CallingConvention#getSupportedMethods()}.
     *
     * @return
     *    the {@link Set} of supported HTTP methods, never <code>null</code>.

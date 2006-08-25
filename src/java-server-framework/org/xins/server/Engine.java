@@ -560,9 +560,13 @@ final class Engine extends Object {
       if (! state.allowsInvocations()) {
          handleUnusableState(state, request, response);
 
-      // Support the HTTP method "OPTIONS" for "*"
-      } else if ("OPTIONS".equals(method) && "*".equals(queryString)) {
-         handleOptionsForAll(response);
+      // Support the HTTP method "OPTIONS"
+      } else if ("OPTIONS".equals(method)) {
+         if ("*".equals(queryString)) {
+            handleOptionsForAll(response);
+         } else {
+            delegateToCC(start, request, response);
+         }
 
       // Fail if the method is not supported by any calling convention
       } else if (! _conventionManager.getSupportedMethods().contains(method)) {
