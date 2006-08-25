@@ -91,46 +91,39 @@ public abstract class CustomCallingConvention extends CallingConvention {
    }
 
    /**
-    * Converts an HTTP request to a XINS request (implementation method).
-    * This method should be implemented by your calling convention.
+    * Checks if the specified request can possibly be handled by this calling
+    * convention as a function invocation.
+    *
+    * <p>Implementations of this method should be optimized for performance,
+    * as this method may be called for each incoming request. Also, this
+    * method should not have any side-effects except possibly some caching in
+    * case there is a match.
+    *
+    * <p>The default implementation of this method always returns
+    * <code>true</code>.
+    *
+    * <p>If this method throws any exception, the exception is logged as an
+    * ignorable exception and <code>false</code> is assumed.
+    *
+    * <p>This method should only be called by the XINS/Java Server Framework.
     *
     * @param httpRequest
-    *    the HTTP request, will not be <code>null</code>.
+    *    the HTTP request to investigate, never <code>null</code>.
     *
     * @return
-    *    the XINS request object, should not be <code>null</code>.
+    *    <code>true</code> if this calling convention is <em>possibly</em>
+    *    able to handle this request, or <code>false</code> if it is
+    *    <em>definitely</em> not able to handle this request.
     *
-    * @throws InvalidRequestException
-    *    if the request is considerd to be invalid.
+    * @throws Exception
+    *    if analysis of the request causes an exception; in this case
+    *    <code>false</code> will be assumed by the framework.
     *
-    * @throws FunctionNotSpecifiedException
-    *    if the request does not indicate the name of the function to execute.
+    * @since XINS 1.4.0
     */
-   protected abstract FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
-   throws InvalidRequestException,
-          FunctionNotSpecifiedException;
-
-   /**
-    * Converts a XINS result to an HTTP response (implementation method).
-    * This method should be implemented by your calling convention.
-    *
-    * @param xinsResult
-    *    the XINS result object that should be converted to an HTTP response,
-    *    will not be <code>null</code>.
-    *
-    * @param httpResponse
-    *    the HTTP response object to configure, will not be <code>null</code>.
-    *
-    * @param httpRequest
-    *    the HTTP request, will not be <code>null</code>.
-    *
-    * @throws IOException
-    *    if calling any of the methods in <code>httpResponse</code> causes an
-    *    I/O error.
-    */
-   protected abstract void convertResultImpl(FunctionResult      xinsResult,
-                                             HttpServletResponse httpResponse,
-                                             HttpServletRequest  httpRequest)
-   throws IOException;
+   protected boolean matches(HttpServletRequest httpRequest)
+   throws Exception {
+      return true;
+   }
 
 }

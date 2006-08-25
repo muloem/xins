@@ -445,15 +445,12 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Checks if the specified request can possibly be handled by this calling
-    * convention.
+    * convention as a function invocation.
     *
     * <p>Implementations of this method should be optimized for performance,
     * as this method may be called for each incoming request. Also, this
     * method should not have any side-effects except possibly some caching in
     * case there is a match.
-    *
-    * <p>The default implementation of this method always returns
-    * <code>true</code>.
     *
     * <p>If this method throws any exception, the exception is logged as an
     * ignorable exception and <code>false</code> is assumed.
@@ -474,10 +471,8 @@ abstract class CallingConvention extends Manageable {
     *
     * @since XINS 1.4.0
     */
-   protected boolean matches(HttpServletRequest httpRequest)
-   throws Exception {
-      return true;
-   }
+   protected abstract boolean matches(HttpServletRequest httpRequest)
+   throws Exception;
 
    /**
     * Converts an HTTP request to a XINS request (wrapper method). This method
@@ -573,9 +568,8 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Converts an HTTP request to a XINS request (implementation method). This
-    * method should only be called from class {@link CallingConvention}.
-    *
-    * <p>It is guaranteed that the <code>httpRequest</code> argument is not
+    * method should only be called from the XINS/Java Server Framework self.
+    * Then it is guaranteed that the <code>httpRequest</code> argument is not
     * <code>null</code> and that the HTTP method is in the set of supported
     * methods, as indicated by {@link #getInfo()}.
     *
@@ -677,8 +671,8 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Converts a XINS result to an HTTP response (implementation method). This
-    * method should only be called from class {@link CallingConvention}. Only
-    * then it is guaranteed that none of the arguments is <code>null</code>.
+    * method should only be called from the XINS/Java Server Framework self.
+    * Then it is guaranteed that none of the arguments is <code>null</code>.
     *
     * @param xinsResult
     *    the XINS result object that should be converted to an HTTP response,
