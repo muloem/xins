@@ -65,7 +65,7 @@ abstract class CallingConvention extends Manageable {
    /**
     * Fully-qualified name of this class.
     */
-   private static final String CLASSNAME;
+   private static final String CLASSNAME = CallingConvention.class.getName();
 
    /**
     * The default value of the <code>"Server"</code> header sent with an HTTP
@@ -73,23 +73,13 @@ abstract class CallingConvention extends Manageable {
     * <code>"XINS/Java Server Framework "</code>, followed by the version of
     * the framework.
     */
-   private static final String SERVER_HEADER;
+   private static final String SERVER_HEADER
+      = "XINS/Java Server Framework " + Library.getVersion();
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Initializes all class variables.
-    */
-   static {
-      CLASSNAME = CallingConvention.class.getName();
-
-      // XXX: This should move somewhere else, as it is unrelated to the
-      //      calling convention
-      SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
-   }
 
    /**
     * Changes a parameter set to remove all parameters that should not be
