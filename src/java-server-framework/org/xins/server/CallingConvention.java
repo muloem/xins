@@ -842,6 +842,11 @@ abstract class CallingConvention extends Manageable {
    /**
     * Handles the specified <em>OPTIONS</em> request.
     *
+    * <p>The default implementation of this method returns a
+    * <code>200 OK</code> with an empty document (content length 0) and the
+    * <code>Accept</code> header containing all supported HTTP methods, as
+    * indicated by {@link #getInfo()}, plus the <em>OPTIONS</em> method.
+    *
     * @param request
     *    the HTTP request, never <code>null</code>.
     *
