@@ -1028,7 +1028,8 @@ implements DefaultResultCodes {
    }
 
    /**
-    * Forwards a call to a function. The call will actually be handled by
+    * Forwards a call to a function, using an HTTP request. The call will
+    * actually be handled by
     * {@link Function#handleCall(long,FunctionRequest,String)}.
     *
     * @param start
@@ -1065,6 +1066,50 @@ implements DefaultResultCodes {
           NoSuchFunctionException,
           AccessDeniedException {
 
+      // Forward the request
+      String ip = httpRequest.getRemoteAddr();
+      return handleCall(start, functionRequest, ip);
+   }
+
+   /**
+    * Forwards a call to a function, using an IP address. The call will
+    * actually be handled by
+    * {@link Function#handleCall(long,FunctionRequest,String)}.
+    *
+    * @param start
+    *    the start time of the request, in milliseconds since the
+    *    <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
+    *
+    * @param functionRequest
+    *    the function request, never <code>null</code>.
+    *
+    * @param ip
+    *    the remote IP address, never <code>null</code>.
+    *
+    * @return
+    *    the result of the call, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this object is currently not initialized.
+    *
+    * @throws NullPointerException
+    *    if <code>functionRequest == null</code>.
+    *
+    * @throws NoSuchFunctionException
+    *    if there is no matching function for the specified request.
+    *
+    * @throws AccessDeniedException
+    *    if access is denied for the specified combination of IP address and
+    *    function name.
+    */
+   final FunctionResult handleCall(long               start,
+                                   FunctionRequest    functionRequest,
+                                   String             ip)
+   throws IllegalStateException,
+          NullPointerException,
+          NoSuchFunctionException,
+          AccessDeniedException {
+
       // Check state first
       assertUsable();
 
@@ -1072,7 +1117,6 @@ implements DefaultResultCodes {
       String functionName = functionRequest.getFunctionName();
 
       // Check the access rule list
-      String ip = httpRequest.getRemoteAddr();
       boolean allow = allow(ip, functionName);
       if (! allow) {
          throw new AccessDeniedException(ip, functionName);
