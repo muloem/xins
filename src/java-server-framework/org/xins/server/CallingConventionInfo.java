@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
@@ -180,5 +181,59 @@ public final class CallingConventionInfo extends Object {
             _supportedMethods.add(upper);
          }
       }
+   }
+
+   /**
+    * Locks this object against modifications.
+    *
+    * @return
+    *    <code>true</code> if the locking was successful and 
+    *    <code>false</code> if the object is already locked.
+    */
+   boolean lock() {
+      synchronized (_lock) {
+         if (_unmodifiable) {
+            return false;
+         } else {
+            _unmodifiable = true;
+            return true;
+         }
+      }
+   }
+
+   /**
+    * Unlocks this object, so it can be modified again.
+    *
+    * @return
+    *    <code>true</code> if the unlocking was successful and 
+    *    <code>false</code> if the object was not locked.
+    */
+   boolean unlock() {
+      synchronized (_lock) {
+         if (! _unmodifiable) {
+            return false;
+         } else {
+            _unmodifiable = false;
+            return true;
+         }
+      }
+   }
+
+   /**
+    * Retrieves the set of supported HTTP methods.
+    *
+    * @return
+    *    the set of supported HTTP methods, never <code>null</code>.
+    *
+    * @throws IllegalStateException
+    *    if this object is not locked against modifications.
+    */
+   Set getSupportedMethods() throws IllegalStateException {
+      synchronized (_lock) {
+         if (! _unmodifiable) {
+            throw new IllegalStateException("This object is not locked against modifications.");
+         }
+      }
+      return _supportedMethods;
    }
 }

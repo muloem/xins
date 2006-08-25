@@ -44,8 +44,10 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines which HTTP methods are supported by this calling convention.
-    * This method is called during the initialization procedure for this
+    * Returns meta information describing the characteristics of this calling 
+    * convention.
+    *
+    * <p>This method is called during the initialization procedure for this
     * <code>CallingConvention</code>, after the
     * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
     * called.
@@ -60,15 +62,32 @@ public abstract class CustomCallingConvention extends CallingConvention {
     *    <li><em>POST</em>
     * </ul>
     *
-    * <p>Sublasses may override this method to return a different set of
-    * supported HTTP methods.
+    * <p>Sublasses are encouraged to override this method to return a
+    * different set of supported HTTP methods.
+    *
+    * <p>Example implementation:
+    *
+    * <blockquote><code>protected CallingConventionInfo getInfo() {
+    * <br>&nbsp;&nbsp;&nbsp;CallingConventionInfo info = new CallingConventionInfo();
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("HEAD");
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("GET");
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("POST");
+    * <br>&nbsp;&nbsp;&nbsp;return info;
+    * <br>}</code></blockquote>
+    *
+    * <p>Note: As of XINS 2.0, this method may become <code>abstract</code>,
+    * so that subclasses will <em>have</em> to implement it.
     *
     * @return
-    *    the HTTP methods supported, in a <code>String</code> array, never
+    *    the meta information for this calling convention, cannot be
     *    <code>null</code>.
     */
-   protected final String[] supportedMethods() {
-      return new String[] { "HEAD", "GET", "POST" };
+   protected CallingConventionInfo getInfo() {
+      CallingConventionInfo info = new CallingConventionInfo();
+      info.addSupportedMethod("HEAD");
+      info.addSupportedMethod("GET");
+      info.addSupportedMethod("POST");
+      return info;
    }
 
    /**

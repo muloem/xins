@@ -618,8 +618,6 @@ extends Manageable {
 
       try {
          cc.init(properties);
-         cc.determineSupportedMethods();
-         Log.log_3436(name);
 
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
@@ -637,6 +635,27 @@ extends Manageable {
       // by previous catch statements
       } catch (Throwable exception) {
          Log.log_3439(exception, name);
+      }
+
+      // Determine the HTTP methods supported for function invocations. If 
+      // this fails, the the calling convention should not be considered 
+      // usable.
+      try {
+         cc.determineSupportedMethods();
+         Log.log_3436(name);
+      } catch (Throwable exception) {
+         Log.log_3439(exception, name);
+         try {
+            cc.deinit();
+         } catch (Throwable ignored) {
+            String thisClass  = CallingConventionManager.class.getName();
+            String thisMethod = "init(java.lang.String,"
+                              + "org.xins.server.CallingConvention,"
+                              + "org.xins.common.collections.PropertyReader)";
+            Utils.logIgnoredException(thisClass,               thisMethod,
+                                      cc.getClass().getName(), "deinit()",
+                                      ignored);
+         }
       }
    }
 

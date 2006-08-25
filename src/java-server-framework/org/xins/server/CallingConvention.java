@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -43,8 +42,8 @@ import org.xins.common.xml.ElementParser;
  * the <em>Singleton</em> pattern can be applied.
  *
  * <p>Any HTTP method except <em>OPTIONS</em> can be used to invoke functions.
- * The method {@link #supportedMethods()} should be implemented by subclasses
- * to indicate which HTTP methods it supports exactly.
+ * The method {@link #getInfo()} must be implemented by subclasses to
+ * indicate which HTTP methods it supports for function invocations.
  *
  * <p>All <em>OPTIONS</em> requests are picked up by the framework and are
  * passed to the
@@ -214,7 +213,7 @@ abstract class CallingConvention extends Manageable {
     * The set of supported HTTP methods. Is initialized by
     * {@link #determineSupportedMethods()}.
     */
-   private HashSet _supportedMethods;
+   private Set _supportedMethods;
 
    /**
     * The set of supported HTTP methods, as a comma-separated string. Is
@@ -247,8 +246,8 @@ abstract class CallingConvention extends Manageable {
     * <p>If the supported HTTP methods cannot be determined, then an
     * {@link InitializationException} is thrown.
     *
-    * <p>This method uses the {@link #supportedMethods()} method, which
-    * must be implemented by subclasses, to determine the supported methods.
+    * <p>This method uses the {@link #getInfo()} method, which must be
+    * implemented by subclasses, to determine the supported methods.
     * When this is determined, this list is stored internally. Use
     * {@link #isSupportedMethod(String)} to determine at runtime whether an
     * HTTP method is actually supported by this calling convention.
@@ -270,61 +269,51 @@ abstract class CallingConvention extends Manageable {
       assertUsable();
 
       // Call the subclass implementation
-      String[] array;
+      CallingConventionInfo info;
       try {
-         array = supportedMethods();
+         info = getInfo();
 
-      // Method supportedMethods() should not throw any exception
+      // Method getInfo() should not throw any exception
       } catch (Throwable exception) {
          throw new InitializationException(exception);
       }
 
       // Prepare the base error message, which acts as the prefix for all
       // actual error messages produced by the code below
-      String baseError = "Method supportedMethods() in calling convention "
+      String baseError = "Method getInfo() in calling convention "
                        + "implementation class \""
                        + getClass().getName()
                        + "\" returns ";
 
       // The returned value cannot be null
-      if (array == null) {
+      if (info == null) {
          String error = baseError + "null.";
          throw new InitializationException(error);
       }
 
-      // Loop through all array items
-      HashSet set = new HashSet();
-      for (int i = 0; i < array.length; i++) {
-
-         String method = array[i];
-
-         // Null elements are not allowed
-         if (method == null) {
-            String error = baseError + "the HTTP method (null).";
-            throw new InitializationException(error);
-
-         // Empty strings are not allowed
-         } else if ("".equals(method.trim())) {
-            String error = baseError + "an empty HTTP method.";
-            throw new InitializationException(error);
-
-         // Handle all but the "OPTIONS" method, as it is implicitly supported
-         } else if (! "OPTIONS".equals(method)) {
-
-            // Add to the set (ignoring duplicates)
-            String upper = method.toUpperCase();
-            set.add(upper);
-         }
+      // The object may already be locked for modifications
+      if (! info.lock()) {
+         String error = baseError
+                      + "a CallingConventionInfo object that is already "
+                      + "locked for modifications.";
+         throw new InitializationException(error);
       }
+
+      // Get the set of HTTP methods supported for function invocations
+      Set set = info.getSupportedMethods();
 
       // At least one HTTP method must be supported
       if (set.size() < 1) {
-         throw new InitializationException("No HTTP method is supported. At least one must be supported, separate from the OPTIONS method.");
+         String error = baseError
+                      + "a CallingConventionInfo object that specifies no "
+                      + "HTTP methods usable for function invocations. At "
+                      + "least one must be supported.";
+         throw new InitializationException(error);
       }
 
       // Convert to a string
       Iterator it = set.iterator();
-      FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS, ");
+      FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS");
       while (it.hasNext()) {
          String next = (String) it.next();
          buffer.append(", ");
@@ -382,34 +371,6 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Determines which HTTP methods are supported by this calling convention.
-    * This method is called during the initialization procedure for this
-    * <code>CallingConvention</code>, after the
-    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
-    * called.
-    *
-    * <p>Each <code>String</code> in the returned array should be one
-    * supported method, case-insensitive.
-    *
-    * <p>The returned array should not be <code>null</code>, it should not
-    * contain any <code>null</code> values and it should only contain
-    * recognized HTTP methods. It may contain duplicates.
-    *
-    * <p>Note that <em>OPTIONS</em> must not be returned by this method, as it
-    * is not an HTTP method that can be used to invoke a XINS function.
-    *
-    * @return
-    *    the HTTP methods supported, in a <code>String</code> array, should
-    *    not be <code>null</code>.
-    *
-    * @since XINS 1.5.0
-    *
-    * @deprecated
-    *    Deprecated and replaced by {@link #getInfo()}.
-    */
-   protected abstract String[] supportedMethods();
-
-   /**
     * Returns meta information describing the characteristics of this calling 
     * convention.
     *
@@ -424,10 +385,7 @@ abstract class CallingConvention extends Manageable {
     *
     * @since XINS 1.5.0
     */
-   protected CallingConventionInfo getInfo() {
-      // TODO: Make abstract
-      return null;
-   }
+   protected abstract CallingConventionInfo getInfo();
 
    /**
     * Checks if the specified request can be handled by this calling
@@ -619,7 +577,7 @@ abstract class CallingConvention extends Manageable {
     *
     * <p>It is guaranteed that the <code>httpRequest</code> argument is not
     * <code>null</code> and that the HTTP method is in the set of supported
-    * methods, as indicated by {@link #supportedMethods()}.
+    * methods, as indicated by {@link #getInfo()}.
     *
     * @param httpRequest
     *    the HTTP request, will not be <code>null</code>.

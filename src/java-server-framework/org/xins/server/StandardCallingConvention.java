@@ -75,25 +75,24 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines which HTTP methods are supported by this calling convention.
-    * This method is called during the initialization procedure for this
+    * Returns meta information describing the characteristics of this calling 
+    * convention.
+    *
+    * <p>This method is called during the initialization procedure for this
     * <code>CallingConvention</code>, after the
     * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
     * called.
     *
-    * <p>This calling convention supports the following HTTP methods:
-    * <ul>
-    *    <li>HEAD
-    *    <li>GET
-    *    <li>POST
-    * </ul>
-    *
     * @return
-    *    the HTTP methods supported, in a <code>String</code> array, never
+    *    the meta information for this calling convention, cannot be
     *    <code>null</code>.
     */
-   protected final String[] supportedMethods() {
-      return new String[] { "HEAD", "GET", "POST" };
+   protected CallingConventionInfo getInfo() {
+      CallingConventionInfo info = new CallingConventionInfo();
+      info.addSupportedMethod("HEAD");
+      info.addSupportedMethod("GET");
+      info.addSupportedMethod("POST");
+      return info;
    }
 
    /**
