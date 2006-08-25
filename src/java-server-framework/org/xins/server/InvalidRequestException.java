@@ -12,9 +12,9 @@ import org.xins.logdoc.ExceptionUtils;
  * Exception that indicates that an incoming request is considered invalid.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
-public final class InvalidRequestException
+public class InvalidRequestException
 extends Exception {
 
    //-------------------------------------------------------------------------
@@ -48,9 +48,4 @@ extends Exception {
    public InvalidRequestException(String message) {
       this(message, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }
