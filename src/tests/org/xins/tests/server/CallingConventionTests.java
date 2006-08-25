@@ -848,6 +848,7 @@ public class CallingConventionTests extends TestCase {
 
             out.println(method + " " + queryString + " HTTP/1.1");
             out.println("Host: " + AllTests.host());
+            out.println("Content-Length: 0");
             out.println();
             out.println();
 
@@ -885,6 +886,7 @@ public class CallingConventionTests extends TestCase {
 
             out.println(method + " " + queryString + " HTTP/1.1");
             out.println("Host: " + AllTests.host());
+            out.println("Content-Length: 0");
             out.println();
             out.println();
 
@@ -893,7 +895,7 @@ public class CallingConventionTests extends TestCase {
             int available = in.available();
             int interval = 300;
             long passed = 0L;
-            while (available < expected.length() && passed < timeout) {
+            while (available < (expected.length() + 1) && passed < timeout) {
                Thread.sleep(interval);
                passed += interval;
                available = in.available();
@@ -904,11 +906,11 @@ public class CallingConventionTests extends TestCase {
             String string = new String(buffer);
 
             if (available < expected.length()) {
-               fail("Received insufficient output (" + buffer.length + " bytes) after waiting " + passed + " ms. Output received: \"" + string + "\".");
+               fail("Received insufficient output (" + buffer.length + " bytes) after waiting " + passed + " ms. Output received: \"" + string + "\". Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.");
                return;
             }
 
-            int index = string.indexOf('\n');
+            int index = string.indexOf('\r');
             String line = string.substring(0, index);
 
             // Expect "501 Not Implemented"
