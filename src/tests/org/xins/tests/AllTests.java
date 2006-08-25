@@ -23,9 +23,11 @@ public class AllTests extends TestSuite {
    // Class fields
    //-------------------------------------------------------------------------
 
-   public static HTTPServletHandler HTTP_SERVER;
-
    private static final int DEFAULT_PORT = 9123;
+
+   private static final boolean RUN_SERVER = true;
+
+   public static HTTPServletHandler HTTP_SERVER;
 
 
    //-------------------------------------------------------------------------
@@ -37,6 +39,9 @@ public class AllTests extends TestSuite {
     *
     * @return
     *    the port to run the server on.
+    *
+    * @deprecated
+    *    Use {@link #port()} instead.
     */
    public static final int getPort() {
       return DEFAULT_PORT;
@@ -59,7 +64,7 @@ public class AllTests extends TestSuite {
     *    the port, for example <code>80</code>.
     */
    public static final int port() {
-      return HTTP_SERVER.getPort();
+      return DEFAULT_PORT;
    }
 
    /**
@@ -83,7 +88,9 @@ public class AllTests extends TestSuite {
       TestSuite suite = new TestSuite();
 
       // Start the server
-      suite.addTestSuite(StartServer.class);
+      if (RUN_SERVER) {
+         suite.addTestSuite(StartServer.class);
+      }
 
       //
       // Add all tests
@@ -194,7 +201,9 @@ public class AllTests extends TestSuite {
       //suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
 
       // Stop the server
-      suite.addTestSuite(StopServer.class);
+      if (RUN_SERVER) {
+         suite.addTestSuite(StopServer.class);
+      }
 
       return suite;
    }
