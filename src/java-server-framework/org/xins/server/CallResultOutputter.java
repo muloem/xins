@@ -28,10 +28,12 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * <p>The result output is always in the UTF-8 encoding.
  *
+ * <p>Note: This class may become package-private as of XINS 2.0.
+ *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
-public final class CallResultOutputter {
+public final class CallResultOutputter extends Object {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -253,9 +255,4 @@ public final class CallResultOutputter {
    private CallResultOutputter() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }
