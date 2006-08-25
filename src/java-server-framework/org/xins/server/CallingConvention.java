@@ -76,12 +76,6 @@ abstract class CallingConvention extends Manageable {
     */
    private static final String SERVER_HEADER;
 
-   /**
-    * The pattern object that valid HTTP method names match and invalid ones 
-    * do not.
-    */
-   private static final Pattern HTTP_METHOD_PATTERN;
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -96,25 +90,6 @@ abstract class CallingConvention extends Manageable {
       // XXX: This should move somewhere else, as it is unrelated to the 
       //      calling convention
       SERVER_HEADER = "XINS/Java Server Framework " + Library.getVersion();
-
-      String thisMethod = "<clinit>()";
-      String pattern = "[A-Za-z1-9_-]+";
-      Perl5Compiler compiler = new Perl5Compiler();
-      try {
-         HTTP_METHOD_PATTERN = compiler.compile(pattern,
-                                                Perl5Compiler.READ_ONLY_MASK);
-
-      } catch (MalformedPatternException exception) {
-         String subjectClass  = compiler.getClass().getName();
-         String subjectMethod = "compile(java.lang.String,int)";
-         String detail        = "The pattern \""
-                              + pattern
-                              + "\" is considered malformed.";
-
-         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                         subjectClass, subjectMethod,
-                                         detail,       exception);
-      }
    }
 
    /**
@@ -423,9 +398,6 @@ abstract class CallingConvention extends Manageable {
     * <p>Note that <em>OPTIONS</em> must not be returned by this method, as it
     * is not an HTTP method that can be used to invoke a XINS function.
     *
-    * <p>TODO: Change this method to be more generic and return a MetaInfo
-    * instance. Then we can extend this in the future.
-    *
     * @return
     *    the HTTP methods supported, in a <code>String</code> array, should
     *    not be <code>null</code>.
@@ -433,7 +405,7 @@ abstract class CallingConvention extends Manageable {
     * @since XINS 1.5.0
     *
     * @deprecated
-    *    Deprecated and replaced by {@link #getMetaInfo()}.
+    *    Deprecated and replaced by {@link #getInfo()}.
     */
    protected abstract String[] supportedMethods();
 
@@ -447,12 +419,12 @@ abstract class CallingConvention extends Manageable {
     * called.
     *
     * @return
-    *    the {@link MetaInfo} for this calling convention, cannot be
+    *    the meta information for this calling convention, cannot be
     *    <code>null</code>.
     *
     * @since XINS 1.5.0
     */
-   protected MetaInfo getMetaInfo() {
+   protected CallingConventionInfo getInfo() {
       // TODO: Make abstract
       return null;
    }
@@ -1051,131 +1023,5 @@ abstract class CallingConvention extends Manageable {
       }
 
       return value;
-   }
-
-
-   //------------------------------------------------------------------------
-   // Inner classes
-   //------------------------------------------------------------------------
-
-   /**
-    * Meta information about a calling convention, describing some of its 
-    * characteristics. Currently only contains the supported HTTP methods.
-    *
-    * <p>When a <code>CallingConvention</code> implementation provides a
-    * <code>MetaInfo</code> object to the XINS framework, then the framework
-    * will make it unmodifiable.
-    *
-    * <p>This class is thread-safe.
-    *
-    * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
-    */
-   public static final class MetaInfo extends Object {
-
-      //---------------------------------------------------------------------
-      // Constructors
-      //---------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>MetaInfo</code> object.
-       */
-      public MetaInfo() {
-         _lock             = new Object();
-         _unmodifiable     = false;
-         _supportedMethods = new HashSet();
-         _matcher          = new Perl5Matcher();
-      }
-
-
-      //---------------------------------------------------------------------
-      // Fields
-      //---------------------------------------------------------------------
-
-      /**
-       * The lock object. Needs to be synchronized on before
-       * {@link #_unmodifiable} can be read or written.
-       */
-      private final Object _lock;
-
-      /**
-       * Flag that indicates whether this instance has been locked to avoid 
-       * further modifications. Initially <code>false</code>.
-       *
-       * <p>Synchronize on {@link #_lock} before accessing this field.
-       */
-      private boolean _unmodifiable;
-
-      /**
-       * The set of supported HTTP methods. Never <code>null</code>.
-       */
-      private final HashSet _supportedMethods;
-
-      /**
-       * The pattern matcher used. Never <code>null</code>.
-       */
-      private final Perl5Matcher _matcher;
-
-
-      //---------------------------------------------------------------------
-      // Methods
-      //---------------------------------------------------------------------
-
-      /**
-       * Adds the specified HTTP method as a method supported for invoking
-       * functions.
-       *
-       * <p>Note that the <em>OPTIONS</em> method can never be used to invoke
-       * a function. Instead, it is used to determine which HTTP methods a
-       * server supports for a specific resource.
-       *
-       * @param method
-       *    the supported HTTP method, must be a valid HTTP method name,
-       *    cannot be <code>null</code> or empty and cannot be
-       *    <code>"OPTIONS"</code>.
-       *
-       * @throws IllegalStateException
-       *    if this <code>MetaInfo</code> instance has already been locked and
-       *    cannot be modified anymore.
-       *
-       * @throws IllegalArgumentException
-       *    if the specified method is a duplicate of a method already
-       *    registered with this object, or if it is invalid in some other
-       *    way.
-       */
-      public void addSupportedMethod(String method)
-      throws IllegalStateException, IllegalArgumentException {
-
-         synchronized (_lock) {
-
-            // Check whether this object is modifiable
-            if (_unmodifiable) {
-               throw new IllegalStateException("No longer modifiable.");
-
-            // Check whether the argument is null
-            } else if (method == null) {
-               throw new IllegalArgumentException("method == null");
-            }
-
-            String upper = method.toUpperCase();
-
-            // Check whether the argument is an empty string
-            if (! _matcher.matches(upper, HTTP_METHOD_PATTERN)) {
-               throw new IllegalArgumentException("The specified method \"" + method + "\" is considered invalid.");
-
-            // Disallow the OPTIONS method
-            } else if ("OPTIONS".equals(upper)) {
-               throw new IllegalArgumentException("The \"OPTIONS\" method cannot be used for invoking functions.");
-
-            // Check for duplicates
-            } else if (_supportedMethods.contains(upper)) {
-               throw new IllegalArgumentException("The \"" + method + "\" method is already registered as a supported method.");
-
-            // Indeed add the method as a supported method
-            } else {
-               _supportedMethods.add(upper);
-            }
-         }
-      }
    }
 }

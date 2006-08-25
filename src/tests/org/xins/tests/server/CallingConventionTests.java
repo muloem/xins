@@ -30,7 +30,7 @@ import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
-import org.xins.server.CustomCallingConvention;
+import org.xins.server.CallingConventionInfo;
 
 import org.xins.tests.AllTests;
 
@@ -778,8 +778,8 @@ public class CallingConventionTests extends TestCase {
       assertEquals(message, expected, actual);
    }
 
-   public void testCallingConventionMetaInfo() throws Exception {
-      CustomCallingConvention.MetaInfo m = new CustomCallingConvention.MetaInfo();
+   public void testCallingConventionInfo() throws Exception {
+      CallingConventionInfo m = new CallingConventionInfo();
       String[] invalid = new String[] { null, "", " ", " POST", "POST ",
                                         "PO ST", "PO,ST", "OPTIONS",
                                         "options" };
