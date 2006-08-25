@@ -591,19 +591,20 @@ public class CallingConventionTests extends TestCase {
 
       // Prepare a connection
       Socket socket = new Socket(AllTests.host(), AllTests.port());
-      PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      try {
+         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-      out.println("OPTIONS " + queryString + " HTTP/1.1");
-      out.println("Host: " + AllTests.host());
-      out.println();
-      out.println();
+         out.println("OPTIONS " + queryString + " HTTP/1.1");
+         out.println("Host: " + AllTests.host());
+         out.println();
+         out.println();
 
-      String line = in.readLine();
+         String line = in.readLine();
 
-      // Expect "200 OK"
-      assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request.",
-                   "HTTP/1.1 200 OK", line);
+         // Expect "200 OK"
+         assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request.",
+                      "HTTP/1.1 200 OK", line);
 
       // Expect empty body
       /*
@@ -611,13 +612,13 @@ public class CallingConventionTests extends TestCase {
                  returnedData == null || returnedData.length == 0);
       */
 
-      line = in.readLine();
-      line = line.toUpperCase();
-      while (! line.startsWith("ACCEPT:")) {
          line = in.readLine();
-      }
+         line = line.toUpperCase();
+         while (! line.startsWith("ACCEPT:")) {
+            line = in.readLine();
+         }
 
-      String acceptHeader = line.substring(7).trim();
+         String acceptHeader = line.substring(7).trim();
       
 /*
       // Expect "Accept" field in the response
@@ -629,14 +630,21 @@ public class CallingConventionTests extends TestCase {
       assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to have a non-empty value.", acceptHeader.trim().length() > 0);
 */
 
-      List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
+         List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
 
-      for (int i = 0; i < yes.length; i++) {
-         assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + yes[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(yes[i]));
-      }
+         for (int i = 0; i < yes.length; i++) {
+            assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + yes[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(yes[i]));
+         }
 
-      for (int i = 0; i < no.length; i++) {
-         assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
+         for (int i = 0; i < no.length; i++) {
+            assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
+         }
+      } finally {
+         try {
+            socket.close();
+         } catch (Throwable exception) {
+            // ignore
+         }
       }
    }
 
@@ -834,19 +842,27 @@ public class CallingConventionTests extends TestCase {
          String method = unsupported[i];
 
          Socket socket = new Socket(AllTests.host(), AllTests.port());
-         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+         try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-         out.println(method + " " + queryString + " HTTP/1.1");
-         out.println("Host: " + AllTests.host());
-         out.println();
-         out.println();
+            out.println(method + " " + queryString + " HTTP/1.1");
+            out.println("Host: " + AllTests.host());
+            out.println();
+            out.println();
 
-         String line = in.readLine();
+            String line = in.readLine();
 
-         // Expect "405 Method Not Allowed"
-         assertEquals("Expected HTTP status code 405 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
-                      "HTTP/1.1 405 Method Not Allowed", line);
+            // Expect "405 Method Not Allowed"
+            assertEquals("Expected HTTP status code 405 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
+                         "HTTP/1.1 405 Method Not Allowed", line);
+         } finally {
+            try {
+               socket.close();
+            } catch (Throwable exception) {
+               // ignore
+            }
+         }
       }
    }
 
@@ -855,7 +871,7 @@ public class CallingConventionTests extends TestCase {
     */
    public void testUnknownHTTPMethods() throws Exception {
 
-      String[] unsupported = new String[] { "POLL",  "JO-JO", };
+      String[] unsupported = new String[] { "PUT", "DELETE", "POLL",  "JO-JO", };
 
       String queryString = "/?_convention=_xins-xml";
 
@@ -863,19 +879,48 @@ public class CallingConventionTests extends TestCase {
          String method = unsupported[i];
 
          Socket socket = new Socket(AllTests.host(), AllTests.port());
-         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+         try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            InputStream in = socket.getInputStream();
 
-         out.println(method + " " + queryString + " HTTP/1.1");
-         out.println("Host: " + AllTests.host());
-         out.println();
-         out.println();
+            out.println(method + " " + queryString + " HTTP/1.1");
+            out.println("Host: " + AllTests.host());
+            out.println();
+            out.println();
 
-         String line = in.readLine();
+            String expected = "HTTP/1.1 501 Not Implemented";
+            long timeout = 4000L;
+            int available = in.available();
+            int interval = 300;
+            long passed = 0L;
+            while (available < expected.length() && passed < timeout) {
+               Thread.sleep(interval);
+               passed += interval;
+               available = in.available();
+            }
 
-         // Expect "501 Not Implemented"
-         assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
-                      "HTTP/1.1 501 Not Implemented", line);
+            byte[] buffer = new byte[available];
+            in.read(buffer);
+            String string = new String(buffer);
+
+            if (available < expected.length()) {
+               fail("Received insufficient output (" + buffer.length + " bytes) after waiting " + passed + " ms. Output received: \"" + string + "\".");
+               return;
+            }
+
+            int index = string.indexOf('\n');
+            String line = string.substring(0, index);
+
+            // Expect "501 Not Implemented"
+            assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
+                         expected, line);
+         } finally {
+            try {
+               socket.close();
+            } catch (Throwable exception) {
+               // ignore
+            }
+         }
       }
    }
 }
