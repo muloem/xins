@@ -609,8 +609,8 @@
 			<description>HTTP request cannot be processed. Returning HTTP status code indicating an error.</description>
 			<param name="ip"          type="text"  nullable="false" />
 			<param name="method"      type="text"  nullable="false" />
-			<param name="path"        type="text"  nullable="false" />
-			<param name="queryString" type="text"  nullable="false" />
+			<param name="path"        type="text"  nullable="true"  />
+			<param name="queryString" type="text"  nullable="true"  />
 			<param name="statusCode"  type="int32" nullable="false" />
 			<param name="reason"      type="text"  nullable="true"  />
 		</entry>
