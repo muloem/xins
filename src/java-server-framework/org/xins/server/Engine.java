@@ -631,7 +631,22 @@ final class Engine extends Object {
    private void handleUnknownMethod(HttpServletRequest  request,
                                     HttpServletResponse response)
    throws IOException {
-      response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+
+      int statusCode = HttpServletResponse.SC_NOT_IMPLEMENTED;
+      String method = request.getMethod();
+      String reason = "The HTTP method \""
+                    + method
+                    + "\" is not known by any of the usable calling "
+                    + "conventions.";
+      Log.log_3523(request.getRemoteAddr(),
+                   method,
+                   request.getRequestURI(),
+                   request.getQueryString(),
+                   statusCode,
+                   reason);
+
+      // Send the HTTP status code to the client
+      response.sendError(statusCode);
    }
 
    /**
@@ -714,7 +729,7 @@ final class Engine extends Object {
          String reason;
          if (exception instanceof InvalidRequestException) {
             statusCode = HttpServletResponse.SC_BAD_REQUEST;
-            reason     = "Unable to determine appropriate calling convention";
+            reason     = "Unable to activate appropriate calling convention";
             String exceptionMessage = exception.getMessage();
             if (TextUtils.isEmpty(exceptionMessage)) {
                reason += '.';
@@ -787,16 +802,38 @@ final class Engine extends Object {
       // considered a programming error.
       } catch (Throwable exception) {
 
-         // Determine the HTTP status code
-         int statusCode;
+         int    statusCode;
+         String reason;
+
+         // Unsupported HTTP method
          if (exception instanceof UnsupportedMethodException) {
             statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+            reason     = "Calling convention \""
+                       + cc.getClass().getName()
+                       + "\" cannot process the request";
+            String exceptionMessage = exception.getMessage();
+            if (! TextUtils.isEmpty(exceptionMessage)) {
+               reason += ": " + exceptionMessage;
+            } else {
+               reason += '.';
+            }
          } else if (exception instanceof InvalidRequestException) {
             statusCode = HttpServletResponse.SC_BAD_REQUEST;
+            reason     = "Calling convention \""
+                       + cc.getClass().getName()
+                       + "\" cannot process the request";
+            String exceptionMessage = exception.getMessage();
+            if (! TextUtils.isEmpty(exceptionMessage)) {
+               reason += ": " + exceptionMessage;
+            } else {
+               reason += '.';
+            }
          } else if (exception instanceof FunctionNotSpecifiedException) {
             statusCode = HttpServletResponse.SC_NOT_FOUND;
+            reason     = "Cannot determine which function to invoke.";
          } else {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            reason     = "Internal error.";
 
             Utils.logProgrammingError(
                Engine.class.getName(),
@@ -808,9 +845,6 @@ final class Engine extends Object {
          }
 
          // Log
-         String reason = "Calling convention \""
-                       + cc.getClass().getName()
-                       + "\" is unable to parse the request.";
          Log.log_3523(request.getRemoteAddr(),
                       request.getMethod(),
                       request.getRequestURI(),
@@ -832,13 +866,26 @@ final class Engine extends Object {
       // AccessDeniedException. Other exceptions are considered to indicate
       // a programming error.
       } catch (Throwable exception) {
-         int error;
+
+         int    statusCode;
+         String reason;
+
+         // Access denied
          if (exception instanceof AccessDeniedException) {
-            error = HttpServletResponse.SC_FORBIDDEN;
+            statusCode = HttpServletResponse.SC_FORBIDDEN;
+            reason     = "Access is denied.";
+
+         // No such function
          } else if (exception instanceof NoSuchFunctionException) {
-            error = HttpServletResponse.SC_NOT_FOUND;
+            statusCode = HttpServletResponse.SC_NOT_FOUND;
+            reason     = "The specified function \""
+                       + xinsRequest.getFunctionName()
+                       + "\" is unknown.";
+
+         // Internal error
          } else {
-            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            reason     = "Internal error while processing function call.";
 
             Utils.logProgrammingError(
                Engine.class.getName(),
@@ -849,10 +896,16 @@ final class Engine extends Object {
                exception);
          }
 
-         // XXX: Log?
+         // Log
+         Log.log_3523(request.getRemoteAddr(),
+                      request.getMethod(),
+                      request.getRequestURI(),
+                      request.getQueryString(),
+                      statusCode,
+                      reason);
 
-         // Return the error to the client
-         response.sendError(error);
+         // Send the HTTP status code to the client
+         response.sendError(statusCode);
          return;
       }
 
