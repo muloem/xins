@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
     DELETE, etc. Support for the OPTIONS method has been implemented and the
     CallingConvention and Engine classes have been refactored. Unit tests have
     been added.
+  - Replaced log message 3522 by the more generic and more elaborative 3523.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:

@@ -137,7 +137,8 @@
 
 	<translation entry="3520">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Received HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />, path is <value-of-param name="path" format="quoted" />, query string is <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="3522">Function invocation cancelled. Returning HTTP code <value-of-param name="httpCode" />.</translation>
+	<!-- XXX: Removed 3522 here (@since XINS 1.5.0) -->
+	<translation entry="3523">Unable to process HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />, path is <value-of-param name="path" format="quoted" />, query string is <value-of-param name="queryString" format="quoted" />. Returning HTTP status code <value-of-param name="statusCode" />. Reason: <value-of-param name="reason" format="quoted" />.</translation>
 
 	<translation entry="3540"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /> <value-of-param name="inParams" /> <value-of-param name="outParams" /></translation>
 	<translation entry="3541"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /></translation>

@@ -551,9 +551,9 @@ final class Engine extends Object {
       // Log that we have received an HTTP request
       String remoteIP    = request.getRemoteAddr();
       String method      = request.getMethod().toUpperCase();
-      String requestURI  = request.getRequestURI();
+      String path        = request.getRequestURI();
       String queryString = request.getQueryString();
-      Log.log_3521(remoteIP, method, requestURI, queryString);
+      Log.log_3521(remoteIP, method, path, queryString);
 
       // If the current state is not usable, then return an error immediately
       EngineState state = _stateMachine.getState();
@@ -563,6 +563,10 @@ final class Engine extends Object {
       // Support the HTTP method "OPTIONS" for "*"
       } else if ("OPTIONS".equals(method) && "*".equals(queryString)) {
          handleOptionsForAll(response);
+
+      // Fail if the method is not supported by any calling convention
+      } else if (! _conventionManager.getSupportedMethods().contains(method)) {
+         handleUnknownMethod(request, response);
 
       // The request should be handled by a calling convention
       } else {
@@ -591,13 +595,43 @@ final class Engine extends Object {
                                     HttpServletResponse response)
    throws IOException {
 
-      // XXX: Log?
+      // Determine the HTTP status code
+      int statusCode = state.isError()
+                     ? HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+                     : HttpServletResponse.SC_SERVICE_UNAVAILABLE;
 
-      if (state.isError()) {
-         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      } else {
-         response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-      }
+      // Log
+      String reason = "XINS/Java Server Framework engine state \""
+                    + state
+                    + "\" does not allow incoming requests.";
+      Log.log_3523(request.getRemoteAddr(),
+                   request.getMethod(),
+                   request.getRequestURI(),
+                   request.getQueryString(),
+                   statusCode,
+                   reason);
+
+      // Send the HTTP status code to the client
+      response.sendError(statusCode);
+   }
+
+   /**
+    * Handles an incoming request that specifies an HTTP method that not 
+    * supported by any of the calling conventions.
+    *
+    * @param request
+    *    the servlet request, should not be <code>null</code>.
+    *
+    * @param response
+    *    the servlet response, should not be <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void handleUnknownMethod(HttpServletRequest  request,
+                                    HttpServletResponse response)
+   throws IOException {
+      response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
    }
 
    /**
@@ -676,11 +710,21 @@ final class Engine extends Object {
       // Only an InvalidRequestException is expected. If a different kind of
       // exception is received, then that is considered a programming error.
       } catch (Throwable exception) {
-         int error;
+         int    statusCode;
+         String reason;
          if (exception instanceof InvalidRequestException) {
-            error = HttpServletResponse.SC_BAD_REQUEST;
+            statusCode = HttpServletResponse.SC_BAD_REQUEST;
+            reason     = "Unable to determine appropriate calling convention";
+            String exceptionMessage = exception.getMessage();
+            if (TextUtils.isEmpty(exceptionMessage)) {
+               reason += '.';
+            } else {
+               reason += ": " + exceptionMessage;
+            }
          } else {
-            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            reason     = "Internal error while trying to determine "
+                       + "appropriate calling convention.";
 
             Utils.logProgrammingError(
                Engine.class.getName(),
@@ -691,11 +735,16 @@ final class Engine extends Object {
                exception);
          }
 
-         // Log that the received request cannot be parsed correctly
-         Log.log_3522(exception, error);
+         // Log
+         Log.log_3523(request.getRemoteAddr(),
+                      request.getMethod(),
+                      request.getRequestURI(),
+                      request.getQueryString(),
+                      statusCode,
+                      reason);
 
-         // Return the error to the client
-         response.sendError(error);
+         // Send the HTTP status code to the client
+         response.sendError(statusCode);
       }
 
       return cc;
@@ -737,13 +786,17 @@ final class Engine extends Object {
       // expected. If a different kind of exception is received, then that is
       // considered a programming error.
       } catch (Throwable exception) {
-         int error;
-         if (exception instanceof InvalidRequestException) {
-            error = HttpServletResponse.SC_BAD_REQUEST;
+
+         // Determine the HTTP status code
+         int statusCode;
+         if (exception instanceof UnsupportedMethodException) {
+            statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+         } else if (exception instanceof InvalidRequestException) {
+            statusCode = HttpServletResponse.SC_BAD_REQUEST;
          } else if (exception instanceof FunctionNotSpecifiedException) {
-            error = HttpServletResponse.SC_NOT_FOUND;
+            statusCode = HttpServletResponse.SC_NOT_FOUND;
          } else {
-            error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
             Utils.logProgrammingError(
                Engine.class.getName(),
@@ -754,14 +807,21 @@ final class Engine extends Object {
                exception);
          }
 
-         // Log that the received request cannot be parsed correctly
-         Log.log_3522(exception, error);
+         // Log
+         String reason = "Calling convention \""
+                       + cc.getClass().getName()
+                       + "\" is unable to parse the request.";
+         Log.log_3523(request.getRemoteAddr(),
+                      request.getMethod(),
+                      request.getRequestURI(),
+                      request.getQueryString(),
+                      statusCode,
+                      reason);
 
-         // Return the error to the client
-         response.sendError(error);
+         // Send the HTTP status code to the client
+         response.sendError(statusCode);
          return;
       }
-
 
       // Call the function
       FunctionResult result;

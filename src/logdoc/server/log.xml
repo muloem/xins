@@ -604,9 +604,15 @@
 			<param name="queryString" nullable="true"  />
 			<!-- TODO: Log parameters ? -->
 		</entry>
-		<entry id="3522" level="INFO" exception="true">
-			<description>The received request cannot be parsed correctly.</description>
-			<param name="httpCode" type="int32" nullable="false" />
+		<!-- XXX: Removed 3522 here (@since XINS 1.5.0) -->
+		<entry id="3523" level="INFO">
+			<description>HTTP request cannot be processed. Returning HTTP status code indicating an error.</description>
+			<param name="ip"          type="text"  nullable="false" />
+			<param name="method"      type="text"  nullable="false" />
+			<param name="path"        type="text"  nullable="false" />
+			<param name="queryString" type="text"  nullable="false" />
+			<param name="statusCode"  type="int32" nullable="false" />
+			<param name="reason"      type="text"  nullable="true"  />
 		</entry>
 	</group>
 

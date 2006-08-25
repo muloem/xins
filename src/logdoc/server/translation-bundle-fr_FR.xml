@@ -137,7 +137,8 @@
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>
-	<translation entry="3522">Invocation de la fonction annulée. Code HTTP retourné: <value-of-param name="httpCode" />.</translation>
+	<!-- XXX: Removed 3522 here (@since XINS 1.5.0) -->
+<!-- TODO FIXME -->	<translation entry="3523">Unable to process HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />, path is <value-of-param name="path" format="quoted" />, query string is <value-of-param name="queryString" format="quoted" />. Returning HTTP status code <value-of-param name="statusCode" />. Reason: <value-of-param name="reason" format="quoted" />.</translation>
 
 	<translation entry="3540"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /> <value-of-param name="inParams" /> <value-of-param name="outParams" /></translation>
 	<translation entry="3541"><value-of-param name="start" /> <value-of-param name="ip" /> <value-of-param name="functionName" /> <value-of-param name="duration" /> <value-of-param name="errorCode" /></translation>
