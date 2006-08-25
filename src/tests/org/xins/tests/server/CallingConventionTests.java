@@ -820,4 +820,62 @@ public class CallingConventionTests extends TestCase {
          }
       }
    }
+
+   /**
+    * Tests that unsupported HTTP methods return the appropriate HTTP error.
+    */
+   public void testUnsupportedHTTPMethods() throws Exception {
+
+      String[] unsupported = new String[] { "GET",  "HEAD", };
+
+      String queryString = "/?_convention=_xins-xml";
+
+      for (int i=0; i<unsupported.length; i++) {
+         String method = unsupported[i];
+
+         Socket socket = new Socket(AllTests.host(), AllTests.port());
+         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+         out.println(method + " " + queryString + " HTTP/1.1");
+         out.println("Host: " + AllTests.host());
+         out.println();
+         out.println();
+
+         String line = in.readLine();
+
+         // Expect "405 Method Not Allowed"
+         assertEquals("Expected HTTP status code 405 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
+                      "HTTP/1.1 405 Method Not Allowed", line);
+      }
+   }
+
+   /**
+    * Tests that unknown HTTP methods return the appropriate HTTP error.
+    */
+   public void testUnknownHTTPMethods() throws Exception {
+
+      String[] unsupported = new String[] { "POLL",  "JO-JO", };
+
+      String queryString = "/?_convention=_xins-xml";
+
+      for (int i=0; i<unsupported.length; i++) {
+         String method = unsupported[i];
+
+         Socket socket = new Socket(AllTests.host(), AllTests.port());
+         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+         out.println(method + " " + queryString + " HTTP/1.1");
+         out.println("Host: " + AllTests.host());
+         out.println();
+         out.println();
+
+         String line = in.readLine();
+
+         // Expect "501 Not Implemented"
+         assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
+                      "HTTP/1.1 501 Not Implemented", line);
+      }
+   }
 }
