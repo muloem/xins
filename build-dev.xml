@@ -171,7 +171,7 @@ ${sf.file}</fail>
 
 	<target name="testreports" description="Generates the unit test reports">
 		<mkdir dir="build/testresults/html" />
-		<style
+		<xslt
 		in="build/testresults/xml/testresults.xml"
 		out="build/testresults/html/index.html"
 		style="src/xslt/tests/index.xslt" />
@@ -230,7 +230,7 @@ ${sf.file}</fail>
 
 	<target name="perftestreports" description="Generates the performance test reports">
 		<mkdir dir="build/perftestresults/html" />
-		<style
+		<xslt
 		in="build/perftestresults/xml/perftestresults.xml"
 		out="build/perftestresults/html/index.html"
 		style="src/xslt/tests/perftests.xslt" />
@@ -381,7 +381,7 @@ ${sf.file}</fail>
 
 	<target name="checkstyle-report" description="Generates the checkstyle report">
 		<mkdir dir="build/checkstyle/html" />
-		<style
+		<xslt
 		in="build/checkstyle/xml/results.xml"
 		out="build/checkstyle/html/index.html"
 		style="src/xslt/checkstyle/index.xslt" />
