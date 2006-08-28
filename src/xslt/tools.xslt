@@ -4,7 +4,7 @@
 
  $Id$
 
- Copyright 2003-2006 Wanadoo Nederland B.V.
+ Copyright 2003-2006 Orange Nederland Breedband B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -13,6 +13,7 @@
 	<!-- Print the footer -->
 	<xsl:template name="tools">
 		<xsl:param name="xins_home" />
+		<xsl:param name="project_home" />
 		<xsl:param name="cvsweb" />
 
 		<target name="-init-tools">
@@ -26,7 +27,7 @@
 			<available property="api.source.dir" value="apis/${{api.name}}/impl" file="apis/${{api.name}}/impl" type="dir" />
 			<fail message="No implementation directory found for API ${{api.name}}" unless="api.source.dir" />
 		</target>
-		
+
 		<target name="java2html" depends="-init-tools" description="Generates HTML pages which contains the API code.">
 			<taskdef name="java2html" classname="com.java2html.Java2HTMLTask">
 				<classpath refid="tools-cp" />
@@ -167,6 +168,18 @@
 			in="${{jmeter.test}}.jlt"
 			out="build/jmeter/${{api.name}}/index.html"
 			style="${{jmeter.home}}/extras/jmeter-results-detail-report.xsl">
+			</style>
+		</target>
+
+		<target name="maven" depends="-init-tools" description="Generates a POM file.">
+			<style
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/pom.xml"
+			style="{$xins_home}/src/tools/maven/api_to_pom.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="api" expression="${{api.name}}" />
+				<param name="xins_home" expression="{$xins_home}" />
+				<param name="project_home" expression="{$project_home}" />
 			</style>
 		</target>
 	</xsl:template>

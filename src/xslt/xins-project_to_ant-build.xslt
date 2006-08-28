@@ -4,7 +4,7 @@
 
  $Id$
 
- Copyright 2003-2006 Wanadoo Nederland B.V.
+ Copyright 2003-2006 Orange Nederland Breedband B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -156,9 +156,10 @@ APIs in this project are:
 
 			<xsl:call-template name="tools">
 				<xsl:with-param name="xins_home" select="$xins_home" />
+				<xsl:with-param name="project_home" select="$project_home" />
 				<xsl:with-param name="cvsweb" select="cvsweb/@href" />
 			</xsl:call-template>
-			
+
 			<target name="-prepare">
 				<property file="{$project_home}/build.properties" />
 				<property name="reload.stylesheet" value="false" />
