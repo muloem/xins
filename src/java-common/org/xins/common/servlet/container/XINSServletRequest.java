@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.servlet.container;
@@ -37,7 +37,7 @@ import org.xins.common.text.URLEncoding;
  * called localy.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class XINSServletRequest implements HttpServletRequest {
 

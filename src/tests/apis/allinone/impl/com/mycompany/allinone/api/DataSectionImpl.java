@@ -7,7 +7,7 @@ package com.mycompany.allinone.api;
  * Implementation of the <code>DataSection</code> function.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class DataSectionImpl extends DataSection  {
 

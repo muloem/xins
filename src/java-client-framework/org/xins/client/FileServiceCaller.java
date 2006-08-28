@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client;
@@ -49,16 +49,16 @@ import org.xins.logdoc.LogdocSerializable;
  * doesn't send data over the network but directly invoke the Servlet method.
  *
  * @version $Revision$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */
 class FileServiceCaller extends ServiceCaller {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
@@ -73,7 +73,7 @@ class FileServiceCaller extends ServiceCaller {
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Constructs a new <code>HTTPServiceCaller</code> object with the
     * specified descriptor and call configuration.
@@ -117,11 +117,11 @@ class FileServiceCaller extends ServiceCaller {
    public FileServiceCaller(Descriptor descriptor) {
       this(descriptor, (HTTPCallConfig) null);
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -141,7 +141,7 @@ class FileServiceCaller extends ServiceCaller {
       return new HTTPCallConfig();
    }
 
-   protected CallResult createCallResult(CallRequest request, TargetDescriptor succeededTarget, 
+   protected CallResult createCallResult(CallRequest request, TargetDescriptor succeededTarget,
          long duration, CallExceptionList exceptions, Object result) throws ClassCastException {
 
       return new HTTPCallResult((HTTPCallRequest) request,
@@ -154,7 +154,7 @@ class FileServiceCaller extends ServiceCaller {
    protected boolean isProtocolSupportedImpl(String protocol) {
       return "file".equalsIgnoreCase(protocol);
    }
-   
+
    /**
     * Executes a request towards the specified target. If the call succeeds,
     * then a {@link HTTPCallResult} object is returned, otherwise a
@@ -208,9 +208,9 @@ class FileServiceCaller extends ServiceCaller {
             sex.printStackTrace();
          }
       }
-      
+
       PropertyReader parameters = ((HTTPCallRequest) request).getParameters();
-      
+
       // Get the parameters for logging
       LogdocSerializable params = PropertyReaderUtils.serialize(parameters, "", "?", null);
 
@@ -242,7 +242,7 @@ class FileServiceCaller extends ServiceCaller {
             query.append(URLEncoding.encode(value));
          }
       }
-      
+
       XINSServletResponse response = null;
       try {
          response = servletHandler.query(query.toString());
@@ -250,7 +250,7 @@ class FileServiceCaller extends ServiceCaller {
          duration = System.currentTimeMillis() - start;
          Log.log_1109(exception, url, params, duration);
          throw new IOCallException(request, target, duration, exception);
-         
+
       }
 
       // Retrieve the data returned from the call
@@ -380,7 +380,7 @@ class FileServiceCaller extends ServiceCaller {
     * Container of the data part of an HTTP call result.
     *
     * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     *
     * @since XINS 1.5.0
     */

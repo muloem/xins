@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -22,8 +22,8 @@ import org.xins.common.text.TextUtils;
  * 0.168.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 final class OldStyleCallingConvention
 extends CallingConvention {
@@ -66,7 +66,7 @@ extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns meta information describing the characteristics of this calling 
+    * Returns meta information describing the characteristics of this calling
     * convention.
     *
     * <p>This method is called during the initialization procedure for this

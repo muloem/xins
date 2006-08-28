@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.ant;
@@ -27,11 +27,11 @@ import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 
 /**
- * Apache Ant task that call a function of a XINS API, the result is stored 
+ * Apache Ant task that call a function of a XINS API, the result is stored
  * in Ant properties.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * either generic or API-specific.
  *
  * <p>Result codes do not automatically apply to all functions of an API if
- * they have been defined for that API. Instead they are associated with each 
+ * they have been defined for that API. Instead they are associated with each
  * individual function.
  *
  * @version $Revision$ $Date$

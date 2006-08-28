@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -35,7 +35,7 @@ import org.xins.common.xml.Element;
  * Management bean for the API.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */
@@ -50,7 +50,7 @@ public final class APIManager implements APIManagerMBean {
     */
    private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
 
-   
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -163,7 +163,7 @@ public final class APIManager implements APIManagerMBean {
    public String getStartupTime() throws IOException {
       return DateConverter.toDateString(_api.getStartupTimestamp());
    }
-    
+
 
    /**
     * Gets the list of the API functions.
@@ -183,7 +183,7 @@ public final class APIManager implements APIManagerMBean {
       }
       return functionNames;
    }
-    
+
    /**
     * Gets the statistics of the functions.
     *
@@ -194,15 +194,15 @@ public final class APIManager implements APIManagerMBean {
     *    if the connection to the MBean fails.
     */
    public TabularDataSupport getStatistics() throws IOException {
-      String[] statsNames = {"Function", "Count", "Error Code", "Average", "Min Date", 
+      String[] statsNames = {"Function", "Count", "Error Code", "Average", "Min Date",
             "Min Duration", "Max Date", "Max Duration", "Last Date", "Last Duration"};
-      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.LONG, SimpleType.STRING, 
+      OpenType[] statsTypes = {SimpleType.STRING, SimpleType.LONG, SimpleType.STRING,
             SimpleType.LONG, SimpleType.DATE, SimpleType.LONG, SimpleType.DATE, SimpleType.LONG,
             SimpleType.DATE, SimpleType.LONG};
       try {
-         CompositeType statType = new CompositeType("Statistic", 
+         CompositeType statType = new CompositeType("Statistic",
                "A statistic of a function", statsNames, statsNames, statsTypes);
-         TabularType tabType = new TabularType("Function statistics", 
+         TabularType tabType = new TabularType("Function statistics",
                "Statistics of the functions", statType, statsNames);
          TabularDataSupport tabularData = new TabularDataSupport(tabType);
          Iterator itFunctions =  _api.getFunctionList().iterator();
@@ -219,7 +219,7 @@ public final class APIManager implements APIManagerMBean {
                tabularData.put(statData2);
             }
          }
-         
+
          return tabularData;
       } catch (Exception ex) {
          ex.printStackTrace();
@@ -288,7 +288,7 @@ public final class APIManager implements APIManagerMBean {
          } else {
             statMap.put("Min Date", null);
             statMap.put("Min Duration", null);
-         } 
+         }
       } catch (Exception ex) {
          Utils.logProgrammingError(ex);
       }

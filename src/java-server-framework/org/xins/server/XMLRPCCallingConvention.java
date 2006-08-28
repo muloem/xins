@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -38,7 +38,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * The XML-RPC calling convention.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 final class XMLRPCCallingConvention extends CallingConvention {
 
@@ -183,7 +183,7 @@ final class XMLRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns meta information describing the characteristics of this calling 
+    * Returns meta information describing the characteristics of this calling
     * convention.
     *
     * <p>This method is called during the initialization procedure for this

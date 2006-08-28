@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Base class for calling convention implementations that are not part of the 
+ * Base class for calling convention implementations that are not part of the
  * core XINS framework.
  *
  * <p>Extend this class to create your own calling conventions. Make sure you
@@ -44,7 +44,7 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns meta information describing the characteristics of this calling 
+    * Returns meta information describing the characteristics of this calling
     * convention.
     *
     * <p>This method is called during the initialization procedure for this

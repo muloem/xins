@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.types.standard;
@@ -18,20 +18,20 @@ import org.xins.common.text.HexConverter;
  * @since XINS 1.5
  */
 public class Hex extends Type {
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Hex SINGLETON = new Hex();
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>byte[]</code> value.
@@ -58,13 +58,13 @@ public class Hex extends Type {
       } else {
          try {// this method converts the string to byte and also checks if the string has hex digits
             return HexConverter.parseHexBytes(string,index,string.length());
-            
+
          } catch (Exception e){
             throw new TypeValueException(SINGLETON, string);
          }
       }
    }
-   
+
    /**
     * Converts the specified string value to a <code>byte[]</code> value.
     *
@@ -88,13 +88,13 @@ public class Hex extends Type {
       }
       try {
          return HexConverter.parseHexBytes(string,index,string.length());
-         
+
       } catch (Exception e){
          throw new TypeValueException(SINGLETON, string);
       }
    }
-   
-   
+
+
    /**
     * Converts the specified <code>byte[]</code> to a hexadecimal string.
     *
@@ -112,11 +112,11 @@ public class Hex extends Type {
          return HexConverter.toHexString(value);
       }
    }
-   
+
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
-   
+
    /**
     * Constructs a new <code>Hex</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -141,7 +141,7 @@ public class Hex extends Type {
     */
    protected Hex(String name, int minimum, int maximum) {
       super(name, byte[].class);
-      
+
       _minimum = minimum;
       _maximum = maximum;
    }
@@ -150,22 +150,22 @@ public class Hex extends Type {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    /**
     * The minimum number of bytes this Hex can have.
     */
    private final int _minimum;
-   
+
    /**
     * The maximum number of bytes this Hex can have.
     */
    private final int _maximum;
-   
-   
+
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Determines if the specified <code>String</code> value is considered
     * valid for this type (implementation method).
@@ -200,7 +200,7 @@ public class Hex extends Type {
          return false;
       }
    }
-   
+
    /**
     * Converts from a <code>String</code> to an instance of the value class
     * for this type (implementation method).
@@ -228,7 +228,7 @@ public class Hex extends Type {
          throw new TypeValueException(SINGLETON, string, ex.getMessage());
       }
    }
-   
+
    /**
     * Generates a string representation of the specified value for this type.
     * The specified value must be an instance of the value class for this type
@@ -256,18 +256,18 @@ public class Hex extends Type {
     */
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
-      
+
       // Check preconditions
       MandatoryArgumentChecker.check("value", value);
-      
+
       // Convert the argument to a byte array (may throw ClassCastException)
       byte[] b = (byte[]) value;
-      
+
       // Try converting the byte array as a Hex string
       try {
          return HexConverter.toHexString(b);
       } catch (Exception e) {
-         
+
          throw new TypeValueException(SINGLETON, b.toString(), e.getMessage());
       }
    }

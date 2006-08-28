@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.threads;
@@ -24,7 +24,7 @@ import org.xins.logdoc.ExceptionUtils;
  * <em>Alternating Reader Writer</em> algorithm.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *
@@ -562,7 +562,7 @@ public final class Doorman extends Object {
     * Queue of waiting reader and writer threads.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */
@@ -805,7 +805,7 @@ public final class Doorman extends Object {
     * Type of an entry in a queue for a doorman.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

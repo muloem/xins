@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
@@ -43,8 +43,8 @@ import org.xins.tests.AllTests;
  * classes.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public class AllInOneAPITests extends TestCase {
 
@@ -741,12 +741,12 @@ public class AllInOneAPITests extends TestCase {
 
        // Test 'all-or-none'
        try {
-          _capi.callParamCombo(Date.fromStringForRequired("20060101"), 
-                               null, 
-                               null, 
-                               null, 
-                               "Texas", 
-                               "Paris", 
+          _capi.callParamCombo(Date.fromStringForRequired("20060101"),
+                               null,
+                               null,
+                               null,
+                               "Texas",
+                               "Paris",
                                Byte.valueOf("21"));
           fail("The param-combo call should return an _InvalidRequest error code.");
        } catch (UnsuccessfulXINSCallException exception) {
@@ -770,7 +770,7 @@ public class AllInOneAPITests extends TestCase {
           }
        }
     }
-   
+
   /**
    * Tests the attribute-combo constraints, which should throw an UnacceptableRequestException.
    */

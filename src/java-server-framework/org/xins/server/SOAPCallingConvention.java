@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -128,7 +128,7 @@ final class SOAPCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns meta information describing the characteristics of this calling 
+    * Returns meta information describing the characteristics of this calling
     * convention.
     *
     * <p>This method is called during the initialization procedure for this

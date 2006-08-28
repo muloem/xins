@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.ant;
@@ -23,7 +23,7 @@ import org.xins.tests.AllTests;
  * Tests for class <code>CallXINSTask</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class CallXINSTaskTests extends TestCase {
 
@@ -69,7 +69,7 @@ public class CallXINSTaskTests extends TestCase {
       param.setName("in");
       param.setValue("calling via ant");
       callTask.execute();
-      assertEquals("Invalid returned value received", "calling via ant", 
+      assertEquals("Invalid returned value received", "calling via ant",
             callTask.getProject().getProperty("out"));
    }
 
@@ -82,15 +82,15 @@ public class CallXINSTaskTests extends TestCase {
       param.setName("inputText");
       param.setValue("Testing Ant");
       callTask.execute();
-      assertEquals("Invalid returned name value received", "superuser", 
+      assertEquals("Invalid returned name value received", "superuser",
             callTask.getProject().getProperty("anttest.data.user.name"));
-      assertEquals("Invalid returned address value received", "12 Madison Avenue", 
+      assertEquals("Invalid returned address value received", "12 Madison Avenue",
             callTask.getProject().getProperty("anttest.data.user.address"));
-      assertEquals("Invalid returned PCDATA value received", "This user has the root authorisation.", 
+      assertEquals("Invalid returned PCDATA value received", "This user has the root authorisation.",
             callTask.getProject().getProperty("anttest.data.user"));
 
    }
-   
+
    /**
     * Creates the Ant CallXINSTask without any parameters set.
     *

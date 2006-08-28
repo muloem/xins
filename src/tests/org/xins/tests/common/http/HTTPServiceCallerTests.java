@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.http;
@@ -31,8 +31,8 @@ import org.xins.common.service.UnsupportedProtocolException;
  * Tests for class <code>HTTPServiceCallerTests</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public class HTTPServiceCallerTests extends TestCase {
 
@@ -217,7 +217,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
       String text = result.getString();
       assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
-      
+
       // Check that the request does not have side effect on the HTTPServiceCaller object
       assertEquals("Incorrect HTTP method.", HTTPMethod.POST, caller.getHTTPCallConfig().getMethod());
    }

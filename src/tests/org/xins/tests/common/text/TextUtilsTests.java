@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.text;
@@ -24,7 +24,7 @@ import org.xins.common.text.FastStringBuffer;
  * Tests for class <code>TextUtils</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class TextUtilsTests extends TestCase {
 
@@ -66,18 +66,18 @@ public class TextUtilsTests extends TestCase {
    public void testReplace() throws Exception {
       String text = "hello ${world} ${name}";
       Properties replaceMap = new Properties();
-      
+
       String replace1 = TextUtils.replace(text, replaceMap, "${", "}");
       assertEquals("Nothing should have been replaced", text, replace1);
-      
+
       replaceMap.put("world", "world");
       String replace2 = TextUtils.replace(text, replaceMap, "${", "}");
       assertEquals("Incorrect text replaced.", "hello world ${name}", replace2);
-      
+
       replaceMap.put("world", "");
       String replace3 = TextUtils.replace(text, replaceMap, "${", "}");
       assertEquals("Incorrect text replaced.", "hello  ${name}", replace3);
-      
+
       replaceMap.put("world", "Mr");
       replaceMap.put("name", "Anthony");
       String replace4 = TextUtils.replace(text, replaceMap, "${", "}");

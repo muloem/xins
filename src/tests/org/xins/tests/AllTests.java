@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests;
@@ -15,7 +15,7 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  * Combination of all XINS/Java tests.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public class AllTests extends TestSuite {
 
@@ -71,7 +71,7 @@ public class AllTests extends TestSuite {
     * Returns the URL to use to connect to the server.
     *
     * @return
-    *    the URL to connect to, for example 
+    *    the URL to connect to, for example
     *    <code>"http://127.0.0.1:8080/"</code>, never <code>null</code>.
     */
    public static final String url() {

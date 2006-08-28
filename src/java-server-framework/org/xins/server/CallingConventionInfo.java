@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -41,7 +41,7 @@ public final class CallingConventionInfo extends Object {
    private static final String CLASSNAME;
 
    /**
-    * The pattern object that valid HTTP method names match and invalid ones 
+    * The pattern object that valid HTTP method names match and invalid ones
     * do not.
     */
    private static final Pattern HTTP_METHOD_PATTERN;
@@ -104,7 +104,7 @@ public final class CallingConventionInfo extends Object {
    private final Object _lock;
 
    /**
-    * Flag that indicates whether this instance has been locked to avoid 
+    * Flag that indicates whether this instance has been locked to avoid
     * further modifications. Initially <code>false</code>.
     *
     * <p>Synchronize on {@link #_lock} before accessing this field.
@@ -187,7 +187,7 @@ public final class CallingConventionInfo extends Object {
     * Locks this object against modifications.
     *
     * @return
-    *    <code>true</code> if the locking was successful and 
+    *    <code>true</code> if the locking was successful and
     *    <code>false</code> if the object is already locked.
     */
    boolean lock() {
@@ -205,7 +205,7 @@ public final class CallingConventionInfo extends Object {
     * Unlocks this object, so it can be modified again.
     *
     * @return
-    *    <code>true</code> if the unlocking was successful and 
+    *    <code>true</code> if the unlocking was successful and
     *    <code>false</code> if the object was not locked.
     */
    boolean unlock() {

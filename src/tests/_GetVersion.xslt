@@ -8,7 +8,7 @@
 
  $Id$
 
- Copyright 2003-2006 Wanadoo Nederland B.V.
+ Copyright 2003-2006 Orange Nederland Breedband B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -21,7 +21,7 @@
                 <title>_GetVersion.xslt</title>
             </head>
             <body>
-							XINS version : 
+							XINS version :
 							<xsl:value-of select="/result/param[@name='xins.version']" />
             </body>
         </html>

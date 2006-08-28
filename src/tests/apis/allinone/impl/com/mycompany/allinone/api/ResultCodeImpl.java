@@ -10,7 +10,7 @@ import java.util.Map;
  * Implementation of the <code>ResultCode</code> function.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class ResultCodeImpl extends ResultCode  {
 
@@ -49,7 +49,7 @@ public class ResultCodeImpl extends ResultCode  {
    //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
-      
+
       if (!request.getUseDefault() && !request.isSetInputText()) {
          MissingInputResult invalidResult = new MissingInputResult();
          MissingInputResult.InputParameter parameter = new MissingInputResult.InputParameter();
@@ -58,7 +58,7 @@ public class ResultCodeImpl extends ResultCode  {
          invalidResult.addInputParameter(parameter);
          return invalidResult;
       }
-      
+
       String inputValue = null;
       if (request.isSetInputText()) {
          inputValue = request.getInputText();

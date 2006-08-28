@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.collections;
@@ -22,7 +22,7 @@ import java.util.Set;
  * position as the old one.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.3.0
  */
@@ -93,7 +93,7 @@ public class ChainedMap extends AbstractMap {
     * The <code>Map.Entry</code> for this <code>ChainedMap</code>.
     *
     * @version $Revision$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     */
    private static class EntryMap implements Map.Entry {
 
@@ -169,7 +169,7 @@ public class ChainedMap extends AbstractMap {
     * this <code>ChainedMap</code>.
     *
     * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     */
    private static class ChainedSet extends AbstractSet {
 

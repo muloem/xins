@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client.async;
@@ -18,7 +18,7 @@ import org.xins.client.AbstractCAPICallRequest;
  * asynchronously.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.4.0
  */
@@ -77,7 +77,7 @@ public class AsynchronousCall {
     * Thread that executes the call to the function.
     *
     * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     */
    private static class CallNotifyThread extends CallCAPIThread {
 

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -39,7 +39,7 @@ import org.xins.logdoc.UnsupportedLocaleError;
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 final class EngineStarter extends Object {
 
@@ -553,7 +553,7 @@ final class EngineStarter extends Object {
             Logger logger = (Logger) loggers.nextElement();
             hdm.addLoggerMBean(logger.getName());
          }
-         
+
       // If for any reason it doesn't work, ignore.
       // For example if the server is running on Java 1.4 a ClassNotFoundException may be thrown.
       } catch (Throwable ex) {

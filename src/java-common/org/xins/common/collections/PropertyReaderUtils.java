@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.collections;
@@ -29,7 +29,7 @@ import org.xins.logdoc.LogdocStringBuffer;
  * Utility functions for dealing with <code>PropertyReader</code> objects.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *
@@ -489,7 +489,7 @@ extends Object {
     * <code>PropertyReader</code>.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     */
    private static final class SerializedPropertyReader
    extends AbstractLogdocSerializable {

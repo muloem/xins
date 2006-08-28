@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client;
@@ -16,36 +16,36 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet that returns invalid XINS results.
  *
  * @version $Revision$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class InvalidResponseServlet extends HttpServlet {
-   
+
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
-   
+
    /**
     * Creates a new instance of InvalidResponseServlet
     */
    public InvalidResponseServlet() {
    }
-   
+
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-   
+
    /**
     * Handles a request to this servlet (wrapper method). If any of the
     * arguments is <code>null</code>, then the behaviour of this method is
@@ -68,7 +68,7 @@ public class InvalidResponseServlet extends HttpServlet {
          throw new IOException("Invalid request, no \"_function\" parameter passed.");
       }
       String xmlResponse = null;
-      
+
       if (function.equals("SimpleTypes")) {
          xmlResponse = getInvalidSimpleTypesResult();
       } else if (function.equals("DefinedTypes")) {
@@ -82,7 +82,7 @@ public class InvalidResponseServlet extends HttpServlet {
       } else if (function.equals("RuntimeProps")) {
          xmlResponse = getValidRuntimePropsResult();
       }
-      
+
       if (xmlResponse != null) {
          response.setStatus(HttpServletResponse.SC_OK);
          response.setContentType("text/xml;charset=UTF-8");
@@ -93,7 +93,7 @@ public class InvalidResponseServlet extends HttpServlet {
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       }
    }
-   
+
    /**
     * Returns an invalid result for the SimpleTypes function.
     *
@@ -111,7 +111,7 @@ public class InvalidResponseServlet extends HttpServlet {
              "<param name=\"outputDate\">20040621</param>"+
              "</result>";
    }
-   
+
    /**
     * Returns an invalid result for the DefinedTypes function.
     *
@@ -122,7 +122,7 @@ public class InvalidResponseServlet extends HttpServlet {
       return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
              "<result/>";
    }
-   
+
    /**
     * Returns an invalid result for the ResultCode function.
     *
@@ -134,7 +134,7 @@ public class InvalidResponseServlet extends HttpServlet {
              "<result errorcode=\"InvalidNumber\">"+
              "</result>";
    }
-   
+
    /**
     * Returns an invalid result for the DataSection function.
     *
@@ -149,7 +149,7 @@ public class InvalidResponseServlet extends HttpServlet {
              "</data>" +
              "</result>";
    }
-   
+
    /**
     * Returns an invalid result for the DataSection2 function.
     *
@@ -170,7 +170,7 @@ public class InvalidResponseServlet extends HttpServlet {
              "</data>" +
              "</result>";
    }
-   
+
    /**
     * Returns an valid result for the RuntimeProps function.
     *

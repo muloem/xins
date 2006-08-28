@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client;
@@ -126,7 +126,7 @@ boolean         failOver = true;
 {@link XINSCallResult} result = caller.{@link #call(XINSCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */
@@ -260,7 +260,7 @@ public final class XINSServiceCaller extends ServiceCaller {
 
    public void setDescriptor(Descriptor descriptor) {
       super.setDescriptor(descriptor);
-      
+
       // Create the ServiceCaller for each descriptor
       if (_serviceCallers == null) {
          _serviceCallers = new HashMap();
@@ -920,7 +920,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * Logdoc serializable that will serialize a chain of exceptions.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {

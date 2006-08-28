@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.http;
@@ -141,8 +141,8 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
 {@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */
@@ -972,7 +972,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Executor of calls to an API.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     */
    private static final class CallExecutor extends Thread {
 
@@ -1284,7 +1284,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Container of the data part of an HTTP call result.
     *
     * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     *
     * @since XINS 1.0.0
     */
@@ -1357,7 +1357,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * where xxxx is the hexadecimal value of the character.
     *
     * @version $Revision$ $Date$
-    * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     *
     * @since XINS 1.4.0
     */

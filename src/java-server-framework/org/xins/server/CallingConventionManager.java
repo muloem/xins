@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -33,8 +33,8 @@ import org.xins.common.text.TextUtils;
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @see CallingConvention
  */
@@ -71,7 +71,7 @@ extends Manageable {
    private final static Object CREATION_FAILED = new Object();
 
    /**
-    * The current <code>CallingConventionManager</code> instance. This is kept 
+    * The current <code>CallingConventionManager</code> instance. This is kept
     * track of so that {@link #getCurrent()} can return it to the
     * {@link CallingConvention} constructor.
     */
@@ -83,16 +83,16 @@ extends Manageable {
    //-------------------------------------------------------------------------
 
    /**
-    * Determines the current <code>CallingConventionManager</code>. This 
-    * method should only be called from the <code>CallingConvention</code> 
+    * Determines the current <code>CallingConventionManager</code>. This
+    * method should only be called from the <code>CallingConvention</code>
     * constructor(s).
     *
     * @return
-    *    the current <code>CallingConventionManager</code> instance, never 
+    *    the current <code>CallingConventionManager</code> instance, never
     *    <code>null</code>.
     *
     * @throws IllegalStateException
-    *    if the current state implies the call could not have been made from 
+    *    if the current state implies the call could not have been made from
     *    the {@link CallingConvention} constructor.
     */
    static final CallingConventionManager getCurrent()
@@ -166,7 +166,7 @@ extends Manageable {
 
    /**
     * The set of supported HTTP methods. The values are initialized during the
-    * initialization stage, see {@link #initImpl(PropertyReader)}. Never 
+    * initialization stage, see {@link #initImpl(PropertyReader)}. Never
     * <code>null</code>.
     */
    private final HashSet _supportedMethods;
@@ -573,7 +573,7 @@ extends Manageable {
          }
       }
 
-      // Only fill the set of supported methods if the initialization 
+      // Only fill the set of supported methods if the initialization
       // completed successfully
       _supportedMethods.addAll(methods);
    }
@@ -637,8 +637,8 @@ extends Manageable {
          Log.log_3439(exception, name);
       }
 
-      // Determine the HTTP methods supported for function invocations. If 
-      // this fails, the the calling convention should not be considered 
+      // Determine the HTTP methods supported for function invocations. If
+      // this fails, the the calling convention should not be considered
       // usable.
       try {
          cc.determineSupportedMethods();
@@ -941,7 +941,7 @@ extends Manageable {
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
-      // NOTE: We now return a mutable collection, but it's only within the 
+      // NOTE: We now return a mutable collection, but it's only within the
       //       same package, so this is not considered an issue
       return _supportedMethods;
    }

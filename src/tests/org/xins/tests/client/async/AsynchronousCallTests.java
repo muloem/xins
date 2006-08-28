@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.client.async;
@@ -27,7 +27,7 @@ import org.xins.tests.AllTests;
  * Tests the <code>AsynchronousCall</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class AsynchronousCallTests extends TestCase {
 
@@ -53,8 +53,8 @@ public class AsynchronousCallTests extends TestCase {
    /**
     * Constructs a new <code>AsynchronousCallTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
-    * 
-    * 
+    *
+    *
     * @param name
     *    the name for this test suite.
     */
@@ -68,10 +68,10 @@ public class AsynchronousCallTests extends TestCase {
 
    private Boolean successfulTestOkay = null;
    private Throwable assertionSuccessfulTestException = null;
-   
+
    private Boolean unsuccessfulTestOkay = null;
    private Throwable assertionUnsuccessfulTestException = null;
-   
+
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
@@ -134,7 +134,7 @@ public class AsynchronousCallTests extends TestCase {
          }
       }
    }
-   
+
    private class UnsuccessfulCallListener implements CallListener {
       public void callSucceeded(CallSucceededEvent event) {
          try {

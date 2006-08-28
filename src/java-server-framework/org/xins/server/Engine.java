@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -579,7 +579,7 @@ final class Engine extends Object {
    }
 
    /**
-    * Handles an unprocessable request (low-level function). The response is 
+    * Handles an unprocessable request (low-level function). The response is
     * filled for the request.
     *
     * @param request
@@ -649,7 +649,7 @@ final class Engine extends Object {
    }
 
    /**
-    * Handles an incoming request that specifies an HTTP method that not 
+    * Handles an incoming request that specifies an HTTP method that not
     * supported by any of the calling conventions.
     *
     * @param request

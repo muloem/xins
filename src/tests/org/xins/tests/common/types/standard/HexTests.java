@@ -14,7 +14,7 @@ import org.xins.common.types.standard.Hex;
  * Tests for class <code>Base64</code>.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class HexTests extends TestCase {
 
@@ -67,9 +67,9 @@ public class HexTests extends TestCase {
          //ignore this because it means the test passed
       }
    }
-   
+
    /**
-    * Tests if fromStringForRequired() throws an TypeValueException when the string is not valid 
+    * Tests if fromStringForRequired() throws an TypeValueException when the string is not valid
     */
    public void testFromStringForRequired2() {
       try {
@@ -80,15 +80,15 @@ public class HexTests extends TestCase {
          //ignore this because it means the test passed
       }
    }
-   
-   /** 
-    * Tests if fromStringForOptional returns null when the parameter is null 
+
+   /**
+    * Tests if fromStringForOptional returns null when the parameter is null
     */
    public void testFromStringForOptional() throws TypeValueException {
       assertEquals(null, Hex.fromStringForOptional(null));
    }
-   
-   
+
+
    /**
     * Tests if the class functions of Hex do their job,passing a hex sting->byte[]->the same hex string
     */
@@ -101,16 +101,16 @@ public class HexTests extends TestCase {
       byte[] result = Hex.fromStringForRequired(string);
       assertEquals("toString should return the same hex", string, Hex.toString(result));
    }
-   
+
    /**
-    * Tests if toString() returns null when the parameter is null. 
+    * Tests if toString() returns null when the parameter is null.
     * Function toString() takes the null byte[] value  returned by fromStringOptional() and toString() returns also null
     */
    public void testToString2() throws TypeValueException {
       byte[]result = Hex.fromStringForOptional(null);
       assertEquals(null, Hex.toString(result));
    }
-   
+
    /**
     * Tests if the method isValidValueImpl() returns false if the string is not hex
     */
@@ -118,7 +118,7 @@ public class HexTests extends TestCase {
       String string = "12345adklm";
       assertTrue(!Hex.SINGLETON.isValidValue(string));
    }
-   
+
    /**
     * Tests if the method isValidValueImpl() returns false if the byte is not at at the specified range
     */
@@ -127,15 +127,15 @@ public class HexTests extends TestCase {
       String string = "12345ad";
       assertTrue("hex is expected to be at the specified range", !single.isValidValue(string));
    }
-   
+
    /**
-    * Tests if the method isValidValueImpl() returns true for the correct hex string 
+    * Tests if the method isValidValueImpl() returns true for the correct hex string
     */
    public void testIsValidValueImpl3() {
       String string = "12345adcef";
       assertTrue("the string is expected to be of a hex type", Hex.SINGLETON.isValidValue(string));
    }
-   
+
    /**
     * Tests if fromStringImpl() throws an TypeValueException when the string is not valid
     */
@@ -149,7 +149,7 @@ public class HexTests extends TestCase {
          //ignore this because it means the test passed
       }
    }
-   
+
    /**
     * Tests if methods toString() and fromStringImpl() work properly
     */
@@ -161,7 +161,7 @@ public class HexTests extends TestCase {
       Object object = Hex.SINGLETON.fromString(string);
       assertEquals("toString should return the same string", string, Hex.SINGLETON.toString(object));
    }
-   
+
    /**
     * Tests if method toString() throws an exception when the parameter is null
     */

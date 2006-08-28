@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.client.async;
@@ -20,7 +20,7 @@ import org.xins.common.service.CallException;
  * invoke the {@link #join()} method.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.4.0
  */
@@ -91,7 +91,7 @@ public class CallCAPIThread extends Thread {
          _duration = _result.duration();
       } catch (InvocationTargetException itex) {
          _exception = (Exception) itex.getTargetException();
-         
+
          // Get the exception thrown by the call and notify the listeners
          if (_exception instanceof CallException) {
             _duration = ((CallException) _exception).getDuration();

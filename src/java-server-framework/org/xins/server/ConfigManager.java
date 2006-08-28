@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -42,8 +42,8 @@ import org.xins.logdoc.UnsupportedLocaleException;
  *
  * @version $Revision$ $Date$
  * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 final class ConfigManager extends Object {
 
@@ -216,7 +216,7 @@ final class ConfigManager extends Object {
       // NOTE: Don't trim the configuration file name, since it may start
       //       with a space or other whitespace character.
       if (_configFile == null) {
-         
+
          // Try to find a xins.properties file in the WEB-INF directory
          ServletConfig  config  = _engine.getServletConfig();
          ServletContext context = config.getServletContext();
@@ -230,7 +230,7 @@ final class ConfigManager extends Object {
          } else {
             Log.log_3248();
          }
-         
+
       } else {
 
          // Unify the file separator character
@@ -364,7 +364,7 @@ final class ConfigManager extends Object {
     *
     * @throws IllegalStateException
     *    if no runtime configuration file is specified or if there is already
-    *    a file watcher. 
+    *    a file watcher.
     *
     * @throws IllegalArgumentException
     *    if <code>interval &lt; 1</code>.
@@ -430,7 +430,7 @@ final class ConfigManager extends Object {
       if (apiLogger != null) {
          properties.setProperty("log4j.rootLogger", apiLogger);
       }
-      
+
       // Reconfigure Log4J
       PropertyConfigurator.configure(properties);
 
@@ -574,7 +574,7 @@ final class ConfigManager extends Object {
     * Listener that reloads the configuration file if it changes.
     *
     * @version $Revision$ $Date$
-    * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */
@@ -648,7 +648,7 @@ final class ConfigManager extends Object {
          if (_configFileWatcher == null) {
             return;
          }
-         
+
          // Determine the interval
          int newInterval;
          try {

@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.tests.common.servlet.container;
@@ -41,7 +41,7 @@ import org.xins.tests.AllTests;
  * Tests for class <code>ServletRequestPropertyReader</code>.
  *
  * @version $Revision$ $Date$
- * @author Ernst de Haan (<a href="mailto:ernst.dehaan@nl.wanadoo.com">ernst.dehaan@nl.wanadoo.com</a>)
+ * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public class XINSServletRequestTests extends TestCase {
 
@@ -68,8 +68,8 @@ public class XINSServletRequestTests extends TestCase {
     * Constructs a new <code>XINSServletRequestTests</code> test
     * suite with the specified name. The name will be passed to the
     * superconstructor.
-    * 
-    * 
+    *
+    *
     * @param name
     *    the name for this test suite.
     */
@@ -84,7 +84,7 @@ public class XINSServletRequestTests extends TestCase {
 
    public void testEmptyValues() {
       XINSServletRequest request = new XINSServletRequest(AllTests.url() + "?test1=bla&test2=&test3=");
-      
+
       Enumeration enuParams = request.getParameterNames();
       boolean test1Done = false;
       boolean test2Done = false;
@@ -108,7 +108,7 @@ public class XINSServletRequestTests extends TestCase {
 
    public void testMultipleValues() {
       XINSServletRequest request = new XINSServletRequest(AllTests.url() + "?test1=bla&test1=&test1=bla2");
-      
+
       String[] test1Values = request.getParameterValues("test1");
       List test1ValuesList = Arrays.asList(test1Values);
       assertEquals("Not all values found.", test1Values.length, 3);
