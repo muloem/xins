@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
   - Renamed Wanadoo Nederland B.V. to the new name of the company
     Orange Nederland Breedband B.V.
   - Changed the way e-mail addresses are specified in the source code.
+  - Changed all Ant build files to use <xslt/> instead of the synonym
+    <style/>, since the latter is considered deprecated as of Ant 1.7.0.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:

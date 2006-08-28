@@ -315,7 +315,7 @@ APIs in this project are:
 				<xmlvalidate file="{$project_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$project_file}"
 				out="{$builddir}/specdocs/index.html"
 				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
@@ -324,8 +324,8 @@ APIs in this project are:
 					<param name="project_home" expression="{$project_home}" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$specsdir}"     />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				in="{$project_file}"
 				out="{$builddir}/specdocs/help.html"
 				style="{$xins_home}/src/xslt/specdocs/xins-project_to_help.xslt">
@@ -334,7 +334,7 @@ APIs in this project are:
 					<param name="project_home" expression="{$project_home}" />
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$specsdir}"     />
-				</style>
+				</xslt>
 				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 
@@ -553,7 +553,7 @@ APIs in this project are:
 			<xmlvalidate file="{$api_file}" warn="false">
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>
-			<style
+			<xslt
 			in="{$api_file}"
 			out="{$project_home}/build/specdocs/{$api}/index.html"
 			style="{$xins_home}/src/xslt/specdocs/api_to_html.xslt">
@@ -563,12 +563,12 @@ APIs in this project are:
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="api"          expression="{$api}"          />
-			</style>
+			</xslt>
 			<xmlvalidate warn="false">
 				<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>
-			<style
+			<xslt
 			basedir="{$api_specsdir}"
 			destdir="{$project_home}/build/specdocs/{$api}"
 			style="{$xins_home}/src/xslt/specdocs/function_to_html.xslt"
@@ -581,13 +581,13 @@ APIs in this project are:
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="api"          expression="{$api}"          />
 				<param name="api_file"     expression="{$api_file}"     />
-			</style>
+			</xslt>
 			<xsl:if test="string-length($typeIncludes) &gt; 0">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$typeIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt"
@@ -600,14 +600,14 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt"
@@ -620,14 +620,14 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:if test="$api_node/category">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/specdocs/category_to_html.xslt"
@@ -636,10 +636,10 @@ APIs in this project are:
 					<param name="xins_version" expression="{$xins_version}" />
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:if test="$api_node/environment or not(environments)">
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
@@ -653,14 +653,14 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:if test="environments">
 				<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 				<xmlvalidate file="{$env_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
 				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
@@ -675,7 +675,7 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
 					<param name="env_file"     expression="{$env_file}"     />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:for-each select="impl">
 				<xsl:variable name="implName" select="@name" />
@@ -691,7 +691,7 @@ APIs in this project are:
 					<xmlvalidate file="{$impl_file}" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
-					<style
+					<xslt
 					in="{$impl_file}"
 					out="{$project_home}/build/specdocs/{$api}/properties{$implName2}.html"
 					style="{$xins_home}/src/xslt/specdocs/impl_to_html.xslt">
@@ -701,7 +701,7 @@ APIs in this project are:
 						<param name="specsdir"     expression="{$api_specsdir}"     />
 						<param name="xins_version" expression="{$xins_version}" />
 						<param name="api"          expression="{$api}"          />
-					</style>
+					</xslt>
 				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
 					<xsl:variable name="javaDestFileDir" select="concat($project_home, '/build/java-fundament/', $api, $implName2, '/', $packageAsDir)" />
@@ -710,7 +710,7 @@ APIs in this project are:
 					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
-					<style
+					<xslt
 					in="{$impl_dir}/log.xml"
 					out="build/logdoc/{$api}{$implName2}/build.xml"
 					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
@@ -721,7 +721,7 @@ APIs in this project are:
 						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
-					</style>
+					</xslt>
 					<copy file="{$xins_home}/src/css/logdoc/style.css" todir="build/specdocs/{$api}/logdoc{$implName2}" />
 					<ant dir="build/logdoc/{$api}{$implName2}" target="html" inheritall="false" />
 				</xsl:if>
@@ -748,18 +748,18 @@ APIs in this project are:
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$api_file}"
 				out="{$javaDestDir}/{$typePackageAsDir}/package.html"
 				style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="api" expression="{$api}" />
-				</style>
+				</xslt>
 				<xmlvalidate warn="false">
 					<fileset dir="{$copiedTypesDir}" includes="{$typeIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$copiedTypesDir}"
 				destdir="{$javaDestDir}/{$typePackageAsDir}/"
 				style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
@@ -770,7 +770,7 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="package"      expression="{$typePackage}"  />
 					<param name="api"          expression="{$api}"          />
-				</style>
+				</xslt>
 
 				<mkdir dir="{$typeClassesDir}" />
 				<javac
@@ -795,7 +795,7 @@ APIs in this project are:
 			<tstamp>
 				<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
 			</tstamp>
-			<style
+			<xslt
 			in="{$api_specsdir}/api.xml"
 			out="{$builddir}/wsdl/{$api}.wsdl"
 			style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
@@ -806,7 +806,7 @@ APIs in this project are:
 				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
 				<param name="xins_version" expression="{$xins_version}" />
 				<param name="timestamp"    expression="${{timestamp}}"  />
-			</style>
+			</xslt>
 			<replace file="{$builddir}/wsdl/{$api}.wsdl">
 				<replacefilter token="urn:apiname" value="urn:{$api}" />
 				<replacefilter token="//?_convention=_xins-soap" value="/?_convention=_xins-soap" />
@@ -815,7 +815,7 @@ APIs in this project are:
 
 		<target name="opendoc-{$api}" description="Generates the specification document for the '{$api}' API">
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
-			<style
+			<xslt
 			in="{$api_specsdir}/api.xml"
 			out="{$builddir}/opendoc/{$api}/content.xml"
 			style="{$xins_home}/src/xslt/opendoc/api_to_content.xslt">
@@ -824,7 +824,7 @@ APIs in this project are:
 				<param name="project_file" expression="{$project_file}" />
 				<param name="specsdir"     expression="{$api_specsdir}" />
 				<param name="api"          expression="{$api}"          />
-			</style>
+			</xslt>
 			<copy file="{$xins_home}/src/opendoc/meta.xml" tofile="{$builddir}/opendoc/{$api}/meta.xml" />
 			<tstamp>
 				<format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm:ss" />
@@ -899,7 +899,7 @@ APIs in this project are:
 					<xmlvalidate file="{$api_specsdir}/{$function}.fnc" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
-					<style
+					<xslt
 					in="{$api_specsdir}/{$function}.fnc"
 					out="{$javaImplFile}"
 					style="{$xins_home}/src/xslt/java-server-framework/function_to_impl_java.xslt">
@@ -911,7 +911,7 @@ APIs in this project are:
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
 						<param name="package"      expression="{$package}"      />
-					</style>
+					</xslt>
 				</target>
 			</xsl:for-each>
 
@@ -972,7 +972,7 @@ APIs in this project are:
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$api_file}"
 				out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
 				style="{$xins_home}/src/xslt/java-server-framework/api_to_java.xslt">
@@ -984,15 +984,15 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"          />
 					<param name="impl_file"    expression="{$impl_file}"    />
 					<param name="package"      expression="{$package}"      />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				in="{$api_file}"
 				out="{$javaDestDir}/{$packageAsDir}/package.html"
 				style="{$xins_home}/src/xslt/java-server-framework/api_to_packagehtml.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="api" expression="{$api}" />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				in="{$impl_file}"
 				out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
 				style="{$xins_home}/src/xslt/java-server-framework/impl_to_java.xslt">
@@ -1001,13 +1001,13 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}" />
 					<param name="package"      expression="{$package}"      />
 					<param name="api"          expression="{$api}"          />
-				</style>
+				</xslt>
 
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$javaDestDir}/{$packageAsDir}"
 				style="{$xins_home}/src/xslt/java-server-framework/function_to_java.xslt"
@@ -1024,7 +1024,7 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"         />
 					<param name="impl_file"    expression="{$impl_file}"        />
 					<param name="generics"     expression="${{build.generics}}" />
-				</style>
+				</xslt>
 
 				<!-- Generation of the result code files. -->
 				<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
@@ -1039,14 +1039,14 @@ APIs in this project are:
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
 					<!-- An intermediate file containing all the functions/result codes is created for performance reasons. -->
-					<style
+					<xslt
 					in="{$api_file}"
 					out="{$javaDestDir}/resultcodes.xml"
 					style="{$xins_home}/src/xslt/java-server-framework/api_to_resultcodes.xslt">
 						<xmlcatalog refid="all-dtds" />
 						<param name="specsdir"     expression="{$api_specsdir}" />
-					</style>
-					<style
+					</xslt>
+					<xslt
 					basedir="{$api_specsdir}"
 					destdir="{$javaDestDir}/{$packageAsDir}"
 					style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
@@ -1061,14 +1061,14 @@ APIs in this project are:
 						<param name="package"      expression="{$package}"      />
 						<param name="api"          expression="{$api}"          />
 						<param name="api_file"     expression="{$api_file}"     />
-					</style>
+					</xslt>
 				</xsl:if>
 
 				<!-- Generate the logdoc java file is needed -->
 				<xsl:if test="$api_node/impl-java/logdoc">
 					<echo message="Generating the logdoc for {$api}" />
 					<mkdir dir="build/logdoc/{$api}" />
-					<style
+					<xslt
 					in="{$project_home}/src/logdoc/{$api}/log.xml"
 					out="build/logdoc/{$api}/build.xml"
 					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt"
@@ -1081,7 +1081,7 @@ APIs in this project are:
 						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc" />
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
-					</style>
+					</xslt>
 					<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
 				</xsl:if>
 				<xsl:if test="local-name() = 'impl'">
@@ -1098,7 +1098,7 @@ APIs in this project are:
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
-						<style
+						<xslt
 						in="{$impl_dir}/log.xml"
 						out="build/logdoc/{$api}{$implName2}/build.xml"
 						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
@@ -1109,7 +1109,7 @@ APIs in this project are:
 							<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
 							<param name="java_destdir"    expression="{$javaDestFileDir}" />
 							<param name="package_name"    expression="{$package}" />
-						</style>
+						</xslt>
 						<ant antfile="build/logdoc/{$api}{$implName2}/build.xml" target="java">
 							<property name="accesslevel" value="{$accesslevel}" />
 						</ant>
@@ -1157,7 +1157,7 @@ APIs in this project are:
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$api_file}"
 				out="build/webapps/{$api}{$implName2}/web.xml"
 				style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
@@ -1170,7 +1170,7 @@ APIs in this project are:
 					<param name="api_version"  expression="${{api.version}}" />
 					<param name="hostname"     expression="${{hostname}}"    />
 					<param name="timestamp"    expression="${{timestamp}}"   />
-				</style>
+				</xslt>
 				<fixcrlf srcdir="build/webapps/{$api}{$implName2}" includes="web.xml" eol="unix" />
 				<manifest file="build/webapps/{$api}{$implName2}/MANIFEST.MF">
 					<attribute name="XINS-Version" value="{$xins_version}" />
@@ -1288,7 +1288,7 @@ APIs in this project are:
 				</xmlvalidate>
 				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
-				<style basedir="{$api_specsdir}"
+				<xslt basedir="{$api_specsdir}"
 				includes="{$functionIncludes}"
 				destdir="{$javaImplDir}"
 				extension="Impl.java"
@@ -1302,7 +1302,7 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"          />
 					<param name="api_file"     expression="{$api_file}"     />
 					<param name="package"      expression="{$package}"      />
-				</style>
+				</xslt>
 			</target>
 
 			<target name="server-{$api}{$implName2}"
@@ -1375,7 +1375,7 @@ APIs in this project are:
 					</classpath>
 				</junit>
 				<mkdir dir="build/testresults/html" />
-				<style
+				<xslt
 				in="build/testresults/xml/testresults-{$api}.xml"
 				out="build/testresults/html/testresults-{$api}.html"
 				style="{$xins_home}/src/xslt/tests/index.xslt" />
@@ -1393,18 +1393,18 @@ APIs in this project are:
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="api.xml" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$api_file}"
 				out="{$javaTestDir}/APITests.java"
 				style="{$xins_home}/src/xslt/tests/api_to_test.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="package"      expression="{$packageTests}"      />
-				</style>
+				</xslt>
 				<xmlvalidate warn="false">
 					<xmlcatalog refid="all-dtds" />
 					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}" />
 				</xmlvalidate>
-				<style basedir="{$api_specsdir}"
+				<xslt basedir="{$api_specsdir}"
 				includes="{$functionIncludes}"
 				destdir="{$javaTestDir}"
 				extension="Tests.java"
@@ -1413,7 +1413,7 @@ APIs in this project are:
 					<xmlcatalog refid="all-dtds" />
 					<param name="api"          expression="{$api}"          />
 					<param name="package"      expression="{$packageTests}" />
-				</style>
+				</xslt>
 			</target>
 		</xsl:if>
 
@@ -1422,7 +1422,7 @@ APIs in this project are:
 			<xmlvalidate file="{$api_file}" warn="false">
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>
-			<style
+			<xslt
 			in="{$api_file}"
 			out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/CAPI.java"
 			style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
@@ -1432,20 +1432,20 @@ APIs in this project are:
 				<param name="package"      expression="{$clientPackage}" />
 				<param name="api"          expression="{$api}"           />
 				<param name="xins_version" expression="{$xins_version}"  />
-			</style>
-			<style
+			</xslt>
+			<xslt
 			in="{$api_file}"
 			out="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}/package.html"
 			style="{$xins_home}/src/xslt/java-capi/api_to_packagehtml.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="api" expression="{$api}" />
-			</style>
+			</xslt>
 			<xsl:if test="string-length($functionIncludes) &gt; 0">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/function_to_result_java.xslt"
@@ -1461,8 +1461,8 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"         />
 					<param name="package"      expression="{$clientPackage}"    />
 					<param name="generics"     expression="${{build.generics}}" />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/function_to_request_java.xslt"
@@ -1474,14 +1474,14 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$api_specsdir}"  />
 					<param name="package"      expression="{$clientPackage}" />
 					<param name="api"          expression="{$api}"           />
-				</style>
+				</xslt>
 			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/java-capi/{$api}/{$clientPackageAsDir}"
 				style="{$xins_home}/src/xslt/java-capi/resultcode_to_java.xslt"
@@ -1493,7 +1493,7 @@ APIs in this project are:
 					<param name="package"      expression="{$clientPackage}" />
 					<param name="api"          expression="{$api}"           />
 					<param name="api_file"     expression="{$api_file}"      />
-				</style>
+				</xslt>
 			</xsl:if>
 
 			<!-- Try to load the API specific .version.properties -->
