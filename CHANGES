@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
 * Generated build file:
   - Added new maven target to create a pom.xml file for the API.
+  - Added new eclipse target that creates the Eclipse projects file for the 
+    API.
 
 * Other:
   - Renamed Wanadoo Nederland B.V. to the new name of the company

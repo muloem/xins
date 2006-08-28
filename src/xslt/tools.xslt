@@ -76,7 +76,7 @@
 					<include name="**/*.java"/>
 				</fileset>
 			</checkstyle>
-			<style
+			<xslt
 			in="build/checkstyle/${{api.name}}/results.xml"
 			out="build/checkstyle/${{api.name}}/index.html"
 			style="{$xins_home}/src/xslt/checkstyle/index.xslt" />
@@ -137,7 +137,7 @@
 					<pathelement location="build/classes-api/${{api.name}}"/>
 				</classespath>
 			</jdepend>
-			<style in="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
+			<xslt in="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
 			out="build/jdepend/${{api.name}}/index.html"
 			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
@@ -145,13 +145,13 @@
 		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report an API.">
 			<mkdir dir="build/cvschangelog/${{api.name}}" />
 			<cvschangelog dir="${{api.source.dir}}/.." destfile="build/cvschangelog/${{api.name}}/changelog.xml" />
-			<style in="build/cvschangelog/${{api.name}}/changelog.xml"
+			<xslt in="build/cvschangelog/${{api.name}}/changelog.xml"
 			out="index.html"
 			style="${{ant.home}}/etc/changelog.xsl">
 				<param name="title" expression="Change Log for ${{api.name}} API"/>
 				<param name="module" expression="${{api.name}}"/>
 				<param name="cvsweb" expression="{$cvsweb}/apis/${{api.name}}"/>
-			</style>
+			</xslt>
 		</target>
 
 		<target name="jmeter" depends="-init-tools" description="Execute some JMeter tests.">
@@ -164,15 +164,15 @@
 				<property name="jmeter.save.saveservice.assertion_results" value="all"/>
 				<property name="file_format.testlog" value="2.0"/>
 			</jmeter>
-			<style force="true"
+			<xslt force="true"
 			in="${{jmeter.test}}.jlt"
 			out="build/jmeter/${{api.name}}/index.html"
 			style="${{jmeter.home}}/extras/jmeter-results-detail-report.xsl">
-			</style>
+			</xslt>
 		</target>
 
 		<target name="maven" depends="-init-tools" description="Generates a POM file.">
-			<style
+			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
 			out="apis/${{api.name}}/pom.xml"
 			style="{$xins_home}/src/tools/maven/api_to_pom.xslt">
@@ -180,7 +180,44 @@
 				<param name="api" expression="${{api.name}}" />
 				<param name="xins_home" expression="{$xins_home}" />
 				<param name="project_home" expression="{$project_home}" />
-			</style>
+			</xslt>
+		</target>
+
+		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files.">
+			<xslt
+			in="xins-project.xml"
+			out="xins-eclipse.userlibraries"
+			style="{$xins_home}/src/tools/eclipse/project_to_userlibraries.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="xins_home" expression="{$xins_home}" />
+			</xslt>
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/.project"
+			style="{$xins_home}/src/tools/eclipse/api_to_project.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+			</xslt>
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/.classpath"
+			style="{$xins_home}/src/tools/eclipse/api_to_classpath.xslt">
+				<xmlcatalog refid="all-dtds" />
+			</xslt>
+			<mkdir dir="apis/${{api.name}}/.externalToolBuilders" />
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/.externalToolBuilders/${{api.name}} Ant Builder.launch"
+			style="{$xins_home}/src/tools/eclipse/api_to_antbuilder.xslt">
+				<xmlcatalog refid="all-dtds" />
+			</xslt>
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/.tomcatplugin"
+			style="{$xins_home}/src/tools/eclipse/api_to_tomcatplugin.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+			</xslt>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
