@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2005 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server.frontend;
@@ -33,7 +33,7 @@ import org.xins.server.API;
  * Manager for the sessions and session properties for the XINS front-end framework.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class SessionManager extends Manageable {
 
@@ -126,7 +126,7 @@ public class SessionManager extends Manageable {
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
          String value = request.getParameter(name);
-         if ("".equals(value)) {
+         if ("".equals(value) || name.equals(getSessionId())) {
             value = null;
          }
          setProperty(name.toLowerCase(), value);

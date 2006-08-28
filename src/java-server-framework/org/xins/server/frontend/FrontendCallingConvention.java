@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2005 Wanadoo Nederland B.V.
+ * Copyright 2003-2005 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server.frontend;
@@ -71,7 +71,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * XINS Front-end Framework calling convention.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public final class FrontendCallingConvention extends CustomCallingConvention {
 
@@ -414,7 +414,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       String mode = httpRequest.getParameter("mode");
       String command = httpRequest.getParameter("command");
+      if (command == null || command.equals("")) {
+         command = _defaultCommand;
+      }
       String action = httpRequest.getParameter("action");
+      if (action == null || action.equals("show")) {
+         action = "";
+      }
       String functionName = command + action;
 
       // Display the XSLT
@@ -427,7 +433,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
 
       // Control command
-      if (command.equals("Control")) {
+      if ("Control".equals(command)) {
          xinsResult = control(action);
       }
 
@@ -881,7 +887,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          try {
             redirection = translate(xmlResult, conditionTemplate);
          } catch (Exception ex) {
-            
+
             // throw ex;
          }
       } else if (redirection == null && xinsResult.getErrorCode() == null) {
@@ -1036,7 +1042,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             }
          }
       } catch (Exception ex) {
-         
+
          // No function defined for this call, continue
       }
       return receivedParameter;

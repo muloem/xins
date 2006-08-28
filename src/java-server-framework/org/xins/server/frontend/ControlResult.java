@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Wanadoo Nederland B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server.frontend;
@@ -23,7 +23,7 @@ import org.xins.server.FunctionResult;
  * Result for the Control command.
  *
  * @version $Revision$ $Date$
- * @author Anthony Goubard (<a href="mailto:anthony.goubard@nl.wanadoo.com">anthony.goubard@nl.wanadoo.com</a>)
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 class ControlResult extends FunctionResult {
 
@@ -46,7 +46,7 @@ class ControlResult extends FunctionResult {
       param("xinsServerVersion", org.xins.server.Library.getVersion());
       param("apiName", api.getName());
       param("apiStartUpTime", DateConverter.toDateString(api.getStartupTimestamp()));
-      
+
       // Some bootstrap properties
       PropertyReader bootstrapProps = api.getBootstrapProperties();
       param("apiVersion", bootstrapProps.get("org.xins.api.version"));
@@ -91,7 +91,7 @@ class ControlResult extends FunctionResult {
       }
       add(builder.createElement());
    }
-   
+
    /**
     * Return the XSLT to use to display the data of the Control command.
     *
