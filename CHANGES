@@ -18,6 +18,11 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
     been added.
   - Replaced log message 3522 by the more generic and more elaborative 3523.
   - Renamed xiff to xinsff in the XINS Front-end Framework properties.
+  - Fixed possible NullPointerException in the XINS FF CC.
+  - The session id stored in the session cannot be changed by input parameters.
+
+* Generated build file:
+  - Added new maven target to create a pom.xml file for the API.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 4:
