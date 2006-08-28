@@ -59,16 +59,6 @@ public final class URLEncoding extends Object {
    private static final int CHAR_UPPER_F = (int) 'F';
 
    /**
-    * The character lowercase U (<code>'u'</code>) as an <code>int</code>.
-    */
-   private static final int CHAR_LOWER_U = (int) 'u';
-
-   /**
-    * The character uppercase U (<code>'U'</code>) as an <code>int</code>.
-    */
-   private static final int CHAR_UPPER_U = (int) 'U';
-
-   /**
     * Mappings from unencoded (array index) to encoded values (array
     * elements). The size of this array is 127.
     */
