@@ -23,15 +23,15 @@ import org.znerd.xmlenc.XMLEncoder;
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
- * Transformer that is able to convert a <code>FunctionResult</code> object to
- * XML.
+ * Converter that can be used by calling conventions to generate responses
+ * which are compatible with the XINS standard calling convention.
  *
  * <p>The result output is always in the UTF-8 encoding.
  *
- * <p>Note: This class may become package-private as of XINS 2.0.
- *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ *
+ * @since XINS 1.5.0
  */
 public final class CallResultOutputter extends Object {
 
