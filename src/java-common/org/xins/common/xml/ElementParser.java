@@ -44,11 +44,6 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class. This field is not <code>null</code>.
-    */
-   private static final String CLASSNAME = ElementParser.class.getName();
-
-   /**
     * Fully-qualified name of the inner class <code>Handler</code>. This field
     * is not <code>null</code>.
     */
@@ -116,8 +111,6 @@ extends Object {
           ParseException {
 
       // TODO: Consider using an XMLReader instead of a SAXParser
-
-      final String THIS_METHOD = "parse(java.io.Reader)";
 
       // Check preconditions
       MandatoryArgumentChecker.check("in", in);
