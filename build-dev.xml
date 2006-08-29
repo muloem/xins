@@ -485,31 +485,22 @@ ${sf.file}</fail>
 			</fileset>
 		</copy>
 		<!-- Create and copy the documentation -->
-		<ant dir="../${name}-docs" target="guide" inheritall="false">
+		<ant dir="../${name}-docs" target="manuals" inheritall="false">
 			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
 		</ant>
-		<delete dir="docs/protocol" />
-		<delete>
-			<fileset dir="docs">
-				<include name="*" />
-			</fileset>
-		</delete>
-		<mkdir dir="docs" />
 		<copy todir="docs">
 			<fileset dir="../${name}-docs/build/guide">
 				<exclude name="*.fo" />
 				<exclude name="XINSGuide.html" />
 			</fileset>
-		</copy>
-		<ant dir="../${name}-docs" target="protocol" inheritall="false" />
-		<mkdir dir="docs/protocol" />
-		<copy todir="docs/protocol">
-			<fileset dir="../${name}-docs/build/protocol">
-				<exclude name="*.fo" />
-				<exclude name="XINSProtocol.html" />
+			<fileset dir="../${name}-docs/build">
+				<include name="protocol/**" />
+				<include name="frontend/**" />
+				<exclude name="**/*.fo" />
+				<exclude name="protocol/XINSProtocol.html" />
+				<exclude name="frontend/XINSFrontend.html" />
 			</fileset>
 		</copy>
-		<mkdir dir="docs/primer" />
 		<copy todir="docs/primer">
 			<fileset dir="../${name}-docs/src/web">
 				<include name="primer.html" />

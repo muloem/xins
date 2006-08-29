@@ -184,13 +184,27 @@
 		</target>
 
 		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files.">
-			<xslt
-			in="xins-project.xml"
-			out="xins-eclipse.userlibraries"
-			style="{$xins_home}/src/tools/eclipse/project_to_userlibraries.xslt">
-				<xmlcatalog refid="all-dtds" />
-				<param name="xins_home" expression="{$xins_home}" />
-			</xslt>
+			<!-- Create destination directories -->
+			<mkdir dir="build/java-fundament/${{api.name}}" />
+			<mkdir dir="build/java-types/${{api.name}}" />
+			<mkdir dir="build/classes-api/${{api.name}}" />
+			<mkdir dir="build/classes-types/${{api.name}}" />
+			
+			<!-- Copy the build file for the API -->
+			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml" 
+			todir="apis/${{api.name}}" overwrite="false" />
+			<replace file="apis/${{api.name}}/nbbuild.xml"
+			token="value=&quot;petstore&quot;" value="value=&quot;${new.api.name}&quot;" />
+			<replace file="apis/${{api.name}}/nbbuild.xml"
+			token="name=&quot;petstore&quot;" value="name=&quot;${new.api.name}&quot;" />
+
+			<!-- Create the xins user library if needed -->
+			<copy file="{$xins_home}/src/tools/eclipse/xins-eclipse.userlibraries"
+			todir="." overwrite="false" />
+			<replace file="xins-eclipse.userlibraries"
+			token="%%XINS_HOME%%" value="{$xins_home}" />
+			
+			<!-- Create the project files -->
 			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
 			out="apis/${{api.name}}/.project"
