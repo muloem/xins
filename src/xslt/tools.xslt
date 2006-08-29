@@ -232,6 +232,13 @@
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
 			</xslt>
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="apis/${{api.name}}/tomcat-server.xml"
+			style="{$xins_home}/src/tools/eclipse/api_to_tomcatserver.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+			</xslt>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
