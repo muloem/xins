@@ -472,9 +472,9 @@ public class HTTPServletHandler {
             String headerKey = inputLine.substring(0, colonPos);
             String headerValue = inputLine.substring(colonPos + 2);
             inHeaders.put(headerKey, headerValue);
-            if (headerKey.equals("Content-Length")) {
+            if (headerKey.equalsIgnoreCase("content-length")) {
                contentLength = Integer.parseInt(headerValue);
-            } else if (headerKey.equals("Content-Type")) {
+            } else if (headerKey.equalsIgnoreCase("content-type")) {
                inContentType = headerValue;
             }
 
