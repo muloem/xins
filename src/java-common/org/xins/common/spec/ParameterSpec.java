@@ -185,6 +185,9 @@ public final class ParameterSpec extends Object {
             truncatePos = className.lastIndexOf(".api.APIImpl");
          }
          try {
+            if (typeName.indexOf('/') != -1) {
+               typeName = typeName.substring(typeName.indexOf('/') + 1);
+            }
             char firstChar = typeName.charAt(0);
             if (Character.isLowerCase(firstChar) && typeName.length() > 1) {
                typeName = Character.toUpperCase(firstChar) + typeName.substring(1);

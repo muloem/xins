@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
     "*" to the default servlet. This is in accordance with the HTTP 1.1 spec,
     allowing an OPTIONS request for "*", which represents the whole server.
   - Fixed The HTTP headers read from the request should be case insensitive.
+  - Implemented SF.net RFE #1523749: Added possibility to share types
+    between APIs.
 
 * XINS/Java Server Framework:
   - Completed implementation of SF.net RFE #1483099: Support HTTP methods PUT,
@@ -21,6 +23,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
   - Renamed xiff to xinsff in the XINS Front-end Framework properties.
   - Fixed possible NullPointerException in the XINS FF CC.
   - The session id stored in the session cannot be changed by input parameters.
+
+* Generated types:
+  - Implemented SF.net RFE #1523749: Added possibility to share types
+    between APIs.
 
 * Generated build file:
   - Added new maven target to create a pom.xml file for the API.

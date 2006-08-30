@@ -189,7 +189,12 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<xsl:variable name="isenum" select="not(starts-with($type, '_')) and boolean(document($type_file)/type/enum)" />
 

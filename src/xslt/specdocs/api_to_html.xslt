@@ -27,8 +27,8 @@
 
 	<xsl:include href="header.xslt"       />
 	<xsl:include href="footer.xslt"       />
-	<xsl:include href="../firstline.xslt" />
 	<xsl:include href="../author.xslt"    />
+	<xsl:include href="../types.xslt"    />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 
@@ -432,7 +432,12 @@
 
 	<xsl:template match="type">
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', @name, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="type_node" select="document($type_file)/type" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
@@ -454,10 +459,10 @@
 			<td>
 				<a>
 					<xsl:attribute name="href">
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$type_node/@name" />
 						<xsl:text>.html</xsl:text>
 					</xsl:attribute>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$type_node/@name" />
 				</a>
 			</td>
 			<td>

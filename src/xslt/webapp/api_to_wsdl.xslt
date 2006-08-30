@@ -322,8 +322,12 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 
-		<xsl:variable name="type_name" select="@name" />
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type_name, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="type_node" select="document($type_file)/type" />
 		<xsl:variable name="base_type">
 			<xsl:choose>
@@ -342,7 +346,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsd:simpleType name="{$type_name}Type">
+		<xsd:simpleType name="{@name}Type">
 			<xsd:annotation>
 				<xsd:documentation>
 					<xsl:value-of select="$type_node/description/text()" />

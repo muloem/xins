@@ -33,34 +33,33 @@
 			Returns the name of the file for the specified type in the specified API.
 			The should contain the definition of the specified type in the specified
 			API.
+			If the type is a XINS predefined type an nothing is returned.
 		</xd:short>
 		<xd:param name="specsdir" type="string">
 			the specification directory for the concerning XINS project, must be
 			specified.
 		</xd:param>
-		<xd:param name="api" type="string">
-			the name of the API to which the type belongs, must be specified.
-		</xd:param>
 		<xd:param name="type" type="string">
-			the name of the type, must be specified.
+			the name of the type, can be empty.
 		</xd:param>
 	</xd:doc>
 	<xsl:template name="file_for_type">
 		<xsl:param name="specsdir" />
-		<xsl:param name="api"      />
 		<xsl:param name="type"     />
 
 		<xsl:if test="string-length($specsdir) &lt; 1">
 			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
 		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($type) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'type' is mandatory.</xsl:message>
-		</xsl:if>
 
-		<xsl:value-of select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:choose>
+			<xsl:when test="starts-with($type, '_') or string-length($type) = 0" />
+			<xsl:when test="contains($type, '/')">
+				<xsl:value-of select="concat($specsdir, '/../../', substring-before($type, '/'), '/spec/', substring-after($type, '/'), '.typ')" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($specsdir, '/', $type, '.typ')" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="typelink">
@@ -98,9 +97,14 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="type"     />
 
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="type_node" select="document($type_file)/type" />
-		<xsl:variable name="type_url"  select="concat($type, '.html')" />
+		<xsl:variable name="type_url"  select="concat($type_node/@name, '.html')" />
 		<xsl:variable name="type_title">
 			<xsl:call-template name="firstline">
 				<xsl:with-param name="text" select="$type_node/description/text()" />
@@ -122,7 +126,7 @@
 			<xsl:attribute name="title">
 				<xsl:value-of select="$type_title" />
 			</xsl:attribute>
-			<xsl:value-of select="$type" />
+			<xsl:value-of select="$type_node/@name" />
 		</a>
 	</xsl:template>
 
@@ -143,13 +147,23 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:variable name="definedtype">
+					<xsl:choose>
+						<xsl:when test="contains($type, '/')">
+							<xsl:value-of select="substring-after($type, '/')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$type" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:call-template name="package_for_type_classes">
 					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"          select="$api"          />
 				</xsl:call-template>
 				<xsl:text>.</xsl:text>
 				<xsl:call-template name="hungarianUpper">
-					<xsl:with-param name="text" select="$type" />
+					<xsl:with-param name="text" select="$definedtype" />
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -188,7 +202,12 @@
 		<xsl:param name="required"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Check preconditions -->
 		<xsl:if test="not($project_node)">
@@ -349,7 +368,12 @@
 		<xsl:param name="variable"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($specsdir) &lt; 1">
@@ -457,7 +481,12 @@
 		<xsl:param name="variable"     />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Check preconditions -->
 		<xsl:if test="string-length($specsdir) &lt; 1">
@@ -544,6 +573,17 @@
 		<xsl:param name="project_node" />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
+		
+		<xsl:variable name="customtype">
+			<xsl:choose>
+				<xsl:when test="contains($type, '/')">
+					<xsl:value-of select="substring-after($type, '/')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$type" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<xsl:call-template name="package_for_type_classes">
 			<xsl:with-param name="project_node" select="$project_node" />
@@ -551,7 +591,7 @@
 		</xsl:call-template>
 		<xsl:text>.</xsl:text>
 		<xsl:call-template name="hungarianUpper">
-			<xsl:with-param name="text" select="$type" />
+			<xsl:with-param name="text" select="$customtype" />
 		</xsl:call-template>
 	</xsl:template>
 
@@ -585,7 +625,12 @@
 		<xsl:param name="type"         />
 
 		<!-- Determine file that defines type -->
-		<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+		<xsl:variable name="type_file">
+			<xsl:call-template name="file_for_type">
+				<xsl:with-param name="specsdir" select="$specsdir" />
+				<xsl:with-param name="type" select="$type" />
+			</xsl:call-template>
+		</xsl:variable>
 
 		<!-- Check preconditions -->
 		<xsl:if test="not($project_node)">
@@ -767,7 +812,12 @@
 			<xsl:otherwise>
 
 				<!-- Determine file that defines type -->
-				<xsl:variable name="type_file" select="concat($specsdir, '/', $type, '.typ')" />
+				<xsl:variable name="type_file">
+					<xsl:call-template name="file_for_type">
+						<xsl:with-param name="specsdir" select="$specsdir" />
+						<xsl:with-param name="type" select="$type" />
+					</xsl:call-template>
+				</xsl:variable>
 				<xsl:variable name="type_node" select="document($type_file)/type" />
 
 				<xsl:choose>

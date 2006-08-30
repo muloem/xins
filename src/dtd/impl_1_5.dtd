@@ -21,7 +21,7 @@
 <!ATTLIST property
           name       NMTOKEN #REQUIRED
           required   (true|false) #REQUIRED
-          type       NMTOKEN #IMPLIED
+          type       CDATA #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
 <!ELEMENT content EMPTY>

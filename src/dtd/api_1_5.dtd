@@ -20,7 +20,7 @@
 >
 <!ELEMENT type EMPTY>
 <!ATTLIST type
-          name       NMTOKEN #REQUIRED
+          name       CDATA   #REQUIRED
           freeze     NMTOKEN #IMPLIED
 >
 <!ELEMENT resultcode EMPTY>

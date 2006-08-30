@@ -496,7 +496,9 @@ APIs in this project are:
 		<xsl:variable name="typeIncludes">
 			<xsl:for-each select="$api_node/type">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
-				<xsl:value-of select="@name" />
+				<xsl:if test="not(contains(@name, '/'))">
+					<xsl:value-of select="@name" />
+				</xsl:if>
 				<xsl:text>.typ</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
@@ -602,6 +604,26 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</xslt>
 			</xsl:if>
+			<xsl:for-each select="$api_node/type">
+				<xsl:if test="contains(@name, '/')">
+					<xsl:variable name="in_type_file"
+					select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
+					<xsl:variable name="out_html_file"
+					select="concat($project_home, '/build/specdocs/', $api, '/', substring-after(@name, '/'), '.html')" />
+					<xslt
+					in="{$in_type_file}"
+					out="{$out_html_file}"
+					style="{$xins_home}/src/xslt/specdocs/type_to_html.xslt">
+						<xmlcatalog refid="all-dtds" />
+						<param name="xins_version" expression="{$xins_version}" />
+						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
+						<param name="specsdir"     expression="{$api_specsdir}" />
+						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
+					</xslt>
+				</xsl:if>
+			</xsl:for-each>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
@@ -744,6 +766,17 @@ APIs in this project are:
 					<fileset dir="{$api_specsdir}" includes="{$typeIncludes}" />
 					<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
 				</copy>
+				<xsl:for-each select="$api_node/type">
+					<xsl:if test="contains(@name, '/')">
+						<xsl:variable name="shared_type_file" 
+						select="concat($api_specsdir, '/../../', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
+						<copy
+						file="{$shared_type_file}"
+						todir="{$copiedTypesDir}">
+							<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
+						</copy>
+					</xsl:if>
+				</xsl:for-each>
 
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
@@ -1199,6 +1232,13 @@ APIs in this project are:
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
+					<xsl:for-each select="$api_node/type">
+						<xsl:if test="contains(@name, '/')">
+							<xsl:variable name="type_file"
+							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
+							<zipfileset src="{$type_file}" prefix="specs" />
+						</xsl:if>
+					</xsl:for-each>
 				</war>
 				<checksum file="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
@@ -1545,6 +1585,13 @@ APIs in this project are:
 			manifest="{$project_home}/build/capis/{$api}-MANIFEST.MF">
 				<fileset dir="{$project_home}/build/classes-capi/{$api}" includes="**/*.class" />
 				<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" prefix="specs" />
+				<xsl:for-each select="type">
+					<xsl:if test="contains(@name, '/')">
+						<xsl:variable name="type_file"
+						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
+						<zipfileset src="{$type_file}" prefix="specs" />
+					</xsl:if>
+				</xsl:for-each>
 			</jar>
 		</target>
 		<target name="capi-{$api}" depends="jar-{$api}" />
