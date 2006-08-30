@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -216,6 +217,11 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private Templates _templateControl;
 
+   /**
+    * The list of the real function names for this API.
+    */
+   private List _functionList = new ArrayList();
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -264,6 +270,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
       } catch (TransformerConfigurationException tcex) {
          Log.log_3701(tcex, "control");
+      }
+      
+      // Gets the functions of the API
+      Iterator itFunctions =  _api.getFunctionList().iterator();
+      while (itFunctions.hasNext()) {
+         Function nextFunction = (Function) itFunctions.next();
+         _functionList.add(nextFunction.getName());
       }
    }
 
@@ -349,7 +362,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Redirect to the login page if not logged in or the function is not implemented
       if (_session.shouldLogIn() ||
-            (_redirectionMap.get(functionName) != null && !_api.getFunctionList().contains(functionName))) {
+            (_redirectionMap.get(functionName) != null && !_functionList.contains(functionName))) {
          return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
       }
 

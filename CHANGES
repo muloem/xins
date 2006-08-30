@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
   - Renamed xiff to xinsff in the XINS Front-end Framework properties.
   - Fixed possible NullPointerException in the XINS FF CC.
   - The session id stored in the session cannot be changed by input parameters.
+  - Fixed call to the function skipped when a redirection property was set in
+    the XINS FF CC.
 
 * Generated types:
   - Implemented SF.net RFE #1523749: Added possibility to share types
