@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
   - Fixed The HTTP headers read from the request should be case insensitive.
   - Implemented SF.net RFE #1523749: Added possibility to share types
     between APIs.
+  - Implemented SF.net RFE #1549196. Added a generic DEBUG-level Logdoc log
+    entry (1053) for XINS users.
 
 * XINS/Java Server Framework:
   - Completed implementation of SF.net RFE #1483099: Support HTTP methods PUT,
