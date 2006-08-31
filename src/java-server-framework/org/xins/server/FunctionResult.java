@@ -14,6 +14,9 @@ import org.xins.common.xml.ElementBuilder;
 /**
  * Result from a function call.
  *
+ * <p>Note: This class is <em>not</em> thread-safe. Access it only from one 
+ * thread at the same time.
+ *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
@@ -28,30 +31,40 @@ public class FunctionResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new successful <code>FunctionResult</code> instance.
+    * Creates a new <code>FunctionResult</code> with no error code and no 
+    * parameters. Since there is no error code set, this indicates the result 
+    * is successful.
     */
    public FunctionResult() {
       this(null, null);
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> instance.
+    * Creates a new <code>FunctionResult</code> with the specified error code 
+    * and no parameters.
+    *
+    * <p>If the error code is set to <code>null</code> then the result is 
+    * successful, otherwise it indicates an error.
     *
     * @param code
-    *    the error code, can be <code>null</code> if the result is successful.
+    *    the error code, can be <code>null</code>.
     */
    public FunctionResult(String code) {
       this(code, null);
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> instance.
+    * Creates a new <code>FunctionResult</code> with the specified error code 
+    * and parameters.
+    *
+    * <p>If the error code is set to <code>null</code> then the result is 
+    * successful, otherwise it indicates an error.
     *
     * @param code
-    *    the error code, can be <code>null</code> if the result is successful.
+    *    the error code, can be <code>null</code>.
     *
     * @param parameters
-    *    the parameters for the result.
+    *    the parameters for the result, can be <code>null</code>.
     */
    public FunctionResult(String code, BasicPropertyReader parameters) {
       // TODO: Check that the name of the code is valid
