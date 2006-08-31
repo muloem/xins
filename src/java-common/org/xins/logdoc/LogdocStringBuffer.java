@@ -14,6 +14,10 @@ package org.xins.logdoc;
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated 
+ *    Deprecated since XINS 1.4.2.
+ *    Performance tests have shown that simple String concatenation
+ *    using the '+' operator is faster.
  */
 public class LogdocStringBuffer extends Object {
 
