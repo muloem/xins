@@ -17,6 +17,8 @@ import org.xins.common.xml.ElementBuilder;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
+ * @see FunctionRequest
+ *
  * @since XINS 1.0.0
  */
 public class FunctionResult extends Object {
@@ -47,10 +49,12 @@ public class FunctionResult extends Object {
     *
     * @param code
     *    the error code, can be <code>null</code> if the result is successful.
+    *
     * @param parameters
     *    the parameters for the result.
     */
    public FunctionResult(String code, BasicPropertyReader parameters) {
+      // TODO: Check that the name of the code is valid
       _code = code;
       if (parameters == null) {
           _parameters = new BasicPropertyReader();
