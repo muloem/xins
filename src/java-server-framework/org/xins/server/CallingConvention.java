@@ -653,6 +653,10 @@ abstract class CallingConvention extends Manageable {
                                  + ')';
             String subjectClass  = getClass().getName();
             String subjectMethod = "convertResultImpl("
+                                 + FunctionResult.class.getName()
+                                 + ','
+                                 + HttpServletResponse.class.getName()
+                                 + ','
                                  + HttpServletRequest.class.getName()
                                  + ')';
 
