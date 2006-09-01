@@ -16,7 +16,7 @@ import org.xins.common.Log;
  *
  * @since XINS 1.0.0
  * @deprecated 
- *    Deprecated since XINS 1.4.2.
+ *    Deprecated since XINS 1.5.0.
  *    Performance tests have shown that simple String concatenation
  *    using the '+' operator is faster.
  */

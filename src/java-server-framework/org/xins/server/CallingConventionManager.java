@@ -9,6 +9,7 @@ package org.xins.server;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -131,9 +132,6 @@ extends Manageable {
 
       // Create a map to store the conventions in
       _conventions = new HashMap(89);
-
-      // Initialize the set of supported methods
-      _supportedMethods = new HashSet();
    }
 
 
@@ -163,13 +161,6 @@ extends Manageable {
     * <p>This field is initialized during bootstrapping.
     */
    private final HashMap _conventions;
-
-   /**
-    * The set of supported HTTP methods. The values are initialized during the
-    * initialization stage, see {@link #initImpl(PropertyReader)}. Never
-    * <code>null</code>.
-    */
-   private final HashSet _supportedMethods;
 
 
    //-------------------------------------------------------------------------
@@ -541,10 +532,6 @@ extends Manageable {
           InvalidPropertyValueException,
           InitializationException {
 
-      // Reset the supported HTTP methods
-      _supportedMethods.clear();
-      HashSet methods = new HashSet();
-
       // Loop through all CallingConvention instances
       Iterator iterator = _conventions.entrySet().iterator();
       while (iterator.hasNext()) {
@@ -561,21 +548,12 @@ extends Manageable {
             CallingConvention conv = (CallingConvention) cc;
             init(name, conv, properties);
 
-            // If the initialization succeeded, then add the supported methods
-            // to the set
-            if (conv.isUsable()) {
-               methods.addAll(conv.getSupportedMethods());
-
             // Fail if the *default* calling convention fails to initialize
-            } else if (name.equals(_defaultConventionName)) {
+            if (name.equals(_defaultConventionName) && !conv.isUsable()) {
                throw new InitializationException("Failed to initialize the default calling convention \"" + name + "\".");
             }
          }
       }
-
-      // Only fill the set of supported methods if the initialization
-      // completed successfully
-      _supportedMethods.addAll(methods);
    }
 
    /**
@@ -636,27 +614,6 @@ extends Manageable {
       } catch (Throwable exception) {
          Log.log_3439(exception, name);
       }
-
-      // Determine the HTTP methods supported for function invocations. If
-      // this fails, the the calling convention should not be considered
-      // usable.
-      try {
-         cc.determineSupportedMethods();
-         Log.log_3436(name);
-      } catch (Throwable exception) {
-         Log.log_3439(exception, name);
-         try {
-            cc.deinit();
-         } catch (Throwable ignored) {
-            String thisClass  = CallingConventionManager.class.getName();
-            String thisMethod = "init(java.lang.String,"
-                              + "org.xins.server.CallingConvention,"
-                              + "org.xins.common.collections.PropertyReader)";
-            Utils.logIgnoredException(thisClass,               thisMethod,
-                                      cc.getClass().getName(), "deinit()",
-                                      ignored);
-         }
-      }
    }
 
    /**
@@ -681,7 +638,15 @@ extends Manageable {
 
       // If a calling convention is specified then use that one
       if (! TextUtils.isEmpty(ccName)) {
-         return getCallingConvention(ccName);
+         CallingConvention conv = getCallingConvention(ccName);
+
+         // Check that the method is correct
+         String method = request.getMethod();
+         if (!"OPTIONS".equals(method) && !Arrays.asList(conv.getSupportedMethods(request)).contains(method)) {
+            throw new UnsupportedMethodException(method);
+         }
+         
+         return conv;
 
       // Otherwise try to detect which one is appropriate
       } else {
@@ -927,22 +892,37 @@ extends Manageable {
     * conventions for invoking functions, so excluding the <em>OPTIONS</em>
     * method. The latter cannot be used for function invocations, only to determine
     * which HTTP methods are available. See
-    * {@link CallingConvention#getSupportedMethods()}.
+    * {@link CallingConvention#getSupportedMethods(HttpServletRequest)}.
+    *
+    * @param
+    *    the OPTION request, never <code>null</code>
     *
     * @return
-    *    the {@link Set} of supported HTTP methods, never <code>null</code>.
+    *    the list of supported HTTP methods, never <code>null</code>.
     *
     * @throws IllegalStateException
     *    if this calling convention manager is not yet bootstrapped and
     *    initialized, see {@link #isUsable()}.
     */
-   final Set getSupportedMethods() throws IllegalStateException {
+   String[] getSupportedMethods(HttpServletRequest httpRequest) throws IllegalStateException {
 
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
-      // NOTE: We now return a mutable collection, but it's only within the
-      //       same package, so this is not considered an issue
-      return _supportedMethods;
+      Set allMethods = new HashSet();
+      Iterator iterator = _conventions.entrySet().iterator();
+      while (iterator.hasNext()) {
+
+         // Determine the name and get the CallingConvention instance
+         Map.Entry entry = (Map.Entry) iterator.next();
+         CallingConvention conv = (CallingConvention) entry.getValue();
+
+         // Process this CallingConvention only if it was created OK
+         if (conv != CREATION_FAILED) {
+            String[] convMethods = conv.getSupportedMethods(httpRequest);
+            allMethods.addAll(Arrays.asList(convMethods));
+         }
+      }
+      return (String[]) allMethods.toArray(new String[0]);
    }
 }
