@@ -527,6 +527,8 @@ ${sf.file}</fail>
 			<include name="src/logdoc/server/*"            />
 			<include name="src/opendoc/**/*"               />
 			<include name="src/package-lists/**/*"         />
+			<include name="src/tools/eclipse/**/*"         />
+			<include name="src/tools/maven/**/*"           />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
 			<include name="lib/apache.LICENSE"             />
