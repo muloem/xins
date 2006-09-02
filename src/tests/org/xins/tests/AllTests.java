@@ -116,6 +116,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.http.HTTPServiceCallerTests.class);
 
       suite.addTestSuite(org.xins.tests.common.manageable.InitializationExceptionTests.class);
+      suite.addTestSuite(org.xins.tests.common.manageable.ManageableTests.class);
 
       suite.addTestSuite(org.xins.tests.common.net.IPAddressUtilsTests.class);
 
