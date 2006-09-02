@@ -14,13 +14,8 @@ import org.xins.common.xml.ElementBuilder;
 /**
  * Result from a function call.
  *
- * <p>Note: This class is <em>not</em> thread-safe. Access it only from one 
- * thread at the same time.
- *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- *
- * @see FunctionRequest
  *
  * @since XINS 1.0.0
  */
@@ -31,43 +26,31 @@ public class FunctionResult extends Object {
    //-------------------------------------------------------------------------
 
    /**
-    * Creates a new <code>FunctionResult</code> with no error code and no 
-    * parameters. Since there is no error code set, this indicates the result 
-    * is successful.
+    * Creates a new successful <code>FunctionResult</code> instance.
     */
    public FunctionResult() {
       this(null, null);
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> with the specified error code 
-    * and no parameters.
-    *
-    * <p>If the error code is set to <code>null</code> then the result is 
-    * successful, otherwise it indicates an error.
+    * Creates a new <code>FunctionResult</code> instance.
     *
     * @param code
-    *    the error code, can be <code>null</code>.
+    *    the error code, can be <code>null</code> if the result is successful.
     */
    public FunctionResult(String code) {
       this(code, null);
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> with the specified error code 
-    * and parameters.
-    *
-    * <p>If the error code is set to <code>null</code> then the result is 
-    * successful, otherwise it indicates an error.
+    * Creates a new <code>FunctionResult</code> instance.
     *
     * @param code
-    *    the error code, can be <code>null</code>.
-    *
+    *    the error code, can be <code>null</code> if the result is successful.
     * @param parameters
-    *    the parameters for the result, can be <code>null</code>.
+    *    the parameters for the result.
     */
    public FunctionResult(String code, BasicPropertyReader parameters) {
-      // TODO: Check that the name of the code is valid
       _code = code;
       if (parameters == null) {
           _parameters = new BasicPropertyReader();

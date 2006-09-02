@@ -73,8 +73,23 @@ extends CallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   protected String[] getSupportedMethods(HttpServletRequest httpRequest) {
-      return new String[] {"POST"};
+   /**
+    * Returns meta information describing the characteristics of this calling
+    * convention.
+    *
+    * <p>This method is called during the initialization procedure for this
+    * <code>CallingConvention</code>, after the
+    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
+    * called.
+    *
+    * @return
+    *    the meta information for this calling convention, cannot be
+    *    <code>null</code>.
+    */
+   protected CallingConventionInfo getInfo() {
+      CallingConventionInfo info = new CallingConventionInfo();
+      info.addSupportedMethod("POST");
+      return info;
    }
 
    /**

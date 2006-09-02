@@ -44,6 +44,53 @@ public abstract class CustomCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
+    * Returns meta information describing the characteristics of this calling
+    * convention.
+    *
+    * <p>This method is called during the initialization procedure for this
+    * <code>CallingConvention</code>, after the
+    * {@link #initImpl(org.xins.common.collections.PropertyReader)} method is
+    * called.
+    *
+    * <p>The implementation of this method in class
+    * <code>CustomCallingConvention</code> indicates the following HTTP
+    * methods are supported:
+    *
+    * <ul>
+    *    <li><em>HEAD</em>
+    *    <li><em>GET</em>
+    *    <li><em>POST</em>
+    * </ul>
+    *
+    * <p>Sublasses are encouraged to override this method to return a
+    * different set of supported HTTP methods.
+    *
+    * <p>Example implementation:
+    *
+    * <blockquote><code>protected CallingConventionInfo getInfo() {
+    * <br>&nbsp;&nbsp;&nbsp;CallingConventionInfo info = new CallingConventionInfo();
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("HEAD");
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("GET");
+    * <br>&nbsp;&nbsp;&nbsp;info.addSupportedMethod("POST");
+    * <br>&nbsp;&nbsp;&nbsp;return info;
+    * <br>}</code></blockquote>
+    *
+    * <p>Note: As of XINS 2.0, this method may become <code>abstract</code>,
+    * so that subclasses will <em>have</em> to implement it.
+    *
+    * @return
+    *    the meta information for this calling convention, cannot be
+    *    <code>null</code>.
+    */
+   protected CallingConventionInfo getInfo() {
+      CallingConventionInfo info = new CallingConventionInfo();
+      info.addSupportedMethod("HEAD");
+      info.addSupportedMethod("GET");
+      info.addSupportedMethod("POST");
+      return info;
+   }
+
+   /**
     * Checks if the specified request can possibly be handled by this calling
     * convention as a function invocation.
     *

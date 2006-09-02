@@ -22,8 +22,6 @@ import org.xins.common.xml.Element;
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
- * @see FunctionResult
- *
  * @since XINS 1.2.0
  */
 public class FunctionRequest
