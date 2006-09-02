@@ -13,7 +13,7 @@ import junit.framework.TestSuite;
 import org.xins.common.manageable.InitializationException;
 
 /**
- * Tests for class <code>InitializationException</code>
+ * Tests for class <code>InitializationException</code>.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
@@ -57,7 +57,7 @@ public class InitializationExceptionTests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * Tests the <code>InitializationExceptionTests</code> class.
+    * Tests the <code>InitializationException</code> class.
     */
    public void testInitializationException() throws Exception {
       new InitializationException(null, null);
