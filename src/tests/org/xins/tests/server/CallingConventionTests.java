@@ -30,8 +30,6 @@ import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
-import org.xins.server.CallingConventionInfo;
-
 import org.xins.tests.AllTests;
 
 /**
@@ -784,49 +782,6 @@ public class CallingConventionTests extends TestCase {
               + paramName
               + "\" parameter.";
       assertEquals(message, expected, actual);
-   }
-
-   public void testCallingConventionInfo() throws Exception {
-      CallingConventionInfo m = new CallingConventionInfo();
-      String[] invalid = new String[] { null, "", " ", " POST", "POST ",
-                                        "PO ST", "PO,ST", "OPTIONS",
-                                        "options" };
-      String[] valid   = new String[] { "POST", "P", "POST2", "1GET" };
-
-      // Test invalids
-      for (int i=0; i < invalid.length; i++) {
-         try {
-            String method = invalid[i];
-            m.addSupportedMethod(method);
-            fail("Expected IllegalArgumentException when calling org.xins.server.CallingConvention$MetaInfo.addSupportedMethod(String) for invalid HTTP method \"" + method + "\".");
-         } catch (IllegalArgumentException exception) {
-            // as expected
-         }
-      }
-
-      // Test valids
-      for (int i=0; i < valid.length; i++) {
-         String method = valid[i];
-         m.addSupportedMethod(method);
-      }
-
-      // Test duplicates
-      for (int i=0; i < valid.length; i++) {
-         try {
-            String method = valid[i].toUpperCase();
-            m.addSupportedMethod(method);
-            fail("Expected IllegalArgumentException when calling org.xins.server.CallingConvention$MetaInfo.addSupportedMethod(String) for a duplicate HTTP method.");
-         } catch (IllegalArgumentException exception) {
-            // as expected
-         }
-         try {
-            String method = valid[i].toLowerCase();
-            m.addSupportedMethod(method);
-            fail("Expected IllegalArgumentException when calling org.xins.server.CallingConvention$MetaInfo.addSupportedMethod(String) for a duplicate HTTP method.");
-         } catch (IllegalArgumentException exception) {
-            // as expected
-         }
-      }
    }
 
    /**

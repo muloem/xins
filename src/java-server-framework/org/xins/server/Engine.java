@@ -27,7 +27,6 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.InitializationException;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
@@ -316,16 +315,6 @@ final class Engine extends Object {
 
          // Initialize the default calling convention for this API
          _conventionManager.init(properties);
-
-         // Create the string with the supported HTTP methods
-         Iterator it = _conventionManager.getSupportedMethods().iterator();
-         FastStringBuffer buffer = new FastStringBuffer(128, "OPTIONS");
-         while (it.hasNext()) {
-            String next = (String) it.next();
-            buffer.append(", ");
-            buffer.append(next.toUpperCase());
-         }
-         _supportedMethodsString = buffer.toString();
 
          succeeded = true;
 
@@ -708,7 +697,8 @@ final class Engine extends Object {
          // Handle OPTIONS calls separately
          String method = request.getMethod().toUpperCase();
          if ("OPTIONS".equals(method)) {
-            cc.handleOptionsRequest(request, response);
+            // FIXME TODO: cc.handleOptionsRequest(request, response);
+            invokeFunction(start, cc, request, response);
 
          // Non-OPTIONS requests are function invocations
          } else {
@@ -938,8 +928,17 @@ final class Engine extends Object {
    private void handleOptionsForAll(HttpServletResponse response)
    throws IOException {
 
+      // Create the string with the supported HTTP methods
+      Iterator it = _conventionManager.getSupportedMethods().iterator();
+      String string = "OPTIONS";
+      while (it.hasNext()) {
+         String next = (String) it.next();
+         string += ", " + next.toUpperCase();
+      }
+
+      // Return the full response
       response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Accept", _supportedMethodsString);
+      response.setHeader("Accept", string);
       response.setContentLength(0);
    }
 

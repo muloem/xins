@@ -564,7 +564,7 @@ extends Manageable {
             // If the initialization succeeded, then add the supported methods
             // to the set
             if (conv.isUsable()) {
-               methods.addAll(conv.getSupportedMethods());
+               methods.addAll(conv.supportedMethods());
 
             // Fail if the *default* calling convention fails to initialize
             } else if (name.equals(_defaultConventionName)) {
@@ -925,9 +925,9 @@ extends Manageable {
     * Returns the set of HTTP methods supported for function invocations. This
     * is the union of the methods supported by the individual calling
     * conventions for invoking functions, so excluding the <em>OPTIONS</em>
-    * method. The latter cannot be used for function invocations, only to determine
-    * which HTTP methods are available. See
-    * {@link CallingConvention#getSupportedMethods()}.
+    * method. The latter cannot be used for function invocations, only to
+    * determine which HTTP methods are available. See
+    * {@link CallingConvention#supportedMethods()}.
     *
     * @return
     *    the {@link Set} of supported HTTP methods, never <code>null</code>.
@@ -941,8 +941,18 @@ extends Manageable {
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
-      // NOTE: We now return a mutable collection, but it's only within the
-      //       same package, so this is not considered an issue
-      return _supportedMethods;
+      HashSet set = new HashSet();
+      Iterator iterator = _conventions.values().iterator();
+      while (iterator.hasNext()) {
+
+         // Add all methods supported by the calling convention
+         Object object = iterator.next();
+         if (object instanceof CallingConvention) {
+            CallingConvention cc = (CallingConvention) object;
+            set.addAll(cc.supportedMethods());
+         }
+      }
+
+      return set;
    }
 }
