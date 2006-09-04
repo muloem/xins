@@ -601,9 +601,7 @@ final class Engine extends Object {
                    reason);
 
       // Send the HTTP status code to the client
-      response.setStatus(statusCode);
-      response.setContentLength(0);
-      response.flushBuffer();
+      response.sendError(statusCode);
    }
 
    /**
@@ -697,8 +695,7 @@ final class Engine extends Object {
          // Handle OPTIONS calls separately
          String method = request.getMethod().toUpperCase();
          if ("OPTIONS".equals(method)) {
-            // FIXME TODO: cc.handleOptionsRequest(request, response);
-            invokeFunction(start, cc, request, response);
+            handleOptions(cc, request, response);
 
          // Non-OPTIONS requests are function invocations
          } else {
@@ -934,6 +931,36 @@ final class Engine extends Object {
       while (it.hasNext()) {
          String next = (String) it.next();
          string += ", " + next.toUpperCase();
+      }
+
+      // Return the full response
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.setHeader("Accept", string);
+      response.setContentLength(0);
+   }
+
+   /**
+    * Handles an <em>OPTIONS</em> request for a specific calling convention.
+    *
+    * @param cc
+    *    the calling convention, never <code>null</code>.
+    *
+    * @param response
+    *    the response to fill, never <code>null</code>.
+    *
+    * @throws IOException
+    *    in case of an I/O error.
+    */
+   private void handleOptions(CallingConvention   cc,
+                              HttpServletRequest  request,
+                              HttpServletResponse response)
+   throws IOException {
+
+      // Create the string with the supported HTTP methods
+      String[] methods = cc.getSupportedMethods(request);
+      String string = "OPTIONS";
+      for (int i = 0; i < methods.length; i++) {
+         string += ", " + methods[i].toUpperCase();
       }
 
       // Return the full response

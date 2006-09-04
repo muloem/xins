@@ -50,10 +50,8 @@ import org.xins.common.xml.ElementParser;
  *
  * <p>HTTP <em>OPTIONS</em> requests are treated differently. For the path
  * <code>*</code> the capabilities of the whole server are returned. For other
- * paths, the appropriate calling convention is determined, after which
- * {@link #handleOptionsRequest(HttpServletRequest,HttpServletResponse)} is
- * invoked. A default implementation for this method is provided and is rarely
- * required to be overridden.
+ * paths, the appropriate calling convention is determined, after which the
+ * set of supported HTTP methods is returned to the called.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
@@ -472,7 +470,7 @@ abstract class CallingConvention extends Manageable {
     *    the request to determine the supported methods for.
     *
     * @return
-    *    the HTTP methods supportedfor the specified request, in a
+    *    the HTTP methods supported for the specified request, in a
     *    <code>String</code> array, can be <code>null</code>.
     *
     * @since XINS 1.5.0
