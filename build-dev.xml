@@ -591,6 +591,7 @@ ${sf.file}</fail>
 				<include name="build/*.jar"                    />
 				<include name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
 				<include name="docs/XINSGuide.pdf"             />
+				<include name="docs/frontend/XINSFrontend.pdf" />
 				<include name="docs/protocol/XINSProtocol.pdf" />
 				<include name="docs/primer/*.png"              />
 				<include name="lib/commons-codec.jar"          />
