@@ -13,10 +13,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
   - Fixed The HTTP headers read from the request should be case insensitive.
   - Implemented SF.net RFE #1523749: Added possibility to share types
     between APIs.
-  - Deprecated the FastStringBuffer class as simple String concatenation is
-    faster.
+  - Deprecated the FastStringBuffer class as simple String concatenation and
+    java.lang.StringBuffer is faster.
   - Implemented SF.net RFE #1549196. Added a generic DEBUG-level Logdoc log
     entry (1053) for XINS users.
+  - Added a BeansUtil class that helps you filling the Request or Result 
+    object using the values of a POJO and vice versa.
 
 * XINS/Java Server Framework:
   - Completed implementation of SF.net RFE #1483099: Support HTTP methods PUT,
