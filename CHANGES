@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
 * XINS/Java Server Framework:
   - Fixed incorrect indirection in the XINS Front-end Framework.
+  - The command can be null in the XINS Front-end Framework.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:

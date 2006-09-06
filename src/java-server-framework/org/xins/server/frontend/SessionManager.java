@@ -188,10 +188,9 @@ public class SessionManager extends Manageable {
       }
       HashMap inputParameters = (HashMap) session.getAttribute("_inputs");
       String command = (String) inputParameters.get("command");
-      if (command != null &&
-            (_unrestrictedPages.contains("*") ||
+      if (_unrestrictedPages.contains("*") ||
             _unrestrictedPages.contains(command) ||
-            command.startsWith("_"))) {
+            command.startsWith("_")) {
          return false;
       }
 
