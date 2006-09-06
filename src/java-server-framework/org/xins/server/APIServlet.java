@@ -308,6 +308,15 @@ extends HttpServlet {
       // Fail silently, so that the servlet container will not keep trying to
       // re-initialize this servlet (possibly on each call!)
       } catch (Throwable exception) {
+         String thisClass  = APIServlet.class.getName();
+         String thisMethod = "init(javax.servlet.ServletConfig)";
+         String thatClass  = Engine.class.getName();
+         String thatMethod = "<init>(javax.servlet.ServletConfig)";
+         String detail     = null;
+         org.xins.common.Log.log_1052(exception,
+                                      thisClass, thisMethod,
+                                      thatClass, thatMethod,
+                                      detail);
          return;
       }
    }

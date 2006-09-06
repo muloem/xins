@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 * XINS/Java Server Framework:
   - Fixed incorrect indirection in the XINS Front-end Framework.
   - The command can be null in the XINS Front-end Framework.
+  - Logging message 1052 (unexpected exception) in the APIServlet class, if
+    the Engine constructor throws an exception.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
