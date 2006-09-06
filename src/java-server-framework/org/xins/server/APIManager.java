@@ -11,20 +11,25 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+
 import javax.management.openmbean.CompositeDataSupport;
 import javax.management.openmbean.CompositeType;
 import javax.management.openmbean.OpenType;
 import javax.management.openmbean.SimpleType;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.jmx.HierarchyDynamicMBean;
+import org.apache.log4j.spi.LoggerRepository;
+
 import org.xins.common.Utils;
-import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.text.DateConverter;
@@ -345,5 +350,49 @@ public final class APIManager implements APIManagerMBean {
           ex.printStackTrace();
           return null;
        }
+   }
+
+   /**
+    * Registers the API MBean.
+    *
+    * @param api
+    *    the API, never <code>null</code>.
+    *
+    * @throws Throwable
+    *    if the MBeanServer cannot be found or created or one of the registered MBean fails.
+    */
+   static void registerMBean(API api) throws Throwable {
+      javax.management.MBeanServer mBeanServer = null;
+      try {
+         mBeanServer = (javax.management.MBeanServer) Class.forName("java.lang.management.ManagementFactory").getMethod("getPlatformMBeanServer", null).invoke(null, null);
+      } catch (ClassNotFoundException cnfe) {
+
+         // Try with the JDK 1.4 and 1.3 compatible JMX reference implementation
+         mBeanServer = javax.management.MBeanServerFactory.createMBeanServer();
+      }
+      APIManager mBean = new APIManager(api);
+      javax.management.ObjectName objectName = new javax.management.ObjectName("org.xins.server:type=APIManager");
+
+      mBeanServer.registerMBean(mBean, objectName);
+
+      // Register also the Log4J loggers
+
+      // Create and Register the top level Log4J MBean
+      HierarchyDynamicMBean hdm = new HierarchyDynamicMBean();
+      javax.management.ObjectName mbo = new javax.management.ObjectName("org.xins.server.log4j:hiearchy=default");
+      mBeanServer.registerMBean(hdm, mbo);
+
+      // Add the root logger to the Hierarchy MBean
+      Logger rootLogger = Logger.getRootLogger();
+      hdm.addLoggerMBean(rootLogger.getName());
+
+      // Get each logger from the Log4J Repository and add it to
+      // the Hierarchy MBean created above.
+      LoggerRepository r = LogManager.getLoggerRepository();
+      Enumeration loggers = r.getCurrentLoggers();
+      while (loggers.hasMoreElements()) {
+         Logger logger = (Logger) loggers.nextElement();
+         hdm.addLoggerMBean(logger.getName());
+      }
    }
 }
