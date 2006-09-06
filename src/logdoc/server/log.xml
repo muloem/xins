@@ -10,7 +10,7 @@
 		<!-- XXX: Removed 3000 here (@since XINS 1.3.0) -->
 		<!-- XXX: Removed 3001 here (@since XINS 1.3.0) -->
 		<!-- XXX: Removed 3002 here (@since XINS 1.3.0) -->
-		<entry id="3003" level="FATAL" exception="true">
+		<entry id="3003" level="ERROR" exception="true">
 			<description>Servlet failed while servicing request.</description>
 		</entry>
 	</group>

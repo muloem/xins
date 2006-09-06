@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - The command can be null in the XINS Front-end Framework.
   - Logging message 1052 (unexpected exception) in the APIServlet class, if
     the Engine constructor throws an exception.
+  - Fixed SF.net bug #1552141: Log message 3003 should not be FATAL. Changed
+    it to ERROR.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
