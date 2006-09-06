@@ -15,6 +15,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
     it to ERROR.
   - Fixed if the JMX library is not in the classpath, the creation of the
     EngineStarter may fail with a NoClassDefFoundError.
+  - Fixed NPE in case of invalid request in the XINS Front-end Framework.
+  - If a data element is stored in the XINS FF session, just add the 
+    sub-elements.
+
+* XINS/Java Common Library:
+  - Improved the BeanUtils class by converting the argument object if needed.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
@@ -743,6 +749,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 
 * Generatation of specdocs:
   - Added attribute-combo.
+
 
 * Generated tests:
   - If the servlet.port property is set, then the Servlet container will

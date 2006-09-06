@@ -167,11 +167,6 @@ public class SessionManager extends Manageable {
             // Ignore
          }
       }
-
-      // Clear the _inputs attribute from the session.
-      if (session != null) {
-         session.removeAttribute("_inputs");
-      }
    }
 
    /**
@@ -190,7 +185,7 @@ public class SessionManager extends Manageable {
       String command = (String) inputParameters.get("command");
       if (_unrestrictedPages.contains("*") ||
             _unrestrictedPages.contains(command) ||
-            command.startsWith("_")) {
+            (command != null && command.startsWith("_"))) {
          return false;
       }
 
@@ -250,7 +245,11 @@ public class SessionManager extends Manageable {
          if (value == null) {
             removeProperty(name);
          } else {
+            try {
             session.setAttribute(name, value);
+            } catch (Throwable t) {
+               t.printStackTrace();
+            }
          }
       }
    }

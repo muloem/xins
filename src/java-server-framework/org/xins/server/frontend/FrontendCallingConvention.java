@@ -533,6 +533,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             Map.Entry nextEntry = (Map.Entry) itSessionProperties.next();
             String nextProperty = (String) nextEntry.getKey();
             Object propValue = nextEntry.getValue();
+            if (propValue instanceof Element && ((Element)propValue).getLocalName().equals("data")) {
+               propValue = ((Element)propValue).getChildElements();
+            }
             if (propValue == null) {
                // continue
             } else if (propValue instanceof String) {
