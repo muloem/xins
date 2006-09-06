@@ -947,7 +947,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       while (itProperties.hasNext()) {
          String nextProp = (String) itProperties.next();
          if (nextProp.startsWith("xinsff.redirect.")) {
-            String command = nextProp.substring(14);
+            String command = nextProp.substring(16);
             String redirectionPage = bootstrapProperties.get(nextProp);
             // TODO the condition should have the same order as in the XML?
             int conditionalPos = command.indexOf('[');
