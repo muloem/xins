@@ -156,6 +156,13 @@ extends CallingConvention {
                                     HttpServletRequest  httpRequest)
    throws IOException {
 
+      // Let's have some fun
+      if ("_IWantTheEasterEggs".equals(httpRequest.getParameter("_function")) ||
+            "_IWantTheEasterEggs".equals(httpRequest.getParameter("function"))) {
+         httpResponse.sendRedirect("http://eeggs.com");
+         return;
+      }
+
       // Send the XML output to the stream and flush
       httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
       PrintWriter out = httpResponse.getWriter();

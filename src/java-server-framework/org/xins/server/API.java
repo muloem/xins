@@ -1265,6 +1265,10 @@ implements DefaultResultCodes {
          _engine.reloadPropertiesIfChanged();
          result = SUCCESSFUL_RESULT;
 
+      // Retrieve function list
+      } else if ("_IWantTheEasterEggs".equals(functionName)) {
+         result = SUCCESSFUL_RESULT;
+
       // Meta-function does not exist
       } else {
          throw new NoSuchFunctionException(functionName);
