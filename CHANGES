@@ -25,6 +25,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 * Generated code:
   - Added support for a default value for optional parameters.
 
+* Generated build file:
+  - Fixed incorrect setting of the name of the API in the build file used for
+    the eclipse target.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 

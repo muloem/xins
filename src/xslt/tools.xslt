@@ -194,9 +194,9 @@
 			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml" 
 			todir="apis/${{api.name}}" overwrite="false" />
 			<replace file="apis/${{api.name}}/nbbuild.xml"
-			token="value=&quot;petstore&quot;" value="value=&quot;${new.api.name}&quot;" />
+			token="value=&quot;petstore&quot;" value="value=&quot;${{api.name}}&quot;" />
 			<replace file="apis/${{api.name}}/nbbuild.xml"
-			token="name=&quot;petstore&quot;" value="name=&quot;${new.api.name}&quot;" />
+			token="name=&quot;petstore&quot;" value="name=&quot;${{api.name}}&quot;" />
 
 			<!-- Create the xins user library if needed -->
 			<copy file="{$xins_home}/src/tools/eclipse/xins-eclipse.userlibraries"
