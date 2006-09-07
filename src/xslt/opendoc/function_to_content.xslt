@@ -139,6 +139,12 @@
 				<text:p text:style-name="Standard">
 					<xsl:value-of select="description" />
 				</text:p>
+				<xsl:if test="string-length(@default) &gt; 0">
+					<text:p text:style-name="Standard">
+						<xsl:text> The default value is </xsl:text>
+						<xsl:value-of select="concat(@default, '.')" />
+					</text:p>
+				</xsl:if>
 			</table:table-cell>
 			<table:table-cell office:value-type="string">
 				<text:p text:style-name="Standard">

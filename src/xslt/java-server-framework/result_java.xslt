@@ -62,14 +62,20 @@ implements Result {
    public SuccessfulResult() {
 
       // Report the success
-      super(null);
+      super(null);]]></xsl:text>
+		<xsl:for-each select="param[@default]">
+			<xsl:text>
+      param(&quot;</xsl:text>
+			<xsl:value-of select="concat(@name, '&quot;, &quot;', @default, '&quot;);')" />
+		</xsl:for-each>
+		<xsl:text>
    }
 
 
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-]]></xsl:text>
+</xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
 		<xsl:apply-templates select="output" />
 		<xsl:text>
@@ -243,7 +249,7 @@ implements Result {
 		<xsl:value-of select="$typeToString" />
 		<xsl:text>);</xsl:text>
 		<xsl:text>
-		}</xsl:text>
+      }</xsl:text>
 		<xsl:text>
    }</xsl:text>
 

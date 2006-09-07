@@ -142,7 +142,13 @@ final class </xsl:text>
 				<xsl:value-of select="@name" />
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>");
+		<xsl:text>");</xsl:text>
+		<xsl:for-each select="param[@default]">
+			<xsl:text>
+      param(&quot;</xsl:text>
+			<xsl:value-of select="concat(@name, '&quot;, &quot;', @default, '&quot;);')" />
+		</xsl:for-each>
+		<xsl:text>
    }</xsl:text>
 	</xsl:template>
 

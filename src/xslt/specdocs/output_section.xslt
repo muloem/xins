@@ -103,6 +103,10 @@
 				</xsl:if>
 				<xsl:if test="@required = 'false'">
 					<xsl:text>no</xsl:text>
+					<xsl:if test="string-length(@default) &gt; 0">
+						<xsl:text> (Default is </xsl:text>
+						<xsl:value-of select="concat(@default, ')')" />
+					</xsl:if>
 				</xsl:if>
 			</td>
 		</tr>
@@ -235,6 +239,10 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>no</xsl:text>
+						<xsl:if test="string-length(@default) &gt; 0">
+							<xsl:text> (Default is </xsl:text>
+							<xsl:value-of select="concat(@default, ')')" />
+						</xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>
 			</td>

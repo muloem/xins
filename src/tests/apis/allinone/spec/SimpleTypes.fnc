@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.5//EN" "http://xins.sourceforge.net/dtd/function_1_5.dtd">
 
 <function name="SimpleTypes"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -25,7 +25,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputFloat" required="true" type="_float32">
 			<description>An example of input for a float.</description>
 		</param>
-		<param name="inputDouble" required="false" type="_float64">
+		<param name="inputDouble" required="false" type="_float64" default="3.14">
 			<description>An example of input for a double.</description>
 		</param>
 		<param name="inputText" required="true" type="_text">

@@ -361,11 +361,12 @@
 	<xsl:template name="javatype_from_string_for_type">
 
 		<!-- Define parameters -->
-		<xsl:param name="specsdir"     />
-		<xsl:param name="api"          />
-		<xsl:param name="type"         />
-		<xsl:param name="required"     />
-		<xsl:param name="variable"     />
+		<xsl:param name="specsdir" />
+		<xsl:param name="api"      />
+		<xsl:param name="type"     />
+		<xsl:param name="required" />
+		<xsl:param name="default"  />
+		<xsl:param name="variable" />
 
 		<!-- Determine file that defines type -->
 		<xsl:variable name="type_file">

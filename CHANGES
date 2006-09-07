@@ -22,6 +22,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 * XINS/Java Common Library:
   - Improved the BeanUtils class by converting the argument object if needed.
 
+* Generated code:
+  - Added support for a default value for optional parameters.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 

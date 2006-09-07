@@ -16,6 +16,7 @@
 <!ATTLIST param
           name       NMTOKEN #REQUIRED
           required   (true|false) #REQUIRED
+          default    CDATA #IMPLIED
           type       CDATA #IMPLIED
 >
 <!ELEMENT deprecated (#PCDATA|em)*>
@@ -60,6 +61,7 @@
 <!ATTLIST attribute
           name       NMTOKEN #REQUIRED
           required   (true | false) #IMPLIED
+          default    CDATA #IMPLIED
           type       CDATA #IMPLIED
 >
 <!ELEMENT example (description, input-example*, input-data-example?, output-example*, (output-data-example | data-example)?)>

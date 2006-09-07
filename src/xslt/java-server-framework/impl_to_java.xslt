@@ -120,6 +120,16 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:text> = runtimeSettings.get("</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>");</xsl:text>
+				<xsl:if test="@default">
+					<xsl:text>
+      if (</xsl:text>
+				<xsl:value-of select="$variableName" />
+				<xsl:text> == null) {
+         </xsl:text>
+				<xsl:value-of select="concat($variableName, ' = &quot;', @default, '&quot;')" />
+				<xsl:text>;
+      }</xsl:text>
+				</xsl:if>
 				<xsl:if test="@required = 'true'">
 					<xsl:text>
       if (</xsl:text>

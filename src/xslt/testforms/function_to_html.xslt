@@ -269,6 +269,11 @@
 									<xsl:otherwise>optional</xsl:otherwise>
 								</xsl:choose>
 							</xsl:attribute>
+							<xsl:if test="@default">
+								<xsl:attribute name="value">
+									<xsl:value-of select="@default" />
+								</xsl:attribute>
+							</xsl:if>
 						</input>
 					</xsl:otherwise>
 				</xsl:choose>

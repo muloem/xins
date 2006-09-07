@@ -95,6 +95,16 @@
 				</xsl:choose>
 				<xsl:value-of select="@name" />
 				<xsl:text>");</xsl:text>
+				<xsl:if test="@default">
+					<xsl:text>
+      if (</xsl:text>
+					<xsl:value-of select="$localJavaVariable" />
+					<xsl:text> == null) {
+         </xsl:text>
+					<xsl:value-of select="concat($localJavaVariable, ' = &quot;', @default, '&quot;')" />
+					<xsl:text>;
+      }</xsl:text>
+				</xsl:if>
 			</xsl:for-each>
 		</xsl:if>
 
@@ -127,6 +137,13 @@
 					</xsl:if>
 				</xsl:variable>
 
+				<xsl:if test="@default">
+					<xsl:message terminate="yes">
+						<xsl:text>The required </xsl:text>
+						<xsl:value-of select="concat(local-name(), ' &quot;', @name, '&quot;')" />
+						<xsl:text> should not have a default parameter.</xsl:text>
+					</xsl:message>
+				</xsl:if>
 				<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="$localJavaVariable" />

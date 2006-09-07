@@ -184,7 +184,8 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:if test="output/param">
 			<xsl:text>
 
-      java.lang.String currentParam = "";</xsl:text>
+      String currentParam = "";
+      String paramValue = "";</xsl:text>
 		</xsl:if>
 		<xsl:if test="output/data/element">
 			<xsl:text>
@@ -238,6 +239,16 @@ extends org.xins.client.AbstractCAPICallResult {
          currentParam = "</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>";
+         paramValue = result.getParameter(currentParam);</xsl:text>
+			<xsl:if test="@default">
+				<xsl:text>
+         if (paramValue == null) {
+            paramValue = &quot;</xsl:text>
+				<xsl:value-of select="@default" />
+				<xsl:text>&quot;;
+         }</xsl:text>
+			</xsl:if>
+			<xsl:text>
          _</xsl:text>
 		<xsl:value-of select="$javaVariable" />
 		<xsl:text> = </xsl:text>
@@ -246,7 +257,7 @@ extends org.xins.client.AbstractCAPICallResult {
 			<xsl:with-param name="specsdir" select="$specsdir" />
 			<xsl:with-param name="required" select="$required" />
 			<xsl:with-param name="type"     select="@type"     />
-			<xsl:with-param name="variable" select="'result.getParameter(currentParam)'" />
+			<xsl:with-param name="variable" select="'paramValue'" />
 		</xsl:call-template>
 		<xsl:text>;</xsl:text>
 		<!-- Work around as javatype_from_string_for_type does no throw IllegalArgumentException for list/set/enum -->
@@ -281,7 +292,7 @@ extends org.xins.client.AbstractCAPICallResult {
 
 		<xsl:text>
 
-   private final </xsl:text>
+   private </xsl:text>
 		<xsl:value-of select="$javatype" />
 		<xsl:text> _</xsl:text>
 		<xsl:value-of select="$javaVariable" />
