@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.xins.common.spec.DataSectionElementSpec;
-import org.xins.common.spec.FunctionSpec;
-import org.xins.common.spec.ParameterSpec;
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.EnumType;
 import org.xins.common.xml.Element;
@@ -193,8 +190,6 @@ public class BeanUtils {
     *    the XML element object, cannot be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
-    * @param functionSpec
-    *    the specification of the function for the result object, cannot be <code>null</code>.
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
@@ -210,8 +205,6 @@ public class BeanUtils {
     *    the XML element object, cannot be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
-    * @param functionSpec
-    *    the specification of the function for the result object, cannot be <code>null</code>.
     * @param topLevel
     *    <code>true</code> if the element passed is the top element, 
     *    <code>false</code> if it is a sub-element.
@@ -282,8 +275,6 @@ public class BeanUtils {
     *    the XML element object, cannot be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
-    * @param functionSpec
-    *    the specification of the function for the result object, cannot be <code>null</code>.
     * @param topLevel
     *    <code>true</code> if the element passed is the top element, 
     *    <code>false</code> if it is a sub-element.
@@ -295,7 +286,6 @@ public class BeanUtils {
       String elementName = element.getLocalName();
       //String newElementClassName = result.getClass().getName() + "." + elementName;
       Object newElement = null;
-      DataSectionElementSpec elementSpec = null;
       try {
          newElement = getElementClass(elementName, result).newInstance();
       } catch (Exception ex) {
