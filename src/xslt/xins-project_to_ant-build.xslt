@@ -495,11 +495,11 @@ APIs in this project are:
 		</xsl:variable>
 		<xsl:variable name="typeIncludes">
 			<xsl:for-each select="$api_node/type">
-				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:if test="not(contains(@name, '/'))">
+					<xsl:if test="position() &gt; 1">,</xsl:if>
 					<xsl:value-of select="@name" />
+					<xsl:text>.typ</xsl:text>
 				</xsl:if>
-				<xsl:text>.typ</xsl:text>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="resultcodeIncludes">
@@ -1234,9 +1234,11 @@ APIs in this project are:
 					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
 					<xsl:for-each select="$api_node/type">
 						<xsl:if test="contains(@name, '/')">
-							<xsl:variable name="type_file"
-							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
-							<zipfileset src="{$type_file}" prefix="specs" />
+							<xsl:variable name="type_dir"
+							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
+							<xsl:variable name="type_filename"
+							select="concat(substring-after(@name, '/'), '.typ')" />
+							<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="specs" />
 						</xsl:if>
 					</xsl:for-each>
 				</war>
@@ -1587,9 +1589,11 @@ APIs in this project are:
 				<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" prefix="specs" />
 				<xsl:for-each select="type">
 					<xsl:if test="contains(@name, '/')">
-						<xsl:variable name="type_file"
-						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
-						<zipfileset src="{$type_file}" prefix="specs" />
+						<xsl:variable name="type_dir"
+						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
+						<xsl:variable name="type_filename"
+						select="concat(substring-after(@name, '/'), '.typ')" />
+						<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="specs" />
 					</xsl:if>
 				</xsl:for-each>
 			</jar>

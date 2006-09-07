@@ -28,6 +28,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 * Generated build file:
   - Fixed incorrect setting of the name of the API in the build file used for
     the eclipse target.
+  - Fixed incorrect packaging for shared types.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
