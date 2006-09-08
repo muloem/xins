@@ -35,6 +35,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Implemented SF.net RFE #1554566: Added new jmeter target that generates
     the Apache JMeter file from the examples.
 
+* Build- and release-process:
+  - Added new test-netbeans target to execute the tests in the NetBeans IDE.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
