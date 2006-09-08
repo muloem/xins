@@ -233,14 +233,6 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 
 	<!-- Generates the get methods. -->
 	<xsl:template match="impl/runtime-properties/property | api/impl-java/runtime-properties/property" mode="method">
-		<!-- TODO translate the variable -->
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-			</xsl:call-template>
-		</xsl:variable>
 		<!-- Get the name of the variable. -->
 		<xsl:variable name="variableName">
 			<xsl:call-template name="hungarianLower">

@@ -119,13 +119,6 @@ implements Result {
 
 		<xsl:param name="methodImpl" />
 
-		<xsl:variable name="basetype">
-			<xsl:call-template name="basetype_for_type">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="api"      select="$api"      />
-				<xsl:with-param name="type"     select="@type"     />
-			</xsl:call-template>
-		</xsl:variable>
 		<xsl:variable name="methodName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
@@ -317,8 +310,6 @@ implements Result {
     *    the value of the ]]></xsl:text>
 		<xsl:value-of select="$parameterText" />
 		<xsl:text><![CDATA[, or <code>null</code> if unset.
-    *
-    * @since XINS 1.4.0
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$javaobjecttype" />

@@ -99,8 +99,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
     *
-    * @since XINS 1.1.0
-    *
     * @deprecated
     *    Deprecated since XINS 1.2.0.
     *    Use the
@@ -147,8 +145,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    if one of the properties in the specified properties set is used to
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
-    *
-    * @since XINS 1.1.0
     *
     * @deprecated
     *    Deprecated since XINS 1.2.0.
@@ -265,8 +261,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *
     * @return
     *    the name of the API, or <code>null</code> if unknown.
-    *
-    * @since XINS 1.2.0
     */
    protected String getAPINameImpl() {
       return "]]></xsl:text>
@@ -323,8 +317,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws UnacceptableErrorCodeXINSCallException
     *    if the specified error code is unacceptable for the specified
     *    function.
-    *
-    * @since XINS 1.2.0
     */
    protected final org.xins.client.AbstractCAPIErrorCodeException
    createErrorCodeException(org.xins.client.XINSCallRequest          request,
@@ -422,8 +414,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    if one of the properties in the specified properties set is used to
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
-    *
-    * @since XINS 1.2.0
     */
    public CAPI(org.xins.common.collections.PropertyReader properties)
    throws java.lang.IllegalArgumentException,
@@ -458,8 +448,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    if one of the properties in the specified properties set is used to
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
-    *
-    * @since XINS 1.2.0
     */
    public CAPI(org.xins.common.collections.PropertyReader properties,
                java.lang.String                           apiName)
@@ -589,8 +577,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws org.xins.client.XINSCallException
     *    if the first call attempt failed due to a XINS-related reason and
     *    all the other call attempts (if any) failed as well.
-    *
-    * @since XINS 1.2.0
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$returnType" />

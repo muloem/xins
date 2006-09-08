@@ -236,8 +236,6 @@ extends org.xins.client.AbstractCAPICallRequest {
     *
     * @return
     *    the value of the parameter, or <code>null</code> if unset.
-    *
-    * @since XINS 1.4.0
     */
    public ]]></xsl:text>
 		<xsl:value-of select="$javaclass" />
