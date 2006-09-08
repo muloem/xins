@@ -857,7 +857,7 @@ final class Engine extends Object {
       // Call the function
       FunctionResult result;
       try {
-         result = _api.handleCall(start, request, xinsRequest);
+         result = _api.handleCall(start, xinsRequest, request.getRemoteAddr());
 
       // The only expected exceptions are NoSuchFunctionException and
       // AccessDeniedException. Other exceptions are considered to indicate
@@ -888,7 +888,7 @@ final class Engine extends Object {
                Engine.class.getName(),
                "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
                _api.getClass().getName(),
-               "handleCall(long,javax.servlet.http.HttpServletRequest,org.xins.server.FunctionRequest)",
+               "handleCall(long,org.xins.server.FunctionRequest,java.lang.String)",
                null,
                exception);
          }
