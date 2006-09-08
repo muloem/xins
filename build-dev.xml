@@ -110,7 +110,7 @@ ${sf.file}</fail>
 
 	<target name="classes-tests" depends="java" description="Compiles the test cases">
 		<!-- Compiles the example used for the tests -->
-		<!-- delete dir="src/tests/build" / -->
+		<!-- delete dir="src/tests/build" /-->
 		<ant antfile="${basedir}/src/ant/make-build.xml" dir="src/tests">
 			<property name="xins_home" value="${basedir}"           />
 			<property name="user.dir"  value="${basedir}/src/tests" />
@@ -528,6 +528,7 @@ ${sf.file}</fail>
 			<include name="src/opendoc/**/*"               />
 			<include name="src/package-lists/**/*"         />
 			<include name="src/tools/eclipse/**/*"         />
+			<include name="src/tools/jmeter/**/*"          />
 			<include name="src/tools/maven/**/*"           />
 			<include name="src/xml/**/*"                   />
 			<include name="src/xslt/**/*"                  />
@@ -589,6 +590,8 @@ ${sf.file}</fail>
 			prefix="${name}-${version}"
 			mode="644">
 				<include name="build/*.jar"                    />
+				<include name="demo/xins-project/apis/fileupload/lib/commons-fileupload.jar" />
+				<include name="demo/xins-project/apis/fileupload/lib/commons-io.jar" />
 				<include name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
 				<include name="docs/XINSGuide.pdf"             />
 				<include name="docs/frontend/XINSFrontend.pdf" />

@@ -154,9 +154,20 @@
 			</xslt>
 		</target>
 
-		<target name="jmeter" depends="-init-tools" description="Execute some JMeter tests.">
+		<target name="jmeter" depends="-init-tools" description="Generate JMeter tests from the function examples.">
 			<mkdir dir="build/jmeter/${{api.name}}" />
+			<xslt 
+			in="apis/${{api.name}}/spec/api.xml"
+			out="build/jmeter/${{api.name}}.jmx"
+			style="{$xins_home}/src/tools/jmeter/${{api.name}}/api_to_jmx.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+			</xslt>
+		</target>
+
+		<target name="run-jmeter" depends="-init-tools" description="Execute some JMeter tests.">
 			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
+			<property name="jmeter.test" value="build/jmeter/${{api.name}}/${{api.name}}" />
 			<jmeter jmeterhome="${{jmeter.home}}"
 			testplan="${{jmeter.test}}.jmx"
 			resultlog="${{jmeter.test}}.jlt">

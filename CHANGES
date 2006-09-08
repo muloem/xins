@@ -31,6 +31,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Fixed incorrect setting of the name of the API in the build file used for
     the eclipse target.
   - Fixed incorrect packaging for shared types.
+  - Renamed jmeter target to run-jmeter.
+  - Implemented SF.net RFE #1554566: Added new jmeter target that generates
+    the Apache JMeter file from the examples.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
