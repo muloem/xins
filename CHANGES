@@ -21,10 +21,11 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
 * XINS/Java Common Library:
   - Improved the BeanUtils class by converting the argument object if needed.
-  - Added the _set and _list types.
+  - Implemented SF.net RFE #1554100: Added the _set and _list types.
 
 * Generated code:
   - Added support for a default value for optional parameters.
+  - Implemented SF.net RFE #1554100: Added the _set and _list types.
 
 * Generated build file:
   - Fixed incorrect setting of the name of the API in the build file used for
