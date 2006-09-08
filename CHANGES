@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
 * XINS/Java Common Library:
   - Improved the BeanUtils class by converting the argument object if needed.
+  - Added the _set and _list types.
 
 * Generated code:
   - Added support for a default value for optional parameters.
@@ -2163,6 +2164,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
 
 * General:
   - Executed all unit tests on the Blackdown 1.4.1_01 JVM for Linux/x86. The
+
     tests did NOT succeed. In fact, at least 2 problems were found:
     . SF.net bug #1113862: IPAddressUtils.getLocalHost gets NPE on Blackdown
       JVM 1.4.1. This problem was worked around since this was very easy to

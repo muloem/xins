@@ -350,6 +350,12 @@
 					<xsl:when test="$type_node/hex">
 						<xsl:text>_hex</xsl:text>
 					</xsl:when>
+					<xsl:when test="$type_node/list">
+						<xsl:text>_list</xsl:text>
+					</xsl:when>
+					<xsl:when test="$type_node/set">
+						<xsl:text>_set</xsl:text>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>_text</xsl:text>
 					</xsl:otherwise>
@@ -764,6 +770,8 @@
 			<xsl:when test="$paramtype = '_timestamp'">dateTime</xsl:when>
 			<xsl:when test="$paramtype = '_properties'">string</xsl:when>
 			<xsl:when test="$paramtype = '_descriptor'">string</xsl:when>
+			<xsl:when test="$paramtype = '_list'">string</xsl:when>
+			<xsl:when test="$paramtype = '_set'">string</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unrecognized type datatype '</xsl:text>

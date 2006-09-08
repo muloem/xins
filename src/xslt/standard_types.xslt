@@ -31,6 +31,8 @@
 			<xsl:when test="$type = '_hex'">Byte Array, Hex encoded.</xsl:when>
 			<xsl:when test="$type = '_url'">Unified Resource Location (URL).</xsl:when>
 			<xsl:when test="$type = '_descriptor'">Descriptor.</xsl:when>
+			<xsl:when test="$type = '_set'">Set of any text.</xsl:when>
+			<xsl:when test="$type = '_list'">List of any text.</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
@@ -62,6 +64,8 @@
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
 					<xsl:when test="$type = '_hex'">byte[]</xsl:when>
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
+					<xsl:when test="$type = '_list'">org.xins.common.types.standard.List.Value</xsl:when>
+					<xsl:when test="$type = '_set'">org.xins.common.types.standard.Set.Value</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
@@ -87,6 +91,8 @@
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
 					<xsl:when test="$type = '_hex'">byte[]</xsl:when>
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
+					<xsl:when test="$type = '_list'">org.xins.common.types.standard.List.Value</xsl:when>
+					<xsl:when test="$type = '_set'">org.xins.common.types.standard.Set.Value</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
