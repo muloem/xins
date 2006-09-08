@@ -1395,13 +1395,14 @@ APIs in this project are:
 				<property name="org.xins.server.config" value="" />
 				<property name="servlet.port" value="8080" />
 				<property name="classes.api.dir" value="build/classes-api/{$api}" />
-				<junit fork="true" printsummary="true" failureproperty="tests.failed">
+				<junit fork="true" showoutput="true" dir="{$project_home}" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
 					<sysproperty key="test.environment" value="${{test.environment}}" />
 					<sysproperty key="test.start.server" value="${{test.start.server}}" />
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
 					<!--sysproperty key="net.sourceforge.cobertura.datafile"	file="build/coverage/{$api}/cobertura.ser" /-->
+          <formatter usefile="false" type="brief"/>
 					<formatter type="xml" />
 					<test name="{$packageTests}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>

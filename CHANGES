@@ -34,6 +34,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Renamed jmeter target to run-jmeter.
   - Implemented SF.net RFE #1554566: Added new jmeter target that generates
     the Apache JMeter file from the examples.
+  - Made the test targets compabible with the requirements needed for 
+    executing the tests in the NetBeans IDE.
 
 * Build- and release-process:
   - Added new test-netbeans target to execute the tests in the NetBeans IDE.
