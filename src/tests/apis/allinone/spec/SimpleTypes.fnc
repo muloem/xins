@@ -25,7 +25,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputFloat" required="true" type="_float32">
 			<description>An example of input for a float.</description>
 		</param>
-		<param name="inputDouble" required="false" type="_float64" default="3.14">
+		<param name="inputDouble" required="false" type="_float64">
 			<description>An example of input for a double.</description>
 		</param>
 		<param name="inputText" required="true" type="_text">
