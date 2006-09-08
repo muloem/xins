@@ -310,7 +310,7 @@ implements DefaultResultCodes {
     * Gets the list of the functions of this API.
     *
     * @return
-    *    the function of this API as a list of {@link Function}, never <code>null</code>.
+    *    the functions of this API as a {@link List} of {@link Function} objects, never <code>null</code>.
     *
     * @since XINS 1.5.0.
     */
@@ -334,7 +334,7 @@ implements DefaultResultCodes {
     * Gets the API runtime properties.
     *
     * @return
-    *   the bootstrap properties, cannot be <code>null</code>.
+    *   the runtime properties, cannot be <code>null</code>.
     */
    PropertyReader getRuntimeProperties() {
       return _runtimeSettings;
