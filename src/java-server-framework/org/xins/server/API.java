@@ -1265,7 +1265,7 @@ implements DefaultResultCodes {
          _engine.reloadPropertiesIfChanged();
          result = SUCCESSFUL_RESULT;
 
-      // Retrieve function list
+      // Retrieve eggs
       } else if ("_IWantTheEasterEggs".equals(functionName)) {
          result = SUCCESSFUL_RESULT;
 
