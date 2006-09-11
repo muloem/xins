@@ -15,7 +15,7 @@ import org.xins.logdoc.ExceptionUtils;
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
-public final class UnsupportedMethodException
+final class UnsupportedMethodException
 extends InvalidRequestException {
 
    //-------------------------------------------------------------------------
