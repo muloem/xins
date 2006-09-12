@@ -22,6 +22,7 @@ import org.xins.common.xml.Element;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @since XINS 1.5.0.
  */
 public class BeanUtils {
 
@@ -82,6 +83,8 @@ public class BeanUtils {
     *    the populated object, never <code>null</null>
     */
    public static Object populate(Object source, Object destination, Properties propertiesMapping) {
+      
+      // Go through all get methods of the source object
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
          if (sourceMethods[i].getName().startsWith("get") && sourceMethods[i].getName().length() > 3) {
@@ -103,6 +106,19 @@ public class BeanUtils {
                // Ignore this property
             }
          }
+      }
+      
+      // If the source object has a data section, fill the destination with it
+      try {
+         Method dataElementMethod = source.getClass().getMethod("dataElement", null);
+         Object dataElement = dataElementMethod.invoke(source, null);
+         if ("org.xins.client.DataElement".equals(dataElement.getClass().getName())) {
+            Method toXMLElementMethod = dataElement.getClass().getMethod("toXMLElement", null);
+            Element element = (Element) toXMLElementMethod.invoke(dataElement, null);
+            xmlToObject(element, destination);
+         }
+      } catch (Exception e) {
+         // Probably no methd found
       }
       return destination;
    }
