@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
+* XINS/Java Common Library:
+  - Improved the BeanUtils class by converting the argument object if needed.
+  - Implemented SF.net RFE #1554100: Added the _set and _list types.
+
 * XINS/Java Server Framework:
   - Fixed incorrect indirection in the XINS Front-end Framework.
   - The command can be null in the XINS Front-end Framework.
@@ -18,10 +22,6 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Fixed NPE in case of invalid request in the XINS Front-end Framework.
   - If a data element is stored in the XINS FF session, just add the 
     sub-elements.
-
-* XINS/Java Common Library:
-  - Improved the BeanUtils class by converting the argument object if needed.
-  - Implemented SF.net RFE #1554100: Added the _set and _list types.
 
 * Generated code:
   - Added support for a default value for optional parameters.
