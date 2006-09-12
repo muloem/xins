@@ -11,14 +11,14 @@ import org.xins.common.Log;
 /**
  * Fast, unsynchronized string buffer implementation.
  *
+ * This class should not be used.
+ * Performance tests have shown that simple String concatenation
+ * using the '+' operator is faster.
+ *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
- * @deprecated 
- *    Deprecated since XINS 1.5.0.
- *    Performance tests have shown that simple String concatenation
- *    using the '+' operator is faster.
  */
 public class FastStringBuffer extends Object {
 
