@@ -30,8 +30,8 @@ import com.mycompany.allinone.types.TextList;
  * to test the API specification.
  *
  * @version $Revision$ $Date$
- * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
- * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
  */
 public class ParameterTests extends TestCase {
 

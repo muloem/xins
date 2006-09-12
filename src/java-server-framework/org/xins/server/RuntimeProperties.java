@@ -14,7 +14,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- * @author Tauseef Rehman (<a href="mailto:tauseef.rehman@nl.wanadoo.com">tauseef.rehman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
  *
  * @since XINS 1.2.0
  */

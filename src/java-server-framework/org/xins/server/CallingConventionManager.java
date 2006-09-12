@@ -32,7 +32,7 @@ import org.xins.common.text.TextUtils;
  * Manages the <code>CallingConvention</code> instances for the API.
  *
  * @version $Revision$ $Date$
- * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  *

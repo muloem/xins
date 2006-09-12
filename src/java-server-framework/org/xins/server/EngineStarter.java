@@ -31,7 +31,7 @@ import org.xins.logdoc.UnsupportedLocaleError;
  * XINS engine starter.
  *
  * @version $Revision$ $Date$
- * @author Mees Witteman (<a href="mailto:mees.witteman@nl.wanadoo.com">mees.witteman@nl.wanadoo.com</a>)
+ * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 final class EngineStarter extends Object {
