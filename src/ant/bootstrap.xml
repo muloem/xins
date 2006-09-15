@@ -36,7 +36,7 @@
 			<srcfileset    dir="${project_home}"    includes="**/environments.xml" />
 			<targetfileset file="${project_home}/build/build.xml" />
 		</dependset>
-		<style in="${project_home}/xins-project.xml"
+		<xslt in="${project_home}/xins-project.xml"
 		       out="${project_home}/build/build.xml"
 		       style="${xins_home}/src/xslt/xins-project_to_ant-build.xslt">
 			<xmlcatalog>
@@ -157,7 +157,7 @@
 			<param name="project_home" expression="${project_home}" />
 			<param name="builddir"     expression="build"     />
 			<param name="xins_version" expression="${version}"     />
-		</style>
+		</xslt>
 
 	</target>
 
@@ -170,11 +170,11 @@
 			<srcfileset    dir="${project_home}"    includes="**/impl.xml" />
 			<targetfileset file="${out}" />
 		</dependset>
-		<style in="${in}" out="${out}" style="${style}">
+		<xslt in="${in}" out="${out}" style="${style}">
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />
 			<param name="builddir"     expression="${builddir}"     />
 			<param name="xins_version" expression="${version}"     />
-		</style>
+		</xslt>
 	</target>
 </project>
