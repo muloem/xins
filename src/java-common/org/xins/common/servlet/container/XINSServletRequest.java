@@ -270,12 +270,13 @@ public class XINSServletRequest implements HttpServletRequest {
 
       // Parse the URL
       int questionMarkPos = url.lastIndexOf('?');
-      if (questionMarkPos != -1) {
-         _queryString = url.substring(questionMarkPos + 1);
-      } else if (questionMarkPos == url.length() - 1) {
+      if (questionMarkPos == url.length() - 1) {
          _queryString = "";
+      } else if (questionMarkPos != -1) {
+         _queryString = url.substring(questionMarkPos + 1);
       } else {
-         _queryString = url;
+         _queryString = null;
+         return;
       }
       StringTokenizer paramsParser = new StringTokenizer(_queryString, "&");
       while (paramsParser.hasMoreTokens()) {
