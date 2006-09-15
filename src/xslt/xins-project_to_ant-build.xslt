@@ -533,6 +533,7 @@ APIs in this project are:
 		<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
+      <mkdir dir="{$project_home}/build/specdocs/{$api}" />
 			<dependset>
 				<srcfilelist   dir="{$api_specsdir}"    files="{$functionIncludes}" />
 				<xsl:if test="$apiHasTypes">
@@ -974,7 +975,7 @@ APIs in this project are:
 					<xsl:value-of select="$api" />
 					<xsl:value-of select="$implName2" />
 				</xsl:attribute>
-				<mkdir dir="{$javaDestDir}" />
+				<mkdir dir="{$javaDestDir}/{$packageAsDir}" />
 				<dependset>
 					<xsl:choose>
 						<xsl:when test="local-name() = 'impl'">
