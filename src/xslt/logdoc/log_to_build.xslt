@@ -63,31 +63,31 @@
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
 					<xmlcatalog refid="log-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/index.html"
 				style="{$logdoc_xslt_dir}/log_to_html.xslt">
 					<xmlcatalog refid="log-dtds" />
 					<param name="package_name" expression="{$package_name}" />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/entry-list.html"
 				style="{$logdoc_xslt_dir}/log_to_list_html.xslt">
 					<xmlcatalog refid="log-dtds" />
-				</style>
+				</xslt>
 				<xsl:for-each select="group">
-					<style
+					<xslt
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/group-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_group_html.xslt">
 						<xmlcatalog refid="log-dtds" />
 						<param name="package_name" expression="{$package_name}" />
 						<param name="group"     expression="{@id}"              />
-					</style>
+					</xslt>
 				</xsl:for-each>
 				<xsl:for-each select="group/entry">
-					<style
+					<xslt
 					in="{$sourcedir}/log.xml"
 					out="{$html_destdir}/entry-{@id}.html"
 					style="{$logdoc_xslt_dir}/log_to_entry_html.xslt">
@@ -95,7 +95,7 @@
 						<param name="package_name" expression="{$package_name}" />
 						<param name="sourcedir" expression="{$sourcedir}" />
 						<param name="entry"     expression="{@id}"              />
-					</style>
+					</xslt>
 				</xsl:for-each>
 			</target>
 
@@ -138,27 +138,27 @@
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
 					<xmlcatalog refid="log-dtds" />
 				</xmlvalidate>
-				<style
+				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/Log.java"
 				style="{$logdoc_xslt_dir}/log_to_Log_java.xslt">
 					<xmlcatalog refid="log-dtds" />
 					<param name="package_name" expression="{$package_name}" />
 					<param name="accesslevel" expression="${{accesslevel}}" />
-				</style>
-				<style
+				</xslt>
+				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/TranslationBundle.java"
 				style="{$logdoc_xslt_dir}/log_to_TranslationBundle_java.xslt">
 					<xmlcatalog refid="log-dtds" />
 					<param name="package_name" expression="{$package_name}" />
 					<param name="accesslevel"  expression="${{accesslevel}}" />
-				</style>
+				</xslt>
 				<xsl:for-each select="translation-bundle">
 					<xmlvalidate warn="false" file="{$sourcedir}/translation-bundle-{@locale}.xml">
 						<xmlcatalog refid="log-dtds" />
 					</xmlvalidate>
-					<style
+					<xslt
 					in="{$sourcedir}/translation-bundle-{@locale}.xml"
 					out="{$java_destdir}/TranslationBundle_{@locale}.java"
 					style="{$logdoc_xslt_dir}/translation-bundle_to_java.xslt">
@@ -167,7 +167,7 @@
 						<param name="package_name" expression="{$package_name}" />
 						<param name="log_file"     expression="{$sourcedir}/log.xml" />
 						<param name="accesslevel" expression="${{accesslevel}}" />
-					</style>
+					</xslt>
 				</xsl:for-each>
 			</target>
 
