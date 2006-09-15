@@ -5,7 +5,7 @@
 [Setup]
 AppName=XINS
 AppVerName=XINS version %%VERSION%%
-DefaultDirName={sd}\xins-%%VERSION%%
+DefaultDirName={pf}\xins
 VersionInfoVersion=%%VERSION%%
 OutputDir=C:\projects
 OutputBaseFilename=xins-%%VERSION%%
@@ -13,7 +13,7 @@ SetupIconFile=xins.ico
 WizardImageFile=bigxinslogo.bmp
 WizardSmallImageFile=smallxinslogo.bmp
 UninstallDisplayIcon={app}\xins.ico
-DefaultGroupName=XINS %%VERSION%%
+DefaultGroupName=XINS
 DisableProgramGroupPage=yes
 LicenseFile=C:\projects\xins-%%VERSION%%\COPYRIGHT
 InfoBeforeFile=xins-info1.txt

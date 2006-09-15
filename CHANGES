@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
+* Tools
+  - Fixed SF.net bug #1492820: Installation on Windows will be done by default
+    in Program Files\xins.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
 
