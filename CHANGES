@@ -14,6 +14,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Input parameters are stored in the session only when the function
     is successful and that the input parameter is defined in the function.
 
+* Generation of the specdocs:
+  - Improved layout of the generation of the runtime properties page.
+
 * Generated logdoc:
   - Changed generated Ant build files to use <xslt/> instead of the synonym
     <style/>, since the latter is considered deprecated as of Ant 1.7.0.

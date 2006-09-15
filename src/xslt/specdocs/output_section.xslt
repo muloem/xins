@@ -14,6 +14,7 @@
 		<xsl:param name="title" />
 		<xsl:param name="content" />
 		<xsl:param name="class" />
+		<xsl:param name="type" select="'Parameter'"/>
 
 		<h3>
 			<xsl:value-of select="$title" />
@@ -26,7 +27,9 @@
 						<xsl:value-of select="$class" />
 					</xsl:attribute>
 					<tr>
-						<th>Parameter</th>
+						<th>
+							<xsl:value-of select="$type" />
+						</th>
 						<th>Type</th>
 						<th>Description</th>
 						<th>Required</th>

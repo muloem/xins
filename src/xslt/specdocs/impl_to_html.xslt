@@ -38,7 +38,7 @@
 	<!-- Default indentation setting -->
 	<xsl:variable name="indentation" select="'&amp;nbsp;&amp;nbsp;&amp;nbsp;'" />
 
-	<xsl:template match="impl/runtime-properties">
+	<xsl:template match="impl">
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
@@ -67,8 +67,8 @@
 
 				<blockquote>
 					<xsl:choose>
-						<xsl:when test="property">
-							<xsl:apply-templates select="." mode="table" />
+						<xsl:when test="runtime-properties/property">
+							<xsl:apply-templates select="runtime-properties" mode="table" />
 						</xsl:when>
 						<xsl:otherwise>
 							<em>This API implementation does not have any properties defined.</em>
@@ -84,9 +84,10 @@
 
 	<xsl:template match="runtime-properties" mode="table">
 		<xsl:call-template name="parametertable">
-			<xsl:with-param name="title">Property</xsl:with-param>
+			<xsl:with-param name="title"></xsl:with-param>
 			<xsl:with-param name="content">property</xsl:with-param>
 			<xsl:with-param name="class">inputparameters</xsl:with-param>
+			<xsl:with-param name="type">Property</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 
