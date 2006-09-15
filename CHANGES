@@ -6,7 +6,11 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
-* Tools
+* DTD:
+  - The types properties, list and set can contain a shared type from another
+    API.
+
+* Tools:
   - Fixed SF.net bug #1492820: Installation on Windows will be done by default
     in Program Files\xins.
 

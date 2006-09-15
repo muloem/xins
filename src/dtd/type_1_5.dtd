@@ -20,8 +20,8 @@
 >
 <!ELEMENT properties EMPTY>
 <!ATTLIST properties
-          nameType    NMTOKEN #IMPLIED
-          valueType   NMTOKEN #REQUIRED
+          nameType    CDATA #IMPLIED
+          valueType   CDATA #REQUIRED
 >
 <!ELEMENT int8 EMPTY>
 <!ATTLIST int8
@@ -65,9 +65,9 @@
 >
 <!ELEMENT set EMPTY>
 <!ATTLIST set
-          type   NMTOKEN #IMPLIED
+          type   CDATA #IMPLIED
 >
 <!ELEMENT list EMPTY>
 <!ATTLIST list
-          type   NMTOKEN #IMPLIED
+          type   CDATA #IMPLIED
 >
