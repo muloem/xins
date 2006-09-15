@@ -10,6 +10,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Fixed SF.net bug #1558478: Internal servlet container assumes path is 
     query string.
 
+* XINS/Java Server Framework:
+  - Input parameters are stored in the session only when the function
+    is successful and that the input parameter is defined in the function.
+
 * Generated build file:
   - Fixed SF.net bug #1531619: 'ant -lib lib tests' fails with Apache 
     Ant 1.7-beta1.

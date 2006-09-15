@@ -96,7 +96,7 @@ public class SessionManager extends Manageable {
     * @param request
     *    the HTTP request, cannot be <code>null</code>.
     */
-   void request(HttpServletRequest request) {
+   final void request(HttpServletRequest request) {
 
       // Find the session ID in the cookies
       String sessionId = null;
@@ -120,7 +120,7 @@ public class SessionManager extends Manageable {
          setProperty(sessionId, Boolean.FALSE);
       }
 
-      // Fill the session with the input parameters
+      // Fill the input parameters
       HashMap inputParameters = new HashMap();
       Enumeration params = request.getParameterNames();
       while (params.hasMoreElements()) {
@@ -129,7 +129,6 @@ public class SessionManager extends Manageable {
          if ("".equals(value) || name.equals(getSessionId())) {
             value = null;
          }
-         setProperty(name.toLowerCase(), value);
          inputParameters.put(name, value);
       }
       setProperty("_inputs", inputParameters);
@@ -141,18 +140,18 @@ public class SessionManager extends Manageable {
     * @param successful
     *    <code>true</code> if the function is successful, <code>false</code> otherwise.
     */
-   void result(boolean successful) {
-      HttpSession session = (HttpSession) _currentSession.get();
-      if (session != null && successful) {
-         HashMap inputParameters = (HashMap) session.getAttribute("_inputs");
+   final void result(boolean successful) {
+      if (successful) {
+         HashMap inputParameters = (HashMap) getProperty("_inputs");
 
          // Only valid inputs of an existing function will be added.
          String command = (String) inputParameters.get("command");
          String action = (String) inputParameters.get("action");
-         if (action == null) {
-            action = "";
+         String functionName = command;
+         // TODO put this in TextUtils
+         if (action != null && !action.equals("") && !action.equalsIgnoreCase("show")) {
+            functionName += action.substring(0, 1).toUpperCase() + action.substring(1);
          }
-         String functionName = command + action;
          try {
             Map specInputParameters = _api.getAPISpecification().getFunction(functionName).getInputParameters();
             Iterator itInputParameters = inputParameters.entrySet().iterator();
@@ -160,7 +159,11 @@ public class SessionManager extends Manageable {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
                if (specInputParameters.containsKey(parameterName)) {
-                  session.setAttribute(parameterName, (String) nextInput.getValue());
+                  String value = (String) nextInput.getValue();
+                  if ("".equals(value) || parameterName.equals(getSessionId())) {
+                     value = null;
+                  }
+                  setProperty(parameterName.toLowerCase(), value);
                }
             }
          } catch (Exception ex) {
