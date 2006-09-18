@@ -621,33 +621,6 @@ public class AllInOneAPITests extends TestCase {
    }
 
   /**
-   * Tests the XINS 1.3 'not-all' param-combos type.
-   */
-   public void testParamComboNotAll() throws Exception {
-
-      // Test 'not-all'
-      try {
-         Integer i = new Integer(1);
-         _capi.callParamComboNotAll(i, i, i, i);
-         fail("The param-combo call should return an _InvalidRequest error code.");
-      } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement) itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("not-all",     paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
-      }
-   }
-
-  /**
    * Tests the param-combo constraints using the new-style (XINS 1.2) call
    * methods, which should throw an UnacceptableRequestException.
    */
@@ -852,112 +825,6 @@ public class AllInOneAPITests extends TestCase {
       }
    }
 
-   /**
-    * Tests invalid responses from the server.
-    */
-   public void testInvalidResponse() throws Exception {
-      XINSCallRequest request = new XINSCallRequest("InvalidResponse");
-      XINSServiceCaller caller = new XINSServiceCaller(_target);
-      try {
-         caller.call(request);
-         fail("No invalid response received as expected.");
-      } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidResponse", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
-         assertNotNull(dataSection);
-         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
-         assertEquals("missing-param", missingParam.getName());
-         assertEquals("outputText1", missingParam.get("param"));
-         assertEquals(0, missingParam.getChildElements().size());
-         assertNull(missingParam.getText());
-         DataElement invalidParam = (DataElement) dataSection.getChildElements().get(1);
-         assertEquals("invalid-value-for-type", invalidParam.getName());
-         assertEquals("pattern", invalidParam.get("param"));
-         assertEquals(0, invalidParam.getChildElements().size());
-         assertNull(invalidParam.getText());
-      }
-   }
-
-   /**
-    * Tests invalid responses from the server using the new XINS 1.2 call
-    * method.
-    */
-   public void testInvalidResponse2() throws Exception {
-
-      InvalidResponseRequest request = new InvalidResponseRequest();
-      try {
-         _capi.callInvalidResponse(request);
-         fail("Expected InternalErrorException.");
-      } catch (InternalErrorException exception) {
-         assertEquals("_InvalidResponse", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
-         assertNotNull(dataSection);
-         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
-         assertEquals("missing-param", missingParam.getName());
-         assertEquals("outputText1", missingParam.get("param"));
-         assertEquals(0, missingParam.getChildElements().size());
-         assertNull(missingParam.getText());
-         DataElement invalidParam = (DataElement) dataSection.getChildElements().get(1);
-         assertEquals("invalid-value-for-type", invalidParam.getName());
-         assertEquals("pattern", invalidParam.get("param"));
-         assertEquals(0, invalidParam.getChildElements().size());
-         assertNull(invalidParam.getText());
-      }
-
-      request = new InvalidResponseRequest();
-      request.setErrorCode("ErrorCodeNotKnownWhatsoever");
-      try {
-         _capi.callInvalidResponse(request);
-         fail("Expected InternalErrorException.");
-      } catch (InternalErrorException exception) {
-         assertEquals("_InternalError", exception.getErrorCode());
-         assertEquals(_target,          exception.getTarget());
-      }
-
-      request = new InvalidResponseRequest();
-      request.setErrorCode("InvalidNumber");
-      try {
-         _capi.callInvalidResponse(request);
-         fail("Expected InternalErrorException.");
-      } catch (InternalErrorException exception) {
-         assertEquals("_InternalError", exception.getErrorCode());
-         assertEquals(_target,          exception.getTarget());
-      }
-   }
-
-   /**
-    * Tests the function 'DefinedTypes' that should return an _InvalidResponse error code.
-    */
-   public void testInvalidResponse3() throws Exception {
-      TextList.Value textList = new TextList.Value();
-      textList.add("Hello");
-      textList.add("Test");
-      try {
-         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1",
-                                                            Salutation.LADY,
-                                                            (byte) 60,
-                                                            textList);
-         fail("The request is invalid, the function should throw an exception");
-      } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidResponse", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
-         assertNotNull(dataSection);
-         List invalidParams = dataSection.getChildElements();
-         assertEquals(1, invalidParams.size());
-         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
-         assertEquals("invalid-value-for-type", invalidParam1.getName());
-         assertEquals("outputProperties", invalidParam1.get("param"));
-         assertEquals(0, invalidParam1.getChildElements().size());
-         assertNull(invalidParam1.getText());
-      }
-   }
-
    public void testEcho() throws Exception {
       EchoRequest request = new EchoRequest();
       EchoResult  result;
@@ -993,6 +860,35 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(in, result.getOut());
    }
 
+   /**
+    * Tests the function 'DefinedTypes' that should return an _InvalidResponse error code.
+    */
+   public void testInvalidResponse3() throws Exception {
+      TextList.Value textList = new TextList.Value();
+      textList.add("Hello");
+      textList.add("Test");
+      try {
+         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1",
+                                                            Salutation.LADY,
+                                                            (byte) 60,
+                                                            textList);
+         fail("The request is invalid, the function should throw an exception");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidResponse", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         List invalidParams = dataSection.getChildElements();
+         assertEquals(1, invalidParams.size());
+         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         assertEquals("invalid-value-for-type", invalidParam1.getName());
+         assertEquals("outputProperties", invalidParam1.get("param"));
+         assertEquals(0, invalidParam1.getChildElements().size());
+         assertNull(invalidParam1.getText());
+      }
+   }
+
    public void testResetInputParameter() throws Exception {
       EchoRequest request = new EchoRequest();
       EchoResult  result;
@@ -1003,6 +899,16 @@ public class AllInOneAPITests extends TestCase {
       result = _capi.callEcho(request);
       assertNull("Bug 1362875: Overriding Request input value with empty string ignored.", result.getOut());
    }
+
+   /* Does not work as only one instance of an API is possible
+    public void testCAPIWithFileProtocol() throws Exception {
+      TargetDescriptor fileTarget = new TargetDescriptor("file://./src/tests/build/webapps/allinone/allinone.war", 5000, 1000, 4000);
+      CAPI fileCapi = new CAPI(fileTarget);
+      EchoRequest request = new EchoRequest();
+      request.setIn("Hello file");
+      EchoResult result = fileCapi.callEcho(request);
+      assertEquals("Incorrect message received.", "Hello file", result.getOut());
+   }*/
 
    private void dataSectionTests(String inputText)
    throws Exception {
