@@ -144,6 +144,8 @@ ${version.file}</fail>
 	</target>
 
 	<target name="java-common" depends="java-logdoc, logdoc-java-common" description="Compiles the XINS/Java common code">
+		<copy file="src/java-common/org/xins/common/ant/antlib.xml"
+		todir="build/classes/java-common/org/xins/common/ant" />
 		<antcall target="-build-framework">
 			<param name="src.side" value="common" />
 			<param name="side"     value="common" />
