@@ -7,7 +7,7 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
 * XINS/Java Common Library:
-  - Fixed SF.net bug #1558478: Internal servlet container assumes path is 
+  - Fixed SF.net bug #1558478: Internal servlet container assumes path is
     query string.
   - Fixed various problems in the antlib.xml file.
 
@@ -23,7 +23,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
     <style/>, since the latter is considered deprecated as of Ant 1.7.0.
 
 * Generated build file:
-  - Fixed SF.net bug #1531619: 'ant -lib lib tests' fails with Apache 
+  - Fixed SF.net bug #1531619: 'ant -lib lib tests' fails with Apache
     Ant 1.7-beta1.
   - Changed generated Ant build files to use <xslt/> instead of the synonym
     <style/>, since the latter is considered deprecated as of Ant 1.7.0.
@@ -58,7 +58,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Fixed if the JMX library is not in the classpath, the creation of the
     EngineStarter may fail with a NoClassDefFoundError.
   - Fixed NPE in case of invalid request in the XINS Front-end Framework.
-  - If a data element is stored in the XINS FF session, just add the 
+  - If a data element is stored in the XINS FF session, just add the
     sub-elements.
 
 * Generated code:
@@ -72,7 +72,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 1:
   - Renamed jmeter target to run-jmeter.
   - Implemented SF.net RFE #1554566: Added new jmeter target that generates
     the Apache JMeter file from the examples.
-  - Made the test target compabible with the requirements needed for 
+  - Made the test target compabible with the requirements needed for
     executing the tests in the NetBeans IDE.
 
 * Build- and release-process:
@@ -92,7 +92,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
     java.lang.StringBuffer is faster.
   - Implemented SF.net RFE #1549196. Added a generic DEBUG-level Logdoc log
     entry (1053) for XINS users.
-  - Added a BeansUtil class that helps you filling the Request or Result 
+  - Added a BeanUtils class that helps you filling the Request or Result
     object using the values of a POJO and vice versa.
 
 * XINS/Java Server Framework:
@@ -117,7 +117,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
 * Generated build file:
   - Added new maven target to create a pom.xml file for the API.
-  - Added new eclipse target that creates the Eclipse projects file for the 
+  - Added new eclipse target that creates the Eclipse projects file for the
     API.
 
 * Build- and release-process:
@@ -215,15 +215,15 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
     looking the build.xml in the correct directory.
   - Fixed SF.net bug #1518818: Parameters with empty values not returned with
     getParameterNames() method of the XINSServletRequest.
-  - Fixed SF.net bug #1518381: Error in getParameterValues (internal servlet 
+  - Fixed SF.net bug #1518381: Error in getParameterValues (internal servlet
     container).
   - Added new tests for the XINSServletRequest.
   - Moved the FileServiceCaller to the org.xins.client package.
 
 * XINS/Java Server Framework:
-  - Improved the detection of relative files in the XSLT used by the 
+  - Improved the detection of relative files in the XSLT used by the
     FrontendCallingConvention.
-  - Improved the detection of relative files in the XSLT used by the 
+  - Improved the detection of relative files in the XSLT used by the
     XSLTCallingConvention.
   - Added more information for the Control command of the front-end framework.
   - Created the XSLT to render the Control command of the front-end framework.
@@ -253,7 +253,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 * XINS/Java Common Library:
   - Fixed SF.net bug #1483127: HTTP OPTIONS method causes hang.
   - Added _hex type. Thanks Georgios.
-  - Added the FileServiceCaller that can call an API without using the 
+  - Added the FileServiceCaller that can call an API without using the
     network.
   - Changed method ServiceCaller#doCallImpl(CallRequest, CallConfig,
     TargetDescriptor) from protected to public.
@@ -268,7 +268,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
   - Improved JMX support.
 
 * XINS/Java Client Framework:
-  - Made the AbstractCAPICallRequest and the AbstractCAPICallResult 
+  - Made the AbstractCAPICallRequest and the AbstractCAPICallResult
     serializable in order to better fit the Java Beans specifications.
   - The XINSServiceCaller redirect the call to the HTTPServiceCaller or the
     FileServiceCaller depending on the TargetDescriptor.
@@ -277,7 +277,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
   - Fixed possible variable conflict if an element has the same attribute as
     a sub element.
   - Generated data elements are now public for the SuccessfulResult.
-  - Made the generated Request and Result classes serializable in order to 
+  - Made the generated Request and Result classes serializable in order to
     better fit the Java Beans specifications.
 
 * Generation of client-side Java code:
