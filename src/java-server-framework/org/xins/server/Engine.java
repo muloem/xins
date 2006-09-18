@@ -100,7 +100,8 @@ final class Engine extends Object {
          _stateMachine.setState(EngineState.API_CONSTRUCTION_FAILED);
          throw se;
       }
-      if (! bootstrapAPI()) {
+      boolean bootstrapped = bootstrapAPI();
+      if (!bootstrapped) {
          throw new ServletException(); // XXX
       }
 
