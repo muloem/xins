@@ -17,7 +17,7 @@
 
 		<available file="${project_home}/xins-project.xml"
 		           property="xins-project.xml.exists" />
-		<fail message="Cannot find input file xins-project.xml" unless="xins-project.xml.exists" />
+		<fail message="Cannot find input file xins-project.xml in the ${project_home} directory." unless="xins-project.xml.exists" />
 
 		<mkdir dir="${project_home}/build" />
 
