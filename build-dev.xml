@@ -110,16 +110,37 @@ ${sf.file}</fail>
 
 	<target name="classes-tests" depends="java" description="Compiles the test cases">
 		<!-- Compiles the example used for the tests -->
-		<!-- delete dir="src/tests/build" /-->
+		<!--delete dir="src/tests/build" /-->
 
 		<taskdef resource="org/xins/common/ant/antlib.xml" classpath="build/xins-common.jar" />
 		<xins api="allinone" target="opendoc" projectdir="src/tests" />
+		<xins api="portal" target="war" projectdir="src/tests" />
+		<xins api="portal" target="jar" projectdir="src/tests" />
 
 		<!-- TODO: Can these be combined? -->
+		<ant antfile="build/build.xml" dir="src/tests" target="jar-portal" />
+		<ant antfile="build/build.xml" dir="src/tests" target="war-portal" />
 		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
 		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="wsdl-allinone"     />
+
+		<!-- Store the path for compilation and execution -->
+		<path id="tests.classpath">
+			<pathelement location="build/classes/tests" />
+			<pathelement location="build/xins-common.jar" />
+			<pathelement location="build/xins-server.jar" />
+			<pathelement location="build/xins-client.jar" />
+			<pathelement location="build/logdoc.jar" />
+			<pathelement location="src/tests/build/capis/allinone-capi.jar" />
+			<pathelement location="src/tests/build/classes-api/allinone" />
+			<pathelement location="src/tests/build/classes-types/allinone" />
+			<pathelement location="src/tests/build/capis/portal-capi.jar" />
+			<pathelement location="src/tests/build/classes-api/portal" />
+			<pathelement location="src/tests/build/classes-types/portal" />
+			<pathelement location="src/tests/myproject-capi.jar" />
+			<fileset dir="lib" includes="*.jar" />
+		</path>
 
 		<!-- Compiles the tests -->
 		<mkdir dir="build/classes/tests" />
@@ -132,15 +153,7 @@ ${sf.file}</fail>
 		target="${javac.targetvm}"
 		encoding="${javac.encoding}">
 			<src path="src/tests" />
-			<classpath>
-				<pathelement location="build/xins-common.jar" />
-				<pathelement location="build/xins-server.jar" />
-				<pathelement location="build/xins-client.jar" />
-				<pathelement location="build/logdoc.jar" />
-				<pathelement location="src/tests/build/classes-capi/allinone" />
-				<pathelement location="src/tests/myproject-capi.jar" />
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath refid="tests.classpath" />
 		</javac>
 	</target>
 
@@ -152,18 +165,7 @@ ${sf.file}</fail>
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
-			<classpath>
-				<pathelement location="build/classes/tests" />
-				<pathelement location="build/xins-common.jar" />
-				<pathelement location="build/xins-server.jar" />
-				<pathelement location="build/xins-client.jar" />
-				<pathelement location="build/logdoc.jar" />
-				<pathelement location="src/tests/build/capis/allinone-capi.jar" />
-				<pathelement location="src/tests/build/classes-api/allinone" />
-				<pathelement location="src/tests/build/classes-types/allinone" />
-				<pathelement location="src/tests/myproject-capi.jar" />
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath refid="tests.classpath" />
 		</junit>
 	</target>
 
@@ -188,19 +190,7 @@ ${sf.file}</fail>
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<arg value="-noloading"/>
 			<arg value="${testclass}"/>
-			<classpath>
-				<pathelement location="build/classes/tests" />
-				<pathelement location="build/xins-common.jar" />
-				<pathelement location="build/xins-server.jar" />
-				<pathelement location="build/xins-client.jar" />
-				<pathelement location="build/logdoc.jar" />
-				<pathelement location="src/tests/build/capis/allinone-capi.jar" />
-				<pathelement location="src/tests/build/classes-api/allinone" />
-				<pathelement location="src/tests/build/classes-types/allinone" />
-				<pathelement location="src/tests/myproject-capi.jar" />
-				<pathelement location="${ant.home}/lib/ant.jar" />
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath refid="tests.classpath" />
 		</java>
 	</target>
 
@@ -213,18 +203,7 @@ ${sf.file}</fail>
       <formatter usefile="false" type="brief"/>
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>
-			<classpath>
-				<pathelement location="build/classes/tests" />
-				<pathelement location="build/xins-common.jar" />
-				<pathelement location="build/xins-server.jar" />
-				<pathelement location="build/xins-client.jar" />
-				<pathelement location="build/logdoc.jar" />
-				<pathelement location="src/tests/build/capis/allinone-capi.jar" />
-				<pathelement location="src/tests/build/classes-api/allinone" />
-				<pathelement location="src/tests/build/classes-types/allinone" />
-				<pathelement location="src/tests/myproject-capi.jar" />
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath refid="tests.classpath" />
 		</junit>
 	</target>
 
@@ -235,18 +214,7 @@ ${sf.file}</fail>
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="${perftestclass}" todir="build/perftestresults/xml" outfile="perftestresults"/>
-			<classpath>
-				<pathelement location="build/classes/tests" />
-				<pathelement location="build/xins-common.jar" />
-				<pathelement location="build/xins-server.jar" />
-				<pathelement location="build/xins-client.jar" />
-				<pathelement location="build/logdoc.jar" />
-				<pathelement location="src/tests/build/classes-capi/allinone" />
-				<pathelement location="src/tests/build/classes-api/allinone" />
-				<pathelement location="src/tests/build/classes-types/allinone" />
-				<pathelement location="src/tests/myproject-capi.jar" />
-				<fileset dir="lib" includes="*.jar" />
-			</classpath>
+			<classpath refid="tests.classpath" />
 		</junit>
 	</target>
 
