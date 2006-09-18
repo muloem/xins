@@ -11,7 +11,7 @@ import org.xins.common.types.standard.Hex;
 
 
 /**
- * Tests for class <code>Base64</code>.
+ * Tests for class <code>Hex</code>.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
