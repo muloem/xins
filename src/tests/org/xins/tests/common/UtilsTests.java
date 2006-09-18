@@ -186,6 +186,18 @@ public class UtilsTests extends TestCase {
       // TODO: Test actual logging, too
    }
 
+   public void testLogIgnoredExceptionWithoutArguments() {
+       try {
+           Object nothing = null;
+           nothing.toString();
+           fail("no NPE thrown as expected");
+       } catch (NullPointerException npe) {
+           
+           // Test that the logIgnoredException method does not fail
+           Utils.logIgnoredException(npe);
+       }
+   }
+
    private class InnerClass {
       private void test(String detail) {
          throw Utils.logProgrammingError(detail);
