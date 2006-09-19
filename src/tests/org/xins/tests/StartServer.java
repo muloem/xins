@@ -59,17 +59,24 @@ public class StartServer extends TestCase {
 
    public void testStartServer() throws Exception {
 
+      // Determine on which server socket to listen
+      int port = AllTests.port();
+
+      // Start the web server
+      AllTests.HTTP_SERVER = startServer("allinone", AllTests.port());
+      startServer("portal", port + 1);
+   }
+
+   public static HTTPServletHandler startServer(String apiName, int port) throws Exception {
       File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
-      String warLocation = "src/tests/build/webapps/allinone/allinone.war".replace('/', File.separatorChar);
+      String warLocation = "src/tests/build/webapps/" + apiName + "/" + apiName + ".war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
-
-      // Determine on which server socket to listen
-      int port = AllTests.getPort();
 
       // Start the web server
       System.out.println("Starting web server on port " + port + '.');
-      AllTests.HTTP_SERVER = new HTTPServletHandler(warFile, port, false);
+      HTTPServletHandler servletHandler = new HTTPServletHandler(warFile, port, false);
       System.out.println("Web server started on port " + port + '.');
+      return servletHandler;
    }
 }

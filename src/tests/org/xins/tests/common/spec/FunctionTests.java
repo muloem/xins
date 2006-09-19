@@ -377,9 +377,9 @@ public class FunctionTests extends TestCase {
     */
    public void testFunctionsGetOutputDataSectionElements() throws Exception {
 
-      String functionName = "InvalidResponse";
+      String functionName = "DefinedTypes";
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'Invalidresponse' has an incorrect number of " +
+      assertEquals("Function 'DefinedTypes' has an incorrect number of " +
          "output data section elements: " +
          function.getOutputDataSectionElements().size(),
          0, function.getOutputDataSectionElements().size());
@@ -432,9 +432,9 @@ public class FunctionTests extends TestCase {
     */
    public void testFunctionsInputParamCombos() throws Exception {
 
-      String functionName = "InvalidResponse";
+      String functionName = "DefinedTypes";
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'InvalidResponse' has an incorrect number of input " +
+      assertEquals("Function 'DefinedTypes' has an incorrect number of input " +
          "paramter combos: " + function.getInputParamCombos().size(),
          0, function.getInputParamCombos().size());
 
@@ -475,9 +475,9 @@ public class FunctionTests extends TestCase {
     */
    public void testFunctionsOutputParamCombos() throws Exception {
 
-      String functionName = "InvalidResponse";
+      String functionName = "DefinedTypes";
       FunctionSpec function = _allInOneAPI.getFunction(functionName);
-      assertEquals("Function 'InvalidResponse' has an incorrect number of " +
+      assertEquals("Function 'DefinedTypes' has an incorrect number of " +
          "output paramter combos: " + function.getOutputParamCombos().size(),
          0, function.getOutputParamCombos().size());
 

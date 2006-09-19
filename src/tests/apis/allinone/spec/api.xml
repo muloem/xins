@@ -13,11 +13,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="DataSection4"    />
 	<function name="DefinedTypes"    />
 	<function name="Echo"            />
-	<function name="InvalidResponse" />
-	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->
 	<function name="Logdoc"          />
 	<function name="ParamCombo"      />
-	<function name="ParamComboNotAll" />
+	<function name="ParamComboNotAll"/>
 	<function name="ResultCode"      />
 	<function name="RuntimeProps"    />
 	<function name="SimpleOutput"    />

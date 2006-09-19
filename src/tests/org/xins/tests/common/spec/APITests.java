@@ -130,7 +130,6 @@ public class APITests extends TestCase {
       list.add("DataSection4");
       list.add("DefinedTypes");
       list.add("Echo");
-      list.add("InvalidResponse");
       list.add("Logdoc");
       list.add("ParamCombo");
       list.add("ParamComboNotAll");

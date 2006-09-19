@@ -1,7 +1,7 @@
 /*
  * $Id$
  */
-package com.mycompany.allinone.api;
+package com.mycompany.portal.api;
 
 import org.xins.server.FunctionResult;
 
@@ -12,14 +12,6 @@ import org.xins.server.FunctionResult;
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
  */
 public class InvalidResponseImpl extends InvalidResponse {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -36,10 +28,6 @@ public class InvalidResponseImpl extends InvalidResponse {
       super(api);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Methods

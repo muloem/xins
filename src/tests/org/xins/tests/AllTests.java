@@ -35,19 +35,6 @@ public class AllTests extends TestSuite {
    //-------------------------------------------------------------------------
 
    /**
-    * Returns the port (server socket) to start the server on.
-    *
-    * @return
-    *    the port to run the server on.
-    *
-    * @deprecated
-    *    Use {@link #port()} instead.
-    */
-   public static final int getPort() {
-      return DEFAULT_PORT;
-   }
-
-   /**
     * Returns the host to use to connect to the server.
     *
     * @return
@@ -192,6 +179,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
 
+      suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
+
       suite.addTestSuite(org.xins.tests.xslt.FirstlineXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.JavaXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
@@ -199,7 +188,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
 
       // XXX: Perform just a single test
-      //suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
+      // suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
 
       // Stop the server
       if (RUN_SERVER) {

@@ -1,28 +1,31 @@
 /*
  * $Id$
  */
-package com.mycompany.allinone.api;
+package com.mycompany.portal.api;
+
 
 /**
- * Implementation of the <code>ParamComboNotAll</code> function.
+ * Implementation of the <code>LoginOkay</code> function.
+ *
+ * <p>Description: Log a user in.
  *
  * @version $Revision$ $Date$
- * @author John Doe (<a href="mailto:john.doe@mycompany.com">john.doe@mycompany.com</a>)
+ * @author TODO
  */
-public final class ParamComboNotAllImpl extends ParamComboNotAll {
+public final class LoginOkayImpl extends LoginOkay {
 
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>ParamComboNotAllImpl</code> instance.
+    * Constructs a new <code>LoginOkayImpl</code> instance.
     *
     * @param api
     *    the API to which this function belongs, guaranteed to be not
     *    <code>null</code>.
     */
-   public ParamComboNotAllImpl(APIImpl api) {
+   public LoginOkayImpl(APIImpl api) {
       super(api);
    }
 
@@ -45,12 +48,12 @@ public final class ParamComboNotAllImpl extends ParamComboNotAll {
     * @return
     *    the result of the function call, should never be <code>null</code>.
     *
-    * @throws java.lang.Throwable
+    * @throws Throwable
     *    if anything went wrong.
     */
-   public Result call(Request request)
-   throws java.lang.Throwable {
+   public Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
+      // TODO
       return result;
    }
 }

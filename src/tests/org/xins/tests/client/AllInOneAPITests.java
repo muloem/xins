@@ -889,6 +889,33 @@ public class AllInOneAPITests extends TestCase {
       }
    }
 
+  /**
+   * Tests the XINS 1.3 'not-all' param-combos type.
+   */
+   public void testParamComboNotAll() throws Exception {
+
+      // Test 'not-all'
+      try {
+         Integer i = new Integer(1);
+         _capi.callParamComboNotAll(i, i, i, i);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement) itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("not-all",     paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+      }
+   }
+
    public void testResetInputParameter() throws Exception {
       EchoRequest request = new EchoRequest();
       EchoResult  result;
