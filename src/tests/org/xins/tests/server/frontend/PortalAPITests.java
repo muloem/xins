@@ -27,6 +27,7 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPMethod;
@@ -102,12 +103,71 @@ public class PortalAPITests extends TestCase {
    }
 
    public void testControlCommand() throws Exception {
-      HTTPServiceCaller callControl = new HTTPServiceCaller(_target);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("command", "Control");
+      String htmlResult = callCommand(params);
+      assertTrue("Incorrect content.", htmlResult.indexOf("API start-up time") != -1);
+   }
+
+   public void testFlushControlCommand() throws Exception {
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("command", "Control");
+      params.set("action", "FlushCommandTemplateCache");
+      callCommand(params);
+   }
+
+   public void testRefreshControlCommand() throws Exception {
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("command", "Control");
+      params.set("action", "RefreshCommandTemplateCache");
+      callCommand(params);
+   }
+
+   public void testRemoveSessionPropertiesControlCommand1() throws Exception {
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("command", "Control");
+      params.set("action", "RemoveSessionProperties");
+      callCommand(params);
+   }
+
+   public void testRemoveSessionPropertiesControlCommand2() throws Exception {
+      
+      // Check that testProp is not in the session
+      BasicPropertyReader paramsControl = new BasicPropertyReader();
+      paramsControl.set("command", "Control");
+      String controlResult1 = callCommand(paramsControl);
+      assertTrue("username property already in the session.", controlResult1.indexOf("username") == -1);
+      
+      // Add testProp to the session
+      BasicPropertyReader paramsLogin = new BasicPropertyReader();
+      paramsLogin.set("command", "Login");
+      paramsLogin.set("action", "Okay");
+      paramsLogin.set("username", "test1");
+      paramsLogin.set("password", "passW1");
+      callCommand(paramsLogin);
+      
+      // Check that it's in the session
+      String controlResult2 = callCommand(paramsControl);
+      assertTrue("username property not found in the session.", controlResult2.indexOf("test1") != -1);
+      
+      // Clear the session
+      BasicPropertyReader paramsRemove = new BasicPropertyReader();
+      paramsRemove.set("command", "Control");
+      paramsRemove.set("action", "RemoveSessionProperties");
+      callCommand(paramsRemove);
+      
+      // Check that it's no more in the session
+      String controlResult3 = callCommand(paramsControl);
+      assertTrue("username has not been cleared of the session.", controlResult3.indexOf("test1") == -1);
+   }
+
+   private String callCommand(PropertyReader params) throws Exception {
+      HTTPServiceCaller callControl = new HTTPServiceCaller(_target);
       HTTPCallRequest callRequest = new HTTPCallRequest(params);
       HTTPCallResult callResult = callControl.call(callRequest);
-      assertEquals("Incorrect status code returned.", 200, callResult.getStatusCode());
+      assertTrue("Incorrect status code returned.", callResult.getStatusCode() < 400);
+      String htmlResult = callResult.getString();
+      return htmlResult;
    }
 
    /**

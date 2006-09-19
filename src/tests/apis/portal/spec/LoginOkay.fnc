@@ -7,8 +7,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<description>Log a user in.</description>
 
 	<input>
-		<param name="inputexample" required="false" type="_text">
-			<description>Input example</description>
+		<param name="username" required="true" type="_text">
+			<description>the name of the user.</description>
+		</param>
+		<param name="password" required="true" type="_text">
+			<description>the password of the user.</description>
 		</param>
 	</input>
 	<output>
