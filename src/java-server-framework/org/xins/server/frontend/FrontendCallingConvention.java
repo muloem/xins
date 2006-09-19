@@ -460,6 +460,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          }
       }
 
+      _session.result(xinsResult.getErrorCode() == null);
+
       Element commandResult = null;
       String commandResultXML = null;
       if (_conditionalRedirectionMap.get(functionName) != null) {
@@ -535,7 +537,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       ElementBuilder dataSection = new ElementBuilder("data");
 
       // Put all the sessions in the XML
-      _session.result(xinsResult.getErrorCode() == null);
       Map sessionProperties = _session.getProperties();
       if (sessionProperties != null) {
          Iterator itSessionProperties = sessionProperties.entrySet().iterator();
@@ -852,27 +853,31 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       } else if ("RefreshCommandTemplateCache".equals(action)) {
          _templateCache.clear();
          String xsltLocation = null;
-         try {
-            Iterator itRealFunctions = _api.getFunctionList().iterator();
-            while (itRealFunctions.hasNext()) {
-               Function nextFunction = (Function) itRealFunctions.next();
-               String nextCommand = nextFunction.getName();
-               xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
+         Iterator itRealFunctions = _api.getFunctionList().iterator();
+         while (itRealFunctions.hasNext()) {
+            Function nextFunction = (Function) itRealFunctions.next();
+            String nextCommand = nextFunction.getName();
+            xsltLocation = _baseXSLTDir + nextCommand + ".xslt";
 
+            try {
                Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                _templateCache.put(xsltLocation, template);
+            } catch (TransformerConfigurationException tcex) {
+               // Ignore as if the functionName include the action, it won't match a XSLT file
             }
-            Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
-            while (itVirtualFunctions.hasNext()) {
-               Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
-               xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
-               if (nextFunction.getValue().equals("-")) {
+         }
+         Iterator itVirtualFunctions = _redirectionMap.entrySet().iterator();
+         while (itVirtualFunctions.hasNext()) {
+            Map.Entry nextFunction = (Map.Entry) itVirtualFunctions.next();
+            xsltLocation = _baseXSLTDir + nextFunction.getKey() + ".xslt";
+            if (nextFunction.getValue().equals("-")) {
+               try {
                   Templates template = _factory.newTemplates(new StreamSource(xsltLocation));
                   _templateCache.put(xsltLocation, template);
+               } catch (TransformerConfigurationException tcex) {
+                  // Ignore as if the functionName include the action, it won't match a XSLT file
                }
             }
-         } catch (TransformerConfigurationException tcex) {
-            Log.log_3701(tcex, xsltLocation);
          }
       }
       return new ControlResult(_api, _session, _redirectionMap);

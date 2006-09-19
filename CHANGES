@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Control command of the XINS FF returns HTML instead of XML.
   - Special commands of the XINS FF should just return OK.
   - Fixed bug for the ReadConfigFile action in the XINS FF.
+  - In the XINS FF, the session should be always notified of the result.
+  - Ignore the XSLT not found in the refresh command of the XINS FF.
 
 * Generation of the specdocs:
   - Improved layout of the generation of the runtime properties page.
