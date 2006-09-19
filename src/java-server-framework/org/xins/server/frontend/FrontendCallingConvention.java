@@ -355,7 +355,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          } else {
             functionName = "_NoOp";
          }
-         return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
+         return new FunctionRequest(functionName, PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
       }
 
       // Append the action to the function name
@@ -452,6 +452,12 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Control command
       if ("Control".equals(command)) {
          xinsResult = control(action);
+         
+         // Just execute the action
+         if (!TextUtils.isEmpty(action)) {
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            return;
+         }
       }
 
       Element commandResult = null;

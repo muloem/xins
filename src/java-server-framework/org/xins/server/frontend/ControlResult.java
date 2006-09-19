@@ -101,6 +101,10 @@ class ControlResult extends FunctionResult {
    static String getControlTemplate() {
       String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
           "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
+          "<xsl:output method=\"html\" indent=\"yes\" encoding=\"US-ASCII\"\n" +
+          "doctype-public=\"-//W3C//DTD XHTML 1.0 Strict//EN\"\n" +
+          "doctype-system=\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"\n" +
+          "omit-xml-declaration=\"yes\" />\n" +
           "<xsl:template match=\"commandresult\">\n" +
           "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n" +
             "<body>\n" +
