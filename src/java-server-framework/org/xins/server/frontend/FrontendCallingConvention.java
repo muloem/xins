@@ -252,7 +252,11 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
           InitializationException {
 
       // Get the base directory of the Style Sheet
-      _baseXSLTDir = runtimeProperties.get("templates." + _api.getName() + ".xinsff.source");
+      String templatesProperty = "templates." + _api.getName() + ".xinsff.source";
+      _baseXSLTDir = runtimeProperties.get(templatesProperty);
+      if (_baseXSLTDir == null) {
+         throw new MissingRequiredPropertyException(templatesProperty);
+      }
       Properties systemProps = System.getProperties();
       _baseXSLTDir = TextUtils.replace(_baseXSLTDir, systemProps, "${", "}");
       _baseXSLTDir = _baseXSLTDir.replace('\\', '/');
