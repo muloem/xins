@@ -6,6 +6,7 @@
  */
 package org.xins.tests.server.frontend;
 
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
+import org.xins.common.xml.ElementParser;
 import org.xins.logdoc.ExceptionUtils;
 
 import org.xins.tests.AllTests;
@@ -139,11 +141,7 @@ public class PortalAPITests extends TestCase {
       assertTrue("username property already in the session.", controlResult1.indexOf("username") == -1);
       
       // Add testProp to the session
-      BasicPropertyReader paramsLogin = new BasicPropertyReader();
-      paramsLogin.set("command", "Login");
-      paramsLogin.set("action", "Okay");
-      paramsLogin.set("username", "test1");
-      paramsLogin.set("password", "passW1");
+      BasicPropertyReader paramsLogin = createLoginParams();
       callCommand(paramsLogin);
       
       // Check that it's in the session
@@ -161,13 +159,57 @@ public class PortalAPITests extends TestCase {
       assertTrue("username has not been cleared of the session.", controlResult3.indexOf("test1") == -1);
    }
 
+   /*public void testSourceMode() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("mode", "source");
+      String xmlResult = callCommand(params);
+      ElementParser parser = new ElementParser();
+      Element result = parser.parse(new StringReader(xmlResult));
+      assertEquals("commandresult", result.getLocalName());
+      assertEquals(6, result.getChildElements().size());
+      assertEquals(1, result.getAttributeMap().size());
+   }*/
+
+   public void testTemplateMode() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("mode", "template");
+      String xmlResult = callCommand(params);
+      ElementParser parser = new ElementParser();
+      Element result = parser.parse(new StringReader(xmlResult));
+      assertEquals("stylesheet", result.getLocalName());
+   }
+
+   public void testInvalidRequest() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.remove("password");
+      params.set("mode", "source");
+      String xmlResult = callCommand(params);
+      ElementParser parser = new ElementParser();
+      Element result = parser.parse(new StringReader(xmlResult));
+      assertEquals("commandresult", result.getLocalName());
+      assertTrue(xmlResult.indexOf("<parameter name=\"error.type\">FieldError</parameter>") != -1);
+      Element error = result.getUniqueChildElement("data").getUniqueChildElement("errorlist").getUniqueChildElement("fielderror");
+      assertEquals("mand", error.getAttribute("type"));
+      assertEquals("password", error.getAttribute("field"));
+   }
+
    private String callCommand(PropertyReader params) throws Exception {
       HTTPServiceCaller callControl = new HTTPServiceCaller(_target);
       HTTPCallRequest callRequest = new HTTPCallRequest(params);
       HTTPCallResult callResult = callControl.call(callRequest);
-      assertTrue("Incorrect status code returned.", callResult.getStatusCode() < 400);
+      assertTrue("Incorrect status code returned: " + callResult.getStatusCode(),
+            callResult.getStatusCode() < 400);
       String htmlResult = callResult.getString();
       return htmlResult;
+   }
+
+   private BasicPropertyReader createLoginParams() {
+      BasicPropertyReader paramsLogin = new BasicPropertyReader();
+      paramsLogin.set("command", "Login");
+      paramsLogin.set("action", "Okay");
+      paramsLogin.set("username", "test1");
+      paramsLogin.set("password", "passW1");
+      return paramsLogin;
    }
 
    /**
