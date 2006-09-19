@@ -6,12 +6,17 @@
  */
 package org.xins.server.frontend;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
@@ -442,8 +447,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Display the XSLT
       if ("template".equalsIgnoreCase(mode)) {
-         byte[] xsltSource = getCommandXSLT(command);
-         OutputStream output = httpResponse.getOutputStream();
+         String xsltSource = getCommandXSLT(command);
+         Writer output = httpResponse.getWriter();
          output.write(xsltSource);
          output.close();
          return;
@@ -787,21 +792,23 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * @throws IOException
     *    if the XSLT cannot be found.
     */
-   private byte[] getCommandXSLT(String command) throws IOException {
+   private String getCommandXSLT(String command) throws IOException {
 
       String xsltLocation = _baseXSLTDir + command + ".xslt";
       //httpResponse.sendRedirect(xsltLocation);
       InputStream inputXSLT = new URL(xsltLocation).openStream();
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      byte[] buffer = new byte[1024];
+      BufferedReader input = new BufferedReader(new InputStreamReader(inputXSLT));
+      StringWriter output = new StringWriter();
+      char[] buffer = new char[1024];
       while (true) {
-         int length = inputXSLT.read(buffer);
+         int length = input.read(buffer);
          if (length == -1) break;
          output.write(buffer, 0, length);
       }
       inputXSLT.close();
+      input.close();
       output.close();
-      return output.toByteArray();
+      return output.toString();
    }
 
    /**
