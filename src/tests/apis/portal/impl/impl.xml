@@ -5,7 +5,7 @@
 	<bootstrap-properties>
 		<bootstrap-property name="xinsff.login.page">Login</bootstrap-property>
 		<bootstrap-property name="xinsff.default.command">DefaultCommand</bootstrap-property>
-		<bootstrap-property name="xinsff.unrestricted.pages"></bootstrap-property>
+		<bootstrap-property name="xinsff.unrestricted.pages">MainPage</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.Login">-</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.LoginOkay">MainPage</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.Logout">DefaultCommand</bootstrap-property>

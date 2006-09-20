@@ -159,16 +159,25 @@ public class PortalAPITests extends TestCase {
       assertTrue("username has not been cleared of the session.", controlResult3.indexOf("test1") == -1);
    }
 
-   /*public void testSourceMode() throws Exception {
+   public void testRedirection() throws Exception {
       BasicPropertyReader params = createLoginParams();
-      params.set("mode", "source");
-      String xmlResult = callCommand(params);
+      String result = callCommand(params);
+      assertEquals("", result);
+   }
+
+   public void testSourceMode() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      callCommand(params);
+      BasicPropertyReader params2 = new BasicPropertyReader();
+      params2.set("command", "MainPage");
+      params2.set("mode", "source");
+      String xmlResult = callCommand(params2);
       ElementParser parser = new ElementParser();
       Element result = parser.parse(new StringReader(xmlResult));
       assertEquals("commandresult", result.getLocalName());
-      assertEquals(6, result.getChildElements().size());
+      assertEquals(4, result.getChildElements("parameter").size());
       assertEquals(1, result.getAttributeMap().size());
-   }*/
+   }
 
    public void testTemplateMode() throws Exception {
       BasicPropertyReader params = createLoginParams();
