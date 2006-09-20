@@ -118,8 +118,6 @@ ${sf.file}</fail>
 		<xins api="portal" target="jar" projectdir="src/tests" />
 
 		<!-- TODO: Can these be combined? -->
-		<ant antfile="build/build.xml" dir="src/tests" target="jar-portal" />
-		<ant antfile="build/build.xml" dir="src/tests" target="war-portal" />
 		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
 		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />

@@ -7,7 +7,7 @@
 	<taskdef name="calltargets" classname="org.xins.common.ant.CallTargetsTask" />
 	<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" />
 	<macrodef name="xins">
-		<attribute name="api" default="" />
+		<attribute name="api" />
 		<attribute name="target" />
 		<attribute name="projectdir" default="${basedir}" />
 		<sequential>
@@ -19,12 +19,13 @@
 				<property name="xins_home" value="${xins.home}" />
 				<property name="user.dir" value="@{projectdir}" />
 			</ant>
-			<condition property="xins.target" value="@{target}">
+			<!-- does not work condition property="xins.target" value="@{target}">
 				<equals arg1="@{api}" arg2="" />
 			</condition>
 			<property name="xins.target" value="@{target}-@{api}" />
+			<echo message="api: @{api} !! target:@{target} !! projectdir:@{projectdir} !! fulltarget:${xins.target}" /-->
 			<ant antfile="@{projectdir}/build/build.xml"
-			target="${xins.target}">
+			target="@{target}-@{api}">
 				<property name="user.dir" value="@{projectdir}" />
 			</ant>
 		</sequential>
