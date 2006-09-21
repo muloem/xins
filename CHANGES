@@ -38,6 +38,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Added antlib.xml to the xins-common.jar.
   - Added test to the xins target.
   - Stored classpath used for the tests in a reference.
+  - Renamed netbeans-debug target to test-netbeans-debug and adapted it to
+    execute tests in NetBeans.
 
 * Tests:
   - Added new Portal API to test the XINS Frontend Framework.
@@ -2879,6 +2881,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     been deprecated in favour of newer ones that work with CallConfig objects.
     Greatly improved the documentation in the ServiceCaller class [work in
     progress].
+
   - Added UnsupportedProtocolException in org.xins.common.service package.
     Documented in ServiceCaller class that this exception should be thrown by
     ServiceCaller subclasses if a TargetDescriptor with an unsupported
