@@ -23,7 +23,6 @@
 				<equals arg1="@{api}" arg2="" />
 			</condition>
 			<property name="xins.target.@{target}-@{api}" value="@{target}-@{api}" />
-			<echo message="api: @{api} !! target:@{target} !! projectdir:@{projectdir} !! fulltarget:${xins.target.@{target}-@{api}}" />
 			<ant antfile="@{projectdir}/build/build.xml"
 			target="${xins.target.@{target}-@{api}}">
 				<property name="user.dir" value="@{projectdir}" />
