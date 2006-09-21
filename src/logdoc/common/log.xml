@@ -192,7 +192,7 @@
 
 	<group id="collections" name="Generic collection classes">
 		<entry id="1350" level="WARNING">
-			<description>A property value has cahnged.</description>
+			<description>A property value has changed.</description>
 			<param name="key" type="text" nullable="false" />
 			<param name="oldValue" type="text" nullable="false" />
 			<param name="newValue" type="text" />
