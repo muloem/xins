@@ -63,13 +63,17 @@ public class StartServer extends TestCase {
       int port = AllTests.port();
 
       // Start the web server
+      // Start allinone API
+      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
+      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       AllTests.HTTP_SERVER = startServer("allinone", AllTests.port());
+      
+      // Start portal API
+      System.setProperty("org.xins.server.config", "");
       startServer("portal", port + 1);
    }
 
    public static HTTPServletHandler startServer(String apiName, int port) throws Exception {
-      File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
-      System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       String warLocation = "src/tests/build/webapps/" + apiName + "/" + apiName + ".war".replace('/', File.separatorChar);
       File warFile = new File(System.getProperty("user.dir"), warLocation);
 
