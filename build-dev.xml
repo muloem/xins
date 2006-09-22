@@ -137,6 +137,7 @@ ${sf.file}</fail>
 			<pathelement location="src/tests/build/classes-api/portal" />
 			<pathelement location="src/tests/build/classes-types/portal" />
 			<pathelement location="src/tests/myproject-capi.jar" />
+			<pathelement location="${ant.home}/lib/ant.jar" />
 			<fileset dir="lib" includes="*.jar" />
 		</path>
 
