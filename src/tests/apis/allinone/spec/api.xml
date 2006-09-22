@@ -16,6 +16,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="Logdoc"          />
 	<function name="ParamCombo"      />
 	<function name="ParamComboNotAll"/>
+	<function name="ParamComboValue" />
 	<function name="ResultCode"      />
 	<function name="RuntimeProps"    />
 	<function name="SimpleOutput"    />
