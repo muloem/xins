@@ -24,6 +24,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="passportNumber" required="false" type="_text">
 			<description>The passport number of the person.</description>
 		</param>
+		<param name="passportValidityDate" required="false" type="_int32">
+			<description>The expiration year of the passport.</description>
+		</param>
 
 		<!-- If the salutation is Madam, the maiden name is required -->
 		<param-combo type="inclusive-or">
@@ -37,12 +40,12 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<param-ref name="nationality" />
 		</param-combo>
 
-		<!-- Passport number and nationality are required if country is Other. If country is not Other, the nationality and the password should not be set. -->
-		<!--param-combo type="all-or-none">
+		<!-- Passport number and validity date are required if country is Other. If country is not Other, the passport number and the validity date should not be set. -->
+		<param-combo type="all-or-none">
 			<param-ref name="country" value="Other" />
-			<param-ref name="nationality" />
 			<param-ref name="passportNumber" />
-		</param-combo-->
+			<param-ref name="passportValidityDate" />
+		</param-combo>
 		
 	</input>
 	<output>

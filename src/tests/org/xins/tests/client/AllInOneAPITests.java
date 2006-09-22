@@ -748,7 +748,7 @@ public class AllInOneAPITests extends TestCase {
 
       // Test 'inclusive-or'
       try {
-         _capi.callParamComboValue(Salutation.MADAM, null, "Lee", "France", "French", null);
+         _capi.callParamComboValue(Salutation.MADAM, null, "Lee", "France", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
@@ -776,7 +776,7 @@ public class AllInOneAPITests extends TestCase {
 
       // Test 'exclusive-or'
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Canada", "French", null);
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Canada", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
@@ -800,7 +800,38 @@ public class AllInOneAPITests extends TestCase {
       }
 
       // Test 'exclusive-or' which should work
-      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", "Canada", null, null);
+      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", "Canada", null, null, null);
+   }
+
+   public void testParamComboValueAllOrNone() throws Exception {
+
+      // Test 'all-or-none'
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Other", "French", null, new Integer(2007));
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         assertNotNull(exception.getDataElement());
+         DataElement dataSection = exception.getDataElement();
+         Iterator itParamCombos = dataSection.getChildElements().iterator();
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            assertEquals("param-combo", paramCombo1.getLocalName());
+            assertEquals("all-or-none", paramCombo1.getAttribute("type"));
+         } else {
+            fail("No param combo element found.");
+         }
+         if (itParamCombos.hasNext()) {
+            DataElement paramCombo2 = (DataElement)itParamCombos.next();
+            fail("Unexpected param combo element of type '" +
+                paramCombo2.getAttribute("type") + "' was found.");
+         }
+      }
+
+      // Test 'all-or-none' which should work
+      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", "Other", "English", "123ID558", new Integer(2010));
    }
 
    /**
