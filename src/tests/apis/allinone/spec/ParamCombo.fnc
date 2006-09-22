@@ -25,7 +25,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<description>The city where the person is borned.</description>
 		</param>
 		<param name="age" required="false" type="Age">
-			<description>An example of input for a int8 type with a minimum and maximum.</description>
+			<description>The age of the person.</description>
 		</param>
 		<!-- One and only one of the three parameters must be filled -->
 		<param-combo type="exclusive-or">
