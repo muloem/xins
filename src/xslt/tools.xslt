@@ -32,10 +32,10 @@
 			<taskdef name="java2html" classname="com.java2html.Java2HTMLTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="build/j2h/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/j2h/${{api.name}}" />
 			<java2html
 			title="Source X-ref for ${{api.name}}"
-			destination="build/j2h/${{api.name}}"
+			destination="{$project_home}/build/j2h/${{api.name}}"
 			footer="no">
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java" />
@@ -43,10 +43,10 @@
 			</java2html>
 			<!--copy
 			file="{$xins_home}/src/j2h/front.html"
-			todir="build/j2h/${{api.name}}"
+			todir="{$project_home}/build/j2h/${{api.name}}"
 			overwrite="true" /-->
 			<copy file="{$xins_home}/src/css/j2h/style.css"
-			tofile="build/j2h/${{api.name}}/stylesheet.css"
+			tofile="{$project_home}/build/j2h/${{api.name}}/stylesheet.css"
 			overwrite="true" />
 		</target>
 
@@ -55,10 +55,10 @@
 				<classpath refid="tools-cp" />
 			</taskdef>
 			<property name="pmd.rule" value="basic" />
-			<mkdir dir="build/pmd/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/pmd/${{api.name}}" />
 			<pmd>
 				<ruleset>${{pmd.rule}}</ruleset>
-				<formatter type="html" toFile="build/pmd/${{api.name}}/index.html" linkPrefix="../../j2h/${{api.name}}/"/>
+				<formatter type="html" toFile="{$project_home}/build/pmd/${{api.name}}/index.html" linkPrefix="../../j2h/${{api.name}}/"/>
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java"/>
 				</fileset>
@@ -69,20 +69,20 @@
 			<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="build/checkstyle/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/checkstyle/${{api.name}}" />
 			<checkstyle config="{$xins_home}/src/config/checkstyle/config.xml" failOnViolation="false">
-				<formatter type="xml" tofile="build/checkstyle/${{api.name}}/results.xml"/>
+				<formatter type="xml" tofile="{$project_home}/build/checkstyle/${{api.name}}/results.xml"/>
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java"/>
 				</fileset>
 			</checkstyle>
 			<xslt
-			in="build/checkstyle/${{api.name}}/results.xml"
-			out="build/checkstyle/${{api.name}}/index.html"
+			in="{$project_home}/build/checkstyle/${{api.name}}/results.xml"
+			out="{$project_home}/build/checkstyle/${{api.name}}/index.html"
 			style="{$xins_home}/src/xslt/checkstyle/index.xslt" />
 			<copy
 			file="{$xins_home}/src/css/checkstyle/style.css"
-			tofile="build/checkstyle/${{api.name}}/stylesheet.css" />
+			tofile="{$project_home}/build/checkstyle/${{api.name}}/stylesheet.css" />
 		</target>
 
 		<target name="coverage" depends="-init-tools" description="Generate the unit tests code coverage report for an API.">
@@ -92,25 +92,25 @@
 			<taskdef name="cobertura-report" classname="net.sourceforge.cobertura.ant.ReportTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<delete dir="build/coverage/${{api.name}}" />
-			<mkdir dir="build/coverage/${{api.name}}" />
+			<delete dir="{$project_home}/build/coverage/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/coverage/${{api.name}}" />
 			<antcall target="classes-api-${{api.name}}" />
-			<cobertura-instrument todir="build/coverage/${{api.name}}/instrumented-classes">
-				<fileset dir="build/classes-api/${{api.name}}" includes="**/*.class" />
+			<cobertura-instrument todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes">
+				<fileset dir="{$project_home}/build/classes-api/${{api.name}}" includes="**/*.class" />
 			</cobertura-instrument>
-			<copy todir="build/coverage/${{api.name}}/instrumented-classes" overwrite="false">
-				<fileset dir="build/classes-api/${{api.name}}" includes="**/*.class" />
+			<copy todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" overwrite="false">
+				<fileset dir="{$project_home}/build/classes-api/${{api.name}}" includes="**/*.class" />
 			</copy>
 			<antcall target="war-${{api.name}}">
-				<param name="classes.api.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
+				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
 			<antcall target="test-${{api.name}}">
 				<param name="test.start.server" value="true" />
-				<param name="classes.api.dir" value="build/coverage/${{api.name}}/instrumented-classes" />
+				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
-			<cobertura-report format="html"	destdir="build/coverage/${{api.name}}"> <!-- datafile="build/coverage/${{api.name}}/cobertura.ser" -->
+			<cobertura-report format="html"	destdir="{$project_home}/build/coverage/${{api.name}}"> <!-- datafile="{$project_home}/build/coverage/${{api.name}}/cobertura.ser" -->
 				<fileset dir="${{api.source.dir}}" includes="**/*.java" />
-				<fileset dir="build/java-fundament/${{api.name}}" includes="**/*.java" />
+				<fileset dir="{$project_home}/build/java-fundament/${{api.name}}" includes="**/*.java" />
 			</cobertura-report>
 		</target>
 
@@ -118,12 +118,12 @@
 			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="build/findbugs/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/findbugs/${{api.name}}" />
 			<findbugs home="${{findbugs.home}}"
 			output="text"
-			outputFile="build/findbugs/${{api.name}}/${{api.name}}-fb.txt" >
+			outputFile="{$project_home}/build/findbugs/${{api.name}}/${{api.name}}-fb.txt" >
 				<sourcePath path="${{api.source.dir}}" />
-				<class location="build/classes-api/${{api.name}}" />
+				<class location="{$project_home}/build/classes-api/${{api.name}}" />
 				<auxClasspath>
 					<path refid="xins.classpath" />
 				</auxClasspath>
@@ -131,21 +131,21 @@
 		</target>
 
 		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generate the JDepend report for an API.">
-			<mkdir dir="build/jdepend/${{api.name}}" />
-			<jdepend classpathref="xins.classpath" format="xml" outputfile="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
+			<mkdir dir="{$project_home}/build/jdepend/${{api.name}}" />
+			<jdepend classpathref="xins.classpath" format="xml" outputfile="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
 				<classespath>
-					<pathelement location="build/classes-api/${{api.name}}"/>
+					<pathelement location="{$project_home}/build/classes-api/${{api.name}}"/>
 				</classespath>
 			</jdepend>
-			<xslt in="build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
-			out="build/jdepend/${{api.name}}/index.html"
+			<xslt in="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
+			out="{$project_home}/build/jdepend/${{api.name}}/index.html"
 			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
 
 		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report an API.">
-			<mkdir dir="build/cvschangelog/${{api.name}}" />
-			<cvschangelog dir="${{api.source.dir}}/.." destfile="build/cvschangelog/${{api.name}}/changelog.xml" />
-			<xslt in="build/cvschangelog/${{api.name}}/changelog.xml"
+			<mkdir dir="{$project_home}/build/cvschangelog/${{api.name}}" />
+			<cvschangelog dir="${{api.source.dir}}/.." destfile="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml" />
+			<xslt in="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml"
 			out="index.html"
 			style="${{ant.home}}/etc/changelog.xsl">
 				<param name="title" expression="Change Log for ${{api.name}} API"/>
@@ -155,10 +155,10 @@
 		</target>
 
 		<target name="jmeter" depends="-init-tools" description="Generate JMeter tests from the function examples.">
-			<mkdir dir="build/jmeter/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/jmeter/${{api.name}}" />
 			<xslt 
 			in="apis/${{api.name}}/spec/api.xml"
-			out="build/jmeter/${{api.name}}.jmx"
+			out="{$project_home}/build/jmeter/${{api.name}}.jmx"
 			style="{$xins_home}/src/tools/jmeter/${{api.name}}/api_to_jmx.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
@@ -167,7 +167,7 @@
 
 		<target name="run-jmeter" depends="-init-tools" description="Execute some JMeter tests.">
 			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
-			<property name="jmeter.test" value="build/jmeter/${{api.name}}/${{api.name}}" />
+			<property name="jmeter.test" value="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}" />
 			<jmeter jmeterhome="${{jmeter.home}}"
 			testplan="${{jmeter.test}}.jmx"
 			resultlog="${{jmeter.test}}.jlt">
@@ -177,7 +177,7 @@
 			</jmeter>
 			<xslt force="true"
 			in="${{jmeter.test}}.jlt"
-			out="build/jmeter/${{api.name}}/index.html"
+			out="{$project_home}/build/jmeter/${{api.name}}/index.html"
 			style="${{jmeter.home}}/extras/jmeter-results-detail-report.xsl">
 			</xslt>
 		</target>
@@ -196,10 +196,10 @@
 
 		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files.">
 			<!-- Create destination directories -->
-			<mkdir dir="build/java-fundament/${{api.name}}" />
-			<mkdir dir="build/java-types/${{api.name}}" />
-			<mkdir dir="build/classes-api/${{api.name}}" />
-			<mkdir dir="build/classes-types/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/java-fundament/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/java-types/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/classes-api/${{api.name}}" />
+			<mkdir dir="{$project_home}/build/classes-types/${{api.name}}" />
 			
 			<!-- Copy the build file for the API -->
 			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml" 

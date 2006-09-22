@@ -35,6 +35,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Changed generated Ant build files to use <xslt/> instead of the synonym
     <style/>, since the latter is considered deprecated as of Ant 1.7.0.
   - Improved error message if the xins-project.xml file is not found.
+  - Full path is used to point to the build directory.
 
 * Build- and release-process:
   - Added antlib.xml to the xins-common.jar.

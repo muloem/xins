@@ -729,13 +729,13 @@ APIs in this project are:
 				<xsl:if test="$impl_node/logdoc">
 					<xsl:variable name="javaDestFileDir" select="concat($project_home, '/build/java-fundament/', $api, $implName2, '/', $packageAsDir)" />
 					<echo message="Generating the logdoc for {$api}{$implName2}" />
-					<mkdir dir="build/logdoc/{$api}{$implName2}" />
+					<mkdir dir="{$project_home}/build/logdoc/{$api}{$implName2}" />
 					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
 						<xmlcatalog refid="all-dtds" />
 					</xmlvalidate>
 					<xslt
 					in="{$impl_dir}/log.xml"
-					out="build/logdoc/{$api}{$implName2}/build.xml"
+					out="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml"
 					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 						<xmlcatalog refid="all-dtds" />
 						<param name="xins_home"       expression="{$xins_home}" />
@@ -745,8 +745,8 @@ APIs in this project are:
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
 					</xslt>
-					<copy file="{$xins_home}/src/css/logdoc/style.css" todir="build/specdocs/{$api}/logdoc{$implName2}" />
-					<ant dir="build/logdoc/{$api}{$implName2}" target="html" inheritall="false" />
+					<copy file="{$xins_home}/src/css/logdoc/style.css" todir="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
+					<ant dir="{$project_home}/build/logdoc/{$api}{$implName2}" target="html" inheritall="false" />
 				</xsl:if>
 			</xsl:for-each>
 		</target>
@@ -1101,10 +1101,10 @@ APIs in this project are:
 				<!-- Generate the logdoc java file is needed -->
 				<xsl:if test="$api_node/impl-java/logdoc">
 					<echo message="Generating the logdoc for {$api}" />
-					<mkdir dir="build/logdoc/{$api}" />
+					<mkdir dir="{$project_home}/build/logdoc/{$api}" />
 					<xslt
 					in="{$project_home}/src/logdoc/{$api}/log.xml"
-					out="build/logdoc/{$api}/build.xml"
+					out="{$project_home}/build/logdoc/{$api}/build.xml"
 					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt"
 					reloadstylesheet="${{reload.stylesheet}}">
 						<xmlcatalog refid="all-dtds" />
@@ -1116,7 +1116,7 @@ APIs in this project are:
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
 					</xslt>
-					<ant antfile="build/logdoc/{$api}/build.xml" target="java" />
+					<ant antfile="{$project_home}/build/logdoc/{$api}/build.xml" target="java" />
 				</xsl:if>
 				<xsl:if test="local-name() = 'impl'">
 					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
@@ -1127,14 +1127,14 @@ APIs in this project are:
 					</xmlvalidate>
 					<xsl:if test="$impl_node/logdoc">
 						<echo message="Generating the logdoc for {$api}{$implName2}" />
-						<mkdir dir="build/logdoc/{$api}{$implName2}" />
+						<mkdir dir="{$project_home}/build/logdoc/{$api}{$implName2}" />
 						<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
 							<xmlcatalog refid="all-dtds" />
 						</xmlvalidate>
 						<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
 						<xslt
 						in="{$impl_dir}/log.xml"
-						out="build/logdoc/{$api}{$implName2}/build.xml"
+						out="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml"
 						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 							<xmlcatalog refid="all-dtds" />
 							<param name="xins_home"       expression="{$xins_home}" />
@@ -1144,7 +1144,7 @@ APIs in this project are:
 							<param name="java_destdir"    expression="{$javaDestFileDir}" />
 							<param name="package_name"    expression="{$package}" />
 						</xslt>
-						<ant antfile="build/logdoc/{$api}{$implName2}/build.xml" target="java">
+						<ant antfile="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml" target="java">
 							<property name="accesslevel" value="{$accesslevel}" />
 						</ant>
 					</xsl:if>
@@ -1181,19 +1181,19 @@ APIs in this project are:
 			</target>
 
 			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version" description="Creates the WAR for the '{$api}{$implName2}' API">
-				<mkdir dir="build/webapps/{$api}{$implName2}" />
+				<mkdir dir="{$project_home}/build/webapps/{$api}{$implName2}" />
 				<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 				<tstamp>
 					<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
 				</tstamp>
 				<hostname />
-				<delete file="build/webapps/{$api}{$implName2}/web.xml" />
+				<delete file="{$project_home}/build/webapps/{$api}{$implName2}/web.xml" />
 				<xmlvalidate file="{$api_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
 				<xslt
 				in="{$api_file}"
-				out="build/webapps/{$api}{$implName2}/web.xml"
+				out="{$project_home}/build/webapps/{$api}{$implName2}/web.xml"
 				style="{$xins_home}/src/xslt/webapp/api_to_webxml.xslt">
 					<xmlcatalog refid="all-dtds" />
 					<param name="xins_version" expression="{$xins_version}"  />
@@ -1205,16 +1205,16 @@ APIs in this project are:
 					<param name="hostname"     expression="${{hostname}}"    />
 					<param name="timestamp"    expression="${{timestamp}}"   />
 				</xslt>
-				<fixcrlf srcdir="build/webapps/{$api}{$implName2}" includes="web.xml" eol="unix" />
-				<manifest file="build/webapps/{$api}{$implName2}/MANIFEST.MF">
+				<fixcrlf srcdir="{$project_home}/build/webapps/{$api}{$implName2}" includes="web.xml" eol="unix" />
+				<manifest file="{$project_home}/build/webapps/{$api}{$implName2}/MANIFEST.MF">
 					<attribute name="XINS-Version" value="{$xins_version}" />
 					<attribute name="API-Version" value="${{api.version}}" />
 				</manifest>
 				<property name="classes.api.dir" value="{$classesDestDir}" />
 				<war
-					webxml="build/webapps/{$api}{$implName2}/web.xml"
-					destfile="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war"
-					manifest="build/webapps/{$api}{$implName2}/MANIFEST.MF"
+					webxml="{$project_home}/build/webapps/{$api}{$implName2}/web.xml"
+					destfile="{$project_home}/build/webapps/{$api}{$implName2}/{$api}{$implName2}.war"
+					manifest="{$project_home}/build/webapps/{$api}{$implName2}/MANIFEST.MF"
 					duplicate="fail">
 					<lib dir="{$xins_home}/build" includes="logdoc.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-common.jar" />
@@ -1243,7 +1243,7 @@ APIs in this project are:
 						</xsl:if>
 					</xsl:for-each>
 				</war>
-				<checksum file="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
+				<checksum file="{$project_home}/build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
 				<echo message="Build time: ${{timestamp}}" />
 			</target>
@@ -1255,13 +1255,16 @@ APIs in this project are:
 							fork="true">
 					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
 					<jvmarg value="-Dcom.sun.management.jmxremote" />
-					<arg path="build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" />
+					<jvmarg value="-Dcom.sun.management.jmxremote.port=1090"/>
+					<jvmarg value="-Dcom.sun.management.jmxremote.authenticate=false"/>
+					<jvmarg value="-Dcom.sun.management.jmxremote.ssl=false"/>
+					<arg path="{$project_home}/build/webapps/{$api}{$implName2}/{$api}{$implName2}.war" />
 					<arg value="${{servlet.port}}" />
 					<classpath>
 						<path refid="xins.classpath" />
-						<path location="build/classes-api/{$api}{$implName2}" />
+						<path location="{$project_home}/build/classes-api/{$api}{$implName2}" />
 						<xsl:if test="$apiHasTypes">
-							<path location="build/classes-types/{$api}" />
+							<path location="{$project_home}/build/classes-types/{$api}" />
 						</xsl:if>
 					</classpath>
 				</java>
@@ -1269,9 +1272,9 @@ APIs in this project are:
 
 			<target name="javadoc-api-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}" description="Generates Javadoc API docs for the '{$api}{$implName2}' API">
 				<property file="{$xins_home}/.version.properties" />
-				<mkdir dir="build/javadoc-api/{$api}{$implName2}" />
+				<mkdir dir="{$project_home}/build/javadoc-api/{$api}{$implName2}" />
 				<javadoc
-				destdir="build/javadoc-api/{$api}{$implName2}"
+				destdir="{$project_home}/build/javadoc-api/{$api}{$implName2}"
 				version="yes"
 				use="yes"
 				author="yes"
@@ -1281,7 +1284,7 @@ APIs in this project are:
 					<packageset dir="{$javaDestDir}" />
 					<packageset dir="{$javaImplDir}" />
 					<xsl:if test="$apiHasTypes">
-						<packageset dir="build/java-types/{$api}" />
+						<packageset dir="{$project_home}/build/java-types/{$api}" />
 					</xsl:if>
 					<link
 					href="http://www.xins.org/javadoc/${{version.major}}.${{version.middle}}.${{version.minor}}${{version.build}}/"
@@ -1310,7 +1313,7 @@ APIs in this project are:
 				</javadoc>
 				<copy
 				file="{$xins_home}/src/css/javadoc/style.css"
-				tofile="build/javadoc-api/{$api}/stylesheet.css"
+				tofile="{$project_home}/build/javadoc-api/{$api}/stylesheet.css"
 				overwrite="true" />
 			</target>
 
@@ -1377,9 +1380,9 @@ APIs in this project are:
 
 				<available property="test.generated" file="apis/{$api}/test" type="dir" />
 				<antcall target="generatetests-{$api}" />
-				<mkdir dir="build/classes-tests/{$api}" />
+				<mkdir dir="{$project_home}/build/classes-tests/{$api}" />
 				<javac
-				destdir="build/classes-tests/{$api}"
+				destdir="{$project_home}/build/classes-tests/{$api}"
 				debug="true"
 				deprecation="${{build.deprecation}}"
 				source="${{build.java.version}}"
@@ -1387,45 +1390,45 @@ APIs in this project are:
 					<src path="apis/{$api}/test" />
 					<classpath>
 						<path refid="xins.classpath" />
-						<pathelement path="build/capis/{$api}-capi.jar" />
+						<pathelement path="{$project_home}/build/capis/{$api}-capi.jar" />
 					</classpath>
 				</javac>
-				<mkdir dir="build/testresults/xml" />
+				<mkdir dir="{$project_home}/build/testresults/xml" />
 				<property name="test.environment" value="" />
 				<property name="test.start.server" value="false" />
 				<property name="org.xins.server.config" value="" />
 				<property name="servlet.port" value="8080" />
-				<property name="classes.api.dir" value="build/classes-api/{$api}" />
+				<property name="classes.api.dir" value="{$project_home}/build/classes-api/{$api}" />
 				<junit fork="true" showoutput="true" dir="{$project_home}" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
 					<sysproperty key="test.environment" value="${{test.environment}}" />
 					<sysproperty key="test.start.server" value="${{test.start.server}}" />
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
-					<!--sysproperty key="net.sourceforge.cobertura.datafile"	file="build/coverage/{$api}/cobertura.ser" /-->
+					<!--sysproperty key="net.sourceforge.cobertura.datafile"	file="{$project_home}/build/coverage/{$api}/cobertura.ser" /-->
           <formatter usefile="false" type="brief"/>
 					<formatter type="xml" />
-					<test name="{$packageTests}.APITests" todir="build/testresults/xml" outfile="testresults-{$api}"/>
+					<test name="{$packageTests}.APITests" todir="{$project_home}/build/testresults/xml" outfile="testresults-{$api}"/>
 					<classpath>
 						<path refid="xins.classpath" />
-						<pathelement path="build/capis/{$api}-capi.jar" />
-						<pathelement path="build/classes-tests/{$api}" />
+						<pathelement path="{$project_home}/build/capis/{$api}-capi.jar" />
+						<pathelement path="{$project_home}/build/classes-tests/{$api}" />
 						<pathelement path="${{classes.api.dir}}" />
-						<pathelement path="build/classes-types/{$api}" />
+						<pathelement path="{$project_home}/build/classes-types/{$api}" />
 						<xsl:if test="impl">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						</xsl:if>
 					</classpath>
 				</junit>
-				<mkdir dir="build/testresults/html" />
+				<mkdir dir="{$project_home}/build/testresults/html" />
 				<xslt
-				in="build/testresults/xml/testresults-{$api}.xml"
-				out="build/testresults/html/testresults-{$api}.html"
+				in="{$project_home}/build/testresults/xml/testresults-{$api}.xml"
+				out="{$project_home}/build/testresults/html/testresults-{$api}.html"
 				style="{$xins_home}/src/xslt/tests/index.xslt" />
 				<copy
 				file="{$xins_home}/src/css/tests/stylesheet.css"
-				todir="build/testresults/html" />
+				todir="{$project_home}/build/testresults/html" />
 			</target>
 
 			<target name="generatetests-{$api}" depends="-prepare-classes" unless="test.generated">
@@ -1613,19 +1616,19 @@ APIs in this project are:
 				<xsl:text>-stubs-capi-</xsl:text>
 				<xsl:value-of select="$api" />
 			</xsl:attribute>
-			<mkdir dir="build/javadoc-capi/{$api}" />
+			<mkdir dir="{$project_home}/build/javadoc-capi/{$api}" />
 			<javadoc
-			sourcepath="build/java-capi/{$api}"
-			destdir="build/javadoc-capi/{$api}"
+			sourcepath="{$project_home}/build/java-capi/{$api}"
+			destdir="{$project_home}/build/javadoc-capi/{$api}"
 			version="yes"
 			use="yes"
 			author="yes"
 			access="public"
 			windowtitle="Call interface for {$api} API"
 			doctitle="Call interface for {$api} API">
-				<packageset dir="build/java-capi/{$api}" />
+				<packageset dir="{$project_home}/build/java-capi/{$api}" />
 				<xsl:if test="$apiHasTypes">
-					<packageset dir="build/java-types/{$api}" />
+					<packageset dir="{$project_home}/build/java-types/{$api}" />
 				</xsl:if>
 				<link
 				href="http://www.xins.org/javadoc/{$xins_version}/"
@@ -1649,7 +1652,7 @@ APIs in this project are:
 			</javadoc>
 			<copy
 			file="{$xins_home}/src/css/javadoc/style.css"
-			tofile="build/javadoc-capi/{$api}/stylesheet.css"
+			tofile="{$project_home}/build/javadoc-capi/{$api}/stylesheet.css"
 			overwrite="true" />
 		</target>
 
@@ -1679,28 +1682,28 @@ APIs in this project are:
 		</target>
 
 		<target name="clean-{$api}" description="Deletes everything for the '{$api}' API stubs.">
-			<delete dir="build/capis/{$api}-capi.jar" />
-			<delete dir="build/classes-api/{$api}" />
-			<delete dir="build/classes-capi/{$api}" />
-			<delete dir="build/classes-types/{$api}" />
-			<delete dir="build/java-capi/{$api}" />
-			<delete dir="build/java-combined/{$api}" />
-			<delete dir="build/java-fundament/{$api}" />
-			<delete dir="build/java-types/{$api}" />
-			<delete dir="build/javadoc-api/{$api}" />
-			<delete dir="build/javadoc-capi/{$api}" />
-			<delete dir="build/logdoc/{$api}" />
-			<delete dir="build/specdocs/{$api}" />
-			<delete dir="build/types/{$api}" />
-			<delete dir="build/webapps/{$api}" />
+			<delete dir="{$project_home}/build/capis/{$api}-capi.jar" />
+			<delete dir="{$project_home}/build/classes-api/{$api}" />
+			<delete dir="{$project_home}/build/classes-capi/{$api}" />
+			<delete dir="{$project_home}/build/classes-types/{$api}" />
+			<delete dir="{$project_home}/build/java-capi/{$api}" />
+			<delete dir="{$project_home}/build/java-combined/{$api}" />
+			<delete dir="{$project_home}/build/java-fundament/{$api}" />
+			<delete dir="{$project_home}/build/java-types/{$api}" />
+			<delete dir="{$project_home}/build/javadoc-api/{$api}" />
+			<delete dir="{$project_home}/build/javadoc-capi/{$api}" />
+			<delete dir="{$project_home}/build/logdoc/{$api}" />
+			<delete dir="{$project_home}/build/specdocs/{$api}" />
+			<delete dir="{$project_home}/build/types/{$api}" />
+			<delete dir="{$project_home}/build/webapps/{$api}" />
 			<xsl:for-each select="impl/@name">
 				<xsl:variable name="impl" select="." />
-				<delete dir="build/classes-api/{$api}-{$impl}" />
-				<delete dir="build/java-fundament/{$api}-{$impl}" />
-				<delete dir="build/javadoc-api/{$api}-{$impl}" />
-				<delete dir="build/logdoc/{$api}-{$impl}" />
-				<delete dir="build/webapps/{$api}-{$impl}" />
-				<delete dir="build/logdoc/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/classes-api/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/java-fundament/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/javadoc-api/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/logdoc/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/webapps/{$api}-{$impl}" />
+				<delete dir="{$project_home}/build/logdoc/{$api}-{$impl}" />
 			</xsl:for-each>
 		</target>
 
