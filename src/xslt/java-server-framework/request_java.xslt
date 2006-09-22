@@ -209,7 +209,7 @@
 		</xsl:variable>
 
 		<!-- If the object is not required, write a isSetType() method -->
-		<xsl:if test="not(@required = 'true')">
+		<xsl:if test="not(@required = 'true') and not(@default)">
 			<xsl:text><![CDATA[
 
       /**
@@ -300,7 +300,7 @@
       throws org.xins.server.ParameterNotInitializedException </xsl:text>
 		</xsl:if>
 		<xsl:text>{</xsl:text>
-		<xsl:if test="not(@required = 'true')">
+		<xsl:if test="not(@required = 'true') and not(@default)">
 			<xsl:text>
          if (!isSet</xsl:text>
 			<xsl:value-of select="$hungarianName" />
@@ -317,13 +317,22 @@
 		<xsl:text>
          return </xsl:text>
 		<xsl:choose>
-			<xsl:when test="name()='attribute'">
+			<xsl:when test="name()='attribute' and not(@default)">
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'true'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="type"     select="@type"     />
 					<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="name()='attribute' and @default">
+				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="required" select="'true'" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;) == null ? &quot;', @default, '&quot; :_element.getAttribute(&quot;', @name, '&quot;)')" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -756,7 +765,7 @@
 				</xsl:call-template>
 			</xsl:variable>
 
-			<xsl:if test="not(@required = 'true')">
+			<xsl:if test="not(@required = 'true') and not(@default)">
 				<xsl:text>((!isSet</xsl:text>
 				<xsl:value-of select="$javaMethodSuffix" />
 				<xsl:text>() &amp;&amp; !otherRequest.isSet</xsl:text>

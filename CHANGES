@@ -22,6 +22,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Simplified Log4J MBeans registration.
   - JMX MBean for the API contains the name of the API in the ObjectName.
 
+* Generation of server-side Java code:
+  - isSet method is not generated if the parameter has a default value.
+
 * Generation of the specdocs:
   - Improved layout of the generation of the runtime properties page.
 
