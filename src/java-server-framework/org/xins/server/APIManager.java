@@ -371,7 +371,7 @@ public final class APIManager implements APIManagerMBean {
          mBeanServer = javax.management.MBeanServerFactory.createMBeanServer();
       }
       APIManager mBean = new APIManager(api);
-      javax.management.ObjectName objectName = new javax.management.ObjectName("org.xins.server:type=APIManager");
+      javax.management.ObjectName objectName = new javax.management.ObjectName("org.xins.server.api." + api.getName() + ":type=APIManager");
 
       mBeanServer.registerMBean(mBean, objectName);
 
@@ -379,20 +379,11 @@ public final class APIManager implements APIManagerMBean {
 
       // Create and Register the top level Log4J MBean
       HierarchyDynamicMBean hdm = new HierarchyDynamicMBean();
-      javax.management.ObjectName mbo = new javax.management.ObjectName("org.xins.server.log4j:hiearchy=default");
+      javax.management.ObjectName mbo = new javax.management.ObjectName("org.xins.server.api." + api.getName() + ":hiearchy=log4j");
       mBeanServer.registerMBean(hdm, mbo);
 
       // Add the root logger to the Hierarchy MBean
       Logger rootLogger = Logger.getRootLogger();
       hdm.addLoggerMBean(rootLogger.getName());
-
-      // Get each logger from the Log4J Repository and add it to
-      // the Hierarchy MBean created above.
-      LoggerRepository r = LogManager.getLoggerRepository();
-      Enumeration loggers = r.getCurrentLoggers();
-      while (loggers.hasMoreElements()) {
-         Logger logger = (Logger) loggers.nextElement();
-         hdm.addLoggerMBean(logger.getName());
-      }
    }
 }
