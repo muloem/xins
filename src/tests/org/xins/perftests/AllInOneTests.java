@@ -181,11 +181,11 @@ public class AllInOneTests extends TestCase {
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
-      DefinedTypesResult result2 = allInOne.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList);
+      DefinedTypesResult result2 = allInOne.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte)28, textList, "Hello");
       assertEquals("127.0.0.1", result2.getOutputIP());
 
       try {
-         allInOne.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList);
+         allInOne.callDefinedTypes("not an IP", Salutation.LADY, (byte)8, textList, "Hello2");
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
