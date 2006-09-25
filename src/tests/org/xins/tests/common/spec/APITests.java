@@ -133,6 +133,7 @@ public class APITests extends TestCase {
       list.add("Logdoc");
       list.add("ParamCombo");
       list.add("ParamComboNotAll");
+      list.add("ParamComboValue");
       list.add("ResultCode");
       list.add("RuntimeProps");
       list.add("SimpleOutput");
