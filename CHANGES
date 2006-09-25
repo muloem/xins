@@ -49,6 +49,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Stored classpath used for the tests in a reference.
   - Renamed netbeans-debug target to test-netbeans-debug and adapted it to
     execute tests in NetBeans.
+  - Removed code coverage of the logs, so that the coverage target reflects
+    more the real code coverage.
 
 * Tests:
   - Added new Portal API to test the XINS Frontend Framework.

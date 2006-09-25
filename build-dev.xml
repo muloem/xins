@@ -240,13 +240,25 @@ ${sf.file}</fail>
 	<target name="-prepare-coverage" depends="clean-coverage">
 		<taskdef classpath="lib/cobertura.jar" resource="tasks.properties"/>
 		<cobertura-instrument todir="build/instrumented-classes/java-client">
-			<fileset dir="build/classes/java-client" includes="**/*.class" />
+			<fileset dir="build/classes/java-client">
+				<include name="**/*.class" />
+				<exclude name="org/xins/client/Log*.class" />
+				<exclude name="org/xins/client/TranslationBundle*.class" />
+			</fileset>
 		</cobertura-instrument>
 		<cobertura-instrument todir="build/instrumented-classes/java-server">
-			<fileset dir="build/classes/java-server" includes="**/*.class" />
+			<fileset dir="build/classes/java-server">
+				<include name="**/*.class" />
+				<exclude name="org/xins/server/Log*.class" />
+				<exclude name="org/xins/server/TranslationBundle*.class" />
+			</fileset>
 		</cobertura-instrument>
 		<cobertura-instrument todir="build/instrumented-classes/java-common">
-			<fileset dir="build/classes/java-common" includes="**/*.class" />
+			<fileset dir="build/classes/java-common">
+				<include name="**/*.class" />
+				<exclude name="org/xins/common/Log*.class" />
+				<exclude name="org/xins/common/TranslationBundle*.class" />
+			</fileset>
 		</cobertura-instrument>
 	</target>
 
