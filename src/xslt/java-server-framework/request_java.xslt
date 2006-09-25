@@ -793,7 +793,7 @@
 			<xsl:if test="not($typeIsPrimary = 'true')">
 				<xsl:text>)</xsl:text>
 			</xsl:if>
-			<xsl:if test="not(@required = 'true')">
+			<xsl:if test="not(@required = 'true') and not(@default)">
 				<xsl:text>))</xsl:text>
 			</xsl:if>
 			<xsl:if test="position() &lt; last()">

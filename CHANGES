@@ -25,6 +25,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 * Generation of server-side Java code:
   - isSet method is not generated if the parameter has a default value.
   - Fixed conditions for the param-combo based on a parameter value.
+  - Fixed generated equals method for the request when a parameter has a 
+    default value.
 
 * Generation of the specdocs:
   - Improved layout of the generation of the runtime properties page.
