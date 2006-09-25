@@ -297,4 +297,17 @@ public class PortalAPITests extends TestCase {
          assertEquals(_target,          exception.getTarget());
       }
    }
+
+   public void testGetSettingsFunction() throws Exception {
+      XINSCallRequest request = new XINSCallRequest("_GetSettings");
+      XINSServiceCaller caller = new XINSServiceCaller(_target);
+      try {
+         caller.call(request);
+         fail("The call to _GetSettings should have failed with ACL denied.");
+      } catch (StatusCodeHTTPCallException schcex) {
+
+         // As expected.
+         assertEquals(403, schcex.getStatusCode());
+      }
+   }
 }
