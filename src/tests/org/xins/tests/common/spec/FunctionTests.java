@@ -133,6 +133,7 @@ public class FunctionTests extends TestCase {
       parameters.add("inputSalutation");
       parameters.add("inputAge");
       parameters.add("inputList");
+      parameters.add("inputShared");
 
       FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
       assertEquals("Function 'DefinedTypes' has an incorrect number of input" +
@@ -214,6 +215,7 @@ public class FunctionTests extends TestCase {
       parameters.add("outputAge");
       parameters.add("outputList");
       parameters.add("outputProperties");
+      parameters.add("outputShared");
 
       FunctionSpec function1 = _allInOneAPI.getFunction(functionName1);
 

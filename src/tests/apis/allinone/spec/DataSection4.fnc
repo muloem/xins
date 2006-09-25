@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.4//EN" "http://xins.sourceforge.net/dtd/function_1_4.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.5//EN" "http://xins.sourceforge.net/dtd/function_1_5.dtd">
 
 <function name="DataSection4"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -18,7 +18,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				<attribute name="gender" required="true" type="Salutation">
 					<description>The gender of the person.</description>
 				</attribute>
-				<attribute name="name" required="true" type="_text">
+				<attribute name="name" required="true" type="portal/Username">
 					<description>The name of the person.</description>
 				</attribute>
 				<attribute name="age" required="false" type="Age">

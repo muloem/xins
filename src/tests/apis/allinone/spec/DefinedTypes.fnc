@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.1//EN" "http://xins.sourceforge.net/dtd/function_1_1.dtd">
+<!DOCTYPE function PUBLIC "-//XINS//DTD Function 1.5//EN" "http://xins.sourceforge.net/dtd/function_1_5.dtd">
 
 <function name="DefinedTypes"
 rcsversion="$Revision$" rcsdate="$Date$">
@@ -18,6 +18,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputList" required="false" type="TextList">
 			<description>An example of input for a list.</description>
 		</param>
+		<param name="inputShared" required="false" type="portal/Username">
+			<description>An example of input for a shared type.</description>
+		</param>
 	</input>
 	<output>
 		<param name="outputIP" required="false" type="IPAddress">
@@ -34,6 +37,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 		<param name="outputProperties" required="false" type="AgeNameProperties">
 			<description>An example of output for a list.</description>
+		</param>
+		<param name="outputShared" required="false" type="portal/Password">
+			<description>An example of output shared type.</description>
 		</param>
 	</output>
 

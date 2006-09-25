@@ -228,15 +228,73 @@ public class AllInOneAPITests extends TestCase {
       TextList.Value textList = new TextList.Value();
       textList.add("hello");
       textList.add("world");
-      DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1",
-                                                         Salutation.LADY,
-                                                         (byte) 28,
-                                                         textList);
+      DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte) 28, textList, "Username1");
       assertEquals("127.0.0.1", result.getOutputIP());
       assertEquals(Salutation.LADY, result.getOutputSalutation());
       assertEquals(Byte.decode("35"), result.getOutputAge());
       assertEquals(2, result.getOutputList().getSize());
       assertEquals(2, result.getOutputProperties().size());
+   }
+
+   /**
+    * Tests CAPI and shared types.
+    */
+   public void testSharedTypes() throws Exception {
+      try {
+         DefinedTypesResult result = _capi.callDefinedTypes("198.165.0.1", Salutation.LADY, (byte) 28, null, "User==name1");
+         fail("The call to DefinedTypes should have failed because of the User==name1 invalid parameter.");
+      } catch (UnsuccessfulXINSCallException exception) {
+
+         // TODO Move this code in a common private method
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         List invalidParams = dataSection.getChildElements();
+         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         assertEquals("invalid-value-for-type", invalidParam1.getName());
+         assertEquals("inputShared", invalidParam1.get("param"));
+         assertEquals(0, invalidParam1.getChildElements().size());
+         assertNull(invalidParam1.getText());
+      }      
+   }
+
+   /**
+    * Tests CAPI and shared types in data section.
+    */
+   public void testSharedTypes2() throws Exception {
+      try {
+         ElementBuilder builder1 = new ElementBuilder();
+         builder1.startElement("person");
+         builder1.setAttribute("gender", "Mister");
+         builder1.setAttribute("name", "Doe++");
+         builder1.setAttribute("age", "55");
+         builder1.setAttribute("birthdate", "19551206");
+         Element person1 = builder1.createElement();
+         ElementBuilder dataBuilder = new ElementBuilder();
+         dataBuilder.startElement("data");
+         dataBuilder.addChild(person1);
+         Element dataSection = dataBuilder.createElement();
+
+         _capi.callDataSection4(dataSection);
+         fail("The call to DataSection4 should have failed because of the User==name1 invalid parameter.");
+      } catch (UnsuccessfulXINSCallException exception) {
+
+         // TODO Move this code in a common private method
+         assertEquals("_InvalidRequest", exception.getErrorCode());
+         assertEquals(_target, exception.getTarget());
+         assertNull(exception.getParameters());
+         DataElement dataSection = exception.getDataElement();
+         assertNotNull(dataSection);
+         List invalidParams = dataSection.getChildElements();
+         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         assertEquals("invalid-value-for-type", invalidParam1.getName());
+         assertEquals("name", invalidParam1.get("param"));
+         assertEquals("person", invalidParam1.get("element"));
+         assertEquals(0, invalidParam1.getChildElements().size());
+         assertNull(invalidParam1.getText());
+      }      
    }
 
    /**
@@ -247,10 +305,7 @@ public class AllInOneAPITests extends TestCase {
       textList.add("Hello");
       textList.add("Test");
       try {
-         DefinedTypesResult result = _capi.callDefinedTypes("not an IP",
-                                                            Salutation.LADY,
-                                                            (byte) 8,
-                                                            textList);
+         DefinedTypesResult result = _capi.callDefinedTypes("not an IP", Salutation.LADY, (byte) 8, textList, null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
@@ -958,10 +1013,7 @@ public class AllInOneAPITests extends TestCase {
       textList.add("Hello");
       textList.add("Test");
       try {
-         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1",
-                                                            Salutation.LADY,
-                                                            (byte) 60,
-                                                            textList);
+         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1", Salutation.LADY, (byte) 60, textList, null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidResponse", exception.getErrorCode());

@@ -93,7 +93,7 @@ public class InvalidResponseTests extends TestCase {
          fail("Expected UnacceptableResultXINSCallException instead of " + exception.getClass().getName() + '.');
       }
       try {
-         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1", Salutation.LADY, (byte) 20, null);
+         DefinedTypesResult result = _capi.callDefinedTypes("127.0.0.1", Salutation.LADY, (byte) 20, null, null);
          fail("Expected UnacceptableResultXINSCallException.");
       } catch (UnacceptableResultXINSCallException exception) {
          // as expected

@@ -10,5 +10,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="InvalidResponse" />
 	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->
 
-	<type name="IPAddress" />
+	<type name="allinone/IPAddress" />
+	<type name="Password" />
+	<type name="Username" />
 </api>

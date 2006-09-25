@@ -24,6 +24,7 @@ import com.mycompany.allinone.types.Age;
 import com.mycompany.allinone.types.IPAddress;
 import com.mycompany.allinone.types.Salutation;
 import com.mycompany.allinone.types.TextList;
+import com.mycompany.allinone.types.Username;
 
 /**
  * Parameter spec TestCase. The testcases use the <i>allinone</i> API
@@ -156,7 +157,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getDescription());
 
             assertEquals("User defined type 'inputIP' of the function " +
-               "'DefinedTypes' has an incorrect name: " +
+               "'DefinedTypes' has an incorrect type name: " +
                userDefinedParameter.getType().getName(),
                "IPAddress", userDefinedParameter.getType().getName());
 
@@ -177,7 +178,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getDescription());
 
             assertEquals("User defined type 'inputSalutation' of the function " +
-               "'DefinedTypes' has an incorrect name: " +
+               "'DefinedTypes' has an incorrect type name: " +
                userDefinedParameter.getType().getName(),
                "Salutation", userDefinedParameter.getType().getName());
 
@@ -198,7 +199,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getDescription());
 
             assertEquals("User defined type 'inputAge' of the function " +
-               "'DefinedTypes' has an incorrect name: " +
+               "'DefinedTypes' has an incorrect type name: " +
                userDefinedParameter.getType().getName(),
                "Age", userDefinedParameter.getType().getName());
 
@@ -219,7 +220,7 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getDescription());
 
             assertEquals("User defined type 'inputList' of the function " +
-               "'DefinedTypes' has an incorrect name:" +
+               "'DefinedTypes' has an incorrect type name:" +
                userDefinedParameter.getType().getName(),
                "TextList", userDefinedParameter.getType().getName());
 
@@ -229,6 +230,26 @@ public class ParameterTests extends TestCase {
                userDefinedParameter.getType() instanceof TextList);
 
             assertFalse("User defined type 'inputList' of the function " +
+               "'DefinedTypes' has an incorrect 'is required' value: ",
+               userDefinedParameter.isRequired());
+         } else if ("inputShared".equals(userDefinedParameter.getName())) {
+            assertEquals("User defined type 'inputShared' of the function " +
+               "'DefinedTypes' has an incorrect description: " +
+               userDefinedParameter.getDescription(),
+               "An example of input for a shared type.",
+               userDefinedParameter.getDescription());
+
+            assertEquals("User defined type 'inputShared' of the function " +
+               "'DefinedTypes' has an incorrect type name:" +
+               userDefinedParameter.getType().getName(),
+               "Username", userDefinedParameter.getType().getName());
+
+            assertTrue("User defined type 'inputShared' of the function " +
+               "'DefinedTypes' has an incorrect type: " +
+               userDefinedParameter.getType().getName(),
+               userDefinedParameter.getType() instanceof Username);
+
+            assertFalse("User defined type 'inputShared' of the function " +
                "'DefinedTypes' has an incorrect 'is required' value: ",
                userDefinedParameter.isRequired());
          } else {
