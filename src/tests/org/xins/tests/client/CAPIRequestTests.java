@@ -6,7 +6,6 @@
  */
 package org.xins.tests.client;
 
-import com.mycompany.allinone.types.TextList;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -14,9 +13,11 @@ import junit.framework.TestSuite;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 
+import com.mycompany.allinone.capi.DefaultValueRequest;
 import com.mycompany.allinone.capi.DefinedTypesRequest;
 import com.mycompany.allinone.capi.SimpleTypesRequest;
 import com.mycompany.allinone.types.Salutation;
+import com.mycompany.allinone.types.TextList;
 
 /**
  * This class tests the generated CAPI Request object.
@@ -189,6 +190,12 @@ public class CAPIRequestTests extends TestCase {
       assertEquals(textList.getSize(), request.getInputList().getSize());
       request.setInputList(null);
       assertNull(request.getInputList());
-
+   }
+   
+   public void testDefaultValues() {
+      DefaultValueRequest request = new DefaultValueRequest();
+      assertTrue(request.getInputBoolean().booleanValue());
+      // XXX parameters with @default should match primitive types
+      assertEquals(33, request.getInputInt().intValue());
    }
 }

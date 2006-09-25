@@ -776,6 +776,7 @@ public class AllInOneAPITests extends TestCase {
                               "Texas",
                               "Paris",
                               Byte.valueOf("21"));
+
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
@@ -1067,6 +1068,13 @@ public class AllInOneAPITests extends TestCase {
       request.setIn("");
       result = _capi.callEcho(request);
       assertNull("Bug 1362875: Overriding Request input value with empty string ignored.", result.getOut());
+   }
+
+   public void testDefaultValues() throws Exception {
+
+      // Test the default returned parameter
+      DefaultValueResult result = _capi.callDefaultValue(null, null, null);
+      assertEquals("Test of default", result.getOutputText());
    }
 
    /* Does not work as only one instance of an API is possible

@@ -128,6 +128,7 @@ public class APITests extends TestCase {
       list.add("DataSection2");
       list.add("DataSection3");
       list.add("DataSection4");
+      list.add("DefaultValue");
       list.add("DefinedTypes");
       list.add("Echo");
       list.add("Logdoc");

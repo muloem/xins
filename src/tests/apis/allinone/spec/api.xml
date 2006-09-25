@@ -11,6 +11,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<function name="DataSection2" freeze="1.1" />
 	<function name="DataSection3"    />
 	<function name="DataSection4"    />
+	<function name="DefaultValue"    />
 	<function name="DefinedTypes"    />
 	<function name="Echo"            />
 	<function name="Logdoc"          />
