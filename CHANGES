@@ -53,6 +53,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 * Tests:
   - Added new Portal API to test the XINS Frontend Framework.
   - Added tests for the param-combo based on a parameter value.
+  - Added tests for the BeanUtils class.
+  - Added tests for the default value feature.
+  - Added tests for _set and _list types.
 
 * DTD:
   - The types properties, list and set can contain a shared type from another

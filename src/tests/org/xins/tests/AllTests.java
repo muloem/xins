@@ -82,6 +82,7 @@ public class AllTests extends TestSuite {
       //
       // Add all tests
       //
+      suite.addTestSuite(org.xins.tests.common.BeanUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
@@ -150,6 +151,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.PropertiesTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.TimestampTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.URLTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.ListTests.class);
+      suite.addTestSuite(org.xins.tests.common.types.standard.SetTests.class);
 
       suite.addTestSuite(org.xins.tests.common.xml.ElementBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
