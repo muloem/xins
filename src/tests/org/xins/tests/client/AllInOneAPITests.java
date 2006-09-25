@@ -35,6 +35,7 @@ import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 import org.xins.logdoc.ExceptionUtils;
+import org.xins.logdoc.LogCentral;
 
 import org.xins.tests.AllTests;
 
@@ -453,7 +454,7 @@ public class AllInOneAPITests extends TestCase {
    }
 
    public void testSpecialCharacters4() throws Exception {
-      dataSectionTests("H<llo");
+      dataSectionTests("Bon<our");
    }
 
    public void testSpecialCharacters5() throws Exception {
@@ -474,6 +475,14 @@ public class AllInOneAPITests extends TestCase {
 
    public void testSpecialCharacters9() throws Exception {
       dataSectionTests("ends with \u00e9");
+   }
+
+   public void testFrenchLogdoc() throws Exception {
+      LogCentral.setLocale("fr_FR");
+      LogCentral.setStackTraceAtMessageLevel(false);
+      dataSectionTests("Bonjour");
+      LogCentral.setLocale("en_US");
+      LogCentral.setStackTraceAtMessageLevel(true);
    }
 
    /**
@@ -776,6 +785,7 @@ public class AllInOneAPITests extends TestCase {
                               "Texas",
                               "Paris",
                               Byte.valueOf("21"));
+
 
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
