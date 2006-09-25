@@ -87,7 +87,8 @@ public class BeanUtils {
       // Go through all get methods of the source object
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
-         if (sourceMethods[i].getName().startsWith("get") && sourceMethods[i].getName().length() > 3) {
+         String getMethodName = sourceMethods[i].getName();
+         if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
             Class[] returnType = {sourceMethods[i].getReturnType()};
             String destProperty = sourceMethods[i].getName().substring(3);
             if (propertiesMapping != null && propertiesMapping.getProperty(destProperty) != null) {
