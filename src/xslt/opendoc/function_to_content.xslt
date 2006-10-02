@@ -141,7 +141,7 @@
 				</text:p>
 				<xsl:if test="string-length(@default) &gt; 0">
 					<text:p text:style-name="Standard">
-						<xsl:text> The default value is </xsl:text>
+						<xsl:text>The default value is </xsl:text>
 						<text:span text:style-name="Code">
 							<xsl:value-of select="@default" />
 						</text:span>
