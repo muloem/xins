@@ -39,7 +39,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</data>
 	</input>
 	<output>
-		<!-- param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é"-->
 		<param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é">
 			<description>An example of output for a text with a default value.</description>
 		</param>
