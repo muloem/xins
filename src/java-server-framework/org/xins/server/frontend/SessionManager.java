@@ -9,8 +9,10 @@ package org.xins.server.frontend;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.Cookie;
@@ -133,7 +135,7 @@ public class SessionManager extends Manageable {
       }
       setProperty("_inputs", inputParameters);
       setProperty("_remoteIP", request.getRemoteAddr());
-      setProperty("_propertiesSet", new HashMap());
+      setProperty("_propertiesSet", new HashSet());
    }
    
    /**
@@ -145,8 +147,8 @@ public class SessionManager extends Manageable {
    final void result(boolean successful) {
       if (successful) {
          HashMap inputParameters = (HashMap) getProperty("_inputs");
-         HashMap propertiesSet =  (HashMap) getProperty("_propertiesSet");
-         if (propertiesSet.containsKey("*")) {
+         Set propertiesSet =  (Set) getProperty("_propertiesSet");
+         if (propertiesSet.contains("*")) {
             return;
          }
          
@@ -165,8 +167,8 @@ public class SessionManager extends Manageable {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
                parameterName = getRealParameter(parameterName, functionName);
-               if (specInputParameters.containsKey(parameterName) && !propertiesSet.containsKey(parameterName)
-                     && !propertiesSet.containsKey(parameterName.toLowerCase())) {
+               if (specInputParameters.containsKey(parameterName) && !propertiesSet.contains(parameterName)
+                     && !propertiesSet.contains(parameterName.toLowerCase())) {
                   String value = (String) nextInput.getValue();
                   if ("".equals(value) || parameterName.equals(getSessionId())) {
                      value = null;
@@ -264,8 +266,7 @@ public class SessionManager extends Manageable {
          }
       }
       if (!name.startsWith("_")) {
-         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
-         propertiesSet.put(name, value);
+         registryProperty(session, name);
       }
    }
    
@@ -334,10 +335,7 @@ public class SessionManager extends Manageable {
          if (inputParameters != null) {
             inputParameters.remove(name);
          }
-         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
-         if (propertiesSet != null) {
-            propertiesSet.put(name, null);
-         }
+         registryProperty(session, name);
       }
    }
    
@@ -362,11 +360,31 @@ public class SessionManager extends Manageable {
             String nextAttribute = (String) itAttributes.next();
             session.removeAttribute(nextAttribute);
          }
-         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
-         propertiesSet.put("*", null);
+         registryProperty(session, "*");
       }
    }
-   
+
+   /**
+    * Registers a property as manually set by the user. The property will then
+    * not be overwritten by the input parameter.
+    *
+    * @param session
+    *    the session which contain the session propeties, cannot be <code>null</code>.
+    *
+    * @param name
+    *    the name of the property set or remove in the function implementation, cannot be <code>null</code>.
+    */
+   private void registryProperty(HttpSession session, String name) {
+      Set propertiesSet = (Set) session.getAttribute("_propertiesSet");
+      if (propertiesSet != null) {
+         propertiesSet.add(name);
+      } else {
+         propertiesSet = new HashSet();
+         propertiesSet.add(name);
+         setProperty("_propertiesSet", propertiesSet);
+      }
+   }
+
    /**
     * Gets the real parameter name.
     *
