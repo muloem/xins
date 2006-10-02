@@ -26,6 +26,7 @@
 	<xsl:include href="../java.xslt"       />
 	<xsl:include href="../types.xslt"      />
 	<xsl:include href="../warning.xslt"    />
+	<xsl:include href="../xml_to_java.xslt"    />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 	<xsl:variable name="api_node" select="document($api_file)/api" />
