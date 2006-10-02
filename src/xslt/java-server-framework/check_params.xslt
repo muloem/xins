@@ -101,8 +101,11 @@
 					<xsl:value-of select="$localJavaVariable" />
 					<xsl:text> == null) {
          </xsl:text>
-					<xsl:value-of select="concat($localJavaVariable, ' = &quot;', @default, '&quot;')" />
-					<xsl:text>;
+					<xsl:value-of select="concat($localJavaVariable, ' = &quot;')" />
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="@default" />
+					</xsl:call-template>
+					<xsl:text>&quot;;
       }</xsl:text>
 				</xsl:if>
 			</xsl:for-each>

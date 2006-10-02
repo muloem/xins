@@ -4,6 +4,16 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
+
+* Generation of server-side Java code:
+  - Fixed support for special characters in the default attribute.
+  - Fixed support for default attribute in a data section attribute.
+
+* Generation of client-side Java code:
+  - Fixed support for special characters in the default attribute.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
 * XINS/Java Common Library:

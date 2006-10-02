@@ -317,22 +317,23 @@
 		<xsl:text>
          return </xsl:text>
 		<xsl:choose>
-			<xsl:when test="name()='attribute' and not(@default)">
+			<xsl:when test="name()='attribute'">
+				<xsl:variable name="attributeParameter">
+					<xsl:value-of select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+					<xsl:if test="@default">
+						<xsl:text> == null ? &quot;</xsl:text>
+						<xsl:call-template name="xml_to_java_string">
+							<xsl:with-param name="text" select="@default" />
+						</xsl:call-template>
+						<xsl:value-of select="concat('&quot; : _element.getAttribute(&quot;', @name, '&quot;)')" />
+					</xsl:if>
+				</xsl:variable>
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'true'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="type"     select="@type"     />
-					<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:when test="name()='attribute' and @default">
-				<xsl:call-template name="javatype_from_string_for_type">
-					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="required" select="'true'" />
-					<xsl:with-param name="specsdir" select="$specsdir" />
-					<xsl:with-param name="type"     select="@type"     />
-					<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;) == null ? &quot;', @default, '&quot; :_element.getAttribute(&quot;', @name, '&quot;)')" />
+					<xsl:with-param name="variable" select="$attributeParameter" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -386,6 +387,16 @@
 			<xsl:call-template name="is_java_datatype">
 				<xsl:with-param name="text" select="$javaObjectType" />
 			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="attributeAsString">
+			<xsl:value-of select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+			<xsl:if test="@default">
+				<xsl:text> == null ? &quot;</xsl:text>
+				<xsl:call-template name="xml_to_java_string">
+					<xsl:with-param name="text" select="@default" />
+				</xsl:call-template>
+				<xsl:value-of select="concat('&quot; : _element.getAttribute(&quot;', @name, '&quot;)')" />
+			</xsl:if>
 		</xsl:variable>
 
 		<!-- Generates the get method. -->
@@ -442,7 +453,7 @@
 			<xsl:with-param name="required" select="@required" />
 			<xsl:with-param name="specsdir" select="$specsdir" />
 			<xsl:with-param name="type"     select="@type"     />
-			<xsl:with-param name="variable" select="concat('_element.getAttribute(&quot;', @name, '&quot;)')" />
+			<xsl:with-param name="variable" select="$attributeAsString" />
 		</xsl:call-template>
 		<xsl:text>;
          } catch (org.xins.common.types.TypeValueException tve) {

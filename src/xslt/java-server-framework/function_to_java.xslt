@@ -27,6 +27,7 @@
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../xml_to_java.xslt"  />
 	<xsl:include href="request_java.xslt" />
 	<xsl:include href="result_java.xslt" />
 	<xsl:include href="check_params.xslt" />

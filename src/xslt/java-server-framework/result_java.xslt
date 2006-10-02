@@ -320,12 +320,22 @@ implements Result {
          return </xsl:text>
 		<xsl:choose>
 			<xsl:when test="name()='attribute'">
+				<xsl:variable name="attributeAsString">
+					<xsl:value-of select="concat('_elementBuilder.createElement().getAttribute(&quot;', @name, '&quot;)')" />
+					<xsl:if test="@default">
+						<xsl:text> == null ? &quot;</xsl:text>
+						<xsl:call-template name="xml_to_java_string">
+							<xsl:with-param name="text" select="@default" />
+						</xsl:call-template>
+						<xsl:value-of select="concat('&quot; : _elementBuilder.createElement().getAttribute(&quot;', @name, '&quot;)')" />
+					</xsl:if>
+				</xsl:variable>
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'false'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="type"     select="@type"     />
-					<xsl:with-param name="variable" select="concat('_elementBuilder.createElement().getAttribute(&quot;', @name, '&quot;)')" />
+					<xsl:with-param name="variable" select="$attributeAsString" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>

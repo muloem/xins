@@ -13,6 +13,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputInt" required="false" type="_int32" default="33">
 			<description>An example of input for an integer with a default value.</description>
 		</param>
+		<param name="inputText" required="false" type="_text" default="Test of default &amp; &quot; { é">
+			<description>An example of input for a text with a default value.</description>
+		</param>
 		<data>
 			<!-- The data section includes persons. -->
 			<contains>
@@ -36,10 +39,22 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</data>
 	</input>
 	<output>
-		<!-- XXX param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é"-->
-		<param name="outputText" required="false" type="_text" default="Test of default">
+		<!-- param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é"-->
+		<param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é">
 			<description>An example of output for a text with a default value.</description>
 		</param>
+		<data>
+			<!-- The data section includes persons. -->
+			<contains>
+				<contained element="outputElement" />
+			</contains>
+			<element name="outputElement">
+				<description>An output element.</description>
+				<attribute name="outputAttribute" required="false" default="This is a test.">
+					<description>An output attribute with a default.</description>
+				</attribute>
+			</element>
+		</data>
 	</output>
 
 	<example>

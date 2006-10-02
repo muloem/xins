@@ -20,6 +20,7 @@
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../xml_to_java.xslt"  />
 	<xsl:include href="../java-server-framework/check_params.xslt"  />
 	<xsl:include href="../java-server-framework/result_java.xslt"  />
 
@@ -81,7 +82,11 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:for-each select="input/param[@default]">
 			<xsl:text>
       parameterValue(&quot;</xsl:text>
-			<xsl:value-of select="concat(@name, '&quot;, &quot;', @default, '&quot;);')" />
+			<xsl:value-of select="concat(@name, '&quot;, &quot;')" />
+			<xsl:call-template name="xml_to_java_string">
+				<xsl:with-param name="text" select="@default" />
+			</xsl:call-template>
+			<xsl:text>&quot;);</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
    }

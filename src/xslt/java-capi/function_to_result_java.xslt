@@ -21,6 +21,7 @@
 	<xsl:include href="../java.xslt" />
 	<xsl:include href="../rcs.xslt"  />
 	<xsl:include href="../types.xslt"  />
+	<xsl:include href="../xml_to_java.xslt"  />
 	<xsl:include href="../java-server-framework/check_params.xslt"  />
 	<xsl:include href="../java-server-framework/request_java.xslt"  />
 
@@ -244,7 +245,9 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:text>
          if (paramValue == null) {
             paramValue = &quot;</xsl:text>
-				<xsl:value-of select="@default" />
+				<xsl:call-template name="xml_to_java_string">
+					<xsl:with-param name="text" select="@default" />
+				</xsl:call-template>
 				<xsl:text>&quot;;
          }</xsl:text>
 			</xsl:if>
