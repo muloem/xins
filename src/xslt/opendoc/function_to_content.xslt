@@ -178,11 +178,11 @@
 			<xsl:when test="@contains">
 				<text:p text:style-name="Standard">
 					<xsl:text>The data section may contain the element </xsl:text>
+					<text:span text:style-name="Elem">
+						<xsl:value-of select="concat('&lt;', @contains, '/&gt;')" />
+					</text:span>
+					<xsl:text>.</xsl:text>
 				</text:p>
-				<text:span text:style-name="Elem">
-					<xsl:value-of select="concat('&lt;', @contains, '/&gt;')" />
-				</text:span>
-				<text:p text:style-name="Standard">.</text:p>
 			</xsl:when>
 			<xsl:when test="contains/contained">
 				<xsl:apply-templates select="contains">
@@ -206,40 +206,35 @@
 	<xsl:template match="contains">
 		<xsl:param name="part" />
 
-		<xsl:choose>
-			<xsl:when test="count(contained) &gt; 1">
-				<text:p text:style-name="Standard">
-					<xsl:text>The </xsl:text>
-					<xsl:value-of select="$part" />
+		<text:p text:style-name="Standard">
+			<xsl:text>The </xsl:text>
+			<xsl:value-of select="$part" />
+			<xsl:choose>
+				<xsl:when test="count(contained) &gt; 1">
 					<xsl:text> may contain the elements </xsl:text>
-				</text:p>
-				<xsl:for-each select="contained">
-					<xsl:choose>
-						<xsl:when test="position() != 1">
-							<xsl:text>, </xsl:text>
-						</xsl:when>
-						<xsl:when test="position() = last()">
-							<text:p text:style-name="Standard"> and </text:p>
-						</xsl:when>
-					</xsl:choose>
-					<text:span text:style-name="Elem">
-						<xsl:value-of select="concat('&lt;', @element, '/&gt;')" />
-					</text:span>
-				</xsl:for-each>
-				<text:p text:style-name="Standard">.</text:p>
-			</xsl:when>
-			<xsl:when test="count(contained) = 1">
-				<text:p text:style-name="Standard">
-					<xsl:text>The </xsl:text>
-					<xsl:value-of select="$part" />
+					<xsl:for-each select="contained">
+						<xsl:choose>
+							<xsl:when test="position() != 1">
+								<xsl:text>, </xsl:text>
+							</xsl:when>
+							<xsl:when test="position() = last()">
+								<xsl:text> and </xsl:text>
+							</xsl:when>
+						</xsl:choose>
+						<text:span text:style-name="Elem">
+							<xsl:value-of select="concat('&lt;', @element, '/&gt;')" />
+						</text:span>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:when test="count(contained) = 1">
 					<xsl:text> may only contain the element </xsl:text>
-				</text:p>
-				<text:span text:style-name="Elem">
-					<xsl:value-of select="concat('&lt;', contained/@element, '/&gt;')" />
-				</text:span>
-				<text:p text:style-name="Standard">.</text:p>
-			</xsl:when>
-		</xsl:choose>
+					<text:span text:style-name="Elem">
+						<xsl:value-of select="concat('&lt;', contained/@element, '/&gt;')" />
+					</text:span>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:text>.</xsl:text>
+		</text:p>
 	</xsl:template>
 
 	<xsl:template match="element">

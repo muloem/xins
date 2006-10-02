@@ -13,6 +13,11 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
 * Generation of client-side Java code:
   - Fixed support for special characters in the default attribute.
 
+* Generation of the opendoc:
+  - Fixed the names of the elements of the data section were not displayed
+    correctly.
+  - Improved the format of the default value for a parameter or attribute.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
