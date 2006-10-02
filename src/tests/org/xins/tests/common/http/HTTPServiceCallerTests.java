@@ -310,7 +310,7 @@ public class HTTPServiceCallerTests extends TestCase {
    /**
     * Tests the pre-XINS 1.1 <code>call</code> method.
     */
-   public void testHttpServiceCallerOldCall() throws Exception {
+   /*public void testHttpServiceCallerOldCall() throws Exception {
       HTTPServiceCaller caller = new HTTPServiceCaller(null);
 
       HTTPCallRequest  request    = null;
@@ -347,5 +347,5 @@ public class HTTPServiceCallerTests extends TestCase {
       // Neither is null
       request = new HTTPCallRequest();
       caller.call(request, callConfig, target);
-   }
+   }*/
 }
