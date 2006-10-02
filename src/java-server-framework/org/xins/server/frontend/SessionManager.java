@@ -36,22 +36,22 @@ import org.xins.server.API;
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class SessionManager extends Manageable {
-
+   
    /**
     * The API, never <code>null</code>.
     */
    private API _api;
-
+   
    /**
     * The session ID of the current running Thread, never <code>null</code>.
     */
    private ThreadLocal _currentSession = new ThreadLocal();
-
+   
    /**
     * The list of pages that doesn't need to be logged in, cannot be <code>null</code>.
     */
    private ArrayList _unrestrictedPages = new ArrayList();
-
+   
    /**
     * Creates the session manager.
     *
@@ -61,14 +61,14 @@ public class SessionManager extends Manageable {
    public SessionManager(API api) {
       _api = api;
    }
-
+   
    /**
     * Bootstrap the <code>GPFCallingConvention</code> object.
     */
    protected void bootstrapImpl(PropertyReader bootstrapProperties)
    throws MissingRequiredPropertyException,
-          InvalidPropertyValueException,
-          BootstrapException {
+         InvalidPropertyValueException,
+         BootstrapException {
       String loginPage = bootstrapProperties.get("xinsff.login.page");
       if (loginPage != null) {
          _unrestrictedPages.add(loginPage);
@@ -86,7 +86,7 @@ public class SessionManager extends Manageable {
          _unrestrictedPages.add("*");
       }
    }
-
+   
    /**
     * Method called when the request is received.
     *
@@ -97,7 +97,7 @@ public class SessionManager extends Manageable {
     *    the HTTP request, cannot be <code>null</code>.
     */
    final void request(HttpServletRequest request) {
-
+      
       // Find the session ID in the cookies
       String sessionId = null;
       Cookie[] cookies = request.getCookies();
@@ -109,17 +109,17 @@ public class SessionManager extends Manageable {
             sessionId = cookie.getValue();
          }
       }
-
+      
       HttpSession session = request.getSession(true);
       _currentSession.set(session);
-
+      
       // If the session ID is not found in the cookies, create a new one
-      if (sessionId == null) {
-
+      if (sessionId == null || sessionId.equals("") || sessionId.equals("null")) {
+         
          sessionId = session.getId();
          setProperty(sessionId, Boolean.FALSE);
       }
-
+      
       // Fill the input parameters
       HashMap inputParameters = new HashMap();
       Enumeration params = request.getParameterNames();
@@ -132,8 +132,10 @@ public class SessionManager extends Manageable {
          inputParameters.put(name, value);
       }
       setProperty("_inputs", inputParameters);
+      setProperty("_remoteIP", request.getRemoteAddr());
+      setProperty("_propertiesSet", new HashMap());
    }
-
+   
    /**
     * Sets the input parameters in the session is the execution of the function is successful.
     *
@@ -143,7 +145,11 @@ public class SessionManager extends Manageable {
    final void result(boolean successful) {
       if (successful) {
          HashMap inputParameters = (HashMap) getProperty("_inputs");
-
+         HashMap propertiesSet =  (HashMap) getProperty("_propertiesSet");
+         if (propertiesSet.containsKey("*")) {
+            return;
+         }
+         
          // Only valid inputs of an existing function will be added.
          String command = (String) inputParameters.get("command");
          String action = (String) inputParameters.get("action");
@@ -158,7 +164,9 @@ public class SessionManager extends Manageable {
             while (itInputParameters.hasNext()) {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
-               if (specInputParameters.containsKey(parameterName)) {
+               parameterName = getRealParameter(parameterName, functionName);
+               if (specInputParameters.containsKey(parameterName) && !propertiesSet.containsKey(parameterName)
+                     && !propertiesSet.containsKey(parameterName.toLowerCase())) {
                   String value = (String) nextInput.getValue();
                   if ("".equals(value) || parameterName.equals(getSessionId())) {
                      value = null;
@@ -171,7 +179,7 @@ public class SessionManager extends Manageable {
          }
       }
    }
-
+   
    /**
     * Returns <code>true</code> if the user needs to log in to access the page.
     *
@@ -191,11 +199,11 @@ public class SessionManager extends Manageable {
             (command != null && command.startsWith("_"))) {
          return false;
       }
-
+      
       // Check if the user is logged in
       return !getBoolProperty(getSessionId());
    }
-
+   
    /**
     * Gets the session id.
     *
@@ -209,7 +217,7 @@ public class SessionManager extends Manageable {
       }
       return session.getId();
    }
-
+   
    /**
     * Gets the session properties.
     *
@@ -231,7 +239,7 @@ public class SessionManager extends Manageable {
       }
       return properties;
    }
-
+   
    /**
     * Adds a new session property. Any previous property is replaced.
     * If the value is <code>null</code>, the property is removed.
@@ -249,14 +257,31 @@ public class SessionManager extends Manageable {
             removeProperty(name);
          } else {
             try {
-            session.setAttribute(name, value);
+               session.setAttribute(name, value);
             } catch (Throwable t) {
                t.printStackTrace();
             }
          }
       }
+      if (!name.startsWith("_")) {
+         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
+         propertiesSet.put(name, value);
+      }
    }
-
+   
+   /**
+    * Adds or sets a new session property.
+    *
+    * @param name
+    *    the name of the session property, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value of the session property.
+    */
+   public void setProperty(String name, boolean value) {
+      setProperty(name, value ? Boolean.TRUE : Boolean.FALSE);
+   }
+   
    /**
     * Gets the value of a session property.
     *
@@ -273,7 +298,7 @@ public class SessionManager extends Manageable {
       }
       return session.getAttribute(name);
    }
-
+   
    /**
     * Gets the value of a boolean session property.
     *
@@ -292,7 +317,7 @@ public class SessionManager extends Manageable {
       Object value = session.getAttribute(name);
       return "true".equals(value) || Boolean.TRUE.equals(value);
    }
-
+   
    /**
     * Removes a session property.
     *
@@ -303,34 +328,76 @@ public class SessionManager extends Manageable {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          session.removeAttribute(name);
-
+         
          // Also remove it from the input parameter list.
          Map inputParameters = (Map) session.getAttribute("_inputs");
          if (inputParameters != null) {
             inputParameters.remove(name);
          }
+         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
+         if (propertiesSet != null) {
+            propertiesSet.put(name, null);
+         }
       }
    }
-
+   
    /**
     * Removes all session properties for the customer.
     */
    public void removeProperties() {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
-
+         
          // Removing the attributes directly throws a ConcurentModificationException in Tomcat
          ArrayList attributeNames = new ArrayList();
          Enumeration enuAttributes = session.getAttributeNames();
          while (enuAttributes.hasMoreElements()) {
             String nextAttribute = (String) enuAttributes.nextElement();
-            attributeNames.add(nextAttribute);
+            if (!nextAttribute.startsWith("_")) {
+               attributeNames.add(nextAttribute);
+            }
          }
          Iterator itAttributes = attributeNames.iterator();
          while (itAttributes.hasNext()) {
             String nextAttribute = (String) itAttributes.next();
             session.removeAttribute(nextAttribute);
          }
+         HashMap propertiesSet = (HashMap) session.getAttribute("_propertiesSet");
+         propertiesSet.put("*", null);
       }
-  }
+   }
+   
+   /**
+    * Gets the real parameter name.
+    *
+    * @param receivedParameter
+    *    the name of the parameter as received.
+    *
+    * @param functionName
+    *    the name of the function.
+    *
+    * @return
+    *    the name of the parameter as specified in the function.
+    *
+    * @deprecated
+    *    no mapping should be needed and the forms should send directly the correct parameters.
+    */
+   private String getRealParameter(String receivedParameter, String functionName) {
+      if (receivedParameter.indexOf("_") != -1) {
+         receivedParameter = receivedParameter.replaceAll("_", "");
+      }
+      try {
+         FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
+         Iterator itParameters = function.getInputParameters().keySet().iterator();
+         while (itParameters.hasNext()) {
+            String nextParameterName = (String) itParameters.next();
+            if (nextParameterName.equalsIgnoreCase(receivedParameter)) {
+               return nextParameterName;
+            }
+         }
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+      return receivedParameter;
+   }
 }

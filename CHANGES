@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
   - Ignore the XSLT not found in the refresh command of the XINS FF.
   - Simplified Log4J MBeans registration.
   - JMX MBean for the API contains the name of the API in the ObjectName.
+  - Session parameters set during the call of the function shouldn't
+    be overwritten by the input parameters in the XINS FF CC.
 
 * Generation of server-side Java code:
   - isSet method is not generated if the parameter has a default value.

@@ -280,7 +280,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       } catch (TransformerConfigurationException tcex) {
          Log.log_3701(tcex, "control");
       }
-      
+
       // Gets the functions of the API
       Iterator itFunctions =  _api.getFunctionList().iterator();
       while (itFunctions.hasNext()) {
@@ -445,6 +445,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
       String functionName = command + action;
 
+      _session.result(xinsResult.getErrorCode() == null);
+
       // Display the XSLT
       if ("template".equalsIgnoreCase(mode)) {
          String xsltSource = getCommandXSLT(command);
@@ -457,15 +459,13 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Control command
       if ("Control".equals(command)) {
          xinsResult = control(action);
-         
+
          // Just execute the action
          if (!TextUtils.isEmpty(action)) {
             httpResponse.setStatus(HttpServletResponse.SC_OK);
             return;
          }
       }
-
-      _session.result(xinsResult.getErrorCode() == null);
 
       Element commandResult = null;
       String commandResultXML = null;
@@ -552,7 +552,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             if (propValue instanceof Element && ((Element)propValue).getLocalName().equals("data")) {
                propValue = ((Element)propValue).getChildElements();
             }
-            if (propValue == null) {
+            if (nextProperty.startsWith("_") || propValue == null) {
                // continue
             } else if (propValue instanceof String) {
                ElementBuilder builderParam = new ElementBuilder("parameter");
