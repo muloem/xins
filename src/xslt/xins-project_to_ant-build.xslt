@@ -1101,7 +1101,7 @@ APIs in this project are:
 						<param name="project_file" expression="{$project_file}" />
 						<param name="specsdir"     expression="{$api_specsdir}" />
 						<param name="package"      expression="{$package}"      />
-						<param name="api"          expression="{$api}"          />
+						<param name="api"          expression="{$api}{$implName2}" />
 						<param name="api_file"     expression="{$api_file}"     />
 					</xslt>
 				</xsl:if>
