@@ -535,20 +535,20 @@ APIs in this project are:
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
       <mkdir dir="{$project_home}/build/specdocs/{$api}" />
 			<dependset>
-				<srcfilelist   dir="{$api_specsdir}"    files="{$functionIncludes}" />
+				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
 				<xsl:if test="$apiHasTypes">
-					<srcfilelist   dir="{$api_specsdir}"    files="{$typeIncludes}" />
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
 				</xsl:if>
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 			</dependset>
 			<dependset>
-				<srcfilelist   dir="{$api_specsdir}"    files="api.xml" />
+				<srcfilelist dir="{$api_specsdir}" files="api.xml" />
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
 			</dependset>
 			<xsl:if test="environments">
 				<xsl:variable name="env_dir" select="concat($project_home, '/apis/', $api)" />
 				<dependset>
-					<srcfilelist   dir="{$env_dir}"    files="environments.xml" />
+					<srcfilelist dir="{$env_dir}" files="environments.xml" />
 					<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="*.html" />
 				</dependset>
 			</xsl:if>
@@ -849,6 +849,14 @@ APIs in this project are:
 
 		<target name="opendoc-{$api}" description="Generates the specification document for the '{$api}' API">
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
+			<dependset>
+				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
+				<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="$apiHasTypes">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				</xsl:if>
+				<targetfileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
+			</dependset>
 			<xslt
 			in="{$api_specsdir}/api.xml"
 			out="{$builddir}/opendoc/{$api}/content.xml"

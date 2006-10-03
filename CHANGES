@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Fixed the names of the elements of the data section were not displayed
     correctly.
   - Improved the format of the default value for a parameter or attribute.
+  - Fixed the document is re-created if the specifications have changed.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
