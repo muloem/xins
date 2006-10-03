@@ -42,6 +42,7 @@
 				</xsl:if>
 				<xsl:for-each select="input-example">
 					<!-- Get the name of the get method. -->
+					<xsl:variable name="inputName" select="@name" />
 					<xsl:variable name="hungarianName">
 						<xsl:call-template name="hungarianUpper">
 							<xsl:with-param name="text" select="@name" />
@@ -50,6 +51,11 @@
 					<xsl:if test="position() &gt; 1">
 						<xsl:text> &amp;&amp;
             </xsl:text>
+					</xsl:if>
+					<xsl:if test="not(/function/input/param[@name=$inputName]/@required = 'true') and not(/function/input/param[@name=$inputName]/@default)">
+						<xsl:text>request.isSet</xsl:text>
+						<xsl:value-of select="$hungarianName" />
+						<xsl:text>() &amp;&amp; </xsl:text>
 					</xsl:if>
 					<xsl:text>String.valueOf(request.get</xsl:text>
 					<xsl:value-of select="$hungarianName" />

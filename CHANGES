@@ -20,6 +20,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Fixed the document is re-created if the specifications have changed.
   - Added the param-combo and attribute-combo in the generated document.
 
+* Generation of the stub:
+  - Fixed optional parameters should call the generated isSet method before
+    calling the get method.
+
 * Generated build file:
   - Fixed the generated resultcodes.xml file was not read when the 
     implementation has a specific name.
