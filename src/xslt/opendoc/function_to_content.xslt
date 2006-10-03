@@ -33,6 +33,7 @@
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
+		<xsl:apply-templates select="$function_node/input" mode="additional-constraints" />
 		<xsl:apply-templates select="$function_node/input/data">
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
@@ -43,6 +44,7 @@
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
 		</xsl:call-template>
+		<xsl:apply-templates select="$function_node/output" mode="additional-constraints" />
 		<xsl:apply-templates select="$function_node/output/data">
 			<xsl:with-param name="specsdir"  select="$specsdir" />
 			<xsl:with-param name="api"       select="$api" />
@@ -292,6 +294,157 @@
 				</xsl:apply-templates>
 			</table:table>
 		</xsl:if>
+		<xsl:apply-templates select="." mode="additional-constraints" />
+	</xsl:template>
+
+	<xsl:template match="input | output | element" mode="additional-constraints">
+		<xsl:variable name="part">
+			<xsl:choose>
+				<xsl:when test="param-combo">
+					<xsl:text> parameters</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text> attributes</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:if test="param-combo | attribute-combo">
+			<text:h text:style-name="Heading2" text:outline-level="2">
+				<xsl:text>Additional constraints</xsl:text>
+			</text:h>
+			<text:p text:style-name="Standard">
+				<xsl:text>The following constraint</xsl:text>
+				<xsl:choose>
+					<xsl:when test="count(param-combo | attribute-combo) &lt; 2">
+						<xsl:text> applies to the </xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>s apply to the </xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:value-of select="local-name()" />
+				<xsl:value-of select="$part" />
+				<xsl:text>, additional to the </xsl:text>
+				<xsl:value-of select="local-name()" />
+				<xsl:value-of select="$part" />
+				<xsl:text> marked as required. A violation of </xsl:text>
+				<xsl:choose>
+					<xsl:when test="count(param-combo | attribute-combo) &lt; 2">
+						<xsl:text>this constraint</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>any of these constraints</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text> will result in an unsuccessful result with the error code </xsl:text>
+				<xsl:choose>
+					<xsl:when test="local-name() = 'input' or local-name(../..) = 'input'">
+						<text:span text:style-name="Code">_InvalidRequest</text:span>
+					</xsl:when>
+					<xsl:when test="local-name() = 'output' or local-name(../..) = 'output'">
+						<text:span text:style-name="Code">_InvalidResponse</text:span>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							Invalid node.
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>.</xsl:text>
+			</text:p>
+			<text:list>
+				<xsl:apply-templates select="param-combo | attribute-combo">
+					<xsl:with-param name="part" select="$part" />
+				</xsl:apply-templates>
+			</text:list>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='exclusive-or'] | attribute-combo[@type='exclusive-or']">
+		<xsl:param name="part" />
+
+		<text:list-item>
+			<text:p text:style-name="Standard">
+				<xsl:text>Exactly one of these</xsl:text>
+				<xsl:value-of select="$part" />
+				<xsl:text> must be set: </xsl:text>
+				<xsl:apply-templates select="." mode="textlist" />
+				<xsl:text>.</xsl:text>
+			</text:p>
+		</text:list-item>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='inclusive-or'] | attribute-combo[@type='inclusive-or']">
+		<xsl:param name="part" />
+
+		<text:list-item>
+			<text:p text:style-name="Standard">
+				<xsl:text>At least one of these</xsl:text>
+				<xsl:value-of select="$part" />
+				<xsl:text> must be set: </xsl:text>
+				<xsl:apply-templates select="." mode="textlist" />
+				<xsl:text>.</xsl:text>
+			</text:p>
+		</text:list-item>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='all-or-none'] | attribute-combo[@type='all-or-none']">
+		<xsl:param name="part" />
+
+		<text:list-item>
+			<text:p text:style-name="Standard">
+				<xsl:text>Either all of these</xsl:text>
+				<xsl:value-of select="$part" />
+				<xsl:text> must be set, or none of them can be set: </xsl:text>
+				<xsl:apply-templates select="." mode="textlist" />
+				<xsl:text>.</xsl:text>
+			</text:p>
+		</text:list-item>
+	</xsl:template>
+
+	<xsl:template match="param-combo[@type='not-all'] | attribute-combo[@type='not-all']">
+		<xsl:param name="part" />
+
+		<text:list-item>
+			<text:p text:style-name="Standard">
+				<xsl:text>The following</xsl:text>
+				<xsl:value-of select="$part" />
+				<xsl:text> cannot all be set at the same time: </xsl:text>
+				<xsl:apply-templates select="." mode="textlist" />
+				<xsl:text>.</xsl:text>
+			</text:p>
+		</text:list-item>
+	</xsl:template>
+
+	<xsl:template match="param-combo | attribute-combo" priority="-1">
+		<xsl:message terminate="yes">
+			<xsl:text>Unrecognized type of </xsl:text>
+			<xsl:value-of select="local-name()" />
+			<xsl:text>.</xsl:text>
+		</xsl:message>
+	</xsl:template>
+
+	<xsl:template match="param-combo | attribute-combo" mode="textlist">
+		<xsl:variable name="count" select="count(param-ref)" />
+		<xsl:for-each select="param-ref | attribute-ref">
+			<xsl:choose>
+				<xsl:when test="position() = $count">
+					<xsl:text> and </xsl:text>
+				</xsl:when>
+				<xsl:when test="position() &gt; 1">
+					<xsl:text>, </xsl:text>
+				</xsl:when>
+			</xsl:choose>
+			<text:span text:style-name="Code">
+				<xsl:value-of select="@name" />
+			</text:span>
+			<xsl:if test="@value">
+				<xsl:text> with the value '</xsl:text>
+				<xsl:value-of select="@value" />
+				<xsl:text>'</xsl:text>
+			</xsl:if>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="example">
