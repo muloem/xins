@@ -572,7 +572,7 @@ public class CallingConventionTests extends TestCase {
    /**
     * Tests the HTTP OPTIONS method.
     */
-   /*public void testOptionsMethod() throws Exception {
+   public void testOptionsMethod() throws Exception {
 
       String[] yes = new String[] { "GET", "HEAD", "POST", "OPTIONS" };
       String[] no  = new String[] { "CONNECT", "PUT", "DELETE" };
@@ -582,67 +582,45 @@ public class CallingConventionTests extends TestCase {
       yes = new String[] { "POST", "OPTIONS" };
       no  = new String[] { "CONNECT", "PUT", "DELETE", "GET", "HEAD" };
       doTestOptions("/?_convention=_xins-soap", yes, no);
-   }*/
+   }
 
    private void doTestOptions(String queryString, String[] yes, String[] no)
    throws Exception {
 
-      // Prepare a connection
-      Socket socket = new Socket(AllTests.host(), AllTests.port());
-      try {
-         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      String     host   = AllTests.host();
+      int        port   = AllTests.port();
+      String     method = "OPTIONS";
+      Properties headers = null;
 
-         out.println("OPTIONS " + queryString + " HTTP/1.1");
-         out.println("Host: " + AllTests.host());
-         out.println();
-         out.println();
+      // Call the server
+      HTTPCaller.Result result = HTTPCaller.call(host, port, method, queryString, headers);
 
-         String line = in.readLine();
+      // Expect 200 OK
+      assertEquals("Expected 200 OK in response to HTTP OPTIONS request.", "200 OK", result.getStatus());
 
-         // Expect "200 OK"
-         assertEquals("Expected HTTP status code 200 in response to an HTTP OPTIONS request for query string \"" + queryString + "\".",
-                      "HTTP/1.1 200 OK", line);
+      // Expect an empty body
+      String body = result.getBody();
+      assertTrue("Expected no body in response to an HTTP OPTIONS request.", body == null || body.length() < 1);
 
-      // Expect empty body
-      /*
-      assertTrue("Expected no body in response to an HTTP OPTIONS request.",
-                 returnedData == null || returnedData.length == 0);
-      */
+      // Expect "Accept" field in the response (case-insensitive)
+      List acceptHeaders = result.getHeaderValues("accept");
+      assertTrue("Expected one \"Accept\" header in response to an HTTP OPTIONS request. Received " + acceptHeaders.size() + '.', acceptHeaders.size() == 1);
 
-         line = in.readLine();
-         line = line.toUpperCase();
-         while (! line.startsWith("ACCEPT:")) {
-            line = in.readLine();
-         }
-
-         String acceptHeader = line.substring(7).trim();
-
-/*
-      // Expect "Accept" field in the response
-      Header[] acceptHeaders = method.getResponseHeaders("accept");
-      assertTrue("Expected an \"Accept\" header in response to an HTTP OPTIONS request.", acceptHeaders != null && acceptHeaders.length > 0);
-      assertTrue("Expected only one \"Accept\" header in response to an HTTP OPTIONS request. Received " + acceptHeaders.length, acceptHeaders.length == 1);
-
-      String acceptHeader = acceptHeaders[0].getValue();
+      // Make sure field is not empty
+      String acceptHeader = (String) acceptHeaders.get(0);
       assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to have a non-empty value.", acceptHeader.trim().length() > 0);
-*/
 
-         List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
+      // Split the list of acceptable HTTP methods
+      List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
 
-         for (int i = 0; i < yes.length; i++) {
-            assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + yes[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(yes[i]));
-         }
+      // Make sure all expected HTTP methods are in the list
+      for (int i = 0; i < yes.length; i++) {
+         assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to indicate the \"" + yes[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(yes[i]));
+      }
 
-         for (int i = 0; i < no.length; i++) {
-            assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
-         }
-      } finally {
-         try {
-            socket.close();
-         } catch (Throwable exception) {
-            // ignore
-         }
+      // Make sure all forbidden HTTP methods are not in the list
+      for (int i = 0; i < no.length; i++) {
+         assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
       }
    }
 
@@ -787,7 +765,7 @@ public class CallingConventionTests extends TestCase {
    /**
     * Tests that unsupported HTTP methods return the appropriate HTTP error.
     */
-   /*public void testUnsupportedHTTPMethods() throws Exception {
+   public void testUnsupportedHTTPMethods() throws Exception {
 
       String[] unsupported = new String[] { "GET",  "HEAD", };
 
@@ -820,12 +798,12 @@ public class CallingConventionTests extends TestCase {
             }
          }
       }
-   }*/
+   }
 
    /**
     * Tests that unknown HTTP methods return the appropriate HTTP error.
     */
-   /*public void testUnknownHTTPMethods() throws Exception {
+   public void testUnknownHTTPMethods() throws Exception {
 
       String[] unsupported = new String[] { "PUT", "DELETE", "POLL",  "JO-JO", };
 
@@ -879,5 +857,5 @@ public class CallingConventionTests extends TestCase {
             }
          }
       }
-   }*/
+   }
 }
