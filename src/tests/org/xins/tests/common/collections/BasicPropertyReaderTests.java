@@ -20,7 +20,7 @@ import org.xins.common.collections.BasicPropertyReader;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
- * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">Chris.gilbride@nl.wanadoo.com</a>)
+ * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
  */
 public class BasicPropertyReaderTests extends TestCase {
 

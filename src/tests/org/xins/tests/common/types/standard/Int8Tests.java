@@ -11,7 +11,7 @@ import org.xins.common.types.standard.Int8;
  * Tests for class <code>Int8</code>.
  *
  * @version $Revision$ $Date$
- * @author Chris Gilbride (<a href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
+ * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
  */
 public class Int8Tests extends TestCase {
 

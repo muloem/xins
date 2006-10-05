@@ -11,8 +11,7 @@ import org.xins.common.types.standard.Boolean;
  * Tests for class <code>Boolean</code>.
  *
  * @version $Revision$ $Date$
- * @author Chris Gilbride (<a
- * href="mailto:chris.gilbride@nl.wanadoo.com">chris.gilbride@nl.wanadoo.com</a>)
+ * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
  */
 public class BooleanTests extends TestCase {
 

@@ -594,8 +594,8 @@ public class XINSServletRequest implements HttpServletRequest {
     * <p>This implementation is <strong>not thread-safe</strong>.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@nl.wanadoo.com">Ernst de Haan</a>
-    * @author <a href="mailto:anthony.goubard@nl.wanadoo.com">Anthony Goubard</a>
+    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
     */
    private static class InputStream extends ServletInputStream {
 

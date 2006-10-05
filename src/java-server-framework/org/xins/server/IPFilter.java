@@ -42,7 +42,7 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
- * @author Peter Troon (<a href="mailto:peter.troon@nl.wanadoo.com">peter.troon@nl.wanadoo.com</a>)
+ * @author Peter Troon
  *
  * @since XINS 1.0.0
  */
