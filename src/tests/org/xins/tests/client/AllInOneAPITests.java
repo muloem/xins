@@ -1083,7 +1083,7 @@ public class AllInOneAPITests extends TestCase {
    public void testDefaultValues() throws Exception {
 
       // Test the default returned parameter
-      DefaultValueResult result = _capi.callDefaultValue(null, null, null);
+      DefaultValueResult result = _capi.callDefaultValue(null, null, null, null);
       assertEquals("Test of default", result.getOutputText());
    }
 
