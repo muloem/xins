@@ -111,6 +111,9 @@ System.err.println("Body is: \"" + result._body + "\".");
 
       // Always convert the key to upper case
       key = key.toUpperCase();
+
+      // Always trim the value
+      value = value.trim();
 System.err.println("Found header with key \"" + key + "\" and value \"" + value + "\".");
 
       // Store the value in the list associated by key
