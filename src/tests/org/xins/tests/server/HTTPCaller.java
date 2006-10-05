@@ -41,10 +41,21 @@ public class HTTPCaller extends Object {
          OutputStream out = socket.getOutputStream();
          InputStream  in  = socket.getInputStream();
 
-         // Write the output
+         // Construct the output string
          String toWrite = method + ' ' + queryString + " HTTP/1.1" + eol
-                        + "Host: " + host + eol
-                        + eol;
+                        + "Host: " + host + eol;
+         if (inputHeaders != null) {
+            Enumeration names = inputHeaders.propertyNames();
+            while (names.hasMoreElements()) {
+               String key   = (String) names.nextElement();
+               String value = inputHeaders.getProperty(key);
+
+               toWrite += key + ": " + value + eol;
+            }
+         }
+         toWrite += eol;
+
+         // Write the output
          out.write(toWrite.getBytes());
 
          // Read the input
