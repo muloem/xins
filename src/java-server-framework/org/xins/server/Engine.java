@@ -552,7 +552,7 @@ final class Engine extends Object {
 
       // Support the HTTP method "OPTIONS"
       } else if ("OPTIONS".equals(method)) {
-         if ("*".equals(queryString)) {
+         if ("*".equals(path)) {
             handleOptionsForAll(response);
          } else {
             delegateToCC(start, request, response);
