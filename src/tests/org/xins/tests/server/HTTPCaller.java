@@ -74,7 +74,7 @@ System.err.println("Status is: \"" + result._status + "\".");
       response = response.substring(index2 + 2);
 
       // Get the headers
-      HashMap headers = new HashMap();
+      result._headers = new HashMap();
       boolean done = false;
       while (! done) {
          int nextEOL = response.indexOf(eol);
@@ -83,7 +83,7 @@ System.err.println("Status is: \"" + result._status + "\".");
          } else if (nextEOL == 0) {
             done = true;
          } else {
-            parseHeader(headers, response.substring(0, nextEOL));
+            parseHeader(result._headers, response.substring(0, nextEOL));
             response = response.substring(nextEOL + 2);
          }
       }
@@ -149,6 +149,7 @@ System.err.println("Found header with key \"" + key + "\" and value \"" + value 
 
       private String _status;
       private String _body;
+      private HashMap _headers;
 
       String getStatus() {
          return _status;
@@ -159,7 +160,12 @@ System.err.println("Found header with key \"" + key + "\" and value \"" + value 
       }
 
       List getHeaderValues(String key) {
-         return new ArrayList(); // TODO
+         Object value = _headers.get(key.toUpperCase());
+         if (value == null) {
+            return new ArrayList();
+         } else {
+            return (List) value;
+         }
       }
    }
 }
