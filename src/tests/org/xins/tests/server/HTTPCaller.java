@@ -54,6 +54,7 @@ public class HTTPCaller extends Object {
             }
          }
          toWrite += eol;
+System.err.println("Sending: \"" + toWrite + "\".");
 
          // Write the output
          out.write(toWrite.getBytes());
@@ -69,7 +70,7 @@ public class HTTPCaller extends Object {
       }
 
       // Convert the response to a character string
-      String response = new String(buffer);
+      String response = new String(buffer, "ISO-8859-1");
 
       // Prepare the result
       Result result = new Result();;
