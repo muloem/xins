@@ -347,7 +347,8 @@ public class CallingConventionTests extends TestCase {
               "    </ns0:ResultCodeRequest>" +
               "  </soap:Body>" +
               "</soap:Envelope>";
-      Element result = postXML(destination, data);
+      int expectedStatus = success ? 200 : 500;
+      Element result = postXML(destination, data, expectedStatus);
       assertEquals("Envelope", result.getLocalName());
       assertEquals("Incorrect number of \"Fault\" elements.", 0, result.getChildElements("Fault").size());
       assertEquals("Incorrect number of \"Body\" elements.", 1, result.getChildElements("Body").size());
@@ -640,6 +641,30 @@ public class CallingConventionTests extends TestCase {
     *    if anything goes wrong.
     */
    private Element postXML(String destination, String data) throws Exception {
+      return postXML(destination, data, 200);
+   }
+
+   /**
+    * Posts the XML data the the given destination.
+    *
+    * @param destination
+    *    the destination where the XML has to be posted.
+    *
+    * @param data
+    *    the XML to post.
+    *
+    * @param expectedStatus
+    *    the HTTP status code that is expected.
+    *
+    * @return
+    *    the returned XML already parsed.
+    *
+    * @throw Exception
+    *    if anything goes wrong.
+    */
+   private Element postXML(String destination, String data, int expectedStatus)
+   throws Exception {
+
       PostMethod post = new PostMethod(destination);
       post.setRequestHeader("Content-Type", "text/xml; charset=UTF-8");
       post.setRequestBody(data);
@@ -648,6 +673,7 @@ public class CallingConventionTests extends TestCase {
       client.setTimeout(5000);
       try {
          int code = client.executeMethod(post);
+         assertEquals(expectedStatus, code);
          byte[] returnedData = post.getResponseBody();
          ElementParser parser = new ElementParser();
          String content = new String(returnedData);
@@ -791,7 +817,6 @@ public class CallingConventionTests extends TestCase {
    /**
     * Tests that unknown HTTP methods return the appropriate HTTP error.
     */
-/* TODO FIXME: This test hangs for me :-(  (Ernst, 5 Oct 2006)
    public void testUnknownHTTPMethods() throws Exception {
 
       String[] unknown = new String[] { "PUT", "DELETE", "POLL",  "JO-JO", "get", "post" };
@@ -812,5 +837,5 @@ public class CallingConventionTests extends TestCase {
          assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
                       "501 Not Implemented", result.getStatus());
       }
-   }*/
+   }
 }
