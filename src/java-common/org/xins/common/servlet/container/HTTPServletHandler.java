@@ -441,7 +441,6 @@ public class HTTPServletHandler {
       // Read the first line
       int eolIndex = request.indexOf(CRLF);
       if (eolIndex < 0) {
-System.err.println("400 Bad Request: Expected CRLF indicating EOL.");
          sendBadRequest(out);
          return;
       }
@@ -449,10 +448,7 @@ System.err.println("400 Bad Request: Expected CRLF indicating EOL.");
       // The first line must end with "HTTP/1.1"
       String line = request.substring(0, eolIndex);
       request = request.substring(eolIndex + 2);
-System.err.println("First line is \"" + line + "\"");
-System.err.println("Rest is \"" + request + "\"");
       if (! line.endsWith(" HTTP/1.1")) {
-System.err.println("400 Bad Request: First line does not end with \" HTTP/1.1\".");
          sendBadRequest(out);
          return;
       }
@@ -463,31 +459,26 @@ System.err.println("400 Bad Request: First line does not end with \" HTTP/1.1\".
       // Find the space
       int spaceIndex = line.indexOf(' ');
       if (spaceIndex < 1) {
-System.err.println("400 Bad Request: Could not determine method.");
          sendBadRequest(out);
          return;
       }
 
       // Determine the method
       String method = line.substring(0, spaceIndex);
-System.err.println("Method is \"" + method + "\".");
 
       // Determine the query string
       String url = line.substring(spaceIndex + 1);
       if (url == null || "".equals(url)) {
-System.err.println("400 Bad Request: Could not determine query string.");
          sendBadRequest(out);
          return;
       } else if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
          url = url.replace(',', '&');
       }
-System.err.println("Query string is \"" + url + "\".");
 
       // Normalize the query string
       if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
          url += "index.html";
       }
-System.err.println("Normalized query string is \"" + url + "\".");
 
       // Read the headers
       HashMap inHeaders = new HashMap();
@@ -500,7 +491,6 @@ System.err.println("Normalized query string is \"" + url + "\".");
             try {
                parseHeader(inHeaders, request.substring(0, nextEOL));
             } catch (ParseException exception) {
-System.err.println("400 Bad Request: Error while parsing request headers.");
                sendBadRequest(out);
                return;
             }
@@ -513,7 +503,6 @@ System.err.println("400 Bad Request: Error while parsing request headers.");
                   ? ""
                   : request.substring(2);
 
-System.err.println("Request body is \"" + body + "\".");
 
       // Response encoding defaults to request encoding
       String responseEncoding = REQUEST_ENCODING;
@@ -545,7 +534,6 @@ System.err.println("Request body is \"" + body + "\".");
          if (virtualPath.endsWith("/") && virtualPath.length() > 1) {
             virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
          }
-System.err.println("Virtual path is \"" + virtualPath + "\".");
 
          // Get the Servlet according to the path
          LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
@@ -573,7 +561,6 @@ System.err.println("Virtual path is \"" + virtualPath + "\".");
                String headerValue = outHeaders.get(nextHeader);
                if (headerValue != null) {
                   httpResult += nextHeader + ": " + headerValue + "\r\n";
-System.err.println("Response header \"" + nextHeader + ": " + headerValue + "\"");
                }
             }
 
@@ -590,7 +577,6 @@ System.err.println("Response header \"" + nextHeader + ": " + headerValue + "\""
          }
       }
 
-System.err.println("Sending response \"" + httpResult + "\".");
       byte[] bytes = httpResult.getBytes(responseEncoding);
       out.write(bytes, 0, bytes.length);
       out.flush();
@@ -625,7 +611,6 @@ System.err.println("Sending response \"" + httpResult + "\".");
 
       // Always trim the value
       value = value.trim();
-System.err.println("Found request header with key \"" + key + "\" and value \"" + value + "\".");
 
       // XXX: Only one header supported
       if (headers.get(key) != null) {
@@ -676,7 +661,6 @@ System.err.println("Found request header with key \"" + key + "\" and value \"" 
          httpResult += content + "\n";
          httpResult += "\n";
       } else {
-System.err.println("Web page \"" + url + "\" not found.");
          httpResult = "HTTP/1.1 404 Not Found\r\n";
       }
       return httpResult;

@@ -263,22 +263,17 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private void parseURL(String url) {
 
-System.err.println("Parsing URL \"" + url + "\".");
       // Parse the URL
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos == url.length() - 1) {
-System.err.println("-- route 0. questionMarkPos=" + questionMarkPos + "; url.length=" + url.length());
          _queryString = "";
       } else if (questionMarkPos != -1) {
-System.err.println("-- route 1");
          _queryString = url.substring(questionMarkPos + 1);
       } else {
-System.err.println("-- route 2");
          _queryString = null;
          return;
       }
 
-System.err.println("-- query string: \"" + _queryString + '"');
       StringTokenizer paramsParser = new StringTokenizer(_queryString, "&");
       while (paramsParser.hasMoreTokens()) {
          String parameter = paramsParser.nextToken();
@@ -290,7 +285,6 @@ System.err.println("-- query string: \"" + _queryString + '"');
                if (equalPos != parameter.length()-1) {
                   paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
                }
-System.err.println("-- parameter: \"" + paramName + "\" --> \"" + paramValue + "\"");
                Object currValue = _parameters.get(paramName);
                if (currValue == null) {
                   _parameters.put(paramName, paramValue);
