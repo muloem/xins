@@ -132,8 +132,6 @@ extends Manageable {
       // Create a map to store the conventions in
       _conventions = new HashMap(89);
 
-      // Initialize the set of supported methods
-      _supportedMethods = new HashSet();
    }
 
 
@@ -163,13 +161,6 @@ extends Manageable {
     * <p>This field is initialized during bootstrapping.
     */
    private final HashMap _conventions;
-
-   /**
-    * The set of supported HTTP methods. The values are initialized during the
-    * initialization stage, see {@link #initImpl(PropertyReader)}. Never
-    * <code>null</code>.
-    */
-   private final HashSet _supportedMethods;
 
 
    //-------------------------------------------------------------------------
@@ -541,10 +532,6 @@ extends Manageable {
           InvalidPropertyValueException,
           InitializationException {
 
-      // Reset the supported HTTP methods
-      _supportedMethods.clear();
-      HashSet methods = new HashSet();
-
       // Loop through all CallingConvention instances
       Iterator iterator = _conventions.entrySet().iterator();
       while (iterator.hasNext()) {
@@ -561,21 +548,12 @@ extends Manageable {
             CallingConvention conv = (CallingConvention) cc;
             init(name, conv, properties);
 
-            // If the initialization succeeded, then add the supported methods
-            // to the set
-            if (conv.isUsable()) {
-               methods.addAll(conv.supportedMethods());
-
             // Fail if the *default* calling convention fails to initialize
-            } else if (name.equals(_defaultConventionName)) {
+            if (!conv.isUsable() && name.equals(_defaultConventionName)) {
                throw new InitializationException("Failed to initialize the default calling convention \"" + name + "\".");
             }
          }
       }
-
-      // Only fill the set of supported methods if the initialization
-      // completed successfully
-      _supportedMethods.addAll(methods);
    }
 
    /**
@@ -636,27 +614,6 @@ extends Manageable {
       } catch (Throwable exception) {
          Log.log_3439(exception, name);
       }
-
-      // Determine the HTTP methods supported for function invocations. If
-      // this fails, the the calling convention should not be considered
-      // usable.
-      try {
-         cc.determineSupportedMethods();
-         Log.log_3436(name);
-      } catch (Throwable exception) {
-         Log.log_3439(exception, name);
-         try {
-            cc.deinit();
-         } catch (Throwable ignored) {
-            String thisClass  = CallingConventionManager.class.getName();
-            String thisMethod = "init(java.lang.String,"
-                              + "org.xins.server.CallingConvention,"
-                              + "org.xins.common.collections.PropertyReader)";
-            Utils.logIgnoredException(thisClass,               thisMethod,
-                                      cc.getClass().getName(), "deinit()",
-                                      ignored);
-         }
-      }
    }
 
    /**
@@ -681,7 +638,14 @@ extends Manageable {
 
       // If a calling convention is specified then use that one
       if (! TextUtils.isEmpty(ccName)) {
-         return getCallingConvention(ccName);
+         CallingConvention cc = getCallingConvention(ccName);
+         if (! Arrays.asList(cc.getSupportedMethods(request)).contains(request.getMethod()) && !"OPTIONS".equals(request.getMethod())) {
+            String detail = "Calling convention \"" + ccName + 
+                  "\" does not support the \"" + request.getMethod() + "\" for this request.";
+            Log.log_3507(ccName, detail);
+            throw new InvalidRequestException(detail);
+         }
+         return cc;
 
       // Otherwise try to detect which one is appropriate
       } else {
@@ -712,9 +676,7 @@ extends Manageable {
 
       // Not found
       if (o == null) {
-         String detail = "Calling convention \""
-                       + name
-                       + "\" is unknown.";
+         String detail = "Calling convention \"" + name + "\" is unknown.";
          Log.log_3507(name, detail);
          throw new InvalidRequestException(detail);
 
@@ -756,7 +718,7 @@ extends Manageable {
     * @return
     *    the calling convention, or <code>null</code>.
     */
-   private CallingConvention getCallingConvention2(String name) {
+   CallingConvention getCallingConvention2(String name) {
 
       // Get the CallingConvention object
       Object o = _conventions.get(name);
@@ -949,7 +911,7 @@ extends Manageable {
          Object object = iterator.next();
          if (object instanceof CallingConvention) {
             CallingConvention cc = (CallingConvention) object;
-            set.addAll(cc.supportedMethods());
+            set.addAll(Arrays.asList(cc.getSupportedMethods()));
          }
       }
 

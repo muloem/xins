@@ -1084,7 +1084,7 @@ public class AllInOneAPITests extends TestCase {
 
       // Test the default returned parameter
       DefaultValueResult result = _capi.callDefaultValue(null, null, null, null);
-      assertEquals("Test of default", result.getOutputText());
+      assertEquals("Test of default & \" { \u00e9", result.getOutputText());
    }
 
    /* Does not work as only one instance of an API is possible

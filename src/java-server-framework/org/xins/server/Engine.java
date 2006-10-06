@@ -7,6 +7,7 @@
 package org.xins.server;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
@@ -553,14 +554,10 @@ final class Engine extends Object {
       // Support the HTTP method "OPTIONS"
       } else if ("OPTIONS".equals(method)) {
          if ("*".equals(path)) {
-            handleOptionsForAll(response);
+            handleOptions(null, request, response);
          } else {
             delegateToCC(start, request, response);
          }
-
-      // Fail if the method is not supported by any calling convention
-      } else if (! _conventionManager.getSupportedMethods().contains(method)) {
-         handleUnknownMethod(request, response);
 
       // The request should be handled by a calling convention
       } else {
@@ -633,32 +630,6 @@ final class Engine extends Object {
       String reason  = "XINS/Java Server Framework engine state \""
                      + state
                      + "\" does not allow incoming requests.";
-      handleUnprocessableRequest(request, response, statusCode, reason);
-   }
-
-   /**
-    * Handles an incoming request that specifies an HTTP method that not
-    * supported by any of the calling conventions.
-    *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
-    *
-    * @param response
-    *    the servlet response, should not be <code>null</code>.
-    *
-    * @throws IOException
-    *    in case of an I/O error.
-    */
-   private void handleUnknownMethod(HttpServletRequest  request,
-                                    HttpServletResponse response)
-   throws IOException {
-
-      // Log and respond
-      int statusCode = HttpServletResponse.SC_NOT_IMPLEMENTED;
-      String reason = "The HTTP method \""
-                    + request.getMethod()
-                    + "\" is not known by any of the usable calling "
-                    + "conventions.";
       handleUnprocessableRequest(request, response, statusCode, reason);
    }
 
@@ -741,13 +712,29 @@ final class Engine extends Object {
          int    statusCode;
          String reason;
          if (exception instanceof InvalidRequestException) {
-            statusCode = HttpServletResponse.SC_BAD_REQUEST;
-            reason     = "Unable to activate appropriate calling convention";
-            String exceptionMessage = exception.getMessage();
-            if (TextUtils.isEmpty(exceptionMessage)) {
-               reason += '.';
+            
+            String method = request.getMethod();
+            String ccName = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
+            // Check if the method is known by at least one CC (otherwise 501)
+            if (!_conventionManager.getSupportedMethods().contains(method)) {
+               statusCode = HttpServletResponse.SC_NOT_IMPLEMENTED;
+               reason = "The HTTP method \"" + method + "\" is not known by any of the usable calling conventions.";
+
+            // Check if the method is known for the specified CC (otherwise 405)
+            } else if (ccName != null && 
+                  _conventionManager.getCallingConvention2(ccName) != null &&
+                  !Arrays.asList(_conventionManager.getCallingConvention2(ccName).getSupportedMethods(request)).contains(method)) {
+               statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+               reason = "The HTTP method \"" + method + "\" is not allowed for the calling convention \"" + ccName + "\".";
             } else {
-               reason += ": " + exceptionMessage;
+               statusCode = HttpServletResponse.SC_BAD_REQUEST;
+               reason     = "Unable to activate appropriate calling convention";
+               String exceptionMessage = exception.getMessage();
+               if (TextUtils.isEmpty(exceptionMessage)) {
+                  reason += '.';
+               } else {
+                  reason += ": " + exceptionMessage;
+               }
             }
          } else {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -810,19 +797,7 @@ final class Engine extends Object {
          int    statusCode;
          String reason;
 
-         // Unsupported HTTP method
-         if (exception instanceof UnsupportedMethodException) {
-            statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
-            reason     = "Calling convention \""
-                       + cc.getClass().getName()
-                       + "\" cannot process the request";
-            String exceptionMessage = exception.getMessage();
-            if (! TextUtils.isEmpty(exceptionMessage)) {
-               reason += ": " + exceptionMessage;
-            } else {
-               reason += '.';
-            }
-         } else if (exception instanceof InvalidRequestException) {
+         if (exception instanceof InvalidRequestException) {
             statusCode = HttpServletResponse.SC_BAD_REQUEST;
             reason     = "Calling convention \""
                        + cc.getClass().getName()
@@ -915,36 +890,15 @@ final class Engine extends Object {
    }
 
    /**
-    * Handles an <em>OPTIONS</em> request for the resource <code>*</code>.
-    *
-    * @param response
-    *    the response to fill, never <code>null</code>.
-    *
-    * @throws IOException
-    *    in case of an I/O error.
-    */
-   private void handleOptionsForAll(HttpServletResponse response)
-   throws IOException {
-
-      // Create the string with the supported HTTP methods
-      Iterator it = _conventionManager.getSupportedMethods().iterator();
-      String string = "OPTIONS";
-      while (it.hasNext()) {
-         String next = (String) it.next();
-         string += ", " + next;
-      }
-
-      // Return the full response
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Accept", string);
-      response.setContentLength(0);
-   }
-
-   /**
-    * Handles an <em>OPTIONS</em> request for a specific calling convention.
+    * Handles an <em>OPTIONS</em> request for a specific calling convention
+    * or for the resource <code>*</code> if no calling convention is given.
     *
     * @param cc
-    *    the calling convention, never <code>null</code>.
+    *    the calling convention, can be <code>null</code>. if no calling 
+    *    convention is specified all possible method names are returned.
+    *
+    * @param request
+    *    the request, never <code>null</code>.
     *
     * @param response
     *    the response to fill, never <code>null</code>.
@@ -958,15 +912,20 @@ final class Engine extends Object {
    throws IOException {
 
       // Create the string with the supported HTTP methods
-      String[] methods = cc.getSupportedMethods(request);
-      String string = "OPTIONS";
+      String[] methods = null;
+      if (cc != null) {
+         methods = cc.getSupportedMethods(request);
+      } else {
+         methods = (String[]) _conventionManager.getSupportedMethods().toArray(new String[0]);
+      }
+      String methodsList = "OPTIONS";
       for (int i = 0; i < methods.length; i++) {
-         string += ", " + methods[i];
+         methodsList += ", " + methods[i];
       }
 
       // Return the full response
       response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Accept", string);
+      response.setHeader("Accept", methodsList);
       response.setContentLength(0);
    }
 

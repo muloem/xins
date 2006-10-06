@@ -96,7 +96,7 @@ public class BeanUtilsTests extends TestCase {
       assertTrue(pojo.getAlmostBoolean().booleanValue());
    }
 
-   /* XXX test fails
+   /* AG XXX test fails
    public void testPopulateWithConvertion() throws Exception {
 
       // Boolean to String
