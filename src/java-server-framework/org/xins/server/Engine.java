@@ -540,7 +540,7 @@ final class Engine extends Object {
 
       // Log that we have received an HTTP request
       String remoteIP    = request.getRemoteAddr();
-      String method      = request.getMethod().toUpperCase();
+      String method      = request.getMethod();
       String path        = request.getRequestURI();
       String queryString = request.getQueryString();
       Log.log_3521(remoteIP, method, path, queryString);
@@ -694,7 +694,7 @@ final class Engine extends Object {
       if (cc != null) {
 
          // Handle OPTIONS calls separately
-         String method = request.getMethod().toUpperCase();
+         String method = request.getMethod();
          if ("OPTIONS".equals(method)) {
             handleOptions(cc, request, response);
 
@@ -931,7 +931,7 @@ final class Engine extends Object {
       String string = "OPTIONS";
       while (it.hasNext()) {
          String next = (String) it.next();
-         string += ", " + next.toUpperCase();
+         string += ", " + next;
       }
 
       // Return the full response
@@ -961,7 +961,7 @@ final class Engine extends Object {
       String[] methods = cc.getSupportedMethods(request);
       String string = "OPTIONS";
       for (int i = 0; i < methods.length; i++) {
-         string += ", " + methods[i].toUpperCase();
+         string += ", " + methods[i];
       }
 
       // Return the full response
