@@ -158,7 +158,7 @@ public class BeanUtils {
             // Convert a String or an EnumItem to another EnumItem.
             if (EnumItem.class.isAssignableFrom(destClass)) {
                Method convertionMethod = destClass.getMethod("getItemByValue", STRING_CLASS);
-               String[] convertParams = {origValue.toString()};
+               Object[] convertParams = {origValue.toString()};
                Object convertedObj = convertionMethod.invoke(null, convertParams);
                return convertedObj;
             
