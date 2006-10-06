@@ -445,10 +445,10 @@ public class HTTPServletHandler {
          return;
       }
 
-      // The first line must end with "HTTP/1.1"
+      // The first line must end with "HTTP/1.0" or "HTTP/1.1"
       String line = request.substring(0, eolIndex);
       request = request.substring(eolIndex + 2);
-      if (! line.endsWith(" HTTP/1.1")) {
+      if (! (line.endsWith(" HTTP/1.1") || line.endsWith(" HTTP/1.0"))) {
          sendBadRequest(out);
          return;
       }
@@ -567,13 +567,15 @@ public class HTTPServletHandler {
             String result = response.getResult();
             if (result != null) {
                responseEncoding = response.getCharacterEncoding();
-               length = result.getBytes(responseEncoding).length + 1;
+               length = response.getContentLength();
+               if (length < 0) {
+                  length = result.getBytes(responseEncoding).length;
+               }
                httpResult += "Content-Length: " + length + "\r\n";
                httpResult += "Connection: close\r\n";
                httpResult += "\r\n";
-               httpResult += result + "\n";
+               httpResult += result;
             }
-            httpResult += "\n";
          }
       }
 
@@ -654,12 +656,11 @@ public class HTTPServletHandler {
          httpResult = "HTTP/1.1 200 OK\r\n";
          String fileName = url.substring(url.lastIndexOf('/') + 1);
          httpResult += "Content-Type: " + MIME_TYPES_MAP.getContentTypeFor(fileName) + "\r\n";
-         int length = content.getBytes("ISO-8859-1").length + 1;
+         int length = content.getBytes("ISO-8859-1").length;
          httpResult += "Content-Length: " + length + "\r\n";
          httpResult += "Connection: close\r\n";
          httpResult += "\r\n";
-         httpResult += content + "\n";
-         httpResult += "\n";
+         httpResult += content;
       } else {
          httpResult = "HTTP/1.1 404 Not Found\r\n";
       }
