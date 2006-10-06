@@ -72,7 +72,9 @@ public class CustomTestConvention extends CustomCallingConvention {
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException, FunctionNotSpecifiedException {
       String[] query = httpRequest.getParameterValues("query");
-      if (query.length > 1) {
+      if (query == null) {
+         throw new InvalidRequestException("Expected input parameter \"query\" to be set.");
+      } else if (query.length > 1) {
          throw new InvalidRequestException("Multiple values for input parameter \"query\": \"" + query[0] + "\" and \"" + query[1] + "\".");
       }
 
