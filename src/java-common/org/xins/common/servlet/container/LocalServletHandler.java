@@ -258,7 +258,8 @@ public class LocalServletHandler {
     *
     * @param headers
     *    the HTTP headers passed with the query, cannot be <code>null</code>.
-    *    The key and the value of the Map is String.
+    *    The key and the value of the Map is String. The keys are all in 
+    *    uppercase.
     *
     * @return
     *    the servlet response.
@@ -270,7 +271,7 @@ public class LocalServletHandler {
     */
    public XINSServletResponse query(String method,
                                     String url,
-                                    char[] data,
+                                    String data,
                                     Map headers)
    throws IOException {
 

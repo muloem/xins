@@ -13,11 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.FileNameMap;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,12 +32,13 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.helpers.NullEnumeration;
-import org.xins.common.Library;
 
+import org.xins.common.Library;
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.text.ParseException;
 
 /**
  * HTTP server used to invoke the XINS servlet.
@@ -79,6 +82,10 @@ public class HTTPServletHandler {
     * The map containing the MIME type information. Never <code>null</code>
     */
    private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
+
+   private final static String REQUEST_ENCODING = "ISO-8859-1";
+
+   private final static String CRLF = "\r\n";
 
 
    //-------------------------------------------------------------------------
@@ -375,10 +382,13 @@ public class HTTPServletHandler {
       BufferedOutputStream outbound = null;
       try {
          // Acquire the streams for IO
+/* TODO
          inbound  = new BufferedReader(new InputStreamReader(client.getInputStream()));
          outbound = new BufferedOutputStream(client.getOutputStream());
 
          httpQuery(inbound, outbound);
+*/
+         httpQuery(client.getInputStream(), client.getOutputStream());
 
       } finally{
 
@@ -409,110 +419,122 @@ public class HTTPServletHandler {
     * the virtual path "/" is used as default. If there is no servlet then with
     * the virtual path "/" is found then HTTP 404 is returned.
     *
-    * @param input
-    *    the input character stream that contains the request sent by the
-    *    client.
+    * @param in
+    *    the input byte stream that contains the request sent by the client.
     *
-    * @param outbound
+    * @param out
     *    the output byte stream that must be fed the response towards the
     *    client.
     *
     * @throws IOException
     *    if the query is not handled correctly.
     */
-   public void httpQuery(BufferedReader input,
-                         BufferedOutputStream outbound) throws IOException {
+   public void httpQuery(InputStream  in, OutputStream out)
+   throws IOException {
 
       // Read the input
-      String url = null;
-      char[] contentData = null;
-      Map inHeaders = new HashMap();
-      int contentLength = -1;
-      String inContentType = null;
-      boolean inputRead = false;
-      String encoding = "ISO-8859-1";
-      String method;
-      String httpResult;
-      boolean getMethod = false;
+      // XXX: Buffer size determines maximum request size
+      byte[] buffer = new byte[16384];
+      int length = in.read(buffer);
+      String request = new String(buffer, 0, length, REQUEST_ENCODING);
 
       // Read the first line
-      String inputLine = input.readLine();
-      if (inputLine == null || inputLine.length() < 1) {
-         httpResult = "HTTP/1.1 400 Bad Request\r\n";
-         byte[] bytes = httpResult.getBytes(encoding);
-         outbound.write(bytes, 0, bytes.length);
-         outbound.flush();
+      int eolIndex = request.indexOf(CRLF);
+      if (eolIndex < 0) {
+System.err.println("400 Bad Request: Expected CRLF indicating EOL.");
+         sendBadRequest(out);
          return;
       }
 
+      // The first line must end with "HTTP/1.1"
+      String line = request.substring(0, eolIndex);
+      request = request.substring(eolIndex + 2);
+System.err.println("First line is \"" + line + "\"");
+System.err.println("Rest is \"" + request + "\"");
+      if (! line.endsWith(" HTTP/1.1")) {
+System.err.println("400 Bad Request: First line does not end with \" HTTP/1.1\".");
+         sendBadRequest(out);
+         return;
+      }
+
+      // Cut off the last part
+      line = line.substring(0, line.length() - 9);
+
       // Find the space
-      int spaceIndex = inputLine.indexOf(' ');
+      int spaceIndex = line.indexOf(' ');
       if (spaceIndex < 1) {
-         httpResult = "HTTP/1.1 400 Bad Request\r\n";
-         byte[] bytes = httpResult.getBytes(encoding);
-         outbound.write(bytes, 0, bytes.length);
-         outbound.flush();
+System.err.println("400 Bad Request: Could not determine method.");
+         sendBadRequest(out);
          return;
       }
 
       // Determine the method
-      method = inputLine.substring(0, spaceIndex).toUpperCase();
+      String method = line.substring(0, spaceIndex);
+System.err.println("Method is \"" + method + "\".");
 
-      url = inputLine.substring(spaceIndex + 1);
-      if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
+      // Determine the query string
+      String url = line.substring(spaceIndex + 1);
+      if (url == null || "".equals(url)) {
+System.err.println("400 Bad Request: Could not determine query string.");
+         sendBadRequest(out);
+         return;
+      } else if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
          url = url.replace(',', '&');
-         getMethod = true;
       }
+System.err.println("Query string is \"" + url + "\".");
 
-      while (!inputRead && (inputLine = input.readLine()) != null) {
+      // Normalize the query string
+      if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
+         url += "index.html";
+      }
+System.err.println("Normalized query string is \"" + url + "\".");
 
-         // Read the HTTP headers
-         if (inputLine.indexOf(": ") > 0) {
-            int colonPos = inputLine.indexOf(": ");
-            String headerKey = inputLine.substring(0, colonPos);
-            String headerValue = inputLine.substring(colonPos + 2);
-            inHeaders.put(headerKey, headerValue);
-            if (headerKey.equalsIgnoreCase("content-length")) {
-               contentLength = Integer.parseInt(headerValue);
-            } else if (headerKey.equalsIgnoreCase("content-type")) {
-               inContentType = headerValue;
+      // Read the headers
+      HashMap inHeaders = new HashMap();
+      boolean done = false;
+      while (! done) {
+         int nextEOL = request.indexOf(CRLF);
+         if (nextEOL <= 0) {
+            done = true;
+         } else {
+            try {
+               parseHeader(inHeaders, request.substring(0, nextEOL));
+            } catch (ParseException exception) {
+System.err.println("400 Bad Request: Error while parsing request headers.");
+               sendBadRequest(out);
+               return;
             }
-
-         // Headers read for HTTP GET
-         } else if (getMethod && inputLine.equals("")) {
-            inputRead = true;
-
-         // Headers read for HTTP POST, then read the content
-         } else if (contentLength != -1 && inputLine.equals("")) {
-            if (inContentType == null) {
-               input.readLine();
-            }
-            contentData = new char[contentLength];
-            input.read(contentData);
-            inputRead = true;
+            request = request.substring(nextEOL + 2);
          }
       }
 
+      // Determine the body contents
+      String body = "".equals(request)
+                  ? ""
+                  : request.substring(2);
 
-      // Normalize the URL (removing the " HTTP/1.1" suffix)
-      if (url != null && url.indexOf(' ') != -1) {
-         url = url.substring(0, url.indexOf(' '));
-         if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
-            url += "index.html";
-         }
-      }
+System.err.println("Request body is \"" + body + "\".");
 
-      if (url == null) {
-         httpResult = "HTTP/1.1 400 Bad Request\r\n";
+      // Response encoding defaults to request encoding
+      String responseEncoding = REQUEST_ENCODING;
 
       // Handle the case that a web page is requested
-      } else if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/") && !"*".equals(url)) {
+      boolean getMethod = method.equals("GET") || method.equals("HEAD");
+      String httpResult;
+      if (getMethod && url.indexOf('?') == -1 && !url.endsWith("/") && !"*".equals(url)) {
          httpResult = readWebPage(url);
+
+      // No web page requested
       } else {
 
-         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && contentData != null) {
-            url += '?' + new String(contentData);
-            contentData = null;
+         // Determine the content type
+         String inContentType = getHeader(inHeaders, "Content-Type");
+
+         // If www-form encoded, then append the body to the query string
+         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && body != null && body.length() > 0) {
+            // XXX: What if the URL already contains a question mark?
+            url += '?' + body;
+            body = null;
          }
 
          // Locate the path of the URL
@@ -523,6 +545,7 @@ public class HTTPServletHandler {
          if (virtualPath.endsWith("/") && virtualPath.length() > 1) {
             virtualPath = virtualPath.substring(0, virtualPath.length() - 1);
          }
+System.err.println("Virtual path is \"" + virtualPath + "\".");
 
          // Get the Servlet according to the path
          LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
@@ -534,30 +557,30 @@ public class HTTPServletHandler {
 
          // If no servlet is found return 404
          if (servlet == null) {
-            httpResult = "HTTP/1.1 404 Not Found\r\n";
+            sendError(out, "404 Not Found");
+            return;
          } else {
 
             // Query the Servlet
-            XINSServletResponse response = servlet.query(method, url, contentData, inHeaders);
+            XINSServletResponse response = servlet.query(method, url, body, inHeaders);
 
             // Create the HTTP answer
-            httpResult = "HTTP/1.1 " + response.getStatus() + " " +
-                  HttpStatus.getStatusText(response.getStatus()) + "\r\n";
-            PropertyReader headers = response.getHeaders();
-            Iterator itHeaderNames = headers.getNames();
+            httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + CRLF;
+            PropertyReader outHeaders = response.getHeaders();
+            Iterator itHeaderNames = outHeaders.getNames();
             while (itHeaderNames.hasNext()) {
                String nextHeader = (String) itHeaderNames.next();
-               String headerValue = headers.get(nextHeader);
+               String headerValue = outHeaders.get(nextHeader);
                if (headerValue != null) {
                   httpResult += nextHeader + ": " + headerValue + "\r\n";
-                  //System.out.println(": " + nextHeader + ": " + headerValue);
+System.err.println("Response header \"" + nextHeader + ": " + headerValue + "\"");
                }
             }
 
             String result = response.getResult();
             if (result != null) {
-               encoding = response.getCharacterEncoding();
-               int length = result.getBytes(encoding).length + 1;
+               responseEncoding = response.getCharacterEncoding();
+               length = result.getBytes(responseEncoding).length + 1;
                httpResult += "Content-Length: " + length + "\r\n";
                httpResult += "Connection: close\r\n";
                httpResult += "\r\n";
@@ -567,9 +590,54 @@ public class HTTPServletHandler {
          }
       }
 
-      byte[] bytes = httpResult.getBytes(encoding);
-      outbound.write(bytes, 0, bytes.length);
-      outbound.flush();
+System.err.println("Sending response \"" + httpResult + "\".");
+      byte[] bytes = httpResult.getBytes(responseEncoding);
+      out.write(bytes, 0, bytes.length);
+      out.flush();
+   }
+
+   private void sendError(OutputStream out, String status)
+   throws IOException {
+      String httpResult = "HTTP/1.1 " + status + CRLF + CRLF;
+      byte[] bytes = httpResult.getBytes(REQUEST_ENCODING);
+      out.write(bytes, 0, bytes.length);
+      out.flush();
+   }
+
+   private void sendBadRequest(OutputStream out)
+   throws IOException {
+      sendError(out, "400 Bad Request");
+   }
+
+   private static void parseHeader(HashMap headers, String header)
+   throws ParseException{
+      int index = header.indexOf(':');
+      if (index < 1) {
+         throw new ParseException();
+      }
+
+      // Get key and value
+      String key   = header.substring(0, index);
+      String value = header.substring(index + 1);
+
+      // Always convert the key to upper case
+      key = key.toUpperCase();
+
+      // Always trim the value
+      value = value.trim();
+System.err.println("Found request header with key \"" + key + "\" and value \"" + value + "\".");
+
+      // XXX: Only one header supported
+      if (headers.get(key) != null) {
+         throw new ParseException();
+      }
+
+      // Store the key-value combo
+      headers.put(key, value);
+   }
+
+   String getHeader(HashMap headers, String key) {
+      return (String) headers.get(key.toUpperCase());
    }
 
    /**

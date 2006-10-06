@@ -117,12 +117,12 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @deprecated
     *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
-    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
+    *    Use {@link #XINSServletRequest(String,String,String,Map)} instead.
     */
    public XINSServletRequest(String url, char[] data, String contentType) {
-      _method      = (_postData == null) ? "GET" : "POST";
+      _method      = (data == null) ? "GET" : "POST";
       _url         = url;
-      _postData    = data;
+      _postData    = new String(data);
       _contentType = contentType;
       parseURL(url);
    }
@@ -145,17 +145,14 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @deprecated
     *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
-    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
+    *    Use {@link #XINSServletRequest(String,String,String,Map)} instead.
     */
    public XINSServletRequest(String url, char[] data, Map headers) {
-      _method   = (_postData == null) ? "GET" : "POST";
+      _method   = (data == null) ? "GET" : "POST";
       _url      = url;
-      _postData = data;
+      _postData = new String(data);
       _headers.putAll(headers);
-
-      if (headers.get("Content-Type") != null) {
-         _contentType = (String) headers.get("Content-Type");
-      }
+      _contentType = (String) headers.get("CONTENT-TYPE");
       parseURL(url);
    }
 
@@ -174,18 +171,16 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @param headers
     *    the HTTP headers of the request. The key and the value of the Map
-    *    is a String.
+    *    is a String. The keys should all be in upper case.
     *
     * @since XINS 1.5.0
     */
-   public XINSServletRequest(String method, String url, char[] data, Map headers) {
+   public XINSServletRequest(String method, String url, String data, Map headers) {
       _method   = method;
       _url      = url;
       _postData = data;
       _headers.putAll(headers);
-      if (headers.get("Content-Type") != null) {
-         _contentType = (String) headers.get("Content-Type");
-      }
+      _contentType = (String) headers.get("CONTENT-TYPE");
       parseURL(url);
    }
 
@@ -237,7 +232,7 @@ public class XINSServletRequest implements HttpServletRequest {
    /**
     * The content of the HTTP POST.
     */
-   private char[] _postData;
+   private String _postData;
 
    /**
     * The cookies of the request.
@@ -268,16 +263,22 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private void parseURL(String url) {
 
+System.err.println("Parsing URL \"" + url + "\".");
       // Parse the URL
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos == url.length() - 1) {
+System.err.println("-- route 0. questionMarkPos=" + questionMarkPos + "; url.length=" + url.length());
          _queryString = "";
       } else if (questionMarkPos != -1) {
+System.err.println("-- route 1");
          _queryString = url.substring(questionMarkPos + 1);
       } else {
+System.err.println("-- route 2");
          _queryString = null;
          return;
       }
+
+System.err.println("-- query string: \"" + _queryString + '"');
       StringTokenizer paramsParser = new StringTokenizer(_queryString, "&");
       while (paramsParser.hasMoreTokens()) {
          String parameter = paramsParser.nextToken();
@@ -289,6 +290,7 @@ public class XINSServletRequest implements HttpServletRequest {
                if (equalPos != parameter.length()-1) {
                   paramValue = URLEncoding.decode(parameter.substring(equalPos + 1));
                }
+System.err.println("-- parameter: \"" + paramName + "\" --> \"" + paramValue + "\"");
                Object currValue = _parameters.get(paramName);
                if (currValue == null) {
                   _parameters.put(paramName, paramValue);
@@ -332,7 +334,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public int getIntHeader(String str) {
-      String value = (String) _headers.get(str);
+      String value = getHeader(str);
       if (value != null) {
          try {
             return Integer.parseInt(value);
@@ -353,7 +355,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getHeader(String str) {
-      return (String) _headers.get(str);
+      return (String) _headers.get(str.toUpperCase());
    }
 
    public Enumeration getHeaders(String str) {
@@ -455,8 +457,8 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public Cookie[] getCookies() {
-      if (_cookies == null && _headers.get("Cookie") != null) {
-         String cookies = (String) _headers.get("Cookie");
+      if (_cookies == null && _headers.get("COOKIE") != null) {
+         String cookies = (String) _headers.get("COOKIE");
          StringTokenizer stCookies = new StringTokenizer(cookies, ";");
          _cookies = new Cookie[stCookies.countTokens()];
          int counter = 0;
@@ -490,7 +492,7 @@ public class XINSServletRequest implements HttpServletRequest {
          throw new IllegalStateException("The method getInputStream() has already been called on this request.");
       }
       _readerUsed = true;
-      return new BufferedReader(new StringReader(new String(_postData)));
+      return new BufferedReader(new StringReader(_postData));
    }
 
    public String getRemoteAddr() {
@@ -608,15 +610,15 @@ public class XINSServletRequest implements HttpServletRequest {
        * data.
        *
        * @param data
-       *    the data, as a set of bytes, can be <code>null</code>.
+       *    the data, as a string, can be <code>null</code>.
        */
-      private InputStream(char[] data) {
+      private InputStream(String data) {
          String encoding = "ISO-8859-1";
          try {
-            byte[] dataAsByte = new String(data).getBytes(encoding);
+            byte[] dataAsByte = data.getBytes(encoding);
             _stream = new ByteArrayInputStream(dataAsByte);
          } catch (UnsupportedEncodingException exception) {
-            throw new RuntimeException("Failed to convert char[] to byte[] using encoding \"" + encoding + "\".");
+            throw new RuntimeException("Failed to convert characters to bytes using encoding \"" + encoding + "\".");
          }
       }
 
