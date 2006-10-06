@@ -11,6 +11,7 @@
 		<available classname="junit.framework.TestListener" property="junit.available" />
 		<fail unless="junit.available" message="JUnit not available" />
 		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
+		<property name="junit.showoutput" value="false" />
 	</target>
 
 	<!--
@@ -160,7 +161,7 @@ ${sf.file}</fail>
 		<mkdir dir="build/testresults" />
 		<mkdir dir="build/testresults/xml" />
 
-		<junit fork="true" printsummary="true" failureproperty="tests.failed">
+		<junit fork="true" printsummary="true" failureproperty="tests.failed" showoutput="${junit.showoutput}">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<formatter type="xml" />
 			<test name="${testclass}" todir="build/testresults/xml" outfile="testresults"/>

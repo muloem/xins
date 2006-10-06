@@ -31,6 +31,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Fixed the generated resultcodes.xml file was not read when the 
     implementation has a specific name.
 
+* Build- and release-process:
+  - Added support for 'junit.showoutput' property. When set to 'true', it also
+    sends output to the console.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 
