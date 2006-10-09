@@ -89,7 +89,6 @@ public class BeanUtils {
       for (int i = 0; i < sourceMethods.length; i++) {
          String getMethodName = sourceMethods[i].getName();
          if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
-            Class[] returnType = {sourceMethods[i].getReturnType()};
             String destProperty = sourceMethods[i].getName().substring(3);
             if (propertiesMapping != null && propertiesMapping.getProperty(destProperty) != null) {
                destProperty = propertiesMapping.getProperty(destProperty);
@@ -99,11 +98,17 @@ public class BeanUtils {
             // Invoke the set method with the value returned by the get method
             try {
                Object value = sourceMethods[i].invoke(source, null);
-               Object setValue = convertObject(value, destination, destProperty);
-               Method setMethod = destination.getClass().getMethod(setMethodName, returnType);
-               Object[] setParams = {setValue};
-               setMethod.invoke(destination, setParams);
+               if (value != null) {
+                  Object setValue = convertObject(value, destination, destProperty);
+                  if (setValue!= null) {
+                     Class[] returnType = {setValue.getClass()};
+                     Method setMethod = destination.getClass().getMethod(setMethodName, returnType);
+                     Object[] setParams = {setValue};
+                     setMethod.invoke(destination, setParams);
+                  }
+               }
             } catch (Exception nsmex) {
+               nsmex.printStackTrace();
                // Ignore this property
             }
          }
@@ -157,6 +162,7 @@ public class BeanUtils {
             
             // Convert a String or an EnumItem to another EnumItem.
             if (EnumItem.class.isAssignableFrom(destClass)) {
+               // AG XXX this doesn't work
                Method convertionMethod = destClass.getMethod("getItemByValue", STRING_CLASS);
                Object[] convertParams = {origValue.toString()};
                Object convertedObj = convertionMethod.invoke(null, convertParams);
@@ -175,7 +181,7 @@ public class BeanUtils {
                }
                
             // Convert a String to whatever is asked
-            } if (origValue instanceof String) {
+            } else if (origValue instanceof String) {
                Method convertionMethod = null;
                try {
                   convertionMethod = destClass.getMethod("valueOf", STRING_CLASS);

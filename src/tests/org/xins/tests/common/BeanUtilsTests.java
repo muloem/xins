@@ -96,7 +96,6 @@ public class BeanUtilsTests extends TestCase {
       assertTrue(pojo.getAlmostBoolean().booleanValue());
    }
 
-   /* AG XXX test fails
    public void testPopulateWithConvertion() throws Exception {
 
       // Boolean to String
@@ -105,7 +104,7 @@ public class BeanUtilsTests extends TestCase {
       SimpleTypesRequest request = new SimpleTypesRequest();
       request.setInputBoolean(Boolean.TRUE);
       SimplePojo pojo = new SimplePojo();
-      BeanUtils.populate(request, pojo);
+      BeanUtils.populate(request, pojo, mapping1);
       assertEquals("true", pojo.getInputText());
 
       // String to Boolean
@@ -119,7 +118,7 @@ public class BeanUtilsTests extends TestCase {
       pojo.setInputText("almost true");
       BeanUtils.populate(pojo, request, mapping2);
       assertTrue(request.getInputBoolean().booleanValue());
-   }*/
+   }
 
    public class SimplePojo {
 
