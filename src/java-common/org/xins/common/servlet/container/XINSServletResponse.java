@@ -45,6 +45,12 @@ public class XINSServletResponse implements HttpServletResponse {
    private String _contentType;
 
    /**
+    * The non-negative content length, or a negative number if unset.
+    * Initially a negative number.
+    */
+   private int _contentLength = -99;
+
+   /**
     * The status of the result.
     */
    private int _status;
@@ -140,7 +146,19 @@ public class XINSServletResponse implements HttpServletResponse {
       throw new UnsupportedOperationException();
    }
 
+   /**
+    * Returns the content length.
+    *
+    * @return
+    *    the (non-negative) content length if set, or a negative value if 
+    *    unset.
+    */
+   int getContentLength() {
+      return _contentLength;
+   }
+
    public void setContentLength(int param) {
+      _contentLength = param;
       setIntHeader("Content-Length", param);
    }
 
