@@ -221,11 +221,10 @@ extends org.xins.client.AbstractCAPICallResult {
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="setfield">
-		<xsl:variable name="required">
+		<xsl:variable name="requiredOrDefault">
 			<xsl:choose>
-				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-				<xsl:when test="@required = 'false'">false</xsl:when>
-				<xsl:when test="@required = 'true'">true</xsl:when>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
@@ -234,6 +233,22 @@ extends org.xins.client.AbstractCAPICallResult {
 			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
+		</xsl:variable>
+
+		<!-- The text passed to the string to type method -->
+		<xsl:variable name="paramValue">
+			<xsl:choose>
+				<xsl:when test="@default">
+					<xsl:text>paramValue == null ? "</xsl:text>
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="@default" />
+					</xsl:call-template>
+					<xsl:text>" : paramValue</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>paramValue</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 
 		<xsl:text>
@@ -258,13 +273,13 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:call-template name="javatype_from_string_for_type">
 			<xsl:with-param name="api"      select="$api"      />
 			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="required" select="$required" />
+			<xsl:with-param name="required" select="$requiredOrDefault" />
 			<xsl:with-param name="type"     select="@type"     />
-			<xsl:with-param name="variable" select="'paramValue'" />
+			<xsl:with-param name="variable" select="$paramValue" />
 		</xsl:call-template>
 		<xsl:text>;</xsl:text>
 		<!-- Work around as javatype_from_string_for_type does no throw IllegalArgumentException for list/set/enum -->
-		<xsl:if test="$required = 'true' and not(starts-with(@type, '_'))">
+		<xsl:if test="@required = 'true' and not(starts-with(@type, '_'))">
 			<xsl:text>
          org.xins.common.MandatoryArgumentChecker.check("_</xsl:text>
 			<xsl:value-of select="$javaVariable" />
@@ -276,12 +291,18 @@ extends org.xins.client.AbstractCAPICallResult {
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="field">
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="required"     select="$requiredOrDefault" />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -319,12 +340,18 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="required"     select="$requiredOrDefault" />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -334,20 +361,13 @@ extends org.xins.client.AbstractCAPICallResult {
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="required">
-			<xsl:choose>
-				<xsl:when test="string-length(@required) &lt; 1">false</xsl:when>
-				<xsl:when test="@required = 'false'">false</xsl:when>
-				<xsl:when test="@required = 'true'">true</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
 
 		<xsl:text><![CDATA[
 
    /**
     * Gets the value of the ]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="$required = 'true'">
+			<xsl:when test="@required = 'true'">
 				<xsl:text>required</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -364,7 +384,7 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:text><![CDATA[</em> output parameter]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="not($basetype = '_text')">.</xsl:when>
-			<xsl:when test="@required = 'true'">
+			<xsl:when test="$requiredOrDefault = 'true'">
 				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
