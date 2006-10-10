@@ -25,6 +25,7 @@
 	<xsl:include href="../java.xslt"       />
 	<xsl:include href="../rcs.xslt"        />
 	<xsl:include href="../types.xslt"      />
+	<xsl:include href="../xml_to_java.xslt" />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 
@@ -888,6 +889,17 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				</xsl:call-template>
 				<xsl:text>);
       }</xsl:text>
+				<xsl:if test="@default">
+					<xsl:text> else {
+         params.set(SECRET_KEY, "</xsl:text>
+					<xsl:value-of select="@name" />
+					<xsl:text>", "</xsl:text>
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="@default" />
+					</xsl:call-template>
+					<xsl:text>");
+      }</xsl:text>
+				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
