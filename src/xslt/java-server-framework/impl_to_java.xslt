@@ -123,11 +123,14 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 				<xsl:if test="@default">
 					<xsl:text>
       if (</xsl:text>
-				<xsl:value-of select="$variableName" />
-				<xsl:text> == null) {
+					<xsl:value-of select="$variableName" />
+					<xsl:text> == null) {
          </xsl:text>
-				<xsl:value-of select="concat($variableName, ' = &quot;', @default, '&quot;')" />
-				<xsl:text>;
+					<xsl:value-of select="concat($variableName, ' = &quot;')" />
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="@default" />
+					</xsl:call-template>
+				<xsl:text>";
       }</xsl:text>
 				</xsl:if>
 				<xsl:if test="@required = 'true'">

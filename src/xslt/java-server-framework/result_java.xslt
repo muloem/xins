@@ -66,7 +66,11 @@ implements Result {
 		<xsl:for-each select="param[@default]">
 			<xsl:text>
       param(&quot;</xsl:text>
-			<xsl:value-of select="concat(@name, '&quot;, &quot;', @default, '&quot;);')" />
+			<xsl:value-of select="concat(@name, '&quot;, &quot;')" />
+			<xsl:call-template name="xml_to_java_string">
+				<xsl:with-param name="text" select="@default" />
+			</xsl:call-template>
+			<xsl:text>");</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
    }
