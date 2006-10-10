@@ -195,7 +195,6 @@ public class CAPIRequestTests extends TestCase {
    public void testDefaultValues() {
       DefaultValueRequest request = new DefaultValueRequest();
       assertTrue(request.getInputBoolean().booleanValue());
-      // AG XXX parameters with @default should match primitive types
       assertEquals(33, request.getInputInt().intValue());
    }
 }
