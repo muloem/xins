@@ -363,7 +363,7 @@ extends Object {
          String value = properties.get(name);
 
          // If the value is null or an empty string, then output nothing
-         if (value == null || value.length() == 0) {
+         if (value == null) {
             continue;
          }
 

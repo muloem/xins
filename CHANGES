@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Refactored servlet container. Fixed a couple of small issues, such as
     support for non-standard HTTP methods.
   - Improved possible convertion cases for the BeanUtils class.
+  - String representation of a PropertyReader should contain the empty values.
 
 * XINS/Java Server Framework:
   - Fixed a small issue, the HTTP method was converted to upper case, although
@@ -2169,6 +2170,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
   - The parameters set in the generated Request object are now checked the
     same way as they are in the generated code on the server side.
   - Improved Javadoc here and there.
+
 
 * Generation of server-side Java code:
   - More sanity checking and logging of programming errors in the generated
