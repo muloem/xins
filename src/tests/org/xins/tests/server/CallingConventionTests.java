@@ -595,7 +595,7 @@ public class CallingConventionTests extends TestCase {
       headers.put("Content-Length", "0");
 
       // Call the server
-      HTTPCaller.Result result = HTTPCaller.call(host, port, method, queryString, headers);
+      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
       // Expect 200 OK
       assertEquals("Expected 200 OK in response to HTTP OPTIONS request.", "200 OK", result.getStatus());
@@ -806,7 +806,7 @@ public class CallingConventionTests extends TestCase {
          String method = unsupported[i];
 
          // Call the server
-         HTTPCaller.Result result = HTTPCaller.call(host, port, method, queryString, headers);
+         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
          // Expect "405 Method Not Allowed"
          assertEquals("Expected HTTP status code 405 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
@@ -831,11 +831,101 @@ public class CallingConventionTests extends TestCase {
          String method = unknown[i];
 
          // Call the server
-         HTTPCaller.Result result = HTTPCaller.call(host, port, method, queryString, headers);
+         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
          // Expect "501 Not Implemented"
          assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
                       "501 Not Implemented", result.getStatus());
       }
+
+      // Same, but now without the content length header
+      headers = new Properties();
+      for (int i=0; i<unknown.length; i++) {
+         String method = unknown[i];
+
+         // Call the server
+         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+
+         // Expect "501 Not Implemented"
+         assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
+                      "501 Not Implemented", result.getStatus());
+      }
+   }
+
+   /**
+    * Tests that a HEAD request returns a correct Content-Length header, but 
+    * no actual content.
+    */
+/* TODO FIXME: Decide whether this test should be enabled.
+   public void testContentLengthFromHEAD() throws Exception {
+
+      String     queryString = "/?_convention=_xins-std&_function=Echo";
+      String     host        = AllTests.host();
+      int        port        = AllTests.port();
+      Properties headers     = null;
+
+      // Perform a GET
+      String method = "GET";
+      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+
+      // Content-length header should be set and correct
+      List lengthHeaders = result.getHeaderValues("content-length");
+      assertEquals("Expected GET request to return 1 \"Content-Length\" header. Instead it returned " + lengthHeaders.size(), 1, lengthHeaders.size());
+      int bodyLength = result.getBody().length();
+      int lengthHeader = Integer.parseInt((String) lengthHeaders.get(0));
+      assertEquals("Expected \"Content-Length\" header from GET request (" + lengthHeader + ") to match actual body length (" + bodyLength + ").", bodyLength, lengthHeader);
+
+      // Perform a HEAD
+      method = "HEAD";
+      result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+
+      // Content-length header should be set and correct
+      lengthHeaders = result.getHeaderValues("content-length");
+      assertEquals("Expected HEAD request to return 1 \"Content-Length\" header. Instead it returned " + lengthHeaders.size(), 1, lengthHeaders.size());
+      assertEquals("Expected actual HEAD response length to be 0.", 0, result.getBody().length());
+      lengthHeader = Integer.parseInt((String) lengthHeaders.get(0));
+      assertEquals("Expected \"Content-Length\" header from HEAD request (" + lengthHeader + ") to match the one from GET (" + bodyLength + ").", bodyLength, lengthHeader);
+   }
+*/
+
+/* TODO FIXME: Decide whether this test should be enabled.
+   public void testFileContentLength() throws Exception {
+
+      String     queryString = "/specs/Age.typ";
+      String     host        = AllTests.host();
+      int        port        = AllTests.port();
+      Properties headers     = null;
+
+      // Perform a GET
+      String method = "GET";
+      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+
+      // Status should be 200 OK
+      assertEquals("Expected 200 OK in response to HTTP/1.1 GET request.", "200 OK", result.getStatus());
+
+      // Content-length header should be set and correct
+      List lengthHeaders = result.getHeaderValues("content-length");
+      assertEquals("Expected GET request to return 1 \"Content-Length\" header instead of " + lengthHeaders.size() + '.', 1, lengthHeaders.size());
+      int lengthHeader = Integer.parseInt((String) lengthHeaders.get(0));
+      int expectedLength = 314;
+      assertEquals("Expected \"Content-Length\" header for \"" + queryString + "\" to return " + expectedLength + '.', expectedLength, lengthHeader);
+      int bodyLength = result.getBody().length();
+      assertEquals("Expected \"Content-Length\" header from GET request (" + lengthHeader + ") to match actual body length (" + bodyLength + ").", bodyLength, lengthHeader);
+   }
+*/
+
+   public void testHTTP_1_0() throws Exception {
+
+      String     queryString = "/?_convention=_xins-std&_function=Echo";
+      String     host        = AllTests.host();
+      int        port        = AllTests.port();
+      Properties headers     = null;
+
+      // Perform a GET
+      String method = "GET";
+      HTTPCaller.Result result = HTTPCaller.call("1.0", host, port, method, queryString, headers);
+
+      // Status should be 200 OK
+      assertEquals("Expected 200 OK in response to HTTP/1.0 GET request.", "200 OK", result.getStatus());
    }
 }
