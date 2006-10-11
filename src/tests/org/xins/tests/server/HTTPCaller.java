@@ -24,7 +24,7 @@ public class HTTPCaller extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   static Result call(String host, int port, String method, String queryString, Properties inputHeaders)
+   static Result call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
    throws IOException, ParseException {
 
       // TODO: Send input headers
@@ -35,6 +35,7 @@ public class HTTPCaller extends Object {
       Socket socket = new Socket(host, port);
 
       byte[] buffer = new byte[16384];
+      int bytesRead;
       try {
 
          // Get the input and output streams
@@ -42,8 +43,10 @@ public class HTTPCaller extends Object {
          InputStream  in  = socket.getInputStream();
 
          // Construct the output string
-         String toWrite = method + ' ' + queryString + " HTTP/1.1" + eol
-                        + "Host: " + host + eol;
+         String toWrite = method + ' ' + queryString + " HTTP/" + httpVersion + eol;
+         if ("1.1".equals(httpVersion)) {
+            toWrite += "Host: " + host + eol;
+         }
          if (inputHeaders != null) {
             Enumeration names = inputHeaders.propertyNames();
             while (names.hasMoreElements()) {
@@ -60,7 +63,7 @@ System.err.println("Sending: \"" + toWrite + "\".");
          out.write(toWrite.getBytes());
 
          // Read the input
-         in.read(buffer);
+         bytesRead = in.read(buffer);
       } finally {
          try {
             socket.close();
@@ -70,7 +73,7 @@ System.err.println("Sending: \"" + toWrite + "\".");
       }
 
       // Convert the response to a character string
-      String response = new String(buffer, "ISO-8859-1");
+      String response = new String(buffer, 0, bytesRead, "ISO-8859-1");
 
       // Prepare the result
       Result result = new Result();;
@@ -93,6 +96,7 @@ System.err.println("Status is: \"" + result._status + "\".");
          if (nextEOL < 0) {
             return result;
          } else if (nextEOL == 0) {
+            response = response.substring(2);
             done = true;
          } else {
             parseHeader(result._headers, response.substring(0, nextEOL));
@@ -101,10 +105,7 @@ System.err.println("Status is: \"" + result._status + "\".");
       }
 
       // Get the body
-      int index3 = response.indexOf(eol + eol);
-      result._body = (index3 < 0)
-                   ? ""
-                   : response.substring(index3 + 2);
+      result._body = response;
 System.err.println("Body is: \"" + result._body + "\".");
 
       return result;
@@ -168,16 +169,12 @@ System.err.println("Found header with key \"" + key + "\" and value \"" + value 
       }
 
       String getBody() {
-         return _body;
+         return (_body == null) ? "" : _body;
       }
 
       List getHeaderValues(String key) {
          Object value = _headers.get(key.toUpperCase());
-         if (value == null) {
-            return new ArrayList();
-         } else {
-            return (List) value;
-         }
+         return (value == null) ? new ArrayList() : (List) value;
       }
    }
 }
