@@ -113,7 +113,7 @@
 					</xsl:call-template>
 				</span>
 			</xsl:when>
-			<xsl:when test="$item='api' and not($active='function' or $active='testform' or $active='type' or $active='resultcode' or $active='properties')">
+			<xsl:when test="$item='api' and not($active='category' or $active='function' or $active='testform' or $active='type' or $active='resultcode' or $active='properties')">
 				<span class="disabled">
 					<xsl:call-template name="header_item_caption">
 						<xsl:with-param name="item" select="$item" />

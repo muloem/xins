@@ -43,6 +43,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Fixed the generated resultcodes.xml file was not read when the 
     implementation has a specific name.
 
+* Generation of the specdocs:
+  - Fixed SF.net bug #1409772. Category pages now link back to the API page.
+
 * Build- and release-process:
   - Added support for 'junit.showoutput' property. When set to 'true', it also
     sends output to the console.
