@@ -613,7 +613,7 @@ public class CallingConventionTests extends TestCase {
       assertTrue("Expected \"Accept\" header in response to HTTP OPTIONS request to have a non-empty value.", acceptHeader.trim().length() > 0);
 
       // Split the list of acceptable HTTP methods
-      List acceptValues = Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
+      List acceptValues = splitCommas(acceptHeader);
 
       // Make sure all expected HTTP methods are in the list
       for (int i = 0; i < yes.length; i++) {
@@ -624,6 +624,21 @@ public class CallingConventionTests extends TestCase {
       for (int i = 0; i < no.length; i++) {
          assertFalse("Expected \"Accept\" header in response to HTTP OPTIONS request to not indicate the \"" + no[i] + "\" method is supported. Instead the response is \"" + acceptHeader + "\".", acceptValues.contains(no[i]));
       }
+   }
+
+   private List splitCommas(String in) {
+
+      // XXX: Before, this was the following code, but that is Java 1.4+ only:
+      // return Arrays.asList(acceptHeader.split("[ ]*,[ ]*"));
+
+      List list = new ArrayList();
+      StringTokenizer st = new StringTokenizer(in, ",");
+      while (st.hasMoreTokens()) {
+         String item = (String) st.nextToken();
+         list.add(item.trim());
+      }
+
+      return list;
    }
 
    /**
@@ -856,7 +871,6 @@ public class CallingConventionTests extends TestCase {
     * Tests that a HEAD request returns a correct Content-Length header, but 
     * no actual content.
     */
-/* TODO FIXME: Decide whether this test should be enabled.
    public void testContentLengthFromHEAD() throws Exception {
 
       String     queryString = "/?_convention=_xins-std&_function=Echo";
@@ -886,9 +900,7 @@ public class CallingConventionTests extends TestCase {
       lengthHeader = Integer.parseInt((String) lengthHeaders.get(0));
       assertEquals("Expected \"Content-Length\" header from HEAD request (" + lengthHeader + ") to match the one from GET (" + bodyLength + ").", bodyLength, lengthHeader);
    }
-*/
 
-/* TODO FIXME: Decide whether this test should be enabled.
    public void testFileContentLength() throws Exception {
 
       String     queryString = "/specs/Age.typ";
@@ -912,7 +924,6 @@ public class CallingConventionTests extends TestCase {
       int bodyLength = result.getBody().length();
       assertEquals("Expected \"Content-Length\" header from GET request (" + lengthHeader + ") to match actual body length (" + bodyLength + ").", bodyLength, lengthHeader);
    }
-*/
 
    public void testHTTP_1_0() throws Exception {
 
