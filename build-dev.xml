@@ -440,7 +440,7 @@ ${sf.file}</fail>
 		command="cd ${www.dir} &amp;&amp; tar zxf j2h.tgz &amp;&amp; rm j2h.tgz &amp;&amp; cd j2h &amp;&amp; rm -f latest &amp;&amp; ln -s ${version} latest" />
 	</target>
 
-	<target name="copy-docs-demo" depends="-init">
+	<target name="copy-demo" depends="-init">
 		<!-- Copy the examples in the release -->
 		<delete dir="demo" />
 		<mkdir dir="demo" />
@@ -477,8 +477,11 @@ ${sf.file}</fail>
 				<exclude name="xins-project/apis/petstore/database/*.DBF" />
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="copy-docs" depends="-init" unless="nodocs">
 		<!-- Create and copy the documentation -->
-		<ant dir="../${name}-docs" target="manuals" inheritall="false">
+		<ant dir="../${name}-docs" target="manuals" inheritall="false" unless="nomanuals">
 			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
 		</ant>
 		<copy todir="docs">
@@ -503,7 +506,7 @@ ${sf.file}</fail>
 		</copy>
 	</target>
 
-	<target name="package" depends="-init-release-properties,javadoc,java-server,java-client,logdoc-html,copy-docs-demo" description="Builds a complete distribution archive">
+	<target name="package" depends="-init-release-properties,javadoc,java-server,java-client,logdoc-html,copy-demo,copy-docs" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
@@ -712,7 +715,7 @@ ${sf.file}</fail>
 		<property environment="env" />
 		<fail unless="env.DOCBOOK_XSLT_HOME">
 Please point the environment variable DOCBOOK_XSLT_HOME to the correct directory.
-If necessary, download docbook-xsl 1.65.1 at
+If necessary, download docbook-xsl 1.70.1 (or higher) from
 http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		</fail>
 	</target>

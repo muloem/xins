@@ -49,6 +49,14 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
 * Build- and release-process:
   - Added support for 'junit.showoutput' property. When set to 'true', it also
     sends output to the console.
+  - Split 'copy-docs-demo' target into 'copy-docs' and 'copy-demo' targets,
+    in build-dev.xml.
+  - Advising docbook-xsl 1.70.1 instead of 1.65.1, if DOCBOOK_XSLT_HOME is not
+    set.
+  - Added support for 'nodocs' parameter. If set, then no Javadoc is
+    generated, nor any documentation in xins-docs.
+  - Added support for 'nomanuals' parameter, then the documentation in
+    xins-docs is not generated.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:

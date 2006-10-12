@@ -394,7 +394,10 @@ ${version.file}</fail>
 	name="-javadoc-sourcepath"
 	depends="-javadoc-sourcepath-nojdksrc,-javadoc-sourcepath-jdksrc" />
 
-	<target name="-do-javadoc" depends="java,-javadoc-sourcepath">
+	<target
+	name="-do-javadoc"
+	depends="java,-javadoc-sourcepath"
+	unless="nodocs">
 		<mkdir dir="${javadoc.destdir}" />
 		<javadoc
 		sourcepath="${javadoc.sourcepath}"
@@ -439,12 +442,14 @@ ${version.file}</fail>
 	<target
 	name="javadoc"
 	depends="javadoc-public,javadoc-private"
-	description="Generates all Javadoc API documentation" />
+	description="Generates all Javadoc API documentation"
+	unless="nodocs" />
 
 	<target
 	name="javadoc-public"
 	depends="-init"
-	description="Generates public Javadoc API documentation">
+	description="Generates public Javadoc API documentation"
+	unless="nodocs">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="no" />
 			<param name="javadoc.destdir" value="docs/javadoc" />
@@ -453,7 +458,11 @@ ${version.file}</fail>
 		</antcall>
 	</target>
 
-	<target name="javadoc-private" depends="-init" description="Generates private Javadoc API documentation">
+	<target
+	name="javadoc-private"
+	depends="-init"
+	description="Generates private Javadoc API documentation"
+	unless="nodocs">
 		<antcall target="-do-javadoc">
 			<param name="javadoc.private" value="yes" />
 			<param name="javadoc.destdir" value="docs/javadoc-private" />
