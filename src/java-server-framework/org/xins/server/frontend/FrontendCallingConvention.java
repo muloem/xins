@@ -1068,7 +1068,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private String getRealParameter(String receivedParameter, String functionName) {
       if (receivedParameter.indexOf("_") != -1) {
-         receivedParameter = receivedParameter.replaceAll("_", "");
+         receivedParameter = removeUnderscores(receivedParameter);
       }
       try {
          FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
@@ -1103,11 +1103,34 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       Iterator itParameterNames = inputs.keySet().iterator();
       while (itParameterNames.hasNext()) {
          String nextParam = (String) itParameterNames.next();
-         String flatParam = nextParam.replaceAll("_", "");
+         String flatParam = removeUnderscores(nextParam);
          if (parameter.equalsIgnoreCase(flatParam)) {
             return nextParam;
          }
       }
       return parameter;
+   }
+
+   /**
+    * Removes all underscores from the specified character string.
+    *
+    * @param in
+    *    the character string to remove underscores from, should never be 
+    *    <code>null</code>.
+    *
+    * @return
+    *    the input string, but then with the underscores removed, never
+    *    <code>null</code>.
+    */
+   private String removeUnderscores(String in) {
+      int length = in.length();
+      StringBuffer out = new StringBuffer(length);
+      for (int i = 0; i < length; i++) {
+         char c = in.charAt(i);
+         if (c != '_') {
+            out.append(c);
+         }
+      }
+      return out.toString();
    }
 }
