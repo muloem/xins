@@ -145,12 +145,12 @@ public class UtilsTests extends TestCase {
 
       String message = pe.getMessage();
       assertNotNull(pe);
-      assertEquals(message, detail, pe.getDetail()         );
-      assertEquals(message, sc,     pe.getSubjectClass()   );
-      assertEquals(message, sc,     pe.getSubjectClass()   );
-      assertEquals(message, sm,     pe.getSubjectMethod()  );
-      assertEquals(message, dc,     pe.getDetectingClass() );
-      assertEquals(message, dm,     pe.getDetectingMethod());
+      assertEquals("Expected detail           on ProgrammingException to match.", detail, pe.getDetail()         );
+      assertEquals("Expected subject   class  on ProgrammingException to match.", sc,     pe.getSubjectClass()   );
+      assertEquals("Expected subject   class  on ProgrammingException to match.", sc,     pe.getSubjectClass()   );
+      assertEquals("Expected subject   method on ProgrammingException to match.", sm,     pe.getSubjectMethod()  );
+      assertEquals("Expected detecting class  on ProgrammingException to match.", dc,     pe.getDetectingClass() );
+      assertEquals("Expected detecting method on ProgrammingException to match.", dm,     pe.getDetectingMethod());
    }
 
    public void testLogProgrammingErrorWithArguments() {
