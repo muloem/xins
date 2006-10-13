@@ -9,6 +9,8 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -183,11 +185,24 @@ extends CallingConvention {
                                     HttpServletRequest  httpRequest)
    throws IOException {
 
-      // Send the XML output to the stream and flush
-      httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
-      PrintWriter out = httpResponse.getWriter();
+      // Set the status code and the content type
       httpResponse.setStatus(HttpServletResponse.SC_OK);
-      CallResultOutputter.output(out, xinsResult, false);
-      out.close();
+      httpResponse.setContentType(RESPONSE_CONTENT_TYPE);
+
+      // Determine the method
+      String method = httpRequest.getMethod();
+
+      // Handle HEAD requests
+      if ("HEAD".equals(method)) {
+         StringWriter out = new StringWriter();
+         CallResultOutputter.output(out, xinsResult, false);
+         httpResponse.setContentLength(out.getBuffer().length());
+
+      // Handle non-HEAD requests
+      } else {
+         Writer out = httpResponse.getWriter();
+         CallResultOutputter.output(out, xinsResult, false);
+         out.close();
+      }
    }
 }
