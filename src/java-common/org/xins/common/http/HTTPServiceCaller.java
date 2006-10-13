@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -26,6 +27,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.util.TimeoutController;
 import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 
@@ -179,6 +181,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private static HashMap HTTP_CLIENTS = new HashMap();
 
+   /**
+    * HTTP retry handler that does not allow any retries.
+    */
+   private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
+
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -300,6 +307,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // HTTP GET request
       } else if (method == HTTPMethod.GET) {
          GetMethod getMethod = new GetMethod(url);
+         getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
 
          // Loop through the parameters
          FastStringBuffer query = new FastStringBuffer(255);
@@ -1369,6 +1377,9 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       public UnicodePostMethod(String url) {
          super(url);
+
+         // Disable retries
+         getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
       }
 
       //-------------------------------------------------------------------------

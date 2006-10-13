@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpRecoverableException;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.methods.OptionsMethod;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -93,6 +95,11 @@ class CheckLinks extends Object {
     * The success message to be added in the <code>FunctionResult</code>.
     */
    private final static String SUCCESS = "Success";
+
+   /**
+    * HTTP retry handler that does not allow any retries.
+    */
+   private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
 
 
    //-------------------------------------------------------------------------
@@ -709,6 +716,7 @@ class CheckLinks extends Object {
             // of a server, without implying a resource action or initiating
             // a resource retrieval.
             optionsMethod = new OptionsMethod(_url);
+            optionsMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
 
             // Execute the OptionsMethod.
             _statusCode = client.executeMethod(optionsMethod);
