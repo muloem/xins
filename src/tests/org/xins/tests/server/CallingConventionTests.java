@@ -903,6 +903,7 @@ public class CallingConventionTests extends TestCase {
 
    public void testFileContentLength() throws Exception {
 
+      String     fileName    = "src/tests/apis/allinone/spec/Age.typ";
       String     queryString = "/specs/Age.typ";
       String     host        = AllTests.host();
       int        port        = AllTests.port();
@@ -918,11 +919,19 @@ public class CallingConventionTests extends TestCase {
       // Content-length header should be set and correct
       List lengthHeaders = result.getHeaderValues("content-length");
       assertEquals("Expected GET request to return 1 \"Content-Length\" header instead of " + lengthHeaders.size() + '.', 1, lengthHeaders.size());
-      int lengthHeader = Integer.parseInt((String) lengthHeaders.get(0));
-      int expectedLength = 314;
-      // XXX assertEquals("Expected \"Content-Length\" header for \"" + queryString + "\" to return " + expectedLength + '.', expectedLength, lengthHeader);
-      int bodyLength = result.getBody().length();
-      // XXX assertEquals("Expected \"Content-Length\" header from GET request (" + lengthHeader + ") to match actual body length (" + bodyLength + ").", bodyLength, lengthHeader);
+      long lengthHeader = Long.parseLong((String) lengthHeaders.get(0));
+      long expectedLength = determineFileSize(fileName);;
+      assertEquals("Expected \"Content-Length\" header for \"" + queryString + "\" to return " + expectedLength + '.', expectedLength, lengthHeader);
+      long bodyLength = result.getBody().length();
+      assertEquals("Expected \"Content-Length\" header from GET request (" + lengthHeader + ") to match actual body length (" + bodyLength + ").", bodyLength, lengthHeader);
+   }
+
+   private long determineFileSize(String fileName) throws Exception {
+      File file = new File(fileName);
+      if (!file.exists()) {
+         throw new Exception("File \"" + file.getName() + "\" does not exist. Absolute: \"" + file.getAbsolutePath() + "\". Canonical: \"" + file.getCanonicalPath() + "\".");
+      }
+      return file.length();
    }
 
    public void testHTTP_1_0() throws Exception {
