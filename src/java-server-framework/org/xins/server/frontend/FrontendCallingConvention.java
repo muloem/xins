@@ -130,6 +130,37 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
 
    //-------------------------------------------------------------------------
+   // Class functions
+   //-------------------------------------------------------------------------
+
+   /**
+    * Removes all underscores from the specified character string.
+    *
+    * <p>TODO: Consider moving this method elsewhere, since it is also used
+    * from the {@link SessionManager} class.
+    *
+    * @param in
+    *    the character string to remove underscores from, should never be 
+    *    <code>null</code>.
+    *
+    * @return
+    *    the input string, but then with the underscores removed, never
+    *    <code>null</code>.
+    */
+   static String removeUnderscores(String in) {
+      int length = in.length();
+      StringBuffer out = new StringBuffer(length);
+      for (int i = 0; i < length; i++) {
+         char c = in.charAt(i);
+         if (c != '_') {
+            out.append(c);
+         }
+      }
+      return out.toString();
+   }
+
+
+   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -1109,28 +1140,5 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          }
       }
       return parameter;
-   }
-
-   /**
-    * Removes all underscores from the specified character string.
-    *
-    * @param in
-    *    the character string to remove underscores from, should never be 
-    *    <code>null</code>.
-    *
-    * @return
-    *    the input string, but then with the underscores removed, never
-    *    <code>null</code>.
-    */
-   private String removeUnderscores(String in) {
-      int length = in.length();
-      StringBuffer out = new StringBuffer(length);
-      for (int i = 0; i < length; i++) {
-         char c = in.charAt(i);
-         if (c != '_') {
-            out.append(c);
-         }
-      }
-      return out.toString();
    }
 }
