@@ -24,7 +24,7 @@ public class HTTPCaller extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   static Result call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
+   public static Result call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
    throws IOException, ParseException {
 
       // TODO: Send input headers
@@ -57,7 +57,6 @@ public class HTTPCaller extends Object {
             }
          }
          toWrite += eol;
-System.err.println("Sending: \"" + toWrite + "\".");
 
          // Write the output
          out.write(toWrite.getBytes());
@@ -83,7 +82,6 @@ System.err.println("Sending: \"" + toWrite + "\".");
       String intro = response.substring(0, index);
       int index2 = response.indexOf(eol);
       result._status = response.substring(index + 1, index2);
-System.err.println("Status is: \"" + result._status + "\".");
 
       // Remove the part we processed
       response = response.substring(index2 + 2);
@@ -127,7 +125,6 @@ System.err.println("Body is: \"" + result._body + "\".");
 
       // Always trim the value
       value = value.trim();
-System.err.println("Found header with key \"" + key + "\" and value \"" + value + "\".");
 
       // Store the value in the list associated by key
       List list = (List) headers.get(key);
@@ -155,7 +152,7 @@ System.err.println("Found header with key \"" + key + "\" and value \"" + value 
    // Inner classes
    //-------------------------------------------------------------------------
 
-   static class Result extends Object {
+   public static class Result extends Object {
 
       private Result() {
       }
@@ -164,15 +161,15 @@ System.err.println("Found header with key \"" + key + "\" and value \"" + value 
       private String _body;
       private HashMap _headers;
 
-      String getStatus() {
+      public String getStatus() {
          return _status;
       }
 
-      String getBody() {
+      public String getBody() {
          return (_body == null) ? "" : _body;
       }
 
-      List getHeaderValues(String key) {
+      public List getHeaderValues(String key) {
          Object value = _headers.get(key.toUpperCase());
          return (value == null) ? new ArrayList() : (List) value;
       }
