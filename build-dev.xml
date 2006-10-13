@@ -481,7 +481,7 @@ ${sf.file}</fail>
 
 	<target name="copy-docs" depends="-init" unless="nodocs">
 		<!-- Create and copy the documentation -->
-		<ant dir="../${name}-docs" target="manuals" inheritall="false" unless="nomanuals">
+		<ant dir="../${name}-docs" target="manuals" inheritall="false">
 			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
 		</ant>
 		<copy todir="docs">
