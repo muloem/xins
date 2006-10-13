@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
     support for non-standard HTTP methods.
   - Improved possible convertion cases for the BeanUtils class.
   - String representation of a PropertyReader should contain the empty values.
+  - Changed Boolean.valueOf(boolean) as not compatible with Java 1.3.
 
 * XINS/Java Client Framework:
   - Fixed a small Java 1.3 compatibility issue in class XINSServiceCaller.

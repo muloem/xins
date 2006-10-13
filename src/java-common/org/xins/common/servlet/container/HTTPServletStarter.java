@@ -149,7 +149,7 @@ public class HTTPServletStarter {
       ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
 
       Class[] constClasses = {File.class, Integer.TYPE, Boolean.TYPE};
-      Object[] constArgs = {warFile, new Integer(port), Boolean.valueOf(deamon)};
+      Object[] constArgs = {warFile, new Integer(port), deamon ? Boolean.TRUE : Boolean.FALSE};
       try {
          Class delegate = loader.loadClass("org.xins.common.servlet.container.HTTPServletHandler");
          Constructor constructor  = delegate.getConstructor(constClasses);
