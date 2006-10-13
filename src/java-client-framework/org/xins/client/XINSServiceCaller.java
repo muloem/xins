@@ -8,20 +8,21 @@ package org.xins.client;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.xins.logdoc.AbstractLogdocSerializable;
+import org.xins.logdoc.LogdocSerializable;
+import org.xins.logdoc.ExceptionUtils;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
-import org.xins.client.FileServiceCaller;
-
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
-
 import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
@@ -40,15 +41,12 @@ import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
 import org.xins.common.spec.ErrorCodeSpec;
-
 import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-
 import org.xins.common.xml.Element;
-import org.xins.logdoc.AbstractLogdocSerializable;
 
-import org.xins.logdoc.LogdocSerializable;
+import org.xins.client.FileServiceCaller;
 
 /**
  * XINS service caller. This class can be used to perform a call to a XINS
@@ -626,7 +624,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          } else if (exception instanceof IOCallException) {
             Log.log_2109(exception, url, function, params, duration);
          } else if (exception instanceof UnexpectedExceptionCallException) {
-            Log.log_2111(exception.getCause(), url, function, params, duration);
+            Log.log_2111(ExceptionUtils.getCause(exception), url, function, params, duration);
          } else {
             final String DETAIL = "Unrecognized GenericCallException subclass "
                                 + exception.getClass().getName()
