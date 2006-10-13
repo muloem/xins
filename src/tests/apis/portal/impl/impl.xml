@@ -7,9 +7,11 @@
 		<bootstrap-property name="xinsff.default.command">DefaultCommand</bootstrap-property>
 		<bootstrap-property name="xinsff.unrestricted.pages">MainPage</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.Login">-</bootstrap-property>
+		<bootstrap-property name="xinsff.redirect.LoginOkay[param[@name='session.username']='superuser']">Admin</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.LoginOkay">MainPage</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.Logout">DefaultCommand</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.MainPage">-</bootstrap-property>
+		<bootstrap-property name="xinsff.redirect.Admin">-</bootstrap-property>
 		<bootstrap-property name="xinsff.redirect.DefaultCommand">MainPage</bootstrap-property>
 	</bootstrap-properties>
 
