@@ -276,6 +276,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          _defaultCommand = "DefaultCommand";
       }
 
+      // Creates the transformer factory
+      _factory = TransformerFactory.newInstance();
+
       initRedirections(bootstrapProperties);
    }
 
@@ -300,9 +303,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Determine if the template cache should be enabled
       String cacheEnabled = runtimeProperties.get(TEMPLATES_CACHE_PROPERTY);
       initCacheEnabled(cacheEnabled);
-
-      // Creates the transformer factory
-      _factory = TransformerFactory.newInstance();
 
       // Store the template used for the Control command
       try {
@@ -1029,7 +1029,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          String nextKey = (String) itConditions.next();
          int conditionPos = nextKey.indexOf('[');
          String command = nextKey.substring(0, conditionPos);
-         String condition = nextKey.substring(0, nextKey.length() - 1);
+         String condition = nextKey.substring(conditionPos + 1, nextKey.length() - 1);
          String redirectionPage = (String) conditionalRedirectionProperties.get(nextKey);
 
          // Create the template object and store it
@@ -1070,7 +1070,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          defaultRedirection = "-";
       }
       String xsltText = currentXSLT;
-      xsltText += "<xsl:when test='not(param[@name='error.type'])'><xsl:text>" + defaultRedirection + "</xsl:text></xsl:when>\n";
+      xsltText += "<xsl:when test=\"not(param[@name='error.type'])\"><xsl:text>" + defaultRedirection + "</xsl:text></xsl:when>\n";
       xsltText += "<xsl:otherwise><xsl:text>-</xsl:text></xsl:otherwise>\n";
       xsltText += "</xsl:choose></xsl:template></xsl:stylesheet>";
       try {

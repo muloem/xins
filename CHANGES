@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Refactored the way HTTP OPTIONS is handled.
   - Refactored the supported HTTP methods for calling conventions.
   - Made some code in the front-end framework compatible with Java 1.3.
+  - Fixed possible NPE in the xins ff cc.
 
 * Generation of server-side Java code:
   - Fixed support for special characters in the default attribute.
