@@ -402,7 +402,7 @@ public class SessionManager extends Manageable {
     */
    private String getRealParameter(String receivedParameter, String functionName) {
       if (receivedParameter.indexOf("_") != -1) {
-         receivedParameter = receivedParameter.replaceAll("_", "");
+         receivedParameter = FrontendCallingConvention.removeUnderscores(receivedParameter);
       }
       try {
          FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
