@@ -4,6 +4,13 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
+
+* XINS/Java Server Framework:
+  - Fixed XML declaration in the conditional redirection in the xins ff.
+  - Param-combo should be handled differently for the xins ff.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
 
 * XINS/Java Common Library:

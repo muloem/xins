@@ -646,18 +646,22 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             Iterator incorrectParams = xinsResult.getDataElement().getChildElements().iterator();
             while (incorrectParams.hasNext()) {
                Element incorrectParamElement = (Element) incorrectParams.next();
-               String paramName = incorrectParamElement.getAttribute("param");
-               paramName = getOriginalParameter(paramName);
-               ElementBuilder fieldError = new ElementBuilder("fielderror");
-               fieldError.setAttribute("field", paramName);
-               if (incorrectParamElement.getLocalName().equals("missing-param")) {
-                  fieldError.setAttribute("type", "mand");
-               } else if (incorrectParamElement.getLocalName().equals("invalid-value-for-type")) {
-                  fieldError.setAttribute("type", "format");
+               String elementName = incorrectParamElement.getLocalName();
+               
+               // param-combo not supported for xins ff
+               if (elementName.equals("param-combo")) {
+                  Iterator incorrectParamCombo = incorrectParamElement.getChildElements("param").iterator();
+                  while (incorrectParamCombo.hasNext()) {
+                     Element incorrectParamComboElement = (Element) incorrectParamCombo.next();
+                     String paramName = incorrectParamComboElement.getAttribute("name");
+                     Element fieldError = createFieldError(elementName, paramName);
+                     errorSection.addChild(fieldError);
+                  }
                } else {
-                  fieldError.setAttribute("type", incorrectParamElement.getLocalName());
+                  String paramName = incorrectParamElement.getAttribute("param");
+                  Element fieldError = createFieldError(elementName, paramName);
+                  errorSection.addChild(fieldError);
                }
-               errorSection.addChild(fieldError.createElement());
             }
             dataSection.addChild(errorSection.createElement());
             builder.addChild(dataSection.createElement());
@@ -678,6 +682,29 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
       builder.addChild(dataSection.createElement());
       return builder.createElement();
+   }
+
+   /**
+    * Creates a field error based on the error based on the error returned
+    * by the function.
+    *
+    * @param elementName
+    *    the name of the error element, cannot be <code>null</code>.
+    * @param paramName
+    *    the name of the incorrect parameter, cannot be <code>null</code>.
+    */
+   private Element createFieldError(String elementName, String paramName) {
+      paramName = getOriginalParameter(paramName);
+      ElementBuilder fieldError = new ElementBuilder("fielderror");
+      fieldError.setAttribute("field", paramName);
+      if (elementName.equals("missing-param")) {
+         fieldError.setAttribute("type", "mand");
+      } else if (elementName.equals("invalid-value-for-type")) {
+         fieldError.setAttribute("type", "format");
+      } else {
+         fieldError.setAttribute("type", elementName);
+      }
+      return fieldError.createElement();
    }
 
    /**
@@ -1018,6 +1045,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Create the conditional map
       String startXSLT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
+            "<xsl:output omit-xml-declaration=\"yes\" />\n" +
             "<xsl:template match=\"commandresult\">\n" +
             "<xsl:choose>\n";
       Iterator itConditions = conditionalRedirectionProperties.keySet().iterator();
