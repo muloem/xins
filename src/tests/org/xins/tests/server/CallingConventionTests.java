@@ -595,7 +595,7 @@ public class CallingConventionTests extends TestCase {
       headers.put("Content-Length", "0");
 
       // Call the server
-      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+      HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
       // Expect 200 OK
       assertEquals("Expected 200 OK in response to HTTP OPTIONS request.", "200 OK", result.getStatus());
@@ -821,7 +821,7 @@ public class CallingConventionTests extends TestCase {
          String method = unsupported[i];
 
          // Call the server
-         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+         HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
          // Expect "405 Method Not Allowed"
          assertEquals("Expected HTTP status code 405 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
@@ -846,7 +846,7 @@ public class CallingConventionTests extends TestCase {
          String method = unknown[i];
 
          // Call the server
-         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+         HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
          // Expect "501 Not Implemented"
          assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
@@ -859,7 +859,7 @@ public class CallingConventionTests extends TestCase {
          String method = unknown[i];
 
          // Call the server
-         HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+         HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
          // Expect "501 Not Implemented"
          assertEquals("Expected HTTP status code 501 in response to an HTTP " + method + " request for a calling convention that does not support that method.",
@@ -880,7 +880,7 @@ public class CallingConventionTests extends TestCase {
 
       // Perform a GET
       String method = "GET";
-      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+      HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
       // Content-length header should be set and correct
       List lengthHeaders = result.getHeaderValues("content-length");
@@ -911,7 +911,7 @@ public class CallingConventionTests extends TestCase {
 
       // Perform a GET
       String method = "GET";
-      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+      HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
       // Status should be 200 OK
       assertEquals("Expected 200 OK in response to HTTP/1.1 GET request.", "200 OK", result.getStatus());
@@ -943,7 +943,7 @@ public class CallingConventionTests extends TestCase {
 
       // Perform a GET
       String method = "GET";
-      HTTPCaller.Result result = HTTPCaller.call("1.0", host, port, method, queryString, headers);
+      HTTPCallerResult result = HTTPCaller.call("1.0", host, port, method, queryString, headers);
 
       // Status should be 200 OK
       assertEquals("Expected 200 OK in response to HTTP/1.0 GET request.", "200 OK", result.getStatus());

@@ -6,9 +6,13 @@
  */
 package org.xins.tests.server;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import org.xins.common.text.ParseException;
 
@@ -17,6 +21,7 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class HTTPCaller extends Object {
 
@@ -24,7 +29,7 @@ public class HTTPCaller extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   public static Result call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
+   public static HTTPCallerResult call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
    throws IOException, ParseException {
 
       // TODO: Send input headers
@@ -75,19 +80,18 @@ public class HTTPCaller extends Object {
       String response = new String(buffer, 0, bytesRead, "ISO-8859-1");
 
       // Prepare the result
-      Result result = new Result();;
+      HTTPCallerResult result = new HTTPCallerResult();;
 
       // Get the first line
       int index = response.indexOf(' ');
       String intro = response.substring(0, index);
       int index2 = response.indexOf(eol);
-      result._status = response.substring(index + 1, index2);
+      result.setStatus(response.substring(index + 1, index2));
 
       // Remove the part we processed
       response = response.substring(index2 + 2);
 
       // Get the headers
-      result._headers = new HashMap();
       boolean done = false;
       while (! done) {
          int nextEOL = response.indexOf(eol);
@@ -97,19 +101,18 @@ public class HTTPCaller extends Object {
             response = response.substring(2);
             done = true;
          } else {
-            parseHeader(result._headers, response.substring(0, nextEOL));
+            parseHeader(result, response.substring(0, nextEOL));
             response = response.substring(nextEOL + 2);
          }
       }
 
       // Get the body
-      result._body = response;
-System.err.println("Body is: \"" + result._body + "\".");
+      result.setBody(response);
 
       return result;
    }
 
-   private static void parseHeader(HashMap headers, String header)
+   private static void parseHeader(HTTPCallerResult result, String header)
    throws ParseException{
       int index = header.indexOf(':');
       if (index < 1) {
@@ -120,59 +123,15 @@ System.err.println("Body is: \"" + result._body + "\".");
       String key   = header.substring(0, index);
       String value = header.substring(index + 1);
 
-      // Always convert the key to upper case
-      key = key.toUpperCase();
-
-      // Always trim the value
-      value = value.trim();
-
-      // Store the value in the list associated by key
-      List list = (List) headers.get(key);
-      if (list == null) {
-         list = new ArrayList();
-         headers.put(key, list);
-      }
-      list.add(value);
+      result.addHeader(key, value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
 
    //-------------------------------------------------------------------------
    // Constructor
    //-------------------------------------------------------------------------
 
    private HTTPCaller() {
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
-   public static class Result extends Object {
-
-      private Result() {
-      }
-
-      private String _status;
-      private String _body;
-      private HashMap _headers;
-
-      public String getStatus() {
-         return _status;
-      }
-
-      public String getBody() {
-         return (_body == null) ? "" : _body;
-      }
-
-      public List getHeaderValues(String key) {
-         Object value = _headers.get(key.toUpperCase());
-         return (value == null) ? new ArrayList() : (List) value;
-      }
    }
 }
 

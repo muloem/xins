@@ -47,6 +47,7 @@ import org.xins.logdoc.ExceptionUtils;
 import org.xins.tests.AllTests;
 import org.xins.tests.StartServer;
 import org.xins.tests.server.HTTPCaller;
+import org.xins.tests.server.HTTPCallerResult;
 
 /**
  * Tests the functions in the <em>allinone</em> API using the generated CAPI
@@ -171,7 +172,7 @@ public class PortalAPITests extends TestCase {
       BasicPropertyReader params = createLoginParams();
       callCommand(params);
       BasicPropertyReader params2 = new BasicPropertyReader();
-      params2.set("command", "MainPage");
+      params2.set("command", "Login");
       params2.set("mode", "source");
       String xmlResult = callCommand(params2);
       ElementParser parser = new ElementParser();
@@ -204,22 +205,53 @@ public class PortalAPITests extends TestCase {
       assertEquals("password", error.getAttribute("field"));
    }*/
 
+   /*public void testSimpleRedirection() throws Exception {
+      BasicPropertyReader params = new BasicPropertyReader();
+      String redirection = callRedirection(params);
+      assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=DefaultCommand"));
+      
+      params.set("command", "DefaultCommand");
+      String redirection2 = callRedirection(params);
+      assertTrue("Incorrect returned redirection: " + redirection2, redirection2.endsWith("?command=Login"));
+   }*/
+
+   public void testConditionalRedirection() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      String redirection = callRedirection(params);
+      assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=MainPage"));
+      
+      params.set("username", "superuser");
+      String redirection2 = callRedirection(params);
+      assertTrue("Incorrect returned redirection: " + redirection2, redirection2.endsWith("?command=Admin"));
+   }
+
    private String callRedirection(PropertyReader params) throws Exception {
       String     host   = AllTests.host();
-      int        port   = AllTests.port();
+      int        port   = AllTests.port() + 1;
       String     method = "GET";
       Properties headers = new Properties();
       headers.put("Content-Length", "0");
-      String queryString = "";
+      String queryString = "/portal/";
+      boolean first = true;
       Iterator itParams = params.getNames();
       while (itParams.hasNext()) {
+         if (first) {
+            queryString += '?';
+            first = false;
+         } else {
+            queryString += '&';
+         }
          String nextParam = (String) itParams.next();
-         queryString = nextParam + "=" + params.get(nextParam) + "&";
+         queryString += nextParam + "=" + params.get(nextParam);
       }
 
       // TODO Call the server
-      HTTPCaller.Result result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
-      return null;
+      HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
+      int statusCode = Integer.parseInt(result.getStatus().substring(0, 3));
+      assertEquals(302, statusCode);
+      assertNotNull(result.getHeaderValues("Location"));
+      assertEquals(1, result.getHeaderValues("Location").size());
+      return (String) result.getHeaderValues("Location").get(0);
    }
 
    private String callCommand(PropertyReader params) throws Exception {
@@ -233,14 +265,10 @@ public class PortalAPITests extends TestCase {
    }
 
    private BasicPropertyReader createLoginParams() {
-      return createLoginParams("test1");
-   }
-
-   private BasicPropertyReader createLoginParams(String userName) {
       BasicPropertyReader paramsLogin = new BasicPropertyReader();
       paramsLogin.set("command", "Login");
       paramsLogin.set("action", "Okay");
-      paramsLogin.set("username", userName);
+      paramsLogin.set("username", "test1");
       paramsLogin.set("password", "passW1");
       return paramsLogin;
    }
