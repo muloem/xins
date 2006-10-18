@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Fixed XML declaration in the conditional redirection in the xins ff.
   - Param-combo should be handled differently for the xins ff.
   - Added more tests for the xins ff.
+  - Removed EngineState.getType() (a private, unused method).
 
 * Generation of server-side Java code:
   - Added tests for the default attribute.

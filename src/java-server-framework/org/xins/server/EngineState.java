@@ -157,16 +157,6 @@ final class EngineState extends Object {
    }
 
    /**
-    * Retrieves the type of this state.
-    *
-    * @return
-    *    the state type.
-    */
-   public Type getType() {
-      return _type;
-   }
-
-   /**
     * Checks if this state is an error state.
     *
     * @return
