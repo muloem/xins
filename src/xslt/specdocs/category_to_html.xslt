@@ -96,8 +96,11 @@
 	</xsl:template>
 
 	<xsl:template match="function-ref">
-		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_name" select="@name" />
+		<xsl:variable name="function_file" select="concat($specsdir, '/', $function_name, '.fnc')" />
 		<xsl:variable name="function_node" select="document($function_file)/function" />
+		<xsl:variable name="api_file"      select="concat($specsdir, '/api.xml')" />
+		<xsl:variable name="api_node"      select="document($api_file)/api/function[@name=$function_name]" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
 				<xsl:with-param name="revision" select="$function_node/@rcsversion" />
@@ -109,7 +112,17 @@
 				<xsl:text>Function file '</xsl:text>
 				<xsl:value-of select="$function_file" />
 				<xsl:text>' not found for the defined function '</xsl:text>
-				<xsl:value-of select="@name" />
+				<xsl:value-of select="$function_name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
+		<xsl:if test="not($api_node)">
+			<xsl:message terminate="yes">
+				<xsl:text>Function '</xsl:text>
+				<xsl:value-of select="$function_name" />
+				<xsl:text>' not found in '</xsl:text>
+				<xsl:value-of select="$api_file" />
 				<xsl:text>'.</xsl:text>
 			</xsl:message>
 		</xsl:if>
@@ -118,7 +131,7 @@
 			<td>
 				<a>
 					<xsl:attribute name="href">
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$function_name" />
 						<xsl:text>.html</xsl:text>
 					</xsl:attribute>
 					<xsl:value-of select="@name" />
@@ -129,12 +142,12 @@
 			</td>
 			<td class="status">
 				<xsl:choose>
-					<xsl:when test="@freeze = $version">Frozen</xsl:when>
-					<xsl:when test="@freeze">
+					<xsl:when test="$api_node/@freeze = $version">Frozen</xsl:when>
+					<xsl:when test="$api_node/@freeze">
 						<span class="broken_freeze">
 							<xsl:attribute name="title">
 								<xsl:text>Freeze broken after version </xsl:text>
-								<xsl:value-of select="@freeze" />
+								<xsl:value-of select="$api_node/@freeze" />
 								<xsl:text>.</xsl:text>
 							</xsl:attribute>
 							<xsl:text>Broken Freeze</xsl:text>

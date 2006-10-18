@@ -19,6 +19,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Added tests for the default attribute.
   - Added tests for the param-combo based on values.
 
+* Generation of specdocs:
+  - Fixed SF.net #1409765: No function status on category page.
+
 * Generated build file:
   - The xins-eclipse.user-libraries to use for Eclipse will be in 
     xins\tools\eclipse.
