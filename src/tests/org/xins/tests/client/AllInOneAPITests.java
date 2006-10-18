@@ -668,19 +668,7 @@ public class AllInOneAPITests extends TestCase {
          _capi.callParamCombo(null, null, new Integer(5), null, "Paris", null, new Byte((byte)33));
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("all-or-none", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
+         checkParamCombo(exception, "all-or-none", true);
       }
    }
 
@@ -723,19 +711,7 @@ public class AllInOneAPITests extends TestCase {
 
       // Call failed as it should
       } catch (InternalErrorException exception) {
-         assertEquals("_InvalidResponse", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
+         checkParamCombo(exception, "exclusive-or", false);
       }
    }
 
@@ -744,7 +720,7 @@ public class AllInOneAPITests extends TestCase {
    */
    public void testParamCombo3() throws Exception {
 
-      // Test 'all-or-none'
+      // Test 'exclusive-or'
       try {
          _capi.callParamCombo(null,
                               new Integer(2006),
@@ -755,19 +731,7 @@ public class AllInOneAPITests extends TestCase {
                               null);
          fail("The param-combo call should return an _InvalidResponse error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidResponse", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
+         checkParamCombo(exception, "exclusive-or", false);
       }
    }
 
@@ -789,24 +753,7 @@ public class AllInOneAPITests extends TestCase {
 
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo2 = (DataElement)itParamCombos.next();
-            fail("Unexpected param combo element of type '" +
-                 paramCombo2.getAttribute("type") + "' was found.");
-         }
+         checkParamCombo(exception, "exclusive-or", true);
       }
    }
 
@@ -817,24 +764,7 @@ public class AllInOneAPITests extends TestCase {
          _capi.callParamComboValue(Salutation.MADAM, null, "Lee", "France", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("inclusive-or", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo2 = (DataElement)itParamCombos.next();
-            fail("Unexpected param combo element of type '" +
-                paramCombo2.getAttribute("type") + "' was found.");
-         }
+         checkParamCombo(exception, "inclusive-or", true);
       }
    }
 
@@ -845,24 +775,7 @@ public class AllInOneAPITests extends TestCase {
          _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Canada", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo2 = (DataElement)itParamCombos.next();
-            fail("Unexpected param combo element of type '" +
-                paramCombo2.getAttribute("type") + "' was found.");
-         }
+         checkParamCombo(exception, "exclusive-or", true);
       }
 
       // Test 'exclusive-or' which should work
@@ -876,24 +789,7 @@ public class AllInOneAPITests extends TestCase {
          _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Other", "French", null, new Integer(2007));
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("all-or-none", paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo2 = (DataElement)itParamCombos.next();
-            fail("Unexpected param combo element of type '" +
-                paramCombo2.getAttribute("type") + "' was found.");
-         }
+         checkParamCombo(exception, "all-or-none", true);
       }
 
       // Test 'all-or-none' which should work
@@ -1053,19 +949,70 @@ public class AllInOneAPITests extends TestCase {
          _capi.callParamComboNotAll(i, i, i, i);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
-         assertEquals("_InvalidRequest", exception.getErrorCode());
-         assertEquals(_target, exception.getTarget());
-         assertNull(exception.getParameters());
-         assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
-         Iterator itParamCombos = dataSection.getChildElements().iterator();
-         if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement) itParamCombos.next();
-            assertEquals("param-combo", paramCombo1.getLocalName());
-            assertEquals("not-all",     paramCombo1.getAttribute("type"));
-         } else {
-            fail("No param combo element found.");
-         }
+         checkParamCombo(exception, "not-all", true);
+      }
+   }
+
+  /**
+   * Tests the XINS 1.5 param-combos with values.
+   */
+   public void testIncluseOrParamComboWithValue() throws Exception {
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, null, "Doe", "France", "French", null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "inclusive-or", true);
+      }
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "France", "French", null, null);
+      } catch (UnsuccessfulXINSCallException exception) {
+         fail("The call should have been ok.");
+      }
+   }
+
+  /**
+   * Tests the XINS 1.5 param-combos with values.
+   */
+   public void testExcluseOrParamComboWithValue() throws Exception {
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Canada", "French", null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "exclusive-or", true);
+      }
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "France", null, null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "exclusive-or", true);
+      }
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Canada", null, null, null);
+      } catch (UnsuccessfulXINSCallException exception) {
+         fail("The call should have been ok.");
+      }
+   }
+
+  /**
+   * Tests the XINS 1.5 param-combos with values.
+   */
+   public void testAllOrNoneParamComboWithValue() throws Exception {
+      try {
+         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", "Other", "French", null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "all-or-none", true);
+      }
+      try {
+         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", "France", "French", "123456", null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "all-or-none", true);
+      }
+      try {
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Other", "French", "123456", new Integer(2011));
+      } catch (UnsuccessfulXINSCallException exception) {
+         fail("The call should have been ok.");
       }
    }
 
@@ -1082,9 +1029,33 @@ public class AllInOneAPITests extends TestCase {
 
    public void testDefaultValues() throws Exception {
 
-      // Test the default returned parameter
       DefaultValueResult result = _capi.callDefaultValue(null, null, null, null);
-      assertEquals("Test of default & \" { \u00e9", result.getOutputText());
+      assertEquals("Test of input default & \" { \u00e9", result.getOutputText());
+      assertNull(result.getCopyAge());
+
+      DefaultValueResult result2 = _capi.callDefaultValue(null, null, "copyright", null);
+      assertEquals("Test of output default & \" { \u00e9", result2.getOutputText());
+      
+      DefaultValueRequest defaultRequest = new DefaultValueRequest();
+      DefaultValueRequest.Person p1 = new DefaultValueRequest.Person();
+      defaultRequest.addPerson(p1);
+      DefaultValueResult result3 = _capi.callDefaultValue(defaultRequest);
+      assertEquals("Test of input default & \" { \u00e9", result3.getOutputText());
+      assertNotNull(result3.getCopyAge());
+      assertEquals(35, result3.getCopyAge().intValue());
+      Iterator itOutputElements = result3.listOutputElement().iterator();
+      if (itOutputElements.hasNext()) {
+         DefaultValueResult.OutputElement elem1 = (DefaultValueResult.OutputElement) itOutputElements.next();
+         assertEquals("This is a test.", elem1.getOutputAttribute());
+      } else {
+         fail("No output data section found.");
+      }
+      if (itOutputElements.hasNext()) {
+         DefaultValueResult.OutputElement elem2 = (DefaultValueResult.OutputElement) itOutputElements.next();
+         assertEquals("another output", elem2.getOutputAttribute());
+      } else {
+         fail("Just one element found in data section.");
+      }
    }
 
    /* Does not work as only one instance of an API is possible
@@ -1096,6 +1067,42 @@ public class AllInOneAPITests extends TestCase {
       EchoResult result = fileCapi.callEcho(request);
       assertEquals("Incorrect message received.", "Hello file", result.getOut());
    }*/
+
+
+   /**
+    * Checks that the exception thrown is a param-combo of the specified type.
+    *
+    * @param exception
+    *    the exception thrown by the call.
+    *
+    * @param type
+    *    the param-combo type.
+    *
+    * @param isRequest
+    *    true is the excepted exception should be an _InvalidRequest, false
+    *    if it should be an _InvalidResponse.
+    */
+   private void checkParamCombo(UnsuccessfulXINSCallException exception, String type, boolean isRequest) {
+      String errorCode = isRequest ? "_InvalidRequest" : "_InvalidResponse";
+      assertEquals(errorCode, exception.getErrorCode());
+      assertEquals(_target, exception.getTarget());
+      assertNull(exception.getParameters());
+      assertNotNull(exception.getDataElement());
+      DataElement dataSection = exception.getDataElement();
+      Iterator itParamCombos = dataSection.getChildElements().iterator();
+      if (itParamCombos.hasNext()) {
+         DataElement paramCombo1 = (DataElement) itParamCombos.next();
+         assertEquals("param-combo", paramCombo1.getLocalName());
+         assertEquals(type, paramCombo1.getAttribute("type"));
+      } else {
+         fail("No param combo element found.");
+      }
+      if (itParamCombos.hasNext()) {
+         DataElement paramCombo2 = (DataElement)itParamCombos.next();
+         fail("Unexpected param combo element of type '" +
+             paramCombo2.getAttribute("type") + "' was found.");
+      }
+   }
 
    private void dataSectionTests(String inputText)
    throws Exception {

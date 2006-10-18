@@ -13,7 +13,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputInt" required="false" type="_int32" default="33">
 			<description>An example of input for an integer with a default value.</description>
 		</param>
-		<param name="inputText" required="false" type="_text" default="Test of default &amp; &quot; { é">
+		<param name="inputText" required="false" type="_text" default="Test of input default &amp; &quot; { é">
 			<description>An example of input for a text with a default value.</description>
 		</param>
 		<data>
@@ -26,9 +26,6 @@ rcsversion="$Revision$" rcsdate="$Date$">
 				<attribute name="gender" required="false" type="Salutation" default="Mister">
 					<description>The gender of the person.</description>
 				</attribute>
-				<!--attribute name="name" required="true" type="portal/Username" default="failing">
-					<description>The name of the person.</description>
-				</attribute-->
 				<attribute name="age" required="false" type="Age" default="35">
 					<description>The age of the person.</description>
 				</attribute>
@@ -39,8 +36,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</data>
 	</input>
 	<output>
-		<param name="outputText" required="false" type="_text" default="Test of default &amp; &quot; { é">
+		<param name="outputText" required="false" type="_text" default="Test of output default &amp; &quot; { é">
 			<description>An example of output for a text with a default value.</description>
+		</param>
+		<param name="copyAge" required="false" type="Age">
+			<description>The first input value sent as age, if any.</description>
 		</param>
 		<data>
 			<!-- The data section includes persons. -->

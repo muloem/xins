@@ -3,6 +3,8 @@
  */
 package com.mycompany.allinone.api;
 
+import java.util.Iterator;
+
 
 /**
  * Implementation of the <code>DefaultValue</code> function.
@@ -61,7 +63,25 @@ public final class DefaultValueImpl extends DefaultValue {
     */
    public Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
-      // TODO
+      
+      if (!request.getInputText().equals("copyright")) {
+         
+         // copy the input value
+         result.setOutputText(request.getInputText());
+      }
+      
+      Iterator itPersons = request.listPerson().iterator();
+      if (itPersons.hasNext()) {
+         Request.Person nextPerson = (Request.Person) itPersons.next();
+         result.setCopyAge(nextPerson.getAge());
+      }
+      
+      OutputElement elem1 = new OutputElement();
+      result.addOutputElement(elem1);
+      OutputElement elem2 = new OutputElement();
+      elem2.setOutputAttribute("another output");
+      result.addOutputElement(elem2);
+      
       return result;
    }
 }

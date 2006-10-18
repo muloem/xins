@@ -11,6 +11,14 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Param-combo should be handled differently for the xins ff.
   - Added more tests for the xins ff.
 
+* Generation of server-side Java code:
+  - Added tests for the default attribute.
+  - Added tests for the param-combo based on values.
+
+* Generation of client-side Java code:
+  - Added tests for the default attribute.
+  - Added tests for the param-combo based on values.
+
 * Generated build file:
   - The xins-eclipse.user-libraries to use for Eclipse will be in 
     xins\tools\eclipse.

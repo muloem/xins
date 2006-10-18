@@ -192,7 +192,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
 
       // XXX: Perform just a single test
-      // suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
+      // suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
+      // suite.addTest(new org.xins.tests.client.AllInOneAPITests("testInclusiveOrParamComboWithValue"));
 
       // Stop the server
       if (RUN_SERVER) {
