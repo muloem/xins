@@ -11,6 +11,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Param-combo should be handled differently for the xins ff.
   - Added more tests for the xins ff.
 
+* Generated build file:
+  - The xins-eclipse.user-libraries to use for Eclipse will be in 
+    xins\tools\eclipse.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
 

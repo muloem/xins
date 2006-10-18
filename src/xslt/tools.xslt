@@ -210,9 +210,7 @@
 			token="name=&quot;petstore&quot;" value="name=&quot;${{api.name}}&quot;" />
 
 			<!-- Create the xins user library if needed -->
-			<copy file="{$xins_home}/src/tools/eclipse/xins-eclipse.userlibraries"
-			todir="." overwrite="false" />
-			<replace file="xins-eclipse.userlibraries"
+			<replace file="{$xins_home}/src/tools/eclipse/xins-eclipse.userlibraries"
 			token="%%XINS_HOME%%" value="{$xins_home}" />
 			
 			<!-- Create the project files -->
