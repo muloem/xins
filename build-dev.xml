@@ -546,7 +546,6 @@ ${sf.file}</fail>
 			<include name=".version.properties"            />
 			<include name="CHANGES"                        />
 			<include name="COPYRIGHT"                      />
-			<include name="NOTES"                          />
 			<include name="README.html"                    />
 			<exclude name="src/xslt/checkstyle/*"          />
 			<exclude name="src/xslt/tests/perftests.xslt"  />
