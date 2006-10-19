@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.xins.common.MandatoryArgumentChecker;
 
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -205,7 +206,7 @@ public class SessionManager extends Manageable {
       // Check if the user is logged in
       return !getBoolProperty(getSessionId());
    }
-   
+
    /**
     * Gets the session id.
     *
@@ -251,8 +252,12 @@ public class SessionManager extends Manageable {
     *
     * @param value
     *    the value of the session property, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public void setProperty(String name, Object value) {
+   public void setProperty(String name, Object value) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("name", name);
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          if (value == null) {
@@ -278,8 +283,12 @@ public class SessionManager extends Manageable {
     *
     * @param value
     *    the value of the session property.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public void setProperty(String name, boolean value) {
+   public void setProperty(String name, boolean value) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("name", name);
       setProperty(name, value ? Boolean.TRUE : Boolean.FALSE);
    }
    
@@ -291,8 +300,12 @@ public class SessionManager extends Manageable {
     *
     * @return
     *    the property value or <code>null</code> if the property does not exist.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public Object getProperty(String name) {
+   public Object getProperty(String name) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("name", name);
       HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return null;
@@ -309,8 +322,12 @@ public class SessionManager extends Manageable {
     * @return
     *    <code>true</code> if the value of the property is "true" or Boolean.TRUE,
     *    <code>false</code> otherwise.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public boolean getBoolProperty(String name) {
+   public boolean getBoolProperty(String name) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("name", name);
       HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return false;
@@ -324,8 +341,12 @@ public class SessionManager extends Manageable {
     *
     * @param name
     *    the name of the session property, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public void removeProperty(String name) {
+   public void removeProperty(String name) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("name", name);
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          session.removeAttribute(name);
