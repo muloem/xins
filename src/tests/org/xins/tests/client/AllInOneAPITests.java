@@ -757,45 +757,6 @@ public class AllInOneAPITests extends TestCase {
       }
    }
 
-   public void testParamComboValueInclusiveOr() throws Exception {
-
-      // Test 'inclusive-or'
-      try {
-         _capi.callParamComboValue(Salutation.MADAM, null, "Lee", "France", "French", null, null);
-         fail("The param-combo call should return an _InvalidRequest error code.");
-      } catch (UnsuccessfulXINSCallException exception) {
-         checkParamCombo(exception, "inclusive-or", true);
-      }
-   }
-
-   public void testParamComboValueExclusiveOr() throws Exception {
-
-      // Test 'exclusive-or'
-      try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Canada", "French", null, null);
-         fail("The param-combo call should return an _InvalidRequest error code.");
-      } catch (UnsuccessfulXINSCallException exception) {
-         checkParamCombo(exception, "exclusive-or", true);
-      }
-
-      // Test 'exclusive-or' which should work
-      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", "Canada", null, null, null);
-   }
-
-   public void testParamComboValueAllOrNone() throws Exception {
-
-      // Test 'all-or-none'
-      try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Lee", "Other", "French", null, new Integer(2007));
-         fail("The param-combo call should return an _InvalidRequest error code.");
-      } catch (UnsuccessfulXINSCallException exception) {
-         checkParamCombo(exception, "all-or-none", true);
-      }
-
-      // Test 'all-or-none' which should work
-      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", "Other", "English", "123ID558", new Integer(2010));
-   }
-
    /**
     * Tests the attribute-combo constraints, which should throw an UnacceptableRequestException.
     */
@@ -958,13 +919,13 @@ public class AllInOneAPITests extends TestCase {
    */
    public void testIncluseOrParamComboWithValue() throws Exception {
       try {
-         _capi.callParamComboValue(Salutation.MADAM, null, "Doe", "France", "French", null, null);
+         _capi.callParamComboValue(Salutation.MADAM, null, "Doe", null, "France", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          checkParamCombo(exception, "inclusive-or", true);
       }
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "France", "French", null, null);
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", null, "France", "French", null, null);
       } catch (UnsuccessfulXINSCallException exception) {
          fail("The call should have been ok.");
       }
@@ -975,19 +936,19 @@ public class AllInOneAPITests extends TestCase {
    */
    public void testExcluseOrParamComboWithValue() throws Exception {
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Canada", "French", null, null);
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", null, "Canada", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          checkParamCombo(exception, "exclusive-or", true);
       }
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "France", null, null, null);
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", null, "France", null, null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          checkParamCombo(exception, "exclusive-or", true);
       }
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Canada", null, null, null);
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", null, "Canada", null, null, null);
       } catch (UnsuccessfulXINSCallException exception) {
          fail("The call should have been ok.");
       }
@@ -998,22 +959,40 @@ public class AllInOneAPITests extends TestCase {
    */
    public void testAllOrNoneParamComboWithValue() throws Exception {
       try {
-         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", "Other", "French", null, null);
+         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", null, "Other", "French", null, null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          checkParamCombo(exception, "all-or-none", true);
       }
       try {
-         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", "France", "French", "123456", null);
+         _capi.callParamComboValue(Salutation.MISTER, null, "Doe", null, "France", "French", "123456", null);
          fail("The param-combo call should return an _InvalidRequest error code.");
       } catch (UnsuccessfulXINSCallException exception) {
          checkParamCombo(exception, "all-or-none", true);
       }
       try {
-         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", "Other", "French", "123456", new Integer(2011));
+         _capi.callParamComboValue(Salutation.MADAM, "Martin", "Doe", null, "Other", "French", "123456", new Integer(2011));
       } catch (UnsuccessfulXINSCallException exception) {
          fail("The call should have been ok.");
       }
+   }
+
+  /**
+   * Tests the XINS 1.5 param-combos with values.
+   */
+   public void testNotAllParamComboWithValue() throws Exception {
+
+      // Test 'not-all'
+      try {
+         _capi.callParamComboValue(Salutation.LADY, "Martin", "Lee", new Integer(25), "France", "French", null, null);
+         fail("The param-combo call should return an _InvalidRequest error code.");
+      } catch (UnsuccessfulXINSCallException exception) {
+         checkParamCombo(exception, "not-all", true);
+      }
+
+      // Test 'not-all' which should work
+      _capi.callParamComboValue(Salutation.LADY, null, "Lee", null, "Other", "English", "123ID558", new Integer(2010));
+      _capi.callParamComboValue(Salutation.MISTER, null, "Lee", new Integer(25), "Other", "English", "123ID558", new Integer(2010));
    }
 
    public void testResetInputParameter() throws Exception {

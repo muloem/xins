@@ -15,6 +15,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="surname" required="false" type="_text">
 			<description>The name of the person.</description>
 		</param>
+		<param name="age" required="false" type="_int32">
+			<description>The age of the person.</description>
+		</param>
 		<param name="country" required="false" type="_text">
 			<description>The country from which this person comes from.</description>
 		</param>
@@ -47,6 +50,11 @@ rcsversion="$Revision$" rcsdate="$Date$">
 			<param-ref name="passportValidityDate" />
 		</param-combo>
 		
+		<!-- If the salutation is Miss, the age should not be set -->
+		<param-combo type="not-all">
+			<param-ref name="salutation" value="Miss" />
+			<param-ref name="age" />
+		</param-combo>
 	</input>
 	<output>
 	</output>
