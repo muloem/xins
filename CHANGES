@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
+* XINS/Java Common Library:
+  - Added convertion in BeanUtils of Object to primitive types and also of 
+    String or EnumItem to EnumItem.
+
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.
   - Param-combo should be handled differently for the xins ff.
@@ -15,8 +19,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 * Generation of server-side Java code:
   - Added tests for the default attribute.
   - Added tests for the param-combo based on values.
-  - Changed the accessor of the get and isSet method of the generated Request
-    object to public.
+  - Changed the accessor of the get and isSet methods of the generated Request
+    objects to public.
 
 * Generation of client-side Java code:
   - Added tests for the default attribute.

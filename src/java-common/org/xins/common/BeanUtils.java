@@ -89,6 +89,8 @@ public class BeanUtils {
       for (int i = 0; i < sourceMethods.length; i++) {
          String getMethodName = sourceMethods[i].getName();
          if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
+            
+            // Determine the name of the set method
             String destProperty = sourceMethods[i].getName().substring(3);
             if (propertiesMapping != null && propertiesMapping.getProperty(destProperty) != null) {
                destProperty = propertiesMapping.getProperty(destProperty);
@@ -100,8 +102,9 @@ public class BeanUtils {
                Object value = sourceMethods[i].invoke(source, null);
                if (value != null) {
                   Object setValue = convertObject(value, destination, destProperty);
-                  if (setValue!= null) {
-                     Class[] returnType = {setValue.getClass()};
+                  if (setValue != null) {
+                     Class setMethodArgClass = getClassForObject(setValue, destination, setMethodName);
+                     Class[] returnType = {setMethodArgClass};
                      Method setMethod = destination.getClass().getMethod(setMethodName, returnType);
                      Object[] setParams = {setValue};
                      setMethod.invoke(destination, setParams);
@@ -162,8 +165,9 @@ public class BeanUtils {
             
             // Convert a String or an EnumItem to another EnumItem.
             if (EnumItem.class.isAssignableFrom(destClass)) {
-               // AG XXX this doesn't work
-               Method convertionMethod = destClass.getMethod("getItemByValue", STRING_CLASS);
+               String enumTypeClassName = destClass.getName().substring(0, destClass.getName().length() - 5);
+               Object enumType = Class.forName(enumTypeClassName).getDeclaredField("SINGLETON").get(null);
+               Method convertionMethod = enumType.getClass().getMethod("getItemByValue", STRING_CLASS);
                Object[] convertParams = {origValue.toString()};
                Object convertedObj = convertionMethod.invoke(null, convertParams);
                return convertedObj;
@@ -206,6 +210,42 @@ public class BeanUtils {
       return null;
    }
 
+   /**
+    * Gets the class for an object.
+    *
+    * In most of cases it will be <code>object.getClass()</code> except for
+    * primitive type where it can be the primitive class.
+    *
+    * @param value
+    *    the value of the object.
+    *
+    * @param destination
+    *    the object containing the set method.
+    *
+    * @param setMethodName
+    *    the name of the set method.
+    */
+   private static Class getClassForObject(Object value, Object destination, String setMethodName) {
+      Class valueClass = value.getClass();
+      if (value instanceof Byte || value instanceof Short || value instanceof Character
+            || value instanceof Integer || value instanceof Long || value instanceof Float
+            || value instanceof Double || value instanceof Boolean) {
+         try {
+            Class primitiveClass = (Class) valueClass.getDeclaredField("TYPE").get(value);
+            Class[] setArgsClasses = {primitiveClass};
+            try {
+               destination.getClass().getMethod(setMethodName, setArgsClasses);
+               
+               // The destination has a set method associated with the primitive type.
+               return primitiveClass;
+            } catch (NoSuchMethodException nsmex) {
+            }
+         } catch (IllegalAccessException iaex) {
+         } catch (NoSuchFieldException nsfex) {
+         }
+      }
+      return valueClass;
+   }
    /**
     * Fills the result object with of the content of the XML element object.
     *

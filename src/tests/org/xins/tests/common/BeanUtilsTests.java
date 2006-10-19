@@ -6,6 +6,7 @@
  */
 package org.xins.tests.common;
 
+import com.mycompany.allinone.types.Salutation;
 import java.util.Properties;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -14,6 +15,7 @@ import junit.framework.TestSuite;
 import org.xins.common.BeanUtils;
 
 import com.mycompany.allinone.capi.SimpleTypesRequest;
+import com.mycompany.allinone.capi.DefinedTypesRequest;
 
 /**
  * Tests for class <code>BeanUtils</code>
@@ -120,10 +122,32 @@ public class BeanUtilsTests extends TestCase {
       assertTrue(request.getInputBoolean().booleanValue());
    }
 
+   public void testTypeConvertion() throws Exception {
+
+      // Boolean to boolean
+      Properties mapping1 = new Properties();
+      mapping1.setProperty("InputBoolean", "RealBoolean");
+      SimpleTypesRequest request = new SimpleTypesRequest();
+      request.setInputBoolean(Boolean.TRUE);
+      SimplePojo pojo = new SimplePojo();
+      BeanUtils.populate(request, pojo, mapping1);
+      assertTrue(pojo.getRealBoolean());
+
+      // String to EnumItem
+      SimplePojo pojo2 = new SimplePojo();
+      pojo2.setInputText("Mister");
+      DefinedTypesRequest request2 = new DefinedTypesRequest();
+      Properties mapping2 = new Properties();
+      mapping2.setProperty("InputText", "InputSalutation");
+      BeanUtils.populate(pojo2, request2, mapping2);
+      assertEquals(Salutation.MISTER, request2.getInputSalutation());
+   }
+
    public class SimplePojo {
 
       private String _inputText;
       private Boolean _almostBoolean = Boolean.FALSE;
+      private boolean _realBoolean = false;
       private int _simpleInt;
       
       public void setInputText(String inputText) {
@@ -140,6 +164,14 @@ public class BeanUtilsTests extends TestCase {
       
       public Boolean getAlmostBoolean() {
          return _almostBoolean;
+      }
+
+      public void setRealBoolean(boolean realBoolean) {
+         _realBoolean = realBoolean;
+      }
+      
+      public boolean getRealBoolean() {
+         return _realBoolean;
       }
 
       public void setSimpleInt(int anInt) {
