@@ -228,7 +228,7 @@
 		</xsl:if>
 		<xsl:text>
        */
-      boolean isSet</xsl:text>
+      public boolean isSet</xsl:text>
 			<xsl:value-of select="$hungarianName" />
 			<xsl:text>() {
          return _</xsl:text>
@@ -290,7 +290,7 @@
 		</xsl:if>
 		<xsl:text>
        */
-      </xsl:text>
+      public </xsl:text>
 		<xsl:value-of select="$javasimpletype" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
@@ -618,10 +618,7 @@
        *    the PCDATA for this element, cannot be <code>null</code>.
        */
       ]]></xsl:text>
-		<xsl:if test="ancestor::output">
-			<xsl:text>public </xsl:text>
-		</xsl:if>
-		<xsl:text>final String pcdata() {
+		<xsl:text>public final String pcdata() {
          return _element.getText();
       }
 
