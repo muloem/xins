@@ -306,46 +306,4 @@ public class HTTPServiceCallerTests extends TestCase {
       // First exception message must contain second one
       assertTrue("Expected first exception message to contain second one. First one is: \"" + em1 + "\" and second one is \"" + em2 + '"', em1.indexOf(em2) >= 0);
    }
-
-   /**
-    * Tests the pre-XINS 1.1 <code>call</code> method.
-    */
-   /*public void testHttpServiceCallerOldCall() throws Exception {
-      HTTPServiceCaller caller = new HTTPServiceCaller(null);
-
-      HTTPCallRequest  request    = null;
-      HTTPCallConfig   callConfig = null;
-      TargetDescriptor target     = null;
-
-      // Target and request both null
-      try {
-         caller.call(request, callConfig, target);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {
-         // as expected
-      }
-
-      // Target is null
-      request = new HTTPCallRequest();
-      try {
-         caller.call(request, callConfig, target);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {
-         // as expected
-      }
-
-      // Request is null
-      target = new TargetDescriptor("http://www.xins.org/");
-      request = null;
-      try {
-         caller.call(request, callConfig, target);
-         fail("Expected IllegalArgumentException.");
-      } catch (IllegalArgumentException exception) {
-         // as expected
-      }
-
-      // Neither is null
-      request = new HTTPCallRequest();
-      caller.call(request, callConfig, target);
-   }*/
 }
