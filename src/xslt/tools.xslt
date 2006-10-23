@@ -54,13 +54,13 @@
 			<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<property name="pmd.rule" value="basic" />
+			<property name="build.java.version" value="${{ant.java.version}}" />
+			<property name="pmd.rules" value="rulesets/basic.xml,rulesets/unusedcode.xml" />
 			<mkdir dir="{$project_home}/build/pmd/${{api.name}}" />
-			<pmd>
-				<ruleset>${{pmd.rule}}</ruleset>
-				<formatter type="html" toFile="{$project_home}/build/pmd/${{api.name}}/index.html" linkPrefix="../../j2h/${{api.name}}/"/>
+			<pmd rulesetfiles="${{pmd.rules}}" targetjdk="${{build.java.version}}">
+				<formatter type="html" toFile="{$project_home}/build/pmd/${{api.name}}/index.html"/>
 				<fileset dir="${{api.source.dir}}">
-					<include name="**/*.java"/>
+					<include name="**/*.java" />
 				</fileset>
 			</pmd>
 		</target>
@@ -115,13 +115,12 @@
 		</target>
 
 		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generate the FindBugs report for an API.">
-			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
-				<classpath refid="tools-cp" />
-			</taskdef>
+			<fail message="Please, specify the findbugs.home property" unless="findbugs.home" />
+			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${{findbugs.home}}/lib/findbugs-ant.jar" />
 			<mkdir dir="{$project_home}/build/findbugs/${{api.name}}" />
 			<findbugs home="${{findbugs.home}}"
-			output="text"
-			outputFile="{$project_home}/build/findbugs/${{api.name}}/${{api.name}}-fb.txt" >
+			output="html"
+			outputFile="{$project_home}/build/findbugs/${{api.name}}/index.html" >
 				<sourcePath path="${{api.source.dir}}" />
 				<class location="{$project_home}/build/classes-api/${{api.name}}" />
 				<auxClasspath>
@@ -142,9 +141,9 @@
 			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
 
-		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report an API.">
+		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report for an API.">
 			<mkdir dir="{$project_home}/build/cvschangelog/${{api.name}}" />
-			<cvschangelog dir="${{api.source.dir}}/.." destfile="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml" />
+			<cvschangelog dir="{$project_home}/apis/${{api.name}}" destfile="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml" />
 			<xslt in="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml"
 			out="index.html"
 			style="${{ant.home}}/etc/changelog.xsl">
@@ -158,7 +157,7 @@
 			<mkdir dir="{$project_home}/build/jmeter/${{api.name}}" />
 			<xslt 
 			in="apis/${{api.name}}/spec/api.xml"
-			out="{$project_home}/build/jmeter/${{api.name}}.jmx"
+			out="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}.jmx"
 			style="{$xins_home}/src/tools/jmeter/${{api.name}}/api_to_jmx.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
@@ -166,6 +165,7 @@
 		</target>
 
 		<target name="run-jmeter" depends="-init-tools" description="Execute some JMeter tests.">
+			<fail message="Please, specify the jmeter.home property" unless="jmeter.home" />
 			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
 			<property name="jmeter.test" value="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}" />
 			<jmeter jmeterhome="${{jmeter.home}}"

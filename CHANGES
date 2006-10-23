@@ -34,6 +34,13 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 * Generated build file:
   - The xins-eclipse.user-libraries to use for Eclipse will be in 
     xins\tools\eclipse.
+  - The property used to define the PMD rules is now pmd.rules and has
+    rulesets/basic.xml,rulesets/unusedcode.xml as default value.
+  - PMD tool target makes use of the build.java.version property.
+  - Fixed incorrect source directory for the cvschangelog target.
+  - Fixed generation of the JMeter file in the incorrect directory.
+  - Findbugs target now generates an HTML report.
+  - The script fails nicely if jmeter.home or findbugs.home is not specified.
 
 * Build- and release-process:
   - Removed the NOTES file as the NOTES file is now online.
