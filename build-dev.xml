@@ -353,7 +353,7 @@ ${sf.file}</fail>
 	<target name="-prepare-checkstyle" depends="-checkstyle-task" />
 
 	<target name="checkstyle-text" depends="-prepare-checkstyle" description="Prints checkstyle errors">
-		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
+		<checkstyle config="src/config/checkstyle/config-xins.xml" failOnViolation="false">
 			<fileset dir="src/java-common"           includes="**/*.java" />
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
 			<fileset dir="src/java-client-framework" includes="**/*.java" />
@@ -364,7 +364,7 @@ ${sf.file}</fail>
 	<target name="checkstyle-xml" depends="-prepare-checkstyle" description="Checks the style of the source code">
 		<mkdir dir="build/checkstyle" />
 		<mkdir dir="build/checkstyle/xml" />
-		<checkstyle config="src/config/checkstyle/config.xml" failOnViolation="false">
+		<checkstyle config="src/config/checkstyle/config-xins.xml" failOnViolation="false">
 			<fileset dir="src/java-common"           includes="**/*.java" />
 			<fileset dir="src/java-server-framework" includes="**/*.java" />
 			<fileset dir="src/java-client-framework" includes="**/*.java" />

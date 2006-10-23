@@ -37,6 +37,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
 * Build- and release-process:
   - Removed the NOTES file as the NOTES file is now online.
+  - Renamed checkstyle config.xml to config-xins.xml as the config.xml is
+    used to check APIs.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:

@@ -12,10 +12,10 @@
 
 	<module name="TreeWalker">
 
-		<!-- Make sure the file header is correct >
+		<!-- Make sure the file header is correct -->
 		<module name="RegexpHeader">
 			<property name="headerFile" value="src/config/checkstyle/java.header" />
-		</module-->
+		</module>
 
 		<!-- Avoid creating duplicate objects -->
 		<module name="IllegalInstantiation">
