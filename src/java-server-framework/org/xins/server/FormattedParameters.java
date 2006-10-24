@@ -6,9 +6,7 @@
  */
 package org.xins.server;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
-import org.xins.common.Utils;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.FastStringBuffer;

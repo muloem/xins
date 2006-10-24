@@ -6,7 +6,6 @@
  */
 package org.xins.server.frontend;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.xins.common.collections.PropertyReader;

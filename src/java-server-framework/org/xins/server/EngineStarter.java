@@ -7,8 +7,6 @@
 package org.xins.server;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;

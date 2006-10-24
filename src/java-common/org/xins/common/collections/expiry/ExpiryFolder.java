@@ -572,8 +572,7 @@ extends Object {
             // Get the next Map.Entry from the iterator
             Map.Entry me = (Map.Entry) iterator.next();
 
-            // Get the key and the entry
-            Object key   = me.getKey();
+            // Get the entry
             Entry  entry = (Entry) me.getValue();
             if (!entry.isExpired()) {
                size++;

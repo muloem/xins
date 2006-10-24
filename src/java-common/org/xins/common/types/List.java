@@ -6,7 +6,6 @@
  */
 package org.xins.common.types;
 
-import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;

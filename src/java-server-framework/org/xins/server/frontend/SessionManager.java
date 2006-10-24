@@ -17,7 +17,6 @@ import java.util.StringTokenizer;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.xins.common.MandatoryArgumentChecker;
 
@@ -25,9 +24,7 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.BootstrapException;
-import org.xins.common.manageable.InitializationException;
 import org.xins.common.manageable.Manageable;
-import org.xins.common.service.Descriptor;
 import org.xins.common.spec.FunctionSpec;
 
 import org.xins.server.API;

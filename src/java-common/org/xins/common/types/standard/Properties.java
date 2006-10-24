@@ -6,7 +6,6 @@
  */
 package org.xins.common.types.standard;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;

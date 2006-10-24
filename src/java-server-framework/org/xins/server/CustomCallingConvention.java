@@ -6,10 +6,7 @@
  */
 package org.xins.server;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Base class for calling convention implementations that are not part of the

@@ -8,12 +8,10 @@ package org.xins.common;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.xins.common.types.EnumItem;
-import org.xins.common.types.EnumType;
 import org.xins.common.xml.Element;
 
 /**
@@ -127,7 +125,7 @@ public class BeanUtils {
             xmlToObject(element, destination);
          }
       } catch (Exception e) {
-         // Probably no methd found
+         // Probably no method found
       }
       return destination;
    }
@@ -152,7 +150,7 @@ public class BeanUtils {
       // First test if the method with the same class as source exists
       try {
          Class[] idemClass = {origValue.getClass()};
-         Method idemMethod = destination.getClass().getMethod(setMethodName, idemClass);
+         destination.getClass().getMethod(setMethodName, idemClass);
          return origValue;
       } catch (NoSuchMethodException nsmex) {
          // Ignore, try to find the other methods
@@ -239,9 +237,12 @@ public class BeanUtils {
                // The destination has a set method associated with the primitive type.
                return primitiveClass;
             } catch (NoSuchMethodException nsmex) {
+               // Ignore no primitive set method found
             }
          } catch (IllegalAccessException iaex) {
+            // Ignore
          } catch (NoSuchFieldException nsfex) {
+            // Ignore
          }
       }
       return valueClass;
@@ -293,7 +294,7 @@ public class BeanUtils {
             String hungarianName = elementName.substring(0, 1).toUpperCase() + elementName.substring(1);
             Class[] argsClasses = {getElementClass(elementName, result)};
             Method addMethod = result.getClass().getMethod("add" + hungarianName, argsClasses);
-            Object childElement = elementToObject(element, result, topLevel);
+            Object childElement = elementToObject(element, result);
             Object[] addArgs = { childElement };
             if (childElement != null) {
                addMethod.invoke(result, addArgs);
@@ -338,14 +339,11 @@ public class BeanUtils {
     *    the XML element object, cannot be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
-    * @param topLevel
-    *    <code>true</code> if the element passed is the top element, 
-    *    <code>false</code> if it is a sub-element.
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   private static Object elementToObject(Element element, Object result, boolean topLevel) {
+   private static Object elementToObject(Element element, Object result) {
       String elementName = element.getLocalName();
       //String newElementClassName = result.getClass().getName() + "." + elementName;
       Object newElement = null;

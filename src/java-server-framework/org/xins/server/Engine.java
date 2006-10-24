@@ -8,7 +8,6 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -173,12 +172,6 @@ final class Engine extends Object {
     * field is indeed <code>null</code>.
     */
    private Pattern _contextIDPattern;
-
-   /**
-    * The set of supported HTTP methods, as a comma-separated string. Is
-    * initialized by {@link #initAPI()}.
-    */
-   private String _supportedMethodsString;
 
 
    //-------------------------------------------------------------------------

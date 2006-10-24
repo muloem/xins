@@ -7,11 +7,9 @@
 package org.xins.server;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
+
 import javax.management.openmbean.CompositeDataSupport;
 import javax.management.openmbean.TabularDataSupport;
-import org.xins.common.collections.PropertyReader;
 
 /**
  * Management bean for the API.
