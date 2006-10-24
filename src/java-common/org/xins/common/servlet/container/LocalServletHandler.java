@@ -175,7 +175,7 @@ public class LocalServletHandler {
     *
     * @deprecated
     *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
-    *    Use {@link #query(String,String,char[],Map)} instead.
+    *    Use {@link #query(String,String,String,Map)} instead.
     */
    public XINSServletResponse query(String url,
                                     char[] data,
@@ -221,7 +221,7 @@ public class LocalServletHandler {
     *
     * @deprecated
     *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
-    *    Use {@link #query(String,String,char[],Map)} instead.
+    *    Use {@link #query(String,String,String,Map)} instead.
     */
    public XINSServletResponse query(String url,
                                     char[] data,

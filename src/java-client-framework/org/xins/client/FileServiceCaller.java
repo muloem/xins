@@ -162,7 +162,7 @@ class FileServiceCaller extends ServiceCaller {
     *
     * <p>The implementation of this method in class
     * <code>HTTPServiceCaller</code> delegates to
-    * {@link #call(HTTPCallRequest,TargetDescriptor)}.
+    * {@link #call(HTTPCallRequest,HTTPCallConfig)}.
     *
     * @param request
     *    the call request to be executed, must be an instance of class

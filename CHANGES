@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 * XINS/Java Common Library:
   - Added convertion in BeanUtils of Object to primitive types and also of 
     String or EnumItem to EnumItem.
+  - Fixed Javadoc links.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.
@@ -17,6 +18,10 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Removed EngineState.getType() (a private, unused method).
   - Setting, getting and removing session properties in the xins ff ckeck
     that the property name is not null.
+  - Fixed Javadoc links.
+
+* XINS/Java Client Framework:
+  - Fixed Javadoc links.
 
 * Generation of server-side Java code:
   - Added tests for the default attribute.

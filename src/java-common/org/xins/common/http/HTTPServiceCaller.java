@@ -865,7 +865,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
    /**
     * Constructs an appropriate <code>CallResult</code> object for a
     * successful call attempt. This method is called from
-    * {@link #doCall(CallRequest)}.
+    * {@link #doCall(CallRequest,CallConfig)}.
     *
     * <p>The implementation of this method in class
     * {@link HTTPServiceCaller} expects an {@link HTTPCallRequest} and
@@ -873,13 +873,13 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @param request
     *    the {@link CallRequest} that was to be executed, never
-    *    <code>null</code> when called from {@link #doCall(CallRequest)};
+    *    <code>null</code> when called from {@link #doCall(CallRequest,CallConfig)};
     *    should be an instance of class {@link HTTPCallRequest}.
     *
     * @param succeededTarget
     *    the {@link TargetDescriptor} for the service that was successfully
     *    called, never <code>null</code> when called from
-    *    {@link #doCall(CallRequest)}.
+    *    {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param duration
     *    the call duration in milliseconds, must be a non-negative number.
@@ -890,8 +890,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @param result
     *    the result from the call, which is the object returned by
-    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, always an instance
-    *    of class {@link HTTPCallResult}, never <code>null</code>; .
+    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)}, 
+    *    always an instance of class {@link HTTPCallResult}, never <code>null</code>; .
     *
     * @return
     *    an {@link HTTPCallResult} instance, never <code>null</code>.
@@ -935,7 +935,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * </ul>
     *
     * @param request
-    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    the request for the call, as passed to {@link #doCall(CallRequest,CallConfig)},
     *    should not be <code>null</code>.
     *
     * @param callConfig

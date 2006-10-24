@@ -798,7 +798,7 @@ public final class XINSServiceCaller extends ServiceCaller {
    /**
     * Constructs an appropriate <code>CallResult</code> object for a
     * successful call attempt. This method is called from
-    * {@link #doCall(CallRequest)}.
+    * {@link #doCall(CallRequest,CallConfig)}.
     *
     * <p>The implementation of this method in class
     * {@link XINSServiceCaller} expects an {@link XINSCallRequest} and
@@ -806,13 +806,13 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @param request
     *    the {@link CallRequest} that was to be executed, never
-    *    <code>null</code> when called from {@link #doCall(CallRequest)};
+    *    <code>null</code> when called from {@link #doCall(CallRequest,CallConfig)};
     *    should be an instance of class {@link XINSCallRequest}.
     *
     * @param succeededTarget
     *    the {@link TargetDescriptor} for the service that was successfully
     *    called, never <code>null</code> when called from
-    *    {@link #doCall(CallRequest)}.
+    *    {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param duration
     *    the call duration in milliseconds, must be a non-negative number.
@@ -823,7 +823,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @param result
     *    the result from the call, which is the object returned by
-    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, always an instance
+    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)}, always an instance
     *    of class {@link XINSCallResult}, never <code>null</code>; .
     *
     * @return
@@ -854,7 +854,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * based on a request, call configuration and exception list.
     *
     * @param request
-    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    the request for the call, as passed to {@link #doCall(CallRequest,CallConfig)},
     *    should not be <code>null</code>.
     *
     * @param callConfig

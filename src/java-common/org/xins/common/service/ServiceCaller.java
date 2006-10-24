@@ -776,20 +776,20 @@ public abstract class ServiceCaller extends Object {
    /**
     * Constructs an appropriate <code>CallResult</code> object for a
     * successful call attempt. This method is called from
-    * {@link #doCall(CallRequest)}.
+    * {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param request
     *    the {@link CallRequest} that was to be executed, never
-    *    <code>null</code> when called from {@link #doCall(CallRequest)}.
+    *    <code>null</code> when called from {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param succeededTarget
     *    the {@link TargetDescriptor} for the service that was successfully
     *    called, never <code>null</code> when called from
-    *    {@link #doCall(CallRequest)}.
+    *    {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param duration
     *    the call duration in milliseconds, guaranteed to be a non-negative
-    *    number when called from {@link #doCall(CallRequest)}.
+    *    number when called from {@link #doCall(CallRequest,CallConfig)}.
     *
     * @param exceptions
     *    the list of {@link CallException} instances, or <code>null</code> if
@@ -797,7 +797,7 @@ public abstract class ServiceCaller extends Object {
     *
     * @param result
     *    the result from the call, which is the object returned by
-    *    {@link #doCallImpl(CallRequest,TargetDescriptor)}, can be
+    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)}, can be
     *    <code>null</code>.
     *
     * @return
@@ -889,7 +889,7 @@ public abstract class ServiceCaller extends Object {
     * </ul>
     *
     * @param request
-    *    the request for the call, as passed to {@link #doCall(CallRequest)},
+    *    the request for the call, as passed to {@link #doCall(CallRequest,CallConfig)},
     *    should not be <code>null</code>.
     *
     * @param callConfig

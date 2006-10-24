@@ -889,7 +889,7 @@ extends Manageable {
     * conventions for invoking functions, so excluding the <em>OPTIONS</em>
     * method. The latter cannot be used for function invocations, only to
     * determine which HTTP methods are available. See
-    * {@link CallingConvention#supportedMethods()}.
+    * {@link CallingConvention#getSupportedMethods()}.
     *
     * @return
     *    the {@link Set} of supported HTTP methods, never <code>null</code>.

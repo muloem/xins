@@ -92,7 +92,7 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @deprecated
     *    Since XINS 1.5.0. The way the HTTP method is determined is incorrect.
-    *    Use {@link #XINSServletRequest(String,String,char[],Map)} instead.
+    *    Use {@link #XINSServletRequest(String,String,String,Map)} instead.
     */
    public XINSServletRequest(String url) {
       _method = "GET";

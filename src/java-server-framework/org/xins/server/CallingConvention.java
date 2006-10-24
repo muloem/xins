@@ -294,9 +294,7 @@ abstract class CallingConvention extends Manageable {
     * {@link #matches(HttpServletRequest)}.
     *
     * <p>If this method does not support the HTTP method for function
-    * invocations, then <code>false</code> is returned, also <em>before</em>
-    * calling {@link #matches(HttpServletRequest)}. See
-    * {@link #isSupportedMethod(String)}.
+    * invocations, then <code>false</code> is returned.
     *
     * <p>If {@link #matches(HttpServletRequest)} throws an exception, then
     * this exception is ignored and <code>false</code> is returned.
