@@ -142,6 +142,8 @@ implements DefaultResultCodes {
     *
     * @return
     *    the name, not <code>null</code>.
+    *
+    * @since XINS 1.5.0.
     */
    public final String getName() {
       return _name;

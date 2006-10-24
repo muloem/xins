@@ -432,6 +432,8 @@ public class HTTPServletHandler {
     *
     * @throws IOException
     *    if the query is not handled correctly.
+    *
+    * @since XINS 1.5.0.
     */
    public void httpQuery(InputStream  in, OutputStream out)
    throws IOException {

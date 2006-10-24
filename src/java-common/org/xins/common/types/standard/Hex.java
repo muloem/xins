@@ -17,7 +17,7 @@ import org.xins.common.text.HexConverter;
  * @version $Revision$ $Date$
  * @author gveiog
  *
- * @since XINS 1.5
+ * @since XINS 1.5.0.
  */
 public class Hex extends Type {
 

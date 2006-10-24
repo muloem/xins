@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Fixed Javadoc links.
   - Removed unused imports and variables with help of PMD.
   - Cleaned up code using checkstyle.
+  - Added @since XINS 1.5.0. to new methods and classes.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.
@@ -24,6 +25,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Removed unused imports and variables with help of PMD.
   - Cleaned up code using checkstyle.
   - Avoid NPE when no function is specified in the xins ff.
+  - Added @since XINS 1.5.0. to new methods and classes.
 
 * XINS/Java Client Framework:
   - Fixed Javadoc links.
@@ -2165,6 +2167,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
   - Improved README.html file.
 
 * Tools:
+
   - Various improvements for the Windows installer.
 
 ______________________________________________________________________________

@@ -34,6 +34,8 @@ import org.xins.server.API;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ *
+ * @since XINS 1.5.0.
  */
 public class SessionManager extends Manageable {
 
