@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2005 Orange Nederland Breedband B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server.frontend;
@@ -134,7 +134,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * from the {@link SessionManager} class.
     *
     * @param in
-    *    the character string to remove underscores from, should never be 
+    *    the character string to remove underscores from, should never be
     *    <code>null</code>.
     *
     * @return
@@ -210,7 +210,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
    private TransformerFactory _factory;
 
    /**
-    * The default page, cannot be <code>null</code>
+    * The default page, cannot be <code>null</code>.
     */
    private String _defaultCommand;
 
@@ -257,9 +257,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
    // Methods
    //-------------------------------------------------------------------------
 
-   /**
-    * Bootstrap the <code>FrontendCallingConvention</code> object.
-    */
    protected void bootstrapImpl(PropertyReader bootstrapProperties)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
@@ -276,9 +273,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       initRedirections(bootstrapProperties);
    }
 
-   /**
-    * Initilialize the <code>FrontendCallingConvention</code> object.
-    */
    protected void initImpl(PropertyReader runtimeProperties)
    throws MissingRequiredPropertyException,
           InvalidPropertyValueException,
@@ -378,7 +372,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       _session.request(httpRequest);
 
       // Control command has a special behaviour
-      if (functionName.equals("Control")) {
+      if ("Control".equals(functionName)) {
          String action = httpRequest.getParameter("action");
          if ("ReadConfigFile".equals(action)) {
             functionName = "_ReloadProperties";
@@ -446,6 +440,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     *
     * @param httpResponse
     *    the HTTP response object to configure, will not be <code>null</code>.
+    *
+    * @param httpRequest
+    *    the HTTP request sent by the client, will not be <code>null</code>.
     *
     * @throws IOException
     *    if calling any of the methods in <code>httpResponse</code> causes an
@@ -641,7 +638,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             while (incorrectParams.hasNext()) {
                Element incorrectParamElement = (Element) incorrectParams.next();
                String elementName = incorrectParamElement.getLocalName();
-               
+
                // param-combo not supported for xins ff
                if (elementName.equals("param-combo")) {
                   Iterator incorrectParamCombo = incorrectParamElement.getChildElements("param").iterator();
@@ -684,8 +681,12 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     *
     * @param elementName
     *    the name of the error element, cannot be <code>null</code>.
+    *
     * @param paramName
     *    the name of the incorrect parameter, cannot be <code>null</code>.
+    *
+    * @return
+    *    the field error element, never <code>null</code>.
     */
    private Element createFieldError(String elementName, String paramName) {
       paramName = getOriginalParameter(paramName);
@@ -756,6 +757,9 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     *
     * @return
     *    the transformed XML, never <code>null</code>.
+    *
+    * @throws Exception
+    *    if the transformation fails.
     */
    private String translate(String xmlInput, Templates template) throws Exception {
       try {
@@ -961,9 +965,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * @return
     *    the location where the command should be redirected, or <code>null</code>
     *    if the command should not be redirected.
-    *
-    * @throws Exception
-    *    if the transformation of the XML result failed.
     */
    private String getRedirection(FunctionResult xinsResult, String command,
          String functionName, String xmlResult) {
