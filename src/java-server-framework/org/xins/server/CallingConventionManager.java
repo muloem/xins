@@ -255,6 +255,9 @@ extends Manageable {
     * @param properties
     *    the bootstrap properties, cannot be <code>null</code>.
     *
+    * @return
+    *    the name of the default calling convention, never <code>null</code>.
+    *
     * @throws MissingRequiredPropertyException
     *    if a required property is not given.
     *
@@ -288,7 +291,7 @@ extends Manageable {
    /**
     * Constructs the calling convention with the specified name, using the
     * specified bootstrap properties. This method is called for both
-	 * <em>regular</em> and <em>custom</em> calling conventions.
+    * <em>regular</em> and <em>custom</em> calling conventions.
     *
     * <p>If the name does not identify a recognized calling convention, then
     * <code>null</code> is returned.
@@ -640,7 +643,7 @@ extends Manageable {
       if (! TextUtils.isEmpty(ccName)) {
          CallingConvention cc = getCallingConvention(ccName);
          if (! Arrays.asList(cc.getSupportedMethods(request)).contains(request.getMethod()) && !"OPTIONS".equals(request.getMethod())) {
-            String detail = "Calling convention \"" + ccName + 
+            String detail = "Calling convention \"" + ccName +
                   "\" does not support the \"" + request.getMethod() + "\" for this request.";
             Log.log_3507(ccName, detail);
             throw new InvalidRequestException(detail);

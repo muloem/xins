@@ -12,7 +12,7 @@ import org.xins.common.types.ItemList;
 /**
  * Standard type <em>_list</em>.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0.
@@ -55,9 +55,9 @@ public final class Set extends org.xins.common.types.List {
    // Inner classes
    //-------------------------------------------------------------------------
 
-	/**
-	 * Inner class that represents a list of java.lang.String.
-	 */
+   /**
+    * Inner class that represents a list of java.lang.String.
+    */
    public static final class Value extends ItemList {
 
       //-------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public final class Set extends org.xins.common.types.List {
        * @throws java.lang.IllegalArgumentException
        *    if <code>value == null</code>.
        */
-      public void add(String value) {
+      public void add(String value) throws IllegalArgumentException {
          MandatoryArgumentChecker.check("value", value);
          addItem(value);
       }

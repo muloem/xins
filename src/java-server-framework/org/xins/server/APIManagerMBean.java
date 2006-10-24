@@ -114,6 +114,12 @@ public interface APIManagerMBean {
     *
     * @throws IOException
     *    if the connection to the MBean fails.
+    *
+    * @throws NoSuchFunctionException
+    *    if the _noOp meta function is not found.
+    *
+    * @throws AccessDeniedException
+    *    if the JMX client is not in the ACLs to execute the _noOp meta function.
     */
    void noOp() throws IOException, NoSuchFunctionException, AccessDeniedException;
 
@@ -122,6 +128,12 @@ public interface APIManagerMBean {
     *
     * @throws IOException
     *    if the connection to the MBean fails.
+    *
+    * @throws NoSuchFunctionException
+    *    if the _ReloadProperties meta function is not found.
+    *
+    * @throws AccessDeniedException
+    *    if the JMX client is not in the ACLs to execute the _ReloadProperties meta function.
     */
    void reloadProperties() throws IOException, NoSuchFunctionException, AccessDeniedException;
 }

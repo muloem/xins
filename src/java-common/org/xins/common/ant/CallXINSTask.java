@@ -72,7 +72,7 @@ public class CallXINSTask extends Task {
    //-------------------------------------------------------------------------
 
    /**
-    * Sets the name of the API function to call
+    * Sets the name of the API function to call.
     *
     * @param function
     *    the name of the function to call, can be <code>null</code>.
@@ -101,6 +101,12 @@ public class CallXINSTask extends Task {
       _prefix = prefix;
    }
 
+   /**
+    * Adds an input parameter.
+    *
+    * @return
+    *    the input parameters.
+    */
    public Property createParam() {
       Property property = new Property();
       _params.add(property);
@@ -140,7 +146,6 @@ public class CallXINSTask extends Task {
             if (_prefix != null && _prefix.length() > 0) {
                 paramName = _prefix + "." + paramName;
             }
-            System.err.println("param " + paramName + ";" + paramValue);
             getProject().setNewProperty(paramName, paramValue);
          }
 

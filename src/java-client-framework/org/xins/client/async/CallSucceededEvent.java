@@ -40,7 +40,9 @@ public final class CallSucceededEvent extends CallEvent {
     * @param result
     *    the result of the call.
     */
-   public CallSucceededEvent(AbstractCAPI capi, AbstractCAPICallRequest request, long duration, AbstractCAPICallResult result) {
+   public CallSucceededEvent(AbstractCAPI capi, AbstractCAPICallRequest request,
+         long duration, AbstractCAPICallResult result) {
+
       super(capi, request, duration);
       _result = result;
    }

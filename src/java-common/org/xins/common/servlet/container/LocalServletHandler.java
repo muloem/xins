@@ -258,7 +258,7 @@ public class LocalServletHandler {
     *
     * @param headers
     *    the HTTP headers passed with the query, cannot be <code>null</code>.
-    *    The key and the value of the Map is String. The keys are all in 
+    *    The key and the value of the Map is String. The keys are all in
     *    uppercase.
     *
     * @return

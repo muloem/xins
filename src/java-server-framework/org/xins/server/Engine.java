@@ -705,7 +705,7 @@ final class Engine extends Object {
          int    statusCode;
          String reason;
          if (exception instanceof InvalidRequestException) {
-            
+
             String method = request.getMethod();
             String ccName = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
             // Check if the method is known by at least one CC (otherwise 501)
@@ -714,7 +714,7 @@ final class Engine extends Object {
                reason = "The HTTP method \"" + method + "\" is not known by any of the usable calling conventions.";
 
             // Check if the method is known for the specified CC (otherwise 405)
-            } else if (ccName != null && 
+            } else if (ccName != null &&
                   _conventionManager.getCallingConvention2(ccName) != null &&
                   !Arrays.asList(_conventionManager.getCallingConvention2(ccName).getSupportedMethods(request)).contains(method)) {
                statusCode = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
@@ -887,7 +887,7 @@ final class Engine extends Object {
     * or for the resource <code>*</code> if no calling convention is given.
     *
     * @param cc
-    *    the calling convention, can be <code>null</code>. if no calling 
+    *    the calling convention, can be <code>null</code>. if no calling
     *    convention is specified all possible method names are returned.
     *
     * @param request

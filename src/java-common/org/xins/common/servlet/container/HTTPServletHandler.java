@@ -81,8 +81,14 @@ public class HTTPServletHandler {
     */
    private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
 
+   /**
+    * The encoding of the request.
+    */
    private final static String REQUEST_ENCODING = "ISO-8859-1";
 
+   /**
+    * The line separator used by the HTTP protocol.
+    */
    private final static String CRLF = "\r\n";
 
 
@@ -518,7 +524,8 @@ public class HTTPServletHandler {
          String inContentType = getHeader(inHeaders, "Content-Type");
 
          // If www-form encoded, then append the body to the query string
-         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && body != null && body.length() > 0) {
+         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && 
+               body != null && body.length() > 0) {
             // XXX: What if the URL already contains a question mark?
             url += '?' + body;
             body = null;
@@ -551,7 +558,8 @@ public class HTTPServletHandler {
             XINSServletResponse response = servlet.query(method, url, body, inHeaders);
 
             // Create the HTTP answer
-            httpResult = "HTTP/1.1 " + response.getStatus() + " " + HttpStatus.getStatusText(response.getStatus()) + CRLF;
+            httpResult = "HTTP/1.1 " + response.getStatus() + " " +
+                  HttpStatus.getStatusText(response.getStatus()) + CRLF;
             PropertyReader outHeaders = response.getHeaders();
             Iterator itHeaderNames = outHeaders.getNames();
             while (itHeaderNames.hasNext()) {
@@ -582,6 +590,15 @@ public class HTTPServletHandler {
       out.flush();
    }
 
+   /**
+    * Sends an HTTP error back to the client.
+    *
+    * @param out
+    *    the output stream to contact the client.
+    *
+    * @param status
+    *    the HTTP error code status.
+    */
    private void sendError(OutputStream out, String status)
    throws IOException {
       String httpResult = "HTTP/1.1 " + status + CRLF + CRLF;
@@ -590,11 +607,26 @@ public class HTTPServletHandler {
       out.flush();
    }
 
+   /**
+    * Sends an HTTP bad request back to the client.
+    *
+    * @param out
+    *    the output stream to contact the client.
+    */
    private void sendBadRequest(OutputStream out)
    throws IOException {
       sendError(out, "400 Bad Request");
    }
 
+   /**
+    * Parses an HTTP header.
+    *
+    * @param headers
+    *    the headers already collected.
+    *
+    * @param header
+    *    the line of the header to be parsed.
+    */
    private static void parseHeader(HashMap headers, String header)
    throws ParseException{
       int index = header.indexOf(':');
@@ -621,6 +653,15 @@ public class HTTPServletHandler {
       headers.put(key, value);
    }
 
+   /**
+    * Gets a HTTP header from the request.
+    *
+    * @param headers
+    *    the list of the headers.
+    *
+    * @param key
+    *    the name of the header.
+    */
    String getHeader(HashMap headers, String key) {
       return (String) headers.get(key.toUpperCase());
    }

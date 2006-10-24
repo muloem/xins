@@ -133,12 +133,12 @@ public final class URLEncoding extends Object {
          int c = (int) content[i];
          if (c < 128) {
             buffer.append(UNENCODED_TO_ENCODED[c]);
-         } else if (c <= 0x07FF) {		// non-ASCII <= 0x7FF
+         } else if (c <= 0x07FF) { // non-ASCII <= 0x7FF
              buffer.append('%');
              buffer.append(Integer.toHexString(0xc0 | (c >> 6)));
              buffer.append('%');
              buffer.append(Integer.toHexString(0x80 | (c & 0x3F)));
-         } else {					// 0x7FF < c <= 0xFFFF
+         } else { // 0x7FF < c <= 0xFFFF
              buffer.append('%');
              buffer.append(Integer.toHexString(0xe0 | (c >> 12)));
              buffer.append('%');

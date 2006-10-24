@@ -247,7 +247,7 @@ extends Object {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
-         final String THIS_METHOD = "startElement(java.lang.String,java.lang.String,java.lang.String,org.xml.sax.Attributes)";
+         final String THIS_METHOD = "startElement(String,String,String,org.xml.sax.Attributes)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;

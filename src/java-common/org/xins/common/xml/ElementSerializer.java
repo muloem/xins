@@ -130,7 +130,7 @@ public final class ElementSerializer extends Object {
          out = new XMLOutputter(fsw, ENCODING);
       } catch (UnsupportedEncodingException uee) {
          String message = "Expected XMLOutputter to support encoding \"" + ENCODING + "\".";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, XMLOutputter.class.getName(), "<init>(java.io.Writer,java.lang.String)", message, uee);
+         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, XMLOutputter.class.getName(), "<init>(java.io.Writer,String)", message, uee);
       }
 
       // XXX: Allow output of declaration to be configured?

@@ -890,7 +890,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @param result
     *    the result from the call, which is the object returned by
-    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)}, 
+    *    {@link #doCallImpl(CallRequest,CallConfig,TargetDescriptor)},
     *    always an instance of class {@link HTTPCallResult}, never <code>null</code>; .
     *
     * @return

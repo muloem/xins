@@ -150,7 +150,7 @@ public class XINSServletResponse implements HttpServletResponse {
     * Returns the content length.
     *
     * @return
-    *    the (non-negative) content length if set, or a negative value if 
+    *    the (non-negative) content length if set, or a negative value if
     *    unset.
     */
    int getContentLength() {

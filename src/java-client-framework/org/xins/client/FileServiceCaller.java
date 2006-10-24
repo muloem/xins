@@ -48,7 +48,7 @@ import org.xins.logdoc.LogdocSerializable;
  * Call a XINS API using the internal Servlet container. This service caller
  * doesn't send data over the network but directly invoke the Servlet method.
  *
- * @version $Revision$
+ * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
@@ -114,7 +114,9 @@ class FileServiceCaller extends ServiceCaller {
     *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
     *    with an unsupported protocol.
     */
-   public FileServiceCaller(Descriptor descriptor) {
+   public FileServiceCaller(Descriptor descriptor)
+   throws IllegalArgumentException, UnsupportedProtocolException {
+
       this(descriptor, (HTTPCallConfig) null);
    }
 

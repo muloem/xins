@@ -57,6 +57,12 @@ public final class APIManager implements APIManagerMBean {
    // Constructors
    //-------------------------------------------------------------------------
 
+   /**
+    * Ctreates a new API manager MBean.
+    *
+    * @param api
+    *    the APi that is managed by this MBean.
+    */
    APIManager(API api) {
       _api = api;
       try {
@@ -73,7 +79,7 @@ public final class APIManager implements APIManagerMBean {
    //-------------------------------------------------------------------------
 
    /**
-    * The API, never <code>null</code>
+    * The API, never <code>null</code>.
     */
    private final API _api;
 
@@ -234,6 +240,12 @@ public final class APIManager implements APIManagerMBean {
     *
     * @throws IOException
     *    if the connection to the MBean fails.
+    *
+    * @throws NoSuchFunctionException
+    *    if the _noOp meta function is not found.
+    *
+    * @throws AccessDeniedException
+    *    if the JMX client is not in the ACLs to execute the _noOp meta function.
     */
    public void noOp() throws IOException, NoSuchFunctionException, AccessDeniedException {
       FunctionRequest noOpRequest = new FunctionRequest("_NoOp",
@@ -246,6 +258,12 @@ public final class APIManager implements APIManagerMBean {
     *
     * @throws IOException
     *    if the connection to the MBean fails.
+    *
+    * @throws NoSuchFunctionException
+    *    if the _ReloadProperties meta function is not found.
+    *
+    * @throws AccessDeniedException
+    *    if the JMX client is not in the ACLs to execute the _ReloadProperties meta function.
     */
    public void reloadProperties() throws IOException, NoSuchFunctionException, AccessDeniedException {
       FunctionRequest reloadPropertiesRequest = new FunctionRequest("_ReloadProperties",
@@ -323,7 +341,7 @@ public final class APIManager implements APIManagerMBean {
    }
 
    /**
-    * Utility method to convert a {@link Properties} to a {@link CompositeDataSupport}
+    * Utility method to convert a {@link Properties} to a {@link CompositeDataSupport}.
     *
     * @param properties
     *    the properties to represent to the JMX agent, cannot be <code>null</code>.

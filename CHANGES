@@ -7,10 +7,11 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
 * XINS/Java Common Library:
-  - Added convertion in BeanUtils of Object to primitive types and also of 
+  - Added convertion in BeanUtils of Object to primitive types and also of
     String or EnumItem to EnumItem.
   - Fixed Javadoc links.
   - Removed unused imports and variables with help of PMD.
+  - Cleaned up code using checkstyle.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.
@@ -21,9 +22,12 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
     that the property name is not null.
   - Fixed Javadoc links.
   - Removed unused imports and variables with help of PMD.
+  - Cleaned up code using checkstyle.
+  - Avoid NPE when no function is specified in the xins ff.
 
 * XINS/Java Client Framework:
   - Fixed Javadoc links.
+  - Cleaned up code using checkstyle.
 
 * Generation of server-side Java code:
   - Added tests for the default attribute.
@@ -39,7 +43,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Fixed SF.net #1409765: No function status on category page.
 
 * Generated build file:
-  - The xins-eclipse.user-libraries to use for Eclipse will be in 
+  - The xins-eclipse.user-libraries to use for Eclipse will be in
     xins\tools\eclipse.
   - The property used to define the PMD rules is now pmd.rules and has
     rulesets/basic.xml,rulesets/unusedcode.xml as default value.
@@ -103,7 +107,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
     calling the get method.
 
 * Generated build file:
-  - Fixed the generated resultcodes.xml file was not read when the 
+  - Fixed the generated resultcodes.xml file was not read when the
     implementation has a specific name.
 
 * Generation of the specdocs:
@@ -145,7 +149,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 * Generation of server-side Java code:
   - isSet method is not generated if the parameter has a default value.
   - Fixed conditions for the param-combo based on a parameter value.
-  - Fixed generated equals method for the request when a parameter has a 
+  - Fixed generated equals method for the request when a parameter has a
     default value.
 
 * Generation of the specdocs:

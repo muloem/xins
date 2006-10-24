@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2005 Orange Nederland Breedband B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server.frontend;
@@ -36,22 +36,22 @@ import org.xins.server.API;
  * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
  */
 public class SessionManager extends Manageable {
-   
+
    /**
     * The API, never <code>null</code>.
     */
    private API _api;
-   
+
    /**
     * The session ID of the current running Thread, never <code>null</code>.
     */
    private ThreadLocal _currentSession = new ThreadLocal();
-   
+
    /**
     * The list of pages that doesn't need to be logged in, cannot be <code>null</code>.
     */
    private ArrayList _unrestrictedPages = new ArrayList();
-   
+
    /**
     * Creates the session manager.
     *
@@ -61,10 +61,7 @@ public class SessionManager extends Manageable {
    public SessionManager(API api) {
       _api = api;
    }
-   
-   /**
-    * Bootstrap the <code>GPFCallingConvention</code> object.
-    */
+
    protected void bootstrapImpl(PropertyReader bootstrapProperties)
    throws MissingRequiredPropertyException,
          InvalidPropertyValueException,
@@ -86,7 +83,7 @@ public class SessionManager extends Manageable {
          _unrestrictedPages.add("*");
       }
    }
-   
+
    /**
     * Method called when the request is received.
     *
@@ -97,7 +94,7 @@ public class SessionManager extends Manageable {
     *    the HTTP request, cannot be <code>null</code>.
     */
    final void request(HttpServletRequest request) {
-      
+
       // Find the session ID in the cookies
       String sessionId = null;
       Cookie[] cookies = request.getCookies();
@@ -109,17 +106,17 @@ public class SessionManager extends Manageable {
             sessionId = cookie.getValue();
          }
       }
-      
+
       HttpSession session = request.getSession(true);
       _currentSession.set(session);
-      
+
       // If the session ID is not found in the cookies, create a new one
       if (sessionId == null || sessionId.equals("") || sessionId.equals("null")) {
-         
+
          sessionId = session.getId();
          setProperty(sessionId, Boolean.FALSE);
       }
-      
+
       // Fill the input parameters
       HashMap inputParameters = new HashMap();
       Enumeration params = request.getParameterNames();
@@ -135,7 +132,7 @@ public class SessionManager extends Manageable {
       setProperty("_remoteIP", request.getRemoteAddr());
       setProperty("_propertiesSet", new HashSet());
    }
-   
+
    /**
     * Sets the input parameters in the session is the execution of the function is successful.
     *
@@ -149,7 +146,7 @@ public class SessionManager extends Manageable {
          if (propertiesSet.contains("*")) {
             return;
          }
-         
+
          // Only valid inputs of an existing function will be added.
          String command = (String) inputParameters.get("command");
          String action = (String) inputParameters.get("action");
@@ -179,7 +176,7 @@ public class SessionManager extends Manageable {
          }
       }
    }
-   
+
    /**
     * Returns <code>true</code> if the user needs to log in to access the page.
     *
@@ -199,7 +196,7 @@ public class SessionManager extends Manageable {
             (command != null && command.startsWith("_"))) {
          return false;
       }
-      
+
       // Check if the user is logged in
       return !getBoolProperty(getSessionId());
    }
@@ -217,7 +214,7 @@ public class SessionManager extends Manageable {
       }
       return session.getId();
    }
-   
+
    /**
     * Gets the session properties.
     *
@@ -239,7 +236,7 @@ public class SessionManager extends Manageable {
       }
       return properties;
    }
-   
+
    /**
     * Adds a new session property. Any previous property is replaced.
     * If the value is <code>null</code>, the property is removed.
@@ -271,7 +268,7 @@ public class SessionManager extends Manageable {
          registryProperty(session, name);
       }
    }
-   
+
    /**
     * Adds or sets a new session property.
     *
@@ -288,7 +285,7 @@ public class SessionManager extends Manageable {
       MandatoryArgumentChecker.check("name", name);
       setProperty(name, value ? Boolean.TRUE : Boolean.FALSE);
    }
-   
+
    /**
     * Gets the value of a session property.
     *
@@ -309,7 +306,7 @@ public class SessionManager extends Manageable {
       }
       return session.getAttribute(name);
    }
-   
+
    /**
     * Gets the value of a boolean session property.
     *
@@ -332,7 +329,7 @@ public class SessionManager extends Manageable {
       Object value = session.getAttribute(name);
       return "true".equals(value) || Boolean.TRUE.equals(value);
    }
-   
+
    /**
     * Removes a session property.
     *
@@ -347,7 +344,7 @@ public class SessionManager extends Manageable {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          session.removeAttribute(name);
-         
+
          // Also remove it from the input parameter list.
          Map inputParameters = (Map) session.getAttribute("_inputs");
          if (inputParameters != null) {
@@ -356,14 +353,14 @@ public class SessionManager extends Manageable {
          registryProperty(session, name);
       }
    }
-   
+
    /**
     * Removes all session properties for the customer.
     */
    public void removeProperties() {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
-         
+
          // Removing the attributes directly throws a ConcurentModificationException in Tomcat
          ArrayList attributeNames = new ArrayList();
          Enumeration enuAttributes = session.getAttributeNames();

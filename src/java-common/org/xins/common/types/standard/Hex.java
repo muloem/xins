@@ -1,4 +1,6 @@
 /*
+ * $Id$
+ *
  * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
@@ -12,7 +14,7 @@ import org.xins.common.text.HexConverter;
 /**
  * Standard type <em>_hex</em>.
  *
- * @version $version$
+ * @version $Revision$ $Date$
  * @author gveiog
  *
  * @since XINS 1.5
@@ -48,7 +50,7 @@ public class Hex extends Type {
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.If the string does not have a hexadecimal value or have a character
-    *	 that is not hexadecimal digit.
+    *	   that is not hexadecimal digit.
     */
    public static byte[] fromStringForRequired(String string)
    throws IllegalArgumentException, TypeValueException {
@@ -251,7 +253,7 @@ public class Hex extends Type {
     * @throws TypeValueException
     *    if the specified value is not in the allowed range.
     *    #Maybe this is redundant because i dont think that there is any possibility to be out of range
-    *	 but since it exists also to other standard types i left it.
+    *    but since it exists also to other standard types i left it.
     *
     */
    public final String toString(Object value)

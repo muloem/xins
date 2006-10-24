@@ -446,7 +446,7 @@ public abstract class Manageable extends Object {
       synchronized (_stateLock) {
          state = _state;
       }
-      return state._level >= BOOTSTRAPPED._level;
+      return state.getLevel() >= BOOTSTRAPPED.getLevel();
    }
 
    /**
@@ -539,7 +539,7 @@ public abstract class Manageable extends Object {
       /**
        * The level of this state.
        */
-      final int _level;
+      private final int _level;
 
       /**
        * The name of this state. Cannot be <code>null</code>.
@@ -550,6 +550,16 @@ public abstract class Manageable extends Object {
       //----------------------------------------------------------------------
       // Methods
       //----------------------------------------------------------------------
+
+      /**
+       * Returns the level of this state.
+       *
+       * @return
+       *    the level of this state, cannot be <code>null</code>.
+       */
+      int getLevel() {
+         return _level;
+      }
 
       /**
        * Returns the name of this state.

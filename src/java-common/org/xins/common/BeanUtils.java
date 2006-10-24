@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2006 Orange Nederland Breeband B.V.
+ * Copyright 2003-2006 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common;
@@ -42,7 +42,7 @@ public class BeanUtils {
     * Get the values returned by the get methods of the source object and
     * call the set method of the destination object for the same property.
     *
-    * e.g. String getFirstName() value of the source object will be used to 
+    * e.g. String getFirstName() value of the source object will be used to
     * invoke setFirstName(String) of the destination object.
     *
     * If the no matching set method exists or the set method parameter is not the
@@ -54,7 +54,7 @@ public class BeanUtils {
     *    the destination object to put the values in. Cannot be <code>null</code>.
     *
     * @return
-    *    the populated object, never <code>null</null>
+    *    the populated object, never <code>null</code>.
     */
    public static Object populate(Object source, Object destination) {
       return populate(source, destination, null);
@@ -64,7 +64,7 @@ public class BeanUtils {
     * Get the values returned by the get methods of the source object and
     * call the set method of the destination object for the same property.
     *
-    * e.g. String getFirstName() value of the source object will be used to 
+    * e.g. String getFirstName() value of the source object will be used to
     * invoke setFirstName(String) of the destination object.
     *
     * If the no matching set method exists or the set method parameter is not the
@@ -78,23 +78,23 @@ public class BeanUtils {
     *    the mapping between properties which does not have the same name.
     *
     * @return
-    *    the populated object, never <code>null</null>
+    *    the populated object, never <code>null</code>.
     */
    public static Object populate(Object source, Object destination, Properties propertiesMapping) {
-      
+
       // Go through all get methods of the source object
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
          String getMethodName = sourceMethods[i].getName();
          if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
-            
+
             // Determine the name of the set method
             String destProperty = sourceMethods[i].getName().substring(3);
             if (propertiesMapping != null && propertiesMapping.getProperty(destProperty) != null) {
                destProperty = propertiesMapping.getProperty(destProperty);
             }
             String setMethodName = "set" + destProperty;
-            
+
             // Invoke the set method with the value returned by the get method
             try {
                Object value = sourceMethods[i].invoke(source, null);
@@ -114,7 +114,7 @@ public class BeanUtils {
             }
          }
       }
-      
+
       // If the source object has a data section, fill the destination with it
       try {
          Method dataElementMethod = source.getClass().getMethod("dataElement", null);
@@ -143,10 +143,13 @@ public class BeanUtils {
     *
     * @return
     *    the converted object.
+    *
+    * @throws Exception
+    *    if error occurs when using the reflection API.
     */
    private static Object convertObject(Object origValue, Object destination, String property) throws Exception {
       String setMethodName = "set" + property.substring(0, 1).toUpperCase() + property.substring(1);
-      
+
       // First test if the method with the same class as source exists
       try {
          Class[] idemClass = {origValue.getClass()};
@@ -155,12 +158,12 @@ public class BeanUtils {
       } catch (NoSuchMethodException nsmex) {
          // Ignore, try to find the other methods
       }
-      
+
       Method[] destMethods = destination.getClass().getMethods();
       for (int i = 0; i < destMethods.length; i++) {
          if (destMethods[i].getName().equals(setMethodName)) {
             Class destClass = destMethods[i].getParameterTypes()[0];
-            
+
             // Convert a String or an EnumItem to another EnumItem.
             if (EnumItem.class.isAssignableFrom(destClass)) {
                String enumTypeClassName = destClass.getName().substring(0, destClass.getName().length() - 5);
@@ -169,11 +172,11 @@ public class BeanUtils {
                Object[] convertParams = {origValue.toString()};
                Object convertedObj = convertionMethod.invoke(null, convertParams);
                return convertedObj;
-            
+
             // Convert whatever to a String
             } else if (destClass == String.class) {
                return origValue.toString();
-               
+
             // Convert an Object to a boolean
             } else if (destClass == Boolean.class || destClass == Boolean.TYPE) {
                if ("true".equals(origValue) || Boolean.TRUE.equals(origValue)) {
@@ -181,7 +184,7 @@ public class BeanUtils {
                } else if ("false".equals(origValue) || Boolean.FALSE.equals(origValue)) {
                   return Boolean.FALSE;
                }
-               
+
             // Convert a String to whatever is asked
             } else if (origValue instanceof String) {
                Method convertionMethod = null;
@@ -222,6 +225,9 @@ public class BeanUtils {
     *
     * @param setMethodName
     *    the name of the set method.
+    *
+    * @return
+    *    the {@link java.lang.Class} object to use for the set method, never <code>null</code>.
     */
    private static Class getClassForObject(Object value, Object destination, String setMethodName) {
       Class valueClass = value.getClass();
@@ -233,7 +239,7 @@ public class BeanUtils {
             Class[] setArgsClasses = {primitiveClass};
             try {
                destination.getClass().getMethod(setMethodName, setArgsClasses);
-               
+
                // The destination has a set method associated with the primitive type.
                return primitiveClass;
             } catch (NoSuchMethodException nsmex) {
@@ -270,7 +276,7 @@ public class BeanUtils {
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
     * @param topLevel
-    *    <code>true</code> if the element passed is the top element, 
+    *    <code>true</code> if the element passed is the top element,
     *    <code>false</code> if it is a sub-element.
     *
     * @return
@@ -363,7 +369,8 @@ public class BeanUtils {
          try {
             Object setArg = convertObject(value, newElement, name);
             Class[] convertionMethodReturnClass = { setArg.getClass() };
-            Method setMethod = newElement.getClass().getMethod("set" + name.substring(0, 1).toUpperCase() + name.substring(1), convertionMethodReturnClass);
+            Method setMethod = newElement.getClass().getMethod(
+                  "set" + name.substring(0, 1).toUpperCase() + name.substring(1), convertionMethodReturnClass);
             Object[] setArgs = { setArg };
             setMethod.invoke(newElement, setArgs);
          } catch (Exception ex) {
