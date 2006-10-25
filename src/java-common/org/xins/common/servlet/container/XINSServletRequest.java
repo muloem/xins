@@ -662,5 +662,9 @@ public class XINSServletRequest implements HttpServletRequest {
       public void reset() throws IOException {
          _stream.reset();
       }
+
+      public void close() throws IOException {
+         _stream.close();
+      }
    }
 }
