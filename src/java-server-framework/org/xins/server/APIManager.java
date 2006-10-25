@@ -353,7 +353,7 @@ public final class APIManager implements APIManagerMBean {
    private CompositeDataSupport propertiesToCompositeData(Properties properties) {
        try {
           //String[] itemNames = {"key", "value"};
-          String[] keys = (String[]) properties.keySet().toArray(new String[0]);
+          String[] keys = (String[]) properties.keySet().toArray(new String[properties.size()]);
           OpenType[] itemTypes = new OpenType[keys.length];
           for (int i = 0; i < itemTypes.length; i++) {
              itemTypes[i] = SimpleType.STRING;

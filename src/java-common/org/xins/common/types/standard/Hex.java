@@ -270,7 +270,7 @@ public class Hex extends Type {
          return HexConverter.toHexString(b);
       } catch (Exception e) {
 
-         throw new TypeValueException(SINGLETON, b.toString(), e.getMessage());
+         throw new TypeValueException(SINGLETON, new String(b), e.getMessage());
       }
    }
 }

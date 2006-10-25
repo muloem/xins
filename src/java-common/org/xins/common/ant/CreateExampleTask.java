@@ -237,12 +237,13 @@ public class CreateExampleTask extends Task {
 
       // Read all the text returned by the server
       BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-      String result = "";
+      StringBuffer sbResult = new StringBuffer();
       String line;
       while ((line = in.readLine()) != null) {
-         result += line;
+         sbResult.append(line);
       }
       in.close();
+      String result = sbResult.toString();
 
       // Combine the XML request with the result
       ElementParser parser = new ElementParser();

@@ -106,7 +106,7 @@ public class SAXParserProvider extends Object {
          Log.log_1550(exception);
          String exceptionMessage = exception.getMessage();
          String message;
-         if (exception == null) {
+         if (exceptionMessage == null) {
             message = "Error when creating a SAX parser.";
          } else {
             message = "Error when creating a SAX parser: \""

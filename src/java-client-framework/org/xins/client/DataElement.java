@@ -726,8 +726,9 @@ public class DataElement implements Cloneable {
          }
 
          QualifiedName qn = (QualifiedName) obj;
-         return ((_namespaceURI == null && qn._namespaceURI == null) || (_namespaceURI.equals(qn._namespaceURI)))
-            &&  _localName.equals(qn._localName);
+         return ((_namespaceURI == null && qn._namespaceURI == null) ||
+               (_namespaceURI != null && _namespaceURI.equals(qn._namespaceURI))) &&
+               _localName.equals(qn._localName);
       }
 
       /**

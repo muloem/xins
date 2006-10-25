@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -909,7 +910,8 @@ final class Engine extends Object {
       if (cc != null) {
          methods = cc.getSupportedMethods(request);
       } else {
-         methods = (String[]) _conventionManager.getSupportedMethods().toArray(new String[0]);
+         Set supportedMethods = _conventionManager.getSupportedMethods();
+         methods = (String[]) supportedMethods.toArray(new String[supportedMethods.size()]);
       }
       String methodsList = "OPTIONS";
       for (int i = 0; i < methods.length; i++) {

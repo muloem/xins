@@ -122,7 +122,9 @@ public class XINSServletRequest implements HttpServletRequest {
    public XINSServletRequest(String url, char[] data, String contentType) {
       _method      = (data == null) ? "GET" : "POST";
       _url         = url;
-      _postData    = new String(data);
+      if (data != null) {
+         _postData    = new String(data);
+      }
       _contentType = contentType;
       parseURL(url);
    }
@@ -150,7 +152,9 @@ public class XINSServletRequest implements HttpServletRequest {
    public XINSServletRequest(String url, char[] data, Map headers) {
       _method   = (data == null) ? "GET" : "POST";
       _url      = url;
-      _postData = new String(data);
+      if (data != null) {
+         _postData = new String(data);
+      }
       _headers.putAll(headers);
       _contentType = (String) headers.get("CONTENT-TYPE");
       parseURL(url);
@@ -318,7 +322,7 @@ public class XINSServletRequest implements HttpServletRequest {
          return new String[] { (String) values };
       } else {
          ArrayList list = (ArrayList) values;
-         return (String[]) list.toArray(new String[0]);
+         return (String[]) list.toArray(new String[list.size()]);
       }
    }
 

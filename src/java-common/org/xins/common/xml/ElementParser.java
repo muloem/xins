@@ -335,7 +335,7 @@ extends Object {
             Element child = (Element) _dataElementStack.pop();
 
             // Set the PCDATA content on the element
-            if (_characters != null && _characters.getLength() > 0) {
+            if (_characters.getLength() > 0) {
                child.setText(_characters.toString());
             }
 
@@ -383,9 +383,7 @@ extends Object {
          State currentState = _state;
          _state = ERROR;
 
-         if (_characters != null) {
-            _characters.append(ch, start, length);
-         }
+         _characters.append(ch, start, length);
 
          // Reset _state
          _state = currentState;

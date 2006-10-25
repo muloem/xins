@@ -281,7 +281,7 @@ public class Base64 extends Type {
          return new String(org.apache.commons.codec.binary.Base64.encodeBase64(b), STRING_ENCODING);
       } catch (UnsupportedEncodingException uee) {
          String message = "Encoding " + STRING_ENCODING + " not supported.";
-         throw new TypeValueException(SINGLETON, b.toString(), message);
+         throw new TypeValueException(SINGLETON, new String(b), message);
       }
    }
 }

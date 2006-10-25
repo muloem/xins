@@ -474,7 +474,7 @@ public class HTTPServletHandler {
 
       // Determine the query string
       String url = line.substring(spaceIndex + 1);
-      if (url == null || "".equals(url)) {
+      if ("".equals(url)) {
          sendBadRequest(out);
          return;
       } else if ("GET".equals(method) || "HEAD".equals(method) || "OPTIONS".equals(method)) {
@@ -526,8 +526,8 @@ public class HTTPServletHandler {
          String inContentType = getHeader(inHeaders, "Content-Type");
 
          // If www-form encoded, then append the body to the query string
-         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) && 
-               body != null && body.length() > 0) {
+         if ((inContentType == null || inContentType.startsWith("application/x-www-form-urlencoded")) &&
+               body.length() > 0) {
             // XXX: What if the URL already contains a question mark?
             url += '?' + body;
             body = null;

@@ -1045,17 +1045,18 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             "<xsl:output omit-xml-declaration=\"yes\" />\n" +
             "<xsl:template match=\"commandresult\">\n" +
             "<xsl:choose>\n";
-      Iterator itConditions = conditionalRedirectionProperties.keySet().iterator();
+      Iterator itConditions = conditionalRedirectionProperties.entrySet().iterator();
       String currentCommand = null;
       String xsltText = null;
       while (itConditions.hasNext()) {
 
          // Parse the line
-         String nextKey = (String) itConditions.next();
+         Map.Entry nextCondition = (Map.Entry) itConditions.next();
+         String nextKey = (String) nextCondition.getKey();
          int conditionPos = nextKey.indexOf('[');
          String command = nextKey.substring(0, conditionPos);
          String condition = nextKey.substring(conditionPos + 1, nextKey.length() - 1);
-         String redirectionPage = (String) conditionalRedirectionProperties.get(nextKey);
+         String redirectionPage = (String) nextCondition.getValue();
 
          // Create the template object and store it
          if (currentCommand != null && !currentCommand.equals(command)) {

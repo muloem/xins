@@ -1152,11 +1152,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
             _throwingMethod = "getResponseBodyAsStream()";
             InputStream in  = method.getResponseBodyAsStream();
 
-            byte[] body;
-            if (in == null) {
-               body = null;
-
-            } else {
+            byte[] body = null;
+            if (in != null) {
                _throwingMethod    = "getResponseContentLength()";
                int contentLength = 4096;
 

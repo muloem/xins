@@ -46,21 +46,7 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.1.0
  */
-public class AccessRuleFile
-extends Object
-implements AccessRuleContainer {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * An empty array of type <code>AccessRuleContainer[]</code>. Size is 0.
-    * This object is used to pass to {@link List#toArray(Object[])}.
-    */
-   private static final AccessRuleContainer[] ARC_ARRAY =
-      new AccessRuleContainer[0];
-
+public class AccessRuleFile implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -471,7 +457,7 @@ implements AccessRuleContainer {
       }
 
       // Copy to the instance field
-      _rules = (AccessRuleContainer[]) rules.toArray(ARC_ARRAY);
+      _rules = (AccessRuleContainer[]) rules.toArray(new AccessRuleContainer[rules.size()]);
    }
 
    /**

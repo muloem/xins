@@ -124,13 +124,14 @@ public class CallXINSTask extends Task {
       try {
 
          // Create the URL
-         String requestURL = _apiLocation + "?_convention=_xins-std&_function=" + _function;
+         StringBuffer sbRequestURL = new StringBuffer(_apiLocation + "?_convention=_xins-std&_function=" + _function);
          for (int i = 0; i < _params.size(); i++) {
              Property nextParam = (Property) _params.elementAt(i);
              String paramName = nextParam.getName();
              String paramValue = nextParam.getValue();
-             requestURL += "&" + URLEncoding.encode(paramName) + "=" + URLEncoding.encode(paramValue);
+             sbRequestURL.append("&" + URLEncoding.encode(paramName) + "=" + URLEncoding.encode(paramValue));
          }
+         String requestURL = sbRequestURL.toString();
 
          // Call the API
          Element resultXML = CreateExampleTask.getResultAsXML(requestURL);
