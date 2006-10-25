@@ -15,7 +15,6 @@ import java.util.Iterator;
 
 import javax.servlet.ServletException;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
@@ -206,8 +205,8 @@ class FileServiceCaller extends ServiceCaller {
             servletHandler = new LocalServletHandler(warFile);
             SERVLETS.put(target, servletHandler);
          } catch (ServletException sex) {
-            // TODO Log
-            sex.printStackTrace();
+
+            Log.log_2117(sex);
          }
       }
 
@@ -250,7 +249,7 @@ class FileServiceCaller extends ServiceCaller {
          response = servletHandler.query(query.toString());
       } catch (IOException exception) {
          duration = System.currentTimeMillis() - start;
-         Log.log_1109(exception, url, params, duration);
+         org.xins.common.Log.log_1109(exception, url, params, duration);
          throw new IOCallException(request, target, duration, exception);
 
       }
@@ -277,11 +276,11 @@ class FileServiceCaller extends ServiceCaller {
 
       // Status code is considered acceptable
       if (verifier == null || verifier.isAcceptable(code)) {
-         Log.log_1107(url, params, duration, code);
+         org.xins.common.Log.log_1107(url, params, duration, code);
 
       // Status code is considered unacceptable
       } else {
-         Log.log_1108(url, params, duration, code);
+         org.xins.common.Log.log_1108(url, params, duration, code);
 
          throw new StatusCodeHTTPCallException((HTTPCallRequest) request, target, duration, code);
       }

@@ -125,6 +125,9 @@
 			<description>Unable to find the API specifications, trying with the ClassLoader.</description>
 			<param name="apiName" type="text" />
 		</entry>
+		<entry id="2117" level="ERROR" exception="true">
+			<description>Error when calling the API using the file protocol.</description>
+		</entry>
 	</group>
 
 	<group id="parse" name="XINS call result parsing">

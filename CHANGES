@@ -35,6 +35,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Fixed Javadoc links.
   - Cleaned up code using checkstyle.
   - Fixed small issues discovered by FindBugs.
+  - Added log 2117 in case of problems using the file protocol.
 
 * Generation of server-side Java code:
   - Added tests for the default attribute.

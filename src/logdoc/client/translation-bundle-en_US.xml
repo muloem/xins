@@ -19,6 +19,7 @@
 	<translation entry="2114">The build-time XINS version for the <value-of-param name="apiName" format="quoted" /> CAPI (<value-of-param name="buildVersion" />) differs from the runtime version of the XINS/Java Client Framework (<value-of-param name="runtimeVersion" />).</translation>
 	<translation entry="2115">Received functional error code <value-of-param name="errorCode" /> within <value-of-param name="duration" /> ms while calling <value-of-param name="url" />?_function=<value-of-param name="function" /><value-of-param name="parameters" />.</translation>
 	<translation entry="2116">Unable to find the API specification for <value-of-param name="apiName" format="quoted" />, trying to find the specifications using the ClassLoader.</translation>
+	<translation entry="2117">Error when calling the API using the file protocol.</translation>
 
 	<translation entry="2200">The returned XML is invalid. The type of the root element is <value-of-param name="localName" format="quoted" /> with namespace <value-of-param name="namespaceURI" format="quoted" /> instead of "result" with namespace (null).</translation>
 	<translation entry="2201">Found output parameter with name nor value.</translation>
