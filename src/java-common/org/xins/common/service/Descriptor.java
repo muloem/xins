@@ -6,6 +6,7 @@
  */
 package org.xins.common.service;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Iterator;
  *
  * @since XINS 1.0.0
  */
-public abstract class Descriptor extends Object {
+public abstract class Descriptor implements Serializable {
 
    //-------------------------------------------------------------------------
    // Constructors

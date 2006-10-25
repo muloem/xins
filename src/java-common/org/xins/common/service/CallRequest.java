@@ -6,6 +6,8 @@
  */
 package org.xins.common.service;
 
+import java.io.Serializable;
+
 /**
  * Abstraction of a request for a <code>ServiceCaller</code> call. Specific
  * service callers typically only accept a single type of request, derived
@@ -33,7 +35,7 @@ package org.xins.common.service;
  *
  * @see ServiceCaller
  */
-public abstract class CallRequest extends Object {
+public abstract class CallRequest implements Serializable {
 
    //-------------------------------------------------------------------------
    // Constructors

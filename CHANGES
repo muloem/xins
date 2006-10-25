@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Cleaned up code using checkstyle.
   - Added @since XINS 1.5.0. to new methods and classes.
   - Fixed small issues discovered by FindBugs.
+  - Improved serialization of the request and result as reported by Lint4j.
+  - Added close method to the InputStream of the internal servlet container.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.

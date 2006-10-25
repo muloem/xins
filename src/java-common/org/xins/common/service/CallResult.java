@@ -6,6 +6,8 @@
  */
 package org.xins.common.service;
 
+import java.io.Serializable;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -21,7 +23,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public abstract class CallResult extends Object {
+public abstract class CallResult implements Serializable {
 
    //-------------------------------------------------------------------------
    // Constructors

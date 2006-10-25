@@ -6,6 +6,8 @@
  */
 package org.xins.common.http;
 
+import java.io.Serializable;
+
 /**
  * HTTP method. Possible values for variable of this class:
  *
@@ -19,7 +21,7 @@ package org.xins.common.http;
  *
  * @since XINS 1.0.0
  */
-public final class HTTPMethod extends Object {
+public final class HTTPMethod implements Serializable {
 
    //-------------------------------------------------------------------------
    // Class fields

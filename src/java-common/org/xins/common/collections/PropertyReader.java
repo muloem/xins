@@ -6,6 +6,7 @@
  */
 package org.xins.common.collections;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Iterator;
  *
  * @see PropertyReaderUtils
  */
-public interface PropertyReader {
+public interface PropertyReader extends Serializable {
 
    /**
     * Gets the value of the property with the specified name.

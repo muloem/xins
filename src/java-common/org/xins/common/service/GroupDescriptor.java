@@ -6,6 +6,7 @@
  */
 package org.xins.common.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -320,7 +321,7 @@ public final class GroupDescriptor extends Descriptor {
     *
     * @since XINS 1.0.0
     */
-   public static final class Type extends Object {
+   public static final class Type implements Serializable {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -381,9 +382,7 @@ public final class GroupDescriptor extends Descriptor {
     *
     * @since XINS 1.0.0
     */
-   private final class RandomIterator
-   extends Object
-   implements Iterator {
+   private final class RandomIterator implements Iterator, Serializable {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -514,9 +513,7 @@ public final class GroupDescriptor extends Descriptor {
     *
     * @since XINS 1.0.0
     */
-   private final class OrderedIterator
-   extends Object
-   implements Iterator {
+   private final class OrderedIterator implements Iterator, Serializable {
 
       //----------------------------------------------------------------------
       // Constructors

@@ -6,6 +6,8 @@
  */
 package org.xins.common.service;
 
+import java.io.Serializable;
+
 import org.xins.common.text.FastStringBuffer;
 
 /**
@@ -46,7 +48,7 @@ import org.xins.common.text.FastStringBuffer;
  * @see ServiceCaller
  * @see CallRequest
  */
-public class CallConfig extends Object {
+public class CallConfig implements Serializable {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -97,7 +99,7 @@ public class CallConfig extends Object {
     * Access controller for the fields in this object. Field reading or
     * writing code should synchronize on this object.
     */
-   private final Object _lock;
+   private transient final Object _lock;
 
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
