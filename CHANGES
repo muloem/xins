@@ -59,6 +59,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Fixed generation of the JMeter file in the incorrect directory.
   - Findbugs target now generates an HTML report.
   - The script fails nicely if jmeter.home or findbugs.home is not specified.
+  - Added Lint4J to the tools targets.
 
 * Build- and release-process:
   - Removed the NOTES file as the NOTES file is now online.

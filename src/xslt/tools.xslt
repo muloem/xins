@@ -129,6 +129,38 @@
 			</findbugs>
 		</target>
 
+		<target name="lint4j" depends="-prepare-classes, -init-tools" description="Generate the Lint4J report for an API.">
+			<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
+				<classpath refid="tools-cp" />
+			</taskdef>
+			<mkdir dir="{$project_home}/build/lint4j/${{api.name}}" />
+			<lint4j>
+				<xsl:attribute name="packages">
+					<xsl:choose>
+						<xsl:when test="@domain">
+							<xsl:value-of select="@domain" />
+							<xsl:text>.*</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>*</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+				<sourcePath path="${{api.source.dir}}" />
+				<classpath>
+					<path refid="xins.classpath" />
+					<dirset dir="{$project_home}/build">
+						<include name="java-fundament/${{api.name}}" />
+						<include name="classes-types/${{api.name}}" />
+						<include name="classes-api/${{api.name}}" />
+					</dirset>
+				</classpath>
+				<formatters>
+					<formatter type="text"/>
+					<formatter type="text" toFile="{$project_home}/build/lint4j/${{api.name}}/lint4j-report.txt"/>
+					<formatter type="xml" toFile="{$project_home}/build/lint4j/${{api.name}}/lint4j-report.xml"/>
+				</formatters>
+			</lint4j>
+		</target>
+
 		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generate the JDepend report for an API.">
 			<mkdir dir="{$project_home}/build/jdepend/${{api.name}}" />
 			<jdepend classpathref="xins.classpath" format="xml" outputfile="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
@@ -155,7 +187,7 @@
 
 		<target name="jmeter" depends="-init-tools" description="Generate JMeter tests from the function examples.">
 			<mkdir dir="{$project_home}/build/jmeter/${{api.name}}" />
-			<xslt 
+			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
 			out="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}.jmx"
 			style="{$xins_home}/src/tools/jmeter/${{api.name}}/api_to_jmx.xslt">
@@ -200,9 +232,9 @@
 			<mkdir dir="{$project_home}/build/java-types/${{api.name}}" />
 			<mkdir dir="{$project_home}/build/classes-api/${{api.name}}" />
 			<mkdir dir="{$project_home}/build/classes-types/${{api.name}}" />
-			
+
 			<!-- Copy the build file for the API -->
-			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml" 
+			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml"
 			todir="apis/${{api.name}}" overwrite="false" />
 			<replace file="apis/${{api.name}}/nbbuild.xml"
 			token="value=&quot;petstore&quot;" value="value=&quot;${{api.name}}&quot;" />
@@ -212,7 +244,7 @@
 			<!-- Create the xins user library if needed -->
 			<replace file="{$xins_home}/src/tools/eclipse/xins-eclipse.userlibraries"
 			token="%%XINS_HOME%%" value="{$xins_home}" />
-			
+
 			<!-- Create the project files -->
 			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
