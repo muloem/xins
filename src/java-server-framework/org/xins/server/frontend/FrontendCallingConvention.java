@@ -294,14 +294,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       String cacheEnabled = runtimeProperties.get(TEMPLATES_CACHE_PROPERTY);
       initCacheEnabled(cacheEnabled);
 
-      // Store the template used for the Control command
-      try {
-         StringReader controlXSLT = new StringReader(ControlResult.getControlTemplate());
-         _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
-      } catch (TransformerConfigurationException tcex) {
-         Log.log_3701(tcex, "control");
-      }
-
       // Gets the functions of the API
       Iterator itFunctions =  _api.getFunctionList().iterator();
       while (itFunctions.hasNext()) {
@@ -523,7 +515,15 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          String xsltLocation = _baseXSLTDir + command + ".xslt";
          try {
             Templates template = null;
-            if (command.equals("Control")) {
+            if ("Control".equals(command)) {
+               try {
+                  StringReader controlXSLT = new StringReader(ControlResult.getControlTemplate());
+                  _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
+                  template = _templateControl;
+               } catch (TransformerConfigurationException tcex) {
+                  Log.log_3701(tcex, "control");
+               }
+            } else if ("Control".equals(command)) {
                template = _templateControl;
             } else {
                template = getTemplate(xsltLocation);

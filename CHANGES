@@ -30,6 +30,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Avoid NPE when no function is specified in the xins ff.
   - Added @since XINS 1.5.0. to new methods and classes.
   - Fixed small issues discovered by FindBugs.
+  - Improved start-up performance by lazy instantiating the Control template
+    in xins ff.
 
 * XINS/Java Client Framework:
   - Fixed Javadoc links.
