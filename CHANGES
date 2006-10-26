@@ -71,6 +71,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Removed the NOTES file as the NOTES file is now online.
   - Renamed checkstyle config.xml to config-xins.xml as the config.xml is
     used to check APIs.
+  - Recompile before profiling.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
@@ -2156,6 +2157,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1187660: State change failed in APIServlet. This bug was
     introduced after XINS 1.1.0.
+
   - Minor improvements in APIServlet class. Mostly style.
   - Fixed translations for log message 3403 so they are appropriate even if
     the new number of seconds is 1.
