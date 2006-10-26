@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Added close method to the InputStream of the internal servlet container.
   - Added check that the InputStream in the internal servlet container reads
     the input.
+  - Removed post condition check which was using too much CPU time.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.

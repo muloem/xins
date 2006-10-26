@@ -182,8 +182,6 @@ public class Element implements Cloneable {
    void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "setAttribute(java.lang.String,java.lang.String,java.lang.String)";
-
       // Construct a QualifiedName object. This will check the preconditions.
       QualifiedName qn = new QualifiedName(namespaceURI, localName);
 
@@ -198,23 +196,6 @@ public class Element implements Cloneable {
 
       // Set or reset the attribute
       _attributes.put(qn, value);
-
-      // Check postconditions
-      String getValue = getAttribute(namespaceURI, localName);
-      if ((value != null && getValue == null)
-       || (value == null && getValue != null)
-       || (value != null && !value.equals(getValue))) {
-         String message = "Postcondition failed"
-           + "; namespaceURI="      + TextUtils.quote(namespaceURI)
-           + "; qn.namespaceURI="   + TextUtils.quote(qn.getNamespaceURI())
-           + "; localName="         + TextUtils.quote(localName)
-           + "; qn.localName="      + TextUtils.quote(qn.getLocalName())
-           + "; value="             + TextUtils.quote(value)
-           + "; getAttribute(...)=" + TextUtils.quote(getValue)
-           + '.';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, THIS_METHOD, message);
-         // TODO: Something like the following but with logging: throw ProgrammingError.forPostCondition(CLASSNAME, THIS_METHOD, message) -- message would be without "Postcondition failed"
-      }
    }
 
    /**
