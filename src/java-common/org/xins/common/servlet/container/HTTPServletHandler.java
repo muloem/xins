@@ -441,9 +441,11 @@ public class HTTPServletHandler {
       // Read the input
       // XXX: Buffer size determines maximum request size
       byte[] buffer = new byte[16384];
-      int length = -1;
-      while (length == -1) {
-         length = in.read(buffer);
+      int length = in.read(buffer);
+      if (length < 0) {
+         sendBadRequest(out);
+         in.close();
+         return;
       }
       String request = new String(buffer, 0, length, REQUEST_ENCODING);
 
