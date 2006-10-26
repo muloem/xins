@@ -30,6 +30,7 @@ import org.xins.common.Utils;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.TextUtils;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
@@ -258,7 +259,7 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("inputShared", invalidParam1.get("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
-      }      
+      }
    }
 
    /**
@@ -295,7 +296,7 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("person", invalidParam1.get("element"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
-      }      
+      }
    }
 
    /**
@@ -475,6 +476,13 @@ public class AllInOneAPITests extends TestCase {
 
    public void testSpecialCharacters9() throws Exception {
       dataSectionTests("ends with \u00e9");
+   }
+
+   public void testEchoCharacters() throws Exception {
+      echoTests("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<!DOCTYPE function PUBLIC \"-//XINS//DTD Function 1.4//EN\" \"http://xins.sourceforge.net/dtd/function_1_4.dtd\">\n" +
+            "\n" +
+            "<function name=\"AttributeCombo\" >");
    }
 
    public void testFrenchLogdoc() throws Exception {
@@ -1014,7 +1022,7 @@ public class AllInOneAPITests extends TestCase {
 
       DefaultValueResult result2 = _capi.callDefaultValue(null, null, "copyright", null);
       assertEquals("Test of output default & \" { \u00e9", result2.getOutputText());
-      
+
       DefaultValueRequest defaultRequest = new DefaultValueRequest();
       DefaultValueRequest.Person p1 = new DefaultValueRequest.Person();
       defaultRequest.addPerson(p1);
@@ -1083,8 +1091,20 @@ public class AllInOneAPITests extends TestCase {
       }
    }
 
-   private void dataSectionTests(String inputText)
-   throws Exception {
+   private void echoTests(String inputText) throws Exception {
+      EchoRequest request = new EchoRequest();
+      request.setIn(inputText);
+      EchoResult result = _capi.callEcho(request);
+      if (TextUtils.isEmpty(inputText)) {
+         assertNull(result.getOut());
+      } else {
+         assertNotNull(result.getOut());
+         assertEquals(inputText.length(), result.getOut().length());
+         assertEquals("Received output: " + result.getOut(), inputText, result.getOut());
+      }
+   }
+
+   private void dataSectionTests(String inputText) throws Exception {
       DataElement element = _capi.callDataSection(inputText).dataElement();
       List users = element.getChildElements();
       assertTrue("No users found.", users.size() > 0);
