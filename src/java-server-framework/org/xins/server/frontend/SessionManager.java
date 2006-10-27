@@ -133,6 +133,7 @@ public class SessionManager extends Manageable {
       setProperty("_inputs", inputParameters);
       setProperty("_remoteIP", request.getRemoteAddr());
       setProperty("_propertiesSet", new HashSet());
+      setProperty("_userAgent", request.getHeader("User-Agent"));
    }
 
    /**
