@@ -508,7 +508,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          httpResponse.setStatus(HttpServletResponse.SC_OK);
          out.print(commandResultXML);
          out.close();
-      } else {
+      } else if (command != null) {
          /*if (command.endsWith("Show") || command.endsWith("Okay")) {
             command = command.substring(0, command.length() - 4);
          }*/
