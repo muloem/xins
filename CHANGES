@@ -20,6 +20,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
     the input.
   - Removed post condition check which was using too much CPU time.
   - Replaced exception.printStackTrace() with correct logging.
+  - Slightly improved the HTTPServletHandler, correctly handling exceptions
+    from the httpQuery method, and logging ignored exceptions caused by the
+    closing of streams.
 
 * XINS/Java Server Framework:
   - Fixed XML declaration in the conditional redirection in the xins ff.
