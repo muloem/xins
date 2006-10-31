@@ -196,7 +196,7 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="translation/value-of-param">
+	<xsl:template match="translation/value-of-param[not(@format)]">
 		<span class="value-of-param">
 			<xsl:value-of select="@name" />
 		</span>
@@ -218,7 +218,7 @@
 		</span>
 	</xsl:template>
 
-	<xsl:template match="translation/exception-property">
+	<xsl:template match="translation/exception-property[not(@format)]">
 		<span class="value-of-param">
 			<xsl:text>exception.</xsl:text>
 			<xsl:value-of select="@name" />
