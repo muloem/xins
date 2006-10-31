@@ -4,7 +4,7 @@
 <function name="DataSection2"
 rcsversion="$Revision$" rcsdate="$Date$">
 
-	<description>An example of a data section.</description>
+	<description>An example of a data section with sub-elements.</description>
 
 	<input>
 		<param name="inputText" required="false" type="_text">
