@@ -74,6 +74,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Renamed checkstyle config.xml to config-xins.xml as the config.xml is
     used to check APIs.
   - Recompile before profiling.
+  - Target executed during the release should depend on -init-release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:

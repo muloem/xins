@@ -387,7 +387,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-checkstyle"
-	depends="-init,checkstyle"
+	depends="-init-release,checkstyle"
 	description="Generates the Checkstyle report and uploads it to the web site"
 	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Checkstyle report to ${www.host}" />
@@ -409,7 +409,7 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="upload-j2h"
-	depends="-init,j2h"
+	depends="-init-release,j2h"
 	description="Uploads the Java2HTML documentation to the web site"
 	unless="no-upload">
 		<echo message="Uploading ${title} ${version} Java2HTML documentation to ${www.host}" />
@@ -624,7 +624,7 @@ ${sf.file}</fail>
 
 	<target
 	name="do-upload-package-www"
-	depends="-init"
+	depends="-init-release"
 	description="Uploads the package to the web site"
 	unless="no-upload">
 		<echo message="Uploading ${title} ${version} package to ${www.host}" />
@@ -637,7 +637,7 @@ ${sf.file}</fail>
 
 	<target
 	name="do-upload-package-ftp"
-	depends="-init"
+	depends="-init-release"
 	description="Uploads the package to the SourceForge FTP server"
 	unless="no-ftp">
 		<echo message="Uploading ${title} ${version} package to SourceForge FTP server" />
@@ -782,7 +782,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		trust="true" />
 	</target>
 
-	<target name="upload-homepage" depends="-init" unless="no-upload">
+	<target name="upload-homepage" depends="-init-release" unless="no-upload">
 		<property name="docs.dir" value="../${name}-docs/" />
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
@@ -793,7 +793,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		</ant>
 	</target>
 
-	<target name="-post-commit-version" depends="-init" unless="major.release">
+	<target name="-post-commit-version" depends="-init-release" unless="major.release">
 		<propertyfile file="${version.file}" comment=" Version number for XINS.&#10;">
 			<entry key="version.build"      type="int" operation="+" value="1"      />
 			<entry key="version.suffix"                operation="=" value="-dev"   />
