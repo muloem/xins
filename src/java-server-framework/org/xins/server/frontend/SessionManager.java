@@ -18,8 +18,9 @@ import java.util.StringTokenizer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.xins.common.MandatoryArgumentChecker;
 
+import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -28,6 +29,7 @@ import org.xins.common.manageable.Manageable;
 import org.xins.common.spec.FunctionSpec;
 
 import org.xins.server.API;
+import org.xins.server.Log;
 
 /**
  * Manager for the sessions and session properties for the XINS front-end framework.
@@ -263,7 +265,9 @@ public class SessionManager extends Manageable {
             try {
                session.setAttribute(name, value);
             } catch (Throwable t) {
-               t.printStackTrace();
+
+               // Should never happen as the session is valid
+               Utils.logProgrammingError(t);
             }
          }
       }
@@ -432,7 +436,7 @@ public class SessionManager extends Manageable {
             }
          }
       } catch (Exception ex) {
-         ex.printStackTrace();
+         Log.log_3705(ex.getMessage());
       }
       return receivedParameter;
    }

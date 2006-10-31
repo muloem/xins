@@ -18,6 +18,7 @@ import java.util.Properties;
 
 import javax.management.openmbean.CompositeDataSupport;
 import javax.management.openmbean.CompositeType;
+import javax.management.openmbean.OpenDataException;
 import javax.management.openmbean.OpenType;
 import javax.management.openmbean.SimpleType;
 import javax.management.openmbean.TabularDataSupport;
@@ -229,8 +230,8 @@ public final class APIManager implements APIManagerMBean {
          }
 
          return tabularData;
-      } catch (Exception ex) {
-         ex.printStackTrace();
+      } catch (OpenDataException odex) {
+         Utils.logProgrammingError(odex);
          return null;
       }
    }
@@ -352,7 +353,6 @@ public final class APIManager implements APIManagerMBean {
     */
    private CompositeDataSupport propertiesToCompositeData(Properties properties) {
        try {
-          //String[] itemNames = {"key", "value"};
           String[] keys = (String[]) properties.keySet().toArray(new String[properties.size()]);
           OpenType[] itemTypes = new OpenType[keys.length];
           for (int i = 0; i < itemTypes.length; i++) {
@@ -361,8 +361,8 @@ public final class APIManager implements APIManagerMBean {
           CompositeType propsType = new CompositeType("Properties type", "properties", keys, keys, itemTypes);
           CompositeDataSupport propsData = new CompositeDataSupport(propsType, properties);
           return propsData;
-       } catch (Exception ex) {
-          ex.printStackTrace();
+       } catch (OpenDataException odex) {
+          Utils.logProgrammingError(odex);
           return null;
        }
    }

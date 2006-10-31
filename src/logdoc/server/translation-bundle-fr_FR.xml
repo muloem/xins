@@ -173,4 +173,5 @@
 	<translation entry="3702">Erreur lors de la sérialisation du resultat de la commande pour le front-end framework.</translation>
 	<translation entry="3703">Erreur lors de la transformation du resultat. Ligne: <value-of-param name="lineNumber" />, Colonne: <value-of-param name="columnNumber" />, Public Id: <value-of-param name="publicId" />, Système Id: <value-of-param name="systemId" />.</translation>
 	<translation entry="3704">Transformation du résultat de la commande <value-of-param name="command" format="quoted" />.</translation>
+	<translation entry="3705">Specifications de l'API non trouvé. Détails: <value-of-param name="details" />.</translation>
 </translation-bundle>

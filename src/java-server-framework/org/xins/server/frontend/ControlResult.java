@@ -8,15 +8,16 @@ package org.xins.server.frontend;
 
 import java.util.Iterator;
 import java.util.Map;
+
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.DateConverter;
-
 import org.xins.common.xml.ElementBuilder;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.spec.InvalidSpecificationException;
 
 import org.xins.server.API;
 import org.xins.server.FunctionResult;
+import org.xins.server.Log;
 
 /**
  * Result for the Control command.
@@ -65,7 +66,7 @@ class ControlResult extends FunctionResult {
             add(builder.createElement());
          }
       } catch (InvalidSpecificationException isex) {
-         isex.printStackTrace();
+         Log.log_3705(isex.getMessage());
       }
       Iterator itVirtualFunctions = redirectionMap.keySet().iterator();
       while (itVirtualFunctions.hasNext()) {
