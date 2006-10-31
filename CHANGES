@@ -76,6 +76,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Recompile before profiling.
   - Target executed during the release should depend on -init-release.
 
+* NetBeans
+  - Added specdocs to the context menu of the project.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
 
