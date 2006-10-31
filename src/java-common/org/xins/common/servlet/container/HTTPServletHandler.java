@@ -382,34 +382,36 @@ public class HTTPServletHandler {
       // Check argument
       MandatoryArgumentChecker.check("client", client);
 
-      BufferedReader       inbound  = null;
-      BufferedOutputStream outbound = null;
+      InputStream  inbound  = client.getInputStream();
+      OutputStream outbound = client.getOutputStream();
+
+      // Delegate to httpQuery in a way it does not have to bother with 
+      // closing the streams
       try {
-         // Acquire the streams for IO
-/* TODO
-         inbound  = new BufferedReader(new InputStreamReader(client.getInputStream()));
-         outbound = new BufferedOutputStream(client.getOutputStream());
-
          httpQuery(inbound, outbound);
-*/
-         httpQuery(client.getInputStream(), client.getOutputStream());
 
+      // Clean up for httpQuery, if necessary
       } finally{
+         String thisClass  = getClass().getName();
+         String thisMethod = "serviceClient(java.net.Socket)";
+         String thatMethod = "close()";
 
-         // Clean up
          if (inbound != null) {
             try {
                inbound.close();
             } catch (Throwable exception) {
-               // ignore
+               String thatClass = inbound.getClass().getName();
+               Utils.logIgnoredException(thisClass, thisMethod,
+                                         thatClass, thatMethod, exception);
             }
          }
-
          if (outbound != null) {
             try {
                outbound.close();
             } catch (Throwable exception) {
-               // ignore
+               String thatClass = outbound.getClass().getName();
+               Utils.logIgnoredException(thisClass, thisMethod,
+                                         thatClass, thatMethod, exception);
             }
          }
       }
