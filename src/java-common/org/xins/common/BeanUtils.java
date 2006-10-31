@@ -110,8 +110,9 @@ public class BeanUtils {
                   }
                }
             } catch (Exception nsmex) {
-               nsmex.printStackTrace();
+
                // Ignore this property
+               Utils.logIgnoredException(nsmex);
             }
          }
       }
@@ -307,7 +308,7 @@ public class BeanUtils {
                addMethod.invoke(result, addArgs);
             }
          } catch (Exception ex) {
-            ex.printStackTrace();
+            Utils.logIgnoredException(ex);
          }
       }
 
@@ -357,7 +358,7 @@ public class BeanUtils {
       try {
          newElement = getElementClass(elementName, result).newInstance();
       } catch (Exception ex) {
-         ex.printStackTrace();
+         Utils.logIgnoredException(ex);
          return null;
       }
 
@@ -375,7 +376,7 @@ public class BeanUtils {
             Object[] setArgs = { setArg };
             setMethod.invoke(newElement, setArgs);
          } catch (Exception ex) {
-            ex.printStackTrace();
+            Utils.logIgnoredException(ex);
          }
       }
 
@@ -387,7 +388,7 @@ public class BeanUtils {
             Object[] pcdataArgs = { text };
             pcdataMethod.invoke(newElement, pcdataArgs);
          } catch (Exception ex) {
-            ex.printStackTrace();
+            Utils.logIgnoredException(ex);
          }
       }
 

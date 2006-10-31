@@ -157,7 +157,6 @@ public class CallXINSTask extends Task {
              elementToProperties(dataSection, _prefix);
          }
       } catch (Exception ex) {
-          ex.printStackTrace();
          throw new BuildException(ex);
       }
    }

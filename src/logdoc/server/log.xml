@@ -763,5 +763,9 @@
 			<description>Transforming the result for a command.</description>
 			<param name="command" />
 		</entry>
+		<entry id="3705" level="WARNING">
+			<description>API specification not found.</description>
+			<param name="details" />
+		</entry>
 	</group>
 </log>
