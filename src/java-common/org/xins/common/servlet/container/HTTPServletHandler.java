@@ -446,7 +446,6 @@ public class HTTPServletHandler {
       int length = in.read(buffer);
       if (length < 0) {
          sendBadRequest(out);
-         in.close();
          return;
       }
       String request = new String(buffer, 0, length, REQUEST_ENCODING);
