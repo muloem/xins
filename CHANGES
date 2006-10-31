@@ -78,6 +78,8 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
 * NetBeans
   - Added specdocs to the context menu of the project.
+  - The profile target should be started from the Profile -> Profile Main 
+    Project menu item.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
@@ -2157,6 +2159,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
     which should not affect the behavior.
 
 * XINS/Java Client Framework:
+
   - Added partial unit test for SF.net RFE #1115233: Show _InvalidRequest
     details in exception message.
 
