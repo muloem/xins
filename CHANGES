@@ -4,6 +4,13 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 1.5.0 RC 1:
+
+Tools:
+  - Added a working set to Eclipse Ant builder in order to recompile the
+    project if the specifications change.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
 * XINS/Java Common Library:
@@ -81,7 +88,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
   - Recompile before profiling.
   - Target executed during the release should depend on -init-release.
 
-* NetBeans
+* NetBeans:
   - Added specdocs to the context menu of the project.
   - The profile target should be started from the Profile -> Profile Main
     Project menu item.

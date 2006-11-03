@@ -10,12 +10,12 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-	<xsl:output 
-		omit-xml-declaration="no" 
+	<xsl:output
+		omit-xml-declaration="no"
 		encoding="UTF-8"
-		method="xml" 
+		method="xml"
 		indent="yes" />
-	
+
 	<xsl:template match="api">
 		<xsl:variable name="api" select="@name" />
 
@@ -39,6 +39,7 @@
 				<listEntry value="/{$api}/nbbuild.xml"/>
 			</listAttribute>
 			<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${{workspace_loc:/{$api}/nbbuild.xml}}"/>
+			<stringAttribute key="org.eclipse.ui.externaltools.ATTR_BUILD_SCOPE" value="${{working_set:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;launchConfigurationWorkingSet factoryID=&quot;org.eclipse.ui.internal.WorkingSetFactory&quot; label=&quot;workingSet&quot; name=&quot;workingSet&quot;&gt;&#10;&lt;item factoryID=&quot;org.eclipse.ui.internal.model.ResourceFactory&quot; path=&quot;/{$api}/environments.xml&quot; type=&quot;1&quot;/&gt;&#10;&lt;item factoryID=&quot;org.eclipse.ui.internal.model.ResourceFactory&quot; path=&quot;/{$api}/impl&quot; type=&quot;2&quot;/&gt;&#10;&lt;item factoryID=&quot;org.eclipse.ui.internal.model.ResourceFactory&quot; path=&quot;/{$api}/spec&quot; type=&quot;2&quot;/&gt;&#10;&lt;/launchConfigurationWorkingSet&gt;}}"/>
 		</launchConfiguration>
 	</xsl:template>
 
