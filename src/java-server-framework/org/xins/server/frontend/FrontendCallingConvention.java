@@ -734,7 +734,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private String serializeResult(Element commandResult) {
       // Store the result in a StringWriter before sending it.
-      Writer buffer = new FastStringWriter();
+      Writer buffer = new FastStringWriter(2048);
 
       // Create an XMLOutputter
       try {
@@ -773,7 +773,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          Source source = new StreamSource(new StringReader(xmlInput));
 
          // Store the result in a StringWriter before sending it.
-         Writer buffer = new FastStringWriter(1024);
+         Writer buffer = new FastStringWriter(8192);
 
          Result result = new StreamResult(buffer);
 

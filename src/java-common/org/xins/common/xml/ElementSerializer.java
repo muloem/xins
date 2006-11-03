@@ -123,7 +123,7 @@ public final class ElementSerializer extends Object {
       MandatoryArgumentChecker.check("element", element);
 
       // Create an XMLOutputter
-      FastStringWriter fsw = new FastStringWriter();
+      FastStringWriter fsw = new FastStringWriter(512);
       XMLOutputter out;
       final String ENCODING = "UTF-8";
       try {

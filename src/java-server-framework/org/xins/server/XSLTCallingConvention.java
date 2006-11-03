@@ -256,7 +256,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
       }
 
       // Get the XML output similar to the standard calling convention.
-      FastStringWriter xmlOutput = new FastStringWriter();
+      FastStringWriter xmlOutput = new FastStringWriter(1024);
       CallResultOutputter.output(xmlOutput, xinsResult, false);
       xmlOutput.close();
 
@@ -282,7 +282,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
          // Proceed to the transformation.
          Transformer xformer = templates.newTransformer();
          Source source = new StreamSource(new StringReader(xmlOutput.toString()));
-         Writer buffer = new FastStringWriter(1024);
+         Writer buffer = new FastStringWriter(4096);
          Result result = new StreamResult(buffer);
          xformer.transform(source, result);
 

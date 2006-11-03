@@ -6,7 +6,13 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 RC 1:
 
-Tools:
+* XINS/Java Common Library:
+  - Increased some FastStringWriter capacity for performance.
+
+* XINS/Java Server Framework:
+  - Increased some FastStringWriter capacity for performance.
+
+* Tools:
   - Added a working set to Eclipse Ant builder in order to recompile the
     project if the specifications change.
 
