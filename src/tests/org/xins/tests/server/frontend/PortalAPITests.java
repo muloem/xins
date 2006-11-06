@@ -105,6 +105,13 @@ public class PortalAPITests extends TestCase {
       int port = AllTests.port() + 1;
       _target = new TargetDescriptor("http://localhost:" + port + "/portal/");
       _capi   = new CAPI(_target);
+
+      // Clean the session before executing any tests
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("command", "Control");
+      params.set("action", "RemoveSessionProperties");
+      callCommand(params);
+
    }
 
    public void testControlCommand() throws Exception {
@@ -136,27 +143,27 @@ public class PortalAPITests extends TestCase {
    }
 
    public void testRemoveSessionPropertiesControlCommand2() throws Exception {
-      
+
       // Check that testProp is not in the session
       BasicPropertyReader paramsControl = new BasicPropertyReader();
       paramsControl.set("command", "Control");
       String controlResult1 = callCommand(paramsControl);
       assertTrue("username property already in the session.", controlResult1.indexOf("username") == -1);
-      
+
       // Add testProp to the session
       BasicPropertyReader paramsLogin = createLoginParams();
       callCommand(paramsLogin);
-      
+
       // Check that it's in the session
       String controlResult2 = callCommand(paramsControl);
       assertTrue("username property not found in the session.", controlResult2.indexOf("test1") != -1);
-      
+
       // Clear the session
       BasicPropertyReader paramsRemove = new BasicPropertyReader();
       paramsRemove.set("command", "Control");
       paramsRemove.set("action", "RemoveSessionProperties");
       callCommand(paramsRemove);
-      
+
       // Check that it's no more in the session
       String controlResult3 = callCommand(paramsControl);
       assertTrue("username has not been cleared of the session.", controlResult3.indexOf("test1") == -1);
@@ -209,7 +216,7 @@ public class PortalAPITests extends TestCase {
       BasicPropertyReader params = new BasicPropertyReader();
       String redirection = callRedirection(params);
       assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=DefaultCommand"));
-      
+
       params.set("command", "DefaultCommand");
       String redirection2 = callRedirection(params);
       assertTrue("Incorrect returned redirection: " + redirection2, redirection2.endsWith("?command=Login"));
@@ -219,7 +226,7 @@ public class PortalAPITests extends TestCase {
       BasicPropertyReader params = createLoginParams();
       String redirection = callRedirection(params);
       assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=MainPage"));
-      
+
       params.set("username", "superuser");
       String redirection2 = callRedirection(params);
       assertTrue("Incorrect returned redirection: " + redirection2, redirection2.endsWith("?command=Admin"));
