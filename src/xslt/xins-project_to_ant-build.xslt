@@ -90,6 +90,11 @@ The following commands assist in authoring specifications:
 - create-example      Generates a new example for a function.
 - create-logdoc       Generates the basic logdoc files for an API.
 
+The following commands can be used to run a tool on an API:
+java2html, pmd, checkstyle, coverage, findbugs, lint4j, jdepend,
+cvschangelog, jmeter, run-jmeter, maven, eclipse.
+More information is available in the user guide.
+
 The following targets are specific for a single API,
 replace <api> with the name of an existing API:
 - run-<api>           Runs the WAR file for the API.

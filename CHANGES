@@ -16,6 +16,9 @@ CHANGES INTRODUCED IN XINS 1.5.0 RC 1:
   - Added a working set to Eclipse Ant builder in order to recompile the
     project if the specifications change.
 
+* Generated build file:
+  - Added the list of tools to the help target.
+
 * Documentation:
   - Rebranded Wanadoo Nederland B.V. to Orange Nederland Breedband B.V.
 
@@ -2886,6 +2889,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 8:
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 7:
+
 
 * XINS/Java Common Library:
   - Added tests for the ExpiryStrategy class. This revealed a bug which caused
