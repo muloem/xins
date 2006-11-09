@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 RC 1:
 
 * Examples:
   - Rebranded Wanadoo Nederland B.V. to Orange Nederland Breedband B.V.
+  - The <nbbrowse> task should only be executed with NetBeans.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
