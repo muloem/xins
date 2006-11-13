@@ -756,6 +756,7 @@ APIs in this project are:
 			</xsl:for-each>
 		</target>
 
+
 		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="typePackage">
@@ -1699,6 +1700,7 @@ APIs in this project are:
 			<delete dir="{$project_home}/build/classes-api/{$api}" />
 			<delete dir="{$project_home}/build/classes-capi/{$api}" />
 			<delete dir="{$project_home}/build/classes-types/{$api}" />
+			<delete dir="{$project_home}/build/classes-tests/{$api}" />
 			<delete dir="{$project_home}/build/java-capi/{$api}" />
 			<delete dir="{$project_home}/build/java-combined/{$api}" />
 			<delete dir="{$project_home}/build/java-fundament/{$api}" />
