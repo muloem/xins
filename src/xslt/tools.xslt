@@ -104,8 +104,10 @@
 			<antcall target="war-${{api.name}}">
 				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
+			<!-- unless explicitly set to false, the API will be started at the same time -->
+			<property name="test.start.server" value="true" />
 			<antcall target="test-${{api.name}}">
-				<param name="test.start.server" value="true" />
+				<param name="test.start.server" value="${{test.start.server}}" />
 				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
 			<cobertura-report format="html"	destdir="{$project_home}/build/coverage/${{api.name}}"> <!-- datafile="{$project_home}/build/coverage/${{api.name}}/cobertura.ser" -->
