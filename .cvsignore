@@ -4,6 +4,7 @@
 .classpath
 .clover
 .directory
+.DS_Store
 .nbintdb
 .project
 build
