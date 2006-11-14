@@ -554,6 +554,7 @@ ${sf.file}</fail>
 			<exclude name="docs/javadoc-private/**/*.css"  />
 			<exclude name="demo/xins-project/apis/fileupload/lib/*.jar" />
 			<exclude name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
+			<exclude name="demo/xins-project/apis/petstore/web/rabbit.gif" />
 			<exclude name="demo/xins-project/apis/petstore/nbproject/private" />
 		</patternset>
 		<mkdir dir="build/lf" />
@@ -588,6 +589,7 @@ ${sf.file}</fail>
 				<include name="demo/xins-project/apis/fileupload/lib/commons-fileupload.jar" />
 				<include name="demo/xins-project/apis/fileupload/lib/commons-io.jar" />
 				<include name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
+				<include name="demo/xins-project/apis/petstore/web/rabbit.gif" />
 				<include name="docs/XINSGuide.pdf"             />
 				<include name="docs/frontend/XINSFrontend.pdf" />
 				<include name="docs/protocol/XINSProtocol.pdf" />
