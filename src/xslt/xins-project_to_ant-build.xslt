@@ -541,7 +541,7 @@ APIs in this project are:
       <mkdir dir="{$project_home}/build/specdocs/{$api}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="$apiHasTypes">
+				<xsl:if test="string-length($typeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
 				</xsl:if>
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
@@ -757,6 +757,7 @@ APIs in this project are:
 		</target>
 
 
+
 		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="typePackage">
@@ -769,13 +770,15 @@ APIs in this project are:
 				<xsl:variable name="javaDestDir"    select="concat($project_home, '/build/java-types/', $api)" />
 				<xsl:variable name="copiedTypesDir" select="concat($project_home, '/build/types/',      $api)" />
 
-				<copy todir="{$copiedTypesDir}">
-					<fileset dir="{$api_specsdir}" includes="{$typeIncludes}" />
-					<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
-				</copy>
+				<xsl:if test="string-length($typeIncludes) &gt; 0">
+					<copy todir="{$copiedTypesDir}">
+						<fileset dir="{$api_specsdir}" includes="{$typeIncludes}" />
+						<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
+					</copy>
+				</xsl:if>
 				<xsl:for-each select="$api_node/type">
 					<xsl:if test="contains(@name, '/')">
-						<xsl:variable name="shared_type_file" 
+						<xsl:variable name="shared_type_file"
 						select="concat($api_specsdir, '/../../', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
 						<copy
 						file="{$shared_type_file}"
@@ -796,7 +799,7 @@ APIs in this project are:
 					<param name="api" expression="{$api}" />
 				</xslt>
 				<xmlvalidate warn="false">
-					<fileset dir="{$copiedTypesDir}" includes="{$typeIncludes}"/>
+					<fileset dir="{$copiedTypesDir}" includes="*.typ"/>
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
 				<xslt
@@ -858,7 +861,7 @@ APIs in this project are:
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
 				<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
-				<xsl:if test="$apiHasTypes">
+				<xsl:if test="string-length($typeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
 				</xsl:if>
 				<targetfileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
