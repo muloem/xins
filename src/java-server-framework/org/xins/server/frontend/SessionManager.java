@@ -57,6 +57,11 @@ public class SessionManager extends Manageable {
    private ArrayList _unrestrictedPages = new ArrayList();
 
    /**
+    * The default page, cannot be <code>null</code>.
+    */
+   private String _defaultCommand;
+
+   /**
     * Creates the session manager.
     *
     * @param api
@@ -70,6 +75,10 @@ public class SessionManager extends Manageable {
    throws MissingRequiredPropertyException,
          InvalidPropertyValueException,
          BootstrapException {
+      _defaultCommand = bootstrapProperties.get("xinsff.default.command");
+      if (_defaultCommand == null) {
+         _defaultCommand = "DefaultCommand";
+      }
       String loginPage = bootstrapProperties.get("xinsff.login.page");
       if (loginPage != null) {
          _unrestrictedPages.add(loginPage);
@@ -196,6 +205,9 @@ public class SessionManager extends Manageable {
       }
       HashMap inputParameters = (HashMap) getProperty("_inputs");
       String command = (String) inputParameters.get("command");
+      if (command == null || command.equals("")) {
+         command = _defaultCommand;
+      }
       if (_unrestrictedPages.contains("*") ||
             _unrestrictedPages.contains(command) ||
             (command != null && command.startsWith("_"))) {
