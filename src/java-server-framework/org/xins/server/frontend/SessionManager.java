@@ -106,7 +106,7 @@ public class SessionManager extends Manageable {
     * @param request
     *    the HTTP request, cannot be <code>null</code>.
     */
-   final void request(HttpServletRequest request) {
+   protected void request(HttpServletRequest request) {
 
       // Find the session ID in the cookies
       String sessionId = null;
@@ -153,7 +153,7 @@ public class SessionManager extends Manageable {
     * @param successful
     *    <code>true</code> if the function is successful, <code>false</code> otherwise.
     */
-   final void result(boolean successful) {
+   protected void result(boolean successful) {
       if (successful) {
          HashMap inputParameters = (HashMap) getProperty("_inputs");
          Set propertiesSet =  (Set) getProperty("_propertiesSet");
