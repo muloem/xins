@@ -199,10 +199,6 @@ public class SessionManager extends Manageable {
     **/
    public boolean shouldLogIn() {
       // Check if the page requires a login
-      HttpSession session = (HttpSession) _currentSession.get();
-      if (session == null) {
-         return true;
-      }
       HashMap inputParameters = (HashMap) getProperty("_inputs");
       String command = (String) inputParameters.get("command");
       if (command == null || command.equals("")) {
