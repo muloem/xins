@@ -16,6 +16,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Starting the Servlet container for the test coverage is now optional.
   - Build failed if the API contained only shared types.
 
+* Lodoc:
+  - Ignorable exceptions shouldn't be logged at ERROR level.
+
 * Build- and release-process:
   - Leave the rabbit as is.
 

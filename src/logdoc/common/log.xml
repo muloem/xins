@@ -24,7 +24,7 @@
 			<param name="subjectMethod"   type="text" nullable="false" />
 			<param name="detail"          type="text" nullable="true"  />
 		</entry>
-		<entry id="1051" level="ERROR" exception="true">
+		<entry id="1051" level="DEBUG" exception="true">
 			<description>Ignoring allowable exception.</description>
 			<param name="detectingClass"  type="text" nullable="false" />
 			<param name="detectingMethod" type="text" nullable="false" />
