@@ -199,7 +199,7 @@
 						<configuration>
 							<warSourceDirectory>impl</warSourceDirectory>
 							<warFile>
-								<xsl:value-of select="concat('${build_home}/webapps/', $api, '/', $api, '.war')" />
+								<xsl:value-of select="concat('${build.home}/webapps/', $api, '/', $api, '.war')" />
 							</warFile>
 							<xsl:if test="$project_node/api[@name=$api]/environments">
 								<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
@@ -215,20 +215,20 @@
 						<version>2.0</version>
 						<configuration>
 							<outputDirectory>
-								<xsl:value-of select="concat('${build_home}/webapps/', $api)" />
+								<xsl:value-of select="concat('${build.home}/webapps/', $api)" />
 							</outputDirectory>
 							<warName>
-								<xsl:value-of select="concat($api, '.war')" />
+								<xsl:value-of select="$api" />
 							</warName>
 							<warSourceDirectory>impl</warSourceDirectory>
 							<webappDirectory>
-								<xsl:value-of select="concat('${build_home}/classes-api/', $api)" />
+								<xsl:value-of select="concat('${build.home}/classes-api/', $api)" />
 							</webappDirectory>
 							<workDirectory>
-								<xsl:value-of select="concat('${build_home}/webapps/', $api)" />
+								<xsl:value-of select="concat('${build.home}/webapps/', $api)" />
 							</workDirectory>
 							<webXml>
-								<xsl:value-of select="concat('${build_home}/webapps/', $api, '/web.xml')" />
+								<xsl:value-of select="concat('${build.home}/webapps/', $api, '/web.xml')" />
 							</webXml>
 							<webResources>
 								<xsl:if test="$project_node/api[@name=$api]/impl">
