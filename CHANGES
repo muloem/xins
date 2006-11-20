@@ -23,6 +23,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 * Build- and release-process:
   - Leave the rabbit as is.
 
+* Tools:
+  - Added Maven2 POM for XINS 1.5.0.
+
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.
 
