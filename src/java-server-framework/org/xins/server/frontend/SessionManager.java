@@ -280,7 +280,7 @@ public class SessionManager extends Manageable {
          }
       }
       if (!name.startsWith("_")) {
-         registryProperty(session, name);
+         registerProperty(session, name);
       }
    }
 
@@ -365,7 +365,7 @@ public class SessionManager extends Manageable {
          if (inputParameters != null) {
             inputParameters.remove(name);
          }
-         registryProperty(session, name);
+         registerProperty(session, name);
       }
    }
 
@@ -390,7 +390,7 @@ public class SessionManager extends Manageable {
             String nextAttribute = (String) itAttributes.next();
             session.removeAttribute(nextAttribute);
          }
-         registryProperty(session, "*");
+         registerProperty(session, "*");
       }
    }
 
@@ -404,8 +404,8 @@ public class SessionManager extends Manageable {
     * @param name
     *    the name of the property set or remove in the function implementation, cannot be <code>null</code>.
     */
-   private void registryProperty(HttpSession session, String name) {
-      Set propertiesSet = (Set) session.getAttribute("_propertiesSet");
+   private void registerProperty(HttpSession session, String name) {
+      Set propertiesSet = (Set) getProperty("_propertiesSet");
       if (propertiesSet != null) {
          propertiesSet.add(name);
       } else {
