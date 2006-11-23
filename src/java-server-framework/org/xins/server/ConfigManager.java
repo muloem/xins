@@ -518,10 +518,6 @@ final class ConfigManager extends Object {
       // If we have runtime properties, then get the log locale
       if (_runtimeProperties != null) {
          newLocale = _runtimeProperties.get(LogCentral.LOG_LOCALE_PROPERTY);
-
-         if (TextUtils.isEmpty(newLocale)) {
-            newLocale = _runtimeProperties.get(APIServlet.LOG_LOCALE_PROPERTY);
-         }
       }
 
       // If the log locale is set, apply it
