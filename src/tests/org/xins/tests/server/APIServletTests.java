@@ -96,17 +96,6 @@ public class APIServletTests extends TestCase {
          assertTrue("Expected exception message (" + msg + ") to contain \"null\".",   msg.indexOf("null")   > -1);
       }
 
-      try {
-         servlet.initImpl(null);
-         fail("Expected APIServlet.initImpl(null) to throw an IllegalArgumentException.");
-         return;
-      } catch (IllegalArgumentException exception) {
-         // as expected
-         String msg = exception.getMessage();
-         assertNotNull(msg);
-         assertTrue("Expected exception message (" + msg + ") to contain \"null\".",   msg.indexOf("null")   > -1);
-      }
-
       TestServletConfig config = new TestServletConfig();
       try {
          servlet.init(config);
