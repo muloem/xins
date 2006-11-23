@@ -257,10 +257,6 @@ public final class IPAddressUtils extends Object {
 
    /**
     * Constructs a new <code>IPAddressUtils</code> object.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0. This constructor should never be used
-    *    since this class is a utility class.
     */
    private IPAddressUtils() {
       // empty
