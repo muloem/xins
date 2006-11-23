@@ -136,56 +136,6 @@ extends Object {
       Log.log_1408(_instanceNum, _name);
    }
 
-   /**
-    * Constructs a new <code>ExpiryFolder</code> with the specified name and
-    * strategy and some specific tweaks. When the strategy is stopped (see
-    * {@link ExpiryStrategy#stop()} then this folder becomes invalid and can
-    * no longer be used.
-    *
-    * <p><em>Since XINS 1.0.1, the arguments <code>strictChecking</code> and
-    * <code>maxQueueWaitTime</code> are not used at all.</em>
-    *
-    * @param name
-    *    description of this folder, to be used in log and exception messages,
-    *    not <code>null</code>.
-    *
-    * @param strategy
-    *    the strategy that should be applied, not <code>null</code>.
-    *
-    * @param strictChecking
-    *    flag that indicates if checking of thread synchronization operations
-    *    should be strict or loose.
-    *
-    * @param maxQueueWaitTime
-    *    the maximum time in milliseconds a thread can wait in the queue for
-    *    obtaining read or write access to a resource, must be &gt; 0L.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name             ==    null
-    *          || strategy         ==    null
-    *          || maxQueueWaitTime &lt;= 0L</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.1.
-    *    Use the constructor {@link #ExpiryFolder(String,ExpiryStrategy)}
-    *    instead.
-    */
-   public ExpiryFolder(String         name,
-                       ExpiryStrategy strategy,
-                       boolean        strictChecking,
-                       long           maxQueueWaitTime)
-   throws IllegalArgumentException {
-      this(name, strategy);
-
-      // Check the extra documented precondition
-      if (maxQueueWaitTime <= 0L) {
-         final String DETAIL = "maxQueueWaitTime ("
-                             + maxQueueWaitTime
-                             + "L) <= 0L";
-         throw new IllegalArgumentException(DETAIL);
-      }
-   }
-
 
    //-------------------------------------------------------------------------
    // Fields

@@ -18,6 +18,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     the org.xins.logdoc package.
   - Removed the WhislEncoding class. It was deprecated since XINS 1.4.0.
   - Removed the NonASCIIException class. It was deprecated since XINS 1.4.0.
+  - Removed the ExpiryFolder constructor that was marked as deprecated since
+    XINS 1.0.1.
 
 * XINS/Java Server Framework:
   - The default command in xins ff could also be unrestricted.
