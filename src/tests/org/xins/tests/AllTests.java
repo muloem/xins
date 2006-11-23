@@ -135,7 +135,6 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.text.SimplePatternParserTests.class);
       suite.addTestSuite(org.xins.tests.common.text.TextUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.text.URLEncodingTests.class);
-      suite.addTestSuite(org.xins.tests.common.text.WhislEncodingTests.class);
 
       suite.addTestSuite(org.xins.tests.common.types.standard.BooleanTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.DateTests.class);

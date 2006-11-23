@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Removed org.xins.common.ExceptionUtils class. This class was marked as
     deprecated since XINS 1.2.0, in favour of the class with the same name in
     the org.xins.logdoc package.
+  - Removed the WhislEncoding class. It was deprecated since XINS 1.4.0.
 
 * XINS/Java Server Framework:
   - The default command in xins ff could also be unrestricted.
