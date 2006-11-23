@@ -200,15 +200,6 @@ extends HttpServlet {
     */
    public static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
 
-   /**
-    * The name of the runtime property that specifies the locale for the log
-    * messages.
-    *
-    * @deprecated
-    *    Use {@link org.xins.logdoc.LogCentral#LOG_LOCALE_PROPERTY}.
-    */
-   public static final String LOG_LOCALE_PROPERTY = "org.xins.server.log.locale";
-
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -319,28 +310,6 @@ extends HttpServlet {
                                       detail);
          return;
       }
-   }
-
-   /**
-    * Initializes this servlet using the specified configuration. This is a
-    * alias for {@link #init(ServletConfig)}. That method should be used
-    * instead.
-    *
-    * @param config
-    *    the {@link ServletConfig} object which contains build properties for
-    *    this servlet, as specified by the <em>assembler</em>, cannot be
-    *    <code>null</code>.
-    *
-    * @throws ServletException
-    *    if the servlet could not be initialized.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.3.0. Use {@link #init(ServletConfig)}
-    *    instead.
-    */
-   public void initImpl(ServletConfig config)
-   throws ServletException {
-      init(config);
    }
 
    /**
