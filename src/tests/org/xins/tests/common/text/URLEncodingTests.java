@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.text.FormatException;
-import org.xins.common.text.NonASCIIException;
 import org.xins.common.text.URLEncoding;
 
 /**
