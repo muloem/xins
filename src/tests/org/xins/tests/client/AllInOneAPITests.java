@@ -216,8 +216,8 @@ public class AllInOneAPITests extends TestCase {
          DataElement dataSection = exception.getDataElement();
          assertNotNull(dataSection);
          DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
-         assertEquals("missing-param", missingParam.getName());
-         assertEquals("inputText", missingParam.get("param"));
+         assertEquals("missing-param", missingParam.getLocalName());
+         assertEquals("inputText", missingParam.getAttribute("param"));
          assertEquals(0, missingParam.getChildElements().size());
          assertNull(missingParam.getText());
       }
@@ -255,8 +255,8 @@ public class AllInOneAPITests extends TestCase {
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
          DataElement invalidParam1 = (DataElement) invalidParams.get(0);
-         assertEquals("invalid-value-for-type", invalidParam1.getName());
-         assertEquals("inputShared", invalidParam1.get("param"));
+         assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
+         assertEquals("inputShared", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
       }
@@ -291,9 +291,9 @@ public class AllInOneAPITests extends TestCase {
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
          DataElement invalidParam1 = (DataElement) invalidParams.get(0);
-         assertEquals("invalid-value-for-type", invalidParam1.getName());
-         assertEquals("name", invalidParam1.get("param"));
-         assertEquals("person", invalidParam1.get("element"));
+         assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
+         assertEquals("name", invalidParam1.getAttribute("param"));
+         assertEquals("person", invalidParam1.getAttribute("element"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
       }
@@ -317,13 +317,13 @@ public class AllInOneAPITests extends TestCase {
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
          DataElement invalidParam1 = (DataElement) invalidParams.get(0);
-         assertEquals("invalid-value-for-type", invalidParam1.getName());
-         assertEquals("inputIP", invalidParam1.get("param"));
+         assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
+         assertEquals("inputIP", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
          DataElement invalidParam2 = (DataElement) invalidParams.get(1);
-         assertEquals("invalid-value-for-type", invalidParam2.getName());
-         assertEquals("inputAge", invalidParam2.get("param"));
+         assertEquals("invalid-value-for-type", invalidParam2.getLocalName());
+         assertEquals("inputAge", invalidParam2.getAttribute("param"));
          assertEquals(0, invalidParam2.getChildElements().size());
          assertNull(invalidParam2.getText());
       }
@@ -502,22 +502,22 @@ public class AllInOneAPITests extends TestCase {
       List packets = element.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
       DataElement packet1 = (DataElement) packets.get(0);
-      assertEquals("Incorrect elements.", "packet", packet1.getName());
-      assertNotNull("No destination specified.", packet1.get("destination"));
+      assertEquals("Incorrect elements.", "packet", packet1.getLocalName());
+      assertNotNull("No destination specified.", packet1.getAttribute("destination"));
       List products = packet1.getChildElements();
       assertTrue("No product specified.", products.size() > 0);
       DataElement product1 = (DataElement) products.get(0);
-      assertEquals("Incorrect price for product1", "12", product1.get("price"));
+      assertEquals("Incorrect price for product1", "12", product1.getAttribute("price"));
       DataElement product12 = (DataElement) products.get(1);
-      assertNull("Incorrect price for product1", product12.get("price"));
+      assertNull("Incorrect price for product1", product12.getAttribute("price"));
 
       DataElement packet2 = (DataElement) packets.get(1);
-      assertEquals("Incorrect elements.", "packet", packet2.getName());
-      assertNotNull("No destination specified.", packet2.get("destination"));
+      assertEquals("Incorrect elements.", "packet", packet2.getLocalName());
+      assertNotNull("No destination specified.", packet2.getAttribute("destination"));
       List products2 = packet2.getChildElements();
       assertTrue("No product specified.", products2.size() > 0);
       DataElement product21 = (DataElement) products2.get(0);
-      assertEquals("Incorrect price for product1", "12", product21.get("price"));
+      assertEquals("Incorrect price for product1", "12", product21.getAttribute("price"));
       assertTrue(product21.getChildElements().size() == 0);
    }
 
@@ -900,8 +900,8 @@ public class AllInOneAPITests extends TestCase {
          List invalidParams = dataSection.getChildElements();
          assertEquals(1, invalidParams.size());
          DataElement invalidParam1 = (DataElement) invalidParams.get(0);
-         assertEquals("invalid-value-for-type", invalidParam1.getName());
-         assertEquals("outputProperties", invalidParam1.get("param"));
+         assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
+         assertEquals("outputProperties", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
       }
@@ -1109,15 +1109,15 @@ public class AllInOneAPITests extends TestCase {
       List users = element.getChildElements();
       assertTrue("No users found.", users.size() > 0);
       DataElement su = (DataElement) users.get(0);
-      assertEquals("Incorrect elements.", "user", su.getName());
-      assertEquals("Incorrect name for su.", "superuser", su.get("name"));
-      assertEquals("Incorrect address.", "12 Madison Avenue", su.get("address"));
+      assertEquals("Incorrect elements.", "user", su.getLocalName());
+      assertEquals("Incorrect name for su.", "superuser", su.getAttribute("name"));
+      assertEquals("Incorrect address.", "12 Madison Avenue", su.getAttribute("address"));
       assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
       assertEquals(0, su.getChildElements().size());
       DataElement doe = (DataElement) users.get(1);
-      assertEquals("Incorrect elements.", "user", doe.getName());
-      assertEquals("Incorrect name for " + inputText + ".", inputText, doe.get("name"));
-      assertEquals("Incorrect address.", "Unknown", doe.get("address"));
+      assertEquals("Incorrect elements.", "user", doe.getLocalName());
+      assertEquals("Incorrect name for " + inputText + ".", inputText, doe.getAttribute("name"));
+      assertEquals("Incorrect address.", "Unknown", doe.getAttribute("address"));
       assertNull(doe.getText());
       assertEquals(0, doe.getChildElements().size());
    }

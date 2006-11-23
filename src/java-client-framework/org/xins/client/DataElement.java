@@ -152,23 +152,6 @@ public class DataElement implements Cloneable {
    }
 
    /**
-    * Gets the local name.
-    *
-    * @return
-    *    the local name of this element, cannot be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0. Use {@link #getLocalName()} instead,
-    *    which has the same functionality and behavior. This method has been
-    *    deprecated since it returned a combination of the namespace prefix
-    *    and the local name in XINS 1.0. This method is guaranteed not to be
-    *    removed before XINS 2.0.0.
-    */
-   public String getName() {
-      return getLocalName();
-   }
-
-   /**
     * Sets the specified attribute. If the value for the specified
     * attribute is already set, then the previous value is replaced.
     *
@@ -242,49 +225,6 @@ public class DataElement implements Cloneable {
          return Collections.EMPTY_MAP;
       } else {
          return Collections.unmodifiableMap(_attributes);
-      }
-   }
-
-   /**
-    * Gets the names of all attributes that do not have a namespace defined.
-    *
-    * @return
-    *    an {@link Iterator} returning each attribute name as a
-    *    {@link String}; or <code>null</code>, which indicates the
-    *    <code>DataElement</code> has no elements.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0. Use {@link #getAttributeMap()}
-    *    instead, which returns all attributes names and values and which
-    *    supports XML Namespaces. This method has been deprecated since it
-    *    does not support namespaces and since it returned a combination of
-    *    the namespace prefix and the local name in XINS 1.0, although XML
-    *    Namespaces were not supported yet. This method is guaranteed not to
-    *    be removed before XINS 2.0.0.
-    */
-   public Iterator getAttributes() {
-
-      Set set = null;
-
-      // Find all matches and put them in a lazily-initialized Set
-      if (_attributes != null) {
-         Iterator it = _attributes.entrySet().iterator();
-         while (it.hasNext()) {
-            Map.Entry     entry = (Map.Entry)     it.next();
-            QualifiedName qn    = (QualifiedName) entry.getKey();
-            if (qn.getNamespaceURI() == null) {
-               if (set == null) {
-                  set = new HashSet();
-               }
-               set.add(qn.getLocalName());
-            }
-         }
-      }
-
-      if (set == null) {
-         return null;
-      } else {
-         return set.iterator();
       }
    }
 
@@ -367,31 +307,6 @@ public class DataElement implements Cloneable {
     */
    public String getAttribute(String localName)
    throws IllegalArgumentException {
-      return getAttribute(null, localName);
-   }
-
-   /**
-    * Gets the value of an attribute that has no namespace.
-    *
-    * @param localName
-    *    the local name of the attribute, cannot be <code>null</code>.
-    *
-    * @return
-    *    the value of the attribute that matches the specified local name and
-    *    has no namespace defined, or <code>null</code> if the attribute is
-    *    either not set or set to <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>localName == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0. Use {@link #getAttribute(String)}
-    *    instead. This method has been deprecated since it used to
-    *    expect/accept a combination of the namespace prefix and the local
-    *    name in XINS 1.0, although that XML Namespaces were not supported
-    *    yet. This method is guaranteed not to be removed before XINS 2.0.0.
-    */
-   public String get(String localName) throws IllegalArgumentException {
       return getAttribute(null, localName);
    }
 

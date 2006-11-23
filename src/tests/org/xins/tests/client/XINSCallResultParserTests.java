@@ -6,8 +6,8 @@
  */
 package org.xins.tests.client;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -41,37 +41,6 @@ public class XINSCallResultParserTests extends TestCase {
     */
    public static Test suite() {
       return new TestSuite(XINSCallResultParserTests.class);
-   }
-
-   /**
-    * Determines the number of elements returned by the specified
-    * <code>Iterator</code>.
-    *
-    * <p>TODO: Move this utility function to a utility class.
-    *
-    * @param iterator
-    *    the {@link Iterator} to determine the number of elements in, or
-    *    <code>null</code>.
-    *
-    * @return
-    *    the number of elements in the {@link Iterator}, or <code>0</code> if
-    *    <code>iterator == null</code>.
-    */
-   private static int iteratorSize(Iterator iterator) {
-
-      // Short-circuit if argument is null
-      if (iterator == null) {
-         return 0;
-      }
-
-      // Loop through the elements
-      int count = 0;
-      while (iterator.hasNext()) {
-         iterator.next();
-         count++;
-      }
-
-      return count;
    }
 
 
@@ -181,11 +150,10 @@ public class XINSCallResultParserTests extends TestCase {
       assertNotNull(dataElement);
 
       // Root element should be <data/>
-      assertEquals("data", dataElement.getName());
+      assertEquals("data", dataElement.getLocalName());
 
       // There should be no attributes in the root element
-      Iterator dataElementAttributes = dataElement.getAttributes();
-      assertEquals(0, iteratorSize(dataElementAttributes));
+      assertEquals(0, dataElement.getAttributeMap().size());
 
       // There should be 1 child element
       List children = dataElement.getChildElements();
@@ -272,11 +240,10 @@ public class XINSCallResultParserTests extends TestCase {
       assertNotNull(dataElement);
 
       // Root element should be <data/>
-      assertEquals("data", dataElement.getName());
+      assertEquals("data", dataElement.getLocalName());
 
       // There should be no attributes in the root element
-      Iterator dataElementAttributes = dataElement.getAttributes();
-      assertEquals(0, iteratorSize(dataElementAttributes));
+      assertEquals(0, dataElement.getAttributeMap().size());
 
       // There should be 2 child elements
       List children = dataElement.getChildElements();
@@ -287,38 +254,20 @@ public class XINSCallResultParserTests extends TestCase {
       DataElement childTwo = (DataElement) children.get(1);
 
       // First element should have 2 attributes
-      assertEquals(2, iteratorSize(childOne.getAttributes()));
+      Map childOneAttr = childOne.getAttributeMap();
+      assertEquals(2, childOneAttr.size());
 
       // There should be an 'available' attribute and a 'name' attribute
-      Iterator childOneAttributes = childOne.getAttributes();
-      String attrOne1 = (String) childOneAttributes.next();
-      String attrOne2 = (String) childOneAttributes.next();
-      assertTrue(attrOne1.equals("available") || attrOne1.equals("name"));
-      assertTrue(attrOne2.equals("available") || attrOne2.equals("name"));
-      assertFalse(attrOne1.equals(attrOne2));
-
-      // The 'name' attribute must be 'FOO'
-      assertEquals("FOO", childOne.get("name"));
-
-      // The 'available' attribute must be 'false'
-      assertEquals("false", childOne.get("available"));
+      assertEquals("false", childOne.getAttribute("available"));
+      assertEquals("FOO",   childOne.getAttribute("name"));
 
       // Second element should have 2 attributes
-      assertEquals(2, iteratorSize(childTwo.getAttributes()));
+      Map childTwoAttr = childTwo.getAttributeMap();
+      assertEquals(2, childTwoAttr.size());
 
       // There should be an 'available' attribute and a 'name' attribute
-      Iterator childTwoAttributes = childTwo.getAttributes();
-      String attrTwo1 = (String) childTwoAttributes.next();
-      String attrTwo2 = (String) childTwoAttributes.next();
-      assertTrue(attrTwo1.equals("available") || attrTwo1.equals("name"));
-      assertTrue(attrTwo2.equals("available") || attrTwo2.equals("name"));
-      assertFalse(attrTwo1.equals(attrTwo2));
-
-      // The 'name' attribute must be 'BAR'
-      assertEquals("BAR", childTwo.get("name"));
-
-      // The 'available' attribute must be 'false'
-      assertEquals("true", childTwo.get("available"));
+      assertEquals("true", childTwo.getAttribute("available"));
+      assertEquals("BAR",   childTwo.getAttribute("name"));
    }
 
    /**
@@ -409,9 +358,9 @@ public class XINSCallResultParserTests extends TestCase {
       DataElement dataElement = result.getDataElement();
       List children = dataElement.getChildElements();
       DataElement child = (DataElement) children.get(0);
-      assertEquals("result", child.getName());
+      assertEquals("result", child.getLocalName());
       child = (DataElement) children.get(1);
-      assertEquals("data", child.getName());
+      assertEquals("data", child.getLocalName());
    }
 
    /**
