@@ -221,41 +221,6 @@ extends Object implements AccessRuleContainer {
 
    /**
     * Determines if the specified IP address is allowed to access the
-    * specified function, returning a <code>boolean</code> value.
-    *
-    * <p>This method finds the first matching rule and then returns the
-    * <em>allow</em> property of that rule (see
-    * {@link AccessRule#isAllowRule()}). If there is no matching rule, then
-    * <code>false</code> is returned.
-    *
-    * @param ip
-    *    the IP address, cannot be <code>null</code>.
-    *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
-    * @return
-    *    <code>true</code> if the request is allowed, <code>false</code> if
-    *    the request is denied.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>ip == null || functionName == null</code>.
-    *
-    * @throws ParseException
-    *    if the specified IP address is malformed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.3.0.
-    *    Use {@link #isAllowed(String,String)} instead.
-    */
-   public boolean allow(String ip, String functionName)
-   throws IllegalArgumentException, ParseException {
-      Boolean allowed = isAllowed(ip, functionName);
-      return (allowed != null) ? allowed.booleanValue() : false;
-   }
-
-   /**
-    * Determines if the specified IP address is allowed to access the
     * specified function, returning a <code>Boolean</code> object or
     * <code>null</code>.
     *
