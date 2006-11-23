@@ -830,7 +830,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testCAPIVersion() throws Exception {
       assertNotNull("No XINS version specified.", _capi.getXINSVersion());
-      assertTrue("The version does not starts with '1.'", _capi.getXINSVersion().startsWith("1."));
+      assertTrue("The version does not starts with '2.0.0'", _capi.getXINSVersion().startsWith("2.0.0"));
    }
 
    /**
