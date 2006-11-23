@@ -60,46 +60,12 @@ extends Object implements AccessRuleContainer {
    /**
     * An empty access rule list. This field is never <code>null</code>.
     */
-   static final AccessRuleList EMPTY =
-      new AccessRuleList(new AccessRuleContainer[0]);
-
-   /**
-    * Default watch interval for referenced files, in seconds. Equals one
-    * minute (60 seconds).
-    */
-   static final int DEFAULT_INTERVAL = 60;
+   static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Parses the specified character string to construct a new
-    * <code>AccessRuleList</code> object, using the default watch interval
-    * for referenced files.
-    *
-    * @param descriptor
-    *    the access rule list descriptor, the character string to parse,
-    *    cannot be <code>null</code>.
-    *
-    * @return
-    *    an {@link AccessRuleList} instance, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws ParseException
-    *    if there was a parsing error.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.3.0.
-    *    Use {@link #parseAccessRuleList(String,int)} instead.
-    */
-   public static final AccessRuleList parseAccessRuleList(String descriptor)
-   throws IllegalArgumentException, ParseException {
-      return parseAccessRuleList(descriptor, DEFAULT_INTERVAL);
-   }
 
    /**
     * Parses the specified character string to construct a new
