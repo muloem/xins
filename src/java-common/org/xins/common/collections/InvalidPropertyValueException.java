@@ -13,7 +13,7 @@ import org.xins.common.text.FastStringBuffer;
  * Exception thrown to indicate the property of a value is invalid.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *

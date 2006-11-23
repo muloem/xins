@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
  * HTTP Server used to invoke the XINS Servlet.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class HTTPServletStarter {
 

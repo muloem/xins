@@ -12,7 +12,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * State machine for the XINS server engine.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 final class EngineStateMachine extends Object {
 

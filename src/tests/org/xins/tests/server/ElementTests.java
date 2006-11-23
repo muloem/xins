@@ -17,7 +17,7 @@ import org.xins.server.Element;
  * Tests for class <code>org.xins.server.Element</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class ElementTests extends TestCase {
 

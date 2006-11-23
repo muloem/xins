@@ -32,6 +32,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.
 
+* Other:
+  - Changed all @orange-ft.com addresses to @orange-ftgroup.com.
+  - Changed the e-mail address of Ernst to ernst@ernstdehaan.com.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.5.0 RC 1:
 

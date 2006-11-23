@@ -19,7 +19,7 @@ import org.xins.common.text.ParseException;
  * threads at the same time.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -327,7 +327,7 @@ public class ElementBuilder extends Object {
     * State of the builder.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static final class State extends Object {
 

@@ -10,7 +10,7 @@ package org.xins.server;
  * Exception that indicates that there is no function matching the request.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

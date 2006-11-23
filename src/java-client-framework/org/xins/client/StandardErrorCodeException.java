@@ -14,7 +14,7 @@ import org.xins.common.service.TargetDescriptor;
  * underscore, e.g. <em>_InternalError</em>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.2.0
  */

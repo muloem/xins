@@ -31,8 +31,8 @@ import com.mycompany.allinone.types.Username;
  * to test the API specification.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
- * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+ * @author <a href="mailto:mees.witteman@orange-ftgroup.com">Mees Witteman</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  */
 public class ParameterTests extends TestCase {
 

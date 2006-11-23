@@ -19,7 +19,7 @@ import org.xins.common.text.ParseException;
  * Tests for class <code>AccessRule</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class AccessRuleTests extends TestCase {
 

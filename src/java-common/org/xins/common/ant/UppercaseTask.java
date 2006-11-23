@@ -15,7 +15,7 @@ import org.apache.tools.ant.Task;
  * translated to underscores '_'.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */

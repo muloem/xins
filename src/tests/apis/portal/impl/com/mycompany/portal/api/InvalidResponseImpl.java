@@ -9,7 +9,7 @@ import org.xins.server.FunctionResult;
  * Implementation of the <code>InvalidResponse</code> function.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class InvalidResponseImpl extends InvalidResponse {
 

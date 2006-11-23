@@ -17,7 +17,7 @@ import org.xins.common.http.HTTPMethod;
  * Tests for class <code>XINSCallConfig</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class XINSCallConfigTests extends TestCase {
 

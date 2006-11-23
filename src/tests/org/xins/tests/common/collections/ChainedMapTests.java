@@ -21,7 +21,7 @@ import org.xins.common.collections.ChainedMap;
  * Tests for the <code>ChainedMap</code> class.
  *
  * @version $Revision$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class ChainedMapTests extends TestCase {
 

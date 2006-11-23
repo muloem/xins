@@ -19,7 +19,7 @@ import org.xins.common.text.WhislEncoding;
  * Tests for class <code>WhislEncoding</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class WhislEncodingTests extends TestCase {
 

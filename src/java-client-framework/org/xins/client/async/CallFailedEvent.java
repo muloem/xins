@@ -13,7 +13,7 @@ import org.xins.client.AbstractCAPICallRequest;
  * Event fired the call to the function failed.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.4.0
  */

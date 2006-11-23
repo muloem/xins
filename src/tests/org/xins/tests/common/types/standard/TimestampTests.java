@@ -14,7 +14,7 @@ import org.xins.common.types.standard.Timestamp;
  * Tests for the <code>Timestamp</code> type class.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class TimestampTests extends TestCase {
 

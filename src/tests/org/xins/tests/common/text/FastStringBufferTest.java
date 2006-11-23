@@ -16,7 +16,7 @@ import org.xins.common.text.FastStringBuffer;
  * FastStringBuffer TestCase.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:mees.witteman@orange-ft.com">Mees Witteman</a>
+ * @author <a href="mailto:mees.witteman@orange-ftgroup.com">Mees Witteman</a>
  */
 public class FastStringBufferTest extends TestCase {
 

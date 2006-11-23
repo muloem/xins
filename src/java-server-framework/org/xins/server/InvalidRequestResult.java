@@ -15,7 +15,7 @@ import org.xins.common.xml.ElementBuilder;
  * Result code that indicates that an input parameter is either missing or invalid.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */

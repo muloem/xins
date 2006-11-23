@@ -18,7 +18,7 @@ import org.xins.logdoc.ExceptionUtils;
  * Tests for class <code>Utils</code>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class UtilsTests extends TestCase {
 

@@ -11,7 +11,7 @@ import org.xins.common.types.standard.Int64;
  * Tests for class <code>Int64</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
+ * @author <a href="mailto:chris.gilbride@orange-ftgroup.com">Chris Gilbride</a>
  */
 public class Int64Tests extends TestCase {
 

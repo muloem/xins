@@ -13,7 +13,7 @@ import org.xins.common.text.FastStringBuffer;
  * Exception thrown when a programming error is detected.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
  */

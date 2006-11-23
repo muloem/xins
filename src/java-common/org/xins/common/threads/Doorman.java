@@ -24,7 +24,7 @@ import org.xins.logdoc.ExceptionUtils;
  * <em>Alternating Reader Writer</em> algorithm.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *
@@ -562,7 +562,7 @@ public final class Doorman extends Object {
     * Queue of waiting reader and writer threads.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */
@@ -805,7 +805,7 @@ public final class Doorman extends Object {
     * Type of an entry in a queue for a doorman.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

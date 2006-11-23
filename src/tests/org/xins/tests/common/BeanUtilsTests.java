@@ -21,7 +21,7 @@ import com.mycompany.allinone.capi.DefinedTypesRequest;
  * Tests for class <code>BeanUtils</code>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class BeanUtilsTests extends TestCase {
 

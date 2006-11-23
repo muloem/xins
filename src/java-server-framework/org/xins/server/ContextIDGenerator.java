@@ -41,7 +41,7 @@ import org.xins.common.text.TextUtils;
  * </ul>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 final class ContextIDGenerator extends Manageable {
 

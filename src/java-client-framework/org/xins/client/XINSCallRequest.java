@@ -40,7 +40,7 @@ import org.xins.common.text.TextUtils;
  * <p>Note that instances of this class are <em>not</em> thread-safe.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  *
@@ -687,7 +687,7 @@ public final class XINSCallRequest extends CallRequest {
     * HTTP status code verifier that will only approve 2xx codes.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

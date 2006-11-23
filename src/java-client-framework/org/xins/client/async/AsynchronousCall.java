@@ -18,7 +18,7 @@ import org.xins.client.AbstractCAPICallRequest;
  * asynchronously.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.4.0
  */
@@ -77,7 +77,7 @@ public class AsynchronousCall {
     * Thread that executes the call to the function.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class CallNotifyThread extends CallCAPIThread {
 

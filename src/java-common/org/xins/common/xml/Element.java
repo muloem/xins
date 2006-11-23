@@ -34,8 +34,8 @@ import org.xins.common.text.TextUtils;
  * {@link ElementParser} to parse an XML string.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
  */
@@ -504,7 +504,7 @@ public class Element implements Cloneable {
     * Qualified name for an element or attribute. This is a combination of an
     * optional namespace URI and a mandatory local name.
     *
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.1.0
     */

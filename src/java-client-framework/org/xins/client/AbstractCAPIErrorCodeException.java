@@ -16,7 +16,7 @@ import org.xins.common.service.TargetDescriptor;
  * classes should derive from this class.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public abstract class AbstractCAPIErrorCodeException
 extends UnsuccessfulXINSCallException {

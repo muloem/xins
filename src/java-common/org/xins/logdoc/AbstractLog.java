@@ -12,7 +12,7 @@ import org.apache.log4j.Level;
  * Abstract base class for <em>logdoc</em> <code>Log</code> classes.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */
@@ -107,7 +107,7 @@ public abstract class AbstractLog {
     * class initializer.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */
@@ -169,7 +169,7 @@ public abstract class AbstractLog {
     * Custom log level.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

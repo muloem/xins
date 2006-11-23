@@ -124,7 +124,7 @@ boolean         failOver = true;
 {@link XINSCallResult} result = caller.{@link #call(XINSCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */
@@ -918,7 +918,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     * Logdoc serializable that will serialize a chain of exceptions.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {

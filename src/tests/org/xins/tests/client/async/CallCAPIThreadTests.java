@@ -23,7 +23,7 @@ import org.xins.tests.AllTests;
  * Tests the <code>CallCAPIThread</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class CallCAPIThreadTests extends TestCase {
 

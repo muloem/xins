@@ -13,8 +13,8 @@ import org.xins.common.collections.MissingRequiredPropertyException;
  * Base class to get the runtime properties.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  *
  * @since XINS 1.2.0
  */

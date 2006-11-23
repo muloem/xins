@@ -68,7 +68,7 @@ import org.xins.logdoc.ExceptionUtils;
  * <br>ldap.host2a=service, ldap://host2a/, 8000</code></blockquote>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

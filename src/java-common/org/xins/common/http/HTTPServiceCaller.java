@@ -143,8 +143,8 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
 {@link HTTPCallResult} result = caller.{@link #call(HTTPCallRequest) call}(request);</pre></blockquote>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */
@@ -980,7 +980,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Executor of calls to an API.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class CallExecutor extends Thread {
 
@@ -1289,7 +1289,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Container of the data part of an HTTP call result.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     *
     * @since XINS 1.0.0
     */
@@ -1362,7 +1362,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * where xxxx is the hexadecimal value of the character.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     *
     * @since XINS 1.4.0
     */

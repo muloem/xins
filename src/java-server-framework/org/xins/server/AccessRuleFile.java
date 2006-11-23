@@ -41,8 +41,8 @@ import org.xins.common.text.ParseException;
  * is disabled, and no automatic reloading will be performed.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -501,7 +501,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * Listener that reloads the ACL file if it changes.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     *
     * @since XINS 1.1.0
     */

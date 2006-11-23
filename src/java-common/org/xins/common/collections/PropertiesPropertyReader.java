@@ -13,7 +13,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * Property reader based on a <code>Properties</code> object.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

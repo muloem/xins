@@ -25,7 +25,7 @@ import org.xins.logdoc.LogdocStringBuffer;
  * Tests for class <code>PropertyReaderUtils</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class PropertyReaderUtilsTests extends TestCase {
 

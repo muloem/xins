@@ -46,7 +46,7 @@ import org.xins.common.xml.ElementBuilder;
  * </pre></blockquote>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  */
 class CheckLinks extends Object {
 
@@ -588,7 +588,7 @@ class CheckLinks extends Object {
     * }</pre></blockquote>
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+    * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
     */
    private static final class URLChecker extends Thread {
 

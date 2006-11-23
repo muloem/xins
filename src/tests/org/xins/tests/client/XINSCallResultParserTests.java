@@ -25,7 +25,7 @@ import org.xins.client.XINSCallResultParser;
  * Tests for class <code>XINSCallResultParser</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class XINSCallResultParserTests extends TestCase {
 

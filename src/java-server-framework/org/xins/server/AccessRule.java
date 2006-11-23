@@ -48,9 +48,9 @@ import org.xins.common.text.SimplePatternParser;
  * </dl>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
- * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:chris.gilbride@orange-ftgroup.com">Chris Gilbride</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */

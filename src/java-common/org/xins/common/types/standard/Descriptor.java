@@ -18,7 +18,7 @@ import org.xins.common.text.FastStringBuffer;
  * Standard type <em>_descriptor</em>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.2.0
  */

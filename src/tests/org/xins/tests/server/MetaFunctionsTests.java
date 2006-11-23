@@ -34,8 +34,8 @@ import org.xins.tests.AllTests;
  * Tests for XINS meta functions.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  */
 public class MetaFunctionsTests extends TestCase {
 
@@ -529,7 +529,7 @@ public class MetaFunctionsTests extends TestCase {
     * </pre>
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+    * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
     */
    private static final class MultiCallChecker extends Thread {
 

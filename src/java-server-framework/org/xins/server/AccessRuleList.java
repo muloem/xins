@@ -46,7 +46,7 @@ import org.xins.common.text.ParseException;
  * all other IP addresses are denied access to any of the functions.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

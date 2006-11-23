@@ -11,7 +11,7 @@ import org.xins.common.types.standard.Int32;
  * Tests for class <code>Int32</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:chris.gilbride@orange-ft.com">Chris Gilbride</a>
+ * @author <a href="mailto:chris.gilbride@orange-ftgroup.com">Chris Gilbride</a>
  */
 public class Int32Tests extends TestCase {
 

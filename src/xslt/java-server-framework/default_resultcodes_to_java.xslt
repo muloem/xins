@@ -31,7 +31,7 @@ import java.util.List;
 		<xsl:value-of select="@rcsdate" />
 		<!-- TODO: Pass down version of .rcd file -->
 		<xsl:text><![CDATA[); XSLT file ($Revision$ $Date$)
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public interface DefaultResultCodes {]]></xsl:text>
 		<xsl:for-each select="code">

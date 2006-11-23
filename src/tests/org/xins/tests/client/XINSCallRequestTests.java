@@ -21,7 +21,7 @@ import org.xins.common.http.HTTPMethod;
  * Tests for class <code>XINSCallRequest</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class XINSCallRequestTests extends TestCase {
 

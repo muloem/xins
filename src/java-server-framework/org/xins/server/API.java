@@ -45,9 +45,9 @@ import org.xins.logdoc.LogdocSerializable;
  * Base class for API implementation classes.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
- * @author <a href="mailto:tauseef.rehman@orange-ft.com">Tauseef Rehman</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  *
  * @since XINS 1.0.0
  */
@@ -1584,7 +1584,7 @@ implements DefaultResultCodes {
     * Thread-safe <code>int</code> counter.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class Counter extends Object {
 

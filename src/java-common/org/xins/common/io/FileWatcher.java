@@ -22,7 +22,7 @@ import org.xins.common.text.FastStringBuffer;
  * calling {@link #setDaemon(boolean)}.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */
@@ -551,7 +551,7 @@ public final class FileWatcher extends Thread {
     * by the <code>FileWatcher</code>.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
     */

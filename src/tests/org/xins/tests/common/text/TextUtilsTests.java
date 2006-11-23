@@ -24,7 +24,7 @@ import org.xins.common.text.FastStringBuffer;
  * Tests for class <code>TextUtils</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class TextUtilsTests extends TestCase {
 

@@ -17,7 +17,7 @@ import org.xins.common.spec.ErrorCodeSpec;
  * Exception that indicates that a result code was returned by the API call.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
  */

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet that returns invalid XINS results.
  *
  * @version $Revision$
- * @author <a href="mailto:anthony.goubard@orange-ft.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class InvalidResponseServlet extends HttpServlet {
 

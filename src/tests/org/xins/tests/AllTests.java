@@ -15,7 +15,7 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  * Combination of all XINS/Java tests.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class AllTests extends TestSuite {
 

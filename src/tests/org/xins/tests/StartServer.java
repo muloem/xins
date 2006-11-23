@@ -18,7 +18,7 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  * Starts the web server.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:ernst.dehaan@orange-ft.com">Ernst de Haan</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class StartServer extends TestCase {
 
