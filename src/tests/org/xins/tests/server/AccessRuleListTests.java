@@ -71,14 +71,14 @@ public class AccessRuleListTests extends TestCase {
          // as expected
       }
       try {
-         AccessRuleList.parseAccessRuleList(null);
-         fail("AccessRule.parseAccessRuleList(null) should throw an IllegalArgumentException.");
+         AccessRuleList.parseAccessRuleList(null, 1);
+         fail("AccessRule.parseAccessRuleList(null,1) should throw an IllegalArgumentException.");
          return;
       } catch (IllegalArgumentException exception) {
          // as expected
       }
 
-      AccessRuleList arl = AccessRuleList.parseAccessRuleList("");
+      AccessRuleList arl = AccessRuleList.parseAccessRuleList("", 1);
       assertNotNull(arl);
       assertEquals(0, arl.getRuleCount());
 
@@ -90,25 +90,20 @@ public class AccessRuleListTests extends TestCase {
       assertNotNull(arl);
       assertEquals(0, arl.getRuleCount());
 
-      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t");
+      int interval = 60;
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t", interval);
       assertNotNull(arl);
       assertEquals(1, arl.getRuleCount());
-      boolean allow = arl.allow("194.134.168.213", "_GetVersion");
-      if (! allow) {
-         fail("Expected AccessRuleList(" + arl + ") to allow 194.134.168.213 to access function \"_GetVersion\".");
-         return;
-      }
+      Boolean allow = arl.isAllowed("194.134.168.213", "_GetVersion");
+      assertEquals("Expected AccessRuleList(" + arl + ") to allow 194.134.168.213 to access function \"_GetVersion\".", Boolean.TRUE, allow);
 
       arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t", 1);
       assertNotNull(arl);
       assertEquals(1, arl.getRuleCount());
-      allow = arl.allow("194.134.168.213", "_GetVersion");
-      if (! allow) {
-         fail("Expected AccessRuleList(" + arl + ") to allow 194.134.168.213 to access function \"_GetVersion\".");
-         return;
-      }
+      allow = arl.isAllowed("194.134.168.213", "_GetVersion");
+      assertEquals("Expected AccessRuleList(" + arl + ") to allow 194.134.168.213 to access function \"_GetVersion\".", Boolean.TRUE, allow);
 
-      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ");
+      arl = AccessRuleList.parseAccessRuleList(" \r\nallow 194.134.168.213/32 *\t;\ndeny 1.2.3.4/0 * ", interval);
       assertNotNull(arl);
       assertEquals(2, arl.getRuleCount());
       // TODO: More tests
