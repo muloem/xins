@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 
+* XINS/Java Common Library:
+  - Removed Doorman class. This class was marked as deprecated since
+    XINS 1.0.1.
+
 * XINS/Java Server Framework:
   - The default command in xins ff could also be unrestricted.
   - The request and result method in the session manager of the xins ff can
