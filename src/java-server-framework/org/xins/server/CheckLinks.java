@@ -25,6 +25,7 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.service.Descriptor;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 /**
