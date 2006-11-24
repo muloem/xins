@@ -27,6 +27,12 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     . get(String)
     . getAttributes()
     . getName()
+  - Unmarked the following constructors in class XINSCallRequest as deprecated.
+    Both were deprecated since XINS 1.1.0:
+    . XINSCallRequest(String,PropertyReader,boolean)
+    . XINSCallRequest(String,PropertyReader,boolean,HTTPMethod)
+  - Removed the method isFailOverAllowed() from class XINSCallRequest. This 
+    method was deprecated since XINS 1.1.0.
 
 * XINS/Java Server Framework:
   - The default command in xins ff could also be unrestricted.

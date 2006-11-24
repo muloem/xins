@@ -222,12 +222,6 @@ public final class XINSCallRequest extends CallRequest {
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #XINSCallRequest(String,PropertyReader)} in combination
-    *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
-    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public XINSCallRequest(String         functionName,
                           PropertyReader parameters,
@@ -261,12 +255,6 @@ public final class XINSCallRequest extends CallRequest {
     *    contains a name that does not match the constraints for a parameter
     *    name, see {@link #PARAMETER_NAME_PATTERN_STRING} or if it equals
     *    <code>"function"</code>, which is currently still reserved.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #XINSCallRequest(String,PropertyReader)} in combination
-    *    with {@link #setXINSCallConfig(XINSCallConfig)} instead.
-    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public XINSCallRequest(String         functionName,
                           PropertyReader parameters,
@@ -626,30 +614,6 @@ public final class XINSCallRequest extends CallRequest {
     */
    public Element getDataSection() {
       return _dataSection;
-   }
-
-   /**
-    * Determines whether fail-over is unconditionally allowed.
-    *
-    * @return
-    *    <code>true</code> if fail-over is unconditionally allowed, even if the
-    *    request was already received or even processed by the other end,
-    *    <code>false</code> otherwise.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Call {@link #getXINSCallConfig()} instead and then call
-    *    {@link XINSCallConfig#isFailOverAllowed() isFailOverAllowed()} on the
-    *    returned call configuration object.
-    *    This method is guaranteed not to be removed before XINS 2.0.0.
-    */
-   public boolean isFailOverAllowed() {
-      XINSCallConfig callConfig = getXINSCallConfig();
-      if (callConfig == null) {
-         return false;
-      } else {
-         return getXINSCallConfig().isFailOverAllowed();
-      }
    }
 
    /**
