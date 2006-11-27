@@ -75,6 +75,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 * Tools:
   - Added Maven2 POM for XINS 1.5.0.
   - Partially fixed SF.net bug #1598355: Maven pom.xml is wrongly generated.
+  - Fixed SF.net bug #1601190: Added Jaxen as needed libraries for PMD.
 
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.
