@@ -52,6 +52,11 @@ final class Engine extends Object {
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
+   /**
+    * Property used to start JMX.
+    */
+   private static final String JMX_PROPERTY = "org.xins.server.jmx.enable";
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -252,11 +257,17 @@ final class Engine extends Object {
       try {
          _contextIDGenerator.bootstrap(bootProps);
       } catch (Exception exception) {
-        return false;
+         return false;
       }
 
-      // Perform JMX initialization
-      _starter.registerMBean(_api);
+      // Perform JMX initialization if asked
+      String enableJmx = _configManager.getRuntimeProperties().get(JMX_PROPERTY);
+      if ("true".equals(enableJmx)) {
+         _starter.registerMBean(_api);
+      } else if (enableJmx != null && !enableJmx.equals("false")) {
+         Log.log_3251(enableJmx);
+         return false;
+      }
 
       // Succeeded
       return true;

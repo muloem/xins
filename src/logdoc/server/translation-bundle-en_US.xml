@@ -61,6 +61,7 @@
 	<translation entry="3248">The runtime properties file has not been defined, the system will use the xins.properties file found in the WEB-INF directory of the WAR file.</translation>
 	<translation entry="3249">Unable to register the management bean. Reason: <value-of-param name="details" /></translation>
 	<translation entry="3250">Unknown host, using 127.0.0.1 as default host.</translation>
+	<translation entry="3251">The value of the runtime property &quot;org.xins.server.jmx.enable&quot; is set to <value-of-param name="propertyValue" format="quoted" /> which is incorrect.</translation>
 
 	<translation entry="3300">Initializing logging subsystem with the settings set in the <value-of-param name="configFile" format="quoted" /> file.</translation>
 	<translation entry="3301">Logging subsystem cannot be initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened. Detail: <value-of-param name="detail" format="quoted" />.</translation>

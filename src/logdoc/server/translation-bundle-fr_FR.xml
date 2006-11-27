@@ -61,6 +61,7 @@
 	<translation entry="3248">Le fichier qui contient les propriétés d'execution n'a pas été défini, le système va utilisé le fichier xins.properties trouvé dans le répertoire WEB-INF du fichier WAR.</translation>
 	<translation entry="3249">Impossible d'enregistrer le bean de gestion. Raison: <value-of-param name="details" /></translation>
 	<translation entry="3250">Hôte inconnu, 127.0.0.1 est utilisé comme hôte par défaut.</translation>
+	<translation entry="3251">La valeur de la propriété d'execution &quot;org.xins.server.jmx.enable&quot; est <value-of-param name="propertyValue" format="quoted" /> ce qui est incorrecte.</translation>
 
 	<translation entry="3300">Initialisation du sous-système de logging avec les paramètres définis dans le fichier <value-of-param name="configFile" format="quoted" />.</translation>
 	<translation entry="3301">Le sous-système de logging ne peut pas être initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être ouvert. Détail: <value-of-param name="detail" format="quoted" />.</translation>

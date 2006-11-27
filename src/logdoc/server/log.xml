@@ -261,6 +261,10 @@
 		<entry id="3250" level="WARNING" exception="true">
 			<description>Unknown host, using localhost as default.</description>
 		</entry>
+		<entry id="3251" level="FATAL">
+			<description>Incorrect value for the enabling JMX runtime property.</description>
+			<param name="propertyValue" />
+		</entry>
 	</group>
 
 	<group id="log" name="Logging subsystem">
