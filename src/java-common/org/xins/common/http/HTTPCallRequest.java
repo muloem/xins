@@ -46,7 +46,8 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified
-    * parameters and status code verifier.
+    * parameters and status code verifier. Fail-over is not unconditionally
+    * allowed.
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code> if there
@@ -70,12 +71,13 @@ public final class HTTPCallRequest extends CallRequest {
                           : PropertyReaderUtils.EMPTY_PROPERTY_READER;
       _statusCodeVerifier = statusCodeVerifier;
 
-      // Note that _asString is lazily initialized.
+      // NOTE: _asString is lazily initialized
    }
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified
     * parameters.
+    * Unconditional fail-over is disabled.
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code> if there
@@ -89,6 +91,7 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with no parameters.
+    * Unconditional fail-over is disabled.
     *
     * @since XINS 1.1.0
     */
@@ -98,20 +101,12 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
-    * method. No arguments are be passed to the URL. Fail-over is disallowed,
-    * unless the request was definitely not processed by the other end.
+    * method. No arguments are passed to the URL.
+    * Unconditional fail-over is disabled.
     *
     * @param method
     *    the HTTP method to use, or <code>null</code> if the method should be
-    *    determined when the call is made
-    *    (<em>since XINS 1.1.0 this argument can be null</em>).
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #HTTPCallRequest(PropertyReader)}
-    *    instead, in combination with
-    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
-    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
+    *    determined when the call is made.
     */
    public HTTPCallRequest(HTTPMethod method) {
       this(method, null, false, null);
@@ -119,23 +114,15 @@ public final class HTTPCallRequest extends CallRequest {
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
-    * method and parameters. Fail-over is disallowed, unless the request was
-    * definitely not processed by the other end.
+    * method and parameters.
+    * Unconditional fail-over is disabled.
     *
     * @param method
     *    the HTTP method to use, or <code>null</code> if the method should be
-    *    determined when the call is made
-    *    (<em>since XINS 1.1.0 this argument can be null</em>).
+    *    determined when the call is made.
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #HTTPCallRequest(PropertyReader)}
-    *    instead, in combination with
-    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
-    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPCallRequest(HTTPMethod     method,
                           PropertyReader parameters) {
@@ -145,30 +132,21 @@ public final class HTTPCallRequest extends CallRequest {
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified HTTP
     * method, parameters and status code verifier, optionally allowing
-    * fail-over in all cases.
+    * unconditional fail-over.
     *
     * @param method
     *    the HTTP method to use, or <code>null</code> if the method should be
-    *    determined when the call is made
-    *    (<em>since XINS 1.1.0 this argument can be null</em>).
+    *    determined when the call is made.
     *
     * @param parameters
     *    the parameters for the HTTP call, can be <code>null</code>.
     *
     * @param failOverAllowed
-    *    flag that indicates whether fail-over is in principle allowed, even
-    *    if the request was already sent to the other end.
+    *    flag that indicates whether fail-over is unconditionally allowed.
     *
     * @param statusCodeVerifier
     *    the HTTP status code verifier, or <code>null</code> if all HTTP
     *    status codes are allowed.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #HTTPCallRequest(PropertyReader,HTTPStatusCodeVerifier)}
-    *    instead, in combination with
-    *    {@link #setHTTPCallConfig(HTTPCallConfig)}.
-    *    This constructor is guaranteed not to be removed before XINS 2.0.0.
     */
    public HTTPCallRequest(HTTPMethod             method,
                           PropertyReader         parameters,
@@ -283,17 +261,14 @@ public final class HTTPCallRequest extends CallRequest {
    }
 
    /**
-    * Returns the HTTP method associated with this call request.
-    *
-    * <p><em>Since XINS 1.1.0, this method may return <code>null</code>.</em>
+    * Returns the HTTP method associated with this call request. This is 
+    * determined by getting the HTTP method on the associated call config, see
+    * {@link #getHTTPCallConfig()}. If the associated call config is
+    * <code>null</code>, then <code>null</code> is returned.
     *
     * @return
-    *    the HTTP method, or <code>null</code>.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0.
-    *    Use {@link #getHTTPCallConfig()} instead.
-    *    This method is guaranteed not to be removed before XINS 2.0.0.
+    *    the HTTP method, or <code>null</code> if none is set for the call 
+    *    configuration associated with this request.
     */
    public HTTPMethod getMethod() {
       HTTPCallConfig callConfig = getHTTPCallConfig();
