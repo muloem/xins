@@ -578,10 +578,10 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             }
             if (nextProperty.startsWith("_") || propValue == null) {
                // continue
-            } else if (propValue instanceof String) {
+            } else if (propValue instanceof String || propValue instanceof Number || propValue instanceof Boolean) {
                ElementBuilder builderParam = new ElementBuilder("parameter");
                builderParam.setAttribute("name", "session." + nextProperty);
-               builderParam.setText((String) propValue);
+               builderParam.setText(propValue.toString());
                builder.addChild(builderParam.createElement());
             } else if ("org.jdom.Element".equals(propValue.getClass().getName())) {
                //org.jdom.Element propElem = (org.jdom.Element) propValue;
