@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Removed the NonASCIIException class. It was deprecated since XINS 1.4.0.
   - Removed the ExpiryFolder constructor that was marked as deprecated since
     XINS 1.0.1.
+  - Fixed SF.net bug #1600564: Added missing methods to List and Set used for
+    standard types.
 
 * XINS/Java Client Framework:
   - Removed the following methods from class DataElement; these are all

@@ -8,6 +8,7 @@ package org.xins.common.types.standard;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.types.ItemList;
+import org.xins.common.types.TypeValueException;
 
 /**
  * Standard type <em>_list</em>.
@@ -58,6 +59,71 @@ public final class List extends org.xins.common.types.List {
    public ItemList createList() {
       return new Value();
    }
+
+   /**
+    * Constructs a <code>List.Value</code> from the specified string
+    * which is guaranteed to be non-<code>null</code>.
+    *
+    * @param string
+    *    the string to convert, cannot be <code>null</code>.
+    *
+    * @return
+    *    the {@link List.Value} object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static Value fromStringForRequired(String string)
+   throws IllegalArgumentException, TypeValueException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("string", string);
+
+      return (Value) SINGLETON.fromString(string);
+   }
+
+   /**
+    * Constructs a <code>List.Value</code> from the specified string.
+    *
+    * @param string
+    *    the string to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the {@link List.Value}, or <code>null</code> if
+    *    <code>string == null</code>.
+    *
+    * @throws TypeValueException
+    *    if the specified string does not represent a valid value for this
+    *    type.
+    */
+   public static Value fromStringForOptional(String string)
+   throws TypeValueException {
+      return (Value) SINGLETON.fromString(string);
+   }
+
+   /**
+    * Converts the specified <code>List.Value</code> to a string.
+    *
+    * @param value
+    *    the value to convert, can be <code>null</code>.
+    *
+    * @return
+    *    the textual representation of the value, or <code>null</code> if and
+    *    only if <code>value == null</code>.
+    */
+   public static String toString(Value value) {
+
+      // Short-circuit if the argument is null
+      if (value == null) {
+         return null;
+      }
+      return SINGLETON.toString((ItemList) value);
+   }
+
 
    //-------------------------------------------------------------------------
    // Inner classes
