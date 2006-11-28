@@ -12,11 +12,6 @@
 
 	<module name="TreeWalker">
 
-		<!-- Make sure the file header is correct >
-		<module name="RegexpHeader">
-			<property name="headerFile" value="src/config/checkstyle/java.header" />
-		</module-->
-
 		<!-- Avoid creating duplicate objects -->
 		<module name="IllegalInstantiation">
 			<property name="classes" value="java.lang.Boolean, java.lang.String" />
@@ -90,7 +85,7 @@
 			<property name="max" value="1500" />
 		</module>
 
-		<!-- Maximum line length is 78 -->
+		<!-- Maximum line length is 120 -->
 		<module name="LineLength">
 			<property name="max" value="120" />
 			<property name="ignorePattern" value="(@author)|(\$Id:)" />
@@ -151,9 +146,6 @@
 		<!-- No String == AnotherString -->
 		<module name="StringLiteralEquality" />
 
-		<!-- Never throw Throwable, Error or RuntimeException -->
-		<!--module name="IllegalThrows" /-->
-
 		<!-- Unnecessary Parentheses -->
 		<module name="UnnecessaryParentheses" />
 
@@ -163,26 +155,8 @@
 		<!-- Enforce Java-style array definitions -->
 		<module name="ArrayTypeStyle" />
 
-		<!-- TODO: Enforce correct indentation
-		<module name="Indentation">
-			 <property name="basicOffset" value="3" />
-			 <property name="caseIndent"  value="3" />
-		</module>
-
-		This does not work correctly. It expects 'throws' clauses, for
-		example, to be indented 3 spaces.
-		-->
-
 		<!-- No trailing comments, please -->
 		<module name="TrailingComment" />
 
-		<!-- TODO: Require legal notices
-		<module name="RequiredRegexp">
-			 <property name="format" value="Copyright 2003-2006 Orange Nederland Breedband B.V." />
-		</module>
-		<module name="RequiredRegexp">
-			 <property name="format" value="See the COPYRIGHT file for redistribution and use restrictions." />
-		</module>
-		-->
 	</module>
 </module>
