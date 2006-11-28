@@ -510,6 +510,7 @@ ${sf.file}</fail>
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
+			<include name="src/config/checkstyle/config.xml" />
 			<include name="src/css/javadoc/*"              />
 			<include name="src/css/logdoc/*"               />
 			<include name="src/css/specdocs/*"             />
@@ -867,5 +868,61 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<property name="profile.dir" value="../xins-examples/xins-project"/>
 		<ant antfile="apis/petstore/nbbuild.xml" target="profile" dir="${profile.dir}">
 		</ant>
+	</target>
+
+	<!-- Package XINS to be put in the Maven repository -->
+	<target name="package-maven" depends="-init">
+		<property name="stable.version" value="1.5.0" />
+		<mkdir dir="build/maven" />
+		<!-- source code -->
+		<jar destfile="build/maven/logdoc-${stable.version}-sources.jar">
+			<fileset dir="../xins-${stable.version}/src/java-common">
+				<include name="org/xins/logdoc/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="build/maven/xins-common-${stable.version}-sources.jar">
+			<fileset dir="../xins-${stable.version}/src/java-common">
+				<include name="org/xins/common/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="build/maven/xins-client-${stable.version}-sources.jar">
+			<fileset dir="../xins-${stable.version}/src/java-client-framework">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<jar destfile="build/maven/xins-server-${stable.version}-sources.jar">
+			<fileset dir="../xins-${stable.version}/src/java-server-framework">
+				<include name="**/*.java" />
+			</fileset>
+		</jar>
+		<!-- Creates the distribution files -->
+		<jar destfile="build/maven/logdoc-${stable.version}.jar">
+			<fileset dir="build/maven">
+				<include name="logdoc-${stable.version}-sources.jar" />
+			</fileset>
+			<zipfileset file="../xins-${stable.version}/build/logdoc.jar" fullpath="logdoc-${stable.version}.jar" />
+			<zipfileset file="src/tools/maven/logdoc.pom" fullpath="pom.xml" />
+		</jar>
+		<jar destfile="build/maven/xins-common-${stable.version}.jar">
+			<fileset dir="build/maven">
+				<include name="xins-common-${stable.version}-sources.jar" />
+			</fileset>
+			<zipfileset file="../xins-${stable.version}/build/xins-common.jar" fullpath="xins-common-${stable.version}.jar" />
+			<zipfileset file="src/tools/maven/xins-common.pom" fullpath="pom.xml" />
+		</jar>
+		<jar destfile="build/maven/xins-client-${stable.version}.jar">
+			<fileset dir="build/maven">
+				<include name="xins-client-${stable.version}-sources.jar" />
+			</fileset>
+			<zipfileset file="../xins-${stable.version}/build/xins-client.jar" fullpath="xins-client-${stable.version}.jar" />
+			<zipfileset file="src/tools/maven/xins-client.pom" fullpath="pom.xml" />
+		</jar>
+		<jar destfile="build/maven/xins-server-${stable.version}.jar">
+			<fileset dir="build/maven">
+				<include name="xins-server-${stable.version}-sources.jar" />
+			</fileset>
+			<zipfileset file="../xins-${stable.version}/build/xins-server.jar" fullpath="xins-server-${stable.version}.jar" />
+			<zipfileset file="src/tools/maven/xins-server.pom" fullpath="pom.xml" />
+		</jar>
 	</target>
 </project>
