@@ -477,12 +477,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Control command
       if ("Control".equals(command)) {
          xinsResult = control(action);
-
-         // Just execute the action
-         if (!TextUtils.isEmpty(action)) {
-            httpResponse.setStatus(HttpServletResponse.SC_OK);
-            return;
-         }
       }
 
       Element commandResult = null;

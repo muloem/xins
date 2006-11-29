@@ -71,6 +71,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     optional and the default value is false.
   - Return HTTP OK with XML MIME type when mode=template is used for the
     XINS FF.
+  - The Control command will also return the HTML if an action is executed.
 
 * Generation of client-side Java code:
   - Removed the following generated methods, which were marked as deprecated
