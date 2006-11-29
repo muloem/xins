@@ -69,6 +69,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     session XML.
   - Added new runtime property org.xins.server.jmx.enable. This property is
     optional and the default value is false.
+  - Return HTTP OK with XML MIME type when mode=template is used for the
+    XINS FF.
 
 * Generation of client-side Java code:
   - Removed the following generated methods, which were marked as deprecated
@@ -745,6 +747,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 FINAL:
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 RC 2:
+
 
 * Build- and release-process:
   - Fixed missing xins.properties in the demo directory.

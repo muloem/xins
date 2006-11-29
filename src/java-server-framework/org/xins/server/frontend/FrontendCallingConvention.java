@@ -466,6 +466,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Display the XSLT
       if ("template".equalsIgnoreCase(mode)) {
          String xsltSource = getCommandXSLT(command);
+         httpResponse.setContentType(XML_CONTENT_TYPE);
+         httpResponse.setStatus(HttpServletResponse.SC_OK);
          Writer output = httpResponse.getWriter();
          output.write(xsltSource);
          output.close();
