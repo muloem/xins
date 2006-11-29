@@ -138,6 +138,7 @@
 		</module>
 		<module name="TodoComment">
 			<property name="format" value="TODO" />
+			<property name="severity" value="warning" />
 		</module>
 
 		<!-- Do not shadow parameter -->

@@ -93,6 +93,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Fixed SF.net bug #1601190: Added Jaxen as needed libraries for PMD.
   - Fixed SF.net bug #1604553: Missing config.xml file for the checkstyle task.
   - Cleaned up commented rules in the config.xml.
+  - Set the TODO comment on warning level.
 
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.
