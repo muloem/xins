@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     This class was already marked as deprecated since XINS 1.2.0.
 
 * XINS/Java Common Library:
+  - Fixed SF.net bug #1600564: Added missing methods to List and Set used for
+    standard types.
   - Removed Doorman class. This class was marked as deprecated since
     XINS 1.0.1.
   - Removed org.xins.common.ExceptionUtils class. This class was marked as
@@ -28,8 +30,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     . (HTTPMethod,PropertyReader,boolean,HTTPStatusCodeVerifier)
   - Removed the method getMethod() from class HTTPCallRequest. Instead,
     getConfig().getMethod() should be used.
-  - Fixed SF.net bug #1600564: Added missing methods to List and Set used for
-    standard types.
 
 * XINS/Java Client Framework:
   - Removed the following methods from class DataElement; these are all
@@ -45,6 +45,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     method was deprecated since XINS 1.1.0.
 
 * XINS/Java Server Framework:
+  - Fixed SF.net bug #1604364: Numbers and booleans should also be shown in the
+    session XML.
   - The default command in xins ff could also be unrestricted.
   - The request and result method in the session manager of the xins ff can
     be extended.
@@ -65,8 +67,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Removed method allow(String,String) from class AccessRuleList, in favour
     of the method isAllowed with the same signature. The removed method was
     marked as deprecated since XINS 1.3.0.
-  - Fixed SF.net bug #1604364: Numbers and booleans should also be shown in the
-    session XML.
   - Added new runtime property org.xins.server.jmx.enable. This property is
     optional and the default value is false.
   - Return HTTP OK with XML MIME type when mode=template is used for the
@@ -91,10 +91,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Leave the rabbit as is.
 
 * Tools:
-  - Added Maven2 POM for XINS 1.5.0.
-  - Partially fixed SF.net bug #1598355: Maven pom.xml is wrongly generated.
   - Fixed SF.net bug #1601190: Added Jaxen as needed libraries for PMD.
   - Fixed SF.net bug #1604553: Missing config.xml file for the checkstyle task.
+  - Partially fixed SF.net bug #1598355: Maven pom.xml is wrongly generated.
+  - Added Maven2 POM for XINS 1.5.0.
   - Cleaned up commented rules in the config.xml.
   - Set the TODO comment on warning level.
 
