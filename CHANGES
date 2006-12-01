@@ -89,6 +89,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - The API dependencies are added to the classpath for compiling the tests.
   - Do not check the dependency type in impl.xml as a dependency cannot have a
     type.
+  - Ask confirmation before generating the stub files.
 
 * Lodoc:
   - Ignorable exceptions shouldn't be logged at ERROR level.
@@ -1444,6 +1445,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 4:
   - Made the HTTPServiceCaller class compatible with HTTPClient 2.0.2.
   - Implemented the getScheme(), getRequestURI() and getRequestURL() method
     in the internal Servlet container.
+
   - Added method isUsable() in class Manageable.
   - Removed the unused log messages 1000-1005.
   - Improved Javadoc comments and formatting.

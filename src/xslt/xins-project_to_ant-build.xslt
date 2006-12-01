@@ -1351,6 +1351,12 @@ APIs in this project are:
 				</xmlvalidate>
 				<available file="{$api_specsdir}/../impl{$implName2}/impl.xml" property="impl.exists" />
 				<antcall target="create-impl-{$api}{$implName2}" />
+				<input message="Are you sure you want to generate the stub files in the {$javaImplDir} directory? Previous files will be orverwritten."
+				addproperty="stub.overwrite" defaultvalue="y" validargs="y,n" />
+				<condition property="stub.notoverwrite">
+					<equals arg1="${{stub.overwrite}}" arg2="n" />
+				</condition>
+				<fail message="Stopped the generation of the stub files in order not to overwrite the current files." if="stub.notoverwrite" />
 				<xslt basedir="{$api_specsdir}"
 				includes="{$functionIncludes}"
 				destdir="{$javaImplDir}"
