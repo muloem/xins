@@ -1185,7 +1185,7 @@ APIs in this project are:
 						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
 						</xsl:if>
 					</classpath>
 				</javac>
@@ -1241,7 +1241,7 @@ APIs in this project are:
 					<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
 					<xsl:if test="local-name() = 'impl'">
 						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-						<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
+						<xsl:apply-templates select="document($impl_file)/impl/dependency" mode="lib" />
 						<xsl:apply-templates select="document($impl_file)/impl/content" />
 					</xsl:if>
 					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
@@ -1324,7 +1324,7 @@ APIs in this project are:
 						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
 						<xsl:if test="local-name() = 'impl'">
 							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
 						</xsl:if>
 					</classpath>
 				</javadoc>
@@ -1397,6 +1397,11 @@ APIs in this project are:
 
 				<available property="test.generated" file="apis/{$api}/test" type="dir" />
 				<antcall target="generatetests-{$api}" />
+				<property name="test.environment" value="" />
+				<property name="test.start.server" value="false" />
+				<property name="org.xins.server.config" value="" />
+				<property name="servlet.port" value="8080" />
+				<property name="classes.api.dir" value="{$project_home}/build/classes-api/{$api}" />
 				<mkdir dir="{$project_home}/build/classes-tests/{$api}" />
 				<javac
 				destdir="{$project_home}/build/classes-tests/{$api}"
@@ -1408,14 +1413,18 @@ APIs in this project are:
 					<classpath>
 						<path refid="xins.classpath" />
 						<pathelement path="{$project_home}/build/capis/{$api}-capi.jar" />
+						<pathelement path="${{classes.api.dir}}" />
+						<xsl:if test="$apiHasTypes">
+							<pathelement path="{$project_home}/build/classes-types/{$api}" />
+						</xsl:if>
+						<xsl:if test="impl">
+							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+						</xsl:if>
+						<fileset dir="{$project_home}/apis/{$api}/test" includes="**/*.jar" />
 					</classpath>
 				</javac>
 				<mkdir dir="{$project_home}/build/testresults/xml" />
-				<property name="test.environment" value="" />
-				<property name="test.start.server" value="false" />
-				<property name="org.xins.server.config" value="" />
-				<property name="servlet.port" value="8080" />
-				<property name="classes.api.dir" value="{$project_home}/build/classes-api/{$api}" />
 				<junit fork="true" showoutput="true" dir="{$project_home}" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
 					<sysproperty key="test.environment" value="${{test.environment}}" />
@@ -1431,11 +1440,14 @@ APIs in this project are:
 						<pathelement path="{$project_home}/build/capis/{$api}-capi.jar" />
 						<pathelement path="{$project_home}/build/classes-tests/{$api}" />
 						<pathelement path="${{classes.api.dir}}" />
-						<pathelement path="{$project_home}/build/classes-types/{$api}" />
-						<xsl:if test="impl">
-							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
+						<xsl:if test="$apiHasTypes">
+							<pathelement path="{$project_home}/build/classes-types/{$api}" />
 						</xsl:if>
+						<xsl:if test="impl">
+							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+						</xsl:if>
+						<fileset dir="{$project_home}/apis/{$api}/test" includes="**/*.jar" />
 					</classpath>
 				</junit>
 				<mkdir dir="{$project_home}/build/testresults/html" />

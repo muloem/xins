@@ -84,6 +84,11 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Starting the Servlet container for the test coverage is now optional.
   - Build failed if the API contained only shared types.
   - Added comment in generated impl.xml to know the order of the sub-elements.
+  - All JARs added to the test directory are added to the classpath for
+    compiling and running the tests.
+  - The API dependencies are added to the classpath for compiling the tests.
+  - Do not check the dependency type in impl.xml as a dependency cannot have a
+    type.
 
 * Lodoc:
   - Ignorable exceptions shouldn't be logged at ERROR level.
