@@ -65,7 +65,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 			<fail message="The file ${{impl.file}} already exists!" if="impl.exists" />
 			<echo file="${{impl.file}}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.5//EN" "http://www.xins.org/dtd/impl_1_5.dtd">
-
+<!-- The order of the elements is logdoc, bootstrap-properties, runtime-properties, content, dependency, calling-convention, instance. -->
 <impl>
 </impl>
 ]]></echo>
