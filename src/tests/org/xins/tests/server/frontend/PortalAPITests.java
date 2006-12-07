@@ -175,6 +175,13 @@ public class PortalAPITests extends TestCase {
       assertEquals("", result);
    }
 
+   public void testRedirectionWithUnderscore() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("user_name", "test1");
+      String result = callCommand(params);
+      assertEquals("", result);
+   }
+
    public void testSourceMode() throws Exception {
       BasicPropertyReader params = createLoginParams();
       callCommand(params);
@@ -197,6 +204,21 @@ public class PortalAPITests extends TestCase {
       Element result = parser.parse(new StringReader(xmlResult));
       assertEquals("stylesheet", result.getLocalName());
    }
+
+   /*public void testInvalidRequest() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("username", "bla@bla");
+      params.remove("password");
+      params.set("mode", "source");
+      String xmlResult = callCommand(params);
+      assertTrue("Not XML result: " + xmlResult, xmlResult.startsWith("<"));
+      ElementParser parser = new ElementParser();
+      Element result = parser.parse(new StringReader(xmlResult));
+      assertEquals("commandresult", result.getLocalName());
+      assertTrue("No FieldError found", xmlResult.indexOf("error.type\">FieldError") != -1);
+      assertTrue("No mantatory field found", xmlResult.indexOf("type=\"mand\" field=\"password\"") != -1);
+      assertTrue("Invalid field found", xmlResult.indexOf("type=\"format\" field=\"username\"") != -1);
+   }*/
 
    /*public void testInvalidRequest() throws Exception {
       BasicPropertyReader params = createLoginParams();
