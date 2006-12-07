@@ -110,6 +110,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Cleaned up commented rules in the config.xml.
   - Set the TODO comment on warning level.
   - Do not cover the generated Request and Result object in code coverage.
+  - Generated pom.xml refers to the JAR files available in the Maven 2
+    repository.
 
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.

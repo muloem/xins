@@ -10,12 +10,12 @@
 
 <xsl:stylesheet xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-	<xsl:output 
-		omit-xml-declaration="no" 
+	<xsl:output
+		omit-xml-declaration="no"
 		encoding="UTF-8"
-		method="xml" 
+		method="xml"
 		indent="yes" />
-	
+
 	<!-- Define parameters -->
 	<xsl:param name="api" />
 	<xsl:param name="project_home" />
@@ -98,32 +98,24 @@
 					</xsl:for-each>
 				</xsl:if>
 				<dependency>
-					<groupId>xins</groupId>
+					<groupId>org.xins</groupId>
 					<artifactId>xins-common</artifactId>
 					<version>1.5.0</version>
-					<scope>system</scope>
-					<systemPath>${xins.home}/build/xins-common.jar</systemPath>
 				</dependency>
 				<dependency>
-					<groupId>xins</groupId>
+					<groupId>org.xins</groupId>
 					<artifactId>xins-server</artifactId>
 					<version>1.5.0</version>
-					<scope>system</scope>
-					<systemPath>${xins.home}/build/xins-server.jar</systemPath>
 				</dependency>
 				<dependency>
-					<groupId>xins</groupId>
+					<groupId>org.xins</groupId>
 					<artifactId>logdoc</artifactId>
 					<version>1.5.0</version>
-					<scope>system</scope>
-					<systemPath>${xins.home}/build/logdoc.jar</systemPath>
 				</dependency>
 				<dependency>
-					<groupId>xins</groupId>
+					<groupId>org.xins</groupId>
 					<artifactId>xins-client</artifactId>
 					<version>1.5.0</version>
-					<scope>system</scope>
-					<systemPath>${xins.home}/build/xins-client.jar</systemPath>
 				</dependency>
 				<dependency>
 					<groupId>log4j</groupId>
@@ -154,8 +146,6 @@
 					<groupId>xmlenc</groupId>
 					<artifactId>xmlenc</artifactId>
 					<version>0.52</version>
-					<scope>system</scope>
-					<systemPath>${xins.home}\lib\xmlenc.jar</systemPath>
 				</dependency>
 				<dependency>
 					<groupId>junit</groupId>
