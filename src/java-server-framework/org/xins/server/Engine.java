@@ -55,7 +55,7 @@ final class Engine extends Object {
    /**
     * Property used to start JMX.
     */
-   private static final String JMX_PROPERTY = "org.xins.server.jmx.enable";
+   private static final String JMX_PROPERTY = "org.xins.server.jmx";
 
 
    //-------------------------------------------------------------------------
