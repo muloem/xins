@@ -157,7 +157,7 @@ public abstract class ]]></xsl:text>
    //-------------------------------------------------------------------------
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext _context)
-   throws java.lang.Throwable {</xsl:text>
+   throws Throwable {</xsl:text>
 
 		<!-- ************************************************************* -->
 		<!-- Retrieve input parameters                                     -->
@@ -238,21 +238,18 @@ public abstract class ]]></xsl:text>
       org.xins.server.FunctionResult _fr = (org.xins.server.FunctionResult) _result;
 
       // Check that if an error code is set, it is a supported one
-      java.lang.String _errorCode = _fr.getErrorCode();
-      if (_errorCode != null) {
-         if (! _errorCodes.contains(_errorCode)) {
-            throw org.xins.common.Utils.logProgrammingError(
-               "</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>", // detecting class
-               "handleCall(org.xins.server.CallContext)", // detecting method
-               getClass().getName(), // subject class
-               "call(</xsl:text>
+      String _errorCode = _fr.getErrorCode();
+      if (_errorCode != null &amp;&amp; !_errorCodes.contains(_errorCode) &amp;&amp; _fr instanceof UnsuccessfulResult) {
+         throw org.xins.common.Utils.logProgrammingError(
+            "</xsl:text>
+				<xsl:value-of select="$className" />
+			<xsl:text>", // detecting class
+            "handleCall(org.xins.server.CallContext)", // detecting method
+            getClass().getName(), // subject class
+            "call(</xsl:text>
       <xsl:value-of select="$className" />
       <xsl:text>$Request)", // subject method
-               "The error code \"" + _errorCode + "\" is not supported by this function."
-            );
-         }
+            "The error code \"" + _errorCode + "\" is not supported by this function.");
       }
 
       return _fr;</xsl:text>
@@ -269,11 +266,11 @@ public abstract class ]]></xsl:text>
     * @return
     *    the result of the function call, should never be <code>null</code>.
     *
-    * @throws java.lang.Throwable
+    * @throws Throwable
     *    if anything went wrong.
     */
    public abstract Result call(Request request)
-   throws java.lang.Throwable;
+   throws Throwable;
 
 
    //-------------------------------------------------------------------------
