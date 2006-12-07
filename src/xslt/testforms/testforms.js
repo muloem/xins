@@ -1,3 +1,11 @@
+/*
+ $Id$
+
+ Copyright 2003-2006 Orange Nederland Breedband B.V.
+ See the COPYRIGHT file for redistribution and use restrictions.
+*/
+
+// Displays the request URL with the colors and execute the request
 function doRequest(form) {
    var elems = form.elements;
    var iframe = document.getElementById('xmlOutputFrame');
@@ -50,4 +58,60 @@ function doRequest(form) {
    iframe.src = requestString;
    querySpan.innerHTML = formattedRequestString;
    return false;
+}
+
+function getCookie(name) {
+   var start = document.cookie.indexOf(name + "=");
+   var len = start + name.length + 1;
+   if ((!start) && (name != document.cookie.substring(0, name.length))) {
+      return null;
+   }
+   if (start == -1) return null;
+   var end = document.cookie.indexOf(";", len);
+   if (end == -1) end = document.cookie.length;
+   return unescape(document.cookie.substring(len, end));
+}
+
+function setCookie(name, value, expires, path, domain, secure) {
+   var today = new Date();
+   today.setTime(today.getTime());
+   if (expires) {
+      expires = expires * 1000 * 60 * 60 * 24;
+   }
+   var expires_date = new Date(today.getTime() + (expires));
+   document.cookie = name + "=" + escape(value) +
+      ((expires) ? ";expires=" + expires_date.toGMTString() : "") + //expires.toGMTString()
+      ((path) ? ";path=" + path : "") +
+      ((domain) ? ";domain=" + domain : "") +
+      ((secure) ? ";secure" : "");
+}
+
+
+function deleteCookie(name, path, domain) {
+   if (getCookie(name)) document.cookie = name + "=" +
+      ((path) ? ";path=" + path : "") +
+      ((domain) ? ";domain=" + domain : "") +
+      ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
+}
+
+
+function setEnvCookie(form) {
+   var selIndex = form._environment.selectedIndex;
+   var env = form._environment.options[selIndex].text;
+   setCookie("xins.env", env, "", "", "", "");
+}
+
+
+function selectEnv() {
+   // make sure that only pages with form and environment set selected value from the env cookie
+   if (document.forms[0] && document.forms[0]._environment && document.forms[0]._environment.options) {
+      var options = document.forms[0]._environment.options;
+      var env = getCookie("xins.env");
+      for (var i = 0; i != options.length; i++) {
+         var option = options[i];
+         if (env == options[i].text) {
+            options.selectedIndex = i;
+         }
+      }
+   }
 }

@@ -62,7 +62,7 @@
 				<script type="text/javascript" src="testforms.js"><xsl:text> </xsl:text></script>
 				<link rel="top" href="../index.html" title="API index" />
 			</head>
-			<body>
+			<body onload="selectEnv();">
 				<xsl:call-template name="header">
 					<xsl:with-param name="active">testform</xsl:with-param>
 					<xsl:with-param name="name" select="$functionName" />
@@ -77,7 +77,7 @@
 				</h1>
 
 				<form method="GET" action="{$init_environment}" target="xmlOutputFrame"
-				onsubmit="this.action=this._environment.value;return doRequest(this)">
+				onsubmit="this.action=this._environment.value;setEnvCookie(this);return doRequest(this)">
 					<p>
 						<input name="_function" type="hidden">
 							<xsl:attribute name="value">
