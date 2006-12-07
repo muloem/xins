@@ -558,6 +558,7 @@ APIs in this project are:
 				</dependset>
 			</xsl:if>
 			<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
+			<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/xslt/testforms/testforms.js" />
 			<xmlvalidate file="{$api_file}" warn="false">
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>
