@@ -104,6 +104,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Added Maven2 POM for XINS 1.5.0.
   - Cleaned up commented rules in the config.xml.
   - Set the TODO comment on warning level.
+  - Do not cover the generated Request and Result object in code coverage.
 
 * Demo:
   - Fixed incorrect replace in the copy-nb-files target for NetBeans.

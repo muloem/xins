@@ -96,7 +96,11 @@
 			<mkdir dir="{$project_home}/build/coverage/${{api.name}}" />
 			<antcall target="classes-api-${{api.name}}" />
 			<cobertura-instrument todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes">
-				<fileset dir="{$project_home}/build/classes-api/${{api.name}}" includes="**/*.class" />
+				<fileset dir="{$project_home}/build/classes-api/${{api.name}}">
+					<include name="**/*.class" />
+					<exclude name="**/*$Request.class" />
+					<exclude name="**/*Result.class" />
+				</fileset>
 			</cobertura-instrument>
 			<copy todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" overwrite="false">
 				<fileset dir="{$project_home}/build/classes-api/${{api.name}}" includes="**/*.class" />
@@ -114,6 +118,7 @@
 				<fileset dir="${{api.source.dir}}" includes="**/*.java" />
 				<fileset dir="{$project_home}/build/java-fundament/${{api.name}}" includes="**/*.java" />
 			</cobertura-report>
+			<delete file="{$project_home}/cobertura.ser" />
 		</target>
 
 		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generate the FindBugs report for an API.">
