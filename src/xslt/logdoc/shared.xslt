@@ -24,52 +24,52 @@
 		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="(@type = 'text') or (string-length(@type) &lt; 1)">
-				<xsl:text>java.lang.String</xsl:text>
+				<xsl:text>String</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'serializable'">
 				<xsl:text>org.xins.logdoc.LogdocSerializable</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'object'">
-				<xsl:text>java.lang.Object</xsl:text>
+				<xsl:text>Object</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'float64') and $nullable">
-				<xsl:text>java.lang.Double</xsl:text>
+				<xsl:text>Double</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'float64'">
 				<xsl:text>double</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'float32') and $nullable">
-				<xsl:text>java.lang.Float</xsl:text>
+				<xsl:text>Float</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'float32'">
 				<xsl:text>float</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'int64') and $nullable">
-				<xsl:text>java.lang.Long</xsl:text>
+				<xsl:text>Long</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'int64'">
 				<xsl:text>long</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'int32') and $nullable">
-				<xsl:text>java.lang.Integer</xsl:text>
+				<xsl:text>Integer</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'int32'">
 				<xsl:text>int</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'int16') and $nullable">
-				<xsl:text>java.lang.Short</xsl:text>
+				<xsl:text>Short</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'int16'">
 				<xsl:text>short</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'int8') and $nullable">
-				<xsl:text>java.lang.Byte</xsl:text>
+				<xsl:text>Byte</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'int8'">
 				<xsl:text>byte</xsl:text>
 			</xsl:when>
 			<xsl:when test="(@type = 'boolean') and $nullable">
-				<xsl:text>java.lang.Boolean</xsl:text>
+				<xsl:text>Boolean</xsl:text>
 			</xsl:when>
 			<xsl:when test="@type = 'boolean'">
 				<xsl:text>boolean</xsl:text>

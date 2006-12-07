@@ -84,7 +84,7 @@ public final class ]]></xsl:text>
     * @param resultData
     *    the result data, cannot be <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>request     == null
     *          || target      == null
     *          || duration  &lt; 0
@@ -97,7 +97,7 @@ public final class ]]></xsl:text>
                  org.xins.common.service.TargetDescriptor   target,
                  long                                       duration,
                  org.xins.client.XINSCallResultData         resultData)
-   throws java.lang.IllegalArgumentException {
+   throws IllegalArgumentException {
       super(request, target, duration, resultData);
    }
 }

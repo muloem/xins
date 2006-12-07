@@ -218,7 +218,7 @@
 		<xsl:value-of select="@id" />
 		<xsl:text>(</xsl:text>
 		<xsl:if test="$exception">
-			<xsl:text>java.lang.Throwable _exception</xsl:text>
+			<xsl:text>Throwable _exception</xsl:text>
 			<xsl:if test="count(param) &gt; 0">
 				<xsl:text>, </xsl:text>
 			</xsl:if>

@@ -159,7 +159,7 @@ extends org.xins.client.AbstractCAPICallResult {
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[</code> from, not <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>result == null || result.getErrorCode() != null</code>.
     *
     * @throws org.xins.client.UnacceptableResultXINSCallException
@@ -171,7 +171,7 @@ extends org.xins.client.AbstractCAPICallResult {
    ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>(org.xins.client.XINSCallResult result)
-   throws java.lang.IllegalArgumentException,
+   throws IllegalArgumentException,
           org.xins.client.UnacceptableResultXINSCallException {
 
       // Call superconstructor, which will fail if result == null
@@ -199,7 +199,7 @@ extends org.xins.client.AbstractCAPICallResult {
 </xsl:text>
 		    <xsl:apply-templates select="output/param" mode="setfield" />
 		    <xsl:text>
-      } catch (java.lang.IllegalArgumentException exception) {
+      } catch (IllegalArgumentException exception) {
          org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(181, "The parameter \"");
          buffer.append(currentParam);
          buffer.append("\" is not set although it is required.");

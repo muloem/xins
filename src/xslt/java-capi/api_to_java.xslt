@@ -214,7 +214,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    {@link org.xins.client.AbstractCAPIErrorCodeException} instance,
     *    otherwise <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>request                   ==   null
     *          || target                    ==   null
     *          || duration                  &lt; 0
@@ -230,21 +230,21 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                             org.xins.common.service.TargetDescriptor target,
                             long                                     duration,
                             org.xins.client.XINSCallResultData       resultData)
-   throws java.lang.IllegalArgumentException,
+   throws IllegalArgumentException,
           org.xins.client.UnacceptableErrorCodeXINSCallException {
 
       // Check preconditions
       org.xins.common.MandatoryArgumentChecker.check(
          "request", request, "target",  target, "resultData", resultData);
       if (duration < 0L) {
-         throw new java.lang.IllegalArgumentException("duration ("
+         throw new IllegalArgumentException("duration ("
                                                      + duration + ") < 0L");
       }
 
       // Determine the error code
-      java.lang.String errorCode = resultData.getErrorCode();
+      String errorCode = resultData.getErrorCode();
       if (resultData.getErrorCode() == null) {
-         throw new java.lang.IllegalArgumentException(
+         throw new IllegalArgumentException(
             "resultData.getErrorCode() == null");
       }
 ]]></xsl:text>
@@ -265,7 +265,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                </xsl:choose>
                <xsl:value-of select="@name" />
                <xsl:text>".equals(errorCode)) {
-         java.lang.String    function  = request.getFunctionName();
+         String    function  = request.getFunctionName();
          java.util.ArrayList supported = (java.util.ArrayList) _errorCodesPerFunction.get(function);
          if (supported == null || !supported.contains("</xsl:text>
                <xsl:value-of select="@name" />
@@ -311,7 +311,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    the properties to create a <code>CAPI</code> object for, cannot be
     *    <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>properties == null</code>.
     *
     * @throws org.xins.common.collections.MissingRequiredPropertyException
@@ -323,7 +323,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    invalid.
     */
    public CAPI(org.xins.common.collections.PropertyReader properties)
-   throws java.lang.IllegalArgumentException,
+   throws IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
       super(properties, "]]></xsl:text>
@@ -344,7 +344,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    the name of the API, cannot be <code>null</code> and must be a valid
     *    API name.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>properties == null || apiName == null</code> or if
     *    <code>apiName</code> is not considered to be a valid API name.
     *
@@ -357,8 +357,8 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    invalid.
     */
    public CAPI(org.xins.common.collections.PropertyReader properties,
-               java.lang.String                           apiName)
-   throws java.lang.IllegalArgumentException,
+               String                           apiName)
+   throws IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
       super(properties, apiName);
@@ -380,7 +380,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    (<em>since XINS 1.1.0</em>).
     */
    public CAPI(org.xins.common.service.Descriptor descriptor)
-   throws java.lang.IllegalArgumentException,
+   throws IllegalArgumentException,
           org.xins.common.service.UnsupportedProtocolException {
       super(descriptor);
       _errorCodesPerFunction = initErrorCodesPerFunction();
@@ -445,7 +445,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @return
     *    the result, not <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>request == null</code>.
     *
     * @throws org.xins.client.UnacceptableRequestException
@@ -492,7 +492,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>(</xsl:text>
 		<xsl:value-of select="$name" />
 		<xsl:text>Request request)
-   throws java.lang.IllegalArgumentException,
+   throws IllegalArgumentException,
           org.xins.client.UnacceptableRequestException,
           org.xins.common.service.GenericCallException,
           org.xins.common.http.HTTPCallException,</xsl:text>

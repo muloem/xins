@@ -147,7 +147,7 @@ public final class ]]></xsl:text>
 				</xsl:call-template>
 			</xsl:variable>
 
-			<xsl:if test="not(contains($imports-set, $import)) and not(starts-with($import, 'java.lang.')) and not($import = 'byte[]')">
+			<xsl:if test="not(contains($imports-set, $import)) and not(starts-with($import, '')) and not($import = 'byte[]')">
 				<xsl:text>import </xsl:text>
 				<xsl:value-of select="$import" />
 				<xsl:text>;

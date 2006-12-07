@@ -190,7 +190,7 @@
 	*
 	* @return
 	*    the Java type for the specified XINS type, for example 'boolean',
-	*    'byte', 'short', 'int', 'long' or 'java.lang.String'.
+	*    'byte', 'short', 'int', 'long' or 'String'.
 	-->
 	<xsl:template name="javatype_for_type">
 
@@ -580,7 +580,7 @@
 		<xsl:param name="project_node" />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
-		
+
 		<xsl:variable name="customtype">
 			<xsl:choose>
 				<xsl:when test="contains($type, '/')">
@@ -619,7 +619,7 @@
 	*
 	* @return
 	*    the Java type for the specified XINS type, for example
-	*    'java.lang.Boolean', 'org.xins.common.collections.PropertyReader',
+	*    'Boolean', 'org.xins.common.collections.PropertyReader',
 	*    'org.xins.common.types.standard.Date',
 	*    'com.mycompany.allinone.types.Salutation'.
 	-->
@@ -689,14 +689,14 @@
 		<xsl:param name="javatype" />
 
 		<xsl:choose>
-			<xsl:when test="$javatype = 'boolean'">java.lang.Boolean</xsl:when>
-			<xsl:when test="$javatype = 'char'">java.lang.Character</xsl:when>
-			<xsl:when test="$javatype = 'byte'">java.lang.Byte</xsl:when>
-			<xsl:when test="$javatype = 'short'">java.lang.Short</xsl:when>
-			<xsl:when test="$javatype = 'int'">java.lang.Integer</xsl:when>
-			<xsl:when test="$javatype = 'long'">java.lang.Long</xsl:when>
-			<xsl:when test="$javatype = 'float'">java.lang.Float</xsl:when>
-			<xsl:when test="$javatype = 'double'">java.lang.Double</xsl:when>
+			<xsl:when test="$javatype = 'boolean'">Boolean</xsl:when>
+			<xsl:when test="$javatype = 'char'">Character</xsl:when>
+			<xsl:when test="$javatype = 'byte'">Byte</xsl:when>
+			<xsl:when test="$javatype = 'short'">Short</xsl:when>
+			<xsl:when test="$javatype = 'int'">Integer</xsl:when>
+			<xsl:when test="$javatype = 'long'">Long</xsl:when>
+			<xsl:when test="$javatype = 'float'">Float</xsl:when>
+			<xsl:when test="$javatype = 'double'">Double</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unrecognized Java datatype '</xsl:text>

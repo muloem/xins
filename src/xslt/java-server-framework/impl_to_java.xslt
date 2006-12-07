@@ -116,7 +116,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
-      java.lang.String </xsl:text>
+      String </xsl:text>
 				<xsl:value-of select="$variableName" />
 				<xsl:text> = runtimeSettings.get("</xsl:text>
 				<xsl:value-of select="@name" />

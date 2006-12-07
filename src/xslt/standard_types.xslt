@@ -50,17 +50,17 @@
 		<xsl:choose>
 			<xsl:when test="not($required = 'true')">
 				<xsl:choose>
-					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>
-					<xsl:when test="$type = '_boolean'">java.lang.Boolean</xsl:when>
-					<xsl:when test="$type = '_int8'">java.lang.Byte</xsl:when>
-					<xsl:when test="$type = '_int16'">java.lang.Short</xsl:when>
-					<xsl:when test="$type = '_int32'">java.lang.Integer</xsl:when>
-					<xsl:when test="$type = '_int64'">java.lang.Long</xsl:when>
-					<xsl:when test="$type = '_float32'">java.lang.Float</xsl:when>
-					<xsl:when test="$type = '_float64'">java.lang.Double</xsl:when>
+					<xsl:when test="$type = '_boolean'">Boolean</xsl:when>
+					<xsl:when test="$type = '_int8'">Byte</xsl:when>
+					<xsl:when test="$type = '_int16'">Short</xsl:when>
+					<xsl:when test="$type = '_int32'">Integer</xsl:when>
+					<xsl:when test="$type = '_int64'">Long</xsl:when>
+					<xsl:when test="$type = '_float32'">Float</xsl:when>
+					<xsl:when test="$type = '_float64'">Double</xsl:when>
 					<xsl:when test="$type = '_base64'">byte[]</xsl:when>
 					<xsl:when test="$type = '_hex'">byte[]</xsl:when>
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
@@ -77,7 +77,7 @@
 			</xsl:when>
 			<xsl:otherwise> <!-- $required = 'false' or $required = '' -->
 				<xsl:choose>
-					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">java.lang.String</xsl:when>
+					<xsl:when test="string-length($type) = 0 or $type = '_text' or $type = '_url'">String</xsl:when>
 					<xsl:when test="$type = '_properties'">org.xins.common.collections.PropertyReader</xsl:when>
 					<xsl:when test="$type = '_date'">org.xins.common.types.standard.Date.Value</xsl:when>
 					<xsl:when test="$type = '_timestamp'">org.xins.common.types.standard.Timestamp.Value</xsl:when>

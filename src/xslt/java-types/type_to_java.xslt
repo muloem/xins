@@ -133,21 +133,21 @@ public final class ]]></xsl:text>
     * @return
     *    the converted value for this type, never <code>null</code>.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
     * @throws org.xins.common.types.TypeValueException
     *    if the specified character string is not considered valid for this
     *    type.
     */
-   public static java.lang.String fromStringForRequired(java.lang.String string)
-   throws java.lang.IllegalArgumentException,
+   public static String fromStringForRequired(String string)
+   throws IllegalArgumentException,
           org.xins.common.types.TypeValueException {
 
       // Check preconditions
       org.xins.common.MandatoryArgumentChecker.check("string", string);
 
-      return (java.lang.String) SINGLETON.fromString(string);
+      return (String) SINGLETON.fromString(string);
    }
 
    /**
@@ -166,9 +166,9 @@ public final class ]]></xsl:text>
     *    if the specified character string is not considered valid for this
     *    type.
     */
-   public static java.lang.String fromStringForOptional(java.lang.String string)
+   public static String fromStringForOptional(String string)
    throws org.xins.common.types.TypeValueException {
-      return (java.lang.String) SINGLETON.fromString(string);
+      return (String) SINGLETON.fromString(string);
    }
 ]]></xsl:text>
 			</xsl:when>
@@ -208,7 +208,7 @@ public final class ]]></xsl:text>
     * @return
     *    the converted value for this type.
     *
-    * @throws java.lang.IllegalArgumentException
+    * @throws IllegalArgumentException
     *    if <code>string == null</code>.
     *
     * @throws org.xins.common.types.TypeValueException
@@ -217,8 +217,8 @@ public final class ]]></xsl:text>
     */
    public static ]]></xsl:text>
 				<xsl:value-of select="$required_object"/>
-				<xsl:text> fromStringForRequired(java.lang.String string)
-   throws java.lang.IllegalArgumentException,
+				<xsl:text> fromStringForRequired(String string)
+   throws IllegalArgumentException,
           org.xins.common.types.TypeValueException {
 
       // Check preconditions
@@ -251,7 +251,7 @@ public final class ]]></xsl:text>
     */
    public static ]]></xsl:text>
 				<xsl:value-of select="$optional_object"/>
-				<xsl:text> fromStringForOptional(java.lang.String string)
+				<xsl:text> fromStringForOptional(String string)
    throws org.xins.common.types.TypeValueException {
       return (</xsl:text>
 				<xsl:value-of select="$optional_object"/>
@@ -614,7 +614,7 @@ public final class ]]></xsl:text>
 			<xsl:if test="$typeIsPrimary = 'false'">
 	      <xsl:text><![CDATA[, cannot be <code>null</code>.
        *
-       * @throws java.lang.IllegalArgumentException
+       * @throws IllegalArgumentException
        *    if <code>value == null</code>]]></xsl:text>
 			</xsl:if>
 			<xsl:text>.
@@ -691,8 +691,8 @@ public final class ]]></xsl:text>
 		<xsl:if test="$kind = 'enum'">
 			<xsl:text><![CDATA[
 
-   public static Item fromStringForRequired(java.lang.String string)
-   throws java.lang.IllegalArgumentException,
+   public static Item fromStringForRequired(String string)
+   throws IllegalArgumentException,
           org.xins.common.types.TypeValueException {
 
       // Check preconditions
@@ -701,7 +701,7 @@ public final class ]]></xsl:text>
       return getItemByValue(string);
 	 }
 
-   public static Item fromStringForOptional(java.lang.String string)
+   public static Item fromStringForOptional(String string)
    throws org.xins.common.types.TypeValueException {
       return getItemByValue(string);
 	 }
@@ -721,7 +721,7 @@ public final class ]]></xsl:text>
     * @throws org.xins.common.types.TypeValueException
     *    if the specified value does not denote an existing item.
     */
-   public static Item getItemByValue(java.lang.String value)
+   public static Item getItemByValue(String value)
    throws org.xins.common.types.TypeValueException {
 
       if (value != null) {
@@ -751,7 +751,7 @@ public final class ]]></xsl:text>
     * @throws org.xins.common.types.TypeValueException
     *    if the specified name does not denote an existing item.
     */
-   public static Item getItemByName(java.lang.String name)
+   public static Item getItemByName(String name)
    throws org.xins.common.types.TypeValueException {
 
       if (name != null) {
@@ -766,7 +766,7 @@ public final class ]]></xsl:text>
       }
    }
 
-   public Object fromStringImpl(java.lang.String value)
+   public Object fromStringImpl(String value)
    throws org.xins.common.types.TypeValueException {
       return getItemByValue(value);
    }
@@ -827,11 +827,11 @@ public final class ]]></xsl:text>
        * @param value
        *    the actual value of the enumeration item, not <code>null</code>.
        *
-       * @throws java.lang.IllegalArgumentException
+       * @throws IllegalArgumentException
        *    if <code>name == null || value == null</code>.
        */
-      private Item(java.lang.String name, java.lang.String value)
-      throws java.lang.IllegalArgumentException {
+      private Item(String name, String value)
+      throws IllegalArgumentException {
          super(name, value);
       }
 
