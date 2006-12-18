@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.xins.common.collections.BasicPropertyReader;
 
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.text.TextUtils;
@@ -40,12 +41,6 @@ extends CallingConvention {
     * The content type of the HTTP response.
     */
    static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
-
-   /**
-    * Secret key used when accessing <code>ProtectedPropertyReader</code>
-    * objects.
-    */
-   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -124,10 +119,10 @@ extends CallingConvention {
       String functionName = determineFunction(function1, function2);
 
       // Parse the parameters in the HTTP request
-      ProtectedPropertyReader params = gatherParams(httpRequest, SECRET_KEY);
+      BasicPropertyReader params = gatherParams(httpRequest);
 
       // Remove all invalid parameters
-      cleanUpParameters(params, SECRET_KEY);
+      cleanUpParameters(params);
 
       // Construct and return the request object
       return new FunctionRequest(functionName, params, null);

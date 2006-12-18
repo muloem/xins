@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.xins.common.collections.BasicPropertyReader;
 
 import org.xins.common.collections.ProtectedPropertyReader;
 
@@ -49,12 +50,6 @@ extends CallingConvention {
     */
    static final String RESPONSE_CONTENT_TYPE = "text/xml;charset="
                                              + RESPONSE_ENCODING;
-
-   /**
-    * Secret key used when accessing <code>ProtectedPropertyReader</code>
-    * objects.
-    */
-   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -132,13 +127,13 @@ extends CallingConvention {
       String functionName = requestElem.getAttribute("function");
 
       // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      BasicPropertyReader functionParams = new BasicPropertyReader();
       Iterator parameters = requestElem.getChildElements("param").iterator();
       while (parameters.hasNext()) {
          Element nextParam = (Element) parameters.next();
          String name  = nextParam.getAttribute("name");
          String value = nextParam.getText();
-         functionParams.set(SECRET_KEY, name, value);
+         functionParams.set(name, value);
       }
 
       // Check if function is specified
@@ -147,7 +142,7 @@ extends CallingConvention {
       }
 
       // Remove all invalid parameters
-      cleanUpParameters(functionParams, SECRET_KEY);
+      cleanUpParameters(functionParams);
 
       // Get data section
       Element dataElement = null;

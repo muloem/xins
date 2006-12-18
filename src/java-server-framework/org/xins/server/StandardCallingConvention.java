@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.Utils;
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
@@ -51,12 +52,6 @@ extends CallingConvention {
     */
    static final String RESPONSE_CONTENT_TYPE = "text/xml; charset="
                                              + RESPONSE_ENCODING;
-
-   /**
-    * Secret key used when accessing <code>ProtectedPropertyReader</code>
-    * objects.
-    */
-   private static final Object SECRET_KEY = new Object();
 
 
    //-------------------------------------------------------------------------
@@ -118,10 +113,10 @@ extends CallingConvention {
           FunctionNotSpecifiedException {
 
       // Parse the parameters in the HTTP request
-      ProtectedPropertyReader params = gatherParams(httpRequest, SECRET_KEY);
+      BasicPropertyReader params = gatherParams(httpRequest);
 
       // Remove all invalid parameters
-      cleanUpParameters(params, SECRET_KEY);
+      cleanUpParameters(params);
 
       // Determine function name
       String functionName = httpRequest.getParameter("_function");

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.text.ParseException;
@@ -93,24 +95,17 @@ abstract class CallingConvention extends Manageable {
     * likely to be changed in XINS 2.0.
     *
     * @param parameters
-    *    the {@link ProtectedPropertyReader} containing the set of parameters
+    *    the {@link BasicPropertyReader} containing the set of parameters
     *    to investigate, cannot be <code>null</code>.
     *
-    * @param secretKey
-    *    the secret key required to be able to modify the
-    *    {@link ProtectedPropertyReader} instance, cannot be
-    *    <code>null</code>.
-    *
     * @throws IllegalArgumentException
-    *    if <code>parameters == null || secretKey == null</code>.
+    *    if <code>parameters == null</code>.
     */
-   static void cleanUpParameters(ProtectedPropertyReader parameters,
-                                 Object                  secretKey)
+   static void cleanUpParameters(BasicPropertyReader parameters)
    throws IllegalArgumentException {
 
       // Check arguments
-      MandatoryArgumentChecker.check("parameters", parameters,
-                                     "secretKey",  secretKey);
+      MandatoryArgumentChecker.check("parameters", parameters);
 
       // Get the parameter names
       Iterator names = parameters.getNames();
@@ -136,7 +131,7 @@ abstract class CallingConvention extends Manageable {
       Iterator itRemove = toRemove.iterator();
       while (itRemove.hasNext()) {
          String name = (String) itRemove.next();
-         parameters.set(secretKey, name, null);
+         parameters.set(name, null);
       }
    }
 
@@ -721,9 +716,8 @@ abstract class CallingConvention extends Manageable {
 
    /**
     * Gathers all parameters from the specified request. The parameters are
-    * returned as a {@link ProtectedPropertyReader} instance with the
-    * specified secret key. If no parameters are found, then <code>null</code>
-    * is returned.
+    * returned as a {@link BasicPropertyReader}.
+    * If no parameters are found, then <code>null</code> is returned.
     *
     * <p>If a parameter is found to have multiple values, then an
     * {@link InvalidRequestException} is thrown.
@@ -732,29 +726,19 @@ abstract class CallingConvention extends Manageable {
     *    the HTTP request to get the parameters from, cannot be
     *    <code>null</code>.
     *
-    * @param secretKey
-    *    the secret key to use if and when constructing the
-    *    {@link ProtectedPropertyReader} instance, should not be
-    *    <code>null</code>.
-    *
     * @return
     *    the properties found, or <code>null</code> if none were found.
-    *
-    * @throws NullPointerException
-    *    if <code>httpRequest == null</code>.
     *
     * @throws InvalidRequestException
     *    if a parameter is found that has multiple values.
     */
-   final ProtectedPropertyReader gatherParams(HttpServletRequest httpRequest,
-                                              Object             secretKey)
-   throws NullPointerException, InvalidRequestException {
+   BasicPropertyReader gatherParams(HttpServletRequest httpRequest) throws InvalidRequestException {
 
       // Get the parameters from the HTTP request
       Enumeration params = httpRequest.getParameterNames();
 
       // The property set to return from this method
-      ProtectedPropertyReader pr;
+      BasicPropertyReader pr;
 
       // If there are no parameters, then return null
       if (! params.hasMoreElements()) {
@@ -762,7 +746,7 @@ abstract class CallingConvention extends Manageable {
 
       // There seem to be some parameters
       } else {
-         pr = new ProtectedPropertyReader(secretKey);
+         pr = new BasicPropertyReader();
 
          do {
             // Get the parameter name
@@ -779,7 +763,7 @@ abstract class CallingConvention extends Manageable {
                String value = getParamValue(name, values);
 
                // Associate the name with the one and only value
-               pr.set(secretKey, name, value);
+               pr.set(name, value);
             }
          } while (params.hasMoreElements());
       }
@@ -819,8 +803,6 @@ abstract class CallingConvention extends Manageable {
           IndexOutOfBoundsException,
           InvalidRequestException {
 
-      // XXX: Should we avoid the NullPointerException ?
-
       String value = values[0];
 
       // We only need to do crunching if there is more than one value
@@ -828,11 +810,7 @@ abstract class CallingConvention extends Manageable {
          for (int i = 1; i < values.length; i++) {
             String other = values[i];
             if (! value.equals(other)) {
-               String error = "Found multiple values for the parameter "
-                            + "named \""
-                            + name
-                            + "\".";
-               throw new InvalidRequestException(error);
+               throw new InvalidRequestException("Found multiple values for the parameter named \"" + name + "\".");
             }
          }
       }

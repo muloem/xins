@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - EnumItem are also displayed in the XML output of the XINS FF.
   - Added new runtime property for the XSLT calling convention which allows
     to pass the template location as one of the parameter to the request.
+  - Simplified gatherParameters and cleanUpParameters in CallingConvention.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
