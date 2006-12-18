@@ -51,6 +51,9 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.spec.FunctionSpec;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+import org.xins.common.types.EnumItem;
+import org.xins.common.types.standard.Date;
+import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
@@ -574,7 +577,8 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             }
             if (nextProperty.startsWith("_") || propValue == null) {
                // continue
-            } else if (propValue instanceof String || propValue instanceof Number || propValue instanceof Boolean) {
+            } else if (propValue instanceof String || propValue instanceof Number || propValue instanceof Boolean ||
+                  propValue instanceof EnumItem || propValue instanceof Date.Value || propValue instanceof Timestamp.Value) {
                ElementBuilder builderParam = new ElementBuilder("parameter");
                builderParam.setAttribute("name", "session." + nextProperty);
                builderParam.setText(propValue.toString());
