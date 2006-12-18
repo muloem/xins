@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.xins.common.types.EnumItem;
+import org.xins.common.types.standard.Date;
+import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 
 /**
@@ -187,6 +189,14 @@ public class BeanUtils {
                   return Boolean.FALSE;
                }
 
+            // Convert a String to a date
+            } else if (origValue instanceof String && destClass == Date.Value.class) {
+               return Date.SINGLETON.fromString((String) origValue);
+
+            // Convert a String to a timestamp
+            } else if (origValue instanceof String && destClass == Timestamp.Value.class) {
+               return Timestamp.SINGLETON.fromString((String) origValue);
+
             // Convert a String to whatever is asked
             } else if (origValue instanceof String) {
                Method convertionMethod = null;
@@ -195,10 +205,12 @@ public class BeanUtils {
                } catch (NoSuchMethodException nsmex) {
                   //Ignore
                }
-               try {
-                  convertionMethod = destClass.getMethod("fromStringForOptional", STRING_CLASS);
-               } catch (NoSuchMethodException nsmex) {
-                  //Ignore
+               if (convertionMethod == null) {
+                  try {
+                     convertionMethod = destClass.getMethod("fromStringForOptional", STRING_CLASS);
+                  } catch (NoSuchMethodException nsmex) {
+                     //Ignore
+                  }
                }
                if (convertionMethod != null) {
                   String[] convertParams = {origValue.toString()};
