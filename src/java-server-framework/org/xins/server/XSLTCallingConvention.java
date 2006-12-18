@@ -81,6 +81,14 @@ class XSLTCallingConvention extends StandardCallingConvention {
    private final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
+    * The name of the runtime property that defines the possibility to pass
+    * the XSLT template as parameter to the request.
+    * Should be either <code>"true"</code> or <code>"false"</code>.
+    * Default value is <code>"false"</code>.
+    */
+   private final static String TEMPLATES_AS_PARAMETER_PROPERTY = "templates.callingconvention.parameter";
+
+   /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
@@ -125,6 +133,12 @@ class XSLTCallingConvention extends StandardCallingConvention {
    private boolean _cacheTemplates;
 
    /**
+    * Flag that indicates whether the templates can be passed as parameter to the request.
+    * This field is set during initialization.
+    */
+   private boolean _templatesAsParameter = false;
+
+   /**
     * Location of the XSLT templates. This field is initially
     * <code>null</code> and set during initialization.
     */
@@ -151,6 +165,15 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       // Get the base directory of the style sheets.
       initXSLTLocation(runtimeProperties);
+
+      // Determine whether template location can be passed as parameter
+      String templatesAsParameter = runtimeProperties.get(TEMPLATES_AS_PARAMETER_PROPERTY);
+      if (!TextUtils.isEmpty(templatesAsParameter) && !"true".equals(templatesAsParameter) &&
+            !"false".equals(templatesAsParameter)) {
+         throw new InvalidPropertyValueException(TEMPLATES_AS_PARAMETER_PROPERTY,
+               templatesAsParameter, "Expected either \"true\" or \"false\".");
+      }
+      _templatesAsParameter = "true".equals(templatesAsParameter);
    }
 
    /**
@@ -261,7 +284,10 @@ class XSLTCallingConvention extends StandardCallingConvention {
       xmlOutput.close();
 
       // Get the location of the XSLT file.
-      String xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);
+      String xsltLocation = null;
+      if (_templatesAsParameter) {
+         xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);
+      }
       if (xsltLocation == null) {
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
       }
