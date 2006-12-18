@@ -6,6 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 
+* XINS/Java Common Library:
+  - BeanUtils#convertObject will also convert from String to Date or Timestamp.
+
+* XINS/Java Server Framework:
+  - EnumItem are also displayed in the XML output of the XINS FF.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
+
 * Logdoc:
   - Removed LogdocExceptionUtils class in favour of the ExceptionUtils class.
     This class was already marked as deprecated since XINS 1.2.0.
@@ -43,7 +52,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     . XINSCallRequest(String,PropertyReader,boolean,HTTPMethod)
   - Removed the method isFailOverAllowed() from class XINSCallRequest. This
     method was deprecated since XINS 1.1.0.
-  - BeanUtils#convertObject will also convert from String to Date or Timestamp.
 
 * XINS/Java Server Framework:
   - Fixed SF.net bug #1604364: Numbers and booleans should also be shown in the
@@ -73,7 +81,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Return HTTP OK with XML MIME type when mode=template is used for the
     XINS FF.
   - The Control command will also return the HTML if an action is executed.
-  - EnumItem are also displayed in the XML output of the XINS FF.
 
 * Generation of client-side Java code:
   - Removed the following generated methods, which were marked as deprecated
