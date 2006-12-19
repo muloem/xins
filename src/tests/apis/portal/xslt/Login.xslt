@@ -22,16 +22,22 @@
 						<input type="hidden" name="action" value="Okay" />
 						<table id="content">
 							<tr>
-								<td id="label">E-mail:</td>
-								<td><input name="email" type="text" id="email" value="{parameter[@name='input.email']}" /></td>
+								<td id="label">Username:</td>
+								<td><input name="username" type="text" id="username" value="{parameter[@name='input.username']}" /></td>
 							</tr>
 							<tr>
 								<td id="label">Password:</td>
 								<td><input name="password" type="password" id="password" /></td>
 							</tr>
 							<tr>
+								<td id="label">Salutation:</td>
+								<td><input type="radio" name="salutation" value="Mister" />Mister<br />
+										<input type="radio" name="salutation" value="Madam" />Madam<br />
+										<input type="radio" name="salutation" value="Miss" />Miss
+								</td>
+							</tr>
+							<tr>
 								<td colspan="2" id="submit">
-									<input id="submit" type="button" onclick="location='?command=RegisterCustomer'" value="Create new account" />
 									<input id="submit" type="submit" value="Login &gt;" />
 								</td>
 							</tr>

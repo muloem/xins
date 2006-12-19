@@ -11,6 +11,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 	<!-- TODO to enable a partial unit test for bug #1172375: <function name="JavaKeywords" /> -->
 
 	<type name="allinone/IPAddress" />
+	<type name="allinone/Salutation" />
 	<type name="Password" />
 	<type name="Username" />
 </api>

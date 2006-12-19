@@ -53,7 +53,8 @@ public final class LoginOkayImpl extends LoginOkay {
     */
    public Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
-      // TODO
+      // TODO do this in the framework when the login page is successful
+      _session.setProperty(_session.getSessionId(), Boolean.TRUE);
       return result;
    }
 }
