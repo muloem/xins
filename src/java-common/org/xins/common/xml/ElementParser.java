@@ -9,6 +9,7 @@ package org.xins.common.xml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 
 import java.util.Stack;
 
@@ -85,6 +86,37 @@ extends Object {
    //-------------------------------------------------------------------------
 
    /**
+    * Parses the specified String to create an XML <code>Element</code> object.
+    *
+    * @param text
+    *    the XML text to be parsed, not <code>null</code>.
+    *
+    * @return
+    *    the parsed result, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>text == null</code>.
+    *
+    * @throws ParseException
+    *    if the content of the character stream is not considered to be valid XML.
+    *
+    * @since XINS 2.0.
+    */
+   public static Element parse(String text)
+   throws IllegalArgumentException,
+          ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("text", text);
+
+      try {
+         return parse(new StringReader(text));
+      } catch (IOException ioe) {
+         throw Utils.logProgrammingError(ioe);
+      }
+   }
+
+   /**
     * Parses content of a character stream to create an XML
     * <code>Element</code> object.
     *
@@ -105,7 +137,7 @@ extends Object {
     *    if the content of the character stream is not considered to be valid
     *    XML.
     */
-   public Element parse(Reader in)
+   public static Element parse(Reader in)
    throws IllegalArgumentException,
           IOException,
           ParseException {
