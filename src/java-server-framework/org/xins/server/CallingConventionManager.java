@@ -56,6 +56,7 @@ extends Manageable {
       APIServlet.XSLT_CALLING_CONVENTION,
       APIServlet.SOAP_CALLING_CONVENTION,
       APIServlet.XML_RPC_CALLING_CONVENTION,
+      APIServlet.JSON_RPC_CALLING_CONVENTION,
    });
 
    /**
