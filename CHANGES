@@ -24,6 +24,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Added new method in Engine to get the URL location of a file included in
     the WAR file.
 
+* Generated build file:
+  - Fixed missing reference to the 1.5 DTD files for the generated logdoc
+    build.xml file.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 
