@@ -1198,7 +1198,7 @@ APIs in this project are:
 				</condition>
 			</target>
 
-			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version" description="Creates the WAR for the '{$api}{$implName2}' API">
+			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API">
 				<mkdir dir="{$project_home}/build/webapps/{$api}{$implName2}" />
 				<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 				<tstamp>
@@ -1250,6 +1250,7 @@ APIs in this project are:
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java" />
+					<zipfileset dir="{$project_home}/build/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
 					<xsl:for-each select="$api_node/type">
 						<xsl:if test="contains(@name, '/')">

@@ -6,11 +6,21 @@
  */
 package org.xins.server;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Set;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -880,6 +890,11 @@ final class Engine extends Object {
          return;
       }
 
+      // Shortcut for the _WSDL meta function
+      if (xinsRequest.getFunctionName().equals("_WSDL")) {
+         handleWsdlRequest(response);
+         return;
+      }
 
       // Convert the XINS result to an HTTP response
       try {
@@ -1001,5 +1016,66 @@ final class Engine extends Object {
     */
    ServletConfig getServletConfig() {
       return _servletConfig;
+   }
+
+   /**
+    * Gets the location of a file or a directory included in the WAR file.
+    *
+    * @param path
+    *    the relative path in the WAR to locate the file or the directory.
+    *
+    * @return
+    *    the String representation of the URL of the given path or <code>null</code>
+    *    if the path cannot be found.
+    */
+   String getFileLocation(String path) {
+      String baseURL = null;
+      ServletConfig  config  = getServletConfig();
+      ServletContext context = config.getServletContext();
+      try {
+         String realPath = context.getRealPath(path);
+         if (realPath != null) {
+            baseURL = new File(realPath).toURL().toExternalForm();
+         } else {
+            baseURL = context.getResource(path).toExternalForm();
+         }
+      } catch (MalformedURLException muex) {
+         // Let the base URL be null
+      }
+      return baseURL;
+   }
+
+   /**
+    * Handles the request for the _WSDL meta function.
+    *
+    * @param response
+    *    the response to fill, never <code>null</code>.
+    */
+   private void handleWsdlRequest(HttpServletResponse response) throws IOException {
+      String wsdlLocation = getFileLocation("WEB-INF/" + _apiName + ".wsdl");
+      if (wsdlLocation == null) {
+         throw new FileNotFoundException("WEB-INF/" + _apiName + ".wsdl not found.");
+      }
+      // TODO put this in a utility method
+      InputStream inputXSLT = new URL(wsdlLocation).openStream();
+      BufferedReader input = new BufferedReader(new InputStreamReader(inputXSLT));
+      StringWriter output = new StringWriter();
+      char[] buffer = new char[1024];
+      while (true) {
+         int length = input.read(buffer);
+         if (length == -1) break;
+         output.write(buffer, 0, length);
+      }
+      inputXSLT.close();
+      input.close();
+      output.close();
+      String wsdlText = output.toString();
+
+      // Write the text to the output
+      response.setContentType("text/xml");
+      response.setStatus(HttpServletResponse.SC_OK);
+      Writer outputResponse = response.getWriter();
+      outputResponse.write(wsdlText);
+      outputResponse.close();
    }
 }

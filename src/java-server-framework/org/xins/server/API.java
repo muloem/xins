@@ -154,6 +154,7 @@ implements DefaultResultCodes {
       _metaFunctionCallIDs.put("_EnableFunction",   new Counter());
       _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
       _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
+      _metaFunctionCallIDs.put("_WSDL",             new Counter());
    }
 
 
@@ -943,19 +944,7 @@ implements DefaultResultCodes {
    throws InvalidSpecificationException {
 
       if (_apiSpecification == null) {
-         String baseURL = null;
-         ServletConfig  config  = _engine.getServletConfig();
-         ServletContext context = config.getServletContext();
-         try {
-            String realPath = context.getRealPath("specs/");
-            if (realPath != null) {
-               baseURL = new File(realPath).toURL().toExternalForm();
-            } else {
-               baseURL = context.getResource("specs/").toExternalForm();
-            }
-         } catch (MalformedURLException muex) {
-            // Let the base URL be null
-         }
+         String baseURL = _engine.getFileLocation("specs/");
          _apiSpecification = new APISpec(getClass(), baseURL);
       }
       return _apiSpecification;
@@ -1221,6 +1210,10 @@ implements DefaultResultCodes {
 
       // Retrieve eggs
       } else if ("_IWantTheEasterEggs".equals(functionName)) {
+         result = SUCCESSFUL_RESULT;
+
+      // Return the WSDL description of the API
+      } else if ("_WSDL".equals(functionName)) {
          result = SUCCESSFUL_RESULT;
 
       // Meta-function does not exist
@@ -1574,7 +1567,6 @@ implements DefaultResultCodes {
       }
       return SUCCESSFUL_RESULT;
    }
-
 
    //-------------------------------------------------------------------------
    // Inner classes

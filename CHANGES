@@ -20,6 +20,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Added JSONRPCCallingConvention.
   - Added test of parameter mapping in the XINSFF CC.
   - Added test of enumeration parameter in the XINSFF CC.
+  - Added _WSDL meta function.
+  - Added new method in Engine to get the URL location of a file included in
+    the WAR file.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
