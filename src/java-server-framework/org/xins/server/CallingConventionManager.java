@@ -387,6 +387,10 @@ extends Manageable {
       } else if (name.equals(APIServlet.XML_RPC_CALLING_CONVENTION)) {
          return "org.xins.server.XMLRPCCallingConvention";
 
+      // JSON-RPC
+      } else if (name.equals(APIServlet.JSON_RPC_CALLING_CONVENTION)) {
+         return "org.xins.server.JSONRPCCallingConvention";
+
       // Unrecognized
       } else {
          return null;
