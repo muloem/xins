@@ -28,6 +28,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Fixed missing reference to the 1.5 DTD files for the generated logdoc
     build.xml file.
 
+* Documentation:
+  - Moved primers and presentations to sub directories.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 
