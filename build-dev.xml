@@ -470,6 +470,7 @@ ${sf.file}</fail>
 				<include name="xins-project/**/*.java" />
 				<include name="xins-project/**/*.html" />
 				<include name="xins-project/apis/petstore/**/*" />
+				<include name="xins-project/apis/fileupload/lib/*.jar" />
 				<exclude name="build" />
 				<exclude name="xins-project/build/**/*" />
 				<exclude name="xins-project/apis/allinone/impl-stub/com/**/*" />
