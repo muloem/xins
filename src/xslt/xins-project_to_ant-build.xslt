@@ -757,8 +757,6 @@ APIs in this project are:
 			</xsl:for-each>
 		</target>
 
-
-
 		<xsl:if test="$apiHasTypes">
 			<target name="-classes-types-{$api}" depends="-prepare-classes">
 				<xsl:variable name="typePackage">
