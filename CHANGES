@@ -16,11 +16,16 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
     contained in a Map into a POJO.
   - SF.net RFE #1589110: Added the possibility to set a limit for the number of
     characters printed for the value of an object in a PropertyReader.
+  - The org.xins.common.xml.Element object is now editable.
+  - Added ProtectedList#remove(key, element) method to remove an element from
+    the list.
 
 * XINS/Java Server Framework:
   - EnumItem are also displayed in the XML output of the XINS FF.
   - Added new runtime property for the XSLT calling convention which allows
     to pass the template location as one of the parameter to the request.
+    The new runtime property is templates.callingconvention.parameter and has
+    the default value to false.
   - Simplified gatherParameters and cleanUpParameters in CallingConvention.
   - Added JSONRPCCallingConvention.
   - Added test of parameter mapping in the XINSFF CC.

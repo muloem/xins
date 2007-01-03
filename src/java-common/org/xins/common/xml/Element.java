@@ -69,7 +69,7 @@ public class Element implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
     */
-   Element(String localName)
+   public Element(String localName)
    throws IllegalArgumentException {
       this(null, localName);
    }
@@ -87,7 +87,7 @@ public class Element implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
     */
-   Element(String namespaceURI, String localName)
+   public Element(String namespaceURI, String localName)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -166,6 +166,24 @@ public class Element implements Cloneable {
     * Sets the specified attribute. If the value for the specified
     * attribute is already set, then the previous value is replaced.
     *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value for the attribute, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void setAttribute(String localName, String value)
+   throws IllegalArgumentException {
+      setAttribute(null, localName, value);
+   }
+
+   /**
+    * Sets the specified attribute. If the value for the specified
+    * attribute is already set, then the previous value is replaced.
+    *
     * @param namespaceURI
     *    the namespace URI for the attribute, can be <code>null</code>; an
     *    empty string is equivalent to <code>null</code>.
@@ -179,7 +197,7 @@ public class Element implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
     */
-   void setAttribute(String namespaceURI, String localName, String value)
+   public void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
       // Construct a QualifiedName object. This will check the preconditions.
@@ -196,6 +214,48 @@ public class Element implements Cloneable {
 
       // Set or reset the attribute
       _attributes.put(qn, value);
+   }
+
+
+   /**
+    * Removes the specified attribute. If no attribute with the specified name
+    * exists, nothing happens.
+    *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void removeAttribute(String localName)
+   throws IllegalArgumentException {
+      removeAttribute(null, localName);
+   }
+
+   /**
+    * Removes the specified attribute. If no attribute with the specified name
+    * exists, nothing happens.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void removeAttribute(String namespaceURI, String localName)
+   throws IllegalArgumentException {
+
+      // Construct a QualifiedName object. This will check the preconditions.
+      QualifiedName qn = new QualifiedName(namespaceURI, localName);
+
+      if (_attributes != null) {
+         _attributes.remove(qn);
+      }
+
    }
 
    /**
@@ -300,7 +360,7 @@ public class Element implements Cloneable {
     * @throws IllegalArgumentException
     *    if <code>child == null || child == <em>this</em></code>.
     */
-   void addChild(Element child) throws IllegalArgumentException {
+   public void addChild(Element child) throws IllegalArgumentException {
 
       final String METHODNAME = "addChild(Element)";
 
@@ -319,6 +379,37 @@ public class Element implements Cloneable {
       }
 
       _children.add(SECRET_KEY, child);
+   }
+
+
+   /**
+    * Removes a child element. If the child is not found, nothing is removed.
+    *
+    * @param child
+    *    the child to be removed to this element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>child == null || child == <em>this</em></code>.
+    */
+   public void removeChild(Element child) throws IllegalArgumentException {
+
+      final String METHODNAME = "removeChild(Element)";
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("child", child);
+      if (child == this) {
+         String message = "child == this";
+         Log.log_1050(CLASSNAME, METHODNAME, Utils.getCallingClass(), Utils.getCallingMethod(), message);
+         // TODO: Log.log_1050 for every IllegalArgumentException
+         throw new IllegalArgumentException(message);
+      }
+
+      // Lazily initialize
+      if (_children == null) {
+         return;
+      }
+
+      _children.remove(SECRET_KEY, child);
    }
 
    /**
@@ -397,7 +488,7 @@ public class Element implements Cloneable {
     * @param text
     *    the character content for this element, or <code>null</code>.
     */
-   void setText(String text) {
+   public void setText(String text) {
       _text = text;
    }
 
