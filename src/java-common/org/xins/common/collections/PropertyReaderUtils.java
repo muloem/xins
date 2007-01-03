@@ -396,7 +396,7 @@ extends Object {
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty) {
-      return serialize(p, valueIfEmpty, null, null);
+      return serialize(p, valueIfEmpty, null, null, -1);
    }
 
    /**
@@ -428,7 +428,43 @@ extends Object {
                                               String         valueIfEmpty,
                                               String         prefixIfNotEmpty,
                                               String         suffix) {
-      return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty, suffix);
+      return serialize(p, valueIfEmpty, prefixIfNotEmpty, suffix, -1);
+   }
+
+
+   /**
+    * Constructs a <code>LogdocSerializable</code> for the specified
+    * <code>PropertyReader</code>.
+    *
+    * @param p
+    *    the {@link PropertyReader} to construct a {@link LogdocSerializable}
+    *    for, or <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if the specified set of properties is either
+    *    <code>null</code> or empty, can be <code>null</code>.
+    *
+    * @param prefixIfNotEmpty
+    *    the prefix to add to the value if the <code>PropertyReader</code>
+    *    is not empty, can be <code>null</code>.
+    *
+    * @param suffix
+    *    the suffix to add to the value, can be <code>null</code>. The suffix
+    *    will be added even if the PropertyReaderis empty.
+    *
+    * @param maxValueLength
+    *    the maximum of characters to set for the value, if the value is longer
+    *    than this limit '...' will be added after the limit.
+    *    If the value is -1, no limit will be set.
+    *
+    * @return
+    *    a new {@link LogdocSerializable}, never <code>null</code>.
+    *
+    * @since XINS 2.0.0
+    */
+   public static LogdocSerializable serialize(PropertyReader p, String valueIfEmpty,
+         String prefixIfNotEmpty, String suffix, int maxValueLength) {
+      return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty, suffix, maxValueLength);
    }
 
    /**
@@ -514,16 +550,23 @@ extends Object {
        * @param suffix
        *    the suffix to add to the value even if the <code>PropertyReader</code>
        *    is empty, can be <code>null</code>.
+       *
+       * @param maxValueLength
+       *    the maximum of characters to set for the value, if the value is longer
+       *    than this limit '...' will be added after the limit.
+       *    If the value is -1, no limit will be set.
        */
       SerializedPropertyReader(PropertyReader p,
                                String         valueIfEmpty,
                                String         prefixIfNotEmpty,
-                               String         suffix) {
+                               String         suffix,
+                               int            maxValueLength) {
 
          _propertyReader = p;
          _valueIfEmpty   = valueIfEmpty;
          _prefixIfNotEmpty = prefixIfNotEmpty;
          _suffix = suffix;
+         _maxValueLength = maxValueLength;
       }
 
 
@@ -551,6 +594,11 @@ extends Object {
        * The suffix to add at the end of the Logdoc serializable.
        */
       private final String _suffix;
+
+      /**
+       * The maximum length for the value.
+       */
+      private final int _maxValueLength;
 
 
       //----------------------------------------------------------------------
@@ -614,7 +662,13 @@ extends Object {
             // Append the key and the value, separated by an equals sign
             buffer.append(URLEncoding.encode(name));
             buffer.append('=');
-            buffer.append(URLEncoding.encode(value));
+            String encodedValue = null;
+            if (_maxValueLength == -1 || value.length() <= _maxValueLength) {
+               encodedValue = URLEncoding.encode(value);
+            } else {
+               encodedValue = URLEncoding.encode(value.substring(0, _maxValueLength)) + "...";
+            }
+            buffer.append(encodedValue);
          } while (names.hasNext());
 
          if (_suffix != null) {

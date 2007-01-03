@@ -4,7 +4,7 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
+CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
 * XINS/Java Common Library:
   - Added BeanUtils#getParameters(Object) method to extract the values of a
@@ -13,6 +13,11 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
     contained in a Map into a POJO.
   - The ElementParser#parse(Reader) and ElementParser#parser(String) methods are
     no longer static as it generated IncompatibleClassChangeError.
+  - SF.net RFE #1589110: Added the possibility to set a limit for the number of
+    characters printed for the value of an object in a PropertyReader.
+
+* XINS/Java Client Framework:
+  - Limited the length of the log message when a parameter has a too long value.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
