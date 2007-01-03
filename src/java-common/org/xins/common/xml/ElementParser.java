@@ -102,7 +102,7 @@ extends Object {
     *
     * @since XINS 2.0.
     */
-   public static Element parse(String text)
+   public Element parse(String text)
    throws IllegalArgumentException,
           ParseException {
 
@@ -137,7 +137,7 @@ extends Object {
     *    if the content of the character stream is not considered to be valid
     *    XML.
     */
-   public static Element parse(Reader in)
+   public Element parse(Reader in)
    throws IllegalArgumentException,
           IOException,
           ParseException {

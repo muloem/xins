@@ -49,7 +49,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * and <a href='http://json-rpc.org/wd/JSON-RPC-1-1-WD-20060807.html'>1.1</a> are supported.
  * The service description is also returned on request when calling the
  * <em>system.describe</em> function.
- * The returned object is a JSON Object with a similar structure as the input 
+ * The returned object is a JSON Object with a similar structure as the input
  * parameters when HTTP POST is used.
  *
  * @since XINS 2.0.
@@ -199,7 +199,7 @@ final class JSONRPCCallingConvention extends CallingConvention {
             throw new IOException(jsonex.getMessage());
          }
       }
-      
+
       // Transform the XINS result to a JSON object
       JSONObject returnObject = new JSONObject();
       try {
@@ -382,7 +382,7 @@ final class JSONRPCCallingConvention extends CallingConvention {
                if (nextName.equals("_data")) {
                   JSONObject dataSectionObject = paramsObject.getJSONObject("_data");
                   String dataSectionString = XML.toString(dataSectionObject);
-                  dataElement = ElementParser.parse(dataSectionString);
+                  dataElement = new ElementParser().parse(dataSectionString);
                } else {
                   String value = paramsObject.get(nextName).toString();
                   functionParams.set(nextName, value);
