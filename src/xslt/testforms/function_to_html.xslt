@@ -85,29 +85,9 @@
 							</xsl:attribute>
 						</input>
 						<input name="_convention" value="_xins-std" type="hidden" />
-						<xsl:text>Execution environment: </xsl:text>
-						<select name="_environment" class="required">
-							<xsl:choose>
-								<xsl:when test="string-length($env_file) > 0">
-									<xsl:for-each select="document($env_file)/environments/environment">
-										<option value="{@url}">
-											<xsl:value-of select="@id" />
-										</option>
-									</xsl:for-each>
-								</xsl:when>
-								<xsl:when test="$api_node/environment">
-									<xsl:for-each select="$api_node/environment">
-										<option value="{@url}">
-											<xsl:value-of select="@id" />
-										</option>
-									</xsl:for-each>
-								</xsl:when>
-								<xsl:otherwise>
-									<option value="API_PATH">No environment</option>
-								</xsl:otherwise>
-							</xsl:choose>
-						</select>
+						<xsl:call-template name="environment_section" />
 					</p>
+					<xsl:call-template name="autofill_section" />
 
 					<xsl:call-template name="input_section">
 						<xsl:with-param name="functionName" select="$functionName" />
@@ -146,6 +126,73 @@
 		<li>
 			<xsl:apply-templates />
 		</li>
+	</xsl:template>
+
+	<xsl:template name="environment_section">
+		<xsl:text>Execution environment: </xsl:text>
+		<select name="_environment" class="required">
+			<xsl:choose>
+				<xsl:when test="string-length($env_file) > 0">
+					<xsl:for-each select="document($env_file)/environments/environment">
+						<option value="{@url}">
+							<xsl:value-of select="@id" />
+						</option>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:when test="$api_node/environment">
+					<xsl:for-each select="$api_node/environment">
+						<option value="{@url}">
+							<xsl:value-of select="@id" />
+						</option>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:otherwise>
+					<option value="API_PATH">No environment</option>
+				</xsl:otherwise>
+			</xsl:choose>
+		</select>
+	</xsl:template>
+
+	<xsl:template name="autofill_section">
+		<xsl:if test="example">
+			<script type="text/javascript">
+				<xsl:text>
+				function fillExample(selectedExample) {
+					if (selectedExample == '') {
+						document.forms[0].reset();</xsl:text>
+				<xsl:for-each select="example">
+					<xsl:text>
+					} else if (selectedExample == </xsl:text>
+					<xsl:value-of select="position()" />
+					<xsl:text>) {</xsl:text>
+					<xsl:for-each select="input-example">
+						<xsl:text>
+						document.forms[0].</xsl:text>
+						<xsl:value-of select="@name" />
+						<xsl:text>.value = '</xsl:text>
+						<xsl:value-of select="text()" />
+						<xsl:text>';</xsl:text>
+					</xsl:for-each>
+				</xsl:for-each>
+				<xsl:text>
+					}
+				}
+				</xsl:text>
+			</script>
+			<p>
+				<xsl:text>Auto-fill the form with: </xsl:text>
+				<select name="_autofill" class="optional" onchange="fillExample(this.value)">
+					<option value="">
+						<xsl:text>-- blank --</xsl:text>
+					</option>
+					<xsl:for-each select="example">
+						<option value="{position()}">
+							<xsl:value-of select="concat('Example ', position())" />
+						</option>
+					</xsl:for-each>
+				</select>
+			</p>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="input_section">
