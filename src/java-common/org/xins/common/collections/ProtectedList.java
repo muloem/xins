@@ -255,6 +255,37 @@ public final class ProtectedList extends AbstractList implements Cloneable {
       _list.remove(index);
    }
 
+
+   /**
+    * Removes the specified element.
+    *
+    * <p>The correct secret key must be passed. If it is incorrect, then an
+    * {@link IncorrectSecretKeyException} is thrown. Note that an identity
+    * check is done, <em>not</em> an equality check. So
+    * the {@link Object#equals(Object)} method is not used, but the
+    * <code>==</code> operator is.
+    *
+    * @param secretKey
+    *    the secret key, must be identity-equal to the secret key passed to
+    *    the constructor, cannot be <code>null</code>.
+    *
+    * @param element
+    *    the element to remove.
+    *
+    * @throws IncorrectSecretKeyException
+    *    if <code>secretKey</code> does not match the secret key passed to the
+    *    constructor.
+    */
+   public void remove(Object secretKey, Object element)
+   throws IncorrectSecretKeyException {
+
+      // Check preconditions
+      checkSecretKey(secretKey);
+
+      // Remove the element
+      _list.remove(element);
+   }
+
    /**
     * Clones this object. The returned object will be a new
     * <code>ProtectedList</code> instance with the same secret key and the
