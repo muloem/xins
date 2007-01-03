@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import org.xins.common.collections.ChainedMap;
 
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.standard.Date;
@@ -413,4 +414,88 @@ public class BeanUtils {
 
       return newElement;
    }
+
+   /**
+    * Gets the values returned by the get methods of the given POJO and put
+    * the values in a <code>Map</code>.
+    * The property names returned start with an uppercase.
+    *
+    * @param source
+    *    the object from which the values are extracted and put in the Map, should not be <code>null</code>
+    *
+    * @return
+    *     the property values of the source object. The key of the Map is
+    *     the name of the property and the value is the value as returned by the get method.
+    *     Never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>source == null</code>.
+    */
+   public static Map getParameters(Object source) throws IllegalArgumentException {
+
+      MandatoryArgumentChecker.check("source", source);
+
+      // Go through all get methods of the source object
+      ChainedMap valuesMap = new ChainedMap();
+      Method[] sourceMethods = source.getClass().getMethods();
+      for (int i = 0; i < sourceMethods.length; i++) {
+         String getMethodName = sourceMethods[i].getName();
+         if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
+
+            // Determine the name of the property
+            String propertyName = sourceMethods[i].getName().substring(3);
+            try {
+               Object propertyValue = sourceMethods[i].invoke(source, null);
+               valuesMap.put(propertyName, propertyValue);
+            } catch (Exception ex) {
+               Utils.logIgnoredException(ex);
+            }
+         }
+      }
+      return valuesMap;
+  }
+
+   /**
+    * Puts the values of the <code>Map</source> in the destination object (POJO).
+    * If needed the property value is converted to the type needed for the set method.
+    * The property names can start with an uppercase or a lowercase.
+    *
+    * @param properties
+    *    the map containing the values to fill the destination object, cannot be <code>null</code>
+    *    The key of the <code>Map</code> should be the property name and will be
+    *    used to find the set method of the destination object.
+    *
+    * @param destination
+    *    the object which should be filled, cannot be <code>null</code>.
+    *
+    * @return
+    *     the destination object filled, never <code>null</code>. This object will
+    *     be the same as the input parameter.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || destination == null</code>.
+    */
+   public static Object setParameters(Map properties, Object destination) throws IllegalArgumentException {
+
+      MandatoryArgumentChecker.check("properties", properties, "destination", destination);
+
+      // Go through all properties and find the set method
+      Iterator itProperties = properties.entrySet().iterator();
+      while (itProperties.hasNext()) {
+         Map.Entry nextProp = (Map.Entry) itProperties.next();
+         try {
+            String propertyName = (String) nextProp.getKey();
+            Object propertyValue = nextProp.getValue();
+            String methodName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+            Object methodArg = convertObject(propertyValue, destination, propertyName);
+            Class[] argsClasses = { methodArg.getClass() };
+            Object[] args = { methodArg };
+            Method setMethod = destination.getClass().getMethod(methodName, argsClasses);
+            setMethod.invoke(destination, args);
+         } catch (Exception ex) {
+            Utils.logIgnoredException(ex);
+         }
+      }
+      return destination;
+  }
 }

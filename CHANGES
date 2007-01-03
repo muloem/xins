@@ -7,6 +7,17 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
 
 * XINS/Java Common Library:
+  - Added BeanUtils#getParameters(Object) method to extract the values of a
+    POJO in a Map.
+  - Added BeanUtils#setParameters(Map, Object) method to set the values
+    contained in a Map into a POJO.
+  - The ElementParser#parse(Reader) and ElementParser#parser(String) methods are
+    no longer static as it generated IncompatibleClassChangeError.
+
+______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
+
+* XINS/Java Common Library:
   - BeanUtils#convertObject will also convert from String to Date or Timestamp.
   - Added org.xins.common.json package based on http://www.json.org/java.
   - The ElementParser#parser(Reader) method is now static.
