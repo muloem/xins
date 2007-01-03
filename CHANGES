@@ -7,26 +7,15 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
 * XINS/Java Common Library:
+  - BeanUtils#convertObject will also convert from String to Date or Timestamp.
+  - Added org.xins.common.json package based on http://www.json.org/java.
+  - Added method ElementParser#parser(String) to parse an XML String.
   - Added BeanUtils#getParameters(Object) method to extract the values of a
     POJO in a Map.
   - Added BeanUtils#setParameters(Map, Object) method to set the values
     contained in a Map into a POJO.
-  - The ElementParser#parse(Reader) and ElementParser#parser(String) methods are
-    no longer static as it generated IncompatibleClassChangeError.
   - SF.net RFE #1589110: Added the possibility to set a limit for the number of
     characters printed for the value of an object in a PropertyReader.
-
-* XINS/Java Client Framework:
-  - Limited the length of the log message when a parameter has a too long value.
-
-______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
-
-* XINS/Java Common Library:
-  - BeanUtils#convertObject will also convert from String to Date or Timestamp.
-  - Added org.xins.common.json package based on http://www.json.org/java.
-  - The ElementParser#parser(Reader) method is now static.
-  - Added static method ElementParser#parser(String) to parse an XML String.
 
 * XINS/Java Server Framework:
   - EnumItem are also displayed in the XML output of the XINS FF.
@@ -39,6 +28,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Added _WSDL meta function.
   - Added new method in Engine to get the URL location of a file included in
     the WAR file.
+
+* XINS/Java Client Framework:
+  - Limited the length of the log message when a parameter has a too long value.
 
 * Generated build file:
   - Fixed missing reference to the 1.5 DTD files for the generated logdoc
