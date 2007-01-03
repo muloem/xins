@@ -213,7 +213,7 @@ class FileServiceCaller extends ServiceCaller {
       PropertyReader parameters = ((HTTPCallRequest) request).getParameters();
 
       // Get the parameters for logging
-      LogdocSerializable params = PropertyReaderUtils.serialize(parameters, "", "?", null);
+      LogdocSerializable params = PropertyReaderUtils.serialize(parameters, "", "?", null, 160);
 
       // Get URL value
       String url = target.getURL();

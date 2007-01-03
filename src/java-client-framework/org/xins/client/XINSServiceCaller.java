@@ -420,7 +420,7 @@ public final class XINSServiceCaller extends ServiceCaller {
             String         s           = dataSection != null
                                        ? ("_data=" + dataSection.toString())
                                        : null;
-            LogdocSerializable params = PropertyReaderUtils.serialize(p, "(null)", "&", s);
+            LogdocSerializable params = PropertyReaderUtils.serialize(p, "(null)", "&", s, 160);
 
             // Serialize the exception chain
             LogdocSerializable chain = new ExceptionFormatter(exception);
@@ -573,7 +573,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       if (xinsRequest.getDataSection() != null) {
          dataSection = "_data=" + xinsRequest.getDataSection().toString();
       }
-      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection);
+      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection, 160);
 
       // Get the time-out values (for logging)
       int totalTimeOut      = target.getTotalTimeOut();
