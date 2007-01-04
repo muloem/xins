@@ -4,7 +4,7 @@
 
  $Id$
 
- Copyright 2003-2006 Orange Nederland Breedband B.V.
+ Copyright 2003-2007 Orange Nederland Breedband B.V.
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
@@ -20,7 +20,7 @@
 
 		<xd:author>Anthony Goubard</xd:author>
 		<xd:author>Ernst De Haan</xd:author>
-		<xd:copyright>Copyright 2003-2006 Orange Nederland Breedband B.V.</xd:copyright>
+		<xd:copyright>Copyright 2003-2007 Orange Nederland Breedband B.V.</xd:copyright>
 		<xd:cvsId>$Id$</xd:cvsId>
 	</xd:doc>
 
