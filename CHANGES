@@ -38,8 +38,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
   - Limited the length of the log message when a parameter has a too long value.
 
 * Generation of specification documentation:
-  - Added first implementation of the automatic filling of the test form with
-    the examples.
+  - Added the automatic filling of the test form with the examples.
 
 * Generated build file:
   - Fixed missing reference to the 1.5 DTD files for the generated logdoc

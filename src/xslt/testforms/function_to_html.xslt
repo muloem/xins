@@ -157,26 +157,32 @@
 		<xsl:if test="example">
 			<script type="text/javascript">
 				<xsl:text>
-				function fillExample(selectedExample) {
-					if (selectedExample == '') {
-						document.forms[0].reset();</xsl:text>
+function fillExample(selectedExample) {
+  if (selectedExample == '') {
+    document.forms[0].reset();</xsl:text>
 				<xsl:for-each select="example">
 					<xsl:text>
-					} else if (selectedExample == </xsl:text>
+  } else if (selectedExample == </xsl:text>
 					<xsl:value-of select="position()" />
 					<xsl:text>) {</xsl:text>
 					<xsl:for-each select="input-example">
 						<xsl:text>
-						document.forms[0].</xsl:text>
+    document.forms[0].</xsl:text>
 						<xsl:value-of select="@name" />
 						<xsl:text>.value = '</xsl:text>
 						<xsl:value-of select="text()" />
 						<xsl:text>';</xsl:text>
 					</xsl:for-each>
+					<xsl:if test="input-data-example">
+    document.forms[0]._data.value = <xsl:text>'&lt;data&gt;\n' +</xsl:text>
+						<xsl:apply-templates select="input-data-example/element-example" />
+						<xsl:text>
+      '&lt;/data&gt;';</xsl:text>
+					</xsl:if>
 				</xsl:for-each>
 				<xsl:text>
-					}
-				}
+  }
+}
 				</xsl:text>
 			</script>
 			<p>
@@ -343,5 +349,49 @@
 				<textarea name="_data" rows="6" cols="40" class="optional" />
 			</td>
 		</tr>
+	</xsl:template>
+
+	<!--
+		Writes the input data section with auto-fill.
+	-->
+	<xsl:template match="element-example">
+
+		<xsl:variable name="text" select="pcdata-example/text()" />
+
+		<xsl:text>
+  '&lt;</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:apply-templates select="attribute-example" />
+		<xsl:if test="not(element-example) and not(boolean($text) and not($text = ''))">
+			<xsl:text> /</xsl:text>
+		</xsl:if>
+		<xsl:text>&gt;\n' +</xsl:text>
+
+		<xsl:if test="boolean($text) and not($text = '')">
+			<xsl:value-of select="$text" />
+		</xsl:if>
+
+		<xsl:apply-templates select="element-example" />
+
+		<xsl:if test="boolean(element-example)">
+			<xsl:text>
+  '</xsl:text>
+		</xsl:if>
+
+		<xsl:if test="boolean(element-example) or (boolean($text) and not($text=''))">
+			<xsl:text>&lt;/</xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>&gt;\n' +</xsl:text>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="attribute-example">
+		<xsl:variable name="name" select="@name" />
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>=</xsl:text>
+		<xsl:text>"</xsl:text>
+		<xsl:value-of select="text()" />
+		<xsl:text>"</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
