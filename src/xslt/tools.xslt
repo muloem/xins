@@ -35,6 +35,9 @@
 			<get src="http://www.ibiblio.org/maven2/pmd/pmd/3.7/pmd-3.7.jar"
 			     dest="{$xins_home}/lib/pmd.jar"
 			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven2/jaxen/jaxen/1.1-beta-11/jaxen-1.1-beta-11.jar"
+			     dest="{$xins_home}/lib/jaxen.jar"
+			     usetimestamp="true" ignoreerrors="true" />
 			<get src="http://www.ibiblio.org/maven/checkstyle/jars/checkstyle-4.1.jar"
 			     dest="{$xins_home}/lib/checkstyle.jar"
 			     usetimestamp="true" ignoreerrors="true" />
