@@ -28,6 +28,44 @@
 			<fail message="No implementation directory found for API ${{api.name}}" unless="api.source.dir" />
 		</target>
 
+		<target name="download-tools" description="Download the dependencies JAR file used by the tools.">
+			<get src="http://www.ibiblio.org/maven2/java2html/j2h/1.3.1/j2h-1.3.1.jar"
+			     dest="{$xins_home}/lib/j2h.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven2/pmd/pmd/3.7/pmd-3.7.jar"
+			     dest="{$xins_home}/lib/pmd.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven/checkstyle/jars/checkstyle-4.1.jar"
+			     dest="{$xins_home}/lib/checkstyle.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven2/cobertura/cobertura/1.8/cobertura-1.8.jar"
+			     dest="{$xins_home}/lib/cobertura.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven2/asm/asm/2.2.1/asm-2.2.1.jar"
+			     dest="{$xins_home}/lib/asm.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.jutils.com/maven/lint4j/jars/lint4j-0.9.1.jar"
+			     dest="{$xins_home}/lib/lint4j.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven/jdepend/jars/jdepend-2.9.1.jar"
+			     dest="${{ant.home}}/lib/jdepend.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<input addproperty="extra-tools.dir"
+						 message="Where do you want to install FindBugs and JMeter?" />
+			<get src="http://heanet.dl.sourceforge.net/sourceforge/findbugs/findbugs-1.1.2.tar.gz"
+			     dest="${{extra-tools.dir}}/findbugs-1.1.2.tar.gz"
+			     usetimestamp="true" ignoreerrors="true" />
+			<gunzip src="${{extra-tools.dir}}/findbugs-1.1.2.tar.gz" />
+			<untar src="${{extra-tools.dir}}/findbugs-1.1.2.tar" dest="${{extra-tools.dir}}" />
+			<delete file="${{extra-tools.dir}}/findbugs-1.1.2.tar" />
+			<get src="http://www.eu.apache.org/dist/jakarta/jmeter/binaries/jakarta-jmeter-2.2.tgz"
+			     dest="${{extra-tools.dir}}/jakarta-jmeter-2.2.tgz"
+			     usetimestamp="true" ignoreerrors="true" />
+			<gunzip src="${{extra-tools.dir}}/jakarta-jmeter-2.2.tgz" />
+			<untar src="${{extra-tools.dir}}/jakarta-jmeter-2.2.tar" dest="${{extra-tools.dir}}" />
+			<delete file="${{extra-tools.dir}}/jakarta-jmeter-2.2.tgz" />
+		</target>
+
 		<target name="java2html" depends="-init-tools" description="Generates HTML pages which contains the API code.">
 			<taskdef name="java2html" classname="com.java2html.Java2HTMLTask">
 				<classpath refid="tools-cp" />
