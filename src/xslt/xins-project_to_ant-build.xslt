@@ -80,6 +80,7 @@ This build file was generated with XINS </xsl:text>
 - wars                Generates all WAR files.
 - capis               Generates all CAPI JAR files.
 - javadoc-capis       Generates all CAPI Javadoc.
+- download-tools      Downloads the dependencies needed to execute tools on an API.
 
 The following commands assist in authoring specifications:
 - create-api          Generates a new api specification file.
