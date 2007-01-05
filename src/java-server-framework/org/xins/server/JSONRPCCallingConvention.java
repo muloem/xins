@@ -41,8 +41,6 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 import org.xins.logdoc.ExceptionUtils;
 
-import org.znerd.xmlenc.XMLOutputter;
-
 /**
  * The JSON-RPC calling convention.
  * Version <a href='http://json-rpc.org/wiki/specification'>1.0</a>
@@ -111,19 +109,13 @@ final class JSONRPCCallingConvention extends CallingConvention {
     * Creates a new <code>JSONRPCCallingConvention</code> instance.
     *
     * @param api
-    *    the API, needed for the JSON-RPC messages, cannot be
-    *    <code>null</code>.
+    *    the API, needed for the JSON-RPC messages, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>api == null</code>.
     */
-   public JSONRPCCallingConvention(API api)
-   throws IllegalArgumentException {
-
-      // Check arguments
+   public JSONRPCCallingConvention(API api) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("api", api);
-
-      // Store the API reference (can be null!)
       _api = api;
    }
 
