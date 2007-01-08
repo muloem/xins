@@ -56,6 +56,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
   - Added new article about writing the Web Service using a script language.
   - Fixed links on web site.
   - Corrected links on web site to avoid redirection.
+  - Improved documentation on how to use antlib.xml in the antlib.xml file.
 
 * Other:
   - Changed copyright statement to 2007.

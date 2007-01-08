@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <antlib>
-	<!-- use with <taskdef resource="org/xins/common/ant/antlib.xml" /> -->
+	<!-- use with <taskdef resource="org/xins/common/ant/antlib.xml" classpath="<path to xins>/build/xins-common.jar" /> -->
 	<taskdef name="callxins" classname="org.xins.common.ant.CallXINSTask"/>
 	<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask"/>
 	<taskdef name="createexample" classname="org.xins.common.ant.CreateExampleTask" />
