@@ -778,11 +778,12 @@ APIs in this project are:
 				</xsl:if>
 				<xsl:for-each select="$api_node/type">
 					<xsl:if test="contains(@name, '/')">
-						<xsl:variable name="shared_type_file"
-						select="concat($api_specsdir, '/../../', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
-						<copy
-						file="{$shared_type_file}"
-						todir="{$copiedTypesDir}">
+						<xsl:variable name="shared_type_dir"
+						select="concat($api_specsdir, '/../../', substring-before(@name, '/'), '/spec')" />
+						<xsl:variable name="shared_type_filename"
+						select="concat(substring-after(@name, '/'), '.typ')" />
+						<copy todir="{$copiedTypesDir}">
+							<fileset dir="{$shared_type_dir}" includes="{$shared_type_filename}" />
 							<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
 						</copy>
 					</xsl:if>
