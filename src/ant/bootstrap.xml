@@ -152,6 +152,23 @@
 				     location="${xins_home}/src/dtd/environments_1_5.dtd" />
 				<dtd publicId="-//XINS//DTD XINS Logdoc 1.5//EN"
 				     location="${xins_home}/src/dtd/log_1_5.dtd" />
+
+				<dtd publicId="-//XINS//DTD XINS Project 2.0//EN"
+				     location="${xins_home}/src/dtd/xins-project_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD XINS API 2.0//EN"
+				     location="${xins_home}/src/dtd/api_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD Function 2.0//EN"
+				     location="${xins_home}/src/dtd/function_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD Type 2.0//EN"
+				     location="${xins_home}/src/dtd/type_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD Result Code 2.0//EN"
+				     location="${xins_home}/src/dtd/resultcode_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD Implementation 2.0//EN"
+				     location="${xins_home}/src/dtd/impl_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD Environments 2.0//EN"
+				     location="${xins_home}/src/dtd/environments_2_0.dtd" />
+				<dtd publicId="-//XINS//DTD XINS Logdoc 2.0//EN"
+				     location="${xins_home}/src/dtd/log_2_0.dtd" />
 			</xmlcatalog>
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />

@@ -64,6 +64,11 @@
 					     publicId="-//XINS//DTD XINS Logdoc 1.5//EN" />
 					<dtd location="translation-bundle_1_5.dtd"
 					     publicId="-//XINS//DTD XINS Translation Bundle 1.5//EN" />
+
+					<dtd location="log_2_0.dtd"
+					     publicId="-//XINS//DTD XINS Logdoc 2.0//EN" />
+					<dtd location="translation-bundle_2_0.dtd"
+					     publicId="-//XINS//DTD XINS Translation Bundle 2.0//EN" />
 				</xmlcatalog>
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
 					<xmlcatalog refid="log-dtds" />
