@@ -46,6 +46,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
   - Added download-tools target.
   - Fixed copy a shared type starting with lowercase was failing because the
     mapper was ignored when file is used in the copy Ant task.
+  - Fixed the build directory is "${project_home}/build" instead of "build" so
+    that you can run xins from another directory.
 
 * Build- and release-process:
   - Included the missing fileupload/lib directory in the release.
