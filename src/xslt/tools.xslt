@@ -41,6 +41,12 @@
 			<get src="http://www.ibiblio.org/maven/checkstyle/jars/checkstyle-4.1.jar"
 			     dest="{$xins_home}/lib/checkstyle.jar"
 			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven/commons-beanutils/jars/commons-beanutils-1.7.0.jar"
+			     dest="{$xins_home}/lib/commons-beanutils.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://www.ibiblio.org/maven/antlr/jars/antlr-2.7.6.jar"
+			     dest="{$xins_home}/lib/antlr.jar"
+			     usetimestamp="true" ignoreerrors="true" />
 			<get src="http://www.ibiblio.org/maven2/cobertura/cobertura/1.8/cobertura-1.8.jar"
 			     dest="{$xins_home}/lib/cobertura.jar"
 			     usetimestamp="true" ignoreerrors="true" />

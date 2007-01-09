@@ -512,10 +512,7 @@ ${sf.file}</fail>
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
 			<include name="src/config/checkstyle/config.xml" />
-			<include name="src/css/javadoc/*"              />
-			<include name="src/css/logdoc/*"               />
-			<include name="src/css/specdocs/*"             />
-			<include name="src/css/tests/*"                />
+			<include name="src/css/*"                      />
 			<include name="src/dtd/**/*"                   />
 			<include name="src/java-client-framework/**/*" />
 			<include name="src/java-common/**/*"           />
@@ -549,7 +546,7 @@ ${sf.file}</fail>
 			<include name="CHANGES"                        />
 			<include name="COPYRIGHT"                      />
 			<include name="README.html"                    />
-			<exclude name="src/xslt/checkstyle/*"          />
+			<exclude name="src/css/xsltdoc/*"              />
 			<exclude name="src/xslt/tests/perftests.xslt"  />
 			<exclude name="src/xslt/xsltdoc/**/*"          />
 			<exclude name="docs/javadoc-private/**/*.html" />

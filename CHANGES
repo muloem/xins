@@ -54,6 +54,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
 * Build- and release-process:
   - Included the missing fileupload/lib directory in the release.
+  - The checkstyle target was failing because of missing libraries in the 
+    documentation and missing files in the release.
 
 * Documentation:
   - Moved primers and presentations to sub directories.
