@@ -40,6 +40,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 * Generation of specification documentation:
   - Added the automatic filling of the test form with the examples.
 
+* Generated tests:
+  - Fixed bug #1630767: Changed comment in the generated APITest file.
+
 * Generated build file:
   - Fixed missing reference to the 1.5 DTD files for the generated logdoc
     build.xml file.

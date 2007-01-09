@@ -44,7 +44,7 @@ public class APITests extends TestCase {
    //-------------------------------------------------------------------------
 
    /**
-    * The Servlet server running the API. &lt;code&gt;null&lt;/code&gt; if the server is not started.
+    * The Servlet server running the API. The value is &lt;code&gt;null&lt;/code&gt; if the server is not started.
     */
    private static HTTPServletHandler API_SERVER;
 
