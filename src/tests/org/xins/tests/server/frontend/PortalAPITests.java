@@ -8,7 +8,6 @@ package org.xins.tests.server.frontend;
 
 import java.io.StringReader;
 import java.util.Iterator;
-import java.util.List;
 
 import com.mycompany.portal.capi.*;
 import java.util.Properties;
@@ -19,33 +18,20 @@ import junit.framework.TestSuite;
 
 import org.xins.client.DataElement;
 import org.xins.client.InternalErrorException;
-import org.xins.client.InvalidRequestException;
-import org.xins.client.UnacceptableRequestException;
 import org.xins.client.UnsuccessfulXINSCallException;
-import org.xins.client.XINSCallConfig;
 import org.xins.client.XINSCallRequest;
-import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
-import org.xins.common.ProgrammingException;
-import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.servlet.container.HTTPServletHandler;
-import org.xins.common.types.standard.Date;
-import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
-import org.xins.logdoc.ExceptionUtils;
 
 import org.xins.tests.AllTests;
-import org.xins.tests.StartServer;
 import org.xins.tests.server.HTTPCaller;
 import org.xins.tests.server.HTTPCallerResult;
 
