@@ -17,19 +17,18 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
-import org.xins.common.json.JSONArray;
-import org.xins.common.json.JSONException;
-import org.xins.common.json.JSONObject;
-import org.xins.common.json.JSONWriter;
-import org.xins.common.json.XML;
 import org.xins.common.spec.APISpec;
-import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.ErrorCodeSpec;
 import org.xins.common.spec.FunctionSpec;

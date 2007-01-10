@@ -534,6 +534,7 @@ ${sf.file}</fail>
 			<include name="lib/jakarta-oro.LICENSE"        />
 			<include name="lib/log4j.LICENSE"              />
 			<include name="lib/junit.LICENSE"              />
+			<include name="lib/json.LICENSE"               />
 			<include name="docs/**/*.html"                 />
 			<include name="docs/**/*.css"                  />
 			<include name="docs/javadoc/package-list"      />
@@ -601,6 +602,7 @@ ${sf.file}</fail>
 				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />
 				<include name="lib/junit.jar"                  />
+				<include name="lib/json.jar"                  />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build/lf"

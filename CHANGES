@@ -8,7 +8,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
 * XINS/Java Common Library:
   - BeanUtils#convertObject will also convert from String to Date or Timestamp.
-  - Added org.xins.common.json package based on http://www.json.org/java.
   - Added method ElementParser#parser(String) to parse an XML String.
   - Added BeanUtils#getParameters(Object) method to extract the values of a
     POJO in a Map.
