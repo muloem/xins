@@ -14,8 +14,8 @@ import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**
- * Call configuration for the XINS service caller. The HTTP method and the
- * can be configured. By default it is set to <em>POST</em>.
+ * Call configuration for the XINS service caller. The HTTP method can be configured. 
+ * By default it is set to <em>POST</em>.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
