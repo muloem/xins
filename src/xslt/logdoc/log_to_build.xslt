@@ -23,9 +23,8 @@
 
 	<xsl:template match="log">
 		<project default="all" basedir="..">
-			<target name="html" description="Generates HTML documentation">
-				<mkdir dir="{$html_destdir}" />
-				<!-- TODO: Define the xmlcatalog only in one place -->
+
+			<target name="catalog">
 				<xmlcatalog id="log-dtds">
 					<classpath>
 						<pathelement path="{$xins_home}/src/dtd"/>
@@ -73,6 +72,10 @@
 				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
 					<xmlcatalog refid="log-dtds" />
 				</xmlvalidate>
+			</target>
+
+			<target name="html" depends="catalog" description="Generates HTML documentation">
+				<mkdir dir="{$html_destdir}" />
 				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$html_destdir}/index.html"
@@ -109,45 +112,8 @@
 				</xsl:for-each>
 			</target>
 
-			<target name="java" description="Generates Java code">
+			<target name="java" depends="catalog" description="Generates Java code">
 				<mkdir dir="{$java_destdir}" />
-				<xmlcatalog id="log-dtds">
-					<classpath>
-						<pathelement path="{$xins_home}/src/dtd"/>
-					</classpath>
-					<dtd location="log_1_0_alpha.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" />
-					<dtd location="translation-bundle_1_0_alpha.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN" />
-
-					<dtd location="log_1_0.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
-					<dtd location="translation-bundle_1_0.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN" />
-
-					<dtd location="log_1_1.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.1//EN" />
-					<dtd location="translation-bundle_1_1.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN" />
-
-					<dtd location="log_1_2.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.2//EN" />
-					<dtd location="translation-bundle_1_2.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.2//EN" />
-
-					<dtd location="log_1_3.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.3//EN" />
-					<dtd location="translation-bundle_1_3.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.3//EN" />
-
-					<dtd location="log_1_4.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.4//EN" />
-					<dtd location="translation-bundle_1_4.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.4//EN" />
-				</xmlcatalog>
-				<xmlvalidate warn="false" file="{$sourcedir}/log.xml">
-					<xmlcatalog refid="log-dtds" />
-				</xmlvalidate>
 				<xslt
 				in="{$sourcedir}/log.xml"
 				out="{$java_destdir}/Log.java"

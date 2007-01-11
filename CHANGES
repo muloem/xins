@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
+* Generated build file:
+  - Put the reference to the Logdoc DTD catalog in a specific target.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
@@ -54,6 +57,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
   - Fixed the build directory is "${project_home}/build" instead of "build" so
     that you can run xins from another directory.
 
+* Tools:
+  - Fixed bug #1631365: Checkstyle-generated HTML does not show file names.
+
 * Build- and release-process:
   - Included the missing fileupload/lib directory in the release.
   - The checkstyle target was failing because of missing libraries in the 
@@ -71,7 +77,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
   - Changed copyright statement to 2007.
   - Added fully compliant REST demo.
   - Added DTD files for the 2.0 version.
-  - Fixed bug #1631365: Checkstyle-generated HTML does not show file names.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
