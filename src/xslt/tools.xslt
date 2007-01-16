@@ -335,5 +335,22 @@
 				<param name="project_home" expression="{$project_home}" />
 			</xslt>
 		</target>
+
+		<target name="xsd2types" depends="-init-tools" description="Generates type files from a set of xsd files.">
+			<input addproperty="xsd.dir"
+						 message="Please, enter the directory containing the XSD files:" />
+			<available property="xsd.dir.exists" file="${{xsd.dir}}" type="dir" />
+			<fail message="No directory &quot;${{xsd.dir}}&quot; found for XSD." unless="xsd.dir.exists" />
+			<xslt
+			basedir="${{xsd.dir}}"
+			destdir="apis/${{api.name}}/spec"
+			classpath="{$xins_home}/lib/saxon8.jar;${{ant.home}}/lib/ant-trax.jar"
+			extension=".typ"
+			processor="trax"
+			style="{$xins_home}/src/xslt/webapp/xsd_to_types.xslt">
+				<param name="project_home" expression="{$project_home}" />
+				<param name="specsdir" expression="{$project_home}/apis/${{api.name}}/spec" />
+			</xslt>
+		</target>
 	</xsl:template>
 </xsl:stylesheet>
