@@ -11,8 +11,12 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                exclude-result-prefixes="xs"
-                version="1.0">
+                xmlns:saxon="http://icl.com/saxon"
+                xmlns:xt="http://www.jclarck.com/xt"
+                xmlns:xalan="http://org.apache.xalan.xslt.extensions.Redirect"
+								extension-element-prefixes="saxon xalan"
+                exclude-result-prefixes="xs saxon xt xalan"
+                version="2.0">
 
 	<xsl:include href="../hungarian.xslt"  />
 
@@ -29,6 +33,9 @@
 		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" />
 	</xsl:template>
 
+	<!--
+	Creates the file
+	-->
 	<xsl:template match="xs:restriction">
 		<xsl:variable name="elementName" select="../../@name" />
 		<xsl:variable name="typeName">
@@ -41,7 +48,47 @@
 			<xsl:text>Found element: </xsl:text>
 			<xsl:value-of select="$elementName" />
 		</xsl:message>
-		<!--xsl:result-document href="$typeFile" format="xml"-->
+		<!-- The XSLT processor will choose which tag it can interpret -->
+		<xsl:result-document href="{$typeFile}" format="typ_doctype">
+			<xsl:call-template name="xml_type">
+				<xsl:with-param name="typeName" select="$typeName" />
+				<xsl:with-param name="elementName" select="$elementName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xsl:result-document>
+		<xalan:write file="{$typeFile}">
+			<xsl:call-template name="xml_type">
+				<xsl:with-param name="typeName" select="$typeName" />
+				<xsl:with-param name="elementName" select="$elementName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xalan:write>
+		<saxon:output file="{$typeFile}">
+			<xsl:call-template name="xml_type">
+				<xsl:with-param name="typeName" select="$typeName" />
+				<xsl:with-param name="elementName" select="$elementName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</saxon:output>
+		<xt:document href="{$typeFile}">
+			<xsl:call-template name="xml_type">
+				<xsl:with-param name="typeName" select="$typeName" />
+				<xsl:with-param name="elementName" select="$elementName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xt:document>
+	</xsl:template>
+
+	<xsl:template name="xml_type">
+		<xsl:param name="typeName" />
+		<xsl:param name="elementName" />
+
+	<xsl:output method="xml" indent="yes"
+	doctype-public="-//XINS//DTD Type 2.0//EN"
+	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
+
+	<xsl:text>
+</xsl:text>
 <type name="{$typeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
 	<xsl:text>
 	</xsl:text>
@@ -95,6 +142,5 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </type>
-		<!--/xsl:result-document-->
 	</xsl:template>
 </xsl:stylesheet>

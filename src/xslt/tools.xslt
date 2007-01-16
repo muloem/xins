@@ -343,14 +343,25 @@
 			<fail message="No directory &quot;${{xsd.dir}}&quot; found for XSD." unless="xsd.dir.exists" />
 			<xslt
 			basedir="${{xsd.dir}}"
+			includes="*.xsd"
 			destdir="apis/${{api.name}}/spec"
-			classpath="{$xins_home}/lib/saxon8.jar;${{ant.home}}/lib/ant-trax.jar"
 			extension=".typ"
-			processor="trax"
 			style="{$xins_home}/src/xslt/webapp/xsd_to_types.xslt">
 				<param name="project_home" expression="{$project_home}" />
 				<param name="specsdir" expression="{$project_home}/apis/${{api.name}}/spec" />
 			</xslt>
+			<!--fileset dir="${{xsd.dir}}" id="xsd.files">
+				<include name="*.xsd"/>
+			</fileset>
+	    <pathconvert property="typefiles" pathsep="," dirsep="" refid="xsd.files">
+				<map from="${{xsd.dir}}" to="" />
+	    </pathconvert>
+			<echo message="files: ${{typefiles}}" />
+			<delete>
+				<fileset dir="{$project_home}/apis/${{api.name}}/spec">
+					<include name="${{typefiles}}" />
+				</fileset>
+			</delete-->
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
