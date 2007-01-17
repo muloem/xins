@@ -84,7 +84,7 @@ public final class TextUtils extends Object {
     * @since XINS 1.0.1
     */
    public static boolean isEmpty(String s) {
-      return (s == null) || (s.length() < 1);
+      return (s == null) || (s.length() == 0);
    }
 
    /**
@@ -178,6 +178,61 @@ public final class TextUtils extends Object {
       }
 
       return s;
+   }
+
+   /**
+    * Tranforms the given <code>String</code> to the similar <code>String</code>, 
+    * but starting with an uppercase.
+    *
+    * @param text
+    *    the text to transform, can be <code>null</code>
+    *
+    * @return
+    *    the transformed text, the return value will start with an uppercase. 
+    *    <code>null</code> is returned if the text was <code>null</code>.
+    *
+    * @since XINS 2.0.0.
+    */
+   public static String firstCharUpper(String text) {
+       if (text == null) {
+           return null;
+       } else if (text.length() == 0) {
+           return text;
+       } else if (!Character.isLowerCase(text.charAt(0))) {
+           return text;
+       } else if (text.length() == 1) {
+           return text.toUpperCase();
+       } else {
+           return text.substring(0, 1).toUpperCase() + text.substring(1);
+       }
+       
+   }
+
+   /**
+    * Tranforms the given <code>String</code> to the similar <code>String</code>, 
+    * but starting with a lowercase.
+    *
+    * @param text
+    *    the text to transform, can be <code>null</code>
+    *
+    * @return
+    *    the transformed text, the return value will start with a lowercase. 
+    *    <code>null</code> is returned if the text was <code>null</code>.
+    *
+    * @since XINS 2.0.0.
+    */
+   public static String firstCharLower(String text) {
+       if (text == null) {
+           return null;
+       } else if (text.length() == 0) {
+           return text;
+       } else if (!Character.isUpperCase(text.charAt(0))) {
+           return text;
+       } else if (text.length() == 1) {
+           return text.toLowerCase();
+       } else {
+           return text.substring(0, 1).toLowerCase() + text.substring(1);
+       }
    }
 
 
