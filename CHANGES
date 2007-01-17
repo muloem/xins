@@ -12,6 +12,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Added new methods to TextUtils to change a String to start with an
     uppercase or a lowercase.
 
+* Generation of specification documentation:
+  - The version is printed in the footer only when known.
+  - Added link to xins.org in the footer.
+
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.
 
