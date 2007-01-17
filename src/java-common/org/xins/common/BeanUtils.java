@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import org.xins.common.collections.ChainedMap;
+import org.xins.common.text.TextUtils;
 
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.standard.Date;
@@ -430,6 +431,8 @@ public class BeanUtils {
     *
     * @throws IllegalArgumentException
     *    if <code>source == null</code>.
+    *
+    * @since XINS 2.0.0.
     */
    public static Map getParameters(Object source) throws IllegalArgumentException {
 
@@ -444,6 +447,7 @@ public class BeanUtils {
 
             // Determine the name of the property
             String propertyName = sourceMethods[i].getName().substring(3);
+            propertyName = TextUtils.firstCharLower(propertyName);
             try {
                Object propertyValue = sourceMethods[i].invoke(source, null);
                valuesMap.put(propertyName, propertyValue);
@@ -474,6 +478,8 @@ public class BeanUtils {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || destination == null</code>.
+    *
+    * @since XINS 2.0.0.
     */
    public static Object setParameters(Map properties, Object destination) throws IllegalArgumentException {
 
@@ -486,7 +492,7 @@ public class BeanUtils {
          try {
             String propertyName = (String) nextProp.getKey();
             Object propertyValue = nextProp.getValue();
-            String methodName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+            String methodName = "set" + TextUtils.firstCharUpper(propertyName);
             Object methodArg = convertObject(propertyValue, destination, propertyName);
             Class[] argsClasses = { methodArg.getClass() };
             Object[] args = { methodArg };
