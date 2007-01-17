@@ -67,8 +67,7 @@ implements DefaultResultCodes {
    /**
     * Successful empty call result.
     */
-   private static final FunctionResult SUCCESSFUL_RESULT =
-      new FunctionResult();
+   static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
 
    /**
     * The runtime (initialization) property that defines the ACL (access

@@ -243,14 +243,19 @@ implements DefaultResultCodes {
 
       // Check if this function is enabled
       if (! _enabled) {
-         performedCall(functionRequest, ip, start,
-                       DISABLED_FUNCTION_RESULT);
+         performedCall(functionRequest, ip, start, DISABLED_FUNCTION_RESULT);
          return DISABLED_FUNCTION_RESULT;
       }
 
+      // Skipped the function call if asked to
+      if (functionRequest.shouldSkipFunctionCall()) {
+         // TODO log
+         performedCall(functionRequest, ip, start, API.SUCCESSFUL_RESULT);
+         return API.SUCCESSFUL_RESULT;
+      }
+
       // Construct a CallContext object
-      CallContext context = new CallContext(functionRequest, start, this,
-                                            callID, ip);
+      CallContext context = new CallContext(functionRequest, start, this, callID, ip);
 
       FunctionResult result;
       try {

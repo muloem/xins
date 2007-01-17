@@ -63,11 +63,39 @@ extends Object {
     *    the data section of the input request, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>functionName == null || parameters == null</code>.
+    *    if <code>functionName == null</code>.
     */
    public FunctionRequest(String         functionName,
                           PropertyReader parameters,
                           Element        dataElement)
+   throws IllegalArgumentException {
+       this(functionName, parameters, dataElement, false);
+   }
+
+   /**
+    * Creates a new <code>FunctionRequest</code>. The function name must be
+    * specified.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param parameters
+    *    the parameters of the function requested, cannot be
+    *    <code>null</code>.
+    *
+    * @param dataElement
+    *    the data section of the input request, can be <code>null</code>.
+    *
+    * @param skipFunctionCall
+    *    <code>true</code> if the function shouldn't be executed, <code>false</code> otherwise.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    */
+   public FunctionRequest(String         functionName,
+                          PropertyReader parameters,
+                          Element        dataElement,
+                          boolean        skipFunctionCall)
    throws IllegalArgumentException {
 
       // Check preconditions
@@ -86,6 +114,8 @@ extends Object {
 
       // Store the data section, or null if there is none
       _dataElement = dataElement;
+
+      _skipFunctionCall = skipFunctionCall;
    }
 
 
@@ -108,6 +138,11 @@ extends Object {
     * <code>null</code>.
     */
    private final Element _dataElement;
+
+   /**
+    * Flag indicating whether the function should be skipped or not.
+    */
+   private boolean _skipFunctionCall;
 
 
    //-------------------------------------------------------------------------
@@ -143,5 +178,15 @@ extends Object {
     */
    Element getDataElement() {
       return _dataElement;
+   }
+
+   /**
+    * Gets whether the function should be executed or not.
+    *
+    * @return
+    *    <code>true</code> if the function shouldn't be executed, <code>false</code> otherwise.
+    */
+   boolean shouldSkipFunctionCall() {
+      return _skipFunctionCall;
    }
 }

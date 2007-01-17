@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
     API for example during the maintenance of resources used by the API.
   - If mode=source is used in the XINS FF, the redirection is skipped and
     the XML is returned.
+  - Added possibility to indicate in the calling convention not to execute the
+    function returned.
 
 * Generation of specification documentation:
   - The version is printed in the footer only when known.
