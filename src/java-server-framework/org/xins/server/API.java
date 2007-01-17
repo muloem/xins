@@ -141,6 +141,7 @@ implements DefaultResultCodes {
       _emptyProperties     = new RuntimeProperties();
       _timeZone            = TimeZone.getDefault();
       _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
+      _apiDisabled         = false;
 
       // Initialize mapping from meta-function to call ID
       _metaFunctionCallIDs = new HashMap(89);
@@ -155,6 +156,8 @@ implements DefaultResultCodes {
       _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
       _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
       _metaFunctionCallIDs.put("_WSDL",             new Counter());
+      _metaFunctionCallIDs.put("_DisableAPI",       new Counter());
+      _metaFunctionCallIDs.put("_EnableAPI",        new Counter());
    }
 
 
@@ -288,6 +291,11 @@ implements DefaultResultCodes {
     * field is never <code>null</code>.
     */
    private final HashMap _metaFunctionCallIDs;
+
+   /**
+    * Flag indicating that the API is down for maintenance.
+    */
+   private boolean _apiDisabled;
 
 
    //-------------------------------------------------------------------------
@@ -1216,6 +1224,16 @@ implements DefaultResultCodes {
       } else if ("_WSDL".equals(functionName)) {
          result = SUCCESSFUL_RESULT;
 
+      // Disable the API
+      } else if ("_DisableAPI".equals(functionName)) {
+         _apiDisabled = true;
+         result = SUCCESSFUL_RESULT;
+
+      // Enable the API
+      } else if ("_EnableAPI".equals(functionName)) {
+         _apiDisabled = false;
+         result = SUCCESSFUL_RESULT;
+
       // Meta-function does not exist
       } else {
          throw new NoSuchFunctionException(functionName);
@@ -1566,6 +1584,16 @@ implements DefaultResultCodes {
          function.getStatistics().resetStatistics();
       }
       return SUCCESSFUL_RESULT;
+   }
+
+   /**
+    * Indicates whether the API is down for maintenance or not.
+    *
+    * @return
+    *    <code>true</code> if the API is disable, <code>false</code> otherwise.
+    */
+   boolean isDisabled() {
+       return _apiDisabled;
    }
 
    //-------------------------------------------------------------------------

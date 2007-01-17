@@ -845,6 +845,12 @@ final class Engine extends Object {
          return;
       }
 
+      // Do not handle the call if the API is disabled
+      if (_api.isDisabled() && !"_EnableAPI".equals(xinsRequest.getFunctionName())) {
+         response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+         return;
+      }
+
       // Call the function
       FunctionResult result;
       try {
