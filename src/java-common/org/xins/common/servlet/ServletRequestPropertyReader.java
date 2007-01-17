@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.AbstractPropertyReader;
 import org.xins.common.text.ParseException;
+import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 
 /**
@@ -125,6 +126,11 @@ extends AbstractPropertyReader {
 
       // Get the HTTP query string
       String query = request.getQueryString();
+
+      // Short-circuit if the query string is empty
+      if (TextUtils.isEmpty(query)) {
+         return;
+      }
 
       // Parse the parameters in the HTTP query string
       try {
