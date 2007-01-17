@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- XSLT that generates the WSDL file from the API.
+ XSLT that generates the typ files from a XSD file.
 
  $Id$
 
@@ -22,10 +22,6 @@
 
 	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
-
-	<xsl:output method="xml" indent="yes"
-	doctype-public="-//XINS//DTD Type 2.0//EN"
-	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
 
 	<!-- TODO test with XML special characters in xsd -->
 
