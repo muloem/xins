@@ -345,8 +345,19 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="type_name">
+			<xsl:choose>
+				<xsl:when test="contains(@name, '/')">
+					<xsl:value-of select="substring-after(@name, '/')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@name" />
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>Type</xsl:text>
+		</xsl:variable>
 
-		<xsd:simpleType name="{@name}Type">
+		<xsd:simpleType name="{$type_name}">
 			<xsd:annotation>
 				<xsd:documentation>
 					<xsl:value-of select="$type_node/description/text()" />
@@ -405,7 +416,14 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>tns:</xsl:text>
-				<xsl:value-of select="$type" />
+				<xsl:choose>
+					<xsl:when test="contains($type, '/')">
+						<xsl:value-of select="substring-after($type, '/')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$type" />
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>Type</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>

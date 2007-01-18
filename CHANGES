@@ -24,6 +24,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - The version is printed in the footer only when known.
   - Added link to xins.org in the footer.
 
+* Generation of the WSDL:
+  - Fixed the shared types had a '/' in the WSDL name.
+
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.
 
