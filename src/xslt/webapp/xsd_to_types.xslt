@@ -11,12 +11,17 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:xt="http://www.jclarck.com/xt"
                 xmlns:xalan="http://org.apache.xalan.xslt.extensions.Redirect"
-								extension-element-prefixes="saxon xalan"
+								extension-element-prefixes="saxon xalan xt"
                 exclude-result-prefixes="xs saxon xt xalan"
                 version="2.0">
+
+	<xsl:output method="xml" indent="yes"
+	doctype-public="-//XINS//DTD Type 2.0//EN"
+	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
 
 	<xsl:include href="../hungarian.xslt"  />
 
@@ -24,15 +29,15 @@
 	<xsl:param name="specsdir"     />
 
 	<!-- TODO test with XML special characters in xsd -->
-
-	<xsl:template match="xs:schema">
+	<xsl:template match="xs:schema | xsd:schema">
 		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" />
+		<xsl:apply-templates select="//xsd:element/xsd:simpleType/xsd:restriction" />
 	</xsl:template>
 
 	<!--
 	Creates the file
 	-->
-	<xsl:template match="xs:restriction">
+	<xsl:template match="xs:restriction | xsd:restriction">
 		<xsl:variable name="elementName" select="../../@name" />
 		<xsl:variable name="typeName">
 			<xsl:call-template name="hungarianUpper">
@@ -93,6 +98,9 @@
 			<xsl:when test="../xs:annotation/xs:documentation">
 				<xsl:value-of select="../xs:annotation/xs:documentation/text()" />
 			</xsl:when>
+			<xsl:when test="../xsd:annotation/xsd:documentation">
+				<xsl:value-of select="../xsd:annotation/xsd:documentation/text()" />
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$typeName" />
 			</xsl:otherwise>
@@ -101,32 +109,36 @@
 	<xsl:text>
 	</xsl:text>
 	<xsl:choose>
-		<xsl:when test="xs:pattern">
+		<xsl:when test="xs:pattern or xsd:pattern">
 			<pattern>
 				<xsl:value-of select="xs:pattern/@value" />
+				<xsl:value-of select="xsd:pattern/@value" />
 			</pattern>
 		</xsl:when>
-		<xsl:when test="xs:enumeration">
+		<xsl:when test="xs:enumeration or xsd:enumeration">
 			<enum>
-				<xsl:for-each select="xs:enumeration">
+				<xsl:for-each select="xs:enumeration | xsd:enumeration">
 					<xsl:text>
 		</xsl:text>
 					<item value="{@value}" />
 				</xsl:for-each>
 			</enum>
 		</xsl:when>
-		<xsl:when test="xs:maxLength or xs:minLength or xs:length">
+		<xsl:when test="xs:maxLength or xs:minLength or xs:length or xsd:maxLength or xsd:minLength or xsd:length">
 			<pattern>
 				<xsl:text>.{</xsl:text>
-				<xsl:if test="not(xs:minLength) and not(xs:length)">
+				<xsl:if test="not(xs:minLength) and not(xs:length) and not(xsd:minLength) and not(xsd:length)">
 					<xsl:text>0</xsl:text>
 				</xsl:if>
 				<xsl:value-of select="xs:minLength/@value" />
 				<xsl:value-of select="xs:length/@value" />
-				<xsl:if test="xs:minLength or xs:maxLength">
+				<xsl:value-of select="xsd:minLength/@value" />
+				<xsl:value-of select="xsd:length/@value" />
+				<xsl:if test="xs:minLength or xs:maxLength or xsd:minLength or xsd:maxLength">
 					<xsl:text>,</xsl:text>
 				</xsl:if>
 				<xsl:value-of select="xs:maxLength/@value" />
+				<xsl:value-of select="xsd:maxLength/@value" />
 				<xsl:text>}</xsl:text>
 			</pattern>
 		</xsl:when>
