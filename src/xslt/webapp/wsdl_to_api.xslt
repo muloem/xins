@@ -16,7 +16,7 @@
                 xmlns:xalan="http://org.apache.xalan.xslt.extensions.Redirect"
 								extension-element-prefixes="saxon xalan"
                 exclude-result-prefixes="xsd saxon xt xalan"
-                version="2.0">
+                version="1.0">
 
 	<xsl:include href="../hungarian.xslt"  />
 
@@ -32,7 +32,7 @@
 		<xsl:call-template name="apifile">
 			<xsl:with-param name="api_name" select="$api_name" />
 		</xsl:call-template>
-		<xsl:apply-templates select="binding/operation" />
+		<xsl:apply-templates select="portType/operation" />
 	</xsl:template>
 
 	<!-- Creates the api.xml file -->
@@ -42,6 +42,7 @@
 
 	</xsl:text>
 			<description>
+				<xsl:value-of select="portType/documentation/text()" />
 				<xsl:value-of select="binding/documentation/text()" />
 			</description>
 <xsl:text>
