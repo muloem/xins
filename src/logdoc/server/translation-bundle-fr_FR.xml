@@ -135,6 +135,7 @@
 	<translation entry="3513">Cache utilisé pour l'analyse de la requête XML.</translation>
 	<translation entry="3514">Mise en cache de l'analyse de la requête XML.</translation>
 	<translation entry="3515">L'analyse de la requête XML n'est pas mise en cache car le type MIME de la requête n'est pas "text/xml".</translation>
+	<translation entry="3516">Omit l'appel à la function <value-of-param name="functionName" format="quoted" /> avec les paramètres d'entrée <value-of-param name="inParams" />.</translation>
 
 	<translation entry="3520">Reçu une requête HTTP invalide à partir de <value-of-param name="ip" />. La méthode de la requête <value-of-param name="method" format="quoted" /> n'est pas supportée/permise. La requête est <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Reçu une requête HTTP <value-of-param name="method" /> à patir de <value-of-param name="ip" />. Le chemin d'accès est <value-of-param name="path" format="quoted" /> et la requête est <value-of-param name="queryString" format="quoted" />.</translation>

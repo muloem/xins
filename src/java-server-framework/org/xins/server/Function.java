@@ -249,7 +249,8 @@ implements DefaultResultCodes {
 
       // Skipped the function call if asked to
       if (functionRequest.shouldSkipFunctionCall()) {
-         // TODO log
+         LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+         Log.log_3516(functionRequest.getFunctionName(), inParams);
          performedCall(functionRequest, ip, start, API.SUCCESSFUL_RESULT);
          return API.SUCCESSFUL_RESULT;
       }

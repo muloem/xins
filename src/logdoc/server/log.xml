@@ -590,6 +590,11 @@
 		<entry id="3515" level="DEBUG">
 			<description>Not caching parsed request XML since the content-type is not "text/xml".</description>
 		</entry>
+		<entry id="3516" level="INFO">
+			<description>Skipped call to the function.</description>
+			<param name="functionName" />
+			<param name="inParams" type="serializable" />
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">
