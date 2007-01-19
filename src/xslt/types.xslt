@@ -783,6 +783,41 @@
 	</xsl:template>
 
 	<!--
+	* Returns the XINS type for the specified XML Schema type.
+	* For more information about the XSD (XML Schema) type: http://www.w3.org/TR/xmlschema-2
+	*
+	* @param xsdtype
+	*    the XML schema type without any namespace prefix, can be empty.
+	*
+	* @return
+	*    the predefined XINS type that match the most to XML Schema type.
+	*    Examples: _text, _int32
+	*    _text is returned when no match was found.
+	-->
+	<xsl:template name="type_for_xsdtype">
+
+		<!-- Define parameters -->
+		<xsl:param name="xsdtype" />
+
+		<xsl:choose>
+			<xsl:when test="string-length($xsdtype) = 0 or $xsdtype = 'string'">_text</xsl:when>
+			<xsl:when test="$xsdtype = 'boolean'">_boolean</xsl:when>
+			<xsl:when test="$xsdtype = 'byte'">_int8</xsl:when>
+			<xsl:when test="$xsdtype = 'short'">_int16</xsl:when>
+			<xsl:when test="$xsdtype = 'integer'">_int32</xsl:when>
+			<xsl:when test="$xsdtype = 'long'">_int64</xsl:when>
+			<xsl:when test="$xsdtype = 'float'">_float32</xsl:when>
+			<xsl:when test="$xsdtype = 'double'">_float64</xsl:when>
+			<xsl:when test="$xsdtype = 'base64Binary'">_base64</xsl:when>
+			<xsl:when test="$xsdtype = 'hexBinary'">_hex</xsl:when>
+			<xsl:when test="$xsdtype = 'anyURI'">_url</xsl:when>
+			<xsl:when test="$xsdtype = 'date'">_date</xsl:when>
+			<xsl:when test="$xsdtype = 'dateTime'">_timestamp</xsl:when>
+			<xsl:otherwise>_text</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!--
 	* Returns the description of the type in Open Document Format.
 	* The type could be a standard type or a defined type.
 	*

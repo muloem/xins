@@ -29,6 +29,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.
+  - Added a new method to convert XML Schema types to predefined XINS types.
 
 * Generated build file:
   - Put the reference to the Logdoc DTD catalog in a specific target.
