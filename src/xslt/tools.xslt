@@ -357,6 +357,7 @@
 						 message="Please, enter the location of the WSDL file:" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
+			<!-- TODO Make a copy of the file and replace wsdl: to nothing -->
 			<!-- TODO If the api exists, ask the user if he want to override the API -->
 			<available property="api.exists" file="{$project_home}/apis/${{api.name}}/spec/api.xml" type="file" />
 			<fail message="There is an already existing API named ${{api.name}}." if="api.exists" />
