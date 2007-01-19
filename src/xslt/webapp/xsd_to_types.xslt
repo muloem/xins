@@ -38,7 +38,20 @@
 	Creates the file
 	-->
 	<xsl:template match="xs:restriction | xsd:restriction">
-		<xsl:variable name="elementName" select="../../@name" />
+		<xsl:variable name="elementName">
+			<xsl:choose>
+				<xsl:when test="../@name">
+					<xsl:value-of select="../@name" />
+				</xsl:when>
+				<xsl:when test="../../@name">
+					<xsl:value-of select="../../@name" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>Type</xsl:text>
+					<xsl:value-of select="position()" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="typeName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="$elementName" />
