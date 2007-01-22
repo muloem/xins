@@ -346,13 +346,15 @@
 			includes="*.xsd"
 			destdir="apis/${{api.name}}/spec"
 			extension=".typ"
-			style="{$xins_home}/src/xslt/webapp/xsd_to_types.xslt">
+			style="{$xins_home}/src/xslt/webapp/schema_to_types.xslt">
 				<param name="project_home" expression="{$project_home}" />
 				<param name="specsdir" expression="{$project_home}/apis/${{api.name}}/spec" />
 			</xslt>
 		</target>
 
-		<target name="wsdl2api" depends="-init-tools" description="Generates the XINS API files from the WSDL.">
+		<target name="wsdl2api" description="Generates the XINS API files from the WSDL.">
+			<input addproperty="api.name"
+						 message="Please, enter the name of the api:" />
 			<input addproperty="wsdl.file"
 						 message="Please, enter the location of the WSDL file:" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />

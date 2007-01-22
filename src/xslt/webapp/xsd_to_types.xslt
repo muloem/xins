@@ -19,25 +19,11 @@
                 exclude-result-prefixes="xs saxon xt xalan"
                 version="2.0">
 
-	<xsl:output method="xml" indent="yes"
-	doctype-public="-//XINS//DTD Type 2.0//EN"
-	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
-
-	<xsl:include href="../hungarian.xslt"  />
-
-	<xsl:param name="project_home" />
-	<xsl:param name="specsdir"     />
-
-	<!-- TODO test with XML special characters in xsd -->
-	<xsl:template match="xs:schema | xsd:schema">
-		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" />
-		<xsl:apply-templates select="//xsd:element/xsd:simpleType/xsd:restriction" />
-	</xsl:template>
-
 	<!--
 	Creates the file
 	-->
-	<xsl:template match="xs:restriction | xsd:restriction">
+	<xsl:template match="xs:restriction | xsd:restriction" mode="restriction">
+<xsl:message terminate="no">-- restriction</xsl:message>
 		<xsl:variable name="elementName">
 			<xsl:choose>
 				<xsl:when test="../@name">
