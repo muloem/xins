@@ -83,7 +83,7 @@
 				<xsl:value-of select="$version" />
 				<xsl:text>.</xsl:text>
 			</xsl:if>
-			<xsl:text>Generated using <xsl:text>
+			<xsl:text>Generated using </xsl:text>
 			<a href="http://www.xins.org/">XINS</a>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="$xins_version" />

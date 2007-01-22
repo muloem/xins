@@ -197,6 +197,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<!-- Determine the method that transform the value to a String -->
 		<xsl:variable name="typeToString">
 			<xsl:call-template name="javatype_to_string_for_type">
+				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"      select="$api" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="required" select="@required" />
@@ -208,11 +209,12 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<!-- Determine the method that transform the String to a value -->
 		<xsl:variable name="stringToType">
 			<xsl:call-template name="javatype_from_string_for_type">
-				<xsl:with-param name="api"      select="$api" />
-				<xsl:with-param name="specsdir" select="$specsdir" />
-				<xsl:with-param name="required" select="'false'" />
-				<xsl:with-param name="type"     select="@type" />
-				<xsl:with-param name="variable" select="'typeValue'" />
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api"          select="$api" />
+				<xsl:with-param name="specsdir"     select="$specsdir" />
+				<xsl:with-param name="required"     select="'false'" />
+				<xsl:with-param name="type"         select="@type" />
+				<xsl:with-param name="variable"     select="'typeValue'" />
 			</xsl:call-template>
 		</xsl:variable>
 

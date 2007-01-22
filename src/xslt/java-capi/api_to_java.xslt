@@ -787,6 +787,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:value-of select="@name" />
 				<xsl:text>", </xsl:text>
 				<xsl:call-template name="javatype_to_string_for_type">
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"      select="$api" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="required" select="$required" />
@@ -813,6 +814,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 				<xsl:value-of select="@name" />
 				<xsl:text>", </xsl:text>
 				<xsl:call-template name="javatype_to_string_for_type">
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"      select="$api" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="required" select="$required" />

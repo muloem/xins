@@ -329,6 +329,7 @@
 					</xsl:if>
 				</xsl:variable>
 				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="project_node" select="$projectnode" />
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'true'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
@@ -449,6 +450,7 @@
          try {
             return </xsl:text>
 		<xsl:call-template name="javatype_from_string_for_type">
+			<xsl:with-param name="project_node" select="$projectnode" />
 			<xsl:with-param name="api"      select="$api"      />
 			<xsl:with-param name="required" select="@required" />
 			<xsl:with-param name="specsdir" select="$specsdir" />

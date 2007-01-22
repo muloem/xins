@@ -367,6 +367,7 @@
 	<xsl:template name="javatype_from_string_for_type">
 
 		<!-- Define parameters -->
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir" />
 		<xsl:param name="api"      />
 		<xsl:param name="type"     />
@@ -481,6 +482,7 @@
 	<xsl:template name="javatype_to_string_for_type">
 
 		<!-- Define parameters -->
+		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 		<xsl:param name="type"         />
@@ -820,9 +822,6 @@
 	<!--
 	* Returns the description of the type in Open Document Format.
 	* The type could be a standard type or a defined type.
-	*
-	* @param project_node
-	*    the content of the xins-project.xml file.
 	*
 	* @param specsdir
 	*    the specification directory for the concerning XINS project, must be

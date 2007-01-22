@@ -35,6 +35,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.
   - Added a new method to convert XML Schema types to predefined XINS types.
+  - Fixed missing project_node parameters for some methods defined in
+    types.xslt.
 
 * Generated build file:
   - Put the reference to the Logdoc DTD catalog in a specific target.
@@ -2871,6 +2873,7 @@ NOTE: This release is based on XINS 1.1.0-rc1.
   - Fixed the script to upload the Javadoc when creating a release.
     This bug has been in XINS since XINS 1.1.0-alpha8.
   - Set the target VM as 1.3 instead of 1.4 as part of the implementation of
+
     Java 1.3 support (SF.net RFE #1108205).
   - Set the tar task to handle long file names as GNU tar.
   - Fixed SF.net bug #1109858: The source code is no longer copied to the
