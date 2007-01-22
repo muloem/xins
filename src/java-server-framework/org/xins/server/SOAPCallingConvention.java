@@ -290,72 +290,19 @@ final class SOAPCallingConvention extends CallingConvention {
       // Write the body start tag
       xmlout.startTag("soap:Body");
 
-      if (xinsResult.getErrorCode() != null) {
+      String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
+      String namespaceURI = (String) httpRequest.getAttribute(REQUEST_NAMESPACE);
 
-         // Write the false start tag
-         xmlout.startTag("soap:Fault");
-         xmlout.startTag("faultcode");
-         if (xinsResult.getErrorCode().equals("_InvalidRequest")) {
-            xmlout.pcdata("soap:Client");
-         } else {
-            xmlout.pcdata("soap:Server");
-         }
-         xmlout.endTag(); // faultcode
-         xmlout.startTag("faultstring");
-         xmlout.pcdata(xinsResult.getErrorCode());
-         xmlout.endTag(); // faultstring
-         xmlout.endTag(); // fault
+      if (xinsResult.getErrorCode() != null) {
+         writeFaultSection(functionName, namespaceURI, xinsResult, xmlout);
       } else {
 
          // Write the response start tag
-         String functionName = (String) httpRequest.getAttribute(FUNCTION_NAME);
-         String namespaceURI = (String) httpRequest.getAttribute(REQUEST_NAMESPACE);
          xmlout.startTag("ns0:" + functionName + "Response");
          xmlout.attribute("xmlns:ns0", namespaceURI);
 
-         // Write the output parameters
-         Iterator outputParameterNames = xinsResult.getParameters().getNames();
-         while (outputParameterNames.hasNext()) {
-            String parameterName = (String) outputParameterNames.next();
-            String parameterValue = xinsResult.getParameter(parameterName);
-            try {
-               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-               Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
-               parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
-            } catch (InvalidSpecificationException ise) {
-
-               // keep the old value
-            } catch (EntityNotFoundException enfe) {
-
-               // keep the old value
-            }
-            xmlout.startTag(parameterName);
-            xmlout.pcdata(parameterValue);
-            xmlout.endTag();
-         }
-
-         // Write the data element
-         Element dataElement = xinsResult.getDataElement();
-         if (dataElement != null) {
-
-            Element transformedDataElement = null;
-            try {
-               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-               Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
-               transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
-            } catch (InvalidSpecificationException ise) {
-
-               // keep the old value
-               transformedDataElement = dataElement;
-            } catch (EntityNotFoundException enfe) {
-
-               // keep the old value
-               transformedDataElement = dataElement;
-            }
-
-            ElementSerializer serializer = new ElementSerializer();
-            serializer.output(xmlout, transformedDataElement);
-         }
+         writeOutputParameters(functionName, xinsResult, xmlout);
+         writeOutputDataSection(functionName, xinsResult, xmlout);
 
          xmlout.endTag(); // response
       }
@@ -367,6 +314,131 @@ final class SOAPCallingConvention extends CallingConvention {
       out.write(buffer.toString());
 
       out.close();
+   }
+
+   /**
+    * Writes the fault section to the SOAP XML when an error code is returned 
+    * from the function call.
+    * 
+    * @param functionName
+    *    the name of the function called.
+    * 
+    * @param namespaceURI
+    *    the namespace URI to use for the parameters.
+    * 
+    * @param xinsResult
+    *    the result of the call to the function.
+    * 
+    * @param xmlout
+    *    the XML outputter to write the parameters in.
+    * 
+    * @throws IOException
+    *    if the data cannot be written to the XML outputter for any reason.
+    */
+   private void writeFaultSection(String functionName, String namespaceURI, FunctionResult xinsResult, XMLOutputter xmlout) 
+   throws IOException {
+
+      // Write the fault start tag
+      xmlout.startTag("soap:Fault");
+      xmlout.startTag("faultcode");
+      if (xinsResult.getErrorCode().equals("_InvalidRequest")) {
+         xmlout.pcdata("soap:Client");
+      } else {
+         xmlout.pcdata("soap:Server");
+      }
+      xmlout.endTag(); // faultcode
+      xmlout.startTag("faultstring");
+      xmlout.pcdata(xinsResult.getErrorCode());
+      xmlout.endTag(); // faultstring
+      if (xinsResult.getParameters().size() > 0 || xinsResult.getDataElement() != null) {
+         xmlout.startTag("detail");
+         xmlout.startTag("ns0:" + xinsResult.getErrorCode() + "Fault");
+         xmlout.attribute("xmlns:ns0", namespaceURI);
+         writeOutputParameters(functionName, xinsResult, xmlout);
+         writeOutputDataSection(functionName, xinsResult, xmlout);
+         xmlout.endTag(); // ns0:<errorcode>Fault
+         xmlout.endTag(); // detail
+      }
+      xmlout.endTag(); // fault
+   }
+
+   /**
+    * Writes the output parameters to the SOAP XML.
+    * 
+    * @param functionName
+    *    the name of the function called.
+    * 
+    * @param xinsResult
+    *    the result of the call to the function.
+    * 
+    * @param xmlout
+    *    the XML outputter to write the parameters in.
+    * 
+    * @throws IOException
+    *    if the data cannot be written to the XML outputter for any reason.
+    */
+   private void writeOutputParameters(String functionName, FunctionResult xinsResult, XMLOutputter xmlout) 
+   throws IOException {
+      Iterator outputParameterNames = xinsResult.getParameters().getNames();
+      while (outputParameterNames.hasNext()) {
+         String parameterName = (String) outputParameterNames.next();
+         String parameterValue = xinsResult.getParameter(parameterName);
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
+            parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+         }
+         xmlout.startTag(parameterName);
+         xmlout.pcdata(parameterValue);
+         xmlout.endTag();
+      }
+   }
+
+
+   /**
+    * Writes the output data section to the SOAP XML.
+    * 
+    * @param functionName
+    *    the name of the function called.
+    * 
+    * @param xinsResult
+    *    the result of the call to the function.
+    * 
+    * @param xmlout
+    *    the XML outputter to write the data section in.
+    * 
+    * @throws IOException
+    *    if the data cannot be written to the XML outputter for any reason.
+    */
+   private void writeOutputDataSection(String functionName, FunctionResult xinsResult, XMLOutputter xmlout) 
+   throws IOException {
+      Element dataElement = xinsResult.getDataElement();
+      if (dataElement != null) {
+
+         Element transformedDataElement = null;
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
+            transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+            transformedDataElement = dataElement;
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+            transformedDataElement = dataElement;
+         }
+
+         ElementSerializer serializer = new ElementSerializer();
+         serializer.output(xmlout, transformedDataElement);
+      }
    }
 
    /**

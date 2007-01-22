@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
     the XML is returned.
   - Added the possibility to indicate in the calling convention not to execute
     the function returned.
+  - Added handling of output parameters and data section for defined error
+    codes.
 
 * Generation of specification documentation:
   - The version is printed in the footer only when known.
@@ -26,6 +28,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
 * Generation of the WSDL:
   - Fixed the shared types had a '/' in the WSDL name.
+  - Fixed error codes were skipped.
+  - Added handling of output parameters and data section for defined error
+    codes.
 
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.

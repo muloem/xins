@@ -75,6 +75,13 @@
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
 
+					<!-- Write the fault elements -->
+					<xsl:apply-templates select="resultcode" mode="elements">
+						<xsl:with-param name="project_node" select="$project_node" />
+						<xsl:with-param name="specsdir"     select="$specsdir"     />
+						<xsl:with-param name="api"          select="$apiname"      />
+					</xsl:apply-templates>
+
 					<!-- Write the defined types -->
 					<xsl:apply-templates select="type" mode="types">
 						<xsl:with-param name="project_node" select="$project_node" />
@@ -85,9 +92,8 @@
 			</types>
 
 			<!-- Write the messages -->
-			<xsl:apply-templates select="function" mode="messages">
-				<xsl:with-param name="specsdir" select="$specsdir" />
-			</xsl:apply-templates>
+			<xsl:apply-templates select="function" mode="messages" />
+			<xsl:apply-templates select="resultcode" mode="messages" />
 
 			<!-- Write the port types -->
 			<portType name="{$apiname}PortType">
@@ -116,7 +122,6 @@
 	</xsl:template>
 
 	<xsl:template match="function" mode="elements">
-
 		<xsl:param name="project_node" />
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
@@ -142,6 +147,26 @@
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
 			<xsl:with-param name="elementname"  select="concat(@name, 'Response')" />
+		</xsl:apply-templates>
+	</xsl:template>
+
+
+	<xsl:template match="resultcode" mode="elements">
+		<xsl:param name="project_node" />
+		<xsl:param name="specsdir"     />
+		<xsl:param name="api"          />
+
+		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
+		<xsl:variable name="resultcode_node" select="document($resultcode_file)/resultcode" />
+
+		<xsl:if test="not($resultcode_node/output)">
+			<xsd:element name="{concat(@name, 'Fault')}" nillable="true" />
+		</xsl:if>
+		<xsl:apply-templates select="$resultcode_node/output" mode="elements">
+			<xsl:with-param name="project_node" select="$project_node" />
+			<xsl:with-param name="specsdir"     select="$specsdir"     />
+			<xsl:with-param name="api"          select="$api"          />
+			<xsl:with-param name="elementname"  select="concat(@name, 'Fault')" />
 		</xsl:apply-templates>
 	</xsl:template>
 
@@ -257,10 +282,6 @@
 	</xsl:template>
 
 	<xsl:template match="function" mode="messages">
-
-		<xsl:param name="specsdir" />
-
-		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="functionname" select="@name" />
 
 		<message name="{$functionname}Input">
@@ -271,17 +292,34 @@
 		</message>
 	</xsl:template>
 
+	<xsl:template match="resultcode" mode="messages">
+		<xsl:variable name="resultcodename" select="@name" />
+
+		<message name="{$resultcodename}FaultMessage">
+			<part name="fault" element="tns:{$resultcodename}Fault" />
+		</message>
+	</xsl:template>
+
 	<xsl:template match="function" mode="porttypes">
 
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_node" select="document($function_file)/function" />
 
 		<operation name="{$functionname}">
 			<documentation>
-				<xsl:value-of select="document($function_file)/function/description" />
+				<xsl:value-of select="$function_node/description" />
 			</documentation>
 			<input message="tns:{$functionname}Input" />
 			<output message="tns:{$functionname}Output" />
+			<xsl:for-each select="$function_node/output/resultcode-ref">
+				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
+				<fault name="{@name}" message="tns:{@name}FaultMessage">
+					<documentation>
+						<xsl:value-of select="document($rcd_file)/resultcode/description" />
+					</documentation>
+				</fault>
+			</xsl:for-each>
 		</operation>
 	</xsl:template>
 
@@ -292,10 +330,11 @@
 
 		<xsl:variable name="functionname" select="@name" />
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
+		<xsl:variable name="function_node" select="document($function_file)/function" />
 
 		<operation name="{$functionname}">
 			<documentation>
-				<xsl:value-of select="document($function_file)/function/description" />
+				<xsl:value-of select="$function_node/description" />
 			</documentation>
 			<!--soapbind:operation soapAction="{$location}/{$functionname}" /-->
 			<input>
@@ -304,13 +343,13 @@
 			<output>
 				<soapbind:body use="literal" />
 			</output>
-			<xsl:for-each select="document($function_file)/function/resultcode-ref">
+			<xsl:for-each select="$function_node/output/resultcode-ref">
 				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
-				<fault name="{$functionname}">
-					<document>
+				<fault name="{@name}">
+					<documentation>
 						<xsl:value-of select="document($rcd_file)/resultcode/description" />
-						<soapbind:body use="literal"/>
-					</document>
+					</documentation>
+					<soapbind:body use="literal"/>
 				</fault>
 			</xsl:for-each>
 		</operation>
