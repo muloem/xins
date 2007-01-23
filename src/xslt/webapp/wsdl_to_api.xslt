@@ -10,6 +10,7 @@
 -->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:xt="http://www.jclarck.com/xt"
@@ -25,18 +26,24 @@
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api_name"     />
 
+	<xsl:variable name="return">
+		<xsl:text>
+</xsl:text>
+	</xsl:variable>
+	<xsl:variable name="tab">
+		<xsl:text>	</xsl:text>
+	</xsl:variable>
+	
+	<xsl:key name="faultnames" match="fault" use="@name" />
+
 	<!-- Creates the different files -->
 	<xsl:template match="definitions">
-<xsl:message terminate="no">-- 1</xsl:message>
 		<xsl:call-template name="apifile">
 			<xsl:with-param name="api_name" select="$api_name" />
 		</xsl:call-template>
-<xsl:message terminate="no">-- 2</xsl:message>
 		<xsl:apply-templates select="portType/operation" />
-<xsl:message terminate="no">-- 3</xsl:message>
-		<!--xsl:apply-templates select="types/xsd:schema/xsd:simpleType/xsd:restriction" mode="restriction" /-->
-<xsl:message terminate="no">-- 4</xsl:message>
-		<xsl:apply-templates select="portType/operation/fault">
+		<xsl:apply-templates select="types/xsd:schema/xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 			<xsl:sort select="@name" />
 		</xsl:apply-templates>
 	</xsl:template>
@@ -49,9 +56,7 @@
 
 </xsl:text>
 		<api name="{$api_name}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
-<xsl:text>
-
-	</xsl:text>
+			<xsl:value-of select="concat($return, $return, $tab)" />
 			<!-- The description of the API -->
 			<description>
 				<xsl:choose>
@@ -65,41 +70,39 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</description>
-<xsl:text>
+			<xsl:value-of select="concat($return, $return, $tab)" />
 
-	</xsl:text>
 			<!-- The list of the functions -->
 			<xsl:for-each select="portType/operation">
 				<function name="{@name}" />
 				<xsl:if test="position() != last()">
-<xsl:text>
-	</xsl:text>
+					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
 			</xsl:for-each>
-<xsl:text>
 
-	</xsl:text>
 			<!-- The list of the defined types -->
-			<!-- TODO namespace independance with $xsdns variable in XPath -->
+			<xsl:if test="types/xsd:schema/xsd:simpleType">
+				<xsl:value-of select="concat($return, $return, $tab)" />
+			</xsl:if>
 			<xsl:for-each select="types/xsd:schema/xsd:simpleType">
 				<type name="{@name}" />
 				<xsl:if test="position() != last()">
-<xsl:text>
-	</xsl:text>
+					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
 			</xsl:for-each>
-<xsl:text>
 
-	</xsl:text>
 			<!-- The list of the possible error codes -->
-			<xsl:for-each select="portType/operation/fault">
+			<xsl:if test="portType/operation/fault">
+				<xsl:value-of select="concat($return, $return, $tab)" />
+			</xsl:if>
+			<xsl:for-each select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 				<xsl:sort select="@name" />
-				<xsl:if test="not(preceding-sibling::fault/@name = @name)">
-					<resultcode name="{@name}" />
-<xsl:text>
-	</xsl:text>
+				<resultcode name="{@name}" />
+				<xsl:if test="position() != last()">
+					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
 			</xsl:for-each>
+			<xsl:value-of select="$return" />
 		</api>
 	</xsl:template>
 
@@ -128,41 +131,30 @@
 
 </xsl:text>
 		<function name="{$functionName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
-<xsl:text>
-
-	</xsl:text>
+			<xsl:value-of select="concat($return, $return, $tab)" />
 			<description>
 				<xsl:value-of select="documentation/text()" />
 			</description>
-<xsl:text>
-
-	</xsl:text>
+			<xsl:value-of select="concat($return, $return, $tab)" />
 			<input>
 				<xsl:apply-templates select="input" />
-<xsl:text>
-	</xsl:text>
+				<xsl:value-of select="concat($return, $tab)" />
 			</input>
-<xsl:text>
-
-	</xsl:text>
+			<xsl:value-of select="concat($return, $return, $tab)" />
 			<output>
 				<xsl:apply-templates select="fault" mode="reference">
 					<xsl:sort select="@name" />
 				</xsl:apply-templates>
-<xsl:text>
-</xsl:text>
+				<xsl:value-of select="$return" />
 				<xsl:apply-templates select="output" />
-<xsl:text>
-	</xsl:text>
+				<xsl:value-of select="concat($return, $tab)" />
 			</output>
-<xsl:text>
-</xsl:text>
+			<xsl:value-of select="$return" />
 		</function>
 	</xsl:template>
 
 	<xsl:template match="fault" mode="reference">
-		<xsl:text>
-		</xsl:text>
+		<xsl:value-of select="concat($return, $tab, $tab)" />
 		<resultcode-ref name="{@name}" />
 	</xsl:template>
 
@@ -175,41 +167,40 @@
 		</xsl:variable>
 		<xsl:variable name="errorcodeFile" select="concat($errorcodeName, '.rcd')" />
 
-		<xsl:if test="not(preceding-sibling::fault/@name = @name)">
-			<xalan:write file="{$errorcodeFile}">
-				<xsl:call-template name="errorcodefile">
-					<xsl:with-param name="errorcodeName" select="$errorcodeName" />
-				</xsl:call-template>
-				<xsl:fallback />
-			</xalan:write>
-		</xsl:if>
+		<xsl:message terminate="no">
+			<xsl:text>creating rcd: </xsl:text>
+			<xsl:value-of select="$errorcodeName"/>
+		</xsl:message>
+		<xalan:write file="{$errorcodeFile}">
+			<xsl:call-template name="errorcodefile">
+				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xalan:write>
 	</xsl:template>
 
-	<!-- The content for the function files (.fnc) -->
+	<!-- The content for the error code file (.rcd) -->
 	<xsl:template name="errorcodefile">
 		<xsl:param name="errorcodeName" />
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE resultcode PUBLIC "-//XINS//DTD XINS Result Code 2.0//EN" "http://www.xins.org/dtd/resultcode_2_0.dtd">]]>
 
 </xsl:text>
 		<resultcode name="{$errorcodeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
-<xsl:text>
-
-	</xsl:text>
+			<xsl:if test="output">
+				<xsl:value-of select="$return" />
+			</xsl:if>
+			<xsl:value-of select="concat($return, $tab)" />
 			<description>
 				<xsl:value-of select="documentation/text()" />
 			</description>
-		<xsl:if test="output">
-<xsl:text>
-
-	</xsl:text>
-			<output>
-				<xsl:apply-templates select="output" />
-				<xsl:text>
-</xsl:text>
-			</output>
-		</xsl:if>
-		<xsl:text>
-</xsl:text>
+			<xsl:if test="output">
+				<xsl:value-of select="concat($return, $return, $tab)" />
+				<output>
+					<xsl:apply-templates select="output" />
+					<xsl:value-of select="concat($return, $tab)" />
+				</output>
+			</xsl:if>
+			<xsl:value-of select="$return" />
 		</resultcode>
 	</xsl:template>
 
@@ -258,20 +249,17 @@
 			</xsl:variable>
 			<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
 
-			<xsl:text>
-		</xsl:text>
+			<xsl:value-of select="concat($return, $tab, $tab)" />
 			<param name="{$paramname}" required="{$required}" type="{$type}">
-			<xsl:text>
-			</xsl:text>
+				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				<description>
 					<xsl:value-of select="concat($paramname, ' ', $section, ' parameter.')" />
 				</description>
-			<xsl:text>
-		</xsl:text>
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 			</param>
 		</xsl:for-each>
 	</xsl:template>
-	
+
 	<!-- Removes any namespace prefix to the text if any -->
 	<xsl:template name="localname">
 		<xsl:param name="text" />

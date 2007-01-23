@@ -19,10 +19,6 @@
                 exclude-result-prefixes="xs saxon xt xalan"
                 version="2.0">
 
-	<xsl:output method="xml" indent="yes"
-	doctype-public="-//XINS//DTD Type 2.0//EN"
-	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
-
 	<xsl:include href="../hungarian.xslt"  />
 	<xsl:include href="xsd_to_types.xslt"  />
 
@@ -31,7 +27,6 @@
 
 	<!-- TODO test with XML special characters in xsd -->
 	<xsl:template match="xs:schema | xsd:schema">
-<xsl:message terminate="no">-- bla</xsl:message>
 		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" mode="restriction" />
 		<xsl:apply-templates select="//xsd:element/xsd:simpleType/xsd:restriction" mode="restriction" />
 	</xsl:template>

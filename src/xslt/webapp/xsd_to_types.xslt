@@ -23,7 +23,6 @@
 	Creates the file
 	-->
 	<xsl:template match="xs:restriction | xsd:restriction" mode="restriction">
-<xsl:message terminate="no">-- restriction</xsl:message>
 		<xsl:variable name="elementName">
 			<xsl:choose>
 				<xsl:when test="../@name">
@@ -44,18 +43,15 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="typeFile" select="concat($typeName, '.typ')" />
-		<xsl:message terminate="no">
-			<xsl:text>Found element: </xsl:text>
-			<xsl:value-of select="$elementName" />
-		</xsl:message>
+
 		<!-- The XSLT processor will choose which tag it can interpret -->
-		<xsl:result-document href="{$typeFile}" format="typ_doctype">
+		<!--xsl:result-document href="{$typeFile}" format="typ_doctype">
 			<xsl:call-template name="xml_type">
 				<xsl:with-param name="typeName" select="$typeName" />
 				<xsl:with-param name="elementName" select="$elementName" />
 			</xsl:call-template>
 			<xsl:fallback />
-		</xsl:result-document>
+		</xsl:result-document-->
 		<xalan:write file="{$typeFile}">
 			<xsl:call-template name="xml_type">
 				<xsl:with-param name="typeName" select="$typeName" />
@@ -83,11 +79,8 @@
 		<xsl:param name="typeName" />
 		<xsl:param name="elementName" />
 
-	<xsl:output method="xml" indent="yes"
-	doctype-public="-//XINS//DTD Type 2.0//EN"
-	doctype-system="http://www.xins.org/dtd/type_2_0.dtd" />
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE type PUBLIC "-//XINS//DTD XINS Type 2.0//EN" "http://www.xins.org/dtd/type_2_0.dtd">]]>
 
-	<xsl:text>
 </xsl:text>
 <type name="{$typeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
 	<xsl:text>
@@ -121,6 +114,8 @@
 		</xsl:text>
 					<item value="{@value}" />
 				</xsl:for-each>
+					<xsl:text>
+	</xsl:text>
 			</enum>
 		</xsl:when>
 		<xsl:when test="xs:maxLength or xs:minLength or xs:length or xsd:maxLength or xsd:minLength or xsd:length">
@@ -148,6 +143,8 @@
 			</xsl:message>
 		</xsl:otherwise>
 	</xsl:choose>
+	<xsl:text>
+</xsl:text>
 </type>
 	</xsl:template>
 </xsl:stylesheet>

@@ -355,22 +355,33 @@
 		<target name="wsdl2api" description="Generates the XINS API files from the WSDL.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
+			<available property="api.exists" file="{$project_home}/apis/${{api.name}}/spec/api.xml" type="file" />
+			<fail message="There is an already existing API named ${{api.name}}." if="api.exists" />
+			<!-- TODO add the possibility to specify the WSDL location using a URL -->
 			<input addproperty="wsdl.file"
 						 message="Please, enter the location of the WSDL file:" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
-			<!-- TODO Make a copy of the file and replace wsdl: to nothing -->
-			<!-- TODO If the api exists, ask the user if he want to override the API -->
-			<available property="api.exists" file="{$project_home}/apis/${{api.name}}/spec/api.xml" type="file" />
-			<fail message="There is an already existing API named ${{api.name}}." if="api.exists" />
+			<!-- Execute some tranformations to be able to get the most of the WSDL -->
+			<copy file="${{wsdl.file}}" tofile="${{wsdl.file}}.copy" />
+			<replaceregexp file="${{wsdl.file}}.copy" match="targetNamespace=&quot;.*&quot;" replace="" byline="true" />
+			<replace file="${{wsdl.file}}.copy">
+				<replacefilter token="&lt;wsdl:" value="&lt;" />
+				<replacefilter token="&lt;/wsdl:" value="&lt;/" />
+				<replacefilter token="&lt;xs:" value="&lt;xsd:" />
+				<replacefilter token="&lt;/xs:" value="&lt;/xsd:" />
+				<replacefilter token="&lt;s:" value="&lt;xsd:" />
+				<replacefilter token="&lt;/s:" value="&lt;/xsd:" />
+			</replace>
 			<xslt
-			in="${{wsdl.file}}"
+			in="${{wsdl.file}}.copy"
 			out="apis/${{api.name}}/spec/api.xml"
 			style="{$xins_home}/src/xslt/webapp/wsdl_to_api.xslt">
 				<param name="project_home" expression="{$project_home}" />
 				<param name="specsdir" expression="{$project_home}/apis/${{api.name}}/spec" />
 				<param name="api_name" expression="${{api.name}}" />
 			</xslt>
+			<delete file="${{wsdl.file}}.copy" />
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
