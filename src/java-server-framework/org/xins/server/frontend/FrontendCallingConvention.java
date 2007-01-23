@@ -450,8 +450,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
                                     HttpServletRequest  httpRequest)
    throws IOException {
 
-      Cookie cookie = new Cookie("SessionId", _session.getSessionId());
-      httpResponse.addCookie(cookie);
+      addSessionCookie(httpRequest, httpResponse);
 
       String mode = httpRequest.getParameter("mode");
       String command = httpRequest.getParameter("command");
@@ -541,6 +540,35 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
             throw new IOException(ex.getMessage());
          }
       }
+   }
+
+   /**
+    * Adds the session ID to the cookies.
+    *
+    * @param httpRequest
+    *    the HTTP request, cannot be <code>null</code>.
+    *
+    * @param httpResponse
+    *    the HTTP response, cannot be <code>null</code>.
+    */
+   private void addSessionCookie(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+      Cookie cookie = new Cookie("SessionId", _session.getSessionId());
+
+      // Determine domain for the session cookie
+      String host = httpRequest.getHeader("host");
+
+      //strip subdomain from the host
+      String domain = host.substring(host.indexOf("."));
+
+      //strip port if any
+      if (domain.indexOf(":") != -1) {
+         domain = domain.substring(0, domain.indexOf(":"));
+      }
+
+      cookie.setDomain(domain);
+      cookie.setPath("/");
+
+      httpResponse.addCookie(cookie);
    }
 
    /**
