@@ -352,14 +352,27 @@
 			</xslt>
 		</target>
 
+		<target name="wsdl2api-download" unless="wsdl.file">
+			<get src="${{wsdl.location}}" dest="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
+		</target>
+
 		<target name="wsdl2api" description="Generates the XINS API files from the WSDL.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<available property="api.exists" file="{$project_home}/apis/${{api.name}}/spec/api.xml" type="file" />
 			<fail message="There is an already existing API named ${{api.name}}." if="api.exists" />
-			<!-- TODO add the possibility to specify the WSDL location using a URL -->
-			<input addproperty="wsdl.file"
-						 message="Please, enter the location of the WSDL file:" />
+			<input addproperty="wsdl.location"
+						 message="Please, enter the location of the WSDL URL or file:" />
+			<condition property="wsdl.file" value="${{wsdl.location}}">
+				<not>
+					<or>
+						<contains string="${{wsdl.location}}" substring="http://" casesensitive="false" />
+						<contains string="${{wsdl.location}}" substring="https://" casesensitive="false" />
+					</or>
+				</not>
+			</condition>
+			<antcall target="wsdl2api-download" />
+			<property name="wsdl.file" value="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
 			<!-- Execute some tranformations to be able to get the most of the WSDL -->
@@ -368,8 +381,10 @@
 			<replace file="${{wsdl.file}}.copy">
 				<replacefilter token="&lt;wsdl:" value="&lt;" />
 				<replacefilter token="&lt;/wsdl:" value="&lt;/" />
+				<replacefilter token="&lt;xs:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;xs:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/xs:" value="&lt;/xsd:" />
+				<replacefilter token="&lt;s:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;s:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/s:" value="&lt;/xsd:" />
 			</replace>

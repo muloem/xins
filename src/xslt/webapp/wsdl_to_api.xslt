@@ -137,7 +137,7 @@
 			</description>
 			<xsl:value-of select="concat($return, $return, $tab)" />
 			<input>
-				<xsl:apply-templates select="input" />
+				<xsl:apply-templates select="input" mode="section" />
 				<xsl:value-of select="concat($return, $tab)" />
 			</input>
 			<xsl:value-of select="concat($return, $return, $tab)" />
@@ -145,8 +145,10 @@
 				<xsl:apply-templates select="fault" mode="reference">
 					<xsl:sort select="@name" />
 				</xsl:apply-templates>
-				<xsl:value-of select="$return" />
-				<xsl:apply-templates select="output" />
+				<xsl:if test="fault">
+					<xsl:value-of select="$return" />
+				</xsl:if>
+				<xsl:apply-templates select="output" mode="section" />
 				<xsl:value-of select="concat($return, $tab)" />
 			</output>
 			<xsl:value-of select="$return" />
@@ -186,17 +188,17 @@
 
 </xsl:text>
 		<resultcode name="{$errorcodeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
-			<xsl:if test="output">
-				<xsl:value-of select="$return" />
-			</xsl:if>
 			<xsl:value-of select="concat($return, $tab)" />
 			<description>
 				<xsl:value-of select="documentation/text()" />
 			</description>
-			<xsl:if test="output">
+			<xsl:variable name="output_section">
+				<xsl:apply-templates select="." mode="section" />
+			</xsl:variable>
+			<xsl:if test="$output_section != ''">
 				<xsl:value-of select="concat($return, $return, $tab)" />
 				<output>
-					<xsl:apply-templates select="output" />
+					<xsl:apply-templates select="." mode="section" />
 					<xsl:value-of select="concat($return, $tab)" />
 				</output>
 			</xsl:if>
@@ -205,7 +207,7 @@
 	</xsl:template>
 
 	<!-- Fills in input or output section -->
-	<xsl:template match="input | output">
+	<xsl:template match="input | output | fault" mode="section">
 		<xsl:variable name="section" select="local-name()" />
 		<xsl:variable name="message">
 			<xsl:call-template name="localname">
@@ -218,6 +220,7 @@
 			</xsl:call-template>
 		</xsl:variable>
 
+		<!-- TODO Parameters can also be defined directly in the message part -->
 		<xsl:for-each select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element">
 			<xsl:variable name="paramname">
 				<xsl:call-template name="hungarianLower">
