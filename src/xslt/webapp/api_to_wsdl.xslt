@@ -197,7 +197,13 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="paramname" select="@name" />
-						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}" />
+						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}">
+							<xsd:annotation>
+								<xsd:documentation>
+									<xsl:value-of select="description/text()" />
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
 					</xsl:for-each>
 					<xsl:if test="data">
 						<xsd:element name="data" minOccurs="0">
@@ -235,6 +241,11 @@
 		<xsl:param name="api"          />
 
 		<xsd:element name="{@name}" minOccurs="0" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+					<xsl:value-of select="description/text()" />
+				</xsd:documentation>
+			</xsd:annotation>
 			<xsd:complexType>
 				<xsl:if test="contains/contained">
 					<xsd:sequence>
@@ -269,7 +280,13 @@
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:variable name="attributename" select="@name" />
-					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}" />
+					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}">
+						<xsd:annotation>
+							<xsd:documentation>
+								<xsl:value-of select="description/text()" />
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
 				</xsl:for-each>
 				<xsl:if test="contains/pcdata">
 					<xsl:text disable-output-escaping="yes">

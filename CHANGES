@@ -36,6 +36,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Fixed error codes were skipped.
   - Added handling of output parameters and data section for defined error
     codes.
+  - Added documentation for the parameters, the attributes and the data
+    elements.
 
 * XSLT:
   - The underscore is skipped when changing a text to the hungarian convention.
