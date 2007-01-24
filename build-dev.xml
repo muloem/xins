@@ -591,6 +591,7 @@ ${sf.file}</fail>
 				<include name="demo/xins-project/apis/petstore/lib/tinySQL.jar" />
 				<include name="demo/xins-project/apis/petstore/web/rabbit.gif" />
 				<include name="docs/XINSGuide.pdf"             />
+				<include name="docs/javadoc/resources/inherit.gif" />
 				<include name="docs/frontend/XINSFrontend.pdf" />
 				<include name="docs/protocol/XINSProtocol.pdf" />
 				<include name="docs/primer/*.png"              />
@@ -602,7 +603,7 @@ ${sf.file}</fail>
 				<include name="lib/xmlenc.jar"                 />
 				<include name="lib/servlet.jar"                />
 				<include name="lib/junit.jar"                  />
-				<include name="lib/json.jar"                  />
+				<include name="lib/json.jar"                   />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build/lf"

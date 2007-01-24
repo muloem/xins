@@ -47,6 +47,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Added stylesheet to convert a WSDL file to a XINS API.
   - Added possibility to convert a WSDL URL to a XINS API.
 
+* Build- and release-process:
+  - Fixed missing image with the Javadoc.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
