@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Added handling of output parameters and data section for defined error
     codes.
   - In the XINS FF, the session ID is stored using the subdomain host name.
+  - The get methods of the FunctionRequest object are now public.
 
 * Generation of specification documentation:
   - The version is printed in the footer only when known.

@@ -24,8 +24,7 @@ import org.xins.common.xml.Element;
  *
  * @since XINS 1.2.0
  */
-public class FunctionRequest
-extends Object {
+public class FunctionRequest {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -91,6 +90,8 @@ extends Object {
     *
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
+    *
+    * @since XINS 2.0.0
     */
    public FunctionRequest(String         functionName,
                           PropertyReader parameters,
@@ -142,7 +143,7 @@ extends Object {
    /**
     * Flag indicating whether the function should be skipped or not.
     */
-   private boolean _skipFunctionCall;
+   private final boolean _skipFunctionCall;
 
 
    //-------------------------------------------------------------------------
@@ -154,8 +155,10 @@ extends Object {
     *
     * @return
     *    the name of the function, never <code>null</code>.
+    *
+    * @since XINS 2.0.0
     */
-   String getFunctionName() {
+   public String getFunctionName() {
       return _functionName;
    }
 
@@ -165,8 +168,10 @@ extends Object {
     *
     * @return
     *    the parameters of the function, never <code>null</code>.
+    *
+    * @since XINS 2.0.0
     */
-   PropertyReader getParameters() {
+   public PropertyReader getParameters() {
       return _parameters;
    }
 
@@ -175,8 +180,10 @@ extends Object {
     *
     * @return
     *    the data section, or <code>null</code> if there is none.
+    *
+    * @since XINS 2.0.0
     */
-   Element getDataElement() {
+   public Element getDataElement() {
       return _dataElement;
    }
 
@@ -185,8 +192,10 @@ extends Object {
     *
     * @return
     *    <code>true</code> if the function shouldn't be executed, <code>false</code> otherwise.
+    *
+    * @since XINS 2.0.0
     */
-   boolean shouldSkipFunctionCall() {
+   public boolean shouldSkipFunctionCall() {
       return _skipFunctionCall;
    }
 }
