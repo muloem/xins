@@ -384,9 +384,11 @@
 				<replacefilter token="&lt;xs:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;xs:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/xs:" value="&lt;/xsd:" />
+				<replacefilter token="&quot;xs:" value="&quot;xsd:" />
 				<replacefilter token="&lt;s:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;s:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/s:" value="&lt;/xsd:" />
+				<replacefilter token="&quot;s:" value="&quot;xsd:" />
 			</replace>
 			<xslt
 			in="${{wsdl.file}}.copy"

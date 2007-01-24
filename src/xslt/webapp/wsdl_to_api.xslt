@@ -213,54 +213,92 @@
 			<xsl:call-template name="localname">
 				<xsl:with-param name="text" select="@message" />
 			</xsl:call-template>
+			<xsl:variable name="type">
+			</xsl:variable>
 		</xsl:variable>
-		<xsl:variable name="messageElement">
-			<xsl:call-template name="localname">
-				<xsl:with-param name="text" select="/definitions/message[@name=$message]/part/@element" />
+
+		<xsl:for-each select="/definitions/message[@name=$message]/part">
+
+			<xsl:choose>
+				<xsl:when test="@type">
+					<xsl:call-template name="printParam">
+						<xsl:with-param name="section" select="$section" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:when test="@element">
+					<xsl:variable name="messageElement">
+						<xsl:call-template name="localname">
+							<xsl:with-param name="text" select="@element" />
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element">
+						<xsl:with-param name="section" select="$section" />
+					</xsl:apply-templates>
+				</xsl:when>
+				<!-- otherwise no section -->
+			</xsl:choose>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="xsd:element">
+		<xsl:param name="section" />
+
+		<xsl:variable name="required">
+			<xsl:choose>
+				<xsl:when test="not(@minOccurs) or @minOccurs = '0' or @nillable = 'true'">false</xsl:when>
+				<xsl:otherwise>true</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:call-template name="printParam">
+			<xsl:with-param name="section" select="$section" />
+			<xsl:with-param name="required" select="$required" />
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="printParam">
+		<xsl:param name="section" />
+		<xsl:param name="required" select="'true'" />
+
+		<xsl:variable name="paramname">
+			<xsl:call-template name="hungarianLower">
+				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="localnametype">
+			<xsl:call-template name="localname">
+				<xsl:with-param name="text" select="@type" />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="type">
+			<xsl:choose>
+				<xsl:when test="starts-with(@type, 'tns:')">
+					<xsl:value-of select="$localnametype" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="type_for_xsdtype">
+						<xsl:with-param name="xsdtype" select="$localnametype" />
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
 
-		<!-- TODO Parameters can also be defined directly in the message part -->
-		<xsl:for-each select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element">
-			<xsl:variable name="paramname">
-				<xsl:call-template name="hungarianLower">
-					<xsl:with-param name="text" select="@name" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="required">
+		<xsl:value-of select="concat($return, $tab, $tab)" />
+		<param name="{$paramname}" required="{$required}" type="{$type}">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
+			<description>
 				<xsl:choose>
-					<xsl:when test="not(@minOccurs) or @minOccurs = '0'">false</xsl:when>
-					<xsl:otherwise>true</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="localnametype">
-				<xsl:call-template name="localname">
-					<xsl:with-param name="text" select="@type" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="type">
-				<xsl:choose>
-					<xsl:when test="starts-with(@type, 'tns:')">
-						<xsl:value-of select="$localnametype" />
+					<xsl:when test="xsd:annotation/xsd:documenation">
+						<xsl:value-of select="xsd:annotation/xsd:documenation/text()" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:call-template name="type_for_xsdtype">
-							<xsl:with-param name="xsdtype" select="$localnametype" />
-						</xsl:call-template>
+						<xsl:value-of select="concat($paramname, ' ', $section, ' parameter.')" />
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:variable>
-			<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
-
+			</description>
 			<xsl:value-of select="concat($return, $tab, $tab)" />
-			<param name="{$paramname}" required="{$required}" type="{$type}">
-				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
-				<description>
-					<xsl:value-of select="concat($paramname, ' ', $section, ' parameter.')" />
-				</description>
-				<xsl:value-of select="concat($return, $tab, $tab)" />
-			</param>
-		</xsl:for-each>
+		</param>
 	</xsl:template>
 
 	<!-- Removes any namespace prefix to the text if any -->
