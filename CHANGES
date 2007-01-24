@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - BeanUtils.getParameters() store the parameters starting with a lowercase.
   - Added new methods to TextUtils to change a String to start with an
     uppercase or a lowercase.
+  - Don't throw NPE if no query string in the internal Servlet container.
 
 * XINS/Java Server Framework:
   - Added new meta function _EnableAPI and _DisableAPI in order to disable an

@@ -389,6 +389,9 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getPathTranslated() {
+      if (_queryString == null) {
+          return null;
+      }
       int questionPos = _queryString.indexOf('?');
       if (questionPos > 0) {
          return _queryString.substring(0, questionPos);
