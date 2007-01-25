@@ -144,7 +144,8 @@
 					<xsl:message terminate="yes">
 						<xsl:text>The required </xsl:text>
 						<xsl:value-of select="concat(local-name(), ' &quot;', @name, '&quot;')" />
-						<xsl:text> should not have a default parameter.</xsl:text>
+						<xsl:text> should not have a default parameter </xsl:text>
+						<xsl:value-of select="concat('&quot;', @default, '&quot;.')" />
 					</xsl:message>
 				</xsl:if>
 				<xsl:text>

@@ -148,7 +148,7 @@
 				<xsl:message terminate="yes">
 					<xsl:text>Unknown RFC-2119 keyword: "</xsl:text>
 					<xsl:value-of select="$term" />
-					<xsl:text>"</xsl:text>
+					<xsl:text>".</xsl:text>
 				</xsl:message>
 			</xsl:otherwise>
 		</xsl:choose>

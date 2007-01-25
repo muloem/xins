@@ -44,6 +44,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Added a new method to convert XML Schema types to predefined XINS types.
   - Fixed missing project_node parameters for some methods defined in
     types.xslt.
+  - Improved details of the error messages.
 
 * Generated build file:
   - Put the reference to the Logdoc DTD catalog in a specific target.

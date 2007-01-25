@@ -776,7 +776,7 @@
 
 		<xsl:if test="boolean(element-example) and boolean($text) and not($text = '')">
 			<xsl:message terminate="yes">
-				<xsl:text>Mixed content is currently not supported in element-examples.</xsl:text>
+				<xsl:text>Mixed content of sub-elements and PCDATA is currently not supported in element-examples.</xsl:text>
 			</xsl:message>
 		</xsl:if>
 
@@ -846,7 +846,7 @@
 
 		<xsl:if test="boolean(element-example) and boolean($text) and not($text = '')">
 			<xsl:message terminate="yes">
-				<xsl:text>Mixed content is currently not supported in element-examples.</xsl:text>
+				<xsl:text>Mixed content of sub-elements and PCDATA is currently not supported in element-examples.</xsl:text>
 			</xsl:message>
 		</xsl:if>
 

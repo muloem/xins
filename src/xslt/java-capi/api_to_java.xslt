@@ -405,7 +405,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
 		<!-- Check name set in function definition file -->
 		<xsl:if test="string-length(@name) &gt; 0 and not($name = @name)">
-			<xsl:message terminate="yes">Name in function definition file differs from name defined in API definition file.</xsl:message>
+			<xsl:message terminate="yes">
+				<xsl:value-of select="concat($name, '!=', @name)" />
+				<xsl:text>. The name function definition file differs from name defined in API definition file.</xsl:text>
+			</xsl:message>
 		</xsl:if>
 
 		<!-- Print method that accepts the a request object only -->

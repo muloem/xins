@@ -314,7 +314,8 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
-						Invalid node.
+						<xsl:text>Invalid node: </xsl:text>
+						<xsl:value-of select="local-name()" />
 					</xsl:message>
 				</xsl:otherwise>
 			</xsl:choose>
