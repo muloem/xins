@@ -336,7 +336,7 @@ implements Result {
 					</xsl:if>
 				</xsl:variable>
 				<xsl:call-template name="javatype_from_string_for_type">
-					<xsl:with-param name="project_node" select="$projectnode" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'false'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
@@ -346,7 +346,7 @@ implements Result {
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="javatype_from_string_for_type">
-					<xsl:with-param name="project_node" select="$projectnode" />
+					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"      select="$api"      />
 					<xsl:with-param name="required" select="'false'" />
 					<xsl:with-param name="specsdir" select="$specsdir" />

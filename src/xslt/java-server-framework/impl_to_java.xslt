@@ -185,7 +185,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 					<xsl:value-of select="$variableName" />
 					<xsl:text> = </xsl:text>
 					<xsl:call-template name="javatype_from_string_for_type">
-						<xsl:with-param name="project_node" select="$projectnode" />
+						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"      select="$api"      />
 						<xsl:with-param name="required" select="@required" />
 						<xsl:with-param name="specsdir" select="$specsdir" />
