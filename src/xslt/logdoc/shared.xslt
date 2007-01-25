@@ -78,7 +78,7 @@
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
 					<xsl:value-of select="@type" />
-					<xsl:text>' is for parameter named '<xsl:text>
+					<xsl:text>' is for parameter named '</xsl:text>
 					<xsl:value-of select="@name" />
 					<xsl:text>' is	unknown.</xsl:text>
 				</xsl:message>
