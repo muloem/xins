@@ -532,8 +532,10 @@ APIs in this project are:
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="$api_node/resultcode">
 				<xsl:if test="position() &gt; 1">,</xsl:if>
-				<xsl:value-of select="@name" />
-				<xsl:text>.rcd</xsl:text>
+				<xsl:if test="not(contains(@name, '/'))">
+					<xsl:value-of select="@name" />
+					<xsl:text>.rcd</xsl:text>
+				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="categoryIncludes">
@@ -673,6 +675,26 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"     />
 				</xslt>
 			</xsl:if>
+			<xsl:for-each select="$api_node/resultcode">
+				<xsl:if test="contains(@name, '/')">
+					<xsl:variable name="in_resultcode_file"
+					select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+					<xsl:variable name="out_html_file"
+					select="concat($project_home, '/build/specdocs/', $api, '/', substring-after(@name, '/'), '.html')" />
+					<xslt
+					in="{$in_resultcode_file}"
+					out="{$out_html_file}"
+					style="{$xins_home}/src/xslt/specdocs/resultcode_to_html.xslt">
+						<xmlcatalog refid="all-dtds" />
+						<param name="xins_version" expression="{$xins_version}" />
+						<param name="project_home" expression="{$project_home}" />
+						<param name="project_file" expression="{$project_file}" />
+						<param name="specsdir"     expression="{$api_specsdir}" />
+						<param name="api"          expression="{$api}"          />
+						<param name="api_file"     expression="{$api_file}"     />
+					</xslt>
+				</xsl:if>
+			</xsl:for-each>
 			<xsl:if test="$api_node/category">
 				<xmlvalidate warn="false">
 					<fileset dir="{$api_specsdir}" includes="{$categoryIncludes}"/>
@@ -1136,6 +1158,27 @@ APIs in this project are:
 						<param name="api_file"     expression="{$api_file}"     />
 					</xslt>
 				</xsl:if>
+				<xsl:for-each select="$api_node/resultcode">
+					<xsl:if test="contains(@name, '/')">
+						<xsl:variable name="in_resultcode_file"
+						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+						<xsl:variable name="out_java_file"
+						select="concat($javaDestDir, '/', $packageAsDir, '/', substring-after(@name, '/'), 'Result.java')" />
+						<xslt
+						in="{$in_resultcode_file}"
+						out="{$out_java_file}"
+						style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt">
+							<xmlcatalog refid="all-dtds" />
+							<param name="xins_version" expression="{$xins_version}" />
+							<param name="project_home" expression="{$project_home}" />
+							<param name="project_file" expression="{$project_file}" />
+							<param name="specsdir"     expression="{$api_specsdir}" />
+							<param name="package"      expression="{$package}"      />
+							<param name="api"          expression="{$api}{$implName2}" />
+							<param name="api_file"     expression="{$api_file}"     />
+						</xslt>
+					</xsl:if>
+				</xsl:for-each>
 
 				<!-- Generate the logdoc java file is needed -->
 				<xsl:if test="$api_node/impl-java/logdoc">
@@ -1280,6 +1323,15 @@ APIs in this project are:
 							<xsl:variable name="type_filename"
 							select="concat(substring-after(@name, '/'), '.typ')" />
 							<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="specs" />
+						</xsl:if>
+					</xsl:for-each>
+					<xsl:for-each select="$api_node/resultcode">
+						<xsl:if test="contains(@name, '/')">
+							<xsl:variable name="resultcode_dir"
+							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
+							<xsl:variable name="resultcode_filename"
+							select="concat(substring-after(@name, '/'), '.rcd')" />
+							<zipfileset dir="{$resultcode_dir}" includes="{$resultcode_filename}" prefix="specs" />
 						</xsl:if>
 					</xsl:for-each>
 				</war>
@@ -1600,6 +1652,24 @@ APIs in this project are:
 					<param name="api_file"     expression="{$api_file}"      />
 				</xslt>
 			</xsl:if>
+			<xsl:for-each select="$api_node/resultcode">
+				<xsl:if test="contains(@name, '/')">
+					<xsl:variable name="in_resultcode_file"
+					select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+					<xsl:variable name="out_java_file"
+					select="concat($project_home, '/build/java-capi/', $api, '/', $clientPackageAsDir, '/', substring-after(@name, '/'), 'Exception.java')" />
+					<xslt
+					in="{$in_resultcode_file}"
+					out="{$out_java_file}"
+					style="{$xins_home}/src/xslt/java-capi/resultcode_to_java.xslt">
+						<xmlcatalog refid="all-dtds" />
+						<param name="specsdir"     expression="{$api_specsdir}"  />
+						<param name="package"      expression="{$clientPackage}" />
+						<param name="api"          expression="{$api}"           />
+						<param name="api_file"     expression="{$api_file}"      />
+					</xslt>
+				</xsl:if>
+			</xsl:for-each>
 
 			<!-- Try to load the API specific .version.properties -->
 			<property prefix="api." file="{$api_specsdir}/../.version.properties" />
@@ -1657,6 +1727,15 @@ APIs in this project are:
 						<xsl:variable name="type_filename"
 						select="concat(substring-after(@name, '/'), '.typ')" />
 						<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="specs" />
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:for-each select="resultcode">
+					<xsl:if test="contains(@name, '/')">
+						<xsl:variable name="resultcode_dir"
+						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
+						<xsl:variable name="resultcode_filename"
+						select="concat(substring-after(@name, '/'), '.rcd')" />
+						<zipfileset dir="{$resultcode_dir}" includes="{$resultcode_filename}" prefix="specs" />
 					</xsl:if>
 				</xsl:for-each>
 			</jar>

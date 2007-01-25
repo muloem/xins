@@ -496,7 +496,16 @@
 
 	<xsl:template match="resultcode">
 
-		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
+		<xsl:variable name="resultcode_file">
+			<xsl:choose>
+				<xsl:when test="contains(@name, '/')">
+					<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="resultcode_node" select="document($resultcode_file)/resultcode" />
 		<xsl:variable name="version">
 			<xsl:call-template name="revision2string">
@@ -518,10 +527,10 @@
 			<td>
 				<a>
 					<xsl:attribute name="href">
-						<xsl:value-of select="@name" />
+						<xsl:value-of select="$resultcode_node/@name" />
 						<xsl:text>.html</xsl:text>
 					</xsl:attribute>
-					<xsl:value-of select="@name" />
+					<xsl:value-of select="$resultcode_node/@name" />
 				</a>
 			</td>
 			<td>

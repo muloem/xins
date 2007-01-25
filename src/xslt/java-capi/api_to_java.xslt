@@ -83,26 +83,33 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       <xsl:for-each select="function">
 			<xsl:variable name="functionName" select="@name" />
 			<xsl:variable name="functionFile" select="concat($specsdir, '/', $functionName, '.fnc')" />
-         <xsl:for-each select="document($functionFile)/function">
-            <xsl:if test="output/resultcode-ref">
-               <xsl:text>
+				<xsl:for-each select="document($functionFile)/function">
+					<xsl:if test="output/resultcode-ref">
+						<xsl:text>
 
       // Error codes for the '</xsl:text>
-			      <xsl:value-of select="$functionName" />
-               <xsl:text>' function
+						<xsl:value-of select="$functionName" />
+						<xsl:text>' function
       list = new java.util.ArrayList();</xsl:text>
-               <xsl:for-each select="output/resultcode-ref">
-                  <xsl:text>
+						<xsl:for-each select="output/resultcode-ref">
+							<xsl:text>
       list.add("</xsl:text>
-			         <xsl:value-of select="@name" />
-                  <xsl:text>");</xsl:text>
-               </xsl:for-each>
-               <xsl:text>map.put("</xsl:text>
-			      <xsl:value-of select="$functionName" />
-               <xsl:text>", list);</xsl:text>
-            </xsl:if>
-         </xsl:for-each>
-      </xsl:for-each>
+							<xsl:choose>
+								<xsl:when test="contains(@name, '/')">
+									<xsl:value-of select="substring-after(@name, '/')" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@name" />
+								</xsl:otherwise>
+							</xsl:choose>
+								<xsl:text>");</xsl:text>
+							</xsl:for-each>
+							<xsl:text>map.put("</xsl:text>
+							<xsl:value-of select="$functionName" />
+							<xsl:text>", list);</xsl:text>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:for-each>
 
       <xsl:text><![CDATA[
       return map;
@@ -251,6 +258,16 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       <xsl:choose>
          <xsl:when test="resultcode">
             <xsl:for-each select="resultcode">
+							<xsl:variable name="name">
+								<xsl:choose>
+									<xsl:when test="contains(@name, '/')">
+										<xsl:value-of select="substring-after(@name, '/')" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="@name" />
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
                <xsl:text>
       </xsl:text>
                <xsl:choose>
@@ -263,18 +280,18 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       } else if ("</xsl:text>
                   </xsl:otherwise>
                </xsl:choose>
-               <xsl:value-of select="@name" />
+               <xsl:value-of select="$name" />
                <xsl:text>".equals(errorCode)) {
          String    function  = request.getFunctionName();
          java.util.ArrayList supported = (java.util.ArrayList) _errorCodesPerFunction.get(function);
          if (supported == null || !supported.contains("</xsl:text>
-               <xsl:value-of select="@name" />
+               <xsl:value-of select="$name" />
                <xsl:text>")) {
             throw new org.xins.client.UnacceptableErrorCodeXINSCallException(
                request, target, duration, resultData);
          } else {
             return new </xsl:text>
-               <xsl:value-of select="@name" />
+               <xsl:value-of select="$name" />
                <xsl:text>Exception(request, target, duration, resultData);
          }</xsl:text>
             </xsl:for-each>
@@ -470,7 +487,14 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws </xsl:text>
             <xsl:value-of select="$package" />
             <xsl:text>.</xsl:text>
-            <xsl:value-of select="@name" />
+						<xsl:choose>
+							<xsl:when test="contains(@name, '/')">
+								<xsl:value-of select="substring-after(@name, '/')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name" />
+							</xsl:otherwise>
+						</xsl:choose>
             <xsl:text><![CDATA[Exception
     *    if the first call attempt failed due to the error code
     *    <em>]]></xsl:text>
@@ -504,7 +528,14 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
           </xsl:text>
             <xsl:value-of select="$package" />
             <xsl:text>.</xsl:text>
-            <xsl:value-of select="@name" />
+						<xsl:choose>
+							<xsl:when test="contains(@name, '/')">
+								<xsl:value-of select="substring-after(@name, '/')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name" />
+							</xsl:otherwise>
+						</xsl:choose>
             <xsl:text>Exception,</xsl:text>
         </xsl:for-each>
         <xsl:text>

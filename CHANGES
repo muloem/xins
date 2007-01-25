@@ -45,6 +45,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Fixed missing project_node parameters for some methods defined in
     types.xslt.
   - Improved details of the error messages.
+  - Added shared error code.
 
 * Generated build file:
   - Put the reference to the Logdoc DTD catalog in a specific target.

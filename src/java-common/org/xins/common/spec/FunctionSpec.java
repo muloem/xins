@@ -445,6 +445,9 @@ public final class FunctionSpec extends Object {
                throw new InvalidSpecificationException("[Function: " + _functionName
                      + "] Missing name attribute for a error code.");
             }
+            if (errorCodeName.indexOf('/') != -1) {
+               errorCodeName = errorCodeName.substring(errorCodeName.indexOf('/') + 1);
+            }
             ErrorCodeSpec errorCodeSpec = new ErrorCodeSpec(errorCodeName, reference, baseURL);
             _errorCodes.put(errorCodeName, errorCodeSpec);
          }

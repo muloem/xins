@@ -980,14 +980,22 @@
 
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
-			<xsl:variable name="code" select="@name" />
-			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $code, '.rcd')" />
+			<xsl:variable name="rcd_file">
+				<xsl:choose>
+					<xsl:when test="contains(@name, '/')">
+						<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 
 			<xsl:for-each select="document($rcd_file)/resultcode">
 				<tr>
 					<td class="value">
-						<a href="{$code}.html">
-							<xsl:value-of select="$code" />
+						<a href="{@name}.html">
+							<xsl:value-of select="@name" />
 						</a>
 					</td>
 					<td class="description">

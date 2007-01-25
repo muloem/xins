@@ -41,7 +41,7 @@
 <!ELEMENT output (resultcode-ref*, param*, param-combo*, data?)>
 <!ELEMENT resultcode-ref EMPTY>
 <!ATTLIST resultcode-ref
-          name       NMTOKEN #REQUIRED
+          name       CDATA #REQUIRED
 >
 <!ELEMENT data (contains?, element+)>
 <!ATTLIST data

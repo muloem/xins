@@ -25,7 +25,7 @@
 >
 <!ELEMENT resultcode EMPTY>
 <!ATTLIST resultcode
-          name       NMTOKEN #REQUIRED
+          name       CDATA   #REQUIRED
           freeze     NMTOKEN #IMPLIED
 >
 <!ELEMENT category EMPTY>

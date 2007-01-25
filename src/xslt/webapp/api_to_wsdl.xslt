@@ -156,17 +156,26 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 
-		<xsl:variable name="resultcode_file" select="concat($specsdir, '/', @name, '.rcd')" />
+		<xsl:variable name="resultcode_file">
+			<xsl:choose>
+				<xsl:when test="contains(@name, '/')">
+					<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="resultcode_node" select="document($resultcode_file)/resultcode" />
 
 		<xsl:if test="not($resultcode_node/output)">
-			<xsd:element name="{concat(@name, 'Fault')}" nillable="true" />
+			<xsd:element name="{concat($resultcode_node/@name, 'Fault')}" nillable="true" />
 		</xsl:if>
 		<xsl:apply-templates select="$resultcode_node/output" mode="elements">
 			<xsl:with-param name="project_node" select="$project_node" />
 			<xsl:with-param name="specsdir"     select="$specsdir"     />
 			<xsl:with-param name="api"          select="$api"          />
-			<xsl:with-param name="elementname"  select="concat(@name, 'Fault')" />
+			<xsl:with-param name="elementname"  select="concat($resultcode_node/@name, 'Fault')" />
 		</xsl:apply-templates>
 	</xsl:template>
 
@@ -310,7 +319,16 @@
 	</xsl:template>
 
 	<xsl:template match="resultcode" mode="messages">
-		<xsl:variable name="resultcodename" select="@name" />
+		<xsl:variable name="resultcodename">
+			<xsl:choose>
+				<xsl:when test="contains(@name, '/')">
+					<xsl:value-of select="substring-after(@name, '/')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@name" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<message name="{$resultcodename}FaultMessage">
 			<part name="fault" element="tns:{$resultcodename}Fault" />
@@ -330,10 +348,20 @@
 			<input message="tns:{$functionname}Input" />
 			<output message="tns:{$functionname}Output" />
 			<xsl:for-each select="$function_node/output/resultcode-ref">
-				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
-				<fault name="{@name}" message="tns:{@name}FaultMessage">
+				<xsl:variable name="rcd_file">
+					<xsl:choose>
+						<xsl:when test="contains(@name, '/')">
+							<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
+				<fault name="{$rcd_node/@name}" message="tns:{$rcd_node/@name}FaultMessage">
 					<documentation>
-						<xsl:value-of select="document($rcd_file)/resultcode/description" />
+						<xsl:value-of select="$rcd_node/description" />
 					</documentation>
 				</fault>
 			</xsl:for-each>
@@ -361,10 +389,20 @@
 				<soapbind:body use="literal" />
 			</output>
 			<xsl:for-each select="$function_node/output/resultcode-ref">
-				<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')" />
-				<fault name="{@name}">
+				<xsl:variable name="rcd_file">
+					<xsl:choose>
+						<xsl:when test="contains(@name, '/')">
+							<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
+				<fault name="{$rcd_node/@name}">
 					<documentation>
-						<xsl:value-of select="document($rcd_file)/resultcode/description" />
+						<xsl:value-of select="$rcd_node/description" />
 					</documentation>
 					<soapbind:body use="literal"/>
 				</fault>

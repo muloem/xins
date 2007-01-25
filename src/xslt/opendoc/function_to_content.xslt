@@ -694,7 +694,16 @@
 	<xsl:template match="resultcode-ref">
 		<xsl:param name="specsdir" />
 
-		<xsl:variable name="rcd_file" select="concat($specsdir, '/', @name, '.rcd')"/>
+		<xsl:variable name="rcd_file">
+			<xsl:choose>
+				<xsl:when test="contains(@name, '/')">
+					<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode"/>
 		<table:table-row>
 			<table:table-cell office:value-type="string">

@@ -70,18 +70,17 @@ public class APIImpl extends API {
     */
    public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
 		<xsl:for-each select="$api_node/resultcode">
-			<xsl:variable name="name"     select="@name" />
-			<xsl:variable name="rcd_node" select="document(concat($specsdir, '/', $name, '.rcd'))/resultcode" />
-			<xsl:variable name="value">
+			<xsl:variable name="name">
 				<xsl:choose>
-					<xsl:when test="$rcd_node/@value">
-						<xsl:value-of select="$rcd_node/@value" />
+					<xsl:when test="contains(@name, '/')">
+						<xsl:value-of select="substring-after(@name, '/')" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="$rcd_node/@name" />
+						<xsl:value-of select="@name" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
+			<xsl:variable name="rcd_node" select="document(concat($specsdir, '/', $name, '.rcd'))/resultcode" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
 					<xsl:with-param name="text">
@@ -105,7 +104,7 @@ public class APIImpl extends API {
 			<xsl:text> = new org.xins.server.ResultCode(SINGLETON, "</xsl:text>
 			<xsl:value-of select="$name" />
 			<xsl:text>", "</xsl:text>
-			<xsl:value-of select="$value" />
+			<xsl:value-of select="$name" />
 			<xsl:text>");</xsl:text>
 		</xsl:for-each>
 
