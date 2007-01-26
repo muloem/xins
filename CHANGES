@@ -57,6 +57,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
 * Build- and release-process:
   - Fixed missing image with the Javadoc.
+  - Added Groovy example to the release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
