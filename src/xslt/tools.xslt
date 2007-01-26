@@ -336,7 +336,7 @@
 			</xslt>
 		</target>
 
-		<target name="xsd2types" depends="-init-tools" description="Generates type files from a set of xsd files.">
+		<target name="xsd-to-types" depends="-init-tools" description="Generates type files from a set of xsd files.">
 			<input addproperty="xsd.dir"
 						 message="Please, enter the directory containing the XSD files:" />
 			<available property="xsd.dir.exists" file="${{xsd.dir}}" type="dir" />
@@ -352,11 +352,11 @@
 			</xslt>
 		</target>
 
-		<target name="wsdl2api-download" unless="wsdl.file">
+		<target name="wsdl-to-api-download" unless="wsdl.file">
 			<get src="${{wsdl.location}}" dest="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
 		</target>
 
-		<target name="wsdl2api" description="Generates the XINS API files from the WSDL.">
+		<target name="wsdl-to-api" description="Generates the XINS API files from the WSDL.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<available property="api.exists" file="{$project_home}/apis/${{api.name}}/spec/api.xml" type="file" />
@@ -371,7 +371,7 @@
 					</or>
 				</not>
 			</condition>
-			<antcall target="wsdl2api-download" />
+			<antcall target="wsdl-to-api-download" />
 			<property name="wsdl.file" value="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
