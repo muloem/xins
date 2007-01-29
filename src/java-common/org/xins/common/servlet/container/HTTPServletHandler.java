@@ -549,7 +549,12 @@ public class HTTPServletHandler {
          }
 
          // Get the Servlet according to the path
-         LocalServletHandler servlet = findServlet(virtualPath);
+         LocalServletHandler servlet = (LocalServletHandler) _servlets.get(virtualPath);
+
+         // If not found the root Servlet is used
+         if (servlet == null) {
+            servlet = (LocalServletHandler) _servlets.get("/");
+         }
 
          // If no servlet is found return 404
          if (servlet == null) {
@@ -591,57 +596,6 @@ public class HTTPServletHandler {
       byte[] bytes = httpResult.getBytes(responseEncoding);
       out.write(bytes, 0, bytes.length);
       out.flush();
-   }
-
-   /**
-    * Finds the servlet that should handle a request at the specified virtual
-    * path.
-    *
-    * @param path
-    *    the virtual path, cannot be <code>null</code>.
-    *
-    * @return
-    *    the servlet that was found, or <code>null</code> if none was found.
-    *
-    * @throws NullPointerException
-    *    if <code>path == null</code>.
-    */
-   private LocalServletHandler findServlet(String path)
-   throws NullPointerException {
-
-      // If the path does not end with a slash, then add one,
-      // to avoid checking that option
-      if (path.charAt(path.length() - 1) != '/') {
-         path += '/';
-      }
-
-      LocalServletHandler servlet;
-      do {
-
-         // Find a servlet at this path
-         servlet = (LocalServletHandler) _servlets.get(path);
-
-         // If not found, then strip off the last part of the path
-         // E.g. "/objects/boats/Cherry"  becomes "/objects/boats/"
-         // and  "/objects/boats/Cherry/" becomes "/objects/boats/"
-         if (servlet == null) {
-
-            // Remove the trailing slash, if any
-            int lastPos = path.length() - 1;
-            if (path.charAt(lastPos) == '/') {
-               path = path.substring(0, lastPos);
-            }
-
-            // Cut up until and including the last slash, if appropriate
-            if (path.length() > 0) {
-               int i = path.lastIndexOf('/');
-               path = path.substring(0, i + 1);
-            }
-         }
-         
-      } while (servlet == null && path.length() > 0);
-
-      return servlet;
    }
 
    /**
