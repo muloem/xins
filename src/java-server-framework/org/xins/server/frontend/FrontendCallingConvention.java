@@ -556,9 +556,16 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Determine domain for the session cookie
       String host = httpRequest.getHeader("host");
+      if (TextUtils.isEmpty(host)) {
+         host = httpRequest.getRemoteHost();
+      }
 
+      String domain = host;
+      
       //strip subdomain from the host
-      String domain = host.substring(host.indexOf("."));
+      if (host.indexOf(".") != -1) {
+         domain = host.substring(host.indexOf("."));
+      }
 
       //strip port if any
       if (domain.indexOf(":") != -1) {
