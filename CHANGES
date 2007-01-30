@@ -6,11 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 
+* Generated build file:
+  - Do not include the impl.xml and the class files from the impl directory
+    into the WAR file.
+
 * Generation of the WSDL:
   - The generated file is correctly indented with tabs.
   - Added support for the default attribute.
 
-* Generation of the APi from the WSDL:
+* Generation of the API from the WSDL:
   - Improved description of the function and error code.
   - Added support for the default attribute.
   - Fixed cases for functions, types and error code in the generated api.xml.
@@ -1467,6 +1471,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 RELEASE CANDIDATE 2:
     FileInputStream.
   - Fixed SF.net bug #1343973: AccessRuleFile does not close constructed
     FileReader stream.
+
   - Removed an unused variable from class API, method handleCall.
 
 * Generatation of specdocs:

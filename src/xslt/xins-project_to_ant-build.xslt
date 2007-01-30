@@ -1313,7 +1313,7 @@ APIs in this project are:
 					<xsl:if test="$apiHasTypes">
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
-					<classes dir="{$javaImplDir}" excludes="**/*.java" />
+					<classes dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
 					<zipfileset dir="{$project_home}/build/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
 					<xsl:for-each select="$api_node/type">
