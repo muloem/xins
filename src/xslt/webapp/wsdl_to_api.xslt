@@ -52,7 +52,7 @@
 	<xsl:template name="apifile">
 		<xsl:param name="api_name" />
 
-		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE api PUBLIC "-//XINS//DTD XINS API 2.0//EN" "http://www.xins.org/dtd/api_2_0.dtd">]]>
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE api PUBLIC "-//XINS//DTD API 2.0//EN" "http://www.xins.org/dtd/api_2_0.dtd">]]>
 
 </xsl:text>
 		<api name="{$api_name}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
@@ -142,7 +142,7 @@
 	<xsl:template name="functionfile">
 		<xsl:param name="functionName" />
 
-		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE function PUBLIC "-//XINS//DTD XINS Function 2.0//EN" "http://www.xins.org/dtd/function_2_0.dtd">]]>
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE function PUBLIC "-//XINS//DTD Function 2.0//EN" "http://www.xins.org/dtd/function_2_0.dtd">]]>
 
 </xsl:text>
 		<function rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$functionName}">
@@ -214,7 +214,7 @@
 	<!-- The content for the error code file (.rcd) -->
 	<xsl:template name="errorcodefile">
 		<xsl:param name="errorcodeName" />
-		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE resultcode PUBLIC "-//XINS//DTD XINS Result Code 2.0//EN" "http://www.xins.org/dtd/resultcode_2_0.dtd">]]>
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 2.0//EN" "http://www.xins.org/dtd/resultcode_2_0.dtd">]]>
 
 </xsl:text>
 		<resultcode rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$errorcodeName}">

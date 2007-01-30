@@ -875,7 +875,7 @@ APIs in this project are:
 			</target>
 		</xsl:if>
 
-		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
+		<target name="wsdl-{$api}" depends="-load-dtds" description="Generates the WSDL specification of the '{$api}' API">
 			<property file="{$project_home}/build.properties" />
 			<property name="wsdl.endpoint" value="" />
 			<mkdir dir="{$builddir}/wsdl" />

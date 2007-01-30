@@ -79,7 +79,7 @@
 		<xsl:param name="typeName" />
 		<xsl:param name="elementName" />
 
-		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE type PUBLIC "-//XINS//DTD XINS Type 2.0//EN" "http://www.xins.org/dtd/type_2_0.dtd">]]>
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE type PUBLIC "-//XINS//DTD Type 2.0//EN" "http://www.xins.org/dtd/type_2_0.dtd">]]>
 
 </xsl:text>
 <type rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$typeName}">
