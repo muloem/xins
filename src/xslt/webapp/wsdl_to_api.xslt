@@ -33,7 +33,7 @@
 	<xsl:variable name="tab">
 		<xsl:text>	</xsl:text>
 	</xsl:variable>
-	
+
 	<xsl:key name="faultnames" match="fault" use="@name" />
 
 	<!-- Creates the different files -->

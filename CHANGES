@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
+
+* Generation of the WSDL:
+  - The generated file is correctly indented with tabs.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
 * XINS/Java Common Library:

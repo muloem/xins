@@ -27,6 +27,12 @@
 	<xsl:output method="xml" indent="yes" />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
+	<xsl:variable name="return">
+		<xsl:text>
+</xsl:text>
+	</xsl:variable>
+	<xsl:variable name="tab"><xsl:text>	</xsl:text></xsl:variable>
+	<xsl:variable name="tab4"><xsl:text>				</xsl:text></xsl:variable>
 
 	<xsl:template match="api">
 
@@ -64,7 +70,9 @@
 				<xsl:value-of select="$timestamp" />
 				<xsl:text>. </xsl:text>
 			</xsl:comment>
+			<xsl:value-of select="concat($return, $tab)" />
 			<types>
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 				<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 										targetNamespace="urn:{$apiname}">
 
@@ -88,7 +96,9 @@
 						<xsl:with-param name="specsdir"     select="$specsdir"     />
 						<xsl:with-param name="api"          select="$apiname"      />
 					</xsl:apply-templates>
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 				</xsd:schema>
+			<xsl:value-of select="concat($return, $tab)" />
 			</types>
 
 			<!-- Write the messages -->
@@ -96,12 +106,16 @@
 			<xsl:apply-templates select="resultcode" mode="messages" />
 
 			<!-- Write the port types -->
+			<xsl:value-of select="concat($return, $tab)" />
 			<portType name="{$apiname}PortType">
 				<xsl:apply-templates select="function" mode="porttypes" />
+			<xsl:value-of select="concat($return, $tab)" />
 			</portType>
 
 			<!-- Write the bindings -->
+			<xsl:value-of select="concat($return, $tab)" />
 			<binding name="{$apiname}SOAPBinding" type="tns:{$apiname}PortType">
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 				<documentation>
 					<xsl:value-of select="description" />
 				</documentation>
@@ -109,15 +123,23 @@
 					<xsl:with-param name="location" select="$location" />
 					<xsl:with-param name="apiname" select="$apiname" />
 				</xsl:apply-templates>
+				<xsl:value-of select="concat($return, $tab, $tab)" />
         <soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+			<xsl:value-of select="concat($return, $tab)" />
 			</binding>
 
 			<!-- Write the services -->
+			<xsl:value-of select="concat($return, $tab)" />
 			<service name="{$apiname}Service">
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 				<port name="{$apiname}Port" binding="tns:{$apiname}SOAPBinding">
+					<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 					<soapbind:address location="{$location}" />
+				<xsl:value-of select="concat($return, $tab, $tab)" />
 				</port>
+			<xsl:value-of select="concat($return, $tab)" />
 			</service>
+		<xsl:value-of select="$return" />
 		</definitions>
 	</xsl:template>
 
@@ -130,6 +152,7 @@
 		<xsl:variable name="function_node" select="document($function_file)/function" />
 
 		<xsl:if test="not($function_node/input)">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<xsd:element name="{concat(@name, 'Request')}" />
 		</xsl:if>
 		<xsl:apply-templates select="$function_node/input" mode="elements">
@@ -140,6 +163,7 @@
 		</xsl:apply-templates>
 
 		<xsl:if test="not($function_node/output)">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<xsd:element name="{concat(@name, 'Response')}" />
 		</xsl:if>
 		<xsl:apply-templates select="$function_node/output" mode="elements">
@@ -169,6 +193,7 @@
 		<xsl:variable name="resultcode_node" select="document($resultcode_file)/resultcode" />
 
 		<xsl:if test="not($resultcode_node/output)">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<xsd:element name="{concat($resultcode_node/@name, 'Fault')}" nillable="true" />
 		</xsl:if>
 		<xsl:apply-templates select="$resultcode_node/output" mode="elements">
@@ -187,8 +212,11 @@
 		<xsl:param name="elementname"  />
 
 		<!-- The input or output parameters of the function -->
+		<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 		<xsd:element name="{$elementname}">
+			<xsl:value-of select="concat($return, $tab4)" />
 			<xsd:complexType>
+				<xsl:value-of select="concat($return, $tab4, $tab)" />
 				<xsd:sequence>
 					<xsl:for-each select="param">
 						<xsl:variable name="elementtype">
@@ -206,17 +234,26 @@
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="paramname" select="@name" />
+
+						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}">
+							<xsl:value-of select="concat($return, $tab4, $tab, $tab, $tab)" />
 							<xsd:annotation>
+								<xsl:value-of select="concat($return, $tab4, $tab4)" />
 								<xsd:documentation>
 									<xsl:value-of select="description/text()" />
 								</xsd:documentation>
+							<xsl:value-of select="concat($return, $tab4, $tab, $tab, $tab)" />
 							</xsd:annotation>
+						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						</xsd:element>
 					</xsl:for-each>
 					<xsl:if test="data">
+						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						<xsd:element name="data" minOccurs="0">
+							<xsl:value-of select="concat($return, $tab4, $tab, $tab, $tab)" />
 							<xsd:complexType>
+								<xsl:value-of select="concat($return, $tab4, $tab4)" />
 								<xsd:sequence>
 									<xsl:if test="data/@contains">
 										<xsl:variable name="contained_element" select="data/@contains" />
@@ -234,12 +271,18 @@
 											<xsl:with-param name="api"          select="$api" />
 										</xsl:apply-templates>
 									</xsl:for-each>
+								<xsl:value-of select="concat($return, $tab4, $tab4)" />
 								</xsd:sequence>
+							<xsl:value-of select="concat($return, $tab4, $tab, $tab, $tab)" />
 							</xsd:complexType>
+						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						</xsd:element>
 					</xsl:if>
+				<xsl:value-of select="concat($return, $tab4, $tab)" />
 				</xsd:sequence>
+			<xsl:value-of select="concat($return, $tab4)" />
 			</xsd:complexType>
+		<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 		</xsd:element>
 	</xsl:template>
 
@@ -249,14 +292,20 @@
 		<xsl:param name="specsdir"     />
 		<xsl:param name="api"          />
 
+		<xsl:value-of select="concat($return, $tab4, $tab4, $tab)" />
 		<xsd:element name="{@name}" minOccurs="0" maxOccurs="unbounded">
+			<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab)" />
 			<xsd:annotation>
+				<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab, $tab)" />
 				<xsd:documentation>
 					<xsl:value-of select="description/text()" />
 				</xsd:documentation>
+			<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab)" />
 			</xsd:annotation>
+			<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab)" />
 			<xsd:complexType>
 				<xsl:if test="contains/contained">
+					<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab, $tab)" />
 					<xsd:sequence>
 						<xsl:for-each select="contains/contained">
 							<xsl:variable name="contained_element" select="@element" />
@@ -266,12 +315,13 @@
 								<xsl:with-param name="api"          select="$api" />
 							</xsl:apply-templates>
 						</xsl:for-each>
+					<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab, $tab)" />
 					</xsd:sequence>
 				</xsl:if>
 				<xsl:if test="contains/pcdata">
 					<xsl:text disable-output-escaping="yes">
-&lt;xsd:simpleContent>
-&lt;xsd:extension base="xsd:string"></xsl:text>
+											&lt;xsd:simpleContent>
+												&lt;xsd:extension base="xsd:string"></xsl:text>
 				</xsl:if>
 				<xsl:for-each select="attribute">
 					<xsl:variable name="elementtype">
@@ -289,32 +339,45 @@
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:variable name="attributename" select="@name" />
+
+					<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab)" />
 					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}">
+						<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab)" />
 						<xsd:annotation>
+							<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab, $tab)" />
 							<xsd:documentation>
 								<xsl:value-of select="description/text()" />
 							</xsd:documentation>
+						<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab)" />
 						</xsd:annotation>
+					<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab)" />
 					</xsd:attribute>
 				</xsl:for-each>
 				<xsl:if test="contains/pcdata">
 					<xsl:text disable-output-escaping="yes">
-&lt;/xsd:extension>
-&lt;/xsd:simpleContent>
-</xsl:text>
+												&lt;/xsd:extension>
+										&lt;/xsd:simpleContent></xsl:text>
 				</xsl:if>
+			<xsl:value-of select="concat($return, $tab4, $tab4, $tab, $tab)" />
 			</xsd:complexType>
+		<xsl:value-of select="concat($return, $tab4, $tab4, $tab)" />
 		</xsd:element>
 	</xsl:template>
 
 	<xsl:template match="function" mode="messages">
 		<xsl:variable name="functionname" select="@name" />
 
+		<xsl:value-of select="concat($return, $tab)" />
 		<message name="{$functionname}Input">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
 			<part name="parameters" element="tns:{$functionname}Request" />
+		<xsl:value-of select="concat($return, $tab)" />
 		</message>
+		<xsl:value-of select="concat($return, $tab)" />
 		<message name="{$functionname}Output">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
 			<part name="parameters" element="tns:{$functionname}Response" />
+		<xsl:value-of select="concat($return, $tab)" />
 		</message>
 	</xsl:template>
 
@@ -330,8 +393,11 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<xsl:value-of select="concat($return, $tab)" />
 		<message name="{$resultcodename}FaultMessage">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
 			<part name="fault" element="tns:{$resultcodename}Fault" />
+		<xsl:value-of select="concat($return, $tab)" />
 		</message>
 	</xsl:template>
 
@@ -341,11 +407,15 @@
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="function_node" select="document($function_file)/function" />
 
+		<xsl:value-of select="concat($return, $tab, $tab)" />
 		<operation name="{$functionname}">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<documentation>
 				<xsl:value-of select="$function_node/description" />
 			</documentation>
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<input message="tns:{$functionname}Input" />
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<output message="tns:{$functionname}Output" />
 			<xsl:for-each select="$function_node/output/resultcode-ref">
 				<xsl:variable name="rcd_file">
@@ -359,12 +429,16 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
+				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				<fault name="{$rcd_node/@name}" message="tns:{$rcd_node/@name}FaultMessage">
+					<xsl:value-of select="concat($return, $tab4)" />
 					<documentation>
 						<xsl:value-of select="$rcd_node/description" />
 					</documentation>
+				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				</fault>
 			</xsl:for-each>
+		<xsl:value-of select="concat($return, $tab, $tab)" />
 		</operation>
 	</xsl:template>
 
@@ -377,16 +451,24 @@
 		<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 		<xsl:variable name="function_node" select="document($function_file)/function" />
 
+		<xsl:value-of select="concat($return, $tab, $tab)" />
 		<operation name="{$functionname}">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<documentation>
 				<xsl:value-of select="$function_node/description" />
 			</documentation>
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<!--soapbind:operation soapAction="{$location}/{$functionname}" /-->
 			<input>
+				<xsl:value-of select="concat($return, $tab4)" />
 				<soapbind:body use="literal" />
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			</input>
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<output>
+				<xsl:value-of select="concat($return, $tab4)" />
 				<soapbind:body use="literal" />
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			</output>
 			<xsl:for-each select="$function_node/output/resultcode-ref">
 				<xsl:variable name="rcd_file">
@@ -400,13 +482,18 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
+				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				<fault name="{$rcd_node/@name}">
+					<xsl:value-of select="concat($return, $tab4)" />
 					<documentation>
 						<xsl:value-of select="$rcd_node/description" />
 					</documentation>
+					<xsl:value-of select="concat($return, $tab4)" />
 					<soapbind:body use="literal"/>
+				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				</fault>
 			</xsl:for-each>
+		<xsl:value-of select="concat($return, $tab, $tab)" />
 		</operation>
 	</xsl:template>
 
@@ -451,40 +538,53 @@
 			<xsl:text>Type</xsl:text>
 		</xsl:variable>
 
+		<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 		<xsd:simpleType name="{$type_name}">
+			<xsl:value-of select="concat($return, $tab4)" />
 			<xsd:annotation>
+				<xsl:value-of select="concat($return, $tab4, $tab)" />
 				<xsd:documentation>
 					<xsl:value-of select="$type_node/description/text()" />
 				</xsd:documentation>
+			<xsl:value-of select="concat($return, $tab4)" />
 			</xsd:annotation>
+			<xsl:value-of select="concat($return, $tab4)" />
 			<xsd:restriction base="xsd:{$base_type}">
 				<xsl:if test="$type_node/pattern">
 					<xsl:variable name="pattern" select="$type_node/pattern/text()" />
+					<xsl:value-of select="concat($return, $tab4, $tab)" />
 					<xsd:pattern value="{$pattern}" />
 				</xsl:if>
 				<xsl:if test="$type_node/enum">
 					<xsl:for-each select="$type_node/enum/item">
 						<xsl:variable name="enumeration_value" select="@value" />
+						<xsl:value-of select="concat($return, $tab4, $tab)" />
 						<xsd:enumeration value="{$enumeration_value}" />
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:if test="$type_node/int8 or $type_node/int16 or $type_node/int32 or $type_node/int64 or $type_node/float32 or $type_node/float64">
 					<xsl:if test="$type_node/*[2]/@min">
+						<xsl:value-of select="concat($return, $tab4, $tab)" />
 						<xsd:minInclusive value="{$type_node/*[2]/@min}" />
 					</xsl:if>
 					<xsl:if test="$type_node/*[2]/@max">
+						<xsl:value-of select="concat($return, $tab4, $tab)" />
 						<xsd:maxInclusive value="{$type_node/*[2]/@max}" />
 					</xsl:if>
 				</xsl:if>
 				<xsl:if test="$type_node/base64">
 					<xsl:if test="$type_node/base64/@min">
+						<xsl:value-of select="concat($return, $tab4, $tab)" />
 						<xsd:minLength value="{$type_node/base64/@min}" />
 					</xsl:if>
 					<xsl:if test="$type_node/base64/@max">
+						<xsl:value-of select="concat($return, $tab4, $tab)" />
 						<xsd:maxLength value="{$type_node/base64/@max}" />
 					</xsl:if>
 				</xsl:if>
+			<xsl:value-of select="concat($return, $tab4)" />
 			</xsd:restriction>
+		<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 		</xsd:simpleType>
 	</xsl:template>
 
