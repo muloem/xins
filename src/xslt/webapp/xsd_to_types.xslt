@@ -82,7 +82,7 @@
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE type PUBLIC "-//XINS//DTD XINS Type 2.0//EN" "http://www.xins.org/dtd/type_2_0.dtd">]]>
 
 </xsl:text>
-<type name="{$typeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
+<type rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$typeName}">
 	<xsl:text>
 	</xsl:text>
 	<description>
@@ -94,7 +94,9 @@
 				<xsl:value-of select="../xsd:annotation/xsd:documentation/text()" />
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:text>The </xsl:text>
 				<xsl:value-of select="$typeName" />
+				<xsl:text> type.</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</description>
@@ -124,17 +126,30 @@
 				<xsl:if test="not(xs:minLength) and not(xs:length) and not(xsd:minLength) and not(xsd:length)">
 					<xsl:text>0</xsl:text>
 				</xsl:if>
-				<xsl:value-of select="xs:minLength/@value" />
-				<xsl:value-of select="xs:length/@value" />
-				<xsl:value-of select="xsd:minLength/@value" />
-				<xsl:value-of select="xsd:length/@value" />
+				<xsl:value-of select="xs:minLength/@value | xsd:minLength/@value" />
+				<xsl:value-of select="xs:length/@value | xsd:length/@value" />
 				<xsl:if test="xs:minLength or xs:maxLength or xsd:minLength or xsd:maxLength">
 					<xsl:text>,</xsl:text>
 				</xsl:if>
-				<xsl:value-of select="xs:maxLength/@value" />
-				<xsl:value-of select="xsd:maxLength/@value" />
+				<xsl:value-of select="xs:maxLength/@value | xsd:maxLength/@value" />
 				<xsl:text>}</xsl:text>
 			</pattern>
+		</xsl:when>
+		<xsl:when test="xs:minInclusive or xs:minExclusive or xsd:minInclusive or xsd:minExclusive or xs:maxInclusive or xs:maxExclusive or xsd:maxInclusive or xsd:maxExclusive">
+			<int32>
+				<xsl:if test="xs:minInclusive or xs:minExclusive or xsd:minInclusive or xsd:minExclusive">
+					<xsl:attribute name="min">
+						<xsl:value-of select="xs:minInclusive/@value | xsd:minInclusive/@value" />
+						<xsl:value-of select="xs:minExclusive/@value | xsd:minExclusive/@value" />
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:if test="xs:maxInclusive or xs:maxExclusive or xsd:maxInclusive or xsd:maxExclusive">
+					<xsl:attribute name="max">
+						<xsl:value-of select="xs:maxInclusive/@value | xsd:maxInclusive/@value" />
+						<xsl:value-of select="xs:maxExclusive/@value | xsd:maxExclusive/@value" />
+					</xsl:attribute>
+				</xsl:if>
+			</int32>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="no">

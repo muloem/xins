@@ -237,6 +237,11 @@
 
 						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}">
+							<xsl:if test="@default">
+								<xsl:attribute name="default">
+									<xsl:value-of select="@default" />
+								</xsl:attribute>
+							</xsl:if>
 							<xsl:value-of select="concat($return, $tab4, $tab, $tab, $tab)" />
 							<xsd:annotation>
 								<xsl:value-of select="concat($return, $tab4, $tab4)" />
@@ -342,6 +347,11 @@
 
 					<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab)" />
 					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}">
+						<xsl:if test="@default">
+							<xsl:attribute name="default">
+								<xsl:value-of select="@default" />
+							</xsl:attribute>
+						</xsl:if>
 						<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab)" />
 						<xsd:annotation>
 							<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab, $tab)" />

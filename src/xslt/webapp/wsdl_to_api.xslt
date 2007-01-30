@@ -74,7 +74,12 @@
 
 			<!-- The list of the functions -->
 			<xsl:for-each select="portType/operation">
-				<function name="{@name}" />
+				<xsl:variable name="functionName">
+					<xsl:call-template name="hungarianUpper">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+				<function name="{$functionName}" />
 				<xsl:if test="position() != last()">
 					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
@@ -85,7 +90,12 @@
 				<xsl:value-of select="concat($return, $return, $tab)" />
 			</xsl:if>
 			<xsl:for-each select="types/xsd:schema/xsd:simpleType">
-				<type name="{@name}" />
+				<xsl:variable name="typeName">
+					<xsl:call-template name="hungarianUpper">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+				<type name="{$typeName}" />
 				<xsl:if test="position() != last()">
 					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
@@ -97,7 +107,12 @@
 			</xsl:if>
 			<xsl:for-each select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 				<xsl:sort select="@name" />
-				<resultcode name="{@name}" />
+				<xsl:variable name="errorcodeName">
+					<xsl:call-template name="hungarianUpper">
+						<xsl:with-param name="text" select="@name" />
+					</xsl:call-template>
+				</xsl:variable>
+				<resultcode name="{$errorcodeName}" />
 				<xsl:if test="position() != last()">
 					<xsl:value-of select="concat($return, $tab)" />
 				</xsl:if>
@@ -130,10 +145,19 @@
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE function PUBLIC "-//XINS//DTD XINS Function 2.0//EN" "http://www.xins.org/dtd/function_2_0.dtd">]]>
 
 </xsl:text>
-		<function name="{$functionName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
+		<function rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$functionName}">
 			<xsl:value-of select="concat($return, $return, $tab)" />
 			<description>
-				<xsl:value-of select="documentation/text()" />
+				<xsl:choose>
+					<xsl:when test="documentation">
+						<xsl:value-of select="documentation/text()" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>The </xsl:text>
+						<xsl:value-of select="$functionName" />
+						<xsl:text> function.</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</description>
 			<xsl:value-of select="concat($return, $return, $tab)" />
 			<input>
@@ -156,8 +180,14 @@
 	</xsl:template>
 
 	<xsl:template match="fault" mode="reference">
+		<xsl:variable name="errorcodeName">
+			<xsl:call-template name="hungarianUpper">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:value-of select="concat($return, $tab, $tab)" />
-		<resultcode-ref name="{@name}" />
+		<resultcode-ref name="{$errorcodeName}" />
 	</xsl:template>
 
 	<!-- Creates the error code files (.rcd) -->
@@ -187,10 +217,19 @@
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE resultcode PUBLIC "-//XINS//DTD XINS Result Code 2.0//EN" "http://www.xins.org/dtd/resultcode_2_0.dtd">]]>
 
 </xsl:text>
-		<resultcode name="{$errorcodeName}" rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$">
+		<resultcode rcsversion="&#x24;Revision$" rcsdate="&#x24;Date$" name="{$errorcodeName}">
 			<xsl:value-of select="concat($return, $tab)" />
 			<description>
-				<xsl:value-of select="documentation/text()" />
+				<xsl:choose>
+					<xsl:when test="documentation">
+						<xsl:value-of select="documentation/text()" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>The </xsl:text>
+						<xsl:value-of select="$errorcodeName" />
+						<xsl:text> error code.</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</description>
 			<xsl:variable name="output_section">
 				<xsl:apply-templates select="." mode="section" />
@@ -234,6 +273,9 @@
 					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element">
+						<xsl:with-param name="section" select="$section" />
+					</xsl:apply-templates>
 				</xsl:when>
 				<!-- otherwise no section -->
 			</xsl:choose>
@@ -245,7 +287,7 @@
 
 		<xsl:variable name="required">
 			<xsl:choose>
-				<xsl:when test="not(@minOccurs) or @minOccurs = '0' or @nillable = 'true'">false</xsl:when>
+				<xsl:when test="@minOccurs = '0' or @nillable = 'true'">false</xsl:when>
 				<xsl:otherwise>true</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -285,7 +327,12 @@
 		<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
 
 		<xsl:value-of select="concat($return, $tab, $tab)" />
-		<param name="{$paramname}" required="{$required}" type="{$type}">
+		<param type="{$type}" required="{$required}" name="{$paramname}">
+			<xsl:if test="@default">
+				<xsl:attribute name="default">
+					<xsl:value-of select="@default" />
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<description>
 				<xsl:choose>
