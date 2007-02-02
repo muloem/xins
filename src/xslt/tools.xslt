@@ -377,7 +377,8 @@
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
 			<!-- Execute some tranformations to be able to get the most of the WSDL -->
 			<copy file="${{wsdl.file}}" tofile="${{wsdl.file}}.copy" />
-			<replaceregexp file="${{wsdl.file}}.copy" match="targetNamespace=&quot;.*&quot;" replace="" byline="true" />
+			<replaceregexp file="${{wsdl.file}}.copy" match="targetNamespace=&quot;\S*&quot;" replace="" byline="true" />
+			<replaceregexp file="${{wsdl.file}}.copy" match="xmlns=&quot;\S*&quot;" replace="" byline="true" />
 			<replace file="${{wsdl.file}}.copy">
 				<replacefilter token="&lt;wsdl:" value="&lt;" />
 				<replacefilter token="&lt;/wsdl:" value="&lt;/" />
@@ -388,7 +389,21 @@
 				<replacefilter token="&lt;s:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;s:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/s:" value="&lt;/xsd:" />
-				<replacefilter token="&quot;s:" value="&quot;xsd:" />
+				<replacefilter token="&lt;schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
+				<replacefilter token="&lt;/schema" value="&lt;/schema" />
+				<replacefilter token="&lt;/schema" value="&lt;/xsd:schema" />
+				<replacefilter token="&lt;complexType" value="&lt;xsd:complexType" />
+				<replacefilter token="&lt;/complexType" value="&lt;/xsd:complexType" />
+				<replacefilter token="&lt;sequence" value="&lt;xsd:sequence" />
+				<replacefilter token="&lt;/sequence" value="&lt;/xsd:sequence" />
+				<replacefilter token="&lt;element" value="&lt;xsd:element" />
+				<replacefilter token="&lt;/element" value="&lt;/xsd:element" />
+				<replacefilter token="&lt;simpleType" value="&lt;xsd:simpleType" />
+				<replacefilter token="&lt;/simpleType" value="&lt;/xsd:simpleType" />
+				<replacefilter token="&lt;complexContent" value="&lt;xsd:complexContent" />
+				<replacefilter token="&lt;/complexContent" value="&lt;/xsd:complexContent" />
+				<replacefilter token="&lt;extension" value="&lt;xsd:extension" />
+				<replacefilter token="&lt;/extension" value="&lt;/xsd:extension" />
 			</replace>
 			<xslt
 			in="${{wsdl.file}}.copy"
