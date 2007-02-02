@@ -144,14 +144,10 @@ public class CallConfig implements Serializable {
          failOverAllowed = _failOverAllowed;
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(55);
-      buffer.append("call config #");
-      buffer.append(_instanceNumber);
-      buffer.append(" [failOverAllowed=");
-      buffer.append(failOverAllowed);
-      buffer.append(']');
+      String description = "call config #" + _instanceNumber +
+            " [failOverAllowed=" + failOverAllowed + ']';
 
-      return buffer.toString();
+      return description;
    }
 
    /**

@@ -163,7 +163,7 @@ extends Object implements AccessRuleContainer {
       int ruleCount = rules.length;
 
       // Build string representation and log
-      FastStringBuffer buffer = new FastStringBuffer(ruleCount * 40);
+      StringBuffer buffer = new StringBuffer(ruleCount * 40);
       if (ruleCount > 0) {
          String s = rules[0].toString();
          buffer.append(s);

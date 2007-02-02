@@ -82,7 +82,7 @@ extends StandardErrorCodeException {
          return null;
       }
 
-      FastStringBuffer detail = new FastStringBuffer(250);
+      StringBuffer detail = new StringBuffer(250);
 
       // Handle all missing parameters
       List missingParamElements = element.getChildElements("missing-param");
@@ -93,15 +93,10 @@ extends StandardErrorCodeException {
             String paramName = e.getAttribute("param");
             String elementName = e.getAttribute("element");
             if (elementName == null && paramName != null && paramName.length() >= 1) {
-               detail.append("No value given for required parameter \""
-                           + paramName
-                           + "\". ");
+               detail.append("No value given for required parameter \"" + paramName + "\". ");
             } else if (elementName != null &&  elementName.length() >= 1 && paramName != null && paramName.length() >= 1) {
-               detail.append("No value given for required attribute \""
-                           + paramName
-                           + "\" in the element \""
-                           + elementName
-                           + "\". ");
+               detail.append("No value given for required attribute \"" +
+                     paramName + "\" in the element \"" + elementName + "\". ");
             }
          }
       }
@@ -186,8 +181,8 @@ extends StandardErrorCodeException {
       }
 
       // Remove the last space from the string, if there is any
-      if (detail.getLength() >= 1) {
-         detail.crop(detail.getLength() - 1);
+      if (detail.length() >= 1) {
+         detail.deleteCharAt(detail.length() - 1);
          return detail.toString();
       } else {
          return null;

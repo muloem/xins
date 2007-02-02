@@ -124,7 +124,7 @@ public class DateConverter extends Object {
          throw new IllegalArgumentException("n == Long.MAX_VALUE");
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(23);
+      StringBuffer buffer = new StringBuffer(23);
 
       GregorianCalendar calendar = new GregorianCalendar(timeZone);
 

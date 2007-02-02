@@ -209,26 +209,25 @@ public final class HTTPCallRequest extends CallRequest {
 
       // Lazily initialize the description of this call request object
       if (_asString == null) {
-         FastStringBuffer buffer =
-            new FastStringBuffer(193, "HTTP request #");
+         StringBuffer description = new StringBuffer(193);
+         description.append("HTTP request #");
 
          // Request number
-         buffer.append(_instanceNumber);
+         description.append(_instanceNumber);
 
          // HTTP config
-         buffer.append(" [config=");
-         buffer.append(TextUtils.quote(getCallConfig()));
+         description.append(" [config=");
+         description.append(TextUtils.quote(getCallConfig()));
 
          // Parameters
          if (_parameters == null || _parameters.size() < 1) {
-            buffer.append("; parameters=(null)");
+            description.append("; parameters=(null)");
          } else {
-            buffer.append("; parameters=\"");
-            PropertyReaderUtils.serialize(_parameters, buffer, "(null)");
-            buffer.append('"');
+            description.append("; parameters=\"");
+            description.append(PropertyReaderUtils.serialize(_parameters, "(null)"));
+            description.append('"');
          }
-
-         _asString = buffer.toString();
+         _asString = description.toString();
       }
 
       return _asString;

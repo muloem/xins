@@ -341,39 +341,39 @@ public final class XINSCallRequest extends CallRequest {
 
       // Lazily initialize the description of this call request object
       if (_asString == null) {
-         FastStringBuffer buffer = new FastStringBuffer(208, "XINS HTTP request #");
+         StringBuffer description = new StringBuffer(193);
+         description.append("XINS HTTP request #");
 
          // Request number
-         buffer.append(_instanceNumber);
+         description.append(_instanceNumber);
 
          // HTTP method
-         buffer.append(" [config=");
-         buffer.append(TextUtils.quote(getCallConfig()));
+         description.append(" [config=");
+         description.append(TextUtils.quote(getCallConfig()));
 
          // Function name
-         buffer.append("; function=\"");
-         buffer.append(_functionName);
+         description.append("; function=\"");
+         description.append(_functionName);
 
          // Parameters
          if (_parameters == null || _parameters.size() < 1) {
-            buffer.append("\"; parameters=(null); contextID=");
+            description.append("\"; parameters=(null); contextID=");
          } else {
-            buffer.append("\"; parameters=\"");
-            PropertyReaderUtils.serialize(_parameters, buffer, "-");
-            buffer.append("\"; contextID=");
+            description.append("\"; parameters=\"");
+            description.append(PropertyReaderUtils.serialize(_parameters, "-"));
+            description.append("\"; contextID=");
          }
 
          // Diagnostic context identifier
          String contextID = _httpParams.get(CONTEXT_ID_HTTP_PARAMETER_NAME);
          if (contextID == null || contextID.length() < 1) {
-            buffer.append("(null)]");
+            description.append("(null)]");
          } else {
-            buffer.append('"');
-            buffer.append(contextID);
-            buffer.append("\"]");
+            description.append('"');
+            description.append(contextID);
+            description.append("\"]");
          }
-
-         _asString = buffer.toString();
+         _asString = description.toString();
       }
 
       return _asString;

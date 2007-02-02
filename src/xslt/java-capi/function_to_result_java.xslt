@@ -200,20 +200,14 @@ extends org.xins.client.AbstractCAPICallResult {
 		    <xsl:apply-templates select="output/param" mode="setfield" />
 		    <xsl:text>
       } catch (IllegalArgumentException exception) {
-         org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(181, "The parameter \"");
-         buffer.append(currentParam);
-         buffer.append("\" is not set although it is required.");
-         throw new org.xins.client.UnacceptableResultXINSCallException(result, buffer.toString(), exception);
+         String details = "The parameter \"" + currentParam + "\" is not set although it is required.";
+         throw new org.xins.client.UnacceptableResultXINSCallException(result, details, exception);
 
       } catch (org.xins.common.types.TypeValueException exception) {
-         org.xins.common.text.FastStringBuffer buffer = new org.xins.common.text.FastStringBuffer(203, "The parameter \"");
-         buffer.append(currentParam);
-         buffer.append("\" has value \"");
-         buffer.append(exception.getValue());
-         buffer.append("\", which is invalid for the type \"");
-         buffer.append(exception.getType().getName());
-         buffer.append("\".");
-         throw new org.xins.client.UnacceptableResultXINSCallException(result, buffer.toString(), exception);
+         String details = "The parameter \"" + currentParam + "\" has value \""
+               + exception.getValue() + "\", which is invalid for the type \""
+               + exception.getType().getName() + "\".";
+         throw new org.xins.client.UnacceptableResultXINSCallException(result, details, exception);
       }</xsl:text>
         </xsl:if>
 		<xsl:text>

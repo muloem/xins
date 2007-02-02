@@ -19,6 +19,7 @@ import org.xins.common.Log;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated since 2.0 use java.lang.Stringbuffer to java.lang.String
  */
 public class FastStringBuffer extends Object {
 

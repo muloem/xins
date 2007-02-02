@@ -33,8 +33,7 @@ import org.xins.logdoc.LogdocStringBuffer;
  *
  * @see PropertyReader
  */
-public final class PropertyReaderUtils
-extends Object {
+public final class PropertyReaderUtils {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -635,7 +634,7 @@ extends Object {
             }
          }
 
-         FastStringBuffer buffer = new FastStringBuffer(299);
+         StringBuffer buffer = new StringBuffer(299);
 
          boolean first = true;
          do {

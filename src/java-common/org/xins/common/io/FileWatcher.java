@@ -230,15 +230,9 @@ public final class FileWatcher extends Thread {
     * Configures the name of this thread.
     */
    private synchronized void configureThreadName() {
-      FastStringBuffer name = new FastStringBuffer(238, CLASSNAME);
-      name.append(" #");
-      name.append(_instanceID);
-      name.append(" [file=\"");
-      name.append(_filePath);
-      name.append("\"; interval=");
-      name.append(_interval);
-      name.append(']');
-      setName(name.toString());
+      String name = CLASSNAME + " #" + _instanceID + " [file=\"" + _filePath +
+            "\"; interval=" + _interval + ']';
+      setName(name);
    }
 
    /**

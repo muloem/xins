@@ -143,15 +143,9 @@ public final class XINSCallConfig extends CallConfig {
          method          = _httpCallConfig.getMethod();
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(51);
-      buffer.append("XINS call config #");
-      buffer.append(_instanceNumber);
-      buffer.append(" [failOverAllowed=");
-      buffer.append(failOverAllowed);
-      buffer.append("; method=");
-      buffer.append(TextUtils.quote(method.toString()));
-      buffer.append(']');
+      String description = "XINS call config #" + _instanceNumber + " [failOverAllowed=" +
+            failOverAllowed + "; method=" + TextUtils.quote(method.toString()) + ']';
 
-      return buffer.toString();
+      return description;
    }
 }

@@ -42,11 +42,8 @@ public final class TextUtils extends Object {
     */
    public static String quote(String s) {
       if (s != null) {
-         FastStringBuffer buffer = new FastStringBuffer(s.length() + 2);
-         buffer.append('"');
-         buffer.append(s);
-         buffer.append('"');
-         return buffer.toString();
+         String quoted = '"' + s + '"';
+         return quoted;
       } else {
          return "(null)";
       }

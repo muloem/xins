@@ -143,7 +143,7 @@ public class SimplePatternParser extends Object {
 
       // Convert to char array and construct buffer
       char[] contents = pattern.toCharArray();
-      FastStringBuffer buffer = new FastStringBuffer(length * 2);
+      StringBuffer buffer = new StringBuffer(length * 2);
 
       // Loop through all characters
       char prevChar = (char) 0;
@@ -163,18 +163,11 @@ public class SimplePatternParser extends Object {
          } else if (currChar == '.') {
             buffer.append("\\.");
          } else if ((currChar == '*' || currChar == '?') && (prevChar == '*' || prevChar == '?')) {
-            final String DETAIL = "The pattern \""
-                                + pattern
-                                + "\" is invalid since it contains two subsequent wildcard characters ('"
-                                + prevChar
-                                + "' and '"
-                                + currChar
-                                + "') at positions "
-                                + (i - 1)
-                                + " and "
-                                + i
-                                + '.';
-            throw new ParseException(DETAIL);
+            String detail = "The pattern \"" + pattern
+                  + "\" is invalid since it contains two subsequent wildcard characters ('"
+                  + prevChar + "' and '" + currChar + "') at positions " + (i - 1)
+                  + " and " + i + '.';
+            throw new ParseException(detail);
          } else if (currChar == '*') {
             buffer.append(".*");
          } else if (currChar == '?') {

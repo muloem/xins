@@ -181,10 +181,7 @@ extends Object {
          if (detail != null) {
             detail = detail.trim();
             if (detail.length() > 0) {
-               FastStringBuffer buffer = new FastStringBuffer(182,
-                  "Unable to convert the specified string to XML: ");
-               buffer.append(detail);
-               message = buffer.toString();
+               message = "Unable to convert the specified string to XML: " + detail;
             }
          }
 
@@ -236,7 +233,7 @@ extends Object {
       private Handler() {
          _state            = INITIAL;
          _level            = -1;
-         _characters       = new FastStringBuffer(145);
+         _characters       = new StringBuffer(145);
          _dataElementStack = new Stack();
       }
 
@@ -275,7 +272,7 @@ extends Object {
        * The character content (CDATA or PCDATA) of the element currently
        * being parsed.
        */
-      private final FastStringBuffer _characters;
+      private StringBuffer _characters;
 
       /**
        * The stack of child elements within the data section. The top element
@@ -435,7 +432,7 @@ extends Object {
                // TODO: Check parameter name here (null and pattern)
 
                // Reserve buffer for PCDATA
-               _characters.clear();
+               _characters = new StringBuffer(145);
 
                // Update the state
                _state = IN_PARAM_ELEMENT;
@@ -491,7 +488,7 @@ extends Object {
             _dataElementStack.push(element);
 
             // Reserve buffer for PCDATA
-            _characters.clear();
+            _characters = new StringBuffer(145);
 
             // Reset the state from ERROR back to IN_DATA_SECTION
             _state = IN_DATA_SECTION;
@@ -623,7 +620,7 @@ extends Object {
             } else {
 
                // Set the PCDATA content on the element
-               if (_characters != null && _characters.getLength() > 0) {
+               if (_characters != null && _characters.length() > 0) {
                   child.setText(_characters.toString());
                }
 
@@ -699,7 +696,7 @@ extends Object {
             // Reset the state
             _parameterName = null;
             _state         = AT_ROOT_LEVEL;
-            _characters.clear();
+            _characters = new StringBuffer(145);
 
          // Unknown state
          } else {
@@ -712,7 +709,7 @@ extends Object {
          }
 
          _level--;
-         _characters.clear();
+         _characters = new StringBuffer(145);
       }
 
       /**

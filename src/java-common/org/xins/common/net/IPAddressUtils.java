@@ -242,12 +242,10 @@ public final class IPAddressUtils extends Object {
       MandatoryArgumentChecker.check("ip", ip);
 
       // Construct the message for the exception
-      FastStringBuffer buffer = new FastStringBuffer(63, "The string \"");
-      buffer.append(ip);
-      buffer.append("\" is not a valid IP address.");
+      String detail = "The string \"" + ip + "\" is not a valid IP address.";
 
       // Return the exception
-      return new ParseException(buffer.toString());
+      return new ParseException(detail);
    }
 
 

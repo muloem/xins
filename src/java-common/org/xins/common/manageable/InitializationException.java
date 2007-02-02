@@ -43,29 +43,23 @@ extends Exception {
     */
    private static String createMessage(String detail, Throwable cause) {
 
-      FastStringBuffer buffer = new FastStringBuffer(159);
-      buffer.append("Initialization failed");
+      String message = "Initialization failed";
 
       if (detail != null) {
-         buffer.append(": \"");
-         buffer.append(detail);
-         buffer.append('"');
+         message += ": \"" + detail + '"';
       }
 
       if (cause != null) {
-         buffer.append(". Caught ");
-         buffer.append(cause.getClass().getName());
+         message += ". Caught "  +cause.getClass().getName();
 
          String causeMessage = TextUtils.trim(cause.getMessage(), null);
          if (causeMessage != null) {
-            buffer.append(" with message \"");
-            buffer.append(causeMessage);
-            buffer.append('"');
+            message += " with message \"" + causeMessage + '"';
          }
       }
-      buffer.append('.');
+      message += '.';
 
-      return buffer.toString();
+      return message;
    }
 
 

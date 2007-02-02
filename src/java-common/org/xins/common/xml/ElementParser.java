@@ -37,8 +37,7 @@ import org.xins.common.text.TextUtils;
  *
  * @since XINS 1.1.0
  */
-public class ElementParser
-extends Object {
+public class ElementParser {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -204,7 +203,7 @@ extends Object {
 
          _state            = PARSING;
          _level            = -1;
-         _characters       = new FastStringBuffer(145);
+         _characters       = new StringBuffer(145);
          _dataElementStack = new Stack();
       }
 
@@ -227,7 +226,7 @@ extends Object {
        * The character content (CDATA or PCDATA) of the element currently
        * being parsed.
        */
-      private final FastStringBuffer _characters;
+      private StringBuffer _characters;
 
       /**
        * The stack of child elements within the data section. The top element
@@ -318,7 +317,7 @@ extends Object {
             _dataElementStack.push(element);
 
             // Reserve buffer for PCDATA
-            _characters.clear();
+            _characters = new StringBuffer(145);
 
             // Reset the state from ERROR back to PARSING
             _state = PARSING;
@@ -367,7 +366,7 @@ extends Object {
             Element child = (Element) _dataElementStack.pop();
 
             // Set the PCDATA content on the element
-            if (_characters.getLength() > 0) {
+            if (_characters.length() > 0) {
                child.setText(_characters.toString());
             }
 
@@ -386,7 +385,7 @@ extends Object {
          }
 
          _level--;
-         _characters.clear();
+         _characters = new StringBuffer(145);
       }
 
       /**

@@ -219,7 +219,7 @@ class FileServiceCaller extends ServiceCaller {
       String url = target.getURL();
 
       // Loop through the parameters
-      FastStringBuffer query = new FastStringBuffer(255);
+      StringBuffer query = new StringBuffer(255);
       Iterator keys = parameters.getNames();
       while (keys.hasNext()) {
 
@@ -235,7 +235,7 @@ class FileServiceCaller extends ServiceCaller {
          // Add this parameter key/value combination.
          if (key != null) {
 
-            if (query.getLength() > 0) {
+            if (query.length() > 0) {
                query.append("&");
             }
             query.append(URLEncoding.encode(key));

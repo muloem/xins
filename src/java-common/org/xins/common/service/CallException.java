@@ -186,7 +186,8 @@ public abstract class CallException extends Exception {
       // Initialize the message if necessary
       if (_message == null) {
 
-         FastStringBuffer buffer = new FastStringBuffer(495, _shortReason);
+         StringBuffer buffer = new StringBuffer(495);
+         buffer.append(_shortReason);
          buffer.append(" in ");
          buffer.append(_duration);
          buffer.append(" ms while executing ");

@@ -46,17 +46,12 @@ extends RuntimeException {
       // Check the precondition
       MandatoryArgumentChecker.check("string", string);
 
-      FastStringBuffer buffer = new FastStringBuffer(256);
-
-      buffer.append("The string \"");
-      buffer.append(string);
-      buffer.append("\" is invalid.");
+      String message = "The string \"" + string + "\" is invalid.";
       if (reason != null) {
-         buffer.append(" Reason: ");
-         buffer.append(reason);
+         message += " Reason: " + reason;
       }
 
-      return buffer.toString();
+      return message;
    }
 
 

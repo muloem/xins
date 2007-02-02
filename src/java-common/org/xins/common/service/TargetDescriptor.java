@@ -548,7 +548,8 @@ public final class TargetDescriptor extends Descriptor {
 
       // Lazily initialize
       if (_asString == null) {
-         FastStringBuffer buffer = new FastStringBuffer(233, "TargetDescriptor #");
+         StringBuffer buffer = new StringBuffer(233);
+         buffer.append("TargetDescriptor #");
          buffer.append(_instanceNumber);
          buffer.append(" [url=\"");
          buffer.append(_url);

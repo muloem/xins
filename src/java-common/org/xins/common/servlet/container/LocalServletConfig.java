@@ -163,7 +163,7 @@ public class LocalServletConfig implements ServletConfig {
       /**
        * The PCDATA element of the tag that is actually parsed.
        */
-      private FastStringBuffer _pcdata;
+      private StringBuffer _pcdata;
 
       /**
        * The name of the property that is currently parsed.
@@ -180,7 +180,7 @@ public class LocalServletConfig implements ServletConfig {
                                String     qName,
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
-         _pcdata = new FastStringBuffer(80);
+         _pcdata = new StringBuffer(80);
       }
 
       public void endElement(String namespaceURI,

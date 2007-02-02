@@ -117,7 +117,7 @@ public class Descriptor extends Type {
     */
    private static String toString(org.xins.common.service.Descriptor value, String prefix) {
       // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(255);
+      StringBuffer buffer = new StringBuffer(255);
       buffer.append(prefix);
       buffer.append("=");
       if (value instanceof GroupDescriptor) {

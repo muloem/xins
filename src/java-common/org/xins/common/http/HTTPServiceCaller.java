@@ -310,7 +310,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
          getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
 
          // Loop through the parameters
-         FastStringBuffer query = new FastStringBuffer(255);
+         StringBuffer query = new StringBuffer(255);
          Iterator keys = parameters.getNames();
          while (keys.hasNext()) {
 
@@ -326,7 +326,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             // Add this parameter key/value combination.
             if (key != null) {
 
-               if (query.getLength() > 0) {
+               if (query.length() > 0) {
                   query.append("&");
                }
                query.append(URLEncoding.encode(key));
@@ -334,7 +334,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                query.append(URLEncoding.encode(value));
             }
          }
-         if (query.getLength() > 0) {
+         if (query.length() > 0) {
             getMethod.setQueryString(query.toString());
          }
 
@@ -1044,10 +1044,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
          }
 
          // Set the name of this thread
-         FastStringBuffer name = new FastStringBuffer(69, EXECUTOR_CLASSNAME);
-         name.append(" #");
-         name.append(instanceID);
-         setName(name.toString());
+         String name = EXECUTOR_CLASSNAME + " #" + instanceID;
+         setName(name);
       }
 
 

@@ -177,7 +177,7 @@ public class List extends Type {
       }
 
       // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(255);
+      StringBuffer buffer = new StringBuffer(255);
 
       // Iterate over the list
       int listSize = value.getSize();

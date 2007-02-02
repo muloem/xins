@@ -123,7 +123,7 @@ public final class URLEncoding extends Object {
       }
 
       // Construct a buffer
-      FastStringBuffer buffer = new FastStringBuffer(length * 2);
+      StringBuffer buffer = new StringBuffer(length * 2);
 
       // Loop through the string and just append whatever we find
       // in UNENCODED_TO_ENCODED or if c > 127, encode the UTF-8 value
@@ -194,7 +194,7 @@ public final class URLEncoding extends Object {
       char[] string = s.toCharArray();
 
       // Loop through the string
-      FastStringBuffer buffer = new FastStringBuffer(length * 2);
+      StringBuffer buffer = new StringBuffer(length * 2);
       int index = 0;
       while (index < length) {
 

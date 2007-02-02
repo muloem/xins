@@ -166,17 +166,11 @@ public final class HTTPCallConfig extends CallConfig {
          userAgent       = _userAgent;
       }
 
-      FastStringBuffer buffer = new FastStringBuffer(55);
-      buffer.append("HTTP call config #");
-      buffer.append(_instanceNumber);
-      buffer.append(" [failOverAllowed=");
-      buffer.append(failOverAllowed);
-      buffer.append("; method=");
-      buffer.append(TextUtils.quote(method.toString()));
-      buffer.append("; userAgent=");
-      buffer.append(TextUtils.quote(userAgent));
-      buffer.append(']');
+      String description = "HTTP call config #" + _instanceNumber +
+            " [failOverAllowed=" + failOverAllowed + "; method=" +
+            TextUtils.quote(method.toString()) + "; userAgent=" +
+            TextUtils.quote(userAgent) + "]";
 
-      return buffer.toString();
+      return description;
    }
 }

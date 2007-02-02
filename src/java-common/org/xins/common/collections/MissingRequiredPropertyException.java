@@ -50,20 +50,17 @@ extends Exception {
       MandatoryArgumentChecker.check("propertyName", propertyName);
 
       // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(120);
-      buffer.append("No value is set for the required property \"");
-      buffer.append(propertyName);
+      String message = "No value is set for the required property \"" + propertyName;
 
       // Append the detail message, if any
       detail = TextUtils.trim(detail, null);
       if (detail != null) {
-         buffer.append("\": ");
-         buffer.append(detail);
+         message += "\": " + detail;
       } else {
-         buffer.append("\".");
+         message += "\".";
       }
 
-      return buffer.toString();
+      return message;
    }
 
 

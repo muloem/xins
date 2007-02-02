@@ -197,7 +197,7 @@ public class Timestamp extends Type {
                                   int second) {
 
       // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(14);
+      StringBuffer buffer = new StringBuffer(14);
 
       // Append the year
       buffer.append(year);

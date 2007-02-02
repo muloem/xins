@@ -659,19 +659,12 @@ public final class XINSServiceCaller extends ServiceCaller {
                                    SUBJECT_CLASS, SUBJECT_METHOD,
                                    null,          exception);
 
-         FastStringBuffer message = new FastStringBuffer(190);
-         message.append(SUBJECT_CLASS);
-         message.append('.');
-         message.append(SUBJECT_METHOD);
-         message.append(" threw unexpected ");
-         message.append(exception.getClass().getName());
-         message.append(". Message: ");
-         message.append(TextUtils.quote(exception.getMessage()));
-         message.append('.');
+         String message = SUBJECT_CLASS + '.' + SUBJECT_METHOD + " threw unexpected " +
+               exception.getClass().getName() + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
 
          // TODO: Call Utils.logProgrammingError ?
          Log.log_2111(exception, url, function, params, duration);
-         throw new UnexpectedExceptionCallException(request, target, duration, message.toString(), exception);
+         throw new UnexpectedExceptionCallException(request, target, duration, message, exception);
       }
 
       // Determine duration

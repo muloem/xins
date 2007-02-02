@@ -55,19 +55,15 @@ extends Exception {
                                      "propertyValue", propertyValue);
 
       // Construct the message
-      FastStringBuffer buffer = new FastStringBuffer(150);
-      buffer.append("The value \"");
-      buffer.append(propertyValue);
-      buffer.append("\" is invalid for property \"");
-      buffer.append(propertyName);
+      String message = "The value \"" + propertyValue +
+            "\" is invalid for property \"" + propertyName;
       if (reason == null) {
-         buffer.append("\".");
+         message += "\".";
       } else {
-         buffer.append("\": ");
-         buffer.append(reason);
+         message += "\": " + reason;
       }
 
-      return buffer.toString();
+      return message;
    }
 
 

@@ -165,7 +165,7 @@ public class Date extends Type {
    private static String toString(int year, int month, int day) {
 
       // Use a buffer to create the string
-      FastStringBuffer buffer = new FastStringBuffer(8);
+      StringBuffer buffer = new StringBuffer(8);
 
       // Append the year
       if (year < 10) {

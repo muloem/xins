@@ -50,18 +50,14 @@ extends Exception {
 
       String exceptionMessage = cause.getMessage();
 
-      FastStringBuffer buffer = new FastStringBuffer(150);
-      buffer.append("Caught ");
-      buffer.append(cause.getClass().getName());
+      String message = "Caught " + cause.getClass().getName();
       if (exceptionMessage != null && exceptionMessage.length() > 0) {
-         buffer.append(". Message: \"");
-         buffer.append(exceptionMessage);
-         buffer.append("\".");
+         message += ". Message: \"" + exceptionMessage + "\".";
       } else {
-         buffer.append('.');
+         message += '.';
       }
 
-      return buffer.toString();
+      return message;
    }
 
 

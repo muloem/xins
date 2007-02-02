@@ -537,13 +537,12 @@ public final class Utils extends Object {
 
       // Handle arrays
       if (c.isArray()) {
-         FastStringBuffer buffer = new FastStringBuffer(137);
          Class comp = c.getComponentType();
-         buffer.append(getNameOfClass(comp));
+         String name = getNameOfClass(comp);
          if (c.getName().charAt(0) == '[') {
-            buffer.append("[]");
+            name += "[]";
          }
-         return buffer.toString();
+         return name;
 
       // Handle non-arrays (primitives and classes)
       } else {
