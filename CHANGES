@@ -40,6 +40,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 * Build- and release-process:
   - Fixed bug #1657846: css directory is missing from the release.
 
+* Other:
+  - Changed the type_2_0.dtd file to required a type.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
@@ -2879,6 +2882,7 @@ NOTE: This release is based on XINS 1.1.0-rc1.
   - Changed ExceptionUtils class to be compatible with Java 1.3 (part of
     SF.net RFE #1108205). Used the unit tests to confirm it still works
     correctly under Java 1.4.  Although it indeed compiles with Java 1.3 now,
+
     the unit tests cannot be run with Java 1.3 yet.
   - Replaced all reference to the Base64 class of the XINS Common library to
     the Base64 class of the Apache Common Codec library.
