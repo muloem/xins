@@ -9,16 +9,13 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.io.Writer;
 import java.util.Iterator;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.io.FastStringWriter;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
 import org.xins.logdoc.ExceptionUtils;
-
 import org.znerd.xmlenc.XMLEncoder;
 import org.znerd.xmlenc.XMLOutputter;
 
@@ -30,10 +27,11 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */
-public final class CallResultOutputter extends Object {
+public final class CallResultOutputter {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -91,12 +89,6 @@ public final class CallResultOutputter extends Object {
     * The final output for each output conversion. Never <code>null</code>.
     */
    private static final char[] DOCUMENT_SUFFIX = "</result>".toCharArray();
-
-   /**
-    * Per-thread caches for the <code>FastStringWriter</code> instances. Never
-    * <code>null</code>.
-    */
-   private static final ThreadLocal WRITER = new ThreadLocal();
 
    /**
     * An <code>XMLEncoder</code> for the UTF-8 encoding. Initialized by the
@@ -164,46 +156,33 @@ public final class CallResultOutputter extends Object {
    static void output(Writer out, FunctionResult result, boolean oldStyle)
    throws IllegalArgumentException, IOException {
 
-      // XXX: Using OutputStream instead of Writer will boost performance
-
       // Check preconditions
       MandatoryArgumentChecker.check("out", out, "result", result);
 
-      // Store the result in a buffer before sending it. Reserve 4 KB.
-      FastStringWriter writer;
-      Object o = WRITER.get();
-      if (o == null) {
-         writer = new FastStringWriter(4096);
-         WRITER.set(writer);
-      } else {
-         writer = (FastStringWriter) o;
-      }
-      FastStringBuffer buffer = writer.getBuffer();
-
       // Output the declaration
-      buffer.append(DOCUMENT_PREFACE);
+      out.write(DOCUMENT_PREFACE);
 
       // Output the start of the <result> element
       String code = result.getErrorCode();
       if (oldStyle) {
          if (code == null) {
-            buffer.append(SUCCESS_TRUE);
+            out.write(SUCCESS_TRUE);
          } else {
-            buffer.append(SUCCESS_FALSE_PREFIX);
-            buffer.append(code);
-            buffer.append(SUCCESS_FALSE_MIDDLE);
-            buffer.append(code);
-            buffer.append('"');
-            buffer.append('>');
+            out.write(SUCCESS_FALSE_PREFIX);
+            out.write(code);
+            out.write(SUCCESS_FALSE_MIDDLE);
+            out.write(code);
+            out.write('"');
+            out.write('>');
          }
       } else {
          if (code == null) {
-            buffer.append('>');
+            out.write('>');
          } else {
-            buffer.append(ERRORCODE_IS);
-            buffer.append(code);
-            buffer.append('"');
-            buffer.append('>');
+            out.write(ERRORCODE_IS);
+            out.write(code);
+            out.write('"');
+            out.write('>');
          }
       }
 
@@ -213,15 +192,15 @@ public final class CallResultOutputter extends Object {
          Iterator names = params.getNames();
          while (names.hasNext()) {
             String n = (String) names.next();
-            if (n != null && n.length() > 0 && n.trim().length() > 0) {
+            if (n != null && n.length() > 0) {
                String v = params.get(n);
-               if (v != null && (v.length() > 0) && v.trim().length() > 0) {
-                  buffer.append(PARAM_PREFACE);
-                  XML_ENCODER.text(writer, n, true);
-                  buffer.append('"');
-                  buffer.append('>');
-                  XML_ENCODER.text(writer, v, true);
-                  buffer.append(PARAM_SUFFIX);
+               if (v != null && v.length() > 0) {
+                  out.write(PARAM_PREFACE);
+                  XML_ENCODER.text(out, n, true);
+                  out.write('"');
+                  out.write('>');
+                  XML_ENCODER.text(out, v, true);
+                  out.write(PARAM_SUFFIX);
                }
             }
          }
@@ -231,17 +210,12 @@ public final class CallResultOutputter extends Object {
       Element dataElement = result.getDataElement();
       if (dataElement != null) {
          ElementSerializer serializer = new ElementSerializer();
-         XMLOutputter xmlout = new XMLOutputter(writer, "UTF-8");
+         XMLOutputter xmlout = new XMLOutputter(out, "UTF-8");
          serializer.output(xmlout, dataElement);
       }
 
       // End the root element <result>
-      buffer.append(DOCUMENT_SUFFIX);
-
-      // Write the result to the servlet response
-      String s = buffer.toString();
-      writer.getBuffer().clear();
-      out.write(s);
+      out.write(DOCUMENT_SUFFIX);
    }
 
 
