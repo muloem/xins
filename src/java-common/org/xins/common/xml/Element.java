@@ -18,10 +18,8 @@ import org.xins.common.Utils;
 import org.xins.common.collections.ProtectedList;
 import org.xins.common.text.ParseException;
 
-import org.xins.common.text.TextUtils;
-
 /**
- * Element in a XINS result data section.
+ * XML Element.
  *
  * <p>Note that this class is not thread-safe. It should not be used from
  * different threads at the same time. This applies even to read operations.
