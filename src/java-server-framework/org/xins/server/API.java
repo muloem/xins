@@ -6,9 +6,8 @@
  */
 package org.xins.server;
 
-import java.io.File;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -18,16 +17,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.DeinitializationException;
 import org.xins.common.manageable.InitializationException;
@@ -1288,7 +1283,7 @@ implements DefaultResultCodes {
       }
 
       // Add the stack trace, if any
-      FastStringWriter stWriter = new FastStringWriter(360);
+      StringWriter stWriter = new StringWriter(360);
       PrintWriter printWriter = new PrintWriter(stWriter);
       exception.printStackTrace(printWriter);
       String stackTrace = stWriter.toString();

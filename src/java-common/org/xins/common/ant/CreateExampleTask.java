@@ -26,7 +26,6 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
-import org.xins.common.io.FastStringWriter;
 import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
@@ -277,7 +276,7 @@ public class CreateExampleTask extends Task {
 
       // Read the source and process it with the XSLT file
       Source source = new StreamSource(new StringReader(combined.toString()));
-      Writer buffer = new FastStringWriter(1024);
+      Writer buffer = new StringWriter(1024);
       Result resultExample = new StreamResult(buffer);
       xformer.transform(source, resultExample);
       return buffer.toString();

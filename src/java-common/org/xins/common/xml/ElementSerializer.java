@@ -7,18 +7,15 @@
 package org.xins.common.xml;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
-import org.xins.common.io.FastStringWriter;
-
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -123,7 +120,7 @@ public final class ElementSerializer extends Object {
       MandatoryArgumentChecker.check("element", element);
 
       // Create an XMLOutputter
-      FastStringWriter fsw = new FastStringWriter(512);
+      Writer fsw = new StringWriter(512);
       XMLOutputter out;
       final String ENCODING = "UTF-8";
       try {
@@ -139,14 +136,12 @@ public final class ElementSerializer extends Object {
       try {
          output(out, element);
 
-      // I/O errors should not happen on a FastStringWriter
+      // I/O errors should not happen on a StringWriter
       } catch (IOException exception) {
          String throwingMethod = "output(" + out.getClass().getName() + ',' + element.getClass().getName() + ')';
          throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, throwingMethod, null, exception);
 
-      // Always close the FastStringWriter
       } finally {
-         fsw.close();
          _namespaces.clear();
          _inUse = false;
       }

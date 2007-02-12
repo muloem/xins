@@ -45,7 +45,6 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
-import org.xins.common.io.FastStringWriter;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.spec.FunctionSpec;
@@ -769,7 +768,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     */
    private String serializeResult(Element commandResult) {
       // Store the result in a StringWriter before sending it.
-      Writer buffer = new FastStringWriter(2048);
+      Writer buffer = new StringWriter(2048);
 
       // Create an XMLOutputter
       try {
@@ -808,7 +807,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          Source source = new StreamSource(new StringReader(xmlInput));
 
          // Store the result in a StringWriter before sending it.
-         Writer buffer = new FastStringWriter(8192);
+         Writer buffer = new StringWriter(8192);
 
          Result result = new StreamResult(buffer);
 
