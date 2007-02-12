@@ -28,6 +28,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Fixed incorect doctype generated for files.
   - Improved normalisation of the original WSDL.
 
+* Build- and release-process:
+  - Fixed bug #1657846: css directory is missing from the release.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
 
