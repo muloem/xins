@@ -10,7 +10,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.service.CallConfig;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**

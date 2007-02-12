@@ -8,8 +8,6 @@ package org.xins.common.manageable;
 
 import org.xins.common.MandatoryArgumentChecker;
 
-import org.xins.common.text.FastStringBuffer;
-
 import org.xins.logdoc.ExceptionUtils;
 
 /**

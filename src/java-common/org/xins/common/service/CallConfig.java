@@ -8,8 +8,6 @@ package org.xins.common.service;
 
 import java.io.Serializable;
 
-import org.xins.common.text.FastStringBuffer;
-
 /**
  * Configuration for a service call. Objects of this type specify certain
  * aspects of <em>how</em> a call is executed. For example, for an HTTP

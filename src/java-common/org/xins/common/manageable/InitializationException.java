@@ -6,7 +6,6 @@
  */
 package org.xins.common.manageable;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 import org.xins.logdoc.ExceptionUtils;

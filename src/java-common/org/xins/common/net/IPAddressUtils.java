@@ -13,8 +13,6 @@ import java.util.StringTokenizer;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 
 /**

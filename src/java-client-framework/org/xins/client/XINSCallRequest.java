@@ -31,7 +31,6 @@ import org.xins.common.http.HTTPMethod;
 
 import org.xins.common.service.CallRequest;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**
@@ -529,12 +528,9 @@ public final class XINSCallRequest extends CallRequest {
          //      some cases or otherwise it should subclass
          //      IllegalArgumentException.
 
-         FastStringBuffer buffer = new FastStringBuffer(121, "The parameter name \"");
-         buffer.append(name);
-         buffer.append("\" does not match the pattern \"");
-         buffer.append(PARAMETER_NAME_PATTERN_STRING);
-         buffer.append("\".");
-         throw new IllegalArgumentException(buffer.toString());
+         String message = "The parameter name \"" + name + "\" does not match the pattern \""
+               + PARAMETER_NAME_PATTERN_STRING + "\".";
+         throw new IllegalArgumentException(message);
 
       // Name cannot be "function"
       } else if ("function".equals(name)) {

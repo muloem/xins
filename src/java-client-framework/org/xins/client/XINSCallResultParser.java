@@ -18,7 +18,6 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.ProtectedPropertyReader;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.SAXParserProvider;
@@ -889,6 +888,7 @@ extends Object {
 
       //----------------------------------------------------------------------
       // Fields
+
       //----------------------------------------------------------------------
 
       /**

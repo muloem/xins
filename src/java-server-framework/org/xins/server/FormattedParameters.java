@@ -9,7 +9,6 @@ package org.xins.server;
 import java.util.Iterator;
 
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 

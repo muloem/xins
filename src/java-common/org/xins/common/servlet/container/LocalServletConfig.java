@@ -17,7 +17,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 import org.xins.common.Log;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.xml.SAXParserProvider;
 
 import org.xml.sax.Attributes;

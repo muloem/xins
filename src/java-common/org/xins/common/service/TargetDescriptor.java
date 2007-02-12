@@ -19,7 +19,6 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.HexConverter;
 
 /**
@@ -66,11 +65,6 @@ public final class TargetDescriptor extends Descriptor {
    private static final int DEFAULT_TIMEOUT = 5000;
 
    /**
-    * Perl 5 pattern compiler.
-    */
-   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
-
-   /**
     * The pattern for a URL, as a character string.
     */
    private static final String PATTERN_STRING = "[a-z][a-z\\d]*(:[a-z\\d]+)?:\\/\\/[a-z\\d-]*(\\.[a-z\\d-]*)*(:[1-9][\\d]*)?(\\/([a-z\\d%_~.-]*))*";
@@ -78,39 +72,12 @@ public final class TargetDescriptor extends Descriptor {
    /**
     * The pattern for a URL.
     */
-   private static final Pattern PATTERN;
+   private static Pattern PATTERN;
 
 
    //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   /**
-    * Initializes this class. This function compiles {@link #PATTERN_STRING}
-    * to a {@link Pattern} and then stores that in {@link #PATTERN}.
-    */
-   static {
-      final String THIS_METHOD = "<clinit>()";
-      try {
-         PATTERN = PATTERN_COMPILER.compile(
-            PATTERN_STRING,
-            Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
-
-      } catch (MalformedPatternException exception) {
-         final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
-         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
-         final String DETAIL = "The pattern \""
-                             + PATTERN_STRING
-                             + "\" is considered malformed.";
-
-         throw Utils.logProgrammingError(CLASSNAME,
-                                         THIS_METHOD,
-                                         SUBJECT_CLASS,
-                                         SUBJECT_METHOD,
-                                         DETAIL,
-                                         exception);
-      }
-   }
 
    /**
     * Computes the CRC-32 checksum for the specified character string.
@@ -286,6 +253,15 @@ public final class TargetDescriptor extends Descriptor {
       // Check preconditions
       MandatoryArgumentChecker.check("url", url);
 
+      if (PATTERN == null) {
+         Perl5Compiler patternCompiler = new Perl5Compiler();
+         try {
+            PATTERN = patternCompiler.compile(PATTERN_STRING,
+                  Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
+         } catch (MalformedPatternException mpex) {
+            throw Utils.logProgrammingError(mpex);
+         }
+      }
       Perl5Matcher patternMatcher = new Perl5Matcher();
       if (! patternMatcher.matches(url, PATTERN)) {
          throw new MalformedURLException(url);

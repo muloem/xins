@@ -39,7 +39,6 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.service.UnsupportedProtocolException;
 import org.xins.common.servlet.container.LocalServletHandler;
 import org.xins.common.servlet.container.XINSServletResponse;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.URLEncoding;
 import org.xins.logdoc.LogdocSerializable;
 

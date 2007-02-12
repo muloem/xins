@@ -8,6 +8,7 @@ package org.xins.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.io.FastStringWriter;
 import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
@@ -274,7 +274,7 @@ final class SOAPCallingConvention extends CallingConvention {
       }
 
       // Store the result in a StringWriter before sending it.
-      Writer buffer = new FastStringWriter(1024);
+      Writer buffer = new StringWriter(1024);
 
       // Create an XMLOutputter
       XMLOutputter xmlout = new XMLOutputter(buffer, RESPONSE_ENCODING);

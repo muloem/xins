@@ -7,7 +7,6 @@
 package org.xins.common.types;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception thrown to indicate a value is invalid for a certain type.

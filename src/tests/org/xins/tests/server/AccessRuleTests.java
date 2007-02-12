@@ -125,9 +125,9 @@ public class AccessRuleTests extends TestCase {
    private void doTestParseAccessRule(boolean allow, String ip, int mask, String whitespace1, String whitespace2)
    throws Throwable {
 
-      final String pattern = "_*";
+      String pattern = "_*";
 
-      FastStringBuffer buffer = new FastStringBuffer(250);
+      StringBuffer buffer = new StringBuffer(250);
       if (allow) {
          buffer.append("allow");
       } else {

@@ -9,10 +9,7 @@ package org.xins.client;
 import java.util.List;
 
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.service.TargetDescriptor;
-
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Exception thrown to indicate a standard error code was received that

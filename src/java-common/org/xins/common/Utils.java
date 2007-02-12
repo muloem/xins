@@ -6,7 +6,6 @@
  */
 package org.xins.common;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**

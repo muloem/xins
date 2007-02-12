@@ -6,19 +6,13 @@
  */
 package org.xins.tests.common.text;
 
-import java.text.ParseException;
-import java.util.Date;
 import java.util.Properties;
-import java.util.Random;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.text.TextUtils;
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Tests for class <code>TextUtils</code>.

@@ -11,12 +11,9 @@ import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.types.Type;
 import org.xins.common.types.TypeValueException;
-
-import org.xins.common.MandatoryArgumentChecker;
-
-import org.xins.common.text.FastStringBuffer;
 
 /**
  * Standard type <em>_timestamp</em>. A value of this type represents a

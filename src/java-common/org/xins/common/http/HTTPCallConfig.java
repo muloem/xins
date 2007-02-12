@@ -8,7 +8,6 @@ package org.xins.common.http;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.CallConfig;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**

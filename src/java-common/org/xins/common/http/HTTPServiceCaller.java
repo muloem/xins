@@ -56,7 +56,6 @@ import org.xins.common.service.TotalTimeOutCallException;
 import org.xins.common.service.UnexpectedExceptionCallException;
 import org.xins.common.service.UnknownHostCallException;
 import org.xins.common.service.UnsupportedProtocolException;
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 

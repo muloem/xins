@@ -11,7 +11,6 @@ import org.xins.common.collections.PropertyReaderUtils;
 
 import org.xins.common.service.CallRequest;
 
-import org.xins.common.text.FastStringBuffer;
 import org.xins.common.text.TextUtils;
 
 /**
