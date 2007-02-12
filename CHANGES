@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     concatenation or the Stringbuffer class which are faster.
   - The FastStringWriter class has been deprecated and been replaced by 
     StringWriter which is faster.
+  - Implemented RFE #1642379: Added support for path in internal servlet
+    container.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
