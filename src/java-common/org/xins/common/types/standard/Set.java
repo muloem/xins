@@ -11,7 +11,7 @@ import org.xins.common.types.ItemList;
 import org.xins.common.types.TypeValueException;
 
 /**
- * Standard type <em>_list</em>.
+ * Standard type <em>_set</em>.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
@@ -122,7 +122,7 @@ public final class Set extends org.xins.common.types.List {
    //-------------------------------------------------------------------------
 
    /**
-    * Inner class that represents a list of java.lang.String.
+    * Inner class that represents a set of String.
     */
    public static final class Value extends ItemList {
 
@@ -143,7 +143,7 @@ public final class Set extends org.xins.common.types.List {
       //----------------------------------------------------------------------
 
       /**
-       * Add a new element in the list.
+       * Add a new element in the set.
        *
        * @param value
        *    the new value to add, cannot be <code>null</code>.
@@ -157,7 +157,7 @@ public final class Set extends org.xins.common.types.List {
       }
 
       /**
-       * Get an element from the list.
+       * Get an element from the set.
        *
        * @param index
        *    The position of the required element.
