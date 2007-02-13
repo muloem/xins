@@ -55,11 +55,11 @@ public abstract class EnumType extends Type {
    throws IllegalArgumentException {
       super(name, EnumItem.class);
 
-      Map namesToValues = new HashMap();
-      Map valuesToNames = new HashMap();
-      Map namesToItems  = new HashMap();
-      Map valuesToItems = new HashMap();
-      List itemList = new ArrayList();
+      _namesToValues = new HashMap();
+      _valuesToNames = new HashMap();
+      _namesToItems  = new HashMap();
+      _valuesToItems = new HashMap();
+      _items = new ArrayList();
 
       int count = items == null ? 0 : items.length;
       String[] values = new String[count];
@@ -70,23 +70,17 @@ public abstract class EnumType extends Type {
             String itemName  = item.getName();
             String itemValue = item.getValue();
 
-            namesToValues.put(itemName,  itemValue);
-            valuesToNames.put(itemValue, itemName);
+            _namesToValues.put(itemName,  itemValue);
+            _valuesToNames.put(itemValue, itemName);
             values[actualItems++] = itemValue;
-            namesToItems.put(itemName,   item);
-            valuesToItems.put(itemValue, item);
-            itemList.add(item);
+            _namesToItems.put(itemName,   item);
+            _valuesToItems.put(itemValue, item);
+            _items.add(item);
          }
       }
 
       _values = new String[actualItems];
       System.arraycopy(values, 0, _values, 0, actualItems);
-
-      _namesToValues = Collections.unmodifiableMap(namesToValues);
-      _valuesToNames = Collections.unmodifiableMap(valuesToNames);
-      _namesToItems  = Collections.unmodifiableMap(namesToItems);
-      _valuesToItems = Collections.unmodifiableMap(valuesToItems);
-      _items = Collections.unmodifiableList(itemList);
    }
 
 
@@ -95,31 +89,27 @@ public abstract class EnumType extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * Map that links symbolic names to enumeration values. This map is
-    * unmodifiable.
+    * Map that links symbolic names to enumeration values.
     */
    protected final Map _namesToValues;
 
    /**
-    * Map that links enumeration values to their symbolic names. This map is
-    * unmodifiable.
+    * Map that links enumeration values to their symbolic names.
     */
    protected final Map _valuesToNames;
 
    /**
-    * Map that links symbolic names to enumeration item objects. This map is
-    * unmodifiable.
+    * Map that links symbolic names to enumeration item objects.
     */
    protected final Map _namesToItems;
 
    /**
-    * Map that links enumeration values to enumeration item objects. This map
-    * is unmodifiable.
+    * Map that links enumeration values to enumeration item objects.
     */
    protected final Map _valuesToItems;
 
    /**
-    * List of the <code>EnumItem</code>. This list is unmodifiable.
+    * List of the <code>EnumItem</code>.
     */
    protected final List _items;
 
