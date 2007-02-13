@@ -263,7 +263,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                               HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "createMethod(java.lang.String,"
+      final String THIS_METHOD = "createMethod(String,"
                                + HTTPCallRequest.class.getName()
                                + ','
                                + HTTPCallConfig.class.getName()

@@ -448,12 +448,12 @@ extends Manageable {
          // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {
             String thisClass  = CallingConventionManager.class.getName();
-            String thisMethod = "construct(java.lang.String,"
-                              + "java.lang.String)";
+            String thisMethod = "construct(String,"
+                              + "String)";
             Utils.logIgnoredException(thisClass,
                                       thisMethod,
                                       con.getClass().getName(),
-                                      "newInstance(java.lang.Object[])",
+                                      "newInstance(Object[])",
                                       exception);
             return null;
          }

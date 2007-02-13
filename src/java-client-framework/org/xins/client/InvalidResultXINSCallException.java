@@ -133,7 +133,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
       } catch (UnsupportedEncodingException exception) {
          throw Utils.logProgrammingError(
             InvalidResultXINSCallException.class.getName(), "parseError",
-            "java.lang.String", "<init>(byte[],int,int,java.lang.String)",
+            "String", "<init>(byte[],int,int,String)",
             null, cause);
       }
 

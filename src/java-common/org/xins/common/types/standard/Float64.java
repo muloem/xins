@@ -151,7 +151,7 @@ public class Float64 extends Type {
     *    the maximum for the value.
     */
    protected Float64(String name, double minimum, double maximum) {
-      super(name, java.lang.Double.class);
+      super(name, Double.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -195,7 +195,7 @@ public class Float64 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Double d = (java.lang.Double) value;
+      Double d = (Double) value;
       return d.toString();
    }
 }

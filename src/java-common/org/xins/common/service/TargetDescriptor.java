@@ -94,7 +94,7 @@ public final class TargetDescriptor extends Descriptor {
    private static int computeCRC32(String s)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "computeCRC32(java.lang.String)";
+      final String THIS_METHOD = "computeCRC32(String)";
 
       // Check preconditions
       MandatoryArgumentChecker.check("s", s);
@@ -109,8 +109,8 @@ public final class TargetDescriptor extends Descriptor {
       // Unsupported exception
       } catch (UnsupportedEncodingException exception) {
          final String DETAIL = "Encoding \"" + ENCODING + "\" is not supported.";
-         final String SUBJECT_CLASS = "java.lang.String";
-         final String SUBJECT_METHOD = "getBytes(java.lang.String)";
+         final String SUBJECT_CLASS = "String";
+         final String SUBJECT_METHOD = "getBytes(String)";
          throw Utils.logProgrammingError(CLASSNAME,
                                          THIS_METHOD,
                                          SUBJECT_CLASS,

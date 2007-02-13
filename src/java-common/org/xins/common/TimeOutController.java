@@ -70,7 +70,7 @@ public final class TimeOutController extends Object {
           SecurityException,
           TimeOutException {
 
-      final String THIS_METHOD = "execute(java.lang.Runnable,int)";
+      final String THIS_METHOD = "execute(Runnable,int)";
 
       // Check preconditions
       MandatoryArgumentChecker.check("task", task);

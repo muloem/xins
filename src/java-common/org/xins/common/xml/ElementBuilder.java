@@ -160,7 +160,7 @@ public class ElementBuilder extends Object {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "setAttribute(java.lang.String,java.lang.String,java.lang.String)";
+         String methodName = "setAttribute(String,String,String)";
          String detail = "Unexpected state " + _state;
          throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
       }
@@ -246,7 +246,7 @@ public class ElementBuilder extends Object {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "setText(java.lang.String)";
+         String methodName = "setText(String)";
          String detail = "Unexpected state " + _state;
          throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
       }
@@ -287,7 +287,7 @@ public class ElementBuilder extends Object {
 
       // Check state
       if (_state != INITIAL) {
-         String methodName = "startElement(java.lang.String,java.lang.String)";
+         String methodName = "startElement(String,String)";
          String detail = "Unexpected state " + _state;
          throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
       }

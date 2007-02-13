@@ -130,7 +130,7 @@ public final class List extends org.xins.common.types.List {
    //-------------------------------------------------------------------------
 
    /**
-    * Inner class that represents a list of java.lang.String.
+    * Inner class that represents a list of String.
     */
    public static final class Value extends ItemList {
 
@@ -144,7 +144,7 @@ public final class List extends org.xins.common.types.List {
        * @param value
        *    the new value to add, cannot be <code>null</code>.
        *
-       * @throws java.lang.IllegalArgumentException
+       * @throws IllegalArgumentException
        *    if <code>value == null</code>.
        */
       public void add(String value) {

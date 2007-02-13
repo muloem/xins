@@ -151,7 +151,7 @@ public class Int64 extends Type {
     *    the maximum for the value.
     */
    protected Int64(String name, long minimum, long maximum) {
-      super(name, java.lang.Long.class);
+      super(name, Long.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -196,7 +196,7 @@ public class Int64 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Long l = (java.lang.Long) value;
+      Long l = (Long) value;
       return l.toString();
    }
 }

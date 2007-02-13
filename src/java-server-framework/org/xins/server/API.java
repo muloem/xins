@@ -997,9 +997,9 @@ implements DefaultResultCodes {
       // If the IP address cannot be parsed there is a programming error
       // somewhere
       } catch (ParseException exception) {
-         String thisMethod    = "allow(java.lang.String,java.lang.String)";
+         String thisMethod    = "allow(String,String)";
          String subjectClass  = _accessRuleList.getClass().getName();
-         String subjectMethod = "allow(java.lang.String,java.lang.String)";
+         String subjectMethod = "allow(String,String)";
          String detail        = "Malformed IP address: \"" + ip + "\".";
          throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
                                          subjectClass, subjectMethod,
@@ -1473,7 +1473,7 @@ implements DefaultResultCodes {
          sysProps = System.getProperties();
       } catch (SecurityException ex) {
          final String THIS_METHOD  = "doGetSettings()";
-         final String SUBJECT_CLASS  = "java.lang.System";
+         final String SUBJECT_CLASS  = "System";
          final String SUBJECT_METHOD = "getProperties()";
          Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
                                    SUBJECT_CLASS, SUBJECT_METHOD,

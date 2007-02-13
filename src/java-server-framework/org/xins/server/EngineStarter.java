@@ -260,7 +260,7 @@ final class EngineStarter extends Object {
             + apiClassName
             + '.';
          String thisMethod = "getAPIFromSingletonField("
-                           + "java.lang.String,java.lang.Class)";
+                           + "String,Class)";
          Utils.logProgrammingError(Engine.class.getName(), thisMethod,
                                    apiClassName,           "SINGLETON",
                                    detail,                 exception);
@@ -439,8 +439,8 @@ final class EngineStarter extends Object {
          Utils.logProgrammingError(
             Engine.class.getName(),
             "<init>(javax.servlet.ServletConfig)",
-            "java.lang.Class",
-            "forName(java.lang.String)",
+            "Class",
+            "forName(String)",
             "Unexpected exception while loading Logdoc Log class for API.",
             exception);
       }

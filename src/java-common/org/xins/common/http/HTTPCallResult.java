@@ -184,7 +184,7 @@ implements HTTPCallResultData {
                                      + ENCODING
                                      + "\" is unsupported.";
          final String SUBJECT_CLASS  = CLASSNAME;
-         final String SUBJECT_METHOD = "getString(java.lang.String)";
+         final String SUBJECT_METHOD = "getString(String)";
          throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
                                          SUBJECT_CLASS, SUBJECT_METHOD,
                                          DETAIL,        exception);

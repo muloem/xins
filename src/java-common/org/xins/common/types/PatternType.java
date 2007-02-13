@@ -121,9 +121,9 @@ public abstract class PatternType extends Type {
       // If the call causes an exception, then log that exception and assume
       // the value does not match the pattern
       } catch (Throwable exception) {
-         String thisMethod    = "isValidValueImpl(java.lang.String)";
+         String thisMethod    = "isValidValueImpl(String)";
          String subjectClass  = "org.apache.oro.text.regex.Perl5Matcher";
-         String subjectMethod = "matches(java.lang.String,"
+         String subjectMethod = "matches(String,"
                               + _pattern.getClass().getName()
                               + ')';
          String detail        = "Assuming the value \""

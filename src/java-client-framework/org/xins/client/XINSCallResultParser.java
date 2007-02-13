@@ -323,9 +323,9 @@ extends Object {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
-         final String THIS_METHOD = "startElement(java.lang.String,"
-                                  + "java.lang.String,"
-                                  + "java.lang.String,"
+         final String THIS_METHOD = "startElement(String,"
+                                  + "String,"
+                                  + "String,"
                                   + Attributes.class.getName()
                                   + ')';
 
@@ -533,9 +533,9 @@ extends Object {
                              String qName)
       throws IllegalArgumentException, SAXException {
 
-         final String THIS_METHOD = "endElement(java.lang.String,"
-                                  + "java.lang.String,"
-                                  + "java.lang.String)";
+         final String THIS_METHOD = "endElement(String,"
+                                  + "String,"
+                                  + "String)";
 
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;

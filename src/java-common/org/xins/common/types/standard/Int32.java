@@ -151,7 +151,7 @@ public class Int32 extends Type {
     *    the maximum for the value.
     */
    protected Int32(String name, int minimum, int maximum) {
-      super(name, java.lang.Integer.class);
+      super(name, Integer.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -195,7 +195,7 @@ public class Int32 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Integer i = (java.lang.Integer) value;
+      Integer i = (Integer) value;
       return i.toString();
    }
 }

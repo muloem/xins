@@ -148,7 +148,7 @@ public final class Set extends org.xins.common.types.List {
        * @param value
        *    the new value to add, cannot be <code>null</code>.
        *
-       * @throws java.lang.IllegalArgumentException
+       * @throws IllegalArgumentException
        *    if <code>value == null</code>.
        */
       public void add(String value) throws IllegalArgumentException {

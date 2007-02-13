@@ -885,7 +885,7 @@ final class Engine extends Object {
                Engine.class.getName(),
                "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
                _api.getClass().getName(),
-               "handleCall(long,org.xins.server.FunctionRequest,java.lang.String)",
+               "handleCall(long,org.xins.server.FunctionRequest,String)",
                null,
                exception);
          }

@@ -554,7 +554,7 @@ public class Element implements Cloneable {
       } catch (CloneNotSupportedException exception) {
          String detail = null;
          throw Utils.logProgrammingError(Element.class.getName(), "clone()",
-                                         "java.lang.Object",      "clone()",
+                                         "Object",      "clone()",
                                          detail,                  exception);
       }
 
@@ -572,7 +572,7 @@ public class Element implements Cloneable {
    }
 
    /**
-    * Overrides the {@link java.lang.Object#toString()} method to return
+    * Overrides the {@link Object#toString()} method to return
     * the element as its XML representation.
     *
     * @return

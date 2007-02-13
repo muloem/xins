@@ -99,7 +99,7 @@ public final class URL extends Type {
     * used.
     */
    private URL() {
-      super("_url", java.lang.String.class);
+      super("_url", String.class);
    }
 
 

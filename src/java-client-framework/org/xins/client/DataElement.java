@@ -520,7 +520,7 @@ public class DataElement implements Cloneable {
          String detail = null;
          throw Utils.logProgrammingError(DataElement.class.getName(),
                                          "clone()",
-                                         "java.lang.Object",
+                                         "Object",
                                          "clone()",
                                          detail,
                                          exception);

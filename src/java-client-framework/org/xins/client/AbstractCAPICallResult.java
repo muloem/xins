@@ -50,8 +50,7 @@ public abstract class AbstractCAPICallResult implements Serializable {
 
       // Check preconditions
       if (result.getErrorCode() != null) {
-         throw new java.lang.IllegalArgumentException(
-            "result.getErrorCode() != null");
+         throw new IllegalArgumentException("result.getErrorCode() != null");
       }
    }
 

@@ -152,7 +152,7 @@ public class Int8 extends Type {
     *    the maximum for the value.
     */
    protected Int8(String name, byte minimum, byte maximum) {
-      super(name, java.lang.Byte.class);
+      super(name, Byte.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -197,7 +197,7 @@ public class Int8 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Byte b = (java.lang.Byte) value;
+      Byte b = (Byte) value;
       return b.toString();
    }
 }

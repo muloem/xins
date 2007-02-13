@@ -151,7 +151,7 @@ public class Float32 extends Type {
     *    the maximum for the value.
     */
    protected Float32(String name, float minimum, float maximum) {
-      super(name, java.lang.Float.class);
+      super(name, Float.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -195,7 +195,7 @@ public class Float32 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Float f = (java.lang.Float) value;
+      Float f = (Float) value;
       return f.toString();
    }
 }

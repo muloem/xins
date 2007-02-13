@@ -77,7 +77,7 @@ public final class ExceptionUtils extends Object {
 
       // Access denied
       } catch (SecurityException exception) {
-         throw new RuntimeException("Unable to get getCause() method of class java.lang.Throwable: Access denied by security manager.");
+         throw new RuntimeException("Unable to get getCause() method of class Throwable: Access denied by security manager.");
       }
    }
 

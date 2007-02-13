@@ -251,7 +251,7 @@ public final class FileWatcher extends Thread {
 
       // Ignore a SecurityException
       } catch (SecurityException exception) {
-         String thisMethod = "<init>(java.lang.String,int,"
+         String thisMethod = "<init>(String,int,"
                                   + Listener.class.getName()
                                   + ")";
          String subjectClass = "java.io.File";
@@ -450,7 +450,7 @@ public final class FileWatcher extends Thread {
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
             String subjectMethod =
-               "securityException(java.lang.SecurityException)";
+               "securityException(SecurityException)";
             Utils.logIgnoredException(CLASSNAME,      thisMethod,
                                       _listenerClass, subjectMethod,
                                       exception);

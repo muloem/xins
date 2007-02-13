@@ -151,7 +151,7 @@ public class Int16 extends Type {
     *    the maximum for the value.
     */
    protected Int16(String name, short minimum, short maximum) {
-      super(name, java.lang.Short.class);
+      super(name, Short.class);
 
       _minimum = minimum;
       _maximum = maximum;
@@ -195,7 +195,7 @@ public class Int16 extends Type {
    public final String toString(Object value)
    throws IllegalArgumentException, ClassCastException, TypeValueException {
       MandatoryArgumentChecker.check("value", value);
-      java.lang.Short s = (java.lang.Short) value;
+      Short s = (Short) value;
       return s.toString();
    }
 }

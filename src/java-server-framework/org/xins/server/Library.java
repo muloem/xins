@@ -68,7 +68,7 @@ public final class Library extends Object {
 
       } catch (MalformedPatternException exception) {
          final String SUBJECT_CLASS = PATTERN_COMPILER.getClass().getName();
-         final String SUBJECT_METHOD = "compile(java.lang.String,int)";
+         final String SUBJECT_METHOD = "compile(String,int)";
          final String DETAIL = "The pattern \""
                              + PRODUCTION_RELEASE_PATTERN_STRING
                              + "\" is considered malformed.";
