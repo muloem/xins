@@ -414,7 +414,7 @@ public class Element implements Cloneable {
     * Gets the list of all child elements.
     *
     * @return
-    *    an unmodifiable {@link List} containing all child elements; each
+    *    the {@link List} containing all child elements; each
     *    element in the list is another <code>Element</code> instance;
     *    never <code>null</code>.
     */
