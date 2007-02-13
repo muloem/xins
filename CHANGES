@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 * Generated build file:
   - Do not include the impl.xml and the class files from the impl directory
     into the WAR file.
+  - Do not include the CAPI source code in the Zip file as it is no needed.
 
 * Generation of the WSDL:
   - The generated file is correctly indented with tabs.
