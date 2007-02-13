@@ -386,7 +386,26 @@ public final class Utils extends Object {
     *    calling method, never <code>null</code>.
     */
    public static ProgrammingException logProgrammingError(Throwable cause) {
+      return logProgrammingError(null, cause);
+   }
 
+
+   /**
+    * Logs a programming error with an optional cause exception and an optional
+    * message, and returns a <code>ProgrammingException</code> object for it.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, cannot be <code>null</code>.
+    *
+    * @return
+    *    an appropriate {@link ProgrammingException} that can be thrown by the
+    *    calling method, never <code>null</code>.
+    */
+   public static ProgrammingException logProgrammingError(String detail, Throwable cause) {
+      
       String sourceClass;
       String sourceMethod;
 
@@ -413,10 +432,11 @@ public final class Utils extends Object {
       // Log the programming error
       return logProgrammingError(detectingClass, detectingMethod,
                                  sourceClass,    sourceMethod,
-                                 null,           cause);
+                                 detail,           cause);
    }
-
+      
    /**
+    * }
     * Logs a programming error with an optional cause exception, and returns a
     * <code>ProgrammingException</code> object for it.
     *

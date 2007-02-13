@@ -246,17 +246,12 @@ public final class GroupDescriptor extends Descriptor {
     */
    public Iterator iterateTargets() {
 
-      final String THIS_METHOD = "iterateTargets()";
-
       if (_type == RANDOM_TYPE) {
          return new RandomIterator();
       } else if (_type == ORDERED_TYPE) {
          return new OrderedIterator();
       } else {
-         final String SUBJECT_CLASS  = CLASSNAME;
-         final String SUBJECT_METHOD = THIS_METHOD;
-         final String DETAIL         = "Unknown type: " + _type + '.';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         throw Utils.logProgrammingError("Unknown type: " + _type + '.');
       }
    }
 

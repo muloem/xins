@@ -179,15 +179,8 @@ implements HTTPCallResultData {
 
       // This should never happen: ASCII encoding is not supported
       } catch (UnsupportedEncodingException exception) {
-         final String THIS_METHOD    = "getString()";
-         final String DETAIL         = "Default encoding \""
-                                     + ENCODING
-                                     + "\" is unsupported.";
-         final String SUBJECT_CLASS  = CLASSNAME;
-         final String SUBJECT_METHOD = "getString(String)";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL,        exception);
+         String detail = "Default encoding \"" + ENCODING + "\" is unsupported.";
+         throw Utils.logProgrammingError(detail, exception);
       }
    }
 

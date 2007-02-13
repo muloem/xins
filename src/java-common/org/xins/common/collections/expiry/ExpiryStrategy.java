@@ -77,43 +77,21 @@ public final class ExpiryStrategy extends Object {
          _instanceNum = INSTANCE_COUNT++;
       }
 
-      final String CONSTRUCTOR_DETAIL = "#"
-                                      + _instanceNum
-                                      + " [timeOut="
-                                      + timeOut
-                                      + "L; precision="
-                                      + precision
-                                      + "L]";
-      final String THIS_METHOD = "<init>" + CONSTRUCTOR_DETAIL;
-
       // Check preconditions
       if (timeOut < 1) {
-         final String DETAIL = "timeOut (" + timeOut + "L) < 1L";
-         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                   Utils.getCallingClass(),
-                                   Utils.getCallingMethod(),
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         String detail = "timeOut (" + timeOut + "L) < 1L";
+         Utils.logProgrammingError(detail);
+         throw new IllegalArgumentException(detail);
 
       } else if (precision < 1) {
-         final String DETAIL = "precision (" + precision + "L) < 1L";
-         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                   Utils.getCallingClass(),
-                                   Utils.getCallingMethod(),
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         String detail = "precision (" + precision + "L) < 1L";
+         Utils.logProgrammingError(detail);
+         throw new IllegalArgumentException(detail);
 
       } else if (timeOut < precision) {
-         final String DETAIL = "timeOut ("
-                             + timeOut
-                             + "L) < precision ("
-                             + precision
-                             + "L)";
-         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                   Utils.getCallingClass(),
-                                   Utils.getCallingMethod(),
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         String detail = "timeOut (" + timeOut + "L) < precision (" + precision + "L)";
+         Utils.logProgrammingError(detail);
+         throw new IllegalArgumentException(detail);
       }
 
       // Determine number of slots
@@ -128,7 +106,9 @@ public final class ExpiryStrategy extends Object {
       _precision = precision;
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
-      _asString  = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
+      String constructorDetail = "#" + _instanceNum + " [timeOut=" + timeOut 
+            + "L; precision=" + precision + "L]";
+      _asString  = CLASSNAME + ' ' + constructorDetail;
 
       // Compute a hash code
       _hashCode = ("" + _timeOut + ":" + _precision).hashCode();

@@ -17,11 +17,15 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     as String values.
   - Removed unneeded unmodifiable Map objects in the enum type.
   - Added a new method in TextUtils to create a Perl5 pattern.
+  - Improved clarity in the programming exception thrown.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
   - Changed CallResultOutputter to directly write in the Writer passed as
     argument.
+
+* XINS/Java Client Framework:
+  - Improved clarity in the programming exception thrown.
 
 * Generated build file:
   - Do not include the impl.xml and the class files from the impl directory

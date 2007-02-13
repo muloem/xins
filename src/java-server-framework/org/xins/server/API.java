@@ -1472,12 +1472,7 @@ implements DefaultResultCodes {
       try {
          sysProps = System.getProperties();
       } catch (SecurityException ex) {
-         final String THIS_METHOD  = "doGetSettings()";
-         final String SUBJECT_CLASS  = "System";
-         final String SUBJECT_METHOD = "getProperties()";
-         Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                   SUBJECT_CLASS, SUBJECT_METHOD,
-                                   null,          ex);
+         Utils.logProgrammingError(ex);
          sysProps = new Properties();
       }
 

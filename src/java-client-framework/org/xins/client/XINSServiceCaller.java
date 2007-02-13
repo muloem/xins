@@ -442,20 +442,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          // Unknown kind of exception. This should never happen. Log and
          // re-throw the exception, wrapped within a ProgrammingException
          } else {
-            final String THIS_METHOD = "call("
-                                     + XINSCallRequest.class.getName()
-                                     + ','
-                                     + XINSCallConfig.class.getName()
-                                     + ')';
-            final String SUBJECT_CLASS  = ServiceCaller.class.getName();
-            final String SUBJECT_METHOD = "doCall("
-                                        + CallRequest.class.getName()
-                                        + ','
-                                        + CallConfig.class.getName()
-                                        + ')';
-            throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                            SUBJECT_CLASS, SUBJECT_METHOD,
-                                            null,          exception);
+            throw Utils.logProgrammingError(exception);
          }
       }
 
@@ -595,14 +582,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       // Perform the HTTP call
       HTTPCallResult httpResult;
       long duration;
-      final String SUBJECT_CLASS  = HTTPServiceCaller.class.getName();
-      final String SUBJECT_METHOD = "call("
-                                  + HTTPCallRequest.class.getName()
-                                  + ','
-                                  + HTTPCallConfig.class.getName()
-                                  + ','
-                                  + TargetDescriptor.class.getName()
-                                  + ')';
       try {
          ServiceCaller serviceCaller = (ServiceCaller) _serviceCallers.get(target);
          httpResult = (HTTPCallResult) serviceCaller.doCallImpl(httpRequest, httpConfig, target);
@@ -625,12 +604,9 @@ public final class XINSServiceCaller extends ServiceCaller {
          } else if (exception instanceof UnexpectedExceptionCallException) {
             Log.log_2111(ExceptionUtils.getCause(exception), url, function, params, duration);
          } else {
-            final String DETAIL = "Unrecognized GenericCallException subclass "
-                                + exception.getClass().getName()
-                                + '.';
-            Utils.logProgrammingError(CLASSNAME,     METHODNAME,
-                                      SUBJECT_CLASS, SUBJECT_METHOD,
-                                      DETAIL);
+            String detail = "Unrecognized GenericCallException subclass "
+                  + exception.getClass().getName() + '.';
+            Utils.logProgrammingError(detail);
          }
          throw exception;
 
@@ -641,12 +617,9 @@ public final class XINSServiceCaller extends ServiceCaller {
             int code = ((StatusCodeHTTPCallException) exception).getStatusCode();
             Log.log_2108(url, function, params, duration, code);
          } else {
-            final String DETAIL = "Unrecognized HTTPCallException subclass "
-                                + exception.getClass().getName()
-                                + '.';
-            Utils.logProgrammingError(CLASSNAME,     METHODNAME,
-                                      SUBJECT_CLASS, SUBJECT_METHOD,
-                                      DETAIL);
+            String detail = "Unrecognized HTTPCallException subclass "
+                  + exception.getClass().getName() + '.';
+            Utils.logProgrammingError(detail);
          }
          throw exception;
 
@@ -654,12 +627,10 @@ public final class XINSServiceCaller extends ServiceCaller {
       // the exception, packed up as a CallException.
       } catch (Throwable exception) {
          duration = System.currentTimeMillis() - start;
-         Utils.logProgrammingError(CLASSNAME,     METHODNAME,
-                                   SUBJECT_CLASS, SUBJECT_METHOD,
-                                   null,          exception);
+         Utils.logProgrammingError(exception);
 
-         String message = SUBJECT_CLASS + '.' + SUBJECT_METHOD + " threw unexpected " +
-               exception.getClass().getName() + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
+         String message = "Unexpected exception: " + exception.getClass().getName() 
+               + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
 
          // TODO: Call Utils.logProgrammingError ?
          Log.log_2111(exception, url, function, params, duration);

@@ -218,11 +218,9 @@ public abstract class Type extends Object {
       //       ProgrammingException to be thrown
 
       if (!_valueClass.isInstance(value)) {
-         final String THIS_METHOD    = "fromString(String)";
-         final String SUBJECT_CLASS  = getClass().getName();
-         final String SUBJECT_METHOD = "isValidValueImpl(String)";
-         final String DETAIL         = "The value returned is an instance of class " + value.getClass().getName() + " instead of an instance of " + _valueClass.getName() + '.';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         String detail = "The value returned is an instance of class " + value.getClass().getName() 
+               + " instead of an instance of " + _valueClass.getName() + '.';
+         throw Utils.logProgrammingError(detail);
       }
 
       return value;

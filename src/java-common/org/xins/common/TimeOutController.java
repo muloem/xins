@@ -70,8 +70,6 @@ public final class TimeOutController extends Object {
           SecurityException,
           TimeOutException {
 
-      final String THIS_METHOD = "execute(Runnable,int)";
-
       // Check preconditions
       MandatoryArgumentChecker.check("task", task);
       if (timeOut <= 0) {
@@ -96,11 +94,7 @@ public final class TimeOutController extends Object {
       try {
          thread.join(timeOut);
       } catch (InterruptedException exception) {
-         Utils.logIgnoredException(
-            CLASSNAME,                   THIS_METHOD,
-            thread.getClass().getName(), "join(long)",
-            exception
-         );
+         Utils.logIgnoredException(exception);
       }
 
       // If the thread is still running at this point, it should stop

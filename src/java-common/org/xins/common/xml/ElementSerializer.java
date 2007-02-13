@@ -101,15 +101,13 @@ public final class ElementSerializer extends Object {
    public String serialize(Element element)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "serialize(" + Element.class.getName() + ')';
-
       synchronized (_lock) {
 
          // Make sure this serializer is not yet in use
          if (_inUse) {
             // TODO: Use _instanceNumber in message
             String detail = "ElementSerializer instance already in use.";
-            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, Utils.getCallingClass(), Utils.getCallingMethod(), detail);
+            throw Utils.logProgrammingError(detail);
          }
 
          // Lock this serializer
@@ -127,7 +125,7 @@ public final class ElementSerializer extends Object {
          out = new XMLOutputter(fsw, ENCODING);
       } catch (UnsupportedEncodingException uee) {
          String message = "Expected XMLOutputter to support encoding \"" + ENCODING + "\".";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, XMLOutputter.class.getName(), "<init>(java.io.Writer,String)", message, uee);
+         throw Utils.logProgrammingError(message, uee);
       }
 
       // XXX: Allow output of declaration to be configured?
@@ -138,8 +136,7 @@ public final class ElementSerializer extends Object {
 
       // I/O errors should not happen on a StringWriter
       } catch (IOException exception) {
-         String throwingMethod = "output(" + out.getClass().getName() + ',' + element.getClass().getName() + ')';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, CLASSNAME, throwingMethod, null, exception);
+         throw Utils.logProgrammingError(exception);
 
       } finally {
          _namespaces.clear();

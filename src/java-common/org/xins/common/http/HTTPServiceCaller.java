@@ -263,12 +263,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
                                               HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "createMethod(String,"
-                               + HTTPCallRequest.class.getName()
-                               + ','
-                               + HTTPCallConfig.class.getName()
-                               + ')';
-
       // Check preconditions
       MandatoryArgumentChecker.check("url", url, "request", request);
 
@@ -341,12 +335,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Unrecognized HTTP method (only GET and POST are supported)
       } else {
-         final String SUBJECT_CLASS  = Utils.getCallingClass();
-         final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL         = "Unrecognized HTTP method \""
-                                     + method
-                                     + "\".";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         String detail = "Unrecognized HTTP method \"" + method + "\".";
+         throw Utils.logProgrammingError(detail);
       }
    }
 
@@ -561,15 +551,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    public HTTPCallResult call(HTTPCallRequest request,
                               HTTPCallConfig  callConfig)
-   throws IllegalArgumentException,
-          GenericCallException,
-          HTTPCallException {
-
-      final String THIS_METHOD = "call("
-                               + HTTPCallRequest.class.getName()
-                               + ','
-                               + HTTPCallConfig.class.getName()
-                               + ')';
+   throws IllegalArgumentException, GenericCallException, HTTPCallException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
@@ -586,9 +568,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       } catch (HTTPCallException exception) {
          throw exception;
       } catch (Exception exception) {
-         final String SUBJECT_CLASS  = ServiceCaller.class.getName(); // XXX: superclass
-         final String SUBJECT_METHOD = "doCall(" + CallRequest.class.getName() + ',' + CallConfig.class.getName() + ')';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, null, exception);
+         throw Utils.logProgrammingError(exception);
       }
 
       return (HTTPCallResult) callResult;
@@ -667,14 +647,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws IllegalArgumentException,
           GenericCallException,
           HTTPCallException {
-
-      final String THIS_METHOD = "call("
-                               + HTTPCallRequest.class.getName()
-                               + ','
-                               + HTTPCallConfig.class.getName()
-                               + ','
-                               + TargetDescriptor.class.getName()
-                               + ')';
 
       // Get the parameters for logging
       PropertyReader     p      = request.getParameters();
@@ -786,10 +758,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
          // Unrecognized kind of exception caught
          } else {
-            final String SUBJECT_CLASS  = executor.getThrowingClass();
-            final String SUBJECT_METHOD = executor.getThrowingMethod();
-            final String DETAIL         = null;
-            Log.log_1052(exception, CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+            String thisMethod = "call(HTTPCallREquest, HTTPCallConfig, TargetDescriptor)";
+            String subjectClass  = executor.getThrowingClass();
+            String subjectMethod = executor.getThrowingMethod();
+            Log.log_1052(exception, CLASSNAME, thisMethod, subjectClass, subjectMethod, null);
             executor.dispose();
             throw new UnexpectedExceptionCallException(request, target, duration, null, exception);
          }
@@ -1112,8 +1084,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
        */
       public void run() {
 
-         final String THIS_METHOD = "run()";
-
          // XXX: Note that performance could be improved by using local
          //      variables for _target and _request
 
@@ -1205,10 +1175,10 @@ public final class HTTPServiceCaller extends ServiceCaller {
             try {
                method.releaseConnection();
             } catch (Throwable exception) {
-               final String SUBJECT_CLASS  = method.getClass().getName();
-               final String SUBJECT_METHOD = "releaseConnection()";
-               final String DETAIL         = null;
-               Log.log_1052(exception, EXECUTOR_CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+               String thisMethod = "run()";
+               String subjectClass = method.getClass().getName();
+               String subjectMethod = "releaseConnection()";
+               Log.log_1052(exception, EXECUTOR_CLASSNAME, thisMethod, subjectClass, subjectMethod, null);
             }
          }
 

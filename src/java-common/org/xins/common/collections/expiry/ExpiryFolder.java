@@ -100,13 +100,8 @@ extends Object {
          _instanceNum = INSTANCE_COUNT++;
       }
 
-      final String CONSTRUCTOR_DETAIL = "#"
-                                      + _instanceNum
-                                      + " [name="
-                                      + TextUtils.quote(name)
-                                      + "; strategy="
-                                      + TextUtils.quote(strategy.toString())
-                                      + ']';
+      String constructorDetail = "#" + _instanceNum + " [name=" + TextUtils.quote(name)
+            + "; strategy=" + TextUtils.quote(strategy.toString()) + ']';
 
       // Check arguments
       MandatoryArgumentChecker.check("name", name, "strategy", strategy);
@@ -116,7 +111,7 @@ extends Object {
       _name             = name;
       _strategy         = strategy;
       _strategyStopped  = false;
-      _asString         = CLASSNAME + ' ' + CONSTRUCTOR_DETAIL;
+      _asString         = CLASSNAME + ' ' + constructorDetail;
       _recentlyAccessed = new HashMap(INITIAL_QUEUE_SIZE);
       _slotCount        = strategy.getSlotCount();
       _slots            = new HashMap[_slotCount];
@@ -329,8 +324,6 @@ extends Object {
     */
    void tick() throws IllegalStateException {
 
-      final String THIS_METHOD = "tick()";
-
       // Check state
       assertStrategyNotStopped();
 
@@ -388,13 +381,10 @@ extends Object {
                   // Store the entry that needs expiring in the refMap
                   refMap.put(key, entry.getReference());
                } else {
-                  final String DETAIL = "Entry marked for expiry should "
-                                      + "have expired. Key as string is \""
-                                      + entry.getReference().toString()
-                                      + "\".";
-                  Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                            CLASSNAME, THIS_METHOD,
-                                            DETAIL);
+                  String detail = "Entry marked for expiry should "
+                        + "have expired. Key as string is \""
+                        + entry.getReference().toString() + "\".";
+                  Utils.logProgrammingError(detail);
                }
             }
          }
@@ -798,25 +788,17 @@ extends Object {
    public void copy(final ExpiryFolder newFolder)
    throws IllegalStateException, IllegalArgumentException {
 
-      final String THIS_METHOD = "copy(" + CLASSNAME + ')';
-
       // Check arguments
       MandatoryArgumentChecker.check("newFolder", newFolder);
       if (newFolder == this) {
-         final String DETAIL = "Folder can not be copied into itself.";
-         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                   Utils.getCallingClass(),
-                                   Utils.getCallingMethod(),
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         String detail = "Folder can not be copied into itself.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalArgumentException(detail);
       }
       if (newFolder._strategy.getPrecision() != _strategy.getPrecision()) {
-         final String DETAIL = "Folders must have the same precision.";
-         Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                   Utils.getCallingClass(),
-                                   Utils.getCallingMethod(),
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         String detail = "Folders must have the same precision.";
+         Utils.logProgrammingError(detail);
+         throw new IllegalArgumentException(detail);
       }
 
       // Avoid a potential deadlock by always locking on the instance with the

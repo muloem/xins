@@ -173,8 +173,6 @@ public class DataElement implements Cloneable {
    void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "setAttribute(String,String,String)";
-
       // Construct a QualifiedName object. This will check the preconditions.
       QualifiedName qn = new QualifiedName(namespaceURI, localName);
 
@@ -189,24 +187,6 @@ public class DataElement implements Cloneable {
 
       // Set or reset the attribute
       _attributes.put(qn, value);
-
-      // Check postconditions
-      String getValue = getAttribute(namespaceURI, localName);
-      if ((value != null && getValue == null)
-       || (value == null && getValue != null)
-       || (value != null && !value.equals(getValue))) {
-         String message = "Postcondition failed"
-           + "; namespaceURI="      + TextUtils.quote(namespaceURI)
-           + "; qn.namespaceURI="   + TextUtils.quote(qn.getNamespaceURI())
-           + "; localName="         + TextUtils.quote(localName)
-           + "; qn.localName="      + TextUtils.quote(qn.getLocalName())
-           + "; value="             + TextUtils.quote(value)
-           + "; getAttribute(...)=" + TextUtils.quote(getValue)
-           + '.';
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD,
-                                         CLASSNAME, THIS_METHOD,
-                                         message,   null);
-      }
    }
 
    /**
@@ -321,18 +301,10 @@ public class DataElement implements Cloneable {
     */
    void addChild(DataElement child) throws IllegalArgumentException {
 
-      final String THIS_METHOD = "addChild(DataElement)";
-
       // Check preconditions
       MandatoryArgumentChecker.check("child", child);
       if (child == this) {
-         final String SUBJECT_CLASS  = Utils.getCallingClass();
-         final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL = "child == this";
-         Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                   SUBJECT_CLASS, SUBJECT_METHOD,
-                                   DETAIL);
-         throw new IllegalArgumentException(DETAIL);
+         throw new IllegalArgumentException("child == this");
       }
 
       // Lazily initialize

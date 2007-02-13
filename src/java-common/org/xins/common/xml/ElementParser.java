@@ -277,8 +277,6 @@ public class ElementParser {
                                Attributes atts)
       throws IllegalArgumentException, SAXException {
 
-         final String THIS_METHOD = "startElement(String,String,String,org.xml.sax.Attributes)";
-
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
@@ -296,7 +294,7 @@ public class ElementParser {
             String detail = "Unexpected state "
                           + currentState
                           + " (level=" + _level + ')';
-            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
+            throw Utils.logProgrammingError(detail);
 
          } else {
 
@@ -345,8 +343,6 @@ public class ElementParser {
                              String qName)
       throws IllegalArgumentException {
 
-         final String THIS_METHOD = "endElement(String,String,String)";
-
          // Temporarily enter ERROR state, on success this state is left
          State currentState = _state;
          _state = ERROR;
@@ -356,7 +352,7 @@ public class ElementParser {
 
          if (currentState == ERROR) {
             String detail = "Unexpected state " + currentState + " (level=" + _level + ')';
-            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD, HANDLER_CLASSNAME, THIS_METHOD, detail);
+            throw Utils.logProgrammingError(detail);
 
          // Within data section
          } else {
@@ -427,17 +423,10 @@ public class ElementParser {
        */
       Element getElement() {
 
-         final String THIS_METHOD = "getElement()";
-
          // Check state
          if (_state != FINISHED) {
-            final String DETAIL = "State is "
-                                + _state
-                                + " instead of "
-                                + FINISHED;
-            throw Utils.logProgrammingError(HANDLER_CLASSNAME, THIS_METHOD,
-                                            HANDLER_CLASSNAME, THIS_METHOD,
-                                            DETAIL);
+            String detail = "State is " + _state + " instead of " + FINISHED;
+            throw Utils.logProgrammingError(detail);
          }
 
          return _element;

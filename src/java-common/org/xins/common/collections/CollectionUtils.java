@@ -100,12 +100,8 @@ public final class CollectionUtils extends Object {
       // Check element count
       int arrayLength = array.length;
       if (arrayLength < min) {
-         final String DETAIL = argumentName
-                             + ".length ("
-                             + arrayLength
-                             + ") < "
-                             + min;
-         throw new IllegalArgumentException(DETAIL);
+         String detail = argumentName + ".length (" + arrayLength + ") < " + min;
+         throw new IllegalArgumentException(detail);
       }
 
       // Copy all elements to an array list, while validating
@@ -113,24 +109,14 @@ public final class CollectionUtils extends Object {
       for (int i = 0; i < arrayLength; i++) {
          Object elem = array[i];
          if (elem == null) {
-            final String DETAIL = argumentName
-                                + '['
-                                + i
-                                + "] == null";
-            throw new IllegalArgumentException(DETAIL);
+            String detail = argumentName + '[' + i + "] == null";
+            throw new IllegalArgumentException(detail);
          }
 
          int existing = list.indexOf(elem);
          if (existing >= 0) {
-            final String DETAIL = argumentName
-                                + '['
-                                + existing
-                                + "] == "
-                                + argumentName
-                                + '['
-                                + i
-                                + "]";
-            throw new IllegalArgumentException(DETAIL);
+            String detail = argumentName + '[' + existing + "] == " + argumentName + '[' + i + "]";
+            throw new IllegalArgumentException(detail);
          }
 
          list.add(elem);

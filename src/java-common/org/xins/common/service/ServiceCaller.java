@@ -226,15 +226,8 @@ public abstract class ServiceCaller extends Object {
    protected ServiceCaller(Descriptor descriptor, CallConfig callConfig)
    throws UnsupportedProtocolException {
 
-      final String THIS_METHOD = "<init>("
-                               + Descriptor.class.getName()
-                               + ','
-                               + CallConfig.class.getName()
-                               + ')';
-
       // Store information
       _className  = getClass().getName();
-      _newStyle   = true;
       setDescriptor(descriptor);
 
       // If no CallConfig is specified, then use a default one
@@ -248,14 +241,12 @@ public abstract class ServiceCaller extends Object {
 
          // ...it should not throw any exception...
          } catch (Throwable t) {
-            final String DETAIL = null;
-            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL, t);
+            throw Utils.logProgrammingError(t);
          }
 
          // ...and it should never return null.
          if (callConfig == null) {
-            final String DETAIL = "Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.";
-            throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, _className, SUBJECT_METHOD, DETAIL);
+            throw Utils.logProgrammingError("Method returned null, although that is disallowed by the ServiceCaller.getDefaultCallConfig() contract.");
          }
       }
 
@@ -272,12 +263,6 @@ public abstract class ServiceCaller extends Object {
     * The name of the current (concrete) class. Never <code>null</code>.
     */
    private final String _className;
-
-   /**
-    * Flag that indicates if the new-style (XINS 1.1) (since XINS 1.1.0) or the old-style (XINS 1.0)
-    * (XINS 1.0.0) behavior is expected from the subclass.
-    */
-   private final boolean _newStyle;
 
    /**
     * The descriptor for this service. Can be <code>null</code>.
@@ -464,27 +449,8 @@ public abstract class ServiceCaller extends Object {
    protected final void setCallConfig(CallConfig config)
    throws IllegalArgumentException {
 
-      final String THIS_METHOD = "setCallConfig("
-                               + CallConfig.class.getName()
-                               + ')';
-
       // Check argument
       MandatoryArgumentChecker.check("config", config);
-
-      // This method should only be called if the subclass uses the new style
-      if (! _newStyle) {
-         final String SUBJECT_CLASS  = Utils.getCallingClass();
-         final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL         = "Method "
-                                     + THIS_METHOD
-                                     + " called while class "
-                                     + _className
-                                     + " uses the old-style (XINS 1.0)"
-                                     + " constructor.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL);
-      }
 
       _callConfig = config;
    }
@@ -569,27 +535,6 @@ public abstract class ServiceCaller extends Object {
           IllegalStateException,
           CallException {
 
-      final String THIS_METHOD = "doCall("
-                               + CallRequest.class.getName()
-                               + ','
-                               + CallConfig.class.getName()
-                               + ')';
-
-      // This method should only be called if the subclass uses the new style
-      if (! _newStyle) {
-         final String SUBJECT_CLASS  = Utils.getCallingClass();
-         final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL         = "Method "
-                                     + THIS_METHOD
-                                     + " called while class "
-                                     + _className
-                                     + " uses the old-style (XINS 1.0)"
-                                     + " constructor.";
-         throw Utils.logProgrammingError(CLASSNAME,     THIS_METHOD,
-                                         SUBJECT_CLASS, SUBJECT_METHOD,
-                                         DETAIL);
-      }
-
       // Check preconditions
       MandatoryArgumentChecker.check("request", request);
 
@@ -628,10 +573,7 @@ public abstract class ServiceCaller extends Object {
 
       // There should be at least one target
       if (! iterator.hasNext()) {
-         final String SUBJECT_CLASS  = descriptor.getClass().getName();
-         final String SUBJECT_METHOD = "iterateTargets()";
-         final String DETAIL         = "Descriptor returns no target descriptors.";
-         throw Utils.logProgrammingError(CLASSNAME, THIS_METHOD, SUBJECT_CLASS, SUBJECT_METHOD, DETAIL);
+         throw Utils.logProgrammingError("Descriptor returns no target descriptors.");
       }
 
       // Loop over all TargetDescriptors
@@ -910,29 +852,6 @@ public abstract class ServiceCaller extends Object {
                                     CallConfig        callConfig,
                                     CallExceptionList exceptions) {
       MandatoryArgumentChecker.check("request", request, "callConfig", callConfig, "exceptions", exceptions);
-      // This method should only be called if the subclass uses the new style
-      if (! _newStyle) {
-         final String THIS_METHOD    = "shouldFailOver("
-                                     + CallRequest.class.getName()
-                                     + ','
-                                     + CallConfig.class.getName()
-                                     + ','
-                                     + CallExceptionList.class.getName()
-                                     + ')';
-         final String SUBJECT_CLASS  = Utils.getCallingClass();
-         final String SUBJECT_METHOD = Utils.getCallingMethod();
-         final String DETAIL         = "Method "
-                                     + THIS_METHOD
-                                     + " called while class "
-                                     + _className
-                                     + " uses the old-style (XINS 1.0)"
-                                     + " constructor.";
-         RuntimeException exception = Utils.logProgrammingError(
-            CLASSNAME,     THIS_METHOD,
-            SUBJECT_CLASS, SUBJECT_METHOD,
-            DETAIL);
-         throw exception;
-      }
 
       // Determine if fail-over is applicable
       boolean should = callConfig.isFailOverAllowed()
