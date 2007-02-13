@@ -946,7 +946,7 @@ implements DefaultResultCodes {
    throws InvalidSpecificationException {
 
       if (_apiSpecification == null) {
-         String baseURL = _engine.getFileLocation("specs/");
+         String baseURL = _engine.getFileLocation("WEB-INF/specs/");
          _apiSpecification = new APISpec(getClass(), baseURL);
       }
       return _apiSpecification;

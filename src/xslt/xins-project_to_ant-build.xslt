@@ -1315,14 +1315,14 @@ APIs in this project are:
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
 					<zipfileset dir="{$project_home}/build/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
-					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="specs" />
+					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="WEB-INF/specs" />
 					<xsl:for-each select="$api_node/type">
 						<xsl:if test="contains(@name, '/')">
 							<xsl:variable name="type_dir"
 							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
 							<xsl:variable name="type_filename"
 							select="concat(substring-after(@name, '/'), '.typ')" />
-							<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="specs" />
+							<zipfileset dir="{$type_dir}" includes="{$type_filename}" prefix="WEB-INF/specs" />
 						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="$api_node/resultcode">
@@ -1331,7 +1331,7 @@ APIs in this project are:
 							select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec')" />
 							<xsl:variable name="resultcode_filename"
 							select="concat(substring-after(@name, '/'), '.rcd')" />
-							<zipfileset dir="{$resultcode_dir}" includes="{$resultcode_filename}" prefix="specs" />
+							<zipfileset dir="{$resultcode_dir}" includes="{$resultcode_filename}" prefix="WEB-INF/specs" />
 						</xsl:if>
 					</xsl:for-each>
 				</war>
