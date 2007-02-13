@@ -49,11 +49,6 @@
 						<xsl:with-param name="item">resultcode</xsl:with-param>
 						<xsl:with-param name="active" select="$active" />
 					</xsl:call-template>
-					<xsl:text> | </xsl:text>
-					<xsl:call-template name="header_item">
-						<xsl:with-param name="item">help</xsl:with-param>
-						<xsl:with-param name="active" select="$active" />
-					</xsl:call-template>
 				</td>
 				<xsl:if test="boolean($prev) or boolean($next)">
 					<td class="prevnext">
@@ -173,7 +168,6 @@
 			<xsl:when test="$item='testform'">Test form</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
 			<xsl:when test="$item='resultcode'">Result code</xsl:when>
-			<xsl:when test="$item='help'">Help</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
@@ -187,7 +181,6 @@
 			<xsl:when test="$item='testform'">Test form for this function</xsl:when>
 			<xsl:when test="$item='type'">Type</xsl:when>
 			<xsl:when test="$item='resultcode'">Result code</xsl:when>
-			<xsl:when test="$item='help'">Explanation on how to interpret this information</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
@@ -197,7 +190,6 @@
 		<xsl:param name="name" />
 
 		<xsl:choose>
-			<xsl:when test="$active='apilist' and $item='help'">help.html</xsl:when>
 			<xsl:when test="$active='apilist'">
 				<xsl:message terminate="yes">
 					<xsl:text>Unsupported combination: item is '</xsl:text>
@@ -207,7 +199,6 @@
 					<xsl:text>' is active.</xsl:text>
 				</xsl:message>
 			</xsl:when>
-			<xsl:when test="$active='help' and $item='apilist'">index.html</xsl:when>
 			<xsl:when test="$item='apilist'">../index.html</xsl:when>
 			<xsl:when test="$item='api'">index.html</xsl:when>
 			<xsl:when test="$item='function'">
@@ -218,7 +209,6 @@
 				<xsl:value-of select="@name" />
 				<xsl:text>-testform.html</xsl:text>
 			</xsl:when>
-			<xsl:when test="$item='help'">../help.html</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unsupported combination: item is '</xsl:text>

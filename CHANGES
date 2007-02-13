@@ -16,7 +16,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Added a new method in BeanUtils to get the parameter values of a POJO
     as String values.
   - Removed unneeded unmodifiable Map objects in the enum type.
-  - Added new method to create a Perl5 pattern.
+  - Added a new method in TextUtils to create a Perl5 pattern.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
@@ -28,6 +28,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     into the WAR file.
   - Do not include the CAPI source code in the Zip file as it is no needed.
   - Moved the specs in the WAR file to the WEB-INF/specs directory.
+
+* Generation of specification documentation:
+  - Moved the help section to the user guide.
 
 * Generation of the WSDL:
   - The generated file is correctly indented with tabs.

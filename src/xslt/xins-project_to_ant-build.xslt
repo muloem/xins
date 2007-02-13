@@ -352,16 +352,6 @@ APIs in this project are:
 					<param name="project_file" expression="{$project_file}" />
 					<param name="specsdir"     expression="{$specsdir}"     />
 				</xslt>
-				<xslt
-				in="{$project_file}"
-				out="{$builddir}/specdocs/help.html"
-				style="{$xins_home}/src/xslt/specdocs/xins-project_to_help.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$specsdir}"     />
-				</xslt>
 				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
 			</target>
 
