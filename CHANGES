@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     StringWriter which is faster.
   - Implemented RFE #1642379: Added support for path in internal servlet
     container.
+  - Added a new method in BeanUtils to get the parameter values of a POJO
+    as String values.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.

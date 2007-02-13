@@ -419,7 +419,7 @@ public class BeanUtils {
    /**
     * Gets the values returned by the get methods of the given POJO and put
     * the values in a <code>Map</code>.
-    * The property names returned start with an uppercase.
+    * The property names returned start with a lowercase.
     *
     * @param source
     *    the object from which the values are extracted and put in the Map, should not be <code>null</code>
@@ -458,6 +458,38 @@ public class BeanUtils {
       }
       return valuesMap;
   }
+
+   /**
+    * Gets the values returned by the get methods of the given POJO,
+    * transform it to e String object and put the values in a <code>Map</code>.
+    * The property names returned start with a lowercase.
+    *
+    * @param source
+    *    the object from which the values are extracted and put in the Map, should not be <code>null</code>
+    *
+    * @return
+    *     the property values of the source object. The key of the Map is
+    *     the name of the property and the value is the String representation of
+    *     the value as returned by the get method. Never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>source == null</code>.
+    *
+    * @since XINS 2.0.0.
+    */
+   public static Map getParametersAsString(Object source) throws IllegalArgumentException {
+      ChainedMap stringMap = new ChainedMap();
+      Map originalMap = getParameters(source);
+      Iterator itParams = originalMap.entrySet().iterator();
+      while (itParams.hasNext()) {
+         Map.Entry nextParam = (Map.Entry) itParams.next();
+         String paramName = (String) nextParam.getKey();
+         Object paramValue = nextParam.getValue();
+         String stringValue = String.valueOf(paramValue);
+         stringMap.put(paramName, paramValue);
+      }
+      return stringMap;
+   }
 
    /**
     * Puts the values of the <code>Map</source> in the destination object (POJO).
