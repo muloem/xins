@@ -91,9 +91,6 @@ public final class URLEncoding extends Object {
             UNENCODED_TO_ENCODED[i] = new String(data);
          }
       }
-
-      // XXX: Allow test coverage analysis tools to report 100% coverage
-      new URLEncoding();
    }
 
    /**

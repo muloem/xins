@@ -152,11 +152,6 @@ public class HexConverter extends Object {
    // Class functions
    //-------------------------------------------------------------------------
 
-   static {
-      // XXX: Allow test coverage analysis tools to report 100% coverage
-      new HexConverter();
-   }
-
    /**
     * Checks if the specified character is a hexadecimal digit. The following
     * ranges of characters are considered hexadecimal digits:
