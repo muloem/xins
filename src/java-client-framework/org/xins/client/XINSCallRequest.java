@@ -10,13 +10,10 @@ import java.util.Iterator;
 
 import org.apache.log4j.NDC;
 
-import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.Utils;
 
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
@@ -52,19 +49,9 @@ public final class XINSCallRequest extends CallRequest {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = XINSCallRequest.class.getName();
-
-   /**
     * HTTP status code verifier that will only approve 2xx codes.
     */
    private static final HTTPStatusCodeVerifier HTTP_STATUS_CODE_VERIFIER = new HTTPStatusCodeVerifier();
-
-   /**
-    * Perl 5 pattern compiler.
-    */
-   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
     * The pattern for a parameter name, as a character string.
@@ -74,7 +61,7 @@ public final class XINSCallRequest extends CallRequest {
    /**
     * The pattern for a parameter name.
     */
-   private static final Pattern PARAMETER_NAME_PATTERN;
+   private static final Pattern PARAMETER_NAME_PATTERN = TextUtils.createPattern(PARAMETER_NAME_PATTERN_STRING);
 
    /**
     * The name of the HTTP parameter that specifies the diagnostic context
@@ -91,34 +78,6 @@ public final class XINSCallRequest extends CallRequest {
     * Secret key used to set the HTTP parameters.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   /**
-    * Initializes this class. This function compiles
-    * {@link #PARAMETER_NAME_PATTERN_STRING} to a {@link Pattern} and then
-    * stores that in {@link #PARAMETER_NAME_PATTERN}.
-    */
-   static {
-
-      final String THIS_METHOD = "<clinit>()";
-
-      try {
-         PARAMETER_NAME_PATTERN = PATTERN_COMPILER.compile(PARAMETER_NAME_PATTERN_STRING, Perl5Compiler.READ_ONLY_MASK);
-      } catch (MalformedPatternException mpe) {
-         final String DETAIL = "The pattern \""
-                             + PARAMETER_NAME_PATTERN_STRING
-                             + "\" is malformed.";
-
-         throw Utils.logProgrammingError(
-            CLASSNAME, THIS_METHOD,
-            CLASSNAME, THIS_METHOD,
-            DETAIL,    mpe);
-      }
-   }
 
 
    //-------------------------------------------------------------------------

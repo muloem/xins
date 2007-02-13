@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Added a new method in BeanUtils to get the parameter values of a POJO
     as String values.
   - Removed unneeded unmodifiable Map objects in the enum type.
+  - Added new method to create a Perl5 pattern.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
@@ -2882,6 +2883,7 @@ NOTE: This release is based on XINS 1.1.0-rc1.
     releases.
   - Improved the accuracy and stability of the ExpiryFolder and ExpiryStrategy
     classes. The tests have been extended a lot. They now also test the
+
     addListener and removeListener methods and the listener callback. Improved
     the logging in the ExpiryStrategy; added log messages 1404-1407.
   - Changed ExceptionUtils class to be compatible with Java 1.3 (part of

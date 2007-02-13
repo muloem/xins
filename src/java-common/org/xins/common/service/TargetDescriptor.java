@@ -10,16 +10,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 import java.util.zip.CRC32;
-
-import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
-
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.TextUtils;
 
 /**
  * Descriptor for a single target service. A target descriptor defines a URL
@@ -254,13 +250,7 @@ public final class TargetDescriptor extends Descriptor {
       MandatoryArgumentChecker.check("url", url);
 
       if (PATTERN == null) {
-         Perl5Compiler patternCompiler = new Perl5Compiler();
-         try {
-            PATTERN = patternCompiler.compile(PATTERN_STRING,
-                  Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
-         } catch (MalformedPatternException mpex) {
-            throw Utils.logProgrammingError(mpex);
-         }
+         PATTERN = TextUtils.createPattern(PATTERN_STRING);
       }
       Perl5Matcher patternMatcher = new Perl5Matcher();
       if (! patternMatcher.matches(url, PATTERN)) {
