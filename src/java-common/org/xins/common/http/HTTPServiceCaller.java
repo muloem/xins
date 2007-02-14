@@ -254,17 +254,11 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @return
     *    the constructed {@link HttpMethodBase} object, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>url == null || request == null</code>.
     */
    private static HttpMethodBase createMethod(String          url,
                                               HTTPCallRequest request,
                                               HTTPCallConfig  callConfig)
    throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("url", url, "request", request);
 
       // Get the HTTP method (like GET and POST) and parameters
       HTTPMethod     method     = callConfig.getMethod();
@@ -984,23 +978,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
        *
        * @param context
        *    the <em>Nested Diagnostic Context identifier</em> (NDC), or
-       *    <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>target     == null
-       *          || callConfig == null
-       *          || request    == null</code>.
        */
       private CallExecutor(HTTPCallRequest  request,
                            HTTPCallConfig   callConfig,
                            TargetDescriptor target,
                            String           context)
       throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("request",    request,
-                                        "callConfig", callConfig,
-                                        "target",     target);
 
          // Store data for later use in the run() method
          _request    = request;

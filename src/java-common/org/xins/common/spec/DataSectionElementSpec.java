@@ -45,16 +45,10 @@ public final class DataSectionElementSpec {
     *
     * @param attributeCombos
     *    the attribute combos for this element, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || description == null || subElements == null || attributes == null</code>.
     */
    DataSectionElementSpec(String name, String description, boolean isPCDataAllowed,
          Map subElements, Map attributes, List attributeCombos)
-   throws IllegalArgumentException {
-
-      MandatoryArgumentChecker.check("name", name, "description", description,
-            "subElements", subElements, "attributes", attributes);
+   {
       _name = name;
       _description = description;
       _isPCDataAllowed = isPCDataAllowed;

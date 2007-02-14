@@ -489,18 +489,11 @@ public final class ExpiryFolder {
     *
     * @throws IllegalStateException
     *    if the associated {@link ExpiryStrategy} has stopped already.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>map == null</code>.
     */
-   private int sizeOf(final Map map)
-   throws IllegalStateException, IllegalArgumentException {
+   private int sizeOf(final Map map) throws IllegalStateException {
 
       // Check state
       assertStrategyNotStopped();
-
-      // Check arguments
-      MandatoryArgumentChecker.check("map", map);
 
       int size = 0;
 

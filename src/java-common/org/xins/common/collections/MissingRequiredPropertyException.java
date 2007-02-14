@@ -38,15 +38,8 @@ extends Exception {
     *
     * @return
     *    the message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>propertyName == null</code>.
     */
-   private static String createMessage(String propertyName, String detail)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("propertyName", propertyName);
+   private static String createMessage(String propertyName, String detail) {
 
       // Construct the message
       String message = "No value is set for the required property \"" + propertyName;

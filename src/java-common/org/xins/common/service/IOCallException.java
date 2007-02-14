@@ -52,21 +52,11 @@ extends GenericCallException {
     *
     * @return
     *    the short reason, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request     == null
-    *          || target      == null
-    *          || ioException == null</code>
     */
    private static String getShortReason(CallRequest      request,
                                         TargetDescriptor target,
                                         IOException      ioException)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request",     request,
-                                     "target",      target,
-                                     "ioException", ioException);
+   {
 
       // Return the short reason
       return "I/O error";

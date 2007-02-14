@@ -7,8 +7,6 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
-
-
 import org.xins.common.service.CallException;
 import org.xins.common.service.TargetDescriptor;
 
@@ -22,42 +20,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public abstract class XINSCallException extends CallException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   /**
-    * Checks the mandatory arguments for the constructor and then returns the
-    * short reason.
-    *
-    * @param shortReason
-    *    the short reason, cannot be <code>null</code>.
-    *
-    * @param result
-    *    the call result, cannot be <code>null</code>.
-    *
-    * @return
-    *    the short reason as given in the argument <code>shortReason</code>,
-    *    never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>shortReason == null || result == null</code>
-    */
-   private static final String checkArguments(String         shortReason,
-                                              XINSCallResult result)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("shortReason", shortReason,
-                                     "result",      result);
-
-      return shortReason;
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -132,7 +94,7 @@ public abstract class XINSCallException extends CallException {
    throws IllegalArgumentException {
 
       // Call superconstructor
-      super(checkArguments(shortReason, result),
+      super(shortReason,
             (result == null) ? null : result.getRequest(),
             (result == null) ? null : result.getSucceededTarget(),
             (result == null) ?   0L : result.getDuration(),

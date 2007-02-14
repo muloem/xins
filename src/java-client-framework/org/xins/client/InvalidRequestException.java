@@ -39,16 +39,8 @@ extends StandardErrorCodeException {
     * @return
     *    the detail message for the constructor to use, never
     *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
     */
-   private static final String determineDetail(XINSCallResultData result)
-   throws IllegalArgumentException {
-
-      // Argument cannot be null
-      MandatoryArgumentChecker.check("result", result);
+   private static final String determineDetail(XINSCallResultData result) {
 
       // Result must be unsuccessful
       String errorCode = result.getErrorCode();

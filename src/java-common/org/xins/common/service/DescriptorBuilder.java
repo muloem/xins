@@ -122,15 +122,8 @@ public final class DescriptorBuilder {
     * @return
     *    the list of tokens as a {@link String} array, never
     *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>s == null</code>.
     */
-   private static String[] tokenize(String s)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("s", s);
+   private static String[] tokenize(String s) {
 
       // Create a StringTokenizer
       StringTokenizer tokenizer = new StringTokenizer(s, DELIMITER_AS_STRING);

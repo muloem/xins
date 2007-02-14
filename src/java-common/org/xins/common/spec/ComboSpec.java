@@ -31,12 +31,8 @@ class ComboSpec {
     *
     * @param parameters
     *    the parameters this param-combo or attribute-combo refers to, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>type == null || parameters == null</code>.
     */
-   ComboSpec(String type, Map parameters) throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("type", type, "parameters", parameters);
+   ComboSpec(String type, Map parameters) {
       _type = type;
       _parameters = parameters;
    }

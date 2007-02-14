@@ -347,7 +347,7 @@ public class XINSCallResultParser {
             // Root element must be 'result' without namespace
             if (! (namespaceURI == null && localName.equals("result"))) {
                Log.log_2200(namespaceURI, localName);
-               String detail = "Root element is \"" + localName + "\" with namespace " 
+               String detail = "Root element is \"" + localName + "\" with namespace "
                      + quotedNamespaceURI + " instead of \"result\" with namespace"
                      + " (null).";
                throw new SAXException(detail);
@@ -613,7 +613,7 @@ public class XINSCallResultParser {
                      if (!existingValue.equals(value)) {
                         // NOTE: This will be logged already (message 2205)
                         String detail = "Found conflicting duplicate value for output parameter \""
-                              + name + "\". Initial value is \"" + existingValue 
+                              + name + "\". Initial value is \"" + existingValue
                               + "\". New value is \"" + value + "\".";
                         throw new SAXException(detail);
                      }
@@ -787,15 +787,8 @@ public class XINSCallResultParser {
        *
        * @param name
        *    the name of this state, cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>name == null</code>.
        */
       private State(String name) throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
-
          _name = name;
       }
 

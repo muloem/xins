@@ -68,15 +68,8 @@ public class DataElement implements Cloneable {
     *
     * @param localName
     *    the local name of the element, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>localName == null</code>.
     */
-   DataElement(String namespaceURI, String localName)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("localName", localName);
+   DataElement(String namespaceURI, String localName) {
 
       // An empty namespace URI is equivalent to null
       if (namespaceURI != null && namespaceURI.length() < 1) {
@@ -435,15 +428,8 @@ public class DataElement implements Cloneable {
     *
     * @return
     *    the converted object, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>dataElement == null</code>.
     */
-   private Element toXMLElement(DataElement dataElement)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("dataElement", dataElement);
+   private Element toXMLElement(DataElement dataElement) {
 
       String elementName = dataElement.getLocalName();
       String elementNameSpaceURI = dataElement.getNamespaceURI();

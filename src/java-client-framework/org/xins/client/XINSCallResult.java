@@ -33,53 +33,7 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 1.0.0
  */
-public final class XINSCallResult
-extends CallResult
-implements XINSCallResultData {
-
-   //----------------------------------------------------------------------
-   // Class fields
-   //----------------------------------------------------------------------
-
-   //----------------------------------------------------------------------
-   // Class functions
-   //----------------------------------------------------------------------
-
-   /**
-    * Checks the constructor arguments that cannot be <code>null</code>.
-    *
-    * @param request
-    *    the call request that resulted in this result, cannot be
-    *    <code>null</code>.
-    *
-    * @param succeededTarget
-    *    the target for which the call succeeded, cannot be <code>null</code>.
-    *
-    * @param data
-    *    the {@link XINSCallResultData} object returned from the call, cannot
-    *    be <code>null</code>.
-    *
-    * @return
-    *    the argument <code>request</code>, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request         ==   null
-    *          || succeededTarget ==   null
-    *          || data            ==   null</code>.
-    */
-   private static XINSCallRequest checkArguments(
-      XINSCallRequest    request,
-      TargetDescriptor   succeededTarget,
-      XINSCallResultData data) throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request",         request,
-                                     "succeededTarget", succeededTarget,
-                                     "data",            data);
-
-      return request;
-   }
-
+public final class XINSCallResult extends CallResult implements XINSCallResultData {
 
    //----------------------------------------------------------------------
    // Constructors
@@ -122,8 +76,7 @@ implements XINSCallResultData {
 
    throws IllegalArgumentException {
 
-      super(checkArguments(request, succeededTarget, data),
-            succeededTarget, duration, exceptions);
+      super(request, succeededTarget, duration, exceptions);
 
       _data = data;
    }

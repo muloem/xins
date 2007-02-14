@@ -106,7 +106,7 @@ public final class ExpiryStrategy {
       _precision = precision;
       _slotCount = (int) slotCount;
       _folders   = new ArrayList();
-      String constructorDetail = "#" + _instanceNum + " [timeOut=" + timeOut 
+      String constructorDetail = "#" + _instanceNum + " [timeOut=" + timeOut
             + "L; precision=" + precision + "L]";
       _asString  = CLASSNAME + ' ' + constructorDetail;
 
@@ -266,20 +266,13 @@ public final class ExpiryStrategy {
     *
     * @throws IllegalStateException
     *    if this strategy was already stopped.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>folder == null</code>.
     */
-   void folderAdded(final ExpiryFolder folder)
-   throws IllegalStateException, IllegalArgumentException {
+   void folderAdded(final ExpiryFolder folder) throws IllegalStateException {
 
       // Check state
       if (_stop) {
          throw new IllegalStateException("Already stopped.");
       }
-
-      // Check arguments
-      MandatoryArgumentChecker.check("folder", folder);
 
       // Associating expiry folder with expiry stategy thread
       Log.log_1401(folder.getInstanceNum(), folder.getName(), _instanceNum);

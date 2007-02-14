@@ -54,13 +54,8 @@ public final class CallExceptionList {
     *
     * @param exception
     *    the {@link CallException} to add, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
     */
-   void add(CallException exception)
-   throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("exception", exception);
+   void add(CallException exception) {
       _exceptions.add(exception);
    }
 

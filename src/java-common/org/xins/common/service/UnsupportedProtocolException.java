@@ -48,19 +48,10 @@ extends RuntimeException {
     *
     * @return
     *    the created message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>target == null</code>.
     */
-   private static String createMessage(TargetDescriptor target)
-   throws IllegalArgumentException {
+   private static String createMessage(TargetDescriptor target) {
 
-      // Check preconditions
-      MandatoryArgumentChecker.check("target", target);
-
-      return "Unsupported protocol \""
-           + target.getProtocol()
-           + "\".";
+      return "Unsupported protocol \"" + target.getProtocol() + "\".";
    }
 
    //-------------------------------------------------------------------------

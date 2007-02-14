@@ -36,15 +36,9 @@ extends Exception {
     *
     * @return
     *    the message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>cause == null</code>.
     */
    private static String createMessage(Throwable cause)
    throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("cause", cause);
 
       String exceptionMessage = cause.getMessage();
 

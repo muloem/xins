@@ -83,15 +83,8 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @return
     *    the checksum for <code>s</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>s == null</code>.
     */
-   private static int computeCRC32(String s)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("s", s);
+   private static int computeCRC32(String s) {
 
       // Compute the CRC-32 checksum
       CRC32 checksum = new CRC32();

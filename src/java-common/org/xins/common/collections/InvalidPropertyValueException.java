@@ -40,18 +40,8 @@ extends Exception {
     *
     * @return
     *    the message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>propertyName == null || propertyValue == null</code>.
     */
-   private static String createMessage(String propertyName,
-                                       String propertyValue,
-                                       String reason)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("propertyName",  propertyName,
-                                     "propertyValue", propertyValue);
+   private static String createMessage(String propertyName, String propertyValue, String reason) {
 
       // Construct the message
       String message = "The value \"" + propertyValue +
