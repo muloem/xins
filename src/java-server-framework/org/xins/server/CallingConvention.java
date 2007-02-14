@@ -141,7 +141,6 @@ abstract class CallingConvention extends Manageable {
    protected CallingConvention() {
       _cachedRequest    = new ThreadLocal();
       _cachedRequestXML = new ThreadLocal();
-      _api              = CallingConventionManager.getCurrent().getAPI();
    }
 
 
@@ -171,10 +170,10 @@ abstract class CallingConvention extends Manageable {
    private final ThreadLocal _cachedRequestXML;
 
    /**
-    * The current API. Initialized by the constructor and returned to
-    * interested subclasses by {@link #getAPI()}.
+    * The current API. The value is set after the construction of the calling
+    * convention.
     */
-   private final API _api;
+   private API _api;
 
 
    //------------------------------------------------------------------------
@@ -191,6 +190,16 @@ abstract class CallingConvention extends Manageable {
     */
    protected final API getAPI() {
       return _api;
+   }
+
+   /**
+    * Sets the current API.
+    *
+    * @param
+    *    the current {@link API}, never <code>null</code>.
+    */
+   final void setAPI(API api) {
+      _api = api;
    }
 
    /**

@@ -56,8 +56,6 @@ public class CustomTestConvention extends CustomCallingConvention {
    public CustomTestConvention(API api) {
       if (api == null) {
          throw new IllegalArgumentException("api == null");
-      } else if (api != getAPI()) {
-         throw new IllegalStateException("api != getAPI()");
       }
    }
 

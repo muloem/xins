@@ -24,6 +24,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Changed CallResultOutputter to directly write in the Writer passed as
     argument.
   - Improved clarity in the programming exception thrown.
+  - Lazy instantiation of the calling conventions.
+  - CallingConvention#getAPI() will return the API object only after the
+    construction of the calling convention.
 
 * XINS/Java Client Framework:
   - Improved clarity in the programming exception thrown.

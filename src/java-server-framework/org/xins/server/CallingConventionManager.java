@@ -18,7 +18,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
@@ -38,8 +37,7 @@ import org.xins.common.text.TextUtils;
  *
  * @see CallingConvention
  */
-class CallingConventionManager
-extends Manageable {
+class CallingConventionManager extends Manageable {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -71,43 +69,6 @@ extends Manageable {
     */
    private final static Object CREATION_FAILED = new Object();
 
-   /**
-    * The current <code>CallingConventionManager</code> instance. This is kept
-    * track of so that {@link #getCurrent()} can return it to the
-    * {@link CallingConvention} constructor.
-    */
-   private final static ThreadLocal CURRENT_INSTANCE = new ThreadLocal();
-
-
-   //-------------------------------------------------------------------------
-   // Class methods
-   //-------------------------------------------------------------------------
-
-   /**
-    * Determines the current <code>CallingConventionManager</code>. This
-    * method should only be called from the <code>CallingConvention</code>
-    * constructor(s).
-    *
-    * @return
-    *    the current <code>CallingConventionManager</code> instance, never
-    *    <code>null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the current state implies the call could not have been made from
-    *    the {@link CallingConvention} constructor.
-    */
-   static final CallingConventionManager getCurrent()
-   throws IllegalStateException {
-
-      Object obj = CURRENT_INSTANCE.get();
-      if (obj == null) {
-         throw new IllegalStateException("Current CallingConventionManager is not available.");
-      }
-
-      return (CallingConventionManager) obj;
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -117,21 +78,18 @@ extends Manageable {
     *
     * @param api
     *    the API, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
     */
-   CallingConventionManager(API api)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("api", api);
+   CallingConventionManager(API api) {
 
       // Store the reference to the API
       _api = api;
 
+      // Fill the list of the convention names with the pre defined conventions
+      _conventionNames = new ArrayList();
+      _conventionNames.addAll(CONVENTIONS);
+      
       // Create a map to store the conventions in
-      _conventions = new HashMap(89);
+      _conventions = new HashMap(12);
 
    }
 
@@ -154,12 +112,15 @@ extends Manageable {
    private String _defaultConventionName;
 
    /**
+    * The names of the possible calling conventions.
+    */
+   private List _conventionNames;
+
+   /**
     * Map containing all calling conventions. The key is the name of the
     * calling convention, the value is the calling convention object, or
     * {@link #CREATION_FAILED} if the calling convention object could not be
     * constructed.
-    *
-    * <p>This field is initialized during bootstrapping.
     */
    private final HashMap _conventions;
 
@@ -167,16 +128,6 @@ extends Manageable {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
-
-   /**
-    * Retrieves the current API.
-    *
-    * @return
-    *    the current {@link API}, never <code>null</code>.
-    */
-   final API getAPI() {
-      return _api;
-   }
 
    /**
     * Performs the bootstrap procedure (actual implementation).
@@ -201,9 +152,6 @@ extends Manageable {
       // Determine the name and class of the custom calling convention
       _defaultConventionName = determineDefaultConvention(properties);
 
-      // Create a list with all known calling convention names
-      ArrayList conventions = new ArrayList(CONVENTIONS);
-
       // Append the defined calling conventions
       Iterator itCustomCC = properties.getNames();
       while (itCustomCC.hasNext()) {
@@ -211,43 +159,26 @@ extends Manageable {
          if (nextProperty.startsWith(APIServlet.API_CALLING_CONVENTION_PROPERTY + '.') &&
              !nextProperty.equals(APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY)) {
             String conventionName = nextProperty.substring(32, nextProperty.length() - 6);
-            conventions.add(conventionName);
+            _conventionNames.add(conventionName);
          }
       }
 
-      // Set the current CallingConvention for this thread
-      CURRENT_INSTANCE.set(this);
+      // Construct and bootstrap the default calling convention
+      CallingConvention cc = create(properties, _defaultConventionName);
+      
+      // If created, store the object and attempt bootstrapping
+      if (cc != null) {
+         _conventions.put(_defaultConventionName, cc);
+         bootstrap(_defaultConventionName, cc, properties);
 
-      // Construct and bootstrap all calling conventions
-      Iterator itConventions = conventions.iterator();
-      while (itConventions.hasNext()) {
-
-         // Create the calling convention
-         String name = (String) itConventions.next();
-         boolean defaultConvention = name.equals(_defaultConventionName);
-         CallingConvention cc = create(properties, name);
-
-         // If created, store the object and attempt bootstrapping
-         if (cc != null) {
-            _conventions.put(name, cc);
-            bootstrap(name, cc, properties);
-
-            if (defaultConvention && cc.getState() != Manageable.BOOTSTRAPPED) {
-               throw new BootstrapException("Failed to bootstrap the default calling convention.");
-            }
-
-         // Otherwise, if it's the default calling convention, fails
-         } else if (defaultConvention) {
-            throw new BootstrapException("Failed to create the default calling convention.");
-
-         // Otherwise remember we know this one, but it failed to create
-         } else {
-            _conventions.put(name, CREATION_FAILED);
+         if (cc.getState() != Manageable.BOOTSTRAPPED) {
+            throw new BootstrapException("Failed to bootstrap the default calling convention.");
          }
-      }
 
-      // Reset the current CallingConvention for this thread
-      CURRENT_INSTANCE.set(null);
+      // Otherwise, if it's the default calling convention, fails
+      } else {
+         throw new BootstrapException("Failed to create the default calling convention.");
+      }
    }
 
    /**
@@ -307,16 +238,8 @@ extends Manageable {
     * @return
     *    a non-bootstrapped {@link CallingConvention} instance that matches
     *    the specified name, or <code>null</code> if no match is found.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>properties == null || name == null</code>.
     */
-   private CallingConvention create(PropertyReader properties,
-                                    String         name)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("properties", properties, "name", name);
+   private CallingConvention create(PropertyReader properties, String name) {
 
       // Determine the name of the CallingConvention class
       String className = null;
@@ -342,6 +265,7 @@ extends Manageable {
       // Constructed successfully
       if (cc != null) {
          Log.log_3238(name, className);
+         cc.setAPI(_api);
       }
 
       return cc;
@@ -398,8 +322,7 @@ extends Manageable {
    }
 
    /**
-    * Constructs a new <code>CustomCallingConvention</code> instance by class
-    * name.
+    * Constructs a new <code>CallingConvention</code> instance by class name.
     *
     * @param name
     *    the name of the calling convention, cannot be <code>null</code>.
@@ -410,15 +333,8 @@ extends Manageable {
     * @return
     *    the constructed {@link CallingConvention} instance, or
     *    <code>null</code> if the construction failed.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || className == null</code>.
     */
-   private CallingConvention construct(String name, String className)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("name", name, "className", className);
+   private CallingConvention construct(String name, String className) {
 
       // Try to load the class
       Class clazz;
@@ -447,14 +363,7 @@ extends Manageable {
 
          // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {
-            String thisClass  = CallingConventionManager.class.getName();
-            String thisMethod = "construct(String,"
-                              + "String)";
-            Utils.logIgnoredException(thisClass,
-                                      thisMethod,
-                                      con.getClass().getName(),
-                                      "newInstance(Object[])",
-                                      exception);
+            Utils.logIgnoredException(exception);
             return null;
          }
       }
@@ -480,19 +389,8 @@ extends Manageable {
     *
     * @param properties
     *    the bootstrap properties, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || cc == null || properties == null</code>.
     */
-   private void bootstrap(String            name,
-                          CallingConvention cc,
-                          PropertyReader    properties)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("name",       name,
-                                     "cc",         cc,
-                                     "properties", properties);
+   private void bootstrap(String name, CallingConvention cc, PropertyReader properties) {
 
       // Bootstrapping calling convention
       Log.log_3240(name);
@@ -579,19 +477,8 @@ extends Manageable {
     *
     * @param properties
     *    the initialization properties, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || cc == null || properties == null</code>.
     */
-   private void init(String            name,
-                     CallingConvention cc,
-                     PropertyReader    properties)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("name",       name,
-                                     "cc",         cc,
-                                     "properties", properties);
+   private void init(String name, CallingConvention cc, PropertyReader properties) {
 
       // If the CallingConvention is not even bootstrapped, then do not even
       // attempt to initialize it
@@ -671,7 +558,7 @@ extends Manageable {
     *    <code>null</code>.
     *
     * @return
-    *    the calling convention, never <code>null</code>.
+    *    the calling convention initialized, never <code>null</code>.
     *
     * @throws InvalidRequestException
     *    if the calling convention name is unknown.
@@ -683,13 +570,29 @@ extends Manageable {
       Object o = _conventions.get(name);
 
       // Not found
-      if (o == null) {
-         String detail = "Calling convention \"" + name + "\" is unknown.";
-         Log.log_3507(name, detail);
-         throw new InvalidRequestException(detail);
+      if (o == null && !_conventionNames.contains(name)) {
+            String detail = "Calling convention \"" + name + "\" is unknown.";
+            Log.log_3507(name, detail);
+            throw new InvalidRequestException(detail);
+      } else if (o == null) {
+
+         // Create the asked calling convention and initiaze it
+         CallingConvention cc = create(_api.getBootstrapProperties(), name);
+
+         // If created, store the object and attempt bootstrapping
+         if (cc != null) {
+            o = cc;
+            _conventions.put(name, cc);
+            bootstrap(name, cc, _api.getBootstrapProperties());
+            init(name, cc, _api.getRuntimeProperties());
+         } else {
+            o = CREATION_FAILED;
+            _conventions.put(name, o);
+         }
+      }
 
       // Creation failed
-      } else if (o == CREATION_FAILED) {
+      if (o == CREATION_FAILED) {
          String detail = "Calling convention \""
                        + name
                        + "\" is known, but could not be created.";
@@ -728,27 +631,10 @@ extends Manageable {
     */
    CallingConvention getCallingConvention2(String name) {
 
-      // Get the CallingConvention object
-      Object o = _conventions.get(name);
-
-      // Not a CallingConvention instance
-      if (! (o instanceof CallingConvention)) {
+      try {
+         return getCallingConvention(name);
+      } catch (InvalidRequestException ex) {
          return null;
-
-      // Calling convention is recognized and was created OK
-      } else {
-
-         // Cast
-         CallingConvention cc = (CallingConvention) o;
-
-         // Return null if it's unusable
-         if (! cc.isUsable()) {
-            return null;
-
-         // Otherwise return the object
-         } else {
-            return cc;
-         }
       }
    }
 
@@ -791,35 +677,18 @@ extends Manageable {
    CallingConvention detectCallingConvention(HttpServletRequest request)
    throws InvalidRequestException {
 
-      String noMatches = "Request does not specify a calling convention, it "
-                       + "cannot be handled by the default calling "
-                       + "convention and it was not possible to find any "
-                       + "calling convention that can handle it.";
-
-      String multipleMatches = "Request does not specify a calling "
-                             + "convention, it cannot be handled by the "
-                             + "default calling convention and multiple "
-                             + "calling conventions are able to handle it: "
-                             + '"';
-
-      String defaultName = _defaultConventionName;
-
-      // Get some calling convention instances in advance
-      CallingConvention defCC = getCallingConvention2(defaultName);
-      CallingConvention xslCC = getCallingConvention2("_xins-xslt");
-      CallingConvention stdCC = getCallingConvention2("_xins-std");
-
       // Log: Request does not specify any calling convention
       Log.log_3508();
 
       // See if the default calling convention matches
+      CallingConvention defCC = getCallingConvention2(_defaultConventionName);
       if (defCC != null && defCC.matchesRequest(request)) {
          Log.log_3509(defCC.getClass().getName());
          return defCC;
       }
 
-      // If not, see if XSLT-specific properties are set /and/ _xins-xslt
-      // matches
+      // If not, see if XSLT-specific properties are set /and/ _xins-xslt matches
+      CallingConvention xslCC = getCallingConvention2("_xins-xslt");
       if (xslCC != null && xslCC != defCC && xslCC.matchesRequest(request)) {
 
          // Determine if one of the two XSLT-specific parameters is set
@@ -835,6 +704,7 @@ extends Manageable {
       }
 
       // If not, see if _xins-std matches
+      CallingConvention stdCC = getCallingConvention2("_xins-std");
       if (stdCC != null && stdCC != defCC && stdCC.matchesRequest(request)) {
          Log.log_3509(StandardCallingConvention.class.getName());
          return stdCC;
@@ -844,11 +714,15 @@ extends Manageable {
       CallingConvention matching = null;
 
       // Determine which calling conventions match
-      Set       entrySet  = _conventions.entrySet();
-      Iterator  iterator  = entrySet.iterator();
-      while (iterator.hasNext()) {
-         Map.Entry entry = (Map.Entry) iterator.next();
-         Object    value =             entry.getValue();
+      Iterator itConventionNames = _conventionNames.iterator();
+      while (itConventionNames.hasNext()) {
+         String name = (String) itConventionNames.next();
+         Object value = getCallingConvention2(name);
+
+         // if the value is null, that's maybe an initialization problem
+         if (value == null) {
+            value = _conventions.get(name);
+         }
 
          // Skip all values that are not CallingConvention instances
          // Skip also the default and the standard calling conventions, we
@@ -870,11 +744,12 @@ extends Manageable {
             // Fail: Multiple matches
             } else {
                Log.log_3511();
-               String message = multipleMatches
-                              + matching.getClass().getName()
-                              + "\", \""
-                              + cc.getClass().getName()
-                              + "\".";
+               String multipleMatches = "Request does not specify a calling "
+                     + "convention, it cannot be handled by the "
+                     + "default calling convention and multiple "
+                     + "calling conventions are able to handle it: \"";
+               String message = multipleMatches + matching.getClass().getName()
+                     + "\", \"" + cc.getClass().getName() + "\".";
                throw new InvalidRequestException(message);
             }
          }
@@ -887,6 +762,9 @@ extends Manageable {
       // Fail: No matches
       } else {
          Log.log_3510();
+         String noMatches = "Request does not specify a calling convention, it "
+               + "cannot be handled by the default calling convention and it was"
+               + "not possible to find any calling convention that can handle it.";
          throw new InvalidRequestException(noMatches);
       }
    }
@@ -911,18 +789,25 @@ extends Manageable {
       // Make sure this Manageable object is bootstrapped and initialized
       assertUsable();
 
-      HashSet set = new HashSet();
-      Iterator iterator = _conventions.values().iterator();
-      while (iterator.hasNext()) {
+      HashSet supportedMethods = new HashSet();
+      Iterator itConventionNames = _conventionNames.iterator();
+      while (itConventionNames.hasNext()) {
+
+         String name = (String) itConventionNames.next();
+         Object convention = getCallingConvention2(name);
+
+         // if the value is null, that's maybe an initialization problem
+         if (convention == null) {
+            convention = _conventions.get(name);
+         }
 
          // Add all methods supported by the calling convention
-         Object object = iterator.next();
-         if (object instanceof CallingConvention) {
-            CallingConvention cc = (CallingConvention) object;
-            set.addAll(Arrays.asList(cc.getSupportedMethods()));
+         if (convention instanceof CallingConvention) {
+            CallingConvention cc = (CallingConvention) convention;
+            supportedMethods.addAll(Arrays.asList(cc.getSupportedMethods()));
          }
       }
 
-      return set;
+      return supportedMethods;
    }
 }
