@@ -47,10 +47,6 @@
 		<xsl:param name="specsdir" />
 		<xsl:param name="type"     />
 
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-
 		<xsl:choose>
 			<xsl:when test="starts-with($type, '_') or string-length($type) = 0" />
 			<xsl:when test="contains($type, '/')">
@@ -209,17 +205,6 @@
 			</xsl:call-template>
 		</xsl:variable>
 
-		<!-- Check preconditions -->
-		<xsl:if test="not($project_node)">
-			<xsl:message terminate="yes">Parameter 'project_node' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
-
 		<xsl:choose>
 			<!-- Determine Java type for standard type -->
 			<xsl:when test="starts-with($type, '_') or string-length($type) = 0">
@@ -298,13 +283,6 @@
 		<xsl:param name="api"      />
 		<xsl:param name="type"     />
 
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
-
 		<xsl:choose>
 			<xsl:when test="string-length($type) &lt; 1">
 				<xsl:text>_text</xsl:text>
@@ -382,14 +360,6 @@
 				<xsl:with-param name="type" select="$type" />
 			</xsl:call-template>
 		</xsl:variable>
-
-		<!-- Check preconditions -->
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
 
 		<xsl:choose>
 			<!-- Determine Java type for standard type -->
@@ -496,14 +466,6 @@
 				<xsl:with-param name="type" select="$type" />
 			</xsl:call-template>
 		</xsl:variable>
-
-		<!-- Check preconditions -->
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
 
 		<xsl:choose>
 			<!-- Determine Java type for standard type -->
@@ -640,17 +602,6 @@
 				<xsl:with-param name="type" select="$type" />
 			</xsl:call-template>
 		</xsl:variable>
-
-		<!-- Check preconditions -->
-		<xsl:if test="not($project_node)">
-			<xsl:message terminate="yes">Parameter 'project_node' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($specsdir) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'specsdir' is mandatory.</xsl:message>
-		</xsl:if>
-		<xsl:if test="string-length($api) &lt; 1">
-			<xsl:message terminate="yes">Parameter 'api' is mandatory.</xsl:message>
-		</xsl:if>
 
 		<xsl:choose>
 			<!-- Determine Java import for standard type -->
