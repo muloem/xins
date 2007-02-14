@@ -39,22 +39,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 public class DataElement implements Cloneable {
 
-   // NOTE: The behavior of this class has been slightly redefined in XINS
-   //       1.1. In XINS 1.0, the name for a DataElement was a combination of
-   //       the namespace prefix and the local name. In XINS 1.1, the name is
-   //       just the local name. Since XINS 1.0 did not support XML Namespaces
-   //       yet, this is not considered an incompatibility.
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = DataElement.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------

@@ -54,17 +54,6 @@ public class XINSCallResultParser {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class. This field is not <code>null</code>.
-    */
-   private static final String CLASSNAME = XINSCallResultParser.class.getName();
-
-   /**
-    * Fully-qualified name of the inner class <code>Handler</code>. This field
-    * is not <code>null</code>.
-    */
-   private static final String HANDLER_CLASSNAME = XINSCallResultParser.Handler.class.getName();
-
-   /**
     * The key for the <code>ProtectedPropertyReader</code> instances created
     * by this class.
     */

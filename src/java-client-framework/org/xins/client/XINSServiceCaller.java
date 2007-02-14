@@ -130,16 +130,6 @@ boolean         failOver = true;
 public final class XINSServiceCaller extends ServiceCaller {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = XINSServiceCaller.class.getName();
-
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 

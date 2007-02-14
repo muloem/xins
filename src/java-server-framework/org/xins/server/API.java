@@ -55,11 +55,6 @@ implements DefaultResultCodes {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = API.class.getName();
-
-   /**
     * Successful empty call result.
     */
    static final FunctionResult SUCCESSFUL_RESULT = new FunctionResult();
@@ -997,13 +992,8 @@ implements DefaultResultCodes {
       // If the IP address cannot be parsed there is a programming error
       // somewhere
       } catch (ParseException exception) {
-         String thisMethod    = "allow(String,String)";
-         String subjectClass  = _accessRuleList.getClass().getName();
-         String subjectMethod = "allow(String,String)";
          String detail        = "Malformed IP address: \"" + ip + "\".";
-         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                         subjectClass, subjectMethod,
-                                         detail,       exception);
+         throw Utils.logProgrammingError(detail, exception);
       }
 
       // If there is a match, return the allow-indication

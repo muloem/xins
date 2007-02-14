@@ -17,16 +17,6 @@ package org.xins.common;
 public final class TimeOutController {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = TimeOutController.class.getName();
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 

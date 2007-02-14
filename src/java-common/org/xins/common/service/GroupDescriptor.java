@@ -34,11 +34,6 @@ public final class GroupDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = GroupDescriptor.class.getName();
-
-   /**
     * The identifier of the <em>random</em> group type.
     */
    public static final String RANDOM_TYPE_ID = "random";

@@ -46,11 +46,6 @@ public final class TargetDescriptor extends Descriptor {
    //-------------------------------------------------------------------------
 
    /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = TargetDescriptor.class.getName();
-
-   /**
     * The number of instances of this class. Initially 0.
     */
    private static int INSTANCE_COUNT;

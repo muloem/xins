@@ -34,16 +34,6 @@ import org.znerd.xmlenc.XMLOutputter;
 public final class ElementSerializer {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = ElementSerializer.class.getName();
-
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 

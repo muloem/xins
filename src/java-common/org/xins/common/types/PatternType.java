@@ -32,11 +32,6 @@ public abstract class PatternType extends Type {
    //-------------------------------------------------------------------------
 
    /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = PatternType.class.getName();
-
-   /**
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
@@ -121,19 +116,9 @@ public abstract class PatternType extends Type {
       // If the call causes an exception, then log that exception and assume
       // the value does not match the pattern
       } catch (Throwable exception) {
-         String thisMethod    = "isValidValueImpl(String)";
-         String subjectClass  = "org.apache.oro.text.regex.Perl5Matcher";
-         String subjectMethod = "matches(String,"
-                              + _pattern.getClass().getName()
-                              + ')';
-         String detail        = "Assuming the value \""
-                              + value
-                              + "\" is invalid for the pattern \""
-                              + _patternString
-                              + "\".";
-         Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                   subjectClass, subjectMethod,
-                                   detail,       exception);
+         String detail = "Assuming the value \"" + value
+               + "\" is invalid for the pattern \"" + _patternString + "\".";
+         Utils.logProgrammingError(detail, exception);
          return false;
       }
    }

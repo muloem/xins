@@ -46,11 +46,6 @@ abstract class CallingConvention extends Manageable {
    //------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = CallingConvention.class.getName();
-
-   /**
     * The default value of the <code>"Server"</code> header sent with an HTTP
     * response. The actual value is
     * <code>"XINS/Java Server Framework "</code>, followed by the version of
@@ -404,35 +399,13 @@ abstract class CallingConvention extends Manageable {
          } else if (exception instanceof FunctionNotSpecifiedException) {
             throw (FunctionNotSpecifiedException) exception;
          } else {
-            String thisMethod    = "convertRequest("
-                                 + HttpServletRequest.class.getName()
-                                 + ')';
-            String subjectClass  = getClass().getName();
-            String subjectMethod = "convertRequestImpl("
-                                 + HttpServletRequest.class.getName()
-                                 + ')';
-
-            String detail = null;
-
-            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                            subjectClass, subjectMethod,
-                                            detail,       exception);
+            throw Utils.logProgrammingError(exception);
          }
       }
 
       // Make sure the returned value is not null
       if (xinsRequest == null) {
-         String thisMethod    = "convertRequest("
-                              + HttpServletRequest.class.getName()
-                              + ')';
-         String subjectClass  = getClass().getName();
-         String subjectMethod = "convertRequestImpl("
-                              + HttpServletRequest.class.getName()
-                              + ')';
-         String detail = "Method returned null.";
-         throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                         subjectClass, subjectMethod,
-                                         detail);
+         throw Utils.logProgrammingError("Method returned null.");
       }
 
       return xinsRequest;
@@ -529,21 +502,7 @@ abstract class CallingConvention extends Manageable {
             Log.log_3506(exception, getClass().getName());
             throw (IOException) exception;
          } else {
-            String thisMethod    = "convertResult("
-                                 + FunctionResult.class.getName()
-                                 + ','
-                                 + HttpServletResponse.class.getName()
-                                 + ','
-                                 + HttpServletRequest.class.getName()
-                                 + ')';
-            String subjectClass  = getClass().getName();
-            String subjectMethod = "convertResultImpl("
-                                 + HttpServletRequest.class.getName()
-                                 + ')';
-
-            throw Utils.logProgrammingError(CLASSNAME,    thisMethod,
-                                            subjectClass, subjectMethod,
-                                            null,         exception);
+            throw Utils.logProgrammingError(exception);
          }
       }
    }

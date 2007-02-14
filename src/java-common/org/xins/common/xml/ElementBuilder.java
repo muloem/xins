@@ -160,9 +160,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "setAttribute(String,String,String)";
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       // Really set the attribute
@@ -183,11 +181,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "addChild(" + Element.class.getName() + ')';
-         String detail     = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName,
-                                         CLASSNAME, methodName,
-                                         detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       // Really add the child element
@@ -217,11 +211,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "addXMLChild(String)";
-         String detail     = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName,
-                                         CLASSNAME, methodName,
-                                         detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       ElementParser parser = new ElementParser();
@@ -246,9 +236,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state == INITIAL) {
-         String methodName = "setText(String)";
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       // Really set the character content
@@ -287,9 +275,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state != INITIAL) {
-         String methodName = "startElement(String,String)";
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       // Really start the element
@@ -310,9 +296,7 @@ public class ElementBuilder {
 
       // Check state
       if (_state != STARTED) {
-         String methodName = "createElement()";
-         String detail = "Unexpected state " + _state;
-         throw Utils.logProgrammingError(CLASSNAME, methodName, CLASSNAME, methodName, detail);
+         throw Utils.logProgrammingError("Unexpected state " + _state);
       }
 
       return _element;

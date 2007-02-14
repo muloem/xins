@@ -57,11 +57,6 @@ public abstract class AbstractCAPI {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class. Never <code>null</code>.
-    */
-   private final static String CLASSNAME = AbstractCAPI.class.getName();
-
-   /**
     * Set of all CAPI classes for which the XINS version at build-time has
     * already been checked against the XINS version at run-time. Never
     * <code>null</code>.
@@ -247,9 +242,7 @@ public abstract class AbstractCAPI {
             return s;
          }
       } catch (Throwable exception) {
-         Utils.logProgrammingError(CLASSNAME,            "determineAPIName()",
-                                   getClass().getName(), "getAPINameImpl()",
-                                   null,                 exception);
+         Utils.logProgrammingError(exception);
          // fall through
       }
 

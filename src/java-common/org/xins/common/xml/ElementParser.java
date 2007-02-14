@@ -43,12 +43,6 @@ public class ElementParser {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of the inner class <code>Handler</code>. This field
-    * is not <code>null</code>.
-    */
-   private static final String HANDLER_CLASSNAME = ElementParser.Handler.class.getName();
-
-   /**
     * Error state for the SAX event handler.
     */
    private static final State ERROR = new State("ERROR");

@@ -28,16 +28,6 @@ import org.xins.common.service.TargetDescriptor;
 public final class HTTPCallResult extends CallResult implements HTTPCallResultData {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = HTTPCallResult.class.getName();
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 

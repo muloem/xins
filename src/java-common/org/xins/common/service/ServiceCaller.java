@@ -185,20 +185,6 @@ import org.xins.common.Utils;
  */
 public abstract class ServiceCaller {
 
-   // TODO: Describe typical implementation scenario, e.g. a
-   //       SpecificCallResult call(SpecificCallRequest, SpecificCallConfig)
-   //       method that calls doCall(CallRequest,CallConfig).
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = ServiceCaller.class.getName();
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
