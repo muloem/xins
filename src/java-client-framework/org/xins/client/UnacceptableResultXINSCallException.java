@@ -47,9 +47,13 @@ extends XINSCallException {
     *
     * @return
     *    the argument <code>result</code>, guaranteed not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null</code>.
     */
    private static AbstractCAPICallResult checkArguments(AbstractCAPICallResult result)
    throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("result", result);
       return result;
    }
 
