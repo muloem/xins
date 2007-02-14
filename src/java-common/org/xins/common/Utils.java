@@ -16,7 +16,7 @@ import org.xins.common.text.TextUtils;
  *
  * @since XINS 1.1.0
  */
-public final class Utils extends Object {
+public final class Utils {
 
    //-------------------------------------------------------------------------
    // Class functions

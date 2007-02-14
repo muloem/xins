@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.1
  */
-public final class PropertyReaderConverter extends Object {
+public final class PropertyReaderConverter {
 
    //-------------------------------------------------------------------------
    // Class fields

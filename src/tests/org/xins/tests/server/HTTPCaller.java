@@ -23,7 +23,7 @@ import org.xins.common.text.ParseException;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
-public class HTTPCaller extends Object {
+public class HTTPCaller {
 
    //-------------------------------------------------------------------------
    // Class functions

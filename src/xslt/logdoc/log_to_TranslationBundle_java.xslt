@@ -44,7 +44,7 @@
  */
 </xsl:text>
 		<xsl:value-of select="$accessmodifier" />
-		<xsl:text>abstract class TranslationBundle extends Object {
+		<xsl:text>abstract class TranslationBundle {
 
    //-------------------------------------------------------------------------
    // Class fields

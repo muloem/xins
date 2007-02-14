@@ -37,8 +37,7 @@ import org.xins.common.text.TextUtils;
  *
  * @since XINS 1.0.0
  */
-public final class ExpiryFolder
-extends Object {
+public final class ExpiryFolder {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -860,7 +859,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
-   private class Entry extends Object {
+   private class Entry {
 
       //----------------------------------------------------------------------
       // Constructors

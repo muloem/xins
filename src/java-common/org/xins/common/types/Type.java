@@ -19,7 +19,7 @@ import org.xins.common.Utils;
  *
  * @since XINS 1.0.0
  */
-public abstract class Type extends Object {
+public abstract class Type {
 
    //-------------------------------------------------------------------------
    // Class fields

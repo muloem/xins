@@ -54,9 +54,7 @@ import org.xins.common.text.SimplePatternParser;
  *
  * @since XINS 1.0.0
  */
-public final class AccessRule
-extends Object
-implements AccessRuleContainer {
+public final class AccessRule implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class functions

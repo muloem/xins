@@ -47,8 +47,7 @@ import org.xins.common.xml.SAXParserProvider;
  *
  * @since XINS 1.0.0
  */
-public class XINSCallResultParser
-extends Object {
+public class XINSCallResultParser {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -777,7 +776,7 @@ extends Object {
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
-   private static final class State extends Object {
+   private static final class State {
 
       //----------------------------------------------------------------------
       // Constructors
@@ -803,7 +802,6 @@ extends Object {
 
       //----------------------------------------------------------------------
       // Fields
-
       //----------------------------------------------------------------------
 
       /**

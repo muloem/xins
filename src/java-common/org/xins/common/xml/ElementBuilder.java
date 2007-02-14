@@ -23,7 +23,7 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.1.0
  */
-public class ElementBuilder extends Object {
+public class ElementBuilder {
 
    // TODO: Document the states. A user of this class should be aware of the
    //       fact that addChild(...) cannot be called if startElement(...) was
@@ -329,7 +329,7 @@ public class ElementBuilder extends Object {
     * @version $Revision$ $Date$
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
-   private static final class State extends Object {
+   private static final class State {
 
       //----------------------------------------------------------------------
       // Constructors

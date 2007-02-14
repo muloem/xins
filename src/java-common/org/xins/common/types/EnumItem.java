@@ -18,7 +18,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @see EnumType
  */
-public class EnumItem extends Object {
+public class EnumItem {
 
    //-------------------------------------------------------------------------
    // Constructors

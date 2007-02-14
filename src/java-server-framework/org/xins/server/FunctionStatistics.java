@@ -25,7 +25,7 @@ import org.xins.common.xml.ElementBuilder;
  *
  * @since XINS 1.0.0
  */
-class FunctionStatistics extends Object {
+class FunctionStatistics {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -195,7 +195,7 @@ class FunctionStatistics extends Object {
     *
     * @since XINS 1.1.0
     */
-   private static final class Statistic extends Object {
+   private static final class Statistic {
 
       //----------------------------------------------------------------------
       // Constructors

@@ -21,8 +21,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class ResultCode
-extends Object {
+public final class ResultCode {
 
    //-------------------------------------------------------------------------
    // Constructors

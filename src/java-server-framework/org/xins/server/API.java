@@ -1595,7 +1595,7 @@ implements DefaultResultCodes {
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
-   private static final class Counter extends Object {
+   private static final class Counter {
 
       //----------------------------------------------------------------------
       // Constructors

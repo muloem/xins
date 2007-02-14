@@ -52,7 +52,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public class SimplePatternParser extends Object {
+public class SimplePatternParser {
 
    //-------------------------------------------------------------------------
    // Constructors

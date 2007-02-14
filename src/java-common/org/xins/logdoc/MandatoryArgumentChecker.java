@@ -14,7 +14,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public final class MandatoryArgumentChecker extends Object {
+public final class MandatoryArgumentChecker {
 
    //-------------------------------------------------------------------------
    // Class functions

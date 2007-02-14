@@ -15,9 +15,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public abstract class AbstractLogdocSerializable
-extends Object
-implements LogdocSerializable {
+public abstract class AbstractLogdocSerializable implements LogdocSerializable {
 
    //-------------------------------------------------------------------------
    // Constructors

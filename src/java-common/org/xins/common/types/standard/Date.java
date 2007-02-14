@@ -275,7 +275,7 @@ public class Date extends Type {
     *
     * @since XINS 1.0.0
     */
-   public static final class Value extends Object implements Cloneable {
+   public static final class Value implements Cloneable {
 
       //----------------------------------------------------------------------
       // Constructors

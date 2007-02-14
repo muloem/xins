@@ -18,8 +18,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @see List
  */
-public class ItemList
-extends Object {
+public class ItemList {
 
    //-------------------------------------------------------------------------
    // Constructors

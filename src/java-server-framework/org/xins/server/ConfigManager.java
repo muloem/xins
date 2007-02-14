@@ -45,7 +45,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-final class ConfigManager extends Object {
+final class ConfigManager {
 
    // XXX: Consider adding state checking
 
@@ -574,9 +574,7 @@ final class ConfigManager extends Object {
     *
     * @since XINS 1.0.0
     */
-   private final class ConfigurationFileListener
-   extends Object
-   implements FileWatcher.Listener {
+   private final class ConfigurationFileListener implements FileWatcher.Listener {
 
       //----------------------------------------------------------------------
       // Constructors

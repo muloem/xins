@@ -15,7 +15,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public class LogdocHexConverter extends Object {
+public class LogdocHexConverter {
 
    //-------------------------------------------------------------------------
    // Class fields

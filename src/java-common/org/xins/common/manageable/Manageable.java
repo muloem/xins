@@ -44,7 +44,7 @@ import org.xins.common.collections.PropertyReaderUtils;
  *
  * @since XINS 1.0.0
  */
-public abstract class Manageable extends Object {
+public abstract class Manageable {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -504,7 +504,7 @@ public abstract class Manageable extends Object {
     *
     * @since XINS 1.0.0
     */
-   public static final class State extends Object {
+   public static final class State {
 
       //----------------------------------------------------------------------
       // Constructors

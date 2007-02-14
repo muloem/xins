@@ -23,7 +23,7 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.0.0
  */
-public final class IPAddressUtils extends Object {
+public final class IPAddressUtils {
 
    //-------------------------------------------------------------------------
    // Class functions

@@ -597,7 +597,7 @@ public class Element implements Cloneable {
     *
     * @since XINS 1.1.0
     */
-   public static final class QualifiedName extends Object {
+   public static final class QualifiedName {
 
       //----------------------------------------------------------------------
       // Constructors

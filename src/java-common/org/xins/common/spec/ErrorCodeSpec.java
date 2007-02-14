@@ -25,7 +25,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.3.0
  */
-public final class ErrorCodeSpec extends Object {
+public final class ErrorCodeSpec {
 
    //-------------------------------------------------------------------------
    // Class fields

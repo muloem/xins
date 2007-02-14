@@ -32,7 +32,7 @@ import org.xins.logdoc.UnsupportedLocaleError;
  * @author <a href="mailto:mees.witteman@orange-ftgroup.com">Mees Witteman</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-final class EngineStarter extends Object {
+final class EngineStarter {
 
    //-------------------------------------------------------------------------
    // Class functions

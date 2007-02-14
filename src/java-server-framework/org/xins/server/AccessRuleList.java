@@ -49,8 +49,7 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.0.0
  */
-public final class AccessRuleList
-extends Object implements AccessRuleContainer {
+public final class AccessRuleList implements AccessRuleContainer {
 
    //-------------------------------------------------------------------------
    // Class fields

@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
  *
  * @since XINS 1.2.0
  */
-public final class ExceptionUtils extends Object {
+public final class ExceptionUtils {
 
    //-------------------------------------------------------------------------
    // Class fields

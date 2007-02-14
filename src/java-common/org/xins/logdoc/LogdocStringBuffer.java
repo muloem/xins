@@ -15,7 +15,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public class LogdocStringBuffer extends Object {
+public class LogdocStringBuffer {
 
    //-------------------------------------------------------------------------
    // Constructors

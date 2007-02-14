@@ -17,7 +17,7 @@ import org.xins.common.types.Type;
  *
  * @since XINS 1.3.0
  */
-public final class ParameterSpec extends Object {
+public final class ParameterSpec {
 
    //-------------------------------------------------------------------------
    // Constructor

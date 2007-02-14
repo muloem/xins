@@ -445,7 +445,7 @@ public class ElementParser {
     *
     * @since XINS 1.0.0
     */
-   private static final class State extends Object {
+   private static final class State {
 
       //----------------------------------------------------------------------
       // Constructors

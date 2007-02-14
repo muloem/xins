@@ -24,9 +24,7 @@ import org.xins.common.collections.PropertyReader;
  *
  * @since XINS 1.0.0
  */
-public final class ServletConfigPropertyReader
-extends Object
-implements PropertyReader {
+public final class ServletConfigPropertyReader implements PropertyReader {
 
    //-------------------------------------------------------------------------
    // Constructors

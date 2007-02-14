@@ -20,7 +20,7 @@ import org.xins.common.xml.ElementBuilder;
  *
  * @since XINS 1.0.0
  */
-public class FunctionResult extends Object {
+public class FunctionResult {
 
    //-------------------------------------------------------------------------
    // Constructors

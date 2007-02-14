@@ -111,7 +111,7 @@ public abstract class AbstractLog {
     *
     * @since XINS 1.0.0
     */
-   protected static abstract class LogController extends Object {
+   protected static abstract class LogController {
 
       //----------------------------------------------------------------------
       // Constructors

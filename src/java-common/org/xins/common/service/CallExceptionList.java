@@ -19,7 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class CallExceptionList extends Object {
+public final class CallExceptionList {
 
    //-------------------------------------------------------------------------
    // Constructors

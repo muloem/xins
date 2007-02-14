@@ -50,7 +50,7 @@ import org.xins.common.text.TextUtils;
  *
  * @since XINS 1.0.0
  */
-public abstract class AbstractCAPI extends Object {
+public abstract class AbstractCAPI {
 
    //-------------------------------------------------------------------------
    // Class fields

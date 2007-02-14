@@ -28,7 +28,7 @@ import org.xml.sax.InputSource;
  *
  * @since XINS 1.3.0
  */
-public class SAXParserProvider extends Object {
+public class SAXParserProvider {
 
    //-------------------------------------------------------------------------
    // Class fields

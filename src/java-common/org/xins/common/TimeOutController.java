@@ -14,7 +14,7 @@ package org.xins.common;
  *
  * @since XINS 1.0.0
  */
-public final class TimeOutController extends Object {
+public final class TimeOutController {
 
    //-------------------------------------------------------------------------
    // Class fields

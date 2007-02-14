@@ -27,7 +27,7 @@ import org.xins.common.Utils;
  *
  * @since XINS 1.0.0
  */
-public final class ExpiryStrategy extends Object {
+public final class ExpiryStrategy {
 
    //-------------------------------------------------------------------------
    // Class fields

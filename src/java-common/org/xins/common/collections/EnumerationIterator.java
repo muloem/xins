@@ -19,9 +19,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class EnumerationIterator
-extends Object
-implements Iterator {
+public final class EnumerationIterator implements Iterator {
 
    //-------------------------------------------------------------------------
    // Constructor

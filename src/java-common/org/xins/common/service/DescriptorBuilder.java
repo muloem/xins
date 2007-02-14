@@ -72,7 +72,7 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @since XINS 1.0.0
  */
-public final class DescriptorBuilder extends Object {
+public final class DescriptorBuilder {
 
    //-------------------------------------------------------------------------
    // Class fields

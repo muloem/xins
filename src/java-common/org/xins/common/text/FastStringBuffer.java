@@ -21,7 +21,7 @@ import org.xins.common.Log;
  * @since XINS 1.0.0
  * @deprecated since 2.0 use Stringbuffer or String
  */
-public class FastStringBuffer extends Object {
+public class FastStringBuffer {
 
    //-------------------------------------------------------------------------
    // Constructors

@@ -32,7 +32,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public class DateConverter extends Object {
+public class DateConverter {
 
    //-------------------------------------------------------------------------
    // Class fields

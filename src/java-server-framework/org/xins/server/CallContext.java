@@ -19,8 +19,7 @@ import org.xins.common.xml.Element;
  *
  * @since XINS 1.0.0
  */
-public final class CallContext
-extends Object {
+public final class CallContext {
 
    //-------------------------------------------------------------------------
    // Constructors

@@ -46,8 +46,7 @@ import org.xins.common.text.ParseException;
  *
  * @since XINS 1.0.0
  */
-public final class IPFilter
-extends Object {
+public final class IPFilter {
 
    //-------------------------------------------------------------------------
    // Class fields

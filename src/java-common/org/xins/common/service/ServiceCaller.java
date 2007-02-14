@@ -183,7 +183,7 @@ import org.xins.common.Utils;
  *
  * @since XINS 1.0.0
  */
-public abstract class ServiceCaller extends Object {
+public abstract class ServiceCaller {
 
    // TODO: Describe typical implementation scenario, e.g. a
    //       SpecificCallResult call(SpecificCallRequest, SpecificCallConfig)

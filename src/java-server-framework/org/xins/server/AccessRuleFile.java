@@ -505,9 +505,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     *
     * @since XINS 1.1.0
     */
-   private final class FileListener
-   extends Object
-   implements FileWatcher.Listener {
+   private final class FileListener implements FileWatcher.Listener {
 
       //----------------------------------------------------------------------
       // Constructors

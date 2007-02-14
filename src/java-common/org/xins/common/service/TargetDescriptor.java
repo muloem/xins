@@ -550,9 +550,7 @@ public final class TargetDescriptor extends Descriptor {
     *
     * @since XINS 1.0.0
     */
-   private final class Iterator
-   extends Object
-   implements java.util.Iterator {
+   private final class Iterator implements java.util.Iterator {
 
       //----------------------------------------------------------------------
       // Constructors

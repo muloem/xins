@@ -14,7 +14,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-final class EngineStateMachine extends Object {
+final class EngineStateMachine {
 
    //-------------------------------------------------------------------------
    // Constructors

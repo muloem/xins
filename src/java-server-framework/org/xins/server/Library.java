@@ -18,7 +18,7 @@ import org.xins.common.text.TextUtils;
  *
  * @since XINS 1.0.0
  */
-public final class Library extends Object {
+public final class Library {
 
    //-------------------------------------------------------------------------
    // Class fields

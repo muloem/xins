@@ -21,9 +21,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.3.0
  */
-public final class StatsPropertyReader
-extends Object
-implements PropertyReader {
+public final class StatsPropertyReader implements PropertyReader {
 
    //-------------------------------------------------------------------------
    // Class fields

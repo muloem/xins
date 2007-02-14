@@ -31,7 +31,7 @@ import org.xins.common.xml.ElementParser;
  *
  * @since XINS 1.3.0
  */
-public final class APISpec extends Object {
+public final class APISpec {
 
    //-------------------------------------------------------------------------
    // Class functions

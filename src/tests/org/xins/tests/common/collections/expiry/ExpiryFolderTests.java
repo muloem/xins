@@ -379,7 +379,7 @@ public class ExpiryFolderTests extends TestCase {
    }
 
    private class Callback
-   extends Object {
+   {
 
       private long _timeStamp;
       private ExpiryFolder _folder;

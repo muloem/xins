@@ -31,7 +31,7 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * @since XINS 1.1.0
  */
-public final class ElementSerializer extends Object {
+public final class ElementSerializer {
 
    //-------------------------------------------------------------------------
    // Class fields

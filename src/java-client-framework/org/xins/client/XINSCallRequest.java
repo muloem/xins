@@ -611,7 +611,6 @@ public final class XINSCallRequest extends CallRequest {
     * @since XINS 1.0.0
     */
    private static final class HTTPStatusCodeVerifier
-   extends Object
    implements org.xins.common.http.HTTPStatusCodeVerifier {
 
       //----------------------------------------------------------------------

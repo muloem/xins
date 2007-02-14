@@ -14,7 +14,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-final class EngineState extends Object {
+final class EngineState {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -199,7 +199,7 @@ final class EngineState extends Object {
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
-   static class Type extends Object {
+   static class Type {
 
       //----------------------------------------------------------------------
       // Constructors

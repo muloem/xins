@@ -49,7 +49,7 @@ import org.xins.common.xml.ElementBuilder;
  * @version $Revision$ $Date$
  * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  */
-class CheckLinks extends Object {
+class CheckLinks {
 
    //-------------------------------------------------------------------------
    // Class fields
