@@ -280,6 +280,18 @@
 				<!-- otherwise no section -->
 			</xsl:choose>
 		</xsl:for-each>
+		
+		<!-- Write the data section if any -->
+		<xsl:if test="//xsd:element[@maxOccurs = 'unbounded']">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
+			<data>
+			<xsl:for-each select="/definitions/message[@name=$message]/part">
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[@maxOccurs = 'unbounded']" mode="attribute" />
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[@maxOccurs = 'unbounded']" mode="attribute" />
+			</xsl:for-each>
+			<xsl:value-of select="concat($return, $tab, $tab)" />
+			</data>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="xsd:element">
@@ -292,10 +304,12 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:call-template name="printParam">
-			<xsl:with-param name="section" select="$section" />
-			<xsl:with-param name="required" select="$required" />
-		</xsl:call-template>
+		<xsl:if test="@maxOccurs != 'unbounded'">
+			<xsl:call-template name="printParam">
+				<xsl:with-param name="section" select="$section" />
+				<xsl:with-param name="required" select="$required" />
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="printParam">
@@ -346,6 +360,13 @@
 			</description>
 			<xsl:value-of select="concat($return, $tab, $tab)" />
 		</param>
+	</xsl:template>
+
+	<xsl:template match="xsd:element" mode="attribute">
+		<xsl:value-of select="concat($return, $tab, $tab; $tab)" />
+		<element name="@name">
+			
+		</element>
 	</xsl:template>
 
 	<!-- Removes any namespace prefix to the text if any -->

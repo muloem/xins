@@ -756,13 +756,7 @@ final class Engine {
             reason     = "Internal error while trying to determine "
                        + "appropriate calling convention.";
 
-            Utils.logProgrammingError(
-               Engine.class.getName(),
-               "determineCC(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
-               _conventionManager.getClass().getName(),
-               "getCallingConvention(javax.servlet.http.HttpServletRequest)",
-               null,
-               exception);
+            Utils.logProgrammingError(exception);
          }
 
          // Log and respond
@@ -830,13 +824,7 @@ final class Engine {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             reason     = "Internal error.";
 
-            Utils.logProgrammingError(
-               Engine.class.getName(),
-               "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
-               cc.getClass().getName(),
-               "convertRequest(javax.servlet.http.HttpServletRequest)",
-               null,
-               exception);
+            Utils.logProgrammingError(exception);
          }
 
          // Log and respond
@@ -881,13 +869,7 @@ final class Engine {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             reason     = "Internal error while processing function call.";
 
-            Utils.logProgrammingError(
-               Engine.class.getName(),
-               "invokeFunction(long,org.xins.server.CallingConvention,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)",
-               _api.getClass().getName(),
-               "handleCall(long,org.xins.server.FunctionRequest,String)",
-               null,
-               exception);
+            Utils.logProgrammingError(exception);
          }
 
          // Log and respond

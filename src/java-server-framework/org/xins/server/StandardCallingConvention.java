@@ -136,16 +136,7 @@ extends CallingConvention {
 
          // I/O error, should never happen on a StringReader
          } catch (IOException exception) {
-            String thisClass  = StandardCallingConvention.class.getName();
-            String thisMethod = "convertRequestImpl("
-                              + HttpServletRequest.class.getName()
-                              + ')';
-            String subjectClass  = ElementParser.class.getName();
-            String subjectMethod = "parse(java.io.Reader)";
-            String detail        = null;
-            throw Utils.logProgrammingError(thisClass,    thisMethod,
-                                            subjectClass, subjectMethod,
-                                            detail,       exception);
+            throw Utils.logProgrammingError(exception);
          // Parsing error
          } catch (ParseException exception) {
             String detail = "Cannot parse the data section.";

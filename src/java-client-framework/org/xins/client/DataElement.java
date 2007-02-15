@@ -459,13 +459,7 @@ public class DataElement implements Cloneable {
       try {
          clone = (DataElement) super.clone();
       } catch (CloneNotSupportedException exception) {
-         String detail = null;
-         throw Utils.logProgrammingError(DataElement.class.getName(),
-                                         "clone()",
-                                         "Object",
-                                         "clone()",
-                                         detail,
-                                         exception);
+         throw Utils.logProgrammingError(exception);
       }
 
       // Deep copy the children

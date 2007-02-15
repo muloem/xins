@@ -552,10 +552,7 @@ public class Element implements Cloneable {
       try {
          clone = (Element) super.clone();
       } catch (CloneNotSupportedException exception) {
-         String detail = null;
-         throw Utils.logProgrammingError(Element.class.getName(), "clone()",
-                                         "Object",      "clone()",
-                                         detail,                  exception);
+         throw Utils.logProgrammingError(exception);
       }
 
       // Deep copy the children

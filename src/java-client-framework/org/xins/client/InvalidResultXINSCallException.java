@@ -131,10 +131,7 @@ public final class InvalidResultXINSCallException extends XINSCallException {
       try {
          quote = new String(httpData, 0, quoteLength, "US-ASCII");
       } catch (UnsupportedEncodingException exception) {
-         throw Utils.logProgrammingError(
-            InvalidResultXINSCallException.class.getName(), "parseError",
-            "String", "<init>(byte[],int,int,String)",
-            null, cause);
+         throw Utils.logProgrammingError(cause);
       }
 
       // Construct the detail message

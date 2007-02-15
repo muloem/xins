@@ -259,11 +259,7 @@ final class EngineStarter {
             + " while retrieving the value of the static field SINGLETON in class "
             + apiClassName
             + '.';
-         String thisMethod = "getAPIFromSingletonField("
-                           + "String,Class)";
-         Utils.logProgrammingError(Engine.class.getName(), thisMethod,
-                                   apiClassName,           "SINGLETON",
-                                   detail,                 exception);
+         Utils.logProgrammingError(detail, exception);
          Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
          throw servletExceptionFor(exception);
       }
@@ -436,13 +432,7 @@ final class EngineStarter {
 
       // Other unexpected exception
       } catch (Throwable exception) {
-         Utils.logProgrammingError(
-            Engine.class.getName(),
-            "<init>(javax.servlet.ServletConfig)",
-            "Class",
-            "forName(String)",
-            "Unexpected exception while loading Logdoc Log class for API.",
-            exception);
+         Utils.logProgrammingError("Unexpected exception while loading Logdoc Log class for API.", exception);
       }
    }
 

@@ -244,7 +244,7 @@ public final class Utils {
     *
     * @since XINS 1.3.0
     */
-   public static void logIgnoredException(String    detectingClass,
+   private static void logIgnoredException(String    detectingClass,
                                           String    detectingMethod,
                                           String    subjectClass,
                                           String    subjectMethod,
@@ -260,7 +260,7 @@ public final class Utils {
       MandatoryArgumentChecker.check("exception",       exception);
 
       // Perform the actual logging
-      Log.log_1051(exception,
+      Log.log_1051(exception.getClass().getName(), exception.getMessage(),
                    detectingClass, detectingMethod,
                    subjectClass,   subjectMethod,
                    detail);
@@ -337,6 +337,8 @@ public final class Utils {
     *          || exception      == null</code>.
     *
     * @since XINS 1.3.0
+    *
+    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(Throwable exception)}
     */
    public static void logIgnoredException(String    detectingClass,
                                           String    detectingMethod,
@@ -463,6 +465,8 @@ public final class Utils {
     * @return
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
+    *
+    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(String detail, Throwable cause)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,
@@ -519,6 +523,8 @@ public final class Utils {
     * @return
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
+    *
+    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(String detail)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,
