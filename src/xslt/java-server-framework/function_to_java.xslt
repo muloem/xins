@@ -205,17 +205,7 @@ public abstract class ]]></xsl:text>
 
       // The method should never return null
       if (_result == null) {
-         throw org.xins.common.Utils.logProgrammingError(
-            "</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>", // detecting class
-            "handleCall(org.xins.server.CallContext)", // detecting method
-            getClass().getName(), // subject class
-            "call(</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>$Request)", // subject method
-            "Return value is null."
-         );
+         throw org.xins.common.Utils.logProgrammingError("Return value is null.");
       }
 
       // Check that the Result object is really a FunctionResult instance. If
@@ -223,14 +213,6 @@ public abstract class ]]></xsl:text>
       // implements Result. He should never do this.
       if (! (_result instanceof org.xins.server.FunctionResult)) {
          throw org.xins.common.Utils.logProgrammingError(
-            "</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>", // detecting class
-            "handleCall(org.xins.server.CallContext)", // detecting method
-            getClass().getName(), // subject class
-            "call(</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>$Request)", // subject method
             "Return value is an instance of class " + _result.getClass().getName() + ", which is not derived from class org.xins.server.FunctionResult."
          );
       }
@@ -241,16 +223,7 @@ public abstract class ]]></xsl:text>
       // Check that if an error code is set, it is a supported one
       String _errorCode = _fr.getErrorCode();
       if (_errorCode != null &amp;&amp; !_errorCodes.contains(_errorCode) &amp;&amp; _fr instanceof UnsuccessfulResult) {
-         throw org.xins.common.Utils.logProgrammingError(
-            "</xsl:text>
-				<xsl:value-of select="$className" />
-			<xsl:text>", // detecting class
-            "handleCall(org.xins.server.CallContext)", // detecting method
-            getClass().getName(), // subject class
-            "call(</xsl:text>
-      <xsl:value-of select="$className" />
-      <xsl:text>$Request)", // subject method
-            "The error code \"" + _errorCode + "\" is not supported by this function.");
+         throw org.xins.common.Utils.logProgrammingError("The error code \"" + _errorCode + "\" is not supported by this function.");
       }
 
       return _fr;</xsl:text>
