@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Added a new method in TextUtils to create a Perl5 pattern.
   - Improved clarity in the programming exception thrown.
   - Removed duplicated code detected by PMD 3.9.
+  - Stack traces have been removed from the logging for the ignorable exception
+    as there are not needed.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
@@ -3600,6 +3602,7 @@ NOTE: This release is based on XINS 1.0.0-beta11.
     . 2109 (was NOTICE);
     . 2110 (was NOTICE);
     . 2111 (was INFO);
+
     . 2112 (was INFO).
   - Added log message 2113: XINS call request completely failed.
   - Changed log messages 2200 and 2206 to include namespace.
