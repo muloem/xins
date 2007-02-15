@@ -27,6 +27,8 @@
 
 	<!-- TODO test with XML special characters in xsd -->
 	<xsl:template match="xs:schema | xsd:schema">
+		<xsl:apply-templates select="xs:simpleType/xs:restriction" mode="restriction" />
+		<xsl:apply-templates select="xsd:simpleType/xsd:restriction" mode="restriction" />
 		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" mode="restriction" />
 		<xsl:apply-templates select="//xsd:element/xsd:simpleType/xsd:restriction" mode="restriction" />
 	</xsl:template>

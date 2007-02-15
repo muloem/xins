@@ -45,7 +45,7 @@
 		<xsl:variable name="typeFile" select="concat($typeName, '.typ')" />
 
 		<!-- The XSLT processor will choose which tag it can interpret -->
-		<!--xsl:result-document href="{$typeFile}" format="typ_doctype">
+		<!-- xsl:result-document href="{$typeFile}" format="typ_doctype">
 			<xsl:call-template name="xml_type">
 				<xsl:with-param name="typeName" select="$typeName" />
 				<xsl:with-param name="elementName" select="$elementName" />
@@ -92,6 +92,18 @@
 			</xsl:when>
 			<xsl:when test="../xsd:annotation/xsd:documentation">
 				<xsl:value-of select="../xsd:annotation/xsd:documentation/text()" />
+			</xsl:when>
+			<xsl:when test="../../xs:annotation/xs:documentation and string-length(../../xs:annotation/xs:documentation/text()) &gt; 1">
+				<xsl:text>Type for </xsl:text>
+				<xsl:variable name="text" select="../../xs:annotation/xs:documentation/text()" />
+				<xsl:value-of select="translate(substring($text, 1, 1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+				<xsl:value-of select="substring($text, 2)" />
+			</xsl:when>
+			<xsl:when test="../../xsd:annotation/xsd:documentation and string-length(../../xsd:annotation/xsd:documentation/text()) &gt; 1">
+				<xsl:text>Type for </xsl:text>
+				<xsl:variable name="text" select="../../xsd:annotation/xsd:documentation/text()" />
+				<xsl:value-of select="translate(substring($text, 1, 1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+				<xsl:value-of select="substring($text, 2)" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>The </xsl:text>

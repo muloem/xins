@@ -336,7 +336,10 @@
 			</xslt>
 		</target>
 
-		<target name="xsd-to-types" depends="-init-tools" description="Generates type files from a set of xsd files.">
+		<target name="xsd-to-types" description="Generates type files from a set of xsd files.">
+			<input addproperty="api.name"
+						 message="Please, enter the name of the api:" />
+			<mkdir dir="apis/${{api.name}}/spec" />
 			<input addproperty="xsd.dir"
 						 message="Please, enter the directory containing the XSD files:" />
 			<available property="xsd.dir.exists" file="${{xsd.dir}}" type="dir" />
