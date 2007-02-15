@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Removed unneeded unmodifiable Map objects in the enum type.
   - Added a new method in TextUtils to create a Perl5 pattern.
   - Improved clarity in the programming exception thrown.
+  - Removed duplicated code detected by PMD 3.9.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.
@@ -27,9 +28,11 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Lazy instantiation of the calling conventions.
   - CallingConvention#getAPI() will return the API object only after the
     construction of the calling convention.
+  - Removed duplicated code detected by PMD 3.9.
 
 * XINS/Java Client Framework:
   - Improved clarity in the programming exception thrown.
+  - Removed duplicated code detected by PMD 3.9.
 
 * Generated build file:
   - Do not include the impl.xml and the class files from the impl directory

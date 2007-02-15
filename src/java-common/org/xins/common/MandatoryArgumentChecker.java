@@ -89,11 +89,7 @@ public final class MandatoryArgumentChecker {
 
       // Check if the name is null
       if (argName == null) {
-         throw Utils.logProgrammingError(
-            CLASSNAME,               METHOD_1_NAME,
-            Utils.getCallingClass(), Utils.getCallingMethod(),
-            "argName == null"
-         );
+         throw Utils.logProgrammingError("argName == null");
       }
 
       // Otherwise the value is null
@@ -132,32 +128,21 @@ public final class MandatoryArgumentChecker {
          return;
       }
 
-      String message;
+      String message = "";
 
       // Check if any of the names is null
-      if (argName1 == null || argName2 == null) {
-         if (argName1 == null && argName2 == null) {
-            message = "argName1 == null && argName2 == null";
-         } else if (argName1 == null) {
-            message = "argName1 == null";
-         } else {
-            message = "argName2 == null";
-         }
-         throw Utils.logProgrammingError(
-            CLASSNAME,               METHOD_2_NAME,
-            Utils.getCallingClass(), Utils.getCallingMethod(),
-            message
-         );
+      if (argName1 == null && argName2 == null) {
+         message = "argName1 == null && argName2 == null";
+         throw Utils.logProgrammingError(message);
       }
 
       // Otherwise (at least) one of the values must be null
       if (argValue1 == null && argValue2 == null) {
          message = argName1 + " == null && "
                  + argName2 + " == null";
-      } else if (argValue1 == null) {
-         message = argName1 + " == null";
       } else {
-         message = argName2 + " == null";
+         check(argName1, argValue1);
+         check(argName2, argValue2);
       }
       throw new IllegalArgumentException(message);
    }
@@ -203,30 +188,12 @@ public final class MandatoryArgumentChecker {
       }
 
       // Check if any of the names is null
-      String message;
-      if (argName1 == null || argName2 == null || argName3 == null) {
-         if (argName1 == null && argName2 == null && argName3 == null) {
-            message = "argName1 == null && "
-                    + "argName2 == null && "
-                    + "argName3 == null";
-         } else if (argName1 == null && argName2 == null) {
-            message = "argName1 == null && argName2 == null";
-         } else if (argName1 == null && argName3 == null) {
-            message = "argName1 == null && argName3 == null";
-         } else if (argName2 == null && argName3 == null) {
-            message = "argName2 == null && argName3 == null";
-         } else if (argName1 == null) {
-            message = "argName1 == null";
-         } else if (argName2 == null) {
-            message = "argName2 == null";
-         } else {
-            message = "argName3 == null";
-         }
-         throw Utils.logProgrammingError(
-            CLASSNAME,               METHOD_3_NAME,
-            Utils.getCallingClass(), Utils.getCallingMethod(),
-            message
-         );
+      String message = "";
+      if (argName1 == null && argName2 == null && argName3 == null) {
+         message = "argName1 == null && "
+                 + "argName2 == null && "
+                 + "argName3 == null";
+         throw Utils.logProgrammingError(message);
       }
 
       // Otherwise (at least) one of the values must be null
@@ -234,21 +201,10 @@ public final class MandatoryArgumentChecker {
          message = argName1 + " == null && "
                  + argName2 + " == null && "
                  + argName3 + " == null";
-      } else if (argValue1 == null && argValue2 == null) {
-         message = argName1 + " == null &&"
-                 + argName2 + " == null";
-      } else if (argValue1 == null && argValue3 == null) {
-         message = argName1 + " == null &&"
-                 + argName3 + " == null";
-      } else if (argValue2 == null && argValue3 == null) {
-         message = argName2 + " == null &&"
-                 + argName3 + " == null";
-      } else if (argValue1 == null) {
-         message = argName1 + " == null";
-      } else if (argValue2 == null) {
-         message = argName2 + " == null";
       } else {
-         message = argName3 + " == null";
+         check(argName1, argValue1, argName2, argValue2);
+         check(argName1, argValue1, argName3, argValue3);
+         check(argName2, argValue2, argName3, argValue3);
       }
       throw new IllegalArgumentException(message);
    }
@@ -301,77 +257,24 @@ public final class MandatoryArgumentChecker {
       }
 
       // Check if any of the names is null
-      String message;
-      if (argName1 == null || argName2 == null ||
-          argName3 == null || argName4 == null) {
-         if (argName1 == null && argName2 == null &&
-             argName3 == null && argName4 == null) {
-            message = "argName1 == null && argName2 == null && "
-                    + "argName3 == null && argName4 == null";
-         } else if (argName1 == null && argName2 == null &&
-                    argName3 == null) {
-            message = "argName1 == null && argName2 == null && "
-                    + "argName3 == null";
-         } else if (argName1 == null && argName2 == null &&
-                    argName4 == null) {
-            message = "argName1 == null && argName2 == null && "
-                    + "argName4 == null";
-         } else if (argName1 == null && argName3 == null &&
-                    argName4 == null) {
-            message = "argName1 == null && argName3 == null && "
-                    + "argName4 == null";
-         } else if (argName2 == null && argName3 == null &&
-                    argName4 == null) {
-            message = "argName2 == null && argName3 == null && "
-                    + "argName4 == null";
-         } else if (argName1 == null && argName2 == null) {
-            message = "argName1 == null && argName2 == null";
-         } else if (argName1 == null && argName3 == null) {
-            message = "argName1 == null && argName3 == null";
-         } else if (argName1 == null && argName4 == null) {
-            message = "argName1 == null && argName4 == null";
-         } else if (argName2 == null && argName3 == null) {
-            message = "argName2 == null && argName3 == null";
-         } else if (argName2 == null && argName4 == null) {
-            message = "argName2 == null && argName4 == null";
-         } else if (argName3 == null && argName4 == null) {
-            message = "argName3 == null && argName4 == null";
-         } else if (argName1 == null) {
-            message = "argName1 == null";
-         } else if (argName2 == null) {
-            message = "argName2 == null";
-         } else if (argName3 == null) {
-            message = "argName3 == null";
-         } else {
-            message = "argName4 == null";
-         }
-         throw Utils.logProgrammingError(
-            CLASSNAME,               METHOD_4_NAME,
-            Utils.getCallingClass(), Utils.getCallingMethod(),
-            message
-         );
+      String message = "";
+      if (argName1 == null && argName2 == null &&
+          argName3 == null && argName4 == null) {
+         message = "argName1 == null && argName2 == null && "
+                 + "argName3 == null && argName4 == null";
+         throw Utils.logProgrammingError(message);
       }
 
       // Otherwise (at least) one of the values must be null
-      if (argValue1 == null && argValue2 == null && argValue3 == null) {
+      if (argValue1 == null && argValue2 == null && argValue3 == null && argValue4 == null) {
          message = argName1 + " == null && "
                  + argName2 + " == null && "
-                 + argName3 + " == null";
-      } else if (argValue1 == null && argValue2 == null) {
-         message = argName1 + " == null &&"
-                 + argName2 + " == null";
-      } else if (argValue1 == null && argValue3 == null) {
-         message = argName1 + " == null &&"
-                 + argName3 + " == null";
-      } else if (argValue2 == null && argValue3 == null) {
-         message = argName2 + " == null &&"
-                 + argName3 + " == null";
-      } else if (argValue1 == null) {
-         message = argName1 + " == null";
-      } else if (argValue2 == null) {
-         message = argName2 + " == null";
+                 + argName3 + " == null && "
+                 + argName4 + " == null";
       } else {
-         message = argName3 + " == null";
+         check(argName1, argValue1, argName2, argValue2, argName3, argValue3);
+         check(argName1, argValue1, argName2, argValue2, argName4, argValue4);
+         check(argName2, argValue2, argName3, argValue3, argName4, argValue4);
       }
       throw new IllegalArgumentException(message);
    }

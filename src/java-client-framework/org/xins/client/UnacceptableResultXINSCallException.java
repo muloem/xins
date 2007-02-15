@@ -30,11 +30,6 @@ public class UnacceptableResultXINSCallException
 extends XINSCallException {
 
    //-------------------------------------------------------------------------
-   // NOTE: Since XINS 1.2.0, this class is no longer final. However, all
-   //       methods still are. This to allow the subclass
-   //       UnacceptableErrorCodeXINSCallException.
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -207,7 +202,7 @@ extends XINSCallException {
     *    the parameter name, not <code>null</code>.
     *
     * @return
-    *    the value of the parameter, not <code>null</code>.
+    *    the value of the parameter, or <code>null</code> if there is no values.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.

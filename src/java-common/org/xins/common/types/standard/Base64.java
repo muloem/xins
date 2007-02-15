@@ -63,15 +63,7 @@ public class Base64 extends Type {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {
-         try {
-            byte[] encoded = string.getBytes(STRING_ENCODING);
-            if (!org.apache.commons.codec.binary.Base64.isArrayByteBase64(encoded)) {
-               throw new TypeValueException(SINGLETON, string);
-            }
-            return org.apache.commons.codec.binary.Base64.decodeBase64(encoded);
-         } catch (Exception ex) {
-            throw new TypeValueException(SINGLETON, string);
-         }
+         return fromStringForOptional(string);
       }
    }
 

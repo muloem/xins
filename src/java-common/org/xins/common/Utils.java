@@ -46,23 +46,27 @@ public final class Utils {
     * @param level
     *    the level of the caller, must be &gt;= 0.
     *
+    * @param methodMode
+    *    <code>true</code> if the information wanted is the method name,
+    *    <code>false</code> if the information wanted is the class name.
+    *
     * @return
-    *    the class name of the caller of the caller of this method, at the
+    *    the class name of method name of the caller of the caller of this method, at the
     *    specified level, never an empty string and never <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>level &lt; 0</code>.
     *
-    * @since XINS 1.3.0
+    * @since XINS 2.0.0
     */
-   public static String getCallingClass(int level)
+   private static String getCallingTrace(int level, boolean methodMode)
    throws IllegalArgumentException {
-
+      
       // Check preconditions
       if (level < 0) {
          throw new IllegalArgumentException("level (" + level + ") < 0");
       }
-      int depth = level + 2;
+      int depth = level + 3;
 
       // Only execute on Java 1.4 and up
       if (getJavaVersion() >= 1.4) {
@@ -83,7 +87,11 @@ public final class Utils {
 
                // If we are at the right depth, then return the method name
                if (i == depth) {
-                  return trace[pos].getClassName();
+                  if (methodMode) {
+                     return method;
+                  } else {
+                     return trace[pos].getClassName();
+                  }
 
                // Otherwise go deeper
                } else {
@@ -95,6 +103,32 @@ public final class Utils {
 
       // Fallback
       return "<unknown>";
+   }
+
+   /**
+    * Retrieves the name of the calling class at the specified level. The level
+    * <code>0</code> indicates the direct caller, while <code>1</code>
+    * indicates the caller of the caller.
+    *
+    * <p>If it cannot be determined, then <code>"&lt;unknown&gt;"</code> is
+    * returned.
+    *
+    * @param level
+    *    the level of the caller, must be &gt;= 0.
+    *
+    * @return
+    *    the class name of the caller of the caller of this method, at the
+    *    specified level, never an empty string and never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>level &lt; 0</code>.
+    *
+    * @since XINS 1.3.0
+    */
+   public static String getCallingClass(int level)
+   throws IllegalArgumentException {
+
+      return getCallingTrace(level, false);
    }
 
    /**
@@ -147,43 +181,7 @@ public final class Utils {
    public static String getCallingMethod(int level)
    throws IllegalArgumentException {
 
-      // Check preconditions
-      if (level < 0) {
-         throw new IllegalArgumentException("level (" + level + ") < 0");
-      }
-      int depth = level + 2;
-
-      // Only execute on Java 1.4 and up
-      if (getJavaVersion() >= 1.4) {
-
-         // Create an exception in order to have a stack trace
-         Throwable exception = new Throwable();
-
-         // Analyze the stack trace
-         StackTraceElement[] trace = exception.getStackTrace();
-         if (trace != null) {
-            for (int pos = 0, i = 0; i < trace.length; i++) {
-
-               // Skip all non-authentic methods
-               String method = trace[pos].getMethodName();
-               while (method.startsWith("access$")) {
-                  method = trace[++pos].getMethodName();
-               }
-
-               // If we are at the right depth, then return the method name
-               if (i == depth) {
-                  return method;
-
-               // Otherwise go deeper
-               } else {
-                  pos++;
-               }
-            }
-         }
-      }
-
-      // Fallback
-      return "<unknown>";
+      return getCallingTrace(level, true);
    }
 
    /**

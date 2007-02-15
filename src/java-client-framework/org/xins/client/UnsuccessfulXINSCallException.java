@@ -26,15 +26,6 @@ extends XINSCallException
 implements XINSCallResultData {
 
    //-------------------------------------------------------------------------
-   // NOTE: Since XINS 1.1.0, this class is no longer final. However, all
-   //       methods still are.
-
-   //-------------------------------------------------------------------------
-   // NOTE: Since XINS 1.2.0, this class implements the XINSCallResultData
-   //       interface.
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
 
@@ -183,7 +174,7 @@ implements XINSCallResultData {
     *    the parameter name, not <code>null</code>.
     *
     * @return
-    *    the value of the parameter, not <code>null</code>.
+    *    the value of the parameter, or <code>null</code> if there is no values.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
