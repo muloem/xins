@@ -381,7 +381,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       // Append the action to the function name
       String actionName = httpRequest.getParameter("action");
       if (actionName != null && !actionName.equals("") && !actionName.toLowerCase().equals("show")) {
-         functionName += actionName.substring(0,1).toUpperCase() + actionName.substring(1);
+         functionName += TextUtils.firstCharUpper(actionName);
       }
 
       // Redirect to the login page if not logged in or the function is not implemented

@@ -14,11 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -27,7 +25,7 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.Manageable;
 import org.xins.common.spec.FunctionSpec;
-
+import org.xins.common.text.TextUtils;
 import org.xins.server.API;
 import org.xins.server.Log;
 
@@ -167,7 +165,7 @@ public class SessionManager extends Manageable {
          String functionName = command;
          // TODO put this in TextUtils
          if (action != null && !action.equals("") && !action.equalsIgnoreCase("show")) {
-            functionName += action.substring(0, 1).toUpperCase() + action.substring(1);
+            functionName += TextUtils.firstCharUpper(action);
          }
          try {
             Map specInputParameters = _api.getAPISpecification().getFunction(functionName).getInputParameters();

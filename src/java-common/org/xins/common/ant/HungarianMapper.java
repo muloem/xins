@@ -7,10 +7,9 @@
 package org.xins.common.ant;
 
 import java.io.File;
-
 import org.apache.tools.ant.util.FileNameMapper;
-
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.TextUtils;
 
 /**
  * Apache Ant mapper that change the case of the first character of a filename
@@ -87,9 +86,7 @@ public class HungarianMapper implements FileNameMapper {
       // that
       } else {
          int index = sourceFileName.lastIndexOf(fileName);
-         result = sourceFileName.substring(0, index)
-                + fileName.substring(0,1).toUpperCase()
-                + fileName.substring(1);
+         result = sourceFileName.substring(0, index) + TextUtils.firstCharUpper(fileName);
       }
 
       return new String[] { result };

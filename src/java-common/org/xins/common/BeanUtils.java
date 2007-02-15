@@ -154,7 +154,7 @@ public class BeanUtils {
     *    if error occurs when using the reflection API.
     */
    private static Object convertObject(Object origValue, Object destination, String property) throws Exception {
-      String setMethodName = "set" + property.substring(0, 1).toUpperCase() + property.substring(1);
+      String setMethodName = "set" + TextUtils.firstCharUpper(property);
 
       // First test if the method with the same class as source exists
       try {
@@ -313,7 +313,7 @@ public class BeanUtils {
          }
       } else {
          try {
-            String hungarianName = elementName.substring(0, 1).toUpperCase() + elementName.substring(1);
+            String hungarianName = TextUtils.firstCharUpper(elementName);
             Class[] argsClasses = {getElementClass(elementName, result)};
             Method addMethod = result.getClass().getMethod("add" + hungarianName, argsClasses);
             Object childElement = elementToObject(element, result);
@@ -344,7 +344,7 @@ public class BeanUtils {
     *    if the class cannot be found.
     */
    private static Class getElementClass(String elementName, Object result) throws ClassNotFoundException {
-      String hungarianName = elementName.substring(0, 1).toUpperCase() + elementName.substring(1);
+      String hungarianName = TextUtils.firstCharUpper(elementName);
       String elementClassName = result.getClass().getName();
       if (elementClassName.indexOf("$") != -1) {
          elementClassName = elementClassName.substring(0, elementClassName.indexOf("$"));
@@ -386,7 +386,7 @@ public class BeanUtils {
             Object setArg = convertObject(value, newElement, name);
             Class[] convertionMethodReturnClass = { setArg.getClass() };
             Method setMethod = newElement.getClass().getMethod(
-                  "set" + name.substring(0, 1).toUpperCase() + name.substring(1), convertionMethodReturnClass);
+                  "set" + TextUtils.firstCharUpper(name), convertionMethodReturnClass);
             Object[] setArgs = { setArg };
             setMethod.invoke(newElement, setArgs);
          } catch (Exception ex) {
