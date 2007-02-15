@@ -753,7 +753,7 @@
 		<xsl:param name="xsdtype" />
 
 		<xsl:choose>
-			<xsl:when test="string-length($xsdtype) = 0 or $xsdtype = 'string'">_text</xsl:when>
+			<xsl:when test="string-length($xsdtype) = 0 or $xsdtype = 'string' or $xsdtype = 'any'">_text</xsl:when>
 			<xsl:when test="$xsdtype = 'boolean'">_boolean</xsl:when>
 			<xsl:when test="$xsdtype = 'byte'">_int8</xsl:when>
 			<xsl:when test="$xsdtype = 'short'">_int16</xsl:when>
