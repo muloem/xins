@@ -6,10 +6,8 @@
  */
 package org.xins.server.frontend;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -33,11 +31,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -45,6 +41,7 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
+import org.xins.common.io.IOReader;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.spec.FunctionSpec;
@@ -57,7 +54,6 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.ElementSerializer;
-
 import org.xins.server.API;
 import org.xins.server.CustomCallingConvention;
 import org.xins.server.Function;
@@ -66,7 +62,6 @@ import org.xins.server.FunctionRequest;
 import org.xins.server.FunctionResult;
 import org.xins.server.InvalidRequestException;
 import org.xins.server.Log;
-
 import org.znerd.xmlenc.XMLOutputter;
 
 /**
@@ -892,18 +887,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       String xsltLocation = _baseXSLTDir + command + ".xslt";
       //httpResponse.sendRedirect(xsltLocation);
       InputStream inputXSLT = new URL(xsltLocation).openStream();
-      BufferedReader input = new BufferedReader(new InputStreamReader(inputXSLT));
-      StringWriter output = new StringWriter();
-      char[] buffer = new char[1024];
-      while (true) {
-         int length = input.read(buffer);
-         if (length == -1) break;
-         output.write(buffer, 0, length);
-      }
-      inputXSLT.close();
-      input.close();
-      output.close();
-      return output.toString();
+      return IOReader.readFully(inputXSLT);
    }
 
    /**

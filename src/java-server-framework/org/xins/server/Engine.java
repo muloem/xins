@@ -18,25 +18,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Set;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.NDC;
-
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.io.IOReader;
 import org.xins.common.manageable.InitializationException;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
@@ -1044,20 +1041,8 @@ final class Engine {
       if (wsdlLocation == null) {
          throw new FileNotFoundException("WEB-INF/" + _apiName + ".wsdl not found.");
       }
-      // TODO put this in a utility method
       InputStream inputXSLT = new URL(wsdlLocation).openStream();
-      BufferedReader input = new BufferedReader(new InputStreamReader(inputXSLT));
-      StringWriter output = new StringWriter();
-      char[] buffer = new char[1024];
-      while (true) {
-         int length = input.read(buffer);
-         if (length == -1) break;
-         output.write(buffer, 0, length);
-      }
-      inputXSLT.close();
-      input.close();
-      output.close();
-      String wsdlText = output.toString();
+      String wsdlText = IOReader.readFully(inputXSLT);
 
       // Write the text to the output
       response.setContentType("text/xml");

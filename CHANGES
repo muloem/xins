@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Removed duplicated code detected by PMD 3.9.
   - Stack traces have been removed from the logging for the ignorable exception
     as there are not needed.
+  - Added new class IOReader containing utilities methods to read input stream.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.

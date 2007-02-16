@@ -24,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.xins.common.io.IOReader;
 import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
@@ -233,14 +234,7 @@ public class CreateExampleTask extends Task {
       URL url = new URL(requestURL);
 
       // Read all the text returned by the server
-      BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-      StringBuffer sbResult = new StringBuffer();
-      String line;
-      while ((line = in.readLine()) != null) {
-         sbResult.append(line);
-      }
-      in.close();
-      String result = sbResult.toString();
+      String result = IOReader.readFully(url.openStream());
 
       // Combine the XML request with the result
       ElementParser parser = new ElementParser();
