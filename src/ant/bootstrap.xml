@@ -40,17 +40,6 @@
 		       out="${project_home}/build/build.xml"
 		       style="${xins_home}/src/xslt/xins-project_to_ant-build.xslt">
 			<xmlcatalog>
-				<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
-				     location="${xins_home}/src/dtd/xins-project_1_0_alpha.dtd" />
-				<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
-				     location="${xins_home}/src/dtd/api_1_0_alpha.dtd" />
-				<dtd publicId="-//XINS//DTD Function 1.0 alpha//EN"
-				     location="${xins_home}/src/dtd/function_1_0_alpha.dtd" />
-				<dtd publicId="-//XINS//DTD Type 1.0 alpha//EN"
-				     location="${xins_home}/src/dtd/type_1_0_alpha.dtd" />
-				<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
-				     location="${xins_home}/src/dtd/resultcode_1_0_alpha.dtd" />
-
 				<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
 				     location="${xins_home}/src/dtd/xins-project_1_0.dtd" />
 				<dtd publicId="-//XINS//DTD XINS API 1.0//EN"

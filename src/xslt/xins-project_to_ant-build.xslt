@@ -180,21 +180,6 @@ APIs in this project are:
 					<classpath>
 						<pathelement path="{$xins_home}/src/dtd"/>
 					</classpath>
-					<dtd publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
-					     location="xins-project_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
-					     location="api_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.0 alpha//EN"
-					     location="function_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.0 alpha//EN"
-					     location="type_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
-					     location="resultcode_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN"
-					     location="log_1_0_alpha.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
-					     location="translation-bundle_1_0_alpha.dtd" />
-
 					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
 					     location="xins-project_1_0.dtd" />
 					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"

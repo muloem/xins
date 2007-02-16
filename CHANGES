@@ -67,6 +67,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 * Build- and release-process:
   - Fixed bug #1657846: css directory is missing from the release.
 
+* DTD:
+  - Removed 1.0 alpha DTDs.
+
 * Other:
   - Changed the type_2_0.dtd file to required a type.
 

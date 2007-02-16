@@ -29,11 +29,6 @@
 					<classpath>
 						<pathelement path="{$xins_home}/src/dtd"/>
 					</classpath>
-					<dtd location="log_1_0_alpha.dtd"
-					     publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN" />
-					<dtd location="translation-bundle_1_0_alpha.dtd"
-					     publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN" />
-
 					<dtd location="log_1_0.dtd"
 					     publicId="-//XINS//DTD XINS Logdoc 1.0//EN" />
 					<dtd location="translation-bundle_1_0.dtd"

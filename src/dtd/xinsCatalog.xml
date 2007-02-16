@@ -7,21 +7,6 @@
 
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">                
 
-	<public publicId="-//XINS//DTD XINS Project 1.0 alpha//EN"
-			 uri="xins-project_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD XINS API 1.0 alpha//EN"
-			 uri="api_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD Function 1.0 alpha//EN"
-			 uri="function_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD Type 1.0 alpha//EN"
-			 uri="type_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD Result Code 1.0 alpha//EN"
-			 uri="resultcode_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD XINS Logdoc 1.0 alpha//EN"
-			 uri="log_1_0_alpha.dtd" />
-	<public publicId="-//XINS//DTD XINS Translation Bundle 1.0 alpha//EN"
-			 uri="translation-bundle_1_0_alpha.dtd" />
-
 	<public publicId="-//XINS//DTD XINS Project 1.0//EN"
 			 uri="xins-project_1_0.dtd" />
 	<public publicId="-//XINS//DTD XINS API 1.0//EN"
