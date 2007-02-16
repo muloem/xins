@@ -489,7 +489,10 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
 
       // Redirection
       String redirection = getRedirection(xinsResult, command, functionName, commandResultXML);
-      if (redirection != null && !"source".equals(mode)) {
+      if (redirection != null) {
+         if ("source".equals(mode)) {
+            redirection += "&mode=source";
+         }
          httpResponse.sendRedirect(redirection);
          return;
       }

@@ -31,6 +31,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - CallingConvention#getAPI() will return the API object only after the
     construction of the calling convention.
   - Removed duplicated code detected by PMD 3.9.
+  - When mode=source is used in XINS FF, the redirection also forward this
+    parameter.
 
 * XINS/Java Client Framework:
   - Improved clarity in the programming exception thrown.
