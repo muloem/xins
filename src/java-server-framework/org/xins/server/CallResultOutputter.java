@@ -44,30 +44,6 @@ public final class CallResultOutputter {
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?><result".toCharArray();
 
    /**
-    * The output for the old-style calling convention in case success is true.
-    * Never <code>null</code>.
-    */
-   private static final char[] SUCCESS_TRUE =
-      " success=\"true\">".toCharArray();
-
-   /**
-    * The output for the old-style calling convention in case success is
-    * false, just before the name of the first error code.
-    * Never <code>null</code>.
-    */
-   private static final char[] SUCCESS_FALSE_PREFIX =
-      " success=\"false\" code=\"".toCharArray();
-
-   /**
-    * The output for the old-style calling convention in case success is
-    * false, just after the name of the first error code and before the name
-    * of the second.
-    * Never <code>null</code>.
-    */
-   private static final char[] SUCCESS_FALSE_MIDDLE =
-      "\" errorcode=\"".toCharArray();
-
-   /**
     * The output for the new-style calling convention in case success is
     * false, just before the name of the error code.
     * Never <code>null</code>.
@@ -130,31 +106,6 @@ public final class CallResultOutputter {
     */
    public static void output(Writer out, FunctionResult result)
    throws IllegalArgumentException, IOException {
-      output(out, result, false);
-   }
-
-   /**
-    * Generates XML for the specified call result. The XML is sent to the
-    * specified output stream.
-    *
-    * @param out
-    *    the output stream to send the XML to, cannot be <code>null</code>.
-    *
-    * @param result
-    *    the call result to convert to XML, cannot be <code>null</code>.
-    *
-    * @param oldStyle
-    *    flag that indicates if old-style output should be generated or not.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>out      == null
-    *          || result   == null</code>.
-    *
-    * @throws IOException
-    *    if there was an I/O error while writing to the output stream.
-    */
-   static void output(Writer out, FunctionResult result, boolean oldStyle)
-   throws IllegalArgumentException, IOException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("out", out, "result", result);
@@ -164,26 +115,13 @@ public final class CallResultOutputter {
 
       // Output the start of the <result> element
       String code = result.getErrorCode();
-      if (oldStyle) {
-         if (code == null) {
-            out.write(SUCCESS_TRUE);
-         } else {
-            out.write(SUCCESS_FALSE_PREFIX);
-            out.write(code);
-            out.write(SUCCESS_FALSE_MIDDLE);
-            out.write(code);
-            out.write('"');
-            out.write('>');
-         }
+      if (code == null) {
+         out.write('>');
       } else {
-         if (code == null) {
-            out.write('>');
-         } else {
-            out.write(ERRORCODE_IS);
-            out.write(code);
-            out.write('"');
-            out.write('>');
-         }
+         out.write(ERRORCODE_IS);
+         out.write(code);
+         out.write('"');
+         out.write('>');
       }
 
       // Write the output parameters, if any

@@ -49,7 +49,6 @@ class CallingConventionManager extends Manageable {
     */
    private final static List CONVENTIONS = Arrays.asList(new String[] {
       APIServlet.STANDARD_CALLING_CONVENTION,
-      APIServlet.OLD_STYLE_CALLING_CONVENTION,
       APIServlet.XML_CALLING_CONVENTION,
       APIServlet.XSLT_CALLING_CONVENTION,
       APIServlet.SOAP_CALLING_CONVENTION,
@@ -287,12 +286,8 @@ class CallingConventionManager extends Manageable {
     */
    private String classNameForRegular(String name) {
 
-      // XINS old-style
-      if (name.equals(APIServlet.OLD_STYLE_CALLING_CONVENTION)) {
-         return "org.xins.server.OldStyleCallingConvention";
-
-      // XINS standard (new-style)
-      } else if (name.equals(APIServlet.STANDARD_CALLING_CONVENTION)) {
+      // XINS standard
+      if (name.equals(APIServlet.STANDARD_CALLING_CONVENTION)) {
          return "org.xins.server.StandardCallingConvention";
 
       // XINS XML

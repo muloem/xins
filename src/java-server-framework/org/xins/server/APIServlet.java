@@ -172,11 +172,6 @@ extends HttpServlet {
    public static final String STANDARD_CALLING_CONVENTION = "_xins-std";
 
    /**
-    * The old-style XINS calling convention.
-    */
-   public static final String OLD_STYLE_CALLING_CONVENTION = "_xins-old";
-
-   /**
     * The XINS XML calling convention.
     */
    public static final String XML_CALLING_CONVENTION = "_xins-xml";
