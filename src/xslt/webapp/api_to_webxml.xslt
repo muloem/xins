@@ -35,14 +35,11 @@
 		<xsl:if test="string-length($timestamp) &lt; 1">
 			<xsl:message terminate="yes">Parameter 'timestamp' is not specified.</xsl:message>
 		</xsl:if>
-		<xsl:apply-templates select="impl-java" />
-		<xsl:if test="$project_node/api[@name = $api]/impl">
-			<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>
-			<xsl:apply-templates select="document($impl_file)/impl" />
-		</xsl:if>
+		<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')"/>
+		<xsl:apply-templates select="document($impl_file)/impl" />
 	</xsl:template>
 
-	<xsl:template match="api/impl-java | impl">
+	<xsl:template match="impl">
 		<web-app>
 			<servlet>
 				<servlet-name>

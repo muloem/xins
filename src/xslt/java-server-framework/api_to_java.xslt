@@ -32,15 +32,9 @@
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 
 	<xsl:template match="api">
-
-		<xsl:apply-templates select="impl-java">
+		<xsl:apply-templates select="document($impl_file)/impl">
 			<xsl:with-param name="api_node" select="." />
 		</xsl:apply-templates>
-		<xsl:if test="$project_node/api[@name = $api]/impl">
-			<xsl:apply-templates select="document($impl_file)/impl">
-				<xsl:with-param name="api_node" select="." />
-			</xsl:apply-templates>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="impl-java | impl">

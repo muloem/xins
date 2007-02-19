@@ -87,24 +87,14 @@ public abstract class ]]></xsl:text>
 		<xsl:text>", "</xsl:text>
 		<xsl:value-of select="$version" />
 		<xsl:text>");</xsl:text>
-		<xsl:for-each select="$api_node/impl-java/instance">
+		<xsl:for-each select="document($impl_file)/impl/instance">
 			<xsl:text>
-      </xsl:text>
+		</xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text> = api.</xsl:text>
 			<xsl:value-of select="@getter" />
 			<xsl:text>();</xsl:text>
 		</xsl:for-each>
-		<xsl:if test="$project_node/api[@name = $api]/impl">
-			<xsl:for-each select="document($impl_file)/impl/instance">
-				<xsl:text>
-      </xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text> = api.</xsl:text>
-				<xsl:value-of select="@getter" />
-				<xsl:text>();</xsl:text>
-			</xsl:for-each>
-		</xsl:if>
 		<xsl:text><![CDATA[
 
       // Initialize list of error codes
@@ -129,7 +119,7 @@ public abstract class ]]></xsl:text>
     */
    private final java.util.HashSet _errorCodes;
 ]]></xsl:text>
-		<xsl:for-each select="$api_node/impl-java/instance">
+		<xsl:for-each select="document($impl_file)/impl/instance">
 			<xsl:text>
    protected final </xsl:text>
 			<xsl:value-of select="@class" />
@@ -138,17 +128,6 @@ public abstract class ]]></xsl:text>
 			<xsl:text>;
 </xsl:text>
 		</xsl:for-each>
-		<xsl:if test="$project_node/api[@name = $api]/impl">
-			<xsl:for-each select="document($impl_file)/impl/instance">
-				<xsl:text>
-   protected final </xsl:text>
-				<xsl:value-of select="@class" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>;
-</xsl:text>
-			</xsl:for-each>
-		</xsl:if>
 
 		<xsl:text>
 

@@ -46,7 +46,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
    //-------------------------------------------------------------------------
 ]]></xsl:text>
 
-		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="field" />
+		<xsl:apply-templates select="runtime-properties/property" mode="field" />
 
 		<xsl:text>
 
@@ -69,14 +69,14 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 
       // Get the properties</xsl:text>
 
-		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="check" />
+		<xsl:apply-templates select="runtime-properties/property" mode="check" />
 
 		<xsl:text>
 
       // The list is made unmodifiable so that no one can change it.
       _descriptors = java.util.Collections.unmodifiableList(_descriptors);
    }</xsl:text>
-		<xsl:apply-templates select="runtime-properties/property | impl-java/runtime-properties/property" mode="method" />
+		<xsl:apply-templates select="runtime-properties/property" mode="method" />
 
    /**
     * Gets the descriptor list. The list is created by getting all the
@@ -93,7 +93,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 	</xsl:template>
 
 	<!-- Generates the checking code. -->
-	<xsl:template match="impl/runtime-properties/property | api/impl-java/runtime-properties/property" mode="check">
+	<xsl:template match="impl/runtime-properties/property" mode="check">
 		<xsl:variable name="variableName">
 			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
@@ -209,7 +209,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 	</xsl:template>
 
 	<!-- Generates the fields. -->
-	<xsl:template match="impl/runtime-properties/property | api/impl-java/runtime-properties/property" mode="field">
+	<xsl:template match="impl/runtime-properties/property" mode="field">
 		<!-- TODO translate the variable -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
@@ -237,7 +237,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
 	</xsl:template>
 
 	<!-- Generates the get methods. -->
-	<xsl:template match="impl/runtime-properties/property | api/impl-java/runtime-properties/property" mode="method">
+	<xsl:template match="impl/runtime-properties/property" mode="method">
 		<!-- Get the name of the variable. -->
 		<xsl:variable name="variableName">
 			<xsl:call-template name="hungarianLower">

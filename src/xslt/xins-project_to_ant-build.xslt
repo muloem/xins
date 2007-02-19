@@ -390,17 +390,6 @@ APIs in this project are:
 							<xsl:value-of select="concat('-', @name)" />
 						</xsl:if>
 					</xsl:for-each>
-					<xsl:for-each select="api">
-						<!-- If old API -->
-						<xsl:variable name="api" select="@name" />
-						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
-							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
-								<xsl:if test="position() &gt; 1 or count(//project/api/impl) &gt; 0">,</xsl:if>
-								<xsl:text>classes-api-</xsl:text>
-								<xsl:value-of select="@name" />
-							</xsl:if>
-						</xsl:if>
-					</xsl:for-each>
 				</xsl:attribute>
 			</target>
 
@@ -444,17 +433,6 @@ APIs in this project are:
 							<xsl:value-of select="concat('-', @name)" />
 						</xsl:if>
 					</xsl:for-each>
-					<xsl:for-each select="api">
-						<!-- If old API -->
-						<xsl:variable name="api"      select="@name" />
-						<xsl:if test="not(impl) and not(document(concat($project_home, '/apis/', $api, '/spec/api.xml')))">
-							<xsl:if test="document(concat($specsdir, '/', @name, '/api.xml'))/api/impl-java">
-								<xsl:if test="position() &gt; 1 or count(//project/api/impl) &gt; 0">,</xsl:if>
-								<xsl:text>war-</xsl:text>
-								<xsl:value-of select="@name" />
-							</xsl:if>
-						</xsl:if>
-					</xsl:for-each>
 				</xsl:attribute>
 			</target>
 
@@ -473,18 +451,8 @@ APIs in this project are:
 	</xsl:template>
 
 	<xsl:template match="api">
-		<xsl:variable name="api"      select="@name" />
-		<xsl:variable name="new_api_file" select="concat($project_home, '/apis/', $api, '/spec/api.xml')" />
-		<xsl:variable name="api_specsdir">
-			<xsl:choose>
-				<xsl:when test="impl or environments or document($new_api_file)">
-					<xsl:value-of select="concat($project_home, '/apis/', $api, '/spec')" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="concat($specsdir, '/', $api)" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="api" select="@name" />
+		<xsl:variable name="api_specsdir" select="concat($project_home, '/apis/', $api, '/spec')" />
 		<xsl:variable name="api_file" select="concat($api_specsdir, '/api.xml')" />
 		<xsl:variable name="api_node" select="document($api_file)/api" />
 		<xsl:variable name="typeClassesDir"    select="concat($project_home, '/build/classes-types/', $api)" />
@@ -686,7 +654,7 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"          />
 				</xslt>
 			</xsl:if>
-			<xsl:if test="$api_node/environment or not(environments)">
+			<xsl:if test="not(environments)">
 				<xslt
 				basedir="{$api_specsdir}"
 				destdir="{$project_home}/build/specdocs/{$api}"
@@ -910,32 +878,14 @@ APIs in this project are:
 			</zip>
 		</target>
 
-		<xsl:for-each select="$api_node/impl-java | impl">
+		<xsl:for-each select="impl">
 			<xsl:variable name="implName" select="@name" />
 			<xsl:variable name="implName2">
 				<xsl:if test="@name and string-length($implName) &gt; 0">
 					<xsl:value-of select="concat('-', $implName)" />
 				</xsl:if>
 			</xsl:variable>
-			<xsl:variable name="javaImplDir">
-				<xsl:value-of select="$project_home" />
-				<xsl:text>/</xsl:text>
-				<xsl:choose>
-					<xsl:when test="$project_node/api[@name=$api]/impl">
-						<xsl:value-of select="concat('apis/', $api, '/impl', $implName2)" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:choose>
-							<xsl:when test="$project_node/@javadir">
-								<xsl:value-of select="$project_node/@javadir" />
-							</xsl:when>
-							<xsl:otherwise>src/impl-java</xsl:otherwise>
-						</xsl:choose>
-						<xsl:text>/</xsl:text>
-						<xsl:value-of select="$api" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
+			<xsl:variable name="javaImplDir" select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
 			<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api, $implName2)" />
 			<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api, $implName2)" />
 			<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
@@ -1013,29 +963,13 @@ APIs in this project are:
 				</xsl:attribute>
 				<mkdir dir="{$javaDestDir}/{$packageAsDir}" />
 				<dependset>
-					<xsl:choose>
-						<xsl:when test="local-name() = 'impl'">
-							<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
-						</xsl:when>
-						<xsl:otherwise>
-							<srcfilelist dir="{$api_specsdir}" files="api.xml" />
-						</xsl:otherwise>
-					</xsl:choose>
+					<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
 					<srcfileset dir="{$api_specsdir}">
 						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
 				</dependset>
-				<xsl:variable name="impl_file">
-					<xsl:choose>
-						<xsl:when test="local-name() = 'impl'">
-							<xsl:value-of select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$api_file" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
+				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 				<xmlvalidate file="{$impl_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
@@ -1156,55 +1090,34 @@ APIs in this project are:
 				</xsl:for-each>
 
 				<!-- Generate the logdoc java file is needed -->
-				<xsl:if test="$api_node/impl-java/logdoc">
-					<echo message="Generating the logdoc for {$api}" />
-					<mkdir dir="{$project_home}/build/logdoc/{$api}" />
+				<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
+				<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+				<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
+				<xmlvalidate file="{$impl_file}" warn="false">
+					<xmlcatalog refid="all-dtds" />
+				</xmlvalidate>
+				<xsl:if test="$impl_node/logdoc">
+					<echo message="Generating the logdoc for {$api}{$implName2}" />
+					<mkdir dir="{$project_home}/build/logdoc/{$api}{$implName2}" />
+					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
+						<xmlcatalog refid="all-dtds" />
+					</xmlvalidate>
+					<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
 					<xslt
-					in="{$project_home}/src/logdoc/{$api}/log.xml"
-					out="{$project_home}/build/logdoc/{$api}/build.xml"
-					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt"
-					reloadstylesheet="${{reload.stylesheet}}">
+					in="{$impl_dir}/log.xml"
+					out="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml"
+					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
 						<xmlcatalog refid="all-dtds" />
 						<param name="xins_home"       expression="{$xins_home}" />
 						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-						<param name="logdoc_dtd_dir"  expression="{$xins_home}/src/dtd" />
-						<param name="sourcedir"       expression="{$project_home}/src/logdoc/{$api}" />
-						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc" />
+						<param name="sourcedir"       expression="{$impl_dir}" />
+						<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
 						<param name="java_destdir"    expression="{$javaDestFileDir}" />
 						<param name="package_name"    expression="{$package}" />
 					</xslt>
-					<ant antfile="{$project_home}/build/logdoc/{$api}/build.xml" target="java" />
-				</xsl:if>
-				<xsl:if test="local-name() = 'impl'">
-					<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
-					<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
-					<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
-					<xmlvalidate file="{$impl_file}" warn="false">
-						<xmlcatalog refid="all-dtds" />
-					</xmlvalidate>
-					<xsl:if test="$impl_node/logdoc">
-						<echo message="Generating the logdoc for {$api}{$implName2}" />
-						<mkdir dir="{$project_home}/build/logdoc/{$api}{$implName2}" />
-						<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
-							<xmlcatalog refid="all-dtds" />
-						</xmlvalidate>
-						<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
-						<xslt
-						in="{$impl_dir}/log.xml"
-						out="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml"
-						style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
-							<xmlcatalog refid="all-dtds" />
-							<param name="xins_home"       expression="{$xins_home}" />
-							<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-							<param name="sourcedir"       expression="{$impl_dir}" />
-							<param name="html_destdir"    expression="{$project_home}/build/specdocs/{$api}/logdoc{$implName2}" />
-							<param name="java_destdir"    expression="{$javaDestFileDir}" />
-							<param name="package_name"    expression="{$package}" />
-						</xslt>
-						<ant antfile="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml" target="java">
-							<property name="accesslevel" value="{$accesslevel}" />
-						</ant>
-					</xsl:if>
+					<ant antfile="{$project_home}/build/logdoc/{$api}{$implName2}/build.xml" target="java">
+						<property name="accesslevel" value="{$accesslevel}" />
+					</ant>
 				</xsl:if>
 
 				<!-- Compile all classes -->
@@ -1222,11 +1135,7 @@ APIs in this project are:
 							<pathelement path="{$typeClassesDir}" />
 						</xsl:if>
 						<path refid="xins.classpath" />
-						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-						<xsl:if test="local-name() = 'impl'">
-							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
-						</xsl:if>
+						<xsl:apply-templates select="$impl_node/dependency" />
 					</classpath>
 				</javac>
 
@@ -1278,12 +1187,9 @@ APIs in this project are:
 					<lib dir="{$xins_home}/build" includes="xins-server.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
-					<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='runtime' or @type='compile_and_runtime']" mode="lib" />
-					<xsl:if test="local-name() = 'impl'">
-						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-						<xsl:apply-templates select="document($impl_file)/impl/dependency" mode="lib" />
-						<xsl:apply-templates select="document($impl_file)/impl/content" />
-					</xsl:if>
+					<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+					<xsl:apply-templates select="document($impl_file)/impl/dependency" mode="lib" />
+					<xsl:apply-templates select="document($impl_file)/impl/content" />
 					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
 					<xsl:if test="$apiHasTypes">
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
@@ -1371,11 +1277,8 @@ APIs in this project are:
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 					<classpath>
 						<path refid="xins.classpath" />
-						<xsl:apply-templates select="$api_node/impl-java/dependency[not(@type) or @type='compile' or @type='compile_and_runtime']" />
-						<xsl:if test="local-name() = 'impl'">
-							<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
-						</xsl:if>
+						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
+						<xsl:apply-templates select="document($impl_file)/impl/dependency" />
 					</classpath>
 				</javadoc>
 				<copy
@@ -1429,6 +1332,7 @@ APIs in this project are:
 							description="Generates the war file, the Javadoc API docs for the server side and the specdocs for the '{$api}{$implName2}' API.">
 			</target>
 		</xsl:for-each>
+
 
 		<xsl:if test="test">
 			<xsl:variable name="packageTests">
@@ -1785,7 +1689,7 @@ APIs in this project are:
 			<xsl:attribute name="depends">
 				<xsl:text>client-</xsl:text>
 				<xsl:value-of select="$api" />
-				<xsl:if test="$api_node/impl-java or impl">
+				<xsl:if test="impl">
 					<xsl:text>, server-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:if>
