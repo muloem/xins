@@ -280,7 +280,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
 
       // Get the XML output similar to the standard calling convention.
       StringWriter xmlOutput = new StringWriter(1024);
-      CallResultOutputter.output(xmlOutput, xinsResult, false);
+      CallResultOutputter.output(xmlOutput, xinsResult);
       xmlOutput.close();
 
       // Get the location of the XSLT file.

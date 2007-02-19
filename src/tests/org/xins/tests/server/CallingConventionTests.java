@@ -152,35 +152,6 @@ public class CallingConventionTests extends TestCase {
    }
 
    /**
-    * Tests the old style calling convention.
-    */
-   public void testOldCallingConvention1() throws Throwable {
-      FastStringBuffer buffer = new FastStringBuffer(16);
-      HexConverter.toHexString(buffer, RANDOM.nextLong());
-      String randomFive = buffer.toString().substring(0, 5);
-
-      Element result1 = callResultCode("_xins-old", randomFive);
-      assertNull("The method returned an error code for the first call: " + result1.getAttribute("errorcode"), result1.getAttribute("errorcode"));
-      assertNull("The method returned a code attribute for the first call: " + result1.getAttribute("code"), result1.getAttribute("code"));
-      assertNotNull("The method did not return a success attribute for the first call.", result1.getAttribute("success"));
-
-      Element result2 = callResultCode("_xins-old", randomFive);
-      assertNotNull("The method did not return an error code for the second call.", result2.getAttribute("errorcode"));
-      assertNotNull("The method did not return a code attribute for the second call.", result2.getAttribute("code"));
-      assertNotNull("The method did not return a success attribute for the second call.", result2.getAttribute("success"));
-      assertEquals("The code and errorcode are different.", result2.getAttribute("code"), result2.getAttribute("errorcode"));
-   }
-
-   /**
-    * Tests that when different parameter values are passed to the
-    * _xins-old calling convention, it must return a 400 status code
-    * (invalid HTTP request).
-    */
-   public void testOldCallingConvention2() throws Throwable {
-      doTestMultipleParamValues("_xins-old");
-   }
-
-   /**
     * Call the ResultCode function with the specified calling convention.
     *
     * @param convention

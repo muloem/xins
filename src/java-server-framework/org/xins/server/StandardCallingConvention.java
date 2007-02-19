@@ -180,13 +180,13 @@ extends CallingConvention {
       // Handle HEAD requests
       if ("HEAD".equals(method)) {
          StringWriter out = new StringWriter();
-         CallResultOutputter.output(out, xinsResult, false);
+         CallResultOutputter.output(out, xinsResult);
          httpResponse.setContentLength(out.getBuffer().length());
 
       // Handle non-HEAD requests
       } else {
          Writer out = httpResponse.getWriter();
-         CallResultOutputter.output(out, xinsResult, false);
+         CallResultOutputter.output(out, xinsResult);
          out.close();
       }
    }
