@@ -87,6 +87,7 @@ public class UppercaseTask extends Task {
       String uppercase = _text.toUpperCase();
 
       uppercase = uppercase.replace('-', '_');
+      uppercase = uppercase.replace('.', '_');
 
       getProject().setUserProperty(_propertyName, uppercase);
    }

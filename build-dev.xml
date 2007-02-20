@@ -64,7 +64,7 @@ ${sf.file}</fail>
 	</target>
 
 	<target name="-init-release-properties" depends="-load-version">
-		<property name="version"           value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+		<property name="version"           value="${version.major}.${version.middle}${dot.version.minor}${version.build}" />
 		<property name="xins_version"      value="${version}" />
 		<property name="tests.deprecation" value="false"  />
 	</target>
@@ -484,7 +484,7 @@ ${sf.file}</fail>
 	<target name="copy-docs" depends="-init" unless="nodocs">
 		<!-- Create and copy the documentation -->
 		<ant dir="../${name}-docs" target="manuals" inheritall="false">
-			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+			<property name="version" value="${version.major}.${version.middle}${dot.version.minor}${version.build}" />
 		</ant>
 		<copy todir="docs">
 			<fileset dir="../${name}-docs/build/guide">
@@ -762,8 +762,8 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	name="-prepare-release"
 	depends="-pre-release-checks">
 		<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" classpath="build/xins-common.jar" />
-		<uppercase property="version.minor.uppercase" text="${version.minor}" />
-		<property name="tagname" value="RELEASE_${version.major}_${version.middle}_${version.minor.uppercase}${version.build}" />
+		<uppercase property="dot.version.minor.uppercase" text="${dot.version.minor}" />
+		<property name="tagname" value="RELEASE_${version.major}_${version.middle}${dot.version.minor.uppercase}${version.build}" />
 		<echo message="Tagging ${tagname}" />
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="tag ${tagname}" quiet="true" />
@@ -792,7 +792,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
 		<ant dir="../${name}-docs" target="upload-homepage" inheritall="false">
-			<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}" />
+			<property name="version" value="${version.major}.${version.middle}${dot.version.minor}${version.build}" />
 			<property name="sf.user" value="${sf.user}" />
 			<property name="sf.password" value="${sf.password}" />
 		</ant>

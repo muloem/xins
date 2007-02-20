@@ -18,35 +18,17 @@
 	This target fails if the required properties are not set in the file.
 	-->
 	<target name="-load-version">
-<!--
-TODO: Should we do this?
-		<condition property="version.wasset">
-			<or>
-				<isset property="version.major" />
-				<isset property="version.middle" />
-				<isset property="version.minor" />
-				<isset property="version.build" />
-			</or>
-		</condition>
-		<fail if="version.wasset">
-At least on of the properties 'version.major', 'version.middle',
-'version.minor' and 'version.build' is already set. These should be read from
-the version properties file.</fail>
--->
 		<property name="version.file" value=".version.properties" />
 		<property file="${version.file}" />
 		<condition property="version.isset">
 			<and>
 				<isset property="version.major" />
 				<isset property="version.middle" />
-				<isset property="version.minor" />
-				<isset property="version.build" />
 			</and>
 		</condition>
 		<fail unless="version.isset">
-Properties 'version.major', 'version.middle', 'version.minor' and
-'version.build' must be set. These are normally read from the version
-properties file.
+Properties 'version.major' and 'version.middle'.
+These are normally read from the version properties file.
 
 Please do either of the following:
 1) add the missing properties to the file;
@@ -56,6 +38,15 @@ Please do either of the following:
 
 The current version properties file used is:
 ${version.file}</fail>
+		<condition property="dot.version.minor" value=".${version.minor}">
+			<and>
+				<isset property="version.minor" />
+				<not>
+					<equals arg1="${version.minor}" arg2="" />
+				</not>
+			</and>
+		</condition>
+		<property name="dot.version.minor" value="" />
 	</target>
 
 	<target name="-init" depends="-load-version">
