@@ -64,7 +64,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Added support for complexContent in WSDL.
   - Fixed double maxLength in generated types.
   - Added support for minimum and maximum in XML Schema decimal.
-  - Fixed incorect doctype generated for files.
+  - Fixed incorrect doctype generated for files.
   - Improved normalisation of the original WSDL.
 
 * Generation of the types from the XML Schema:
