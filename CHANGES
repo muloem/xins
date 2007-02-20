@@ -35,6 +35,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - When mode=source is used in XINS FF, the redirection also forward this
     parameter.
   - Removed the old calling convention.
+  - Removed isMoreRecent method of the class Libray as it contains several
+    bugs and this method is unneeded.
 
 * XINS/Java Client Framework:
   - Improved clarity in the programming exception thrown.

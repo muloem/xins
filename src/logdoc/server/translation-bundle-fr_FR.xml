@@ -39,7 +39,6 @@
 	<translation entry="3226">La version du XINS/Java Server Framework (<value-of-param name="serverVersion" />) est différente de la version du XINS/Java Common Library (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="3227">Le XINS/Java Server Framework <value-of-param name="version" /> n'est pas une version de production.</translation>
 	<translation entry="3228">Le paquetage a été construit avec XINS <value-of-param name="version" />, qui n'est pas une version de production.</translation>
-	<translation entry="3229">Le paquetage a été construit avec XINS <value-of-param name="buildVersion" /> qui est une version plus récente que la version de XINS utilisée <value-of-param name="currentVersion" />.</translation>
 	<translation entry="3230">La propriété système <value-of-param name="propertyName" format="quoted" />, qui défini l'emplacement du fichier des propriétés d'exécution, ne peut pas être lue à cause de restriction de sécurité.</translation>
 	<translation entry="3231">Obtention de l'emplacement du fichier des propriétés d'exécution en lisant la propriété <value-of-param name="propertyName" format="quoted" /> dans les propriétés de démarrage.</translation>
 	<translation entry="3232">La propriété système <value-of-param name="propertyName" format="quoted" /> n'est pas définie.</translation>

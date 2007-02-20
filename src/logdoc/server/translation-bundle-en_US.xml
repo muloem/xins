@@ -39,7 +39,6 @@
 	<translation entry="3226">XINS/Java Server Framework version (<value-of-param name="serverVersion" />) is different from the XINS/Java Common Library version (<value-of-param name="commonVersion" />).</translation>
 	<translation entry="3227">XINS/Java Server Framework <value-of-param name="version" /> is not a production release.</translation>
 	<translation entry="3228">Package was built with XINS <value-of-param name="version" />, which is not a production release.</translation>
-	<translation entry="3229">Package was built with XINS <value-of-param name="buildVersion" /> which is more recent version than the running version XINS <value-of-param name="currentVersion" />.</translation>
 	<translation entry="3230">The system property <value-of-param name="propertyName" format="quoted" />, which defines the location of the runtime properties file, cannot be read due to a security restriction.</translation>
 	<translation entry="3231">Getting the location of the runtime properties file by reading the <value-of-param name="propertyName" format="quoted" /> property from the bootstrap properties.</translation>
 	<translation entry="3232">Expected bootstrap property <value-of-param name="propertyName" format="quoted" /> to be set.</translation>

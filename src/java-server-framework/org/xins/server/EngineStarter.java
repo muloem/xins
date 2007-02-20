@@ -160,9 +160,6 @@ final class EngineStarter {
          String buildVersion = _config.getInitParameter(propName);
          if (buildVersion == null) {
             Log.log_3232(propName);
-         } else if (Library.isProductionRelease(buildVersion)
-                    && Library.isMoreRecent(buildVersion)) {
-            Log.log_3229(buildVersion, serverVersion);
          }
       }
    }
