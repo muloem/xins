@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     as there are not needed.
   - Added new class IOReader containing utilities methods to read input stream.
   - Removed CollectionUtils class as this class was not used.
+  - Methods getChildElements() and getAttributes() returns the original 
+    structure of the XML element.
 
 * XINS/Java Server Framework:
   - Remove use of an unneeded ThreadLocal in the CallResultOutputter.

@@ -6,12 +6,12 @@
  */
 package org.xins.common.xml;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -98,7 +98,7 @@ public class Element implements Cloneable {
 
       // Store namespace URI and local name
       _namespaceURI = namespaceURI;
-      _localName    = localName;
+      _localName = localName;
    }
 
 
@@ -121,7 +121,7 @@ public class Element implements Cloneable {
     * The child elements. This field is lazily initialized is initially
     * <code>null</code>.
     */
-   private ProtectedList _children;
+   private ArrayList _children;
 
    /**
     * The attributes. This field is lazily initialized and is initially
@@ -257,20 +257,19 @@ public class Element implements Cloneable {
    }
 
    /**
-    * Gets an unmodifiable view of all attributes.
+    * Gets the attributes of this element.
     *
     * @return
-    *    an unmodifiable {@link Map} (never <code>null</code>) which is a view
-    *    on all the attributes; each key in the <code>Map</code> is a
-    *    {@link QualifiedName} instance (not <code>null</code>) and each value
-    *    in it is a <code>String</code> instance (not <code>null</code>).
+    *    a {@link Map} (never <code>null</code>) which contains the attributes; 
+    *    each key in the <code>Map</code> is a {@link QualifiedName} instance 
+    *    (not <code>null</code>) and each value in it is a <code>String</code> 
+    *    instance (not <code>null</code>).
     */
    public Map getAttributeMap() {
       if (_attributes == null) {
-         return Collections.EMPTY_MAP;
-      } else {
-         return Collections.unmodifiableMap(_attributes);
+         _attributes = new HashMap();
       }
+      return _attributes;
    }
 
    /**
@@ -373,10 +372,10 @@ public class Element implements Cloneable {
 
       // Lazily initialize
       if (_children == null) {
-         _children = new ProtectedList(SECRET_KEY);
+         _children = new ArrayList();
       }
 
-      _children.add(SECRET_KEY, child);
+      _children.add(child);
    }
 
 
@@ -407,7 +406,7 @@ public class Element implements Cloneable {
          return;
       }
 
-      _children.remove(SECRET_KEY, child);
+      _children.remove(child);
    }
 
    /**
@@ -420,14 +419,11 @@ public class Element implements Cloneable {
     */
    public List getChildElements() {
 
-      // If there are no children, then return an immutable empty List
-      if (_children == null || _children.size() == 0) {
-         return Collections.EMPTY_LIST;
-
-      // Otherwise return an immutable view of the list of children
-      } else {
-         return _children;
+      if (_children == null) {
+         _children = new ArrayList();
       }
+
+      return _children;
    }
 
    /**
@@ -440,7 +436,7 @@ public class Element implements Cloneable {
     * @return
     *    a {@link List} containing each child element that matches the
     *    specified name as another <code>Element</code> instance;
-    *    never <code>null</code>.
+    *    never <code>null</code>. The list cannot be modified.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.
@@ -557,7 +553,7 @@ public class Element implements Cloneable {
 
       // Deep copy the children
       if (_children != null) {
-         clone._children = (ProtectedList) _children.clone();
+         clone._children = (ArrayList) _children.clone();
       }
 
       // Deep copy the attributes
