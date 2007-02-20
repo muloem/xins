@@ -114,6 +114,26 @@
 				<xsl:text>' does not exist.</xsl:text>
 			</xsl:message>
 		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="contains($type, '/') and not(substring-after($type, '/') = $type_node/@name)">
+				<xsl:message terminate="yes">
+					<xsl:text>The type '</xsl:text>
+					<xsl:value-of select="substring-after($type, '/')" />
+					<xsl:text>' does not match the one defined in the type file: '</xsl:text>
+					<xsl:value-of select="$type_node/@name" />
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
+			</xsl:when>
+			<xsl:when test="not(contains($type, '/')) and not($type = $type_node/@name)">
+				<xsl:message terminate="yes">
+					<xsl:text>The type '</xsl:text>
+					<xsl:value-of select="$type" />
+					<xsl:text>' does not match the one defined in the type file: '</xsl:text>
+					<xsl:value-of select="$type_node/@name" />
+					<xsl:text>'.</xsl:text>
+				</xsl:message>
+			</xsl:when>
+		</xsl:choose>
 
 		<a xsl:exclude-result-prefixes="text xd">
 			<xsl:attribute name="href">
