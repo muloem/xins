@@ -38,15 +38,15 @@ Please do either of the following:
 
 The current version properties file used is:
 ${version.file}</fail>
-		<condition property="dot.version.minor" value=".${version.minor}">
-			<and>
-				<isset property="version.minor" />
-				<not>
-					<equals arg1="${version.minor}" arg2="" />
-				</not>
-			</and>
+		<condition property="dot.version.minor" value="${version.minor}">
+			<or>
+				<equals arg1="${version.minor}" arg2="-alpha" />
+				<equals arg1="${version.minor}" arg2="-beta" />
+				<equals arg1="${version.minor}" arg2="-rc" />
+				<equals arg1="${version.minor}" arg2="" />
+			</or>
 		</condition>
-		<property name="dot.version.minor" value="" />
+		<property name="dot.version.minor" value=".${version.minor}" />
 	</target>
 
 	<target name="-init" depends="-load-version">
@@ -54,7 +54,7 @@ ${version.file}</fail>
 		<!-- General project properties -->
 		<property name="title"               value="XINS" />
 		<property name="name"                value="${ant.project.name}" />
-		<property name="xins_version"        value="${version.major}.${version.middle}.${version.minor}${version.build}${version.suffix}" />
+		<property name="xins_version"        value="${version.major}.${version.middle}${dot.version.minor}${version.build}${version.suffix}" />
 		<property name="package-basename"    value="${name}-${xins_version}" />
 		<property name="xins_vendor"         value="Orange Nederland Breedband B.V." />
 		<property name="cvs.module"          value="${name}" />

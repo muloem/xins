@@ -1245,6 +1245,15 @@ APIs in this project are:
 
 			<target name="javadoc-api-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}" description="Generates Javadoc API docs for the '{$api}{$implName2}' API">
 				<property file="{$xins_home}/.version.properties" />
+				<condition property="dot.version.minor" value="${version.minor}">
+					<or>
+						<equals arg1="${version.minor}" arg2="-alpha" />
+						<equals arg1="${version.minor}" arg2="-beta" />
+						<equals arg1="${version.minor}" arg2="-rc" />
+						<equals arg1="${version.minor}" arg2="" />
+					</or>
+				</condition>
+				<property name="dot.version.minor" value=".${version.minor}" />
 				<mkdir dir="{$project_home}/build/javadoc-api/{$api}{$implName2}" />
 				<javadoc
 				destdir="{$project_home}/build/javadoc-api/{$api}{$implName2}"
@@ -1260,7 +1269,7 @@ APIs in this project are:
 						<packageset dir="{$project_home}/build/java-types/{$api}" />
 					</xsl:if>
 					<link
-					href="http://www.xins.org/javadoc/${{version.major}}.${{version.middle}}.${{version.minor}}${{version.build}}/"
+					href="http://www.xins.org/javadoc/${{version.major}}.${{version.middle}}${{dot.version.minor}}${{version.build}}/"
 					offline="true"
 					packagelistloc="{$xins_home}/docs/javadoc/" />
 					<link
