@@ -202,6 +202,13 @@ extends HttpServlet {
     */
    public static final String JSON_RPC_CALLING_CONVENTION = "_xins-jsonrpc";
 
+   /**
+    * The name of the JSON calling convention (Yahoo! style).
+    *
+    * @since XINS 2.0.
+    */
+   public static final String JSON_CALLING_CONVENTION = "_xins-json";
+
 
    //-------------------------------------------------------------------------
    // Class functions

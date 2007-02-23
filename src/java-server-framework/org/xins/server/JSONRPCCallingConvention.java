@@ -405,7 +405,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
     * @throws JSONException
     *    if the object cannot be created for any reason.
     */
-   private JSONObject createResultObject(FunctionResult xinsResult) throws JSONException {
+   static JSONObject createResultObject(FunctionResult xinsResult) throws JSONException {
       Properties params = PropertyReaderConverter.toProperties(xinsResult.getParameters());
       JSONObject paramsObject = new JSONObject(params);
       if (xinsResult.getDataElement() != null) {

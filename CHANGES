@@ -41,6 +41,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
   - Removed isMoreRecent method of the class Libray as it contains several
     bugs and this method is unneeded.
   - The calling conventions are now public and extendable.
+  - Added new JSONCallingConvention which implement Yahoo! style of JSON RPC
+    calls, included callback.
 
 * XINS/Java Client Framework:
   - Improved clarity in the programming exception thrown.

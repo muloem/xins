@@ -54,6 +54,7 @@ class CallingConventionManager extends Manageable {
       APIServlet.SOAP_CALLING_CONVENTION,
       APIServlet.XML_RPC_CALLING_CONVENTION,
       APIServlet.JSON_RPC_CALLING_CONVENTION,
+      APIServlet.JSON_CALLING_CONVENTION
    });
 
    /**
@@ -309,6 +310,10 @@ class CallingConventionManager extends Manageable {
       // JSON-RPC
       } else if (name.equals(APIServlet.JSON_RPC_CALLING_CONVENTION)) {
          return "org.xins.server.JSONRPCCallingConvention";
+
+      // JSON
+      } else if (name.equals(APIServlet.JSON_CALLING_CONVENTION)) {
+         return "org.xins.server.JSONCallingConvention";
 
       // Unrecognized
       } else {
