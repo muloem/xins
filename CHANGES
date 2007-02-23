@@ -60,6 +60,14 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 
 * Generation of server-side Java code:
   - The old directory structure is not supported anymore.
+  - The ParameterNotInitializedException if no longer thrown for optional
+    parameter or attributes in the request. If you have an optional parameter
+    or attribute in the input, an object will always be returned from the get
+    method. The value of this object will be null if the parameter is not
+    sent and there is no default.
+    This change may break the compatibility of your code if you had optional
+    input parameters or attributes returning primitive types (int, short, 
+    boolean, ...) you will need to change your code to use .intValue(), etc...
 
 * Generation of the WSDL:
   - The generated file is correctly indented with tabs.
@@ -2879,6 +2887,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
   - Added common-codec.jar to the classpath and in the generated war file.
   - Slightly improved output of 'help' target.
   - Added target 'javadoc-capis'.
+
 
 * Generic XSLT files:
   - Added 'javaclass_for_javatype' template to types.xslt. For a Java primary

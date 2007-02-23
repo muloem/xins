@@ -191,8 +191,15 @@
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
+		<!-- Get if this type is required of has a default -->
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<!-- Get the return type of the get method. -->
-		<xsl:variable name="javasimpletype">
+		<!-- xsl:variable name="javasimpletype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
@@ -200,16 +207,26 @@
 				<xsl:with-param name="required"     select="'true'"     />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
+		</xsl:variable-->
+		<!-- Get the return type of the get method. -->
+		<xsl:variable name="javaObjectType">
+			<xsl:call-template name="javatype_for_type">
+				<xsl:with-param name="project_node" select="$project_node" />
+				<xsl:with-param name="api"          select="$api"          />
+				<xsl:with-param name="specsdir"     select="$specsdir"     />
+				<xsl:with-param name="required"     select="$requiredOrDefault" />
+				<xsl:with-param name="type"         select="@type"         />
+			</xsl:call-template>
 		</xsl:variable>
 		<!-- Get whether the return type is a primary type. -->
 		<xsl:variable name="typeIsPrimary">
 			<xsl:call-template name="is_java_datatype">
-				<xsl:with-param name="text" select="$javasimpletype" />
+				<xsl:with-param name="text" select="$javaObjectType" />
 			</xsl:call-template>
 		</xsl:variable>
 
 		<!-- If the object is not required, write a isSetType() method -->
-		<xsl:if test="not(@required = 'true') and not(@default)">
+		<xsl:if test="$requiredOrDefault = 'false'">
 			<xsl:text><![CDATA[
 
       /**
@@ -271,16 +288,13 @@
 		<xsl:text><![CDATA[</em> input parameter]]></xsl:text>
 		<xsl:choose>
 			<xsl:when test="$typeIsPrimary = 'true'">.</xsl:when>
-			<xsl:otherwise>
+			<xsl:when test="not($typeIsPrimary = 'true') and $requiredOrDefault">
 				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text><![CDATA[, can be <code>null</code>.]]></xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:if test="not(@required = 'true')">
-			<xsl:text>
-       *
-       * @throws org.xins.server.ParameterNotInitializedException
-       *    if the value has not been set.</xsl:text>
-		</xsl:if>
 		<xsl:if test="deprecated">
 			<xsl:text>
        *
@@ -291,26 +305,11 @@
 		<xsl:text>
        */
       public </xsl:text>
-		<xsl:value-of select="$javasimpletype" />
+		<xsl:value-of select="$javaObjectType" />
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
-		<xsl:text>() </xsl:text>
-		<xsl:if test="not(@required = 'true')">
-			<xsl:text>
-      throws org.xins.server.ParameterNotInitializedException </xsl:text>
-		</xsl:if>
-		<xsl:text>{</xsl:text>
-		<xsl:if test="not(@required = 'true') and not(@default)">
-			<xsl:text>
-         if (!isSet</xsl:text>
-			<xsl:value-of select="$hungarianName" />
-			<xsl:text>()) {
-            throw new org.xins.server.ParameterNotInitializedException("</xsl:text>
-				<xsl:value-of select="@name" />
-				<xsl:text>");
-         }</xsl:text>
-		</xsl:if>
-		<xsl:if test="name()='attribute'">
+		<xsl:text>() {</xsl:text>
+		<xsl:if test="name() = 'attribute'">
 			<xsl:text>
          try {</xsl:text>
 		</xsl:if>
@@ -331,7 +330,7 @@
 				<xsl:call-template name="javatype_from_string_for_type">
 					<xsl:with-param name="project_node" select="$project_node" />
 					<xsl:with-param name="api"      select="$api"      />
-					<xsl:with-param name="required" select="'true'" />
+					<xsl:with-param name="required" select="$requiredOrDefault" />
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="type"     select="@type"     />
 					<xsl:with-param name="variable" select="$attributeParameter" />
@@ -340,11 +339,6 @@
 			<xsl:otherwise>
 				<xsl:text>_</xsl:text>
 				<xsl:value-of select="$javaVariable" />
-				<xsl:if test="not(@required = 'true') and $typeIsPrimary = 'true'">
-					<xsl:text>.</xsl:text>
-					<xsl:value-of select="$javasimpletype" />
-					<xsl:text>Value()</xsl:text>
-				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>;</xsl:text>
