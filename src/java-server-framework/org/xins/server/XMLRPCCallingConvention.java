@@ -40,7 +40,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
-final class XMLRPCCallingConvention extends CallingConvention {
+public class XMLRPCCallingConvention extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -135,12 +135,12 @@ final class XMLRPCCallingConvention extends CallingConvention {
    /**
     * The response encoding format.
     */
-   private static final String RESPONSE_ENCODING = "UTF-8";
+   public static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   private static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
 
    //-------------------------------------------------------------------------

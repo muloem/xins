@@ -14,12 +14,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.xins.common.collections.BasicPropertyReader;
-
-import org.xins.common.collections.ProtectedPropertyReader;
-
 import org.xins.common.text.TextUtils;
-
 import org.xins.common.xml.Element;
 
 /**
@@ -28,8 +25,7 @@ import org.xins.common.xml.Element;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
-final class XMLCallingConvention
-extends CallingConvention {
+public class XMLCallingConvention extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -38,30 +34,17 @@ extends CallingConvention {
    /**
     * The request encoding format.
     */
-   static final String REQUEST_ENCODING = "UTF-8";
+   public static final String REQUEST_ENCODING = "UTF-8";
 
    /**
     * The response encoding format.
     */
-   static final String RESPONSE_ENCODING = "UTF-8";
+   public static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   static final String RESPONSE_CONTENT_TYPE = "text/xml;charset="
-                                             + RESPONSE_ENCODING;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
-   /**
-    * Constructs a new <code>XMLCallingConvention</code> object.
-    */
-   XMLCallingConvention() {
-      // empty
-   }
+   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
 
    //-------------------------------------------------------------------------

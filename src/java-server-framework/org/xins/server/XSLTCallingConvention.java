@@ -50,7 +50,7 @@ import org.xins.logdoc.ExceptionUtils;
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-class XSLTCallingConvention extends StandardCallingConvention {
+public class XSLTCallingConvention extends StandardCallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -78,7 +78,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * <li><code>https://xslt.johndoe.com/</code></li>
     * </ul>
     */
-   private final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
+   public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
 
    /**
     * The name of the runtime property that defines the possibility to pass
@@ -86,18 +86,18 @@ class XSLTCallingConvention extends StandardCallingConvention {
     * Should be either <code>"true"</code> or <code>"false"</code>.
     * Default value is <code>"false"</code>.
     */
-   private final static String TEMPLATES_AS_PARAMETER_PROPERTY = "templates.callingconvention.parameter";
+   public final static String TEMPLATES_AS_PARAMETER_PROPERTY = "templates.callingconvention.parameter";
 
    /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
-   final static String TEMPLATE_PARAMETER = "_template";
+   public final static String TEMPLATE_PARAMETER = "_template";
 
    /**
     * The name of the input parameter used to clear the template cache.
     */
-   final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
+   public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
 
    //-------------------------------------------------------------------------
@@ -107,7 +107,7 @@ class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * Constructs a new <code>XSLTCallingConvention</code> object.
     */
-   XSLTCallingConvention() {
+   public XSLTCallingConvention() {
 
       // Create the transformer factory
       _factory = TransformerFactory.newInstance();

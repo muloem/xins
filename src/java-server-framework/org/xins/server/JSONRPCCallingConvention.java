@@ -53,7 +53,7 @@ import org.xins.logdoc.ExceptionUtils;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
-final class JSONRPCCallingConvention extends CallingConvention {
+public class JSONRPCCallingConvention extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -90,14 +90,9 @@ final class JSONRPCCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The response encoding format.
-    */
-   private static final String RESPONSE_ENCODING = "UTF-8";
-
-   /**
     * The content type of the HTTP response.
     */
-   private static final String RESPONSE_CONTENT_TYPE = "application/json";
+   public static final String RESPONSE_CONTENT_TYPE = "application/json";
 
 
    //-------------------------------------------------------------------------

@@ -42,7 +42,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
-final class SOAPCallingConvention extends CallingConvention {
+public class SOAPCallingConvention extends CallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields
@@ -51,12 +51,12 @@ final class SOAPCallingConvention extends CallingConvention {
    /**
     * The response encoding format.
     */
-   private static final String RESPONSE_ENCODING = "UTF-8";
+   public static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   private static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
    /**
     * The key used to store the name of the function in the request attributes.
