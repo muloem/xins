@@ -6,6 +6,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
+* Generated build file:
+  - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
+
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
 

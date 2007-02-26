@@ -1148,7 +1148,7 @@ APIs in this project are:
 				</condition>
 			</target>
 
-			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API">
+			<target name="war-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}, -load-version, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API" unless="no-war-{$api}">
 				<mkdir dir="{$project_home}/build/webapps/{$api}{$implName2}" />
 				<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask" classpath="{$xins_home}/build/xins-common.jar" />
 				<tstamp>
@@ -1395,6 +1395,10 @@ APIs in this project are:
 						<fileset dir="{$project_home}/apis/{$api}/test" includes="**/*.jar" />
 					</classpath>
 				</javac>
+				<condition property="no-war-{$api}">
+					<isfalse value="${{test.start.server}}" />
+				</condition>
+				<antcall target="war-{$api}" />
 				<mkdir dir="{$project_home}/build/testresults/xml" />
 				<junit fork="true" showoutput="true" dir="{$project_home}" printsummary="true" failureproperty="tests.failed">
 					<sysproperty key="user.dir" value="{$project_home}" />
