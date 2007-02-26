@@ -70,6 +70,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     This change may break the compatibility of your code if you had optional
     input parameters or attributes returning primitive types (int, short, 
     boolean, ...) you will need to change your code to use .intValue(), etc...
+  - Fixed: the default attribute was not handled correctly in the generated
+    Request object.
 
 * Generation of the opendoc:
   - Fixed: the creation doesn't fail anymore if there is no error code in the
