@@ -49,7 +49,7 @@ public class SimpleTypesImpl extends SimpleTypes  {
 
       short shortValue = -1;
       if (request.isSetInputShort()) {
-         shortValue = request.getInputShort();
+         shortValue = request.getInputShort().shortValue();
          shortValue += 10;
       }
 

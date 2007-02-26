@@ -71,7 +71,7 @@ public final class AttributeComboImpl extends AttributeCombo {
          Person nextPerson = (Person)itPersons.next();
          Registration registration = new Registration();
          if (nextPerson.isSetAge()) {
-            int age = nextPerson.getAge();
+            int age = nextPerson.getAge().intValue();
             registration.setRegistrationYear(calendar.get(Calendar.YEAR) - age + 1);
             registration.setRegistrationMonth(calendar.get(Calendar.MONTH));
          } else {
@@ -83,9 +83,9 @@ public final class AttributeComboImpl extends AttributeCombo {
                month = nextPerson.getBirthDate().getMonthOfYear();
                day = nextPerson.getBirthDate().getDayOfMonth();
             } else {
-               year = nextPerson.getBirthYear();
-               month = nextPerson.getBirthMonth();
-               day = nextPerson.getBirthDay();
+               year = nextPerson.getBirthYear().intValue();
+               month = nextPerson.getBirthMonth().intValue();
+               day = nextPerson.getBirthDay().intValue();
             }
 
             // Create an invalid response for year above 2006

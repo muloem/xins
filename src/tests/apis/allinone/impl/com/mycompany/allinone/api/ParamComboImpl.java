@@ -49,7 +49,7 @@ public class ParamComboImpl extends ParamCombo  {
    public final Result call(Request request) throws Throwable {
       int age;
       if (request.isSetAge()) {
-         age = request.getAge();
+         age = request.getAge().intValue();
 
          SuccessfulResult result = new SuccessfulResult();
          Calendar calendar = Calendar.getInstance();
@@ -65,9 +65,9 @@ public class ParamComboImpl extends ParamCombo  {
             month = request.getBirthDate().getMonthOfYear();
             day = request.getBirthDate().getDayOfMonth();
          } else {
-            year = request.getBirthYear();
-            month = request.getBirthMonth();
-            day = request.getBirthDay();
+            year = request.getBirthYear().intValue();
+            month = request.getBirthMonth().intValue();
+            day = request.getBirthDay().intValue();
          }
 
          // Create an invalid response

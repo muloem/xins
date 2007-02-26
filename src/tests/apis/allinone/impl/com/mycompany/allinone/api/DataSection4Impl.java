@@ -74,8 +74,8 @@ public final class DataSection4Impl extends DataSection4 {
          if (name.length() < 1) {
             throw new Exception("Incorrect name");
          }
-         int age = nextPerson.getAge();
-         if (age < 1) {
+         Byte age = nextPerson.getAge();
+         if (age != null && age.intValue() < 1) {
             throw new Exception("Incorrect age");
          }
       }

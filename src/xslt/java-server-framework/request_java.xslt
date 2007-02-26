@@ -309,7 +309,7 @@
 		<xsl:text> get</xsl:text>
 		<xsl:value-of select="$hungarianName" />
 		<xsl:text>() {</xsl:text>
-		<xsl:if test="name() = 'attribute'">
+		<xsl:if test="name() = 'attribute' or (name()='param' and @default)">
 			<xsl:text>
          try {</xsl:text>
 		</xsl:if>
@@ -336,13 +336,36 @@
 					<xsl:with-param name="variable" select="$attributeParameter" />
 				</xsl:call-template>
 			</xsl:when>
+			<xsl:when test="name()='param' and @default">
+				<xsl:variable name="javaDefault">
+					<xsl:call-template name="xml_to_java_string">
+						<xsl:with-param name="text" select="@default" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:text>_</xsl:text>
+				<xsl:value-of select="$javaVariable" />
+				<xsl:text> == null ? </xsl:text>
+				<xsl:call-template name="javatype_from_string_for_type">
+					<xsl:with-param name="project_node" select="$project_node" />
+					<xsl:with-param name="api"      select="$api"      />
+					<xsl:with-param name="required" select="'true'" />
+					<xsl:with-param name="specsdir" select="$specsdir" />
+					<xsl:with-param name="type"     select="@type"     />
+					<xsl:with-param name="variable" select="concat('&quot;', $javaDefault, '&quot;')" />
+				</xsl:call-template>
+				<xsl:text> : _</xsl:text>
+				<xsl:value-of select="$javaVariable" />
+				<xsl:if test="$typeIsPrimary = 'true'">
+					<xsl:value-of select="concat('.', $javaObjectType, 'Value()')" />
+				</xsl:if>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>_</xsl:text>
 				<xsl:value-of select="$javaVariable" />
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>;</xsl:text>
-		<xsl:if test="name()='attribute'">
+		<xsl:if test="name()='attribute' or (name()='param' and @default)">
 			<xsl:text>
          } catch (org.xins.common.types.TypeValueException tve) {
 
@@ -692,8 +715,9 @@
 		<xsl:param name="specsdir" />
 
 		<xsl:text>
-   public int hashCode() {
-      return </xsl:text>
+
+      public int hashCode() {
+         return </xsl:text>
 		<xsl:for-each select="input/param">
 			<!-- Get the name of the declared variable. -->
 			<xsl:variable name="javaVariable">
@@ -738,14 +762,14 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:text>;
-   }
-
-   public boolean equals(Object obj) {
-      if (!(obj instanceof Request)) {
-         return false;
       }
-      Request otherRequest = (Request) obj;
-      return </xsl:text>
+
+      public boolean equals(Object obj) {
+         if (!(obj instanceof Request)) {
+            return false;
+         }
+         Request otherRequest = (Request) obj;
+         return </xsl:text>
 		<xsl:for-each select="input/param">
 			<xsl:variable name="javaMethodSuffix">
 				<xsl:call-template name="hungarianUpper">
@@ -805,6 +829,6 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:text>;
-   }</xsl:text>
+      }</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
