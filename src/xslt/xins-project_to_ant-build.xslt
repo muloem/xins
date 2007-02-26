@@ -847,7 +847,9 @@ APIs in this project are:
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				</xsl:if>
 				<xsl:if test="string-length($typeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
 				</xsl:if>

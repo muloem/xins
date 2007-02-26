@@ -71,6 +71,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     input parameters or attributes returning primitive types (int, short, 
     boolean, ...) you will need to change your code to use .intValue(), etc...
 
+* Generation of the opendoc:
+  - Fixed: the creation doesn't fail anymore if there is no error code in the
+    API.
+
 * Generation of the WSDL:
   - The generated file is correctly indented with tabs.
   - Added support for the default attribute.
