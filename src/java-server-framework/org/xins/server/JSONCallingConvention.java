@@ -64,8 +64,9 @@ public class JSONCallingConvention extends CallingConvention {
 
    protected boolean matches(HttpServletRequest httpRequest) {
 
-      // Detected by the query parameter "output=json"
-      return "json".equals(httpRequest.getParameter("output"));
+      String pathInfo = httpRequest.getPathInfo();
+      return "json".equals(httpRequest.getParameter("output")) && 
+            !TextUtils.isEmpty(pathInfo) && !pathInfo.endsWith("/");
    }
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
@@ -78,20 +79,21 @@ public class JSONCallingConvention extends CallingConvention {
       cleanUpParameters(params);
 
       // Determine function name
-      String functionName = httpRequest.getParameter("_function");
-      if (TextUtils.isEmpty(functionName)) {
+      String pathInfo = httpRequest.getPathInfo();
+      if (TextUtils.isEmpty(pathInfo) || pathInfo.endsWith("/")) {
          throw new FunctionNotSpecifiedException();
       }
+      String functionName = pathInfo.substring(pathInfo.lastIndexOf("/") + 1);
 
       Element dataElement = null;
-      String dataString = httpRequest.getParameter("_function");
+      String dataString = httpRequest.getParameter("_data");
       if (TextUtils.isEmpty(dataString)) {
          try {
             JSONObject dataSectionObject = new JSONObject(dataString);
             String dataSectionString = XML.toString(dataSectionObject);
             dataElement = new ElementParser().parse(dataSectionString);
          } catch (JSONException jsonex) {
-            throw new InvalidRequestException("Invalid input data section.", jsonex);
+            throw new InvalidRequestException("Invalid JSON input data section.", jsonex);
          } catch (ParseException pex) {
             throw new InvalidRequestException("Invalid XML created from JSON object.", pex);
          }
