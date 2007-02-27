@@ -474,8 +474,8 @@ APIs in this project are:
 		</xsl:variable>
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="$api_node/resultcode">
-				<xsl:if test="position() &gt; 1">,</xsl:if>
 				<xsl:if test="not(contains(@name, '/'))">
+					<xsl:if test="position() &gt; 1">,</xsl:if>
 					<xsl:value-of select="@name" />
 					<xsl:text>.rcd</xsl:text>
 				</xsl:if>
