@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - If a result code file changes, the index.html is regenerated.
   - Removed checking of the result code uniqueness as a result code cannot
     have a value anymore. It was only possible before XINS 1.0.
+    This should improve the speed of the generation of the specdocs.
 
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
@@ -2153,6 +2154,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 ALPHA 3:
     specifications are only parsed once.
 
 * XINS/Java Server Framework:
+
   - Implemented SF.net RFE #1236690. Logging message 3236 if the build version
     is not set on the API package.
   - An InvalidRequestException is thrown if the request does not contain any
