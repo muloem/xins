@@ -37,31 +37,10 @@
 	<xsl:include href="../types.xslt"       />
 	<xsl:include href="../urlencode.xslt"   />
 	<xsl:include href="../warning.xslt"     />
-	<xsl:include href="../resultcode_uniqueness.xslt"     />
 
 	<xsl:template match="resultcode">
 
 		<xsl:variable name="resultcode_name" select="@name" />
-
-		<xsl:call-template name="resultcodeValidity">
-			<xsl:with-param name="resultcode_name" select="@name" />
-			<xsl:with-param name="resultcode_value" select="@value" />
-			<xsl:with-param name="specsdir" select="$specsdir" />
-			<xsl:with-param name="api_node" select="$api_node" />
-		</xsl:call-template>
-
-		<!-- Warn if name differs from value -->
-		<xsl:if test="(string-length(@value) &gt; 0) and (not(@value = @name))">
-			<xsl:call-template name="warn">
-				<xsl:with-param name="message">
-					<xsl:text>Errorcode name ('</xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text>') differs from value ('</xsl:text>
-					<xsl:value-of select="@value" />
-					<xsl:text>'). This may cause confusion and errors.</xsl:text>
-				</xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
@@ -88,7 +67,7 @@
 					</em>
 				</h1>
 
-				<!-- Broken freezes -->
+				<!-- Broken freezes >
 				<xsl:variable name="broken_file" select="concat($resultcode_name,'.rcd')" />
 				<xsl:call-template name="broken_freeze">
 					<xsl:with-param name="project_home" select="$project_home" />
@@ -97,7 +76,7 @@
 					<xsl:with-param name="api" select="$api" />
 					<xsl:with-param name="frozen_version" select="$api_node/resultcode[@name=$resultcode_name]/@freeze" />
 					<xsl:with-param name="broken_file" select="$broken_file" />
-				</xsl:call-template>
+				</xsl:call-template-->
 
 				<!-- Description -->
 				<xsl:apply-templates select="description" />

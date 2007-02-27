@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Generation of specification documentation:
   - If a result code file changes, the index.html is regenerated.
+  - Removed checking of the result code uniqueness as a result code cannot
+    have a value anymore. It was only possible before XINS 1.0.
 
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
