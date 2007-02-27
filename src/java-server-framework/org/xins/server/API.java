@@ -6,8 +6,11 @@
  */
 package org.xins.server;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -16,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
@@ -370,6 +372,35 @@ implements DefaultResultCodes {
     */
    public final TimeZone getTimeZone() {
       return _timeZone;
+   }
+
+   /**
+    * Gets the resource in the WAR file.
+    *
+    * @param path
+    *    the path for the resource, cannot be <code>null</code> and should start with /.
+    * 
+    * @return
+    *    the InputStream to use to read this resource or <code>null</code> if
+    *    the resource cannot be found.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>path == null</code> or if the path doesn't start with /.
+    */
+   public final InputStream getResourceAsStream(String path) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("path", path);
+      if (!path.startsWith("/")) {
+         throw new IllegalArgumentException("The path '" + path + "' should start with /.");
+      }
+      String resource = _engine.getFileLocation(path);
+      if (resource != null) {
+         try {
+            return new URL(resource).openStream();
+         } catch (IOException ioe) {
+            // Fall through and return null
+         }
+      }
+      return null;
    }
 
    /**
@@ -941,7 +972,7 @@ implements DefaultResultCodes {
    throws InvalidSpecificationException {
 
       if (_apiSpecification == null) {
-         String baseURL = _engine.getFileLocation("WEB-INF/specs/");
+         String baseURL = _engine.getFileLocation("/WEB-INF/specs/");
          _apiSpecification = new APISpec(getClass(), baseURL);
       }
       return _apiSpecification;

@@ -1022,10 +1022,19 @@ final class Engine {
          if (realPath != null) {
             baseURL = new File(realPath).toURL().toExternalForm();
          } else {
-            baseURL = context.getResource(path).toExternalForm();
+            URL pathURL = context.getResource(path);
+            if (pathURL == null) {
+               pathURL = getClass().getResource(path);
+            }
+            if (pathURL != null) {
+               baseURL = pathURL.toExternalForm();
+            } else {
+               // TODO log
+            }
          }
       } catch (MalformedURLException muex) {
          // Let the base URL be null
+         // TODO log with the detail of the exception
       }
       return baseURL;
    }
@@ -1037,9 +1046,9 @@ final class Engine {
     *    the response to fill, never <code>null</code>.
     */
    private void handleWsdlRequest(HttpServletResponse response) throws IOException {
-      String wsdlLocation = getFileLocation("WEB-INF/" + _apiName + ".wsdl");
+      String wsdlLocation = getFileLocation("/WEB-INF/" + _apiName + ".wsdl");
       if (wsdlLocation == null) {
-         throw new FileNotFoundException("WEB-INF/" + _apiName + ".wsdl not found.");
+         throw new FileNotFoundException("/WEB-INF/" + _apiName + ".wsdl not found.");
       }
       InputStream inputXSLT = new URL(wsdlLocation).openStream();
       String wsdlText = IOReader.readFully(inputXSLT);
