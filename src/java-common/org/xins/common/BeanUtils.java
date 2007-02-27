@@ -60,6 +60,9 @@ public class BeanUtils {
     *
     * @return
     *    the populated object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>source == null || destination == null</code>.
     */
    public static Object populate(Object source, Object destination) {
       return populate(source, destination, null);
@@ -84,9 +87,13 @@ public class BeanUtils {
     *
     * @return
     *    the populated object, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>source == null || destination == null</code>.
     */
    public static Object populate(Object source, Object destination, Properties propertiesMapping) {
 
+      MandatoryArgumentChecker.check("source", source, "destination", destination);
       // Go through all get methods of the source object
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
@@ -273,7 +280,7 @@ public class BeanUtils {
     * Fills the result object with of the content of the XML element object.
     *
     * @param element
-    *    the XML element object, cannot be <code>null</code>.
+    *    the XML element object, can be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
     *
@@ -288,7 +295,7 @@ public class BeanUtils {
     * Fills the result object with of the content of the XML element object.
     *
     * @param element
-    *    the XML element object, cannot be <code>null</code>.
+    *    the XML element object, can be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
     * @param topLevel
