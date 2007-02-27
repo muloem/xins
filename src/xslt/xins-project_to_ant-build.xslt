@@ -891,6 +891,9 @@ APIs in this project are:
 			<xsl:variable name="javaDestDir"     select="concat($project_home,    '/build/java-fundament/', $api, $implName2)" />
 			<xsl:variable name="classesDestDir"  select="concat($project_home,    '/build/classes-api/',    $api, $implName2)" />
 			<xsl:variable name="javaDestFileDir" select="concat($javaDestDir, '/', $packageAsDir)" />
+			<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
+			<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
+			<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
 
 			<target name="-impl-{$api}{$implName2}-existencechecks">
 				<xsl:for-each select="$api_node/function">
@@ -971,7 +974,6 @@ APIs in this project are:
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
 				</dependset>
-				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
 				<xmlvalidate file="{$impl_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
@@ -1092,9 +1094,6 @@ APIs in this project are:
 				</xsl:for-each>
 
 				<!-- Generate the logdoc java file is needed -->
-				<xsl:variable name="impl_dir"     select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
-				<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
-				<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
 				<xmlvalidate file="{$impl_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
@@ -1189,9 +1188,8 @@ APIs in this project are:
 					<lib dir="{$xins_home}/build" includes="xins-server.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-client.jar" />
 					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
-					<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-					<xsl:apply-templates select="document($impl_file)/impl/dependency" mode="lib" />
-					<xsl:apply-templates select="document($impl_file)/impl/content" />
+					<xsl:apply-templates select="$impl_node/dependency" mode="lib" />
+					<xsl:apply-templates select="$impl_node/content" />
 					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
 					<xsl:if test="$apiHasTypes">
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
@@ -1288,8 +1286,7 @@ APIs in this project are:
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 					<classpath>
 						<path refid="xins.classpath" />
-						<xsl:variable name="impl_file"    select="concat($project_home, '/apis/', $api, '/impl', $implName2, '/impl.xml')" />
-						<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+						<xsl:apply-templates select="$impl_node/dependency" />
 					</classpath>
 				</javadoc>
 				<copy
