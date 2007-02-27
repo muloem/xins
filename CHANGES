@@ -15,6 +15,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     file.
   - Improved method used to find files located in the WAR file.
 
+* Generation of specification documentation:
+  - If a result code file changes, the index.html is regenerated.
+
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
   - Fixed generation of the build.xml failed with Java 5/6 because of a

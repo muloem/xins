@@ -511,6 +511,9 @@ APIs in this project are:
 				<xsl:if test="string-length($typeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
 				</xsl:if>
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				</xsl:if>
 				<targetfileset dir="{$project_home}/build/specdocs/{$api}" includes="index.html" />
 			</dependset>
 			<dependset>
@@ -847,11 +850,11 @@ APIs in this project are:
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
-				</xsl:if>
 				<xsl:if test="string-length($typeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				</xsl:if>
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
 				</xsl:if>
 				<targetfileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
 			</dependset>
