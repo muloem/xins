@@ -6,6 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
+* XINS/Java Common Library:
+  - Some methods in BeanUtils will throw an IllegalArgumentException instead
+    of a NullPointerException.
+
+* XINS/Java Server Framework:
+  - Added a new method to get the InputStream of a resource located in the WAR
+    file.
+  - Improved method used to find files located in the WAR file.
+
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
   - Fixed generation of the build.xml failed with Java 5/6 because of a
@@ -13,6 +22,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
+
+* Examples:
+  - Fixed the functions of the toolbox API.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
