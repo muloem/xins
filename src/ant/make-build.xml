@@ -13,11 +13,11 @@
 
 		<available file="${xins_home}/src/xslt/xins-project_to_ant-build.xslt"
 		           property="ant.build.xslt.exists" />
-		<fail message="Cannot find stylesheet" unless="ant.build.xslt.exists" />
+		<fail message="Cannot find XINS at ${xins_home}, check your XINS_HOME environment variable." unless="ant.build.xslt.exists" />
 
 		<available file="${project_home}/xins-project.xml"
 		           property="xins-project.xml.exists" />
-		<fail message="Cannot find input file xins-project.xml in the ${project_home} directory." unless="xins-project.xml.exists" />
+		<fail message="Cannot find input file xins-project.xml in the ${project_home} directory, change your current directory to the one containing the xins-project.xml file." unless="xins-project.xml.exists" />
 
 		<mkdir dir="${project_home}/build" />
 
@@ -159,24 +159,6 @@
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />
 			<param name="builddir"     expression="${project_home}/build" />
-			<param name="xins_version" expression="${version}"     />
-		</xslt>
-
-	</target>
-
-	<target name="transform">
-		<property file="${xins_home}/.version.properties" />
-		<property name="version" value="${version.major}.${version.minor}${version.suffix}" />
-		<dependset>
-			<srcfileset    file="${xins_home}/.version.properties"         />
-			<srcfileset    dir="${project_home}"    includes="**/api.xml"  />
-			<srcfileset    dir="${project_home}"    includes="**/impl.xml" />
-			<targetfileset file="${out}" />
-		</dependset>
-		<xslt in="${in}" out="${out}" style="${style}">
-			<param name="xins_home"    expression="${xins_home}"    />
-			<param name="project_home" expression="${project_home}" />
-			<param name="builddir"     expression="${builddir}"     />
 			<param name="xins_version" expression="${version}"     />
 		</xslt>
 	</target>
