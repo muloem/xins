@@ -7,10 +7,8 @@
 package org.xins.server;
 
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.ProtectedPropertyReader;
-
+import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.xml.Element;
 
 /**
@@ -25,23 +23,6 @@ import org.xins.common.xml.Element;
  * @since XINS 1.2.0
  */
 public class FunctionRequest {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Secret key used to control <code>ProtectedPropertyReader</code>
-    * instances.
-    */
-   private static final Object SECRET_KEY = new Object();
-
-   /**
-    * A shared empty <code>ProtectedPropertyReader</code> instance.
-    */
-   private static final ProtectedPropertyReader EMPTY_PROPERTY_READER
-      = new ProtectedPropertyReader(SECRET_KEY);
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -107,10 +88,9 @@ public class FunctionRequest {
 
       // Store the parameters, make sure this is never null
       if (parameters == null) {
-         _parameters = EMPTY_PROPERTY_READER;
+         _parameters = PropertyReaderUtils.EMPTY_PROPERTY_READER;
       } else {
-         _parameters = new ProtectedPropertyReader(SECRET_KEY);
-         _parameters.copyFrom(SECRET_KEY, parameters);
+         _parameters = parameters;
       }
 
       // Store the data section, or null if there is none
@@ -132,7 +112,7 @@ public class FunctionRequest {
    /**
     * The parameters of the function. This field is never <code>null</code>
     */
-   private final ProtectedPropertyReader _parameters;
+   private final PropertyReader _parameters;
 
    /**
     * The data section of the function. If there is none, then this field is

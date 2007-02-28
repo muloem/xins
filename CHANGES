@@ -17,7 +17,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     file.
   - Improved method used to find files located in the WAR file.
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
-  - The FrontendCallingConevntion is no longer final.
+  - The FrontendCallingConvention is no longer final.
+  - Improved implementation of the FunctionRequest class.
 
 * Generation of specification documentation:
   - If a result code file changes, the index.html is regenerated.
