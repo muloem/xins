@@ -33,6 +33,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Improved message description in case XINS_HOME is set incorrectly or
     the script is not executed from the correct directory.
   - Removed transform target which is not used.
+  - Next version will be XINS 2.0 instead of XINS 2.0.0.
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
@@ -2883,6 +2884,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     UnsuccessfulXINSCallException message.
   - Reworked the framework around the UnsuccessfulXINSCallException class.
     Removed the UnsuccessfulXINSCallExceptionFactory class and added quite a
+
     few UnsuccessfulXINSCallException subclasses.
   - Added no-arg XINSServiceCaller constructor.
   - If available the version of the API is set in the manifest of the JAR

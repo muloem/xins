@@ -22,7 +22,16 @@
 		<mkdir dir="${project_home}/build" />
 
 		<property file="${xins_home}/.version.properties" />
-		<property name="version" value="${version.major}.${version.middle}.${version.minor}${version.build}${version.suffix}" />
+		<condition property="dot.version.minor" value="${version.minor}">
+			<or>
+				<equals arg1="${version.minor}" arg2="-alpha" />
+				<equals arg1="${version.minor}" arg2="-beta" />
+				<equals arg1="${version.minor}" arg2="-rc" />
+				<equals arg1="${version.minor}" arg2="" />
+			</or>
+		</condition>
+		<property name="dot.version.minor" value=".${version.minor}" />
+		<property name="version" value="${version.major}.${version.middle}${dot.version.minor}${version.build}${version.suffix}" />
 		<dependset>
 			<srcfileset    file="${xins_home}/.version.properties"                 />
 			<srcfileset    dir="${project_home}"    includes="**/api.xml"          />
