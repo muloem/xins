@@ -91,7 +91,7 @@ public class FunctionRequest {
     * @throws IllegalArgumentException
     *    if <code>functionName == null</code>.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    public FunctionRequest(String         functionName,
                           PropertyReader parameters,
@@ -156,7 +156,7 @@ public class FunctionRequest {
     * @return
     *    the name of the function, never <code>null</code>.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    public String getFunctionName() {
       return _functionName;
@@ -169,7 +169,7 @@ public class FunctionRequest {
     * @return
     *    the parameters of the function, never <code>null</code>.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    public PropertyReader getParameters() {
       return _parameters;
@@ -181,7 +181,7 @@ public class FunctionRequest {
     * @return
     *    the data section, or <code>null</code> if there is none.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    public Element getDataElement() {
       return _dataElement;
@@ -193,7 +193,7 @@ public class FunctionRequest {
     * @return
     *    <code>true</code> if the function shouldn't be executed, <code>false</code> otherwise.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    public boolean shouldSkipFunctionCall() {
       return _skipFunctionCall;

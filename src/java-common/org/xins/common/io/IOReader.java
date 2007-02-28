@@ -20,7 +20,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
- * @since XINS 2.0.0
+ * @since XINS 2.0
  */
 public final class IOReader {
 
@@ -31,19 +31,19 @@ public final class IOReader {
    /**
     * Read an InputStream completly and put the content of the input stream in
     * a String.
-    * 
+    *
     * @param inputStream
     *    the input stream to read, cannot be <code>null</code>.
-    * 
+    *
     * @throws IllegalArgumentException
     *    if <code>inputStream == null</code>.
-    * 
+    *
     * @throws IOException
     *    if there are some problems reading the input stream.
     */
    public static String readFully(InputStream inputStream) throws IllegalArgumentException, IOException {
       MandatoryArgumentChecker.check("inputStream", inputStream);
-      
+
       BufferedReader input = new BufferedReader(new InputStreamReader(inputStream));
       StringWriter output = new StringWriter();
       char[] buffer = new char[1024];

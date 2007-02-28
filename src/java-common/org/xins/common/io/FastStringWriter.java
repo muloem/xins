@@ -21,7 +21,7 @@ import org.xins.common.text.FastStringBuffer;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
- * @deprecated since XINS 2.0.0, use java.io.StringWriter
+ * @deprecated since XINS 2.0, use java.io.StringWriter
  */
 public class FastStringWriter extends Writer {
 

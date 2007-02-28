@@ -439,7 +439,7 @@ public class BeanUtils {
     * @throws IllegalArgumentException
     *    if <code>source == null</code>.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static Map getParameters(Object source) throws IllegalArgumentException {
 
@@ -482,7 +482,7 @@ public class BeanUtils {
     * @throws IllegalArgumentException
     *    if <code>source == null</code>.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static Map getParametersAsString(Object source) throws IllegalArgumentException {
       ChainedMap stringMap = new ChainedMap();
@@ -518,7 +518,7 @@ public class BeanUtils {
     * @throws IllegalArgumentException
     *    if <code>properties == null || destination == null</code>.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static Object setParameters(Map properties, Object destination) throws IllegalArgumentException {
 

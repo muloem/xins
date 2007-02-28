@@ -183,17 +183,17 @@ public final class TextUtils {
    }
 
    /**
-    * Tranforms the given <code>String</code> to the similar <code>String</code>, 
+    * Tranforms the given <code>String</code> to the similar <code>String</code>,
     * but starting with an uppercase.
     *
     * @param text
     *    the text to transform, can be <code>null</code>
     *
     * @return
-    *    the transformed text, the return value will start with an uppercase. 
+    *    the transformed text, the return value will start with an uppercase.
     *    <code>null</code> is returned if the text was <code>null</code>.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static String firstCharUpper(String text) {
        if (text == null) {
@@ -207,21 +207,21 @@ public final class TextUtils {
        } else {
            return text.substring(0, 1).toUpperCase() + text.substring(1);
        }
-       
+
    }
 
    /**
-    * Tranforms the given <code>String</code> to the similar <code>String</code>, 
+    * Tranforms the given <code>String</code> to the similar <code>String</code>,
     * but starting with a lowercase.
     *
     * @param text
     *    the text to transform, can be <code>null</code>
     *
     * @return
-    *    the transformed text, the return value will start with a lowercase. 
+    *    the transformed text, the return value will start with a lowercase.
     *    <code>null</code> is returned if the text was <code>null</code>.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static String firstCharLower(String text) {
        if (text == null) {
@@ -239,7 +239,7 @@ public final class TextUtils {
 
    /**
     * Compile the given regular expression to a Perl5 pattern object.
-    * 
+    *
     * @param regexp
     *     the String value of the Perl5 regular expresssion, cannot be <code>null</code>.
     *
@@ -252,7 +252,7 @@ public final class TextUtils {
     * @throws ProgrammingException
     *    if the pattern cannot be complied.
     *
-    * @since XINS 2.0.0.
+    * @since XINS 2.0.
     */
    public static Pattern createPattern(String regexp) throws ProgrammingException {
       MandatoryArgumentChecker.check("regexp", regexp);

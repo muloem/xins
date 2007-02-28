@@ -57,11 +57,11 @@ public final class Utils {
     * @throws IllegalArgumentException
     *    if <code>level &lt; 0</code>.
     *
-    * @since XINS 2.0.0
+    * @since XINS 2.0
     */
    private static String getCallingTrace(int level, boolean methodMode)
    throws IllegalArgumentException {
-      
+
       // Check preconditions
       if (level < 0) {
          throw new IllegalArgumentException("level (" + level + ") < 0");
@@ -338,7 +338,7 @@ public final class Utils {
     *
     * @since XINS 1.3.0
     *
-    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(Throwable exception)}
+    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(Throwable exception)}
     */
    public static void logIgnoredException(String    detectingClass,
                                           String    detectingMethod,
@@ -405,7 +405,7 @@ public final class Utils {
     *    calling method, never <code>null</code>.
     */
    public static ProgrammingException logProgrammingError(String detail, Throwable cause) {
-      
+
       String sourceClass;
       String sourceMethod;
 
@@ -434,7 +434,7 @@ public final class Utils {
                                  sourceClass,    sourceMethod,
                                  detail,           cause);
    }
-      
+
    /**
     * }
     * Logs a programming error with an optional cause exception, and returns a
@@ -466,7 +466,7 @@ public final class Utils {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     *
-    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(String detail, Throwable cause)}
+    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(String detail, Throwable cause)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,
@@ -524,7 +524,7 @@ public final class Utils {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     *
-    * @deperecated Since XINS 2.0.0, use {@link #logProgrammingError(String detail)}
+    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(String detail)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,

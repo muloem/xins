@@ -11,13 +11,13 @@ import java.util.List;
 import org.xins.common.xml.ElementBuilder;
 
 /**
- * Result code that indicates that a request or a response parameter is either 
+ * Result code that indicates that a request or a response parameter is either
  * missing or invalid.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
- * @since XINS 2.0.0
+ * @since XINS 2.0
  */
 class InvalidMessageResult extends FunctionResult {
 
@@ -27,7 +27,7 @@ class InvalidMessageResult extends FunctionResult {
 
    /**
     * Constructs a new <code>InvalidMessageResult</code> object.
-    * 
+    *
     * @param errorCode
     *    the error code to return to the client, never <code>null</code>.
     */
