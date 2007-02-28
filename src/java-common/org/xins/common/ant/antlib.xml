@@ -4,7 +4,6 @@
 	<taskdef name="callxins" classname="org.xins.common.ant.CallXINSTask"/>
 	<taskdef name="hostname" classname="org.xins.common.ant.HostnameTask"/>
 	<taskdef name="createexample" classname="org.xins.common.ant.CreateExampleTask" />
-	<taskdef name="calltargets" classname="org.xins.common.ant.CallTargetsTask" />
 	<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" />
 	<macrodef name="xins">
 		<attribute name="api" default="" />
