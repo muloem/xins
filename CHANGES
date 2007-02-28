@@ -10,7 +10,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Some methods in BeanUtils will throw an IllegalArgumentException instead
     of a NullPointerException.
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
-  - Removed CallTargetsTask as no longer used.
+  - Removed CallTargetsTask as it's no longer used.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR
@@ -43,6 +43,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Examples:
   - Fixed the functions of the toolbox API.
+
+* Documentation:
+  - Improved description for integration with NetBeans.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
