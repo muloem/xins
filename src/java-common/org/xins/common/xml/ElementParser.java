@@ -8,9 +8,9 @@ package org.xins.common.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-
 import java.util.Stack;
 
 import org.xml.sax.Attributes;
@@ -113,6 +113,43 @@ public class ElementParser {
     * <code>Element</code> object.
     *
     * @param in
+    *    the byte stream that is supposed to contain XML to be parsed,
+    *    not <code>null</code>.
+    *
+    * @return
+    *    the parsed result, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>in == null</code>.
+    *
+    * @throws IOException
+    *    if there is an I/O error.
+    *
+    * @throws ParseException
+    *    if the content of the character stream is not considered to be valid
+    *    XML.
+    *
+    * @since XINS 2.0.
+    */
+   public Element parse(InputStream in)
+   throws IllegalArgumentException,
+          IOException,
+          ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("in", in);
+
+      // Wrap the Reader in a SAX InputSource object
+      InputSource source = new InputSource(in);
+
+      return parse(source);
+   }
+
+   /**
+    * Parses content of a character stream to create an XML
+    * <code>Element</code> object.
+    *
+    * @param in
     *    the character stream that is supposed to contain XML to be parsed,
     *    not <code>null</code>.
     *
@@ -134,16 +171,40 @@ public class ElementParser {
           IOException,
           ParseException {
 
-      // TODO: Consider using an XMLReader instead of a SAXParser
-
       // Check preconditions
       MandatoryArgumentChecker.check("in", in);
 
-      // Initialize our SAX event handler
-      Handler handler = new Handler();
-
       // Wrap the Reader in a SAX InputSource object
       InputSource source = new InputSource(in);
+
+      return parse(source);
+   }
+
+
+   /**
+    * Parses content of a character stream to create an XML
+    * <code>Element</code> object.
+    *
+    * @param source
+    *    the input source that is supposed to contain XML to be parsed,
+    *    not <code>null</code>.
+    *
+    * @return
+    *    the parsed result, not <code>null</code>.
+    *
+    * @throws IOException
+    *    if there is an I/O error.
+    *
+    * @throws ParseException
+    *    if the content of the character stream is not considered to be valid
+    *    XML.
+    */
+   private Element parse(InputSource source) throws IOException, ParseException {
+
+      // TODO: Consider using an XMLReader instead of a SAXParser
+
+      // Initialize our SAX event handler
+      Handler handler = new Handler();
 
       try {
          // Let SAX parse the XML, using our handler
