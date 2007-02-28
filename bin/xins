@@ -18,8 +18,8 @@ if [ "${XINS_HOME}" = "" ]; then
    fi
 fi
 
-# Decide if XINS_HOME is valid by checking if bootstrap.xml exists
-BOOT_XML="${XINS_HOME}/src/ant/bootstrap.xml"
+# Decide if XINS_HOME is valid by checking if make-build.xml exists
+BOOT_XML="${XINS_HOME}/src/ant/make-build.xml"
 if [ ! -f "${BOOT_XML}" ]; then
    echo "ERROR: Unable to determine XINS home directory. Please set XINS_HOME correctly."
    exit 1
@@ -29,49 +29,6 @@ fi
 if [ "$1" = "-version" ] || [ "$1" = "version" ]; then
    ant -q -f ${XINS_HOME}/build.xml version
    exit 0
-fi
-
-# Recognize clean option
-#
-# This fixes SF.net bug #1110726: Invalid generated build.xml cannot be
-# removed with 'xins clean'
-if [ "$1" = "clean" ] && [ -f build/build.xml ]; then
-   rm build/build.xml
-fi
-
-# Split options and target arguments.
-# Options start with a hyphen, while target arguments do not.
-#
-# This fixes SF.net bug 1187914: Cannot pass arguments with the XINS command
-# on Unix
-for word in $*; do
-   case $word in
-   -*)
-      if [ ! -z "${__OPTS__}" ]
-      then
-         word=' '${word}
-      fi
-      __OPTS__=${__OPTS__}${word}
-      ;;
-
-   *)
-      if [ ! -z "${__ARGS__}" ]
-      then
-         word=' '${word}
-      fi
-      __ARGS__=${__ARGS__}${word}
-      ;;
-
-   esac
-   shift
-done
-
-# Default to the 'help' target
-#
-# This fixes SF.net bug #1199691: Calling 'xins' shell script should default
-# to target 'help'
-if [ "${__ARGS__}" = "" ]; then
-   __ARGS__=help
 fi
 
 # Detect Cygwin
@@ -90,23 +47,10 @@ if [ "${__CYGWIN__}" = "true" ]; then
    CURR_DIR=`cygpath --windows ${CURR_DIR}`
 fi
 
-# Construct the command to execute
-__CMD__="ant -f ${XINS_HOME}/src/ant/bootstrap.xml"
-__CMD__="${__CMD__} -Dxins_home=${XINS_HOME}"
-__CMD__="${__CMD__} -Dpwd=${CURR_DIR}"
-if [ ! -z "${__OPTS__}" ]; then
-   __CMD__="${__CMD__} ${__OPTS__}"
-fi
-__CMD__="${__CMD__} -Dargs=\"${__ARGS__}\""
+# Creates the buid file if needed
+ant -Dxins_home=${xins_home} -q -f ${xins_home}/src/ant/make-build.xml
 
-# In verbose mode, print the command that will be executed
-if [ "${XINS_VERBOSE}" = "true" ]; then
-   echo "Cygwin detected: ${__CYGWIN__}"
-   echo
-   echo "Executing:"
-   echo "${__CMD__}"
-   echo
+# Run Ant against the build file, if the build file was created
+if [ "$?" = "0" ]; then
+   ant -f build/build.xml $*
 fi
-
-# Execute the command; pass control to Ant
-${__CMD__}
