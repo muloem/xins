@@ -653,26 +653,10 @@
       while (</xsl:text>
 		<xsl:value-of select="$elementvariable" />
 		<xsl:value-of select="$level" />
-		<xsl:text>Iterator.hasNext()) {</xsl:text>
-		<xsl:choose>
-			<xsl:when test="$side='client' and ancestor::output">
-				<xsl:text>
-         org.xins.client.DataElement </xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>
+		<xsl:text>Iterator.hasNext()) {
          org.xins.common.xml.Element </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
 		<xsl:value-of select="$elementvariable" />
-		<xsl:choose>
-			<xsl:when test="$side='client' and ancestor::output">
-				<xsl:text>NextElement = (org.xins.client.DataElement) </xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:text>NextElement = (org.xins.common.xml.Element) </xsl:text>
 		<xsl:value-of select="$elementvariable" />
 		<xsl:value-of select="$level" />
 		<xsl:text>Iterator.next();</xsl:text>

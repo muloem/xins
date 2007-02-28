@@ -7,12 +7,11 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.service.CallExceptionList;
 import org.xins.common.service.CallResult;
 import org.xins.common.service.TargetDescriptor;
-
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.xml.Element;
 
 /**
  * Successful result of a call to a XINS service. It may be that some targets
@@ -157,14 +156,14 @@ public final class XINSCallResult extends CallResult implements XINSCallResultDa
    }
 
    /**
-    * Returns the optional extra data. The data is an XML {@link DataElement},
+    * Returns the optional extra data. The data is an XML {@link Element},
     * or <code>null</code>.
     *
     * @return
-    *    the extra data as an XML {@link DataElement}, can be
+    *    the extra data as an XML {@link Element}, can be
     *    <code>null</code>.
     */
-   public DataElement getDataElement() {
+   public Element getDataElement() {
       return _data.getDataElement();
    }
 }

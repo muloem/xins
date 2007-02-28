@@ -7,6 +7,7 @@
 package org.xins.client;
 
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.xml.Element;
 
 /**
  * Data part of a XINS call result.
@@ -43,12 +44,12 @@ public interface XINSCallResultData {
    PropertyReader getParameters();
 
    /**
-    * Returns the optional extra data. The data is an XML {@link DataElement},
+    * Returns the optional extra data. The data is an XML {@link Element},
     * or <code>null</code>.
     *
     * @return
-    *    the extra data as an XML {@link DataElement}, can be
+    *    the extra data as an XML {@link Element}, can be
     *    <code>null</code>;
     */
-   DataElement getDataElement();
+   Element getDataElement();
 }

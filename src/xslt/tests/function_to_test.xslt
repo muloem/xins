@@ -29,7 +29,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.client.DataElement;
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
@@ -221,9 +220,9 @@ public class ]]></xsl:text>
 		</xsl:variable>
 
 		<xsl:text>
-      DataElement </xsl:text>
+      Element </xsl:text>
 		<xsl:value-of select="$elementVariable" />
-		<xsl:text> = (DataElement) </xsl:text>
+		<xsl:text> = (Element) </xsl:text>
 		<xsl:value-of select="$parent" />
 		<xsl:text>.getChildElements().get(</xsl:text>
 		<xsl:value-of select="position() - 1" />

@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     of a NullPointerException.
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
   - Removed CallTargetsTask as it's no longer used.
+  - Added new method in ElementParser to parse XML based on an InputStream.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR
@@ -21,6 +22,11 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Improved implementation of the FunctionRequest class.
   - The new argument skipFunctionCall is now used in the XINS FF CC and the
     JSONRPCCallingConvention instead of the _NoOp meta function.
+
+* XINS/Java Client Framework:
+  - The class DataElement has been deprecated and replaced by
+    org.xins.common.xml.Element.
+  - In the returned XML each param element should have a name attribute.
 
 * Generation of specification documentation:
   - If a result code file changes, the index.html is regenerated.
@@ -723,6 +729,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
 * Build- and release-process:
   - Added the XINS Front-end Framework manual to the release.
+
   - Added XSLT files needed for the eclipse and maven targets.
 
 * Other:

@@ -213,9 +213,9 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("_InvalidRequest", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          assertNotNull(dataSection);
-         DataElement missingParam = (DataElement) dataSection.getChildElements().get(0);
+         Element missingParam = (Element) dataSection.getChildElements().get(0);
          assertEquals("missing-param", missingParam.getLocalName());
          assertEquals("inputText", missingParam.getAttribute("param"));
          assertEquals(0, missingParam.getChildElements().size());
@@ -251,10 +251,10 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("_InvalidRequest", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
-         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         Element invalidParam1 = (Element) invalidParams.get(0);
          assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
          assertEquals("inputShared", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
@@ -287,10 +287,10 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("_InvalidRequest", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
-         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         Element invalidParam1 = (Element) invalidParams.get(0);
          assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
          assertEquals("name", invalidParam1.getAttribute("param"));
          assertEquals("person", invalidParam1.getAttribute("element"));
@@ -313,15 +313,15 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("_InvalidRequest", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
-         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         Element invalidParam1 = (Element) invalidParams.get(0);
          assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
          assertEquals("inputIP", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
          assertNull(invalidParam1.getText());
-         DataElement invalidParam2 = (DataElement) invalidParams.get(1);
+         Element invalidParam2 = (Element) invalidParams.get(1);
          assertEquals("invalid-value-for-type", invalidParam2.getLocalName());
          assertEquals("inputAge", invalidParam2.getAttribute("param"));
          assertEquals(0, invalidParam2.getChildElements().size());
@@ -396,7 +396,7 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("MissingInput", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNotNull(exception.getDataElement());
-         Element inputParam = exception.getDataElement().toXMLElement().getUniqueChildElement("inputParameter");
+         Element inputParam = exception.getDataElement().getUniqueChildElement("inputParameter");
          assertNotNull(inputParam);
          assertEquals("Incorrect value for the name parameter.", "inputText", inputParam.getAttribute("name"));
       }
@@ -498,25 +498,25 @@ public class AllInOneAPITests extends TestCase {
     * other elements.
     */
    public void testDataSection2() throws Exception {
-      DataElement element = _capi.callDataSection2("hello").dataElement();
+      Element element = _capi.callDataSection2("hello").dataElement();
       List packets = element.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
-      DataElement packet1 = (DataElement) packets.get(0);
+      Element packet1 = (Element) packets.get(0);
       assertEquals("Incorrect elements.", "packet", packet1.getLocalName());
       assertNotNull("No destination specified.", packet1.getAttribute("destination"));
       List products = packet1.getChildElements();
       assertTrue("No product specified.", products.size() > 0);
-      DataElement product1 = (DataElement) products.get(0);
+      Element product1 = (Element) products.get(0);
       assertEquals("Incorrect price for product1", "12", product1.getAttribute("price"));
-      DataElement product12 = (DataElement) products.get(1);
+      Element product12 = (Element) products.get(1);
       assertNull("Incorrect price for product1", product12.getAttribute("price"));
 
-      DataElement packet2 = (DataElement) packets.get(1);
+      Element packet2 = (Element) packets.get(1);
       assertEquals("Incorrect elements.", "packet", packet2.getLocalName());
       assertNotNull("No destination specified.", packet2.getAttribute("destination"));
       List products2 = packet2.getChildElements();
       assertTrue("No product specified.", products2.size() > 0);
-      DataElement product21 = (DataElement) products2.get(0);
+      Element product21 = (Element) products2.get(0);
       assertEquals("Incorrect price for product1", "12", product21.getAttribute("price"));
       assertTrue(product21.getChildElements().size() == 0);
    }
@@ -542,23 +542,23 @@ public class AllInOneAPITests extends TestCase {
       builder3.addChild(address2);
       Element dataSection = builder3.createElement();
 
-      DataElement element = _capi.callDataSection3("hello", dataSection).dataElement();
+      Element element = _capi.callDataSection3("hello", dataSection).dataElement();
       List packets = element.getChildElements();
       assertTrue("No packets or envelopes found.", packets.size() == 4);
 
-      DataElement envelope1 = (DataElement) packets.get(0);
+      Element envelope1 = (Element) packets.get(0);
       assertEquals("Incorrect elements.", "envelope", envelope1.getLocalName());
       assertEquals("1234", envelope1.getAttribute("destination"));
 
-      DataElement envelope2 = (DataElement) packets.get(1);
+      Element envelope2 = (Element) packets.get(1);
       assertEquals("Incorrect elements.", "envelope", envelope2.getLocalName());
       assertEquals("5678", envelope2.getAttribute("destination"));
 
-      DataElement packet1 = (DataElement) packets.get(2);
+      Element packet1 = (Element) packets.get(2);
       assertEquals("Incorrect elements.", "packet", packet1.getLocalName());
       assertNotNull("No destination specified.", packet1.getAttribute("destination"));
 
-      DataElement envelope3 = (DataElement) packets.get(3);
+      Element envelope3 = (Element) packets.get(3);
       assertEquals("Incorrect elements.", "envelope", envelope3.getLocalName());
       assertNotNull("No destination specified.", envelope3.getAttribute("destination"));
 
@@ -648,24 +648,24 @@ public class AllInOneAPITests extends TestCase {
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          Iterator itParamCombos = dataSection.getChildElements().iterator();
          if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            Element paramCombo1 = (Element)itParamCombos.next();
             assertEquals("param-combo", paramCombo1.getLocalName());
             assertEquals("inclusive-or", paramCombo1.getAttribute("type"));
          } else {
             fail("No param combo element found.");
          }
          if (itParamCombos.hasNext()) {
-            DataElement paramCombo2 = (DataElement)itParamCombos.next();
+            Element paramCombo2 = (Element)itParamCombos.next();
             assertEquals("param-combo", paramCombo2.getLocalName());
             assertEquals("exclusive-or", paramCombo2.getAttribute("type"));
          } else {
             fail("Just one param combo element was found.");
          }
          if (itParamCombos.hasNext()) {
-            DataElement paramCombo3 = (DataElement)itParamCombos.next();
+            Element paramCombo3 = (Element)itParamCombos.next();
             fail("Unexpected param combo element of type '" +
                  paramCombo3.getAttribute("type") + "' was found.");
          }
@@ -813,10 +813,10 @@ public class AllInOneAPITests extends TestCase {
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
          assertNotNull(exception.getDataElement());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          Iterator itParamCombos = dataSection.getChildElements().iterator();
          if (itParamCombos.hasNext()) {
-            DataElement paramCombo1 = (DataElement)itParamCombos.next();
+            Element paramCombo1 = (Element)itParamCombos.next();
             assertEquals("attribute-combo", paramCombo1.getLocalName());
             assertEquals("exclusive-or", paramCombo1.getAttribute("type"));
          } else {
@@ -830,7 +830,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testCAPIVersion() throws Exception {
       assertNotNull("No XINS version specified.", _capi.getXINSVersion());
-      assertTrue("The version does not starts with '2.0.0'", _capi.getXINSVersion().startsWith("2.0.0"));
+      assertTrue("The version does not starts with '2.0'", _capi.getXINSVersion().startsWith("2.0"));
    }
 
    /**
@@ -895,11 +895,11 @@ public class AllInOneAPITests extends TestCase {
          assertEquals("_InvalidResponse", exception.getErrorCode());
          assertEquals(_target, exception.getTarget());
          assertNull(exception.getParameters());
-         DataElement dataSection = exception.getDataElement();
+         Element dataSection = exception.getDataElement();
          assertNotNull(dataSection);
          List invalidParams = dataSection.getChildElements();
          assertEquals(1, invalidParams.size());
-         DataElement invalidParam1 = (DataElement) invalidParams.get(0);
+         Element invalidParam1 = (Element) invalidParams.get(0);
          assertEquals("invalid-value-for-type", invalidParam1.getLocalName());
          assertEquals("outputProperties", invalidParam1.getAttribute("param"));
          assertEquals(0, invalidParam1.getChildElements().size());
@@ -1075,17 +1075,17 @@ public class AllInOneAPITests extends TestCase {
       assertEquals(_target, exception.getTarget());
       assertNull(exception.getParameters());
       assertNotNull(exception.getDataElement());
-      DataElement dataSection = exception.getDataElement();
+      Element dataSection = exception.getDataElement();
       Iterator itParamCombos = dataSection.getChildElements().iterator();
       if (itParamCombos.hasNext()) {
-         DataElement paramCombo1 = (DataElement) itParamCombos.next();
+         Element paramCombo1 = (Element) itParamCombos.next();
          assertEquals("param-combo", paramCombo1.getLocalName());
          assertEquals(type, paramCombo1.getAttribute("type"));
       } else {
          fail("No param combo element found.");
       }
       if (itParamCombos.hasNext()) {
-         DataElement paramCombo2 = (DataElement)itParamCombos.next();
+         Element paramCombo2 = (Element)itParamCombos.next();
          fail("Unexpected param combo element of type '" +
              paramCombo2.getAttribute("type") + "' was found.");
       }
@@ -1105,16 +1105,16 @@ public class AllInOneAPITests extends TestCase {
    }
 
    private void dataSectionTests(String inputText) throws Exception {
-      DataElement element = _capi.callDataSection(inputText).dataElement();
+      Element element = _capi.callDataSection(inputText).dataElement();
       List users = element.getChildElements();
       assertTrue("No users found.", users.size() > 0);
-      DataElement su = (DataElement) users.get(0);
+      Element su = (Element) users.get(0);
       assertEquals("Incorrect elements.", "user", su.getLocalName());
       assertEquals("Incorrect name for su.", "superuser", su.getAttribute("name"));
       assertEquals("Incorrect address.", "12 Madison Avenue", su.getAttribute("address"));
       assertEquals("Incorrect PCDATA.", "This user has the root authorisation.", su.getText());
       assertEquals(0, su.getChildElements().size());
-      DataElement doe = (DataElement) users.get(1);
+      Element doe = (Element) users.get(1);
       assertEquals("Incorrect elements.", "user", doe.getLocalName());
       assertEquals("Incorrect name for " + inputText + ".", inputText, doe.getAttribute("name"));
       assertEquals("Incorrect address.", "Unknown", doe.getAttribute("address"));

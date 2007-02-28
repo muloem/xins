@@ -77,7 +77,7 @@ extends org.xins.client.AbstractCAPICallResult {
     * The result data element. This field will be <code>null</code> if no data
     * element was returned.
     */
-   private final org.xins.client.DataElement _dataElement;]]></xsl:text>
+   private final org.xins.common.xml.Element _dataElement;]]></xsl:text>
 		</xsl:if>
 		<xsl:text>
 
@@ -95,7 +95,7 @@ extends org.xins.client.AbstractCAPICallResult {
     * @return
     *    the data element, or <code>null</code> if there is none.
     */
-   public org.xins.client.DataElement dataElement() {
+   public org.xins.common.xml.Element dataElement() {
       return _dataElement;
    }]]></xsl:text>
 		</xsl:if>

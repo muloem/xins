@@ -8,6 +8,8 @@ package org.xins.client;
 
 import java.util.Iterator;
 import java.util.List;
+import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementBuilder;
 
 /**
  * Exception that indicates that a request for an API call is considered
@@ -19,8 +21,8 @@ import java.util.List;
  *
  * @since XINS 1.2.0
  */
-public final class UnacceptableRequestException
-extends RuntimeException {
+// TODO extend XINSCallException
+public final class UnacceptableRequestException extends RuntimeException {
 
    // TODO: Support XINSCallRequest objects?
    // TODO: Is the name UnacceptableRequestException okay?
@@ -57,7 +59,7 @@ extends RuntimeException {
    /**
     * The DataElement containing the errors.
     */
-   private DataElement _errors = new DataElement(null, "data");
+   private Element _errors = new Element("data");
 
    /**
     * The error message.
@@ -83,31 +85,31 @@ extends RuntimeException {
    }
 
    /**
-    * Adds to the response a paramater that is missing.
+    * Adds to the response that a paramater that is missing.
     *
     * @param parameter
     *    the missing parameter.
     */
    public void addMissingParameter(String parameter) {
-      DataElement missingParam = new DataElement(null, "missing-param");
-      missingParam.setAttribute(null, "param", parameter);
-      _errors.addChild(missingParam);
+      ElementBuilder missingParam = new ElementBuilder("missing-param");
+      missingParam.setAttribute("param", parameter);
+      _errors.addChild(missingParam.createElement());
    }
 
    /**
-    * Adds to the response an attribute that is missing in an element.
+    * Adds to the response a parameter that is missing in an element.
     *
-    * @param attribute
-    *    the missing attribute.
+    * @param parameter
+    *    the missing parameter.
     *
     * @param element
-    *    the element in which the attribute is missing.
+    *    the element in which the parameter is missing.
     */
-   public void addMissingParameter(String attribute, String element) {
-      DataElement missingParam = new DataElement(null, "missing-param");
-      missingParam.setAttribute(null, "param", attribute);
-      missingParam.setAttribute(null, "element", element);
-      _errors.addChild(missingParam);
+   public void addMissingParameter(String parameter, String element) {
+      ElementBuilder missingParam = new ElementBuilder("missing-param");
+      missingParam.setAttribute("param", parameter);
+      missingParam.setAttribute("element", element);
+      _errors.addChild(missingParam.createElement());
    }
 
    /**
@@ -120,35 +122,30 @@ extends RuntimeException {
     *    the type which this parameter should be compliant with.
     */
    public void addInvalidValueForType(String parameter, String type) {
-      DataElement invalidValue = new DataElement(null,
-                                                 "invalid-value-for-type");
-      invalidValue.setAttribute(null, "param", parameter);
-      invalidValue.setAttribute(null, "type", type);
-      _errors.addChild(invalidValue);
+      ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
+      invalidValue.setAttribute("param", parameter);
+      invalidValue.setAttribute("type", type);
+      _errors.addChild(invalidValue.createElement());
    }
 
    /**
     * Adds an invalid value for a specified type.
     *
-    * @param attribute
-    *    the attribute passed by the user.
+    * @param parameter
+    *    the parameter passed by the user.
     *
     * @param type
     *    the type which this parameter should be compliant with.
     *
     * @param element
-    *    the element in which the attribute is missing.
+    *    the element in which the parameter is missing.
     */
-   public void addInvalidValueForType(String attribute,
-                                      String type,
-                                      String element) {
-
-      DataElement invalidValue = new DataElement(null,
-                                                 "invalid-value-for-type");
-      invalidValue.setAttribute(null, "param", attribute);
-      invalidValue.setAttribute(null, "type", type);
-      invalidValue.setAttribute(null, "element", element);
-      _errors.addChild(invalidValue);
+   public void addInvalidValueForType(String parameter, String type, String element) {
+      ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
+      invalidValue.setAttribute("param", parameter);
+      invalidValue.setAttribute("type", type);
+      invalidValue.setAttribute("element", element);
+      _errors.addChild(invalidValue.createElement());
    }
 
    /**
@@ -163,18 +160,18 @@ extends RuntimeException {
     */
    public void addParamCombo(String type, List parameters) {
 
-      DataElement paramCombo = new DataElement(null, "param-combo");
-      paramCombo.setAttribute(null, "type", type);
+      ElementBuilder paramCombo = new ElementBuilder("param-combo");
+      paramCombo.setAttribute("type", type);
 
       // Iterate over all parameters
       Iterator itParameters = parameters.iterator();
       while(itParameters.hasNext()) {
-         DataElement param = new DataElement(null, "param");
-         param.setAttribute(null, "name", (String) itParameters.next());
-         paramCombo.addChild(param);
+         ElementBuilder param = new ElementBuilder("param");
+         param.setAttribute("name", (String) itParameters.next());
+         paramCombo.addChild(param.createElement());
       }
 
-      _errors.addChild(paramCombo);
+      _errors.addChild(paramCombo.createElement());
    }
 
    /**
@@ -194,17 +191,17 @@ extends RuntimeException {
     */
    public void addAttributeCombo(String type, List attributes, String elementName) {
 
-      DataElement attributeCombo = new DataElement(null, "attribute-combo");
-      attributeCombo.setAttribute(null, "type", type);
+      ElementBuilder attributeCombo = new ElementBuilder("attribute-combo");
+      attributeCombo.setAttribute("type", type);
 
       // Iterate over all attributes
       Iterator itAttributes = attributes.iterator();
       while(itAttributes.hasNext()) {
-         DataElement attribute = new DataElement(null, "attribute");
-         attribute.setAttribute(null, "name", (String) itAttributes.next());
-         attributeCombo.addChild(attribute);
+         ElementBuilder attribute = new ElementBuilder("attribute");
+         attribute.setAttribute("name", (String) itAttributes.next());
+         attributeCombo.addChild(attribute.createElement());
       }
 
-      _errors.addChild(attributeCombo);
+      _errors.addChild(attributeCombo.createElement());
    }
 }

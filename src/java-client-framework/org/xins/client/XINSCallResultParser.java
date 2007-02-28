@@ -7,20 +7,17 @@
 package org.xins.client;
 
 import java.io.ByteArrayInputStream;
-
-import java.util.Stack;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
+import java.util.Iterator;
+import java.util.List;
+import org.xins.common.text.TextUtils;
+import org.xins.common.xml.Element;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
-import org.xins.common.xml.SAXParserProvider;
+import org.xins.common.xml.ElementParser;
 
 /**
  * XINS call result parser. XML is parsed to produce a {@link XINSCallResult}
@@ -50,60 +47,6 @@ import org.xins.common.xml.SAXParserProvider;
 public class XINSCallResultParser {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The key for the <code>ProtectedPropertyReader</code> instances created
-    * by this class.
-    */
-   private static final Object PROTECTION_KEY = new Object();
-
-   /**
-    * Error state for the SAX event handler.
-    */
-   private static final State ERROR = new State("ERROR");
-
-   /**
-    * Initial state for the SAX event handler, before the root element is
-    * processed.
-    */
-   private static final State INITIAL = new State("INITIAL");
-
-   /**
-    * State for the SAX event handler just within the root element
-    * (<code>result</code>).
-    */
-   private static final State AT_ROOT_LEVEL = new State("AT_ROOT_LEVEL");
-
-   /**
-    * State for the SAX event handler at any depth within an ignorable
-    * element.
-    */
-   private static final State IN_IGNORABLE_ELEMENT =
-      new State("IN_IGNORABLE_ELEMENT");
-
-   /**
-    * State for the SAX event handler within the output parameter element
-    * (<code>param</code>).
-    */
-   private static final State IN_PARAM_ELEMENT =
-      new State("IN_PARAM_ELEMENT");
-
-   /**
-    * State for the SAX event handler in the data section (at any depth within
-    * the <code>data</code> element).
-    */
-   private static final State IN_DATA_SECTION = new State("IN_DATA_SECTION");
-
-   /**
-    * State for the SAX event handler for the final state, when parsing is
-    * finished.
-    */
-   private static final State FINISHED = new State("FINISHED");
-
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -111,9 +54,17 @@ public class XINSCallResultParser {
     * Constructs a new <code>XINSCallResultParser</code>.
     */
    public XINSCallResultParser() {
-      // empty
+      _parser = new ElementParser();
    }
 
+   //-------------------------------------------------------------------------
+   // Methods
+   //-------------------------------------------------------------------------
+
+   /**
+    * The parser used to parse the XML.
+    */
+   private final ElementParser _parser; 
 
    //-------------------------------------------------------------------------
    // Methods
@@ -142,17 +93,15 @@ public class XINSCallResultParser {
       // Check preconditions
       MandatoryArgumentChecker.check("xml", xml);
 
-      // Initialize our SAX event handler
-      Handler handler = new Handler();
-
       ByteArrayInputStream stream = null;
       try {
 
          // Convert the byte array to an input stream
          stream = new ByteArrayInputStream(xml);
 
-         // Let SAX parse the XML, using our handler
-         SAXParserProvider.get().parse(stream, handler);
+         Element resultElement = _parser.parse(stream);
+
+         return new XINSCallResultDataImpl(resultElement);
 
       } catch (Throwable exception) {
 
@@ -183,8 +132,6 @@ public class XINSCallResultParser {
             }
          }
       }
-
-      return handler;
    }
 
 
@@ -200,33 +147,82 @@ public class XINSCallResultParser {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
-   private static class Handler
-   extends DefaultHandler
-   implements XINSCallResultData {
+   private static class XINSCallResultDataImpl implements XINSCallResultData {
 
       //-------------------------------------------------------------------------
       // Constructors
       //-------------------------------------------------------------------------
 
       /**
-       * Constructs a new <code>Handler</code> instance.
+       * Constructs a new <code>XINSCallResultDataImpl</code> instance.
+       * 
+       * @param resultElement
+       *    the parsed result, cannot be <code>null</code>.
+       * 
+       * @throws ParseException
+       *    if the parse XML does not match the XINS protocol.
        */
-      private Handler() {
-         _state            = INITIAL;
-         _level            = -1;
-         _characters       = new StringBuffer(145);
-         _dataElementStack = new Stack();
+      private XINSCallResultDataImpl(Element resultElement) throws ParseException {
+         
+         if (!"result".equals(resultElement.getLocalName())) {
+            String detail = "Incorrect root element '" + resultElement.getLocalName() + "'. Excpected 'result'.";
+            throw new ParseException(detail);
+         }
+         if (resultElement.getNamespaceURI() != null) {
+            String detail = "No namespace is allowed for the 'result' element. The namespace used is '" + 
+                  resultElement.getNamespaceURI() + "'.";
+            throw new ParseException(detail);
+         }
+         if (resultElement.getText() != null && !resultElement.getText().trim().equals("")) {
+            String detail = "No PCDATA is allowed for the 'result' element. The PCDATA returned is '" + 
+                  resultElement.getText() + "'.";
+            throw new ParseException(detail);
+         }
+
+         // Get and check the error code if any.
+         _errorCode = resultElement.getAttribute("errorcode");
+         String oldErrorCode = resultElement.getAttribute("code");
+         if (TextUtils.isEmpty(_errorCode) && !TextUtils.isEmpty(oldErrorCode)) {
+            _errorCode = oldErrorCode;
+         }
+         if (!TextUtils.isEmpty(_errorCode) && !TextUtils.isEmpty(oldErrorCode) && !_errorCode.equals(oldErrorCode)) {
+               // NOTE: No need to log here. This will be logged already in
+               //       Logdoc log message 2205.
+               String detail = "Found conflicting duplicate value for the "
+                             + "error code, since attribute errorcode=\"" + _errorCode
+                             + "\", while attribute code=\"" + oldErrorCode + "\".";
+               throw new ParseException(detail);
+         }
+
+         // Get and check the parameters, if any.
+         Iterator itParamElements = resultElement.getChildElements("param").iterator();
+         while (itParamElements.hasNext()) {
+            Element nextParam = (Element) itParamElements.next();
+            String paramName = nextParam.getAttribute("name");
+            if (TextUtils.isEmpty(paramName)) {
+               throw new ParseException("No parameter name specified for a parameter: " + nextParam.toString());
+            }
+            String paramValue = nextParam.getText();
+            if (_parameters != null && _parameters.get(paramName) != null && 
+                  !_parameters.get(paramName).equals(paramValue)) {
+               String detail = "Duplicate output parameter '" + paramName + 
+                     "'with different values: '" + _parameters.get(paramName) +
+                     "' and '" + paramValue + "'.";
+               throw new ParseException(detail);
+            }
+            if (!TextUtils.isEmpty(paramValue) && nextParam.getNamespaceURI() == null) {
+               if (_parameters == null) {
+                  _parameters = new BasicPropertyReader();
+               }
+               _parameters.set(paramName, paramValue);
+            }
+         }
+
+         // Get the data section, if any.
+         if (resultElement.getChildElements("data").size() > 0) {
+             _dataSection = resultElement.getUniqueChildElement("data");
+         }
       }
-
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
-      /**
-       * The current state. Never <code>null</code>.
-       */
-      private State _state;
 
       /**
        * The error code returned by the function or <code>null</code>, if no
@@ -240,456 +236,20 @@ public class XINSCallResultParser {
 
       /**
        * The list of the parameters (name/value) returned by the function.
-       * This field is lazily initialized.
+       * This field is <code>null</code> if there is no output parameters returned.
        */
-      private ProtectedPropertyReader _parameters;
+      private BasicPropertyReader _parameters;
 
       /**
-       * The name of the output parameter that is currently being parsed.
+       * The data section of the result, can be <code>null</code>.
        */
-      private String _parameterName;
-
-      /**
-       * The character content (CDATA or PCDATA) of the element currently
-       * being parsed.
-       */
-      private StringBuffer _characters;
-
-      /**
-       * The stack of child elements within the data section. The top element
-       * is always <code>&lt;data/&gt;</code>.
-       */
-      private Stack _dataElementStack;
-
-      /**
-       * The level for the element pointer within the XML document. Initially
-       * this field is <code>-1</code>, which indicates the current element
-       * pointer is outside the document. The value <code>0</code> is for the
-       * root element (<code>result</code>), etc.
-       */
-      private int _level;
+      private Element _dataSection;
 
 
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
 
-      /**
-       * Receive notification of the beginning of an element.
-       *
-       * @param namespaceURI
-       *    the namespace URI, can be <code>null</code>.
-       *
-       * @param localName
-       *    the local name (without prefix); cannot be <code>null</code>.
-       *
-       * @param qName
-       *    the qualified name (with prefix), can be <code>null</code> since
-       *    <code>namespaceURI</code> and <code>localName</code> are always
-       *    used instead.
-       *
-       * @param atts
-       *    the attributes attached to the element; if there are no
-       *    attributes, it shall be an empty {@link Attributes} object; cannot
-       *    be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>localName == null || atts == null</code>.
-       *
-       * @throws SAXException
-       *    if the parsing failed.
-       */
-      public void startElement(String     namespaceURI,
-                               String     localName,
-                               String     qName,
-                               Attributes atts)
-      throws IllegalArgumentException, SAXException {
-
-         // Temporarily enter ERROR state, on success this state is left
-         State currentState = _state;
-         _state = ERROR;
-
-         // Make sure namespaceURI is either null or non-empty
-         namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
-
-         // Cache quoted version of namespaceURI
-         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("localName", localName, "atts", atts);
-
-         // Increase the element depth level
-         _level++;
-
-         if (currentState == ERROR) {
-            String detail = "_state=" + currentState + "; _level=" + _level;
-            throw Utils.logProgrammingError(detail);
-
-         } else if (currentState == INITIAL) {
-
-            // Level and state must comply
-            if (_level != 0) {
-               String detail = "_state=" + currentState + "; _level=" + _level;
-               throw Utils.logProgrammingError(detail);
-            }
-
-            // Root element must be 'result' without namespace
-            if (! (namespaceURI == null && localName.equals("result"))) {
-               Log.log_2200(namespaceURI, localName);
-               String detail = "Root element is \"" + localName + "\" with namespace "
-                     + quotedNamespaceURI + " instead of \"result\" with namespace"
-                     + " (null).";
-               throw new SAXException(detail);
-            }
-
-            // Get the 'errorcode' and 'code attributes
-            String code1 = atts.getValue("errorcode");
-            String code2 = atts.getValue("code");
-
-            // Convert an empty string to null
-            if (code1 == null || code1.length() == 0) {
-               code1 = null;
-            }
-            if (code2 == null || code2.length() == 0) {
-               code2 = null;
-            }
-
-            // Only one error code attribute set
-            if (code1 != null && code2 == null) {
-               _errorCode = code1;
-            } else if (code1 == null && code2 != null) {
-               _errorCode = code2;
-
-            // Two error code attribute set
-            } else if (code1 == null) {
-               _errorCode = null;
-            } else if (code1.equals(code2)) {
-               _errorCode = code1;
-
-            // Conflicting error codes
-            } else {
-               // NOTE: No need to log here. This will be logged already in
-               //       Logdoc log message 2205.
-               String detail = "Found conflicting duplicate value for the "
-                             + "error code, since attribute errorcode=\""
-                             + code1
-                             + "\", while attribute code=\""
-                             + code2
-                             + "\".";
-               throw new SAXException(detail);
-            }
-
-            // Change state
-            _state = AT_ROOT_LEVEL;
-
-         } else if (currentState == AT_ROOT_LEVEL) {
-
-            // Output parameter
-            if (namespaceURI == null && "param".equals(localName)) {
-
-               // Store the name of the parameter. It may be null, but that
-               // will be checked only after the element end tag is processed.
-               _parameterName = atts.getValue("name");
-
-               // TODO: Check parameter name here (null and pattern)
-
-               // Reserve buffer for PCDATA
-               _characters = new StringBuffer(145);
-
-               // Update the state
-               _state = IN_PARAM_ELEMENT;
-
-            // Start of data section
-            } else if (namespaceURI == null && "data".equals(localName)) {
-
-               // A data element stack should really be empty
-               if (_dataElementStack.size() > 0) {
-                  throw new SAXException("Found second data section.");
-               }
-
-               // Maintain a list of the elements, with data as the root
-               _dataElementStack.push(new DataElement(null, "data"));
-
-               // Update the state
-               _state = IN_DATA_SECTION;
-
-            // Ignore unrecognized element at root level
-            } else {
-               _state = IN_IGNORABLE_ELEMENT;
-               Log.log_2206(namespaceURI, localName);
-            }
-
-         // Within output parameter element, no elements are allowed
-         } else if (currentState == IN_PARAM_ELEMENT) {
-            // NOTE: No need to log here. This will be logged already (message 2205)
-            String detail = "Found \""
-                          + localName
-                          + "\" element with namespace "
-                          + quotedNamespaceURI
-                          + " within \"param\" element.";
-            throw new SAXException(detail);
-
-         // Within the data section
-         } else if (currentState == IN_DATA_SECTION) {
-
-            // Construct a DataElement
-            DataElement element = new DataElement(namespaceURI, localName);
-
-            // Add all attributes
-            for (int i = 0; i < atts.getLength(); i++) {
-               String attrNamespaceURI = atts.getURI(i);
-               String attrLocalName    = atts.getLocalName(i);
-               String attrValue        = atts.getValue(i);
-
-               element.setAttribute(attrNamespaceURI,
-                                    attrLocalName,
-                                    attrValue);
-            }
-
-            // Push the element on the stack
-            _dataElementStack.push(element);
-
-            // Reserve buffer for PCDATA
-            _characters = new StringBuffer(145);
-
-            // Reset the state from ERROR back to IN_DATA_SECTION
-            _state = IN_DATA_SECTION;
-
-         // Deeper level within ignorable element
-         } else if (currentState == IN_IGNORABLE_ELEMENT) {
-            _state = IN_IGNORABLE_ELEMENT;
-
-         // Unrecognized state
-         } else {
-            String detail = "_state=" + currentState + "; _level=" + _level;
-            throw Utils.logProgrammingError(detail);
-         }
-      }
-
-      /**
-       * Receive notification of the end of an element.
-       *
-       * @param namespaceURI
-       *    the namespace URI, can be <code>null</code>.
-       *
-       * @param localName
-       *    the local name (without prefix); cannot be <code>null</code>.
-       *
-       * @param qName
-       *    the qualified name (with prefix), can be <code>null</code> since
-       *    <code>namespaceURI</code> and <code>localName</code> are only
-       *    used.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>localName == null</code>.
-       *
-       * @throws SAXException
-       *    if the parsing failed.
-       */
-      public void endElement(String namespaceURI,
-                             String localName,
-                             String qName)
-      throws IllegalArgumentException, SAXException {
-
-         // Temporarily enter ERROR state, on success this state is left
-         State currentState = _state;
-         _state = ERROR;
-
-         // Make sure namespaceURI is either null or non-empty
-         namespaceURI = (namespaceURI != null && "".equals(namespaceURI.trim()))
-                      ? null
-                      : namespaceURI;
-
-         // Cache quoted version of namespaceURI
-         String quotedNamespaceURI = TextUtils.quote(namespaceURI);
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("localName", localName);
-
-         if (currentState == ERROR) {
-            String detail = "_state=" + currentState + "; _level=" + _level;
-            throw Utils.logProgrammingError(detail);
-
-         // At root level
-         } else if (currentState == AT_ROOT_LEVEL) {
-
-            if (! (namespaceURI == null && "result".equals(localName))) {
-               String detail = "Expected end of element of type \"result\" with namespace (null) "
-                     + "instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
-               throw Utils.logProgrammingError(detail);
-            }
-            _state = FINISHED;
-
-         // Ignorable element
-         } else if (currentState == IN_IGNORABLE_ELEMENT) {
-            if (_level == 1) {
-               _state = AT_ROOT_LEVEL;
-            } else {
-               _state = IN_IGNORABLE_ELEMENT;
-            }
-
-         // Within data section
-         } else if (currentState == IN_DATA_SECTION) {
-
-            // Get the DataElement for which we process the end tag
-            DataElement child = (DataElement) _dataElementStack.pop();
-
-            // If at the <data/> element level, then return to AT_ROOT_LEVEL
-            if (_dataElementStack.size() == 0) {
-               if (! (namespaceURI == null && "data".equals(localName))) {
-                  String detail = "Expected end of element of type \"data\" with namespace (null) "
-                        + "instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
-                  throw Utils.logProgrammingError(detail);
-               }
-
-               // Push the root DataElement back
-               _dataElementStack.push(child);
-
-               // Reset the state
-               _state = AT_ROOT_LEVEL;
-
-            // Otherwise it's a custom element
-            } else {
-
-               // Set the PCDATA content on the element
-               if (_characters != null && _characters.length() > 0) {
-                  child.setText(_characters.toString());
-               }
-
-               // Add the child to the parent
-               DataElement parent = (DataElement) _dataElementStack.peek();
-               parent.addChild(child);
-
-               // Reset the state back frmo ERROR to IN_DATA_SECTION
-               _state = IN_DATA_SECTION;
-            }
-
-         // Output parameter
-         } else if (currentState == IN_PARAM_ELEMENT) {
-
-            if (! (namespaceURI == null && "param".equals(localName))) {
-               String detail = "Expected end of element of type \"param\" with namespace (null) "
-                     + "instead of \"" + localName + "\" with namespace " + quotedNamespaceURI + '.';
-               throw Utils.logProgrammingError(detail);
-            }
-
-            // Retrieve name and value for output parameter
-            String name  = _parameterName;
-            String value = _characters.toString();
-
-            // Both name and value should be set
-            boolean noName  = (name  == null || name.length()  < 1);
-            boolean noValue = (value == null || value.length() < 1);
-            if (noName && noValue) {
-               Log.log_2201();
-            } else if (noName) {
-               Log.log_2202(value);
-            } else if (noValue) {
-               Log.log_2203(name);
-
-            // Name and value are both set, correctly
-            } else {
-               Log.log_2204(name, value);
-
-               // Previously no parameters, perform (lazy) initialization
-               if (_parameters == null) {
-                  _parameters = new ProtectedPropertyReader(PROTECTION_KEY);
-
-               // Check if parameter is already set
-               } else {
-                  String existingValue = _parameters.get(name);
-                  if (existingValue != null) {
-                     if (!existingValue.equals(value)) {
-                        // NOTE: This will be logged already (message 2205)
-                        String detail = "Found conflicting duplicate value for output parameter \""
-                              + name + "\". Initial value is \"" + existingValue
-                              + "\". New value is \"" + value + "\".";
-                        throw new SAXException(detail);
-                     }
-                  }
-               }
-
-               // Store the name-value combination for the output parameter
-               _parameters.set(PROTECTION_KEY, name, value);
-            }
-
-            // Reset the state
-            _parameterName = null;
-            _state         = AT_ROOT_LEVEL;
-            _characters = new StringBuffer(145);
-
-         // Unknown state
-         } else {
-            String detail = "Unrecognized state: " + currentState + ". Programming error suspected.";
-            throw Utils.logProgrammingError(detail);
-         }
-
-         _level--;
-         _characters = new StringBuffer(145);
-      }
-
-      /**
-       * Receive notification of character data.
-       *
-       * @param ch
-       *    the <code>char</code> array that contains the characters from the
-       *    XML document, cannot be <code>null</code>.
-       *
-       * @param start
-       *    the start index within <code>ch</code>.
-       *
-       * @param length
-       *    the number of characters to take from <code>ch</code>.
-       *
-       * @throws IndexOutOfBoundsException
-       *    if characters outside the allowed range are specified.
-       *
-       * @throws SAXException
-       *    if the parsing failed.
-       */
-      public void characters(char[] ch, int start, int length)
-      throws IndexOutOfBoundsException, SAXException {
-
-         // Temporarily enter ERROR state, on success this state is left
-         State currentState = _state;
-         _state = ERROR;
-
-         // Check state
-         if (currentState != IN_PARAM_ELEMENT
-          && currentState != IN_DATA_SECTION
-          && currentState != IN_IGNORABLE_ELEMENT) {
-            String text = new String(ch, start, length);
-            if (text.trim().length() > 0) {
-               // NOTE: This will be logged already (message 2205)
-               String detail = "Found character content \"" + text + "\" in state " + currentState + '.';
-               throw new SAXException(detail);
-            }
-         }
-
-         if (_characters != null) {
-            _characters.append(ch, start, length);
-         }
-
-         // Reset _state
-         _state = currentState;
-      }
-
-      /**
-       * Checks if the state is <code>FINISHED</code> and if not throws an
-       * <code>IllegalStateException</code>.
-       *
-       * @throws IllegalStateException
-       *    if the current state is not {@link #FINISHED}.
-       */
-      private void assertFinished()
-      throws IllegalStateException {
-
-         if (_state != FINISHED) {
-            String detail = "State is " + _state + " instead of " + FINISHED + '.';
-            Utils.logProgrammingError(detail);
-            throw new IllegalStateException(detail);
-         }
-      }
 
       /**
        * Returns the error code. If <code>null</code> is returned the call was
@@ -703,15 +263,8 @@ public class XINSCallResultParser {
        * @return
        *    the returned error code, or <code>null</code> if the call was
        *    successful.
-       *
-       * @throws IllegalStateException
-       *    if the current state is invalid.
        */
-      public String getErrorCode()
-      throws IllegalStateException {
-
-         // Check state
-         assertFinished();
+      public String getErrorCode() {
 
          return _errorCode;
       }
@@ -722,15 +275,8 @@ public class XINSCallResultParser {
        * @return
        *    the parameters (name/value) or <code>null</code> if the function
        *    does not have any parameters.
-       *
-       * @throws IllegalStateException
-       *    if the current state is invalid.
        */
-      public PropertyReader getParameters()
-      throws IllegalStateException {
-
-         // Check state
-         assertFinished();
+      public PropertyReader getParameters() {
 
          return _parameters;
       }
@@ -741,69 +287,10 @@ public class XINSCallResultParser {
        * @return
        *    the data element, or <code>null</code> if the function did not
        *    return any data element.
-       *
-       * @throws IllegalStateException
-       *    if the current state is invalid.
        */
-      public DataElement getDataElement()
-      throws IllegalStateException {
+      public Element getDataElement() {
 
-         // Check state
-         assertFinished();
-
-         if (_dataElementStack.isEmpty()) {
-            return null;
-         } else {
-            return (DataElement) _dataElementStack.peek();
-         }
-      }
-   }
-
-   /**
-    * State of the event handler.
-    *
-    * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
-    */
-   private static final class State {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
-      /**
-       * Constructs a new <code>State</code> object.
-       *
-       * @param name
-       *    the name of this state, cannot be <code>null</code>.
-       */
-      private State(String name) throws IllegalArgumentException {
-         _name = name;
-      }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      /**
-       * The name of this state. Cannot be <code>null</code>.
-       */
-      private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
-      /**
-       * Returns a textual representation of this object.
-       *
-       * @return
-       *    the name of this state, never <code>null</code>.
-       */
-      public String toString() {
-         return _name;
+         return _dataSection;
       }
    }
 }

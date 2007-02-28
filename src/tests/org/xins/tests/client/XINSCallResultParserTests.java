@@ -14,10 +14,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.collections.PropertyReader;
-
 import org.xins.common.text.ParseException;
+import org.xins.common.xml.Element;
 
-import org.xins.client.DataElement;
 import org.xins.client.XINSCallResultData;
 import org.xins.client.XINSCallResultParser;
 
@@ -104,7 +103,7 @@ public class XINSCallResultParserTests extends TestCase {
       parser.parse(xml.getBytes(ENCODING));
 
       // Empty keys, empty values, non-conflicting duplicates
-      xml = "<result><param/><param name='a'/><param>b</param><param name='c'>z</param><param name='c'>z</param></result>";
+      xml = "<result><param name='a'/><param name='c'>z</param><param name='c'>z</param></result>";
       result = parser.parse(xml.getBytes(ENCODING));
       assertNotNull(result);
       assertEquals(null, result.getErrorCode());
@@ -146,7 +145,7 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals("2", params.get("b"));
 
       // There should be a data section
-      DataElement dataElement = result.getDataElement();
+      Element dataElement = result.getDataElement();
       assertNotNull(dataElement);
 
       // Root element should be <data/>
@@ -236,7 +235,7 @@ public class XINSCallResultParserTests extends TestCase {
       assertTrue(params == null || params.size() == 0);
 
       // There should be a data section
-      DataElement dataElement = result.getDataElement();
+      Element dataElement = result.getDataElement();
       assertNotNull(dataElement);
 
       // Root element should be <data/>
@@ -250,8 +249,8 @@ public class XINSCallResultParserTests extends TestCase {
       assertEquals(2, children.size());
 
       // Get both child elements
-      DataElement childOne = (DataElement) children.get(0);
-      DataElement childTwo = (DataElement) children.get(1);
+      Element childOne = (Element) children.get(0);
+      Element childTwo = (Element) children.get(1);
 
       // First element should have 2 attributes
       Map childOneAttr = childOne.getAttributeMap();
@@ -355,11 +354,11 @@ public class XINSCallResultParserTests extends TestCase {
 
       xml = "<result>  <data><result /><data /></data></result>";
       result = parser.parse(xml.getBytes(ENCODING));
-      DataElement dataElement = result.getDataElement();
+      Element dataElement = result.getDataElement();
       List children = dataElement.getChildElements();
-      DataElement child = (DataElement) children.get(0);
+      Element child = (Element) children.get(0);
       assertEquals("result", child.getLocalName());
-      child = (DataElement) children.get(1);
+      child = (Element) children.get(1);
       assertEquals("data", child.getLocalName());
    }
 

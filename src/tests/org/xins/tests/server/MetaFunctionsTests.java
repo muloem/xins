@@ -22,7 +22,8 @@ import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
-import org.xins.client.DataElement;
+import org.xins.common.xml.Element;
+
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
@@ -136,11 +137,11 @@ public class MetaFunctionsTests extends TestCase {
       } catch (ParseException parseException) {
          fail("Incorrect date format for 'now'.");
       }
-      DataElement data = result.getDataElement();
+      Element data = result.getDataElement();
       assertEquals(0, data.getAttributeMap().size());
       List children = data.getChildElements();
 
-      DataElement heap = (DataElement) children.get(0);
+      Element heap = (Element) children.get(0);
       assertNotNull("No total memory provided.", heap.getAttribute("total"));
       assertNotNull("No used memory provided.", heap.getAttribute("used"));
       assertNotNull("No free memory provided.", heap.getAttribute("free"));
@@ -162,15 +163,15 @@ public class MetaFunctionsTests extends TestCase {
       // browse all function
       int size = children.size();
       for (int i = 1; i < size; i++) {
-         DataElement nextFunction = (DataElement) children.get(i);
+         Element nextFunction = (Element) children.get(i);
          assertEquals("Object other than a function has been found.", "function", nextFunction.getLocalName());
          assertNotNull("The function does not have a name", nextFunction.getAttribute("name"));
          // XXX: Also test the children.
          List subElements = nextFunction.getChildElements();
          assertTrue(subElements.size() >= 2);
-         DataElement successful = (DataElement) subElements.get(0);
+         Element successful = (Element) subElements.get(0);
          checkFunctionStatistics(successful, true);
-         DataElement unsuccessful = (DataElement) subElements.get(1);
+         Element unsuccessful = (Element) subElements.get(1);
          checkFunctionStatistics(unsuccessful, false);
       }
    }
@@ -188,7 +189,7 @@ public class MetaFunctionsTests extends TestCase {
     * @throws Throwable
     *    if something fails.
     */
-   private void checkFunctionStatistics(DataElement functionElement, boolean successful) throws Throwable {
+   private void checkFunctionStatistics(Element functionElement, boolean successful) throws Throwable {
       String success = successful ? "successful" : "unsuccessful";
 
       assertEquals("The function does not have any " + success + " sub-section.", success, functionElement.getLocalName());
@@ -196,15 +197,15 @@ public class MetaFunctionsTests extends TestCase {
       assertNotNull("No count attribute defined", functionElement.getAttribute("count"));
       List minMaxLast = functionElement.getChildElements();
       assertTrue(minMaxLast.size() >= 3);
-      DataElement min = (DataElement) minMaxLast.get(0);
+      Element min = (Element) minMaxLast.get(0);
       assertEquals("The function does not have any successful sub-section.", "min", min.getLocalName());
       assertNotNull("No average attribute defined", min.getAttribute("start"));
       assertNotNull("No count attribute defined", min.getAttribute("duration"));
-      DataElement max = (DataElement) minMaxLast.get(1);
+      Element max = (Element) minMaxLast.get(1);
       assertEquals("The function does not have any successful sub-section.", "max", max.getLocalName());
       assertNotNull("No average attribute defined", max.getAttribute("start"));
       assertNotNull("No count attribute defined", max.getAttribute("duration"));
-      DataElement last = (DataElement) minMaxLast.get(2);
+      Element last = (Element) minMaxLast.get(2);
       assertEquals("The function does not have any successful sub-section.", "last", last.getLocalName());
       assertNotNull("No average attribute defined", last.getAttribute("start"));
       assertNotNull("No count attribute defined", last.getAttribute("duration"));
@@ -237,7 +238,7 @@ public class MetaFunctionsTests extends TestCase {
       List functions = result.getDataElement().getChildElements();
       int size = functions.size();
       for (int i = 0; i < size; i++) {
-         DataElement nextFunction = (DataElement) functions.get(i);
+         Element nextFunction = (Element) functions.get(i);
          assertEquals("Element other than a function found.", "function", nextFunction.getLocalName());
          String version = nextFunction.getAttribute("version");
          String name = nextFunction.getAttribute("name");
@@ -269,42 +270,42 @@ public class MetaFunctionsTests extends TestCase {
       List functions = result.getDataElement().getChildElements();
 
       assertTrue("No build section defined.", functions.size() > 0);
-      DataElement build = (DataElement) functions.get(0);
+      Element build = (Element) functions.get(0);
       assertEquals(0, build.getAttributeMap().size());
       assertEquals("build", build.getLocalName());
       List buildProps = build.getChildElements();
       assertNotNull(buildProps);
       int size = buildProps.size();
       for (int i = 0; i < size; i++) {
-         DataElement nextProp = (DataElement) buildProps.get(i);
+         Element nextProp = (Element) buildProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getLocalName());
          assertNotNull("No name attribute for the property.", nextProp.getAttribute("name"));
          assertNotNull("No value for the \"" + nextProp.getAttribute("name") + "\" property", nextProp.getText());
       }
 
       assertTrue("No runtime section defined.", functions.size() > 1);
-      DataElement runtime = (DataElement) functions.get(1);
+      Element runtime = (Element) functions.get(1);
       assertEquals(0, runtime.getAttributeMap().size());
       assertEquals("runtime", runtime.getLocalName());
       List runtimeProps = runtime.getChildElements();
       assertNotNull(runtimeProps);
       size = runtimeProps.size();
       for (int i = 0; i < size; i++) {
-         DataElement nextProp = (DataElement) runtimeProps.get(i);
+         Element nextProp = (Element) runtimeProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getLocalName());
          assertNotNull("No name attribute for the property.", nextProp.getAttribute("name"));
          assertNotNull("No value for the \"" + nextProp.getAttribute("name") + "\" property", nextProp.getText());
       }
 
       assertTrue("No system section defined.", functions.size() > 2);
-      DataElement system = (DataElement) functions.get(2);
+      Element system = (Element) functions.get(2);
       assertEquals(0, system.getAttributeMap().size());
       assertEquals("system", system.getLocalName());
       List systemProps = system.getChildElements();
       assertNotNull(systemProps);
       size = systemProps.size();
       for (int i = 0; i < size; i++) {
-         DataElement nextProp = (DataElement) systemProps.get(i);
+         Element nextProp = (Element) systemProps.get(i);
          assertEquals("Element other than a property found.", "property", nextProp.getLocalName());
          assertNotNull("No name attribute for the property.", nextProp.getAttribute("name"));
          assertNotNull("No value for the \"" + nextProp.getAttribute("name") + "\" property", nextProp.getText());
@@ -403,13 +404,13 @@ public class MetaFunctionsTests extends TestCase {
       assertEquals("7", parameters.get("linkCount"));
       //assertEquals(parameters.get("errorCount"), "4");
 
-      DataElement dataElement = result.getDataElement();
+      Element dataElement = result.getDataElement();
       List elementList = dataElement.getChildElements();
       assertEquals(7, elementList.size());
 
       Iterator elementIt = elementList.iterator();
       while (elementIt.hasNext()) {
-         DataElement element = (DataElement)elementIt.next();
+         Element element = (Element)elementIt.next();
 
          assertEquals("check", element.getLocalName());
          assertNotNull(element.getAttribute("url"));

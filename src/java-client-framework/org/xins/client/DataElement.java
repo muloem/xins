@@ -36,6 +36,7 @@ import org.xins.common.xml.ElementBuilder;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated since XINS 2.0, use {@link org.xins.common.xml.Element}.
  */
 public class DataElement implements Cloneable {
 

@@ -7,11 +7,10 @@
 package org.xins.client;
 
 import org.xins.common.MandatoryArgumentChecker;
-
 import org.xins.common.collections.PropertyReader;
-
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.spec.ErrorCodeSpec;
+import org.xins.common.xml.Element;
 
 /**
  * Exception that indicates that a result code was returned by the API call.
@@ -193,9 +192,9 @@ implements XINSCallResultData {
     * Returns the optional extra data.
     *
     * @return
-    *    the extra data as a {@link DataElement}, can be <code>null</code>;
+    *    the extra data as an {@link Element}, can be <code>null</code>;
     */
-   public final DataElement getDataElement() {
+   public final Element getDataElement() {
       return _result.getDataElement();
    }
 

@@ -7,9 +7,9 @@
 package org.xins.client;
 
 import java.util.List;
-
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.xml.Element;
 
 /**
  * Exception thrown to indicate a standard error code was received that
@@ -49,7 +49,7 @@ extends StandardErrorCodeException {
       }
 
       // Parse the data element
-      DataElement element = result.getDataElement();
+      Element element = result.getDataElement();
       return createMessage(element);
    }
 
@@ -57,14 +57,14 @@ extends StandardErrorCodeException {
     * Creates the message containing the details of the error.
     *
     * @param element
-    *    the {@link DataElement} containing the details of the error, can be
+    *    the {@link Element} containing the details of the error, can be
     *    <code>null</code>.
     *
     * @return
     *    the message or <code>null</code> if <code>element == null</code>
     *    or empty.
     */
-   static String createMessage(DataElement element) {
+   static String createMessage(Element element) {
 
       // Parse the data element
       if (element == null) {
@@ -78,7 +78,7 @@ extends StandardErrorCodeException {
       if (missingParamElements != null) {
          int size = missingParamElements.size();
          for (int i = 0; i < size; i++) {
-            DataElement e = (DataElement) missingParamElements.get(i);
+            Element e = (Element) missingParamElements.get(i);
             String paramName = e.getAttribute("param");
             String elementName = e.getAttribute("element");
             if (elementName == null && paramName != null && paramName.length() >= 1) {
@@ -95,7 +95,7 @@ extends StandardErrorCodeException {
       if (invalidValueElements != null) {
          int size = invalidValueElements.size();
          for (int i = 0; i < size; i++) {
-            DataElement e = (DataElement) invalidValueElements.get(i);
+            Element e = (Element) invalidValueElements.get(i);
             String paramName = e.getAttribute("param");
             String typeName      = e.getAttribute("type");
             String elementName   = e.getAttribute("element");
@@ -125,7 +125,7 @@ extends StandardErrorCodeException {
 
          // Loop through all param-combo elements
          for (int i = 0; i < size; i++) {
-            DataElement e = (DataElement) paramComboElements.get(i);
+            Element e = (Element) paramComboElements.get(i);
 
             // There should be a 'type' attribute
             String typeName = e.getAttribute("type");
@@ -147,7 +147,7 @@ extends StandardErrorCodeException {
             detail.append("\" on parameters ");
             int paramCount = paramList.size();
             for (int j = 0; j < paramCount; j++) {
-               DataElement e2 = (DataElement) paramList.get(j);
+               Element e2 = (Element) paramList.get(j);
                String paramName = e2.getAttribute("name");
                if (paramName == null || paramName.trim().length() < 1) {
                   // TODO: Log?

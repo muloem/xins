@@ -205,11 +205,11 @@ public class AllInOneTests extends TestCase {
       }
       allInOne.callLogdoc("12000");
 
-      DataElement element1 = allInOne.callDataSection("Doe").dataElement();
+      Element element1 = allInOne.callDataSection("Doe").dataElement();
       List users = element1.getChildElements();
       assertTrue("No users found.", users.size() > 0);
 
-      DataElement element2 = allInOne.callDataSection2("hello").dataElement();
+      Element element2 = allInOne.callDataSection2("hello").dataElement();
       List packets = element2.getChildElements();
       assertTrue("No destination found.", packets.size() > 0);
 

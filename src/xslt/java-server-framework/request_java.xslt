@@ -503,16 +503,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="dataSectionClass">
-			<xsl:choose>
-				<xsl:when test="ancestor::input">
-					<xsl:text>org.xins.common.xml.Element</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>org.xins.client.DataElement</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
 
 		<xsl:text><![CDATA[
 
@@ -556,20 +546,12 @@
       java.util.List resultList = new java.util.ArrayList(elements.size());
       java.util.Iterator itElements = elements.listIterator();
       while (itElements.hasNext()) {
-         </xsl:text>
-		<xsl:value-of select="$dataSectionClass" />
-		<xsl:text> nextElement = (</xsl:text>
-		<xsl:value-of select="$dataSectionClass" />
-		<xsl:text>)itElements.next();
+         org.xins.common.xml.Element nextElement = (org.xins.common.xml.Element)itElements.next();
          </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> elem = new </xsl:text>
 		<xsl:value-of select="$objectName" />
-		<xsl:text>(nextElement</xsl:text>
-		<xsl:if test="ancestor::output">
-			<xsl:text>.toXMLElement()</xsl:text>
-		</xsl:if>
-		<xsl:text>);
+		<xsl:text>(nextElement);
          resultList.add(elem);
       }
       return resultList;
