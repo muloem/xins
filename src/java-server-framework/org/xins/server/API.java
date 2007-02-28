@@ -1135,10 +1135,16 @@ implements DefaultResultCodes {
       // Handle normal functions
       } else {
          Function function = getFunction(functionName);
-         if (function == null)  {
+         if (function == null && !functionRequest.shouldSkipFunctionCall())  {
             throw new NoSuchFunctionException(functionName);
          }
-         result = function.handleCall(start, functionRequest, ip);
+         if (function == null) {
+            LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+            Log.log_3516(functionRequest.getFunctionName(), inParams);
+            result = SUCCESSFUL_RESULT;
+         } else {
+            result = function.handleCall(start, functionRequest, ip);
+         }
       }
       return result;
    }
