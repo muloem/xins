@@ -30,9 +30,8 @@
 		<xsl:text>
 </xsl:text>
 	</xsl:variable>
-	<xsl:variable name="tab">
-		<xsl:text>	</xsl:text>
-	</xsl:variable>
+	<xsl:variable name="tab"><xsl:text>	</xsl:text></xsl:variable>
+	<xsl:variable name="tab4"><xsl:text>				</xsl:text></xsl:variable>
 
 	<xsl:key name="faultnames" match="fault" use="@name" />
 
@@ -270,12 +269,17 @@
 							<xsl:with-param name="text" select="@element" />
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
+					<!-- write the data section if needed -->
+					<xsl:call-template name="dataSection">
+						<xsl:with-param name="unboundedSet" select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[@maxoccur = 'unbounded'] | /definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[@maxoccur = 'unbounded']" />
+						<xsl:with-param name="topLevel" select="'true'" />
+					</xsl:call-template>
 				</xsl:when>
 				<!-- otherwise no section -->
 			</xsl:choose>
@@ -284,6 +288,7 @@
 
 	<xsl:template match="xsd:element">
 		<xsl:param name="section" />
+		<xsl:param name="elementName" select="'param'" />
 
 		<xsl:variable name="required">
 			<xsl:choose>
@@ -295,57 +300,148 @@
 		<xsl:call-template name="printParam">
 			<xsl:with-param name="section" select="$section" />
 			<xsl:with-param name="required" select="$required" />
+			<xsl:with-param name="elementName" select="$elementName" />
 		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="printParam">
 		<xsl:param name="section" />
 		<xsl:param name="required" select="'true'" />
+		<xsl:param name="elementName" />
 
-		<xsl:variable name="paramname">
+		<xsl:variable name="paramName">
 			<xsl:call-template name="hungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="localnametype">
+		<xsl:variable name="localNameType">
 			<xsl:call-template name="localname">
 				<xsl:with-param name="text" select="@type" />
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="type">
 			<xsl:choose>
-				<xsl:when test="starts-with(@type, 'tns:')">
-					<xsl:value-of select="$localnametype" />
+				<xsl:when test="starts-with(@type, 'xsd:')">
+					<xsl:call-template name="type_for_xsdtype">
+						<xsl:with-param name="xsdtype" select="$localNameType" />
+					</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:call-template name="type_for_xsdtype">
-						<xsl:with-param name="xsdtype" select="$localnametype" />
-					</xsl:call-template>
+					<xsl:value-of select="$localNameType" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
 
 		<xsl:value-of select="concat($return, $tab, $tab)" />
-		<param type="{$type}" required="{$required}" name="{$paramname}">
+		<xsl:if test="$elementName = 'attribute'">
+			<xsl:value-of select="concat($tab, $tab)" />
+		</xsl:if>
+		<xsl:element name="{$elementName}">
+			<xsl:attribute name="name">
+				<xsl:value-of select="$paramName" />
+			</xsl:attribute>
+			<xsl:attribute name="required">
+				<xsl:value-of select="$required" />
+			</xsl:attribute>
+			<xsl:attribute name="type">
+				<xsl:value-of select="$type" />
+			</xsl:attribute>
 			<xsl:if test="@default">
 				<xsl:attribute name="default">
 					<xsl:value-of select="@default" />
 				</xsl:attribute>
 			</xsl:if>
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
+			<xsl:if test="$elementName = 'attribute'">
+				<xsl:value-of select="concat($tab, $tab)" />
+			</xsl:if>
 			<description>
 				<xsl:choose>
 					<xsl:when test="xsd:annotation/xsd:documenation">
 						<xsl:value-of select="xsd:annotation/xsd:documenation/text()" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="concat($paramname, ' ', $section, ' parameter.')" />
+						<xsl:value-of select="concat($paramName, ' ', $section, ' parameter.')" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</description>
 			<xsl:value-of select="concat($return, $tab, $tab)" />
-		</param>
+			<xsl:if test="$elementName = 'attribute'">
+				<xsl:value-of select="concat($tab, $tab)" />
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+	<!-- Put the elements which contain a max unbounded to the data section. -->
+	<xsl:template name="dataSection">
+		<xsl:param name="unboundedSet" />
+		<xsl:param name="topLevel" />
+
+		<!-- We assume that all unbounded refers to a complexType sequence. -->
+		<xsl:if test="$unboundedSet and $topLevel = 'true'">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
+			<xsl:text>&lt;data&gt;</xsl:text>
+		</xsl:if>
+		<xsl:if test="$unboundedSet">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
+			<xsl:text>&lt;contains&gt;</xsl:text>
+		</xsl:if>
+		<xsl:for-each select="$unboundedSet">
+			<xsl:variable name="complexTypeName">
+				<xsl:call-template name="localname">
+					<xsl:with-param name="text" select="@type" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:value-of select="concat($return, $tab4)" />
+			<contains element="{$complexTypeName}" />
+		</xsl:for-each>
+		<xsl:if test="$unboundedSet">
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
+			<xsl:text>&lt;/contains&gt;</xsl:text>
+		</xsl:if>
+
+		<xsl:for-each select="$unboundedSet">
+			<xsl:variable name="complexTypeName">
+				<xsl:call-template name="localname">
+					<xsl:with-param name="text" select="@type" />
+				</xsl:call-template>
+			</xsl:variable>
+
+			<xsl:value-of select="concat($return, $tab4)" />
+			<element name="{$complexTypeName}">
+				<xsl:value-of select="concat($return, $tab4, $tab)" />
+				<description>
+					<xsl:choose>
+						<xsl:when test="xsd:annotation/xsd:documenation">
+							<xsl:value-of select="xsd:annotation/xsd:documenation/text()" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat(@name, ' element.')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</description>
+				<!-- First write the inner elements. -->
+				<xsl:call-template name="dataSection">
+					<xsl:with-param name="unboundedSet" select="/definitions/types/xsd:schema/xsd:element[@name=$complexTypeName]/xsd:complexType/xsd:sequence/xsd:element[@maxoccur = 'unbounded'] | /definitions/types/xsd:schema/xsd:complexType[@name=$complexTypeName]/xsd:sequence/xsd:element[@maxoccur = 'unbounded']" />
+					<xsl:with-param name="topLevel" select="'false'" />
+				</xsl:call-template>
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$complexTypeName]/xsd:complexType/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
+					<xsl:with-param name="section" select="''" />
+					<xsl:with-param name="elementName" select="'attribute'" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$complexTypeName]/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
+					<xsl:with-param name="section" select="''" />
+					<xsl:with-param name="elementName" select="'attribute'" />
+				</xsl:apply-templates>
+			<xsl:value-of select="concat($return, $tab4)" />
+			</element>
+		</xsl:for-each>
+
+		<xsl:if test="$unboundedSet and $topLevel = 'true'">
+			<xsl:value-of select="concat($return, $tab, $tab)" />
+			<xsl:text>&lt;/data&gt;</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Removes any namespace prefix to the text if any -->
