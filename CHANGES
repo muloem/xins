@@ -47,6 +47,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
   - The Unix xins script now uses the make-build.xml to create the build.xml
     instead of the bootstrap.xml.
+  - Improved layout of the help target.
+  - Added new 'tools' target that displays the help for the tools targets.
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.

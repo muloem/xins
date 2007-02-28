@@ -80,13 +80,12 @@ This build file was generated with XINS </xsl:text>
 - wars                Generates all WAR files.
 - capis               Generates all CAPI JAR files.
 - javadoc-capis       Generates all CAPI Javadoc.
-- download-tools      Downloads the dependencies needed to execute tools on an API.
+- tools               Display the help for the tools commands.
 
 The following commands assist in authoring specifications:
 - create-api          Generates a new api specification file.
 - create-function     Generates a new function specification file.
-- create-rcd          Generates a new error code specification
-                      file.
+- create-rcd          Generates a new error code specification file
 - create-type         Generates a new type specification file.
 - create-example      Generates a new example for a function.
 - create-logdoc       Generates the basic logdoc files for an API.
@@ -94,7 +93,7 @@ The following commands assist in authoring specifications:
 The following commands can be used to run a tool on an API:
 java2html, pmd, checkstyle, coverage, findbugs, lint4j, jdepend,
 cvschangelog, jmeter, run-jmeter, maven, eclipse.
-More information is available in the user guide.
+More information is available using the 'tools' command.
 
 The following targets are specific for a single API,
 replace <api> with the name of an existing API:
@@ -115,7 +114,7 @@ replace <api> with the name of an existing API:
 - wsdl-<api>          Generates the WSDL for the API.
 - stub-<api>          Generates the stub for the API.
 - test-<api>          Generates (if needed) and runs the tests.
-- opendoc-<api>       Generates the specifications in Opendoc format for the API.
+- opendoc-<api>       Generates the specification in Opendoc format
 
 APIs in this project are:
 ]]></echo>

@@ -28,6 +28,30 @@
 			<fail message="No implementation directory found for API ${{api.name}}" unless="api.source.dir" />
 		</target>
 
+		<target name="tools"  description="Shows the supported commands for the tools.">
+				<echo><![CDATA[Tools targets:
+- download-tools  Downloads the dependencies used by the tools.
+- java2html       Generates HTML pages which contains the API code.
+- pmd             Generates the PMD report for an API.
+- checkstyle      Generates the checkstyle report for an API.
+- coverage        Generates the unit tests code coverage report
+                  for an API.
+- findbugs        Generates the FindBugs report for an API.
+- lint4j          Generates the Lint4J report for an API.
+- jdepend         Generates the JDepend report for an API.
+- cvschangelog    Generates the CVS change logs report for an API.
+- jmeter          Generates JMeter tests from the function examples
+- run-jmeter      Executes some JMeter tests.
+- maven           Generates a POM file for an API.
+- eclipse         Generates Eclipse project files for an API.
+- xsd-to-types    Generates type files from XML Schema files.
+- wsdl-to-api     Generates the XINS API files from the WSDL.
+
+The name of the API is specified with the 'api.name' Ant property.
+]]>
+</echo>
+		</target>
+
 		<target name="download-tools" description="Download the dependencies JAR file used by the tools.">
 			<get src="http://www.ibiblio.org/maven2/java2html/j2h/1.3.1/j2h-1.3.1.jar"
 			     dest="{$xins_home}/lib/j2h.jar"
@@ -97,7 +121,7 @@
 			overwrite="true" />
 		</target>
 
-		<target name="pmd" depends="-init-tools" description="Generate the PMD report for an API.">
+		<target name="pmd" depends="-init-tools" description="Generates the PMD report for an API.">
 			<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
@@ -112,7 +136,7 @@
 			</pmd>
 		</target>
 
-		<target name="checkstyle" depends="-init-tools" description="Generate the checkstyle report for an API.">
+		<target name="checkstyle" depends="-init-tools" description="Generates the checkstyle report for an API.">
 			<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
@@ -132,7 +156,7 @@
 			tofile="{$project_home}/build/checkstyle/${{api.name}}/stylesheet.css" />
 		</target>
 
-		<target name="coverage" depends="-init-tools" description="Generate the unit tests code coverage report for an API.">
+		<target name="coverage" depends="-init-tools" description="Generates the unit tests code coverage report for an API.">
 			<taskdef name="cobertura-instrument" classname="net.sourceforge.cobertura.ant.InstrumentTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
@@ -168,7 +192,7 @@
 			<delete file="{$project_home}/cobertura.ser" />
 		</target>
 
-		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generate the FindBugs report for an API.">
+		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generates the FindBugs report for an API.">
 			<fail message="Please, specify the findbugs.home property" unless="findbugs.home" />
 			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${{findbugs.home}}/lib/findbugs-ant.jar" />
 			<mkdir dir="{$project_home}/build/findbugs/${{api.name}}" />
@@ -183,7 +207,7 @@
 			</findbugs>
 		</target>
 
-		<target name="lint4j" depends="-prepare-classes, -init-tools" description="Generate the Lint4J report for an API.">
+		<target name="lint4j" depends="-prepare-classes, -init-tools" description="Generates the Lint4J report for an API.">
 			<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
@@ -215,7 +239,7 @@
 			</lint4j>
 		</target>
 
-		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generate the JDepend report for an API.">
+		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generates the JDepend report for an API.">
 			<mkdir dir="{$project_home}/build/jdepend/${{api.name}}" />
 			<jdepend classpathref="xins.classpath" format="xml" outputfile="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
 				<classespath>
@@ -227,7 +251,7 @@
 			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
 
-		<target name="cvschangelog" depends="-init-tools" description="Generate the CVS change logs report for an API.">
+		<target name="cvschangelog" depends="-init-tools" description="Generates the CVS change logs report for an API.">
 			<mkdir dir="{$project_home}/build/cvschangelog/${{api.name}}" />
 			<cvschangelog dir="{$project_home}/apis/${{api.name}}" destfile="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml" />
 			<xslt in="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml"
@@ -239,7 +263,7 @@
 			</xslt>
 		</target>
 
-		<target name="jmeter" depends="-init-tools" description="Generate JMeter tests from the function examples.">
+		<target name="jmeter" depends="-init-tools" description="Generates JMeter tests from the function examples.">
 			<mkdir dir="{$project_home}/build/jmeter/${{api.name}}" />
 			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
@@ -250,7 +274,7 @@
 			</xslt>
 		</target>
 
-		<target name="run-jmeter" depends="-init-tools" description="Execute some JMeter tests.">
+		<target name="run-jmeter" depends="-init-tools" description="Executes some JMeter tests.">
 			<fail message="Please, specify the jmeter.home property" unless="jmeter.home" />
 			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
 			<property name="jmeter.test" value="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}" />
@@ -268,7 +292,7 @@
 			</xslt>
 		</target>
 
-		<target name="maven" depends="-init-tools" description="Generates a POM file.">
+		<target name="maven" depends="-init-tools" description="Generates a POM file for an API.">
 			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
 			out="apis/${{api.name}}/pom.xml"
@@ -280,7 +304,7 @@
 			</xslt>
 		</target>
 
-		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files.">
+		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files for an API.">
 			<!-- Create destination directories -->
 			<mkdir dir="{$project_home}/build/java-fundament/${{api.name}}" />
 			<mkdir dir="{$project_home}/build/java-types/${{api.name}}" />
@@ -336,7 +360,7 @@
 			</xslt>
 		</target>
 
-		<target name="xsd-to-types" description="Generates type files from a set of xsd files.">
+		<target name="xsd-to-types" description="Generates type files from a set of XML Schema files.">
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<mkdir dir="apis/${{api.name}}/spec" />
