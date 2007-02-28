@@ -35,12 +35,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
-import org.xins.common.collections.ProtectedPropertyReader;
 import org.xins.common.io.IOReader;
 import org.xins.common.manageable.BootstrapException;
 import org.xins.common.manageable.InitializationException;
@@ -72,16 +72,11 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * @since XINS 1.5.0.
  */
-public final class FrontendCallingConvention extends CustomCallingConvention {
+public class FrontendCallingConvention extends CustomCallingConvention {
 
    //-------------------------------------------------------------------------
    // Class fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The request encoding format.
-    */
-   private static final String REQUEST_ENCODING = "UTF-8";
 
    /**
     * The response encoding format.
@@ -97,12 +92,6 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
     * The content type of the HTTP response.
     */
    private static final String HTML_CONTENT_TYPE = "text/html;charset=" + RESPONSE_ENCODING;
-
-   /**
-    * Secret key used when accessing <code>ProtectedPropertyReader</code>
-    * objects.
-    */
-   private static final Object SECRET_KEY = new Object();
 
    /**
     * The name of the runtime property that defines if the templates should be
@@ -386,7 +375,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
       }
 
       // Determine function parameters
-      ProtectedPropertyReader functionParams = new ProtectedPropertyReader(SECRET_KEY);
+      BasicPropertyReader functionParams = new BasicPropertyReader();
       Enumeration params = httpRequest.getParameterNames();
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
@@ -394,7 +383,7 @@ public final class FrontendCallingConvention extends CustomCallingConvention {
          // TODO remove the next line when no longer needed.
          String realName = getRealParameter(name, functionName);
          String value = httpRequest.getParameter(name);
-         functionParams.set(SECRET_KEY, realName, value);
+         functionParams.set(realName, value);
       }
 
       // Get data section
