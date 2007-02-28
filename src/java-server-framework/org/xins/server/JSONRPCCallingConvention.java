@@ -269,7 +269,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
       }
       httpRequest.getSession().setAttribute("functionName", functionName);
       if (functionName.equals("system.describe")) {
-         return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
+         return new FunctionRequest(functionName, null, null, true);
       }
       httpRequest.getSession().setAttribute("version", "1.1");
       try {
@@ -345,7 +345,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
          functionName = requestObject.getString("method");
          httpRequest.getSession().setAttribute("functionName", functionName);
          if (functionName.equals("system.describe")) {
-            return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
+            return new FunctionRequest(functionName, null, null, true);
          }
 
          // TODO take the other way to pass parameter into account

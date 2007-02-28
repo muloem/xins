@@ -356,10 +356,8 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          String action = httpRequest.getParameter("action");
          if ("ReadConfigFile".equals(action)) {
             functionName = "_ReloadProperties";
-         } else {
-            functionName = "_NoOp";
          }
-         return new FunctionRequest(functionName, PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
+         return new FunctionRequest(functionName, null, null, true);
       }
 
       // Append the action to the function name
@@ -371,7 +369,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       // Redirect to the login page if not logged in or the function is not implemented
       if (_session.shouldLogIn() ||
             (_redirectionMap.get(functionName) != null && !_functionList.contains(functionName))) {
-         return new FunctionRequest("_NoOp", PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
+         return new FunctionRequest(functionName, null, null, true);
       }
 
       // Determine function parameters

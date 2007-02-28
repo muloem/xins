@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
   - The FrontendCallingConvention is no longer final.
   - Improved implementation of the FunctionRequest class.
+  - The new argument skipFunctionCall is now used in the XINS FF CC and the
+    JSONRPCCallingConvention instead of the _NoOp meta function.
 
 * Generation of specification documentation:
   - If a result code file changes, the index.html is regenerated.
@@ -725,6 +727,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 5:
 
 * Other:
   - Renamed Wanadoo Nederland B.V. to the new name of the company
+
     Orange Nederland Breedband B.V.
   - Changed the way e-mail addresses are specified in the source code.
   - Changed all Ant build files to use <xslt/> instead of the synonym
