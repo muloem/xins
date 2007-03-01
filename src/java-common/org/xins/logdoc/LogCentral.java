@@ -70,17 +70,11 @@ public final class LogCentral {
     * @param controller
     *    the {@link AbstractLog.LogController}, cannot be <code>null</code>.
     *
-    * @throws IllegalArgumentException
-    *    if <code>controller == null</code>.
-    *
     * @throws UnsupportedLocaleException
     *    if {@link AbstractLog.LogController} does not support the current Locale.
     */
    static void registerLog(AbstractLog.LogController controller)
-   throws IllegalArgumentException, UnsupportedLocaleException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("controller", controller);
+   throws UnsupportedLocaleException {
 
       // When the first LogController registers, set the locale.
       if (LOCALE == null) {
@@ -162,7 +156,9 @@ public final class LogCentral {
    throws IllegalArgumentException, UnsupportedLocaleException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("newLocale", newLocale);
+      if (newLocale == null) {
+         throw new IllegalArgumentException("newLocale == null");
+      }
 
       // Short-circuit if the new locale equals the current one
       if (newLocale.equals(LOCALE)) {
@@ -193,16 +189,7 @@ public final class LogCentral {
     * @since XINS 1.3.0
     */
    public static void useDefaultLocale() {
-      try {
-         setLocale(DEFAULT_LOCALE);
-      } catch (UnsupportedLocaleException ule) {
-         String detail = "Failed to apply default locale (\""
-                       + DEFAULT_LOCALE
-                       + "\").";
-         RuntimeException exception = new RuntimeException(detail);
-         ExceptionUtils.setCause(exception, ule);
-         throw exception;
-      }
+      setLocale(DEFAULT_LOCALE);
    }
 
    /**

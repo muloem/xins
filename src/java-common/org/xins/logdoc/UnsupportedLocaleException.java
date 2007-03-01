@@ -37,7 +37,9 @@ public final class UnsupportedLocaleException extends RuntimeException {
       super("Locale \"" + locale + "\" is not supported.");
 
       // Check preconditions
-      MandatoryArgumentChecker.check("locale", locale);
+      if (locale == null) {
+         throw new IllegalArgumentException("locale == null");
+      }
 
       // Store locale?
       _locale = locale;

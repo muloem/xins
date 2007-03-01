@@ -64,15 +64,6 @@ public abstract class AbstractLog {
 
       // Determine the int value for the NOTICE level
       int noticeInt = (Level.INFO_INT + Level.WARN_INT) / 2;
-      if (noticeInt <= Level.INFO_INT || noticeInt >= Level.WARN_INT) {
-         String detail = "Unable to determine int value for NOTICE level,"
-                       + " between INFO and WARN. Value for INFO level is "
-                       + Level.INFO_INT
-                       + ". Value for WARN level is "
-                       + Level.WARN_INT
-                       + '.';
-         throw new Error(detail);
-      }
 
       // Initialize all the log levels
       DEBUG   = Level.DEBUG;
@@ -190,27 +181,12 @@ public abstract class AbstractLog {
        *
        * @param syslogEquivalent
        *    the syslog equivalent.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>name == null</code>.
        */
-      private CustomLevel(int value, String name, int syslogEquivalent)
-      throws IllegalArgumentException {
+      private CustomLevel(int value, String name, int syslogEquivalent) {
 
          // Call superconstructor
          super(value, name, syslogEquivalent);
 
-         // Check preconditions
-         MandatoryArgumentChecker.check("name", name);
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
    }
 }

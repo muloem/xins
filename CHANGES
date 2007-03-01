@@ -9,7 +9,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 * Logdoc:
   - The following classes have been deprecated as no longer used: 
     AbstractLogdocSerializable, LogdocHexConverter, LogdocSerializable,
-    LogdocStringBuffer and UnsupportedLocaleError.
+    LogdocStringBuffer, UnsupportedLocaleError, MandatoryArgumentChecker and
+    ExceptionUtils.
   - The type 'serializable' is no longer supported. LogdocSerializable is 
     replaced by the toString() method of the object passed as argument or 
     by passing directly the String.
