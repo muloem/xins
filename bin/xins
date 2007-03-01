@@ -48,7 +48,7 @@ if [ "${__CYGWIN__}" = "true" ]; then
 fi
 
 # Creates the buid file if needed
-ant -Dxins_home=${xins_home} -q -f ${xins_home}/src/ant/make-build.xml
+ant -Dxins_home=${XINS_HOME} -q -f ${XINS_HOME}/src/ant/make-build.xml
 
 # Run Ant against the build file, if the build file was created
 if [ "$?" = "0" ]; then
