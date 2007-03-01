@@ -6,6 +6,18 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
+* Logdoc:
+  - The following classes have been deprecated as no longer used: 
+    AbstractLogdocSerializable, LogdocHexConverter, LogdocSerializable,
+    LogdocStringBuffer and UnsupportedLocaleError.
+  - The type 'serializable' is no longer supported. LogdocSerializable is 
+    replaced by the toString() method of the object passed as argument or 
+    by passing directly the String.
+    This change may break compatibility.
+  - The format 'hex' is no longer supported for integers. Note that it was
+    never used or documented.
+  - org.xins.logdoc.MandatoryArgumentChecker is no longer public.
+
 * XINS/Java Common Library:
   - Some methods in BeanUtils will throw an IllegalArgumentException instead
     of a NullPointerException.

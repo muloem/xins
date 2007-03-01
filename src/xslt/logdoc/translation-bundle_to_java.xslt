@@ -39,8 +39,6 @@
 		<xsl:value-of select="$package_name" />
 		<xsl:text><![CDATA[;
 
-import org.xins.logdoc.LogdocStringBuffer;
-
 /**
  * Translation bundle for the <em>]]></xsl:text>
 
@@ -126,7 +124,7 @@ import org.xins.logdoc.LogdocStringBuffer;
 			<xsl:with-param name="exception" select="$exception" />
 		</xsl:apply-templates>
 		<xsl:text>) {
-      LogdocStringBuffer buffer = new LogdocStringBuffer(255);</xsl:text>
+      StringBuffer buffer = new StringBuffer(255);</xsl:text>
 		<xsl:apply-templates />
 		<xsl:text>
       return buffer.toString();</xsl:text>
@@ -212,18 +210,6 @@ import org.xins.logdoc.LogdocStringBuffer;
 				<xsl:text>buffer.append(</xsl:text>
 				<xsl:value-of select="@name" />
 				<xsl:text>.toString()</xsl:text>
-				<xsl:text>);</xsl:text>
-			</xsl:when>
-			<xsl:when test="@format = 'hex' and (not($param-nullable = 'false') or (not($param-type = 'int32') and not($param-type = 'int64')))">
-				<xsl:message terminate="yes">
-					<xsl:text>The parameter "</xsl:text>
-					<xsl:value-of select="@name"/>
-					<xsl:text>" can be formatted as hex because its type is not int32 or int64 or its value is nullable.</xsl:text>
-				</xsl:message>
-			</xsl:when>
-			<xsl:when test="@format = 'hex' and $param-nullable = 'false' and ($param-type = 'int32' or $param-type = 'int64')">
-				<xsl:text>org.xins.logdoc.LogdocHexConverter.toHexString(buffer, </xsl:text>
-				<xsl:value-of select="@name" />
 				<xsl:text>);</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

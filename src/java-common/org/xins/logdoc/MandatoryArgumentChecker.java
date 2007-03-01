@@ -14,7 +14,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public final class MandatoryArgumentChecker {
+final class MandatoryArgumentChecker {
 
    //-------------------------------------------------------------------------
    // Class functions
@@ -41,7 +41,8 @@ public final class MandatoryArgumentChecker {
       }
 
       if (argumentValue == null) {
-         LogdocStringBuffer buffer = new LogdocStringBuffer(argumentName.length() + 8, argumentName);
+         StringBuffer buffer = new StringBuffer(argumentName.length() + 8);
+         buffer.append(argumentName);
          buffer.append(" == null");
          throw new IllegalArgumentException(buffer.toString());
       }
@@ -77,17 +78,20 @@ public final class MandatoryArgumentChecker {
 
       if (argumentValue1 == null || argumentValue2 == null) {
          if (argumentValue1 == null && argumentValue2 == null) {
-            LogdocStringBuffer buffer = new LogdocStringBuffer(20 + argumentName1.length() + argumentName2.length(), argumentName1);
+            StringBuffer buffer = new StringBuffer(20 + argumentName1.length() + argumentName2.length());
+            buffer.append(argumentName1);
             buffer.append(" == null && ");
             buffer.append(argumentName2);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          } else if (argumentValue1 == null) {
-            LogdocStringBuffer buffer = new LogdocStringBuffer(8 + argumentName1.length(), argumentName1);
+            StringBuffer buffer = new StringBuffer(8 + argumentName1.length());
+            buffer.append(argumentName1);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          } else if (argumentValue2 == null) {
-            LogdocStringBuffer buffer = new LogdocStringBuffer(8 + argumentName2.length(), argumentName2);
+            StringBuffer buffer = new StringBuffer(8 + argumentName2.length());
+            buffer.append(argumentName2);
             buffer.append(" == null");
             throw new IllegalArgumentException(buffer.toString());
          }

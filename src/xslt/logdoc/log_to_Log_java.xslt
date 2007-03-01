@@ -100,11 +100,7 @@
 			<xsl:text><![CDATA[
 
       // Create LogController instance
-      try {
-         CONTROLLER = new Controller();
-      } catch (org.xins.logdoc.UnsupportedLocaleException ex) {
-         throw new org.xins.logdoc.UnsupportedLocaleError(ex);
-      }
+      CONTROLLER = new Controller();
    }
 
    /**

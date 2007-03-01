@@ -22,16 +22,7 @@ import org.xins.logdoc.AbstractLogdocSerializable;
  *
  * @since XINS 1.0.0
  */
-final class FormattedParameters
-extends AbstractLogdocSerializable {
-
-   //----------------------------------------------------------------------------
-   // Class fields
-   //----------------------------------------------------------------------------
-
-   //------------------------------------------------------------------------
-   // Class functions
-   //------------------------------------------------------------------------
+class FormattedParameters {
 
    //------------------------------------------------------------------------
    // Constructors
@@ -82,13 +73,13 @@ extends AbstractLogdocSerializable {
    //------------------------------------------------------------------------
 
    /**
-    * Initializes this <code>AbstractLogdocSerializable</code>.
+    * String representation of the parameters including the data section.
+    * TODO This class should move to common to also be used by the client.
     *
     * @return
-    *    the serialized form of this <code>FormattedParameters</code>, never
-    *    <code>null</code>.
+    *    the String representation of the request or "-" if the request is empty.
     */
-   protected String initialize() {
+   public String toString() {
 
       Iterator names = (_parameters == null) ? null : _parameters.getNames();
 

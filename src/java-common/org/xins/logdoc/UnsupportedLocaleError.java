@@ -14,6 +14,7 @@ package org.xins.logdoc;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.2.0
+ * @deprecated since XINS 2.0, UnsupportedLocaleException is thrown instead
  */
 public final class UnsupportedLocaleError extends Error {
 

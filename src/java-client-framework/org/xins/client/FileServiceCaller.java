@@ -40,7 +40,6 @@ import org.xins.common.service.UnsupportedProtocolException;
 import org.xins.common.servlet.container.LocalServletHandler;
 import org.xins.common.servlet.container.XINSServletResponse;
 import org.xins.common.text.URLEncoding;
-import org.xins.logdoc.LogdocSerializable;
 
 /**
  * Call a XINS API using the internal Servlet container. This service caller
@@ -212,7 +211,7 @@ class FileServiceCaller extends ServiceCaller {
       PropertyReader parameters = ((HTTPCallRequest) request).getParameters();
 
       // Get the parameters for logging
-      LogdocSerializable params = PropertyReaderUtils.serialize(parameters, "", "?", null, 160);
+      String params = PropertyReaderUtils.toString(parameters, "", "?", null, 160);
 
       // Get URL value
       String url = target.getURL();

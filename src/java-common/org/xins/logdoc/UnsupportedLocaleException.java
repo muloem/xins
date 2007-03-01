@@ -15,7 +15,7 @@ package org.xins.logdoc;
  *
  * @since XINS 1.0.0
  */
-public final class UnsupportedLocaleException extends Exception {
+public final class UnsupportedLocaleException extends RuntimeException {
 
    //-------------------------------------------------------------------------
    // Constructors

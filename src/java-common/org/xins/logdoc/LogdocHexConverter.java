@@ -14,6 +14,7 @@ package org.xins.logdoc;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated since XINS 2.0, never used.
  */
 public class LogdocHexConverter {
 

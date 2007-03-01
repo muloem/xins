@@ -318,7 +318,7 @@ public final class XINSCallRequest extends CallRequest {
             description.append("\"; parameters=(null); contextID=");
          } else {
             description.append("\"; parameters=\"");
-            description.append(PropertyReaderUtils.serialize(_parameters, "-"));
+            description.append(PropertyReaderUtils.toString(_parameters, "-"));
             description.append("\"; contextID=");
          }
 

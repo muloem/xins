@@ -59,8 +59,6 @@ import org.xins.common.service.UnsupportedProtocolException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.text.URLEncoding;
 
-import org.xins.logdoc.LogdocSerializable;
-
 /**
  * HTTP service caller. This class can be used to perform a call to an HTTP
  * server and fail-over to other HTTP servers if the first one fails.
@@ -644,7 +642,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Get the parameters for logging
       PropertyReader     p      = request.getParameters();
-      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "?", null, 160);
+      String params = PropertyReaderUtils.toString(p, "", "?", null, 160);
 
       // Prepare a thread for execution of the call
       // NOTE: Preconditions are checked by the CallExecutor constructor

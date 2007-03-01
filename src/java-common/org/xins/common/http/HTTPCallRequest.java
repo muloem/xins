@@ -223,7 +223,7 @@ public final class HTTPCallRequest extends CallRequest {
             description.append("; parameters=(null)");
          } else {
             description.append("; parameters=\"");
-            description.append(PropertyReaderUtils.serialize(_parameters, "(null)"));
+            description.append(PropertyReaderUtils.toString(_parameters, "(null)"));
             description.append('"');
          }
          _asString = description.toString();

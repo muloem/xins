@@ -23,7 +23,7 @@ import org.xins.common.text.TextUtils;
 import org.xins.logdoc.AbstractLog;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
-import org.xins.logdoc.UnsupportedLocaleError;
+import org.xins.logdoc.UnsupportedLocaleException;
 
 /**
  * XINS engine starter.
@@ -423,7 +423,7 @@ final class EngineStarter {
          Log.log_3234();
 
       // The locale is not supported
-      } catch (UnsupportedLocaleError exception) {
+      } catch (UnsupportedLocaleException exception) {
          Log.log_3309(exception.getLocale());
          throw servletExceptionFor(exception);
 

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.xins.logdoc.AbstractLogdocSerializable;
-import org.xins.logdoc.LogdocSerializable;
 import org.xins.logdoc.ExceptionUtils;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -409,10 +408,10 @@ public final class XINSServiceCaller extends ServiceCaller {
             String         s           = dataSection != null
                                        ? ("_data=" + dataSection.toString())
                                        : null;
-            LogdocSerializable params = PropertyReaderUtils.serialize(p, "(null)", "&", s, 160);
+            String params = PropertyReaderUtils.toString(p, "(null)", "&", s, 160);
 
             // Serialize the exception chain
-            LogdocSerializable chain = new ExceptionFormatter(exception);
+            String chain = exception.getMessage();
 
             // TODO: Will dataSection.toString() serialize the dataSection
             //       appropriately? For example, will '=' be escaped properly?
@@ -549,7 +548,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       if (xinsRequest.getDataSection() != null) {
          dataSection = "_data=" + xinsRequest.getDataSection().toString();
       }
-      LogdocSerializable params = PropertyReaderUtils.serialize(p, "", "&", dataSection, 160);
+      String params = PropertyReaderUtils.toString(p, "", "&", dataSection, 160);
 
       // Get the time-out values (for logging)
       int totalTimeOut      = target.getTotalTimeOut();
@@ -872,6 +871,7 @@ public final class XINSServiceCaller extends ServiceCaller {
     *
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+    * @deprecated since XINS 2.0, use exception.getMessage();
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {

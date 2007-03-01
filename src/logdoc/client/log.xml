@@ -11,7 +11,7 @@
 			<description>Calling XINS service.</description>
 			<param name="url"               type="text"         nullable="false" />
 			<param name="function"          type="text"         nullable="false" />
-			<param name="parameters"        type="serializable" nullable="true"  />
+			<param name="parameters"        type="text"         nullable="true"  />
 			<param name="totalTimeOut"      type="int32"        nullable="false" />
 			<param name="connectionTimeOut" type="int32"        nullable="false" />
 			<param name="socketTimeOut"     type="int32"        nullable="false" />
@@ -20,28 +20,28 @@
 			<description>Successful XINS result received.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
 		<entry id="2102" level="WARNING" exception="false">
 			<description>Unknown host error while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"           nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
 		<entry id="2103" level="WARNING">
 			<description>Connection refused while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
 		<entry id="2104" level="WARNING">
 			<description>Connection time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
@@ -49,7 +49,7 @@
 			<description>Socket time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
@@ -57,7 +57,7 @@
 			<description>Total call time-out while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="timeOut"    type="int32"        nullable="false" />
 		</entry>
@@ -66,7 +66,7 @@
 			<description>Unacceptable status code received while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="code"       type="int32"        nullable="false" />
 		</entry>
@@ -74,14 +74,14 @@
 			<description>Unrecognized I/O error while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
 		<entry id="2110" level="WARNING" exception="false">
 			<description>Invalid result received from XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="detail"     type="text"         nullable="false" />
 		</entry>
@@ -89,23 +89,23 @@
 			<description>Unexpected exception while calling XINS service.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 		</entry>
 		<entry id="2112" level="WARNING" exception="false">
 			<description>Unsuccessful XINS result received.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="errorCode"  type="text"         nullable="false" />
 		</entry>
 		<entry id="2113" level="ERROR" exception="false">
 			<description>XINS call request completely failed.</description>
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
-			<param name="reason"     type="serializable" nullable="true"  />
+			<param name="reason"     type="text"         nullable="true"  />
 		</entry>
 		<entry id="2114" level="WARNING">
 			<description>The CAPI has been compiled with a different XINS version.</description>
@@ -117,7 +117,7 @@
 			<description>Functional error code returned from XINS call.</description>
 			<param name="url"        type="text"         nullable="false" />
 			<param name="function"   type="text"         nullable="false" />
-			<param name="parameters" type="serializable" nullable="true"  />
+			<param name="parameters" type="text"         nullable="true"  />
 			<param name="duration"   type="int64"        nullable="false" />
 			<param name="errorCode"  type="text"         nullable="false" />
 		</entry>

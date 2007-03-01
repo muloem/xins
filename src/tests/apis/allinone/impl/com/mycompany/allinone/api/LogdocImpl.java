@@ -64,7 +64,7 @@ public class LogdocImpl extends Logdoc  {
          long squareNumber = (long) (number * number);
          MyThread thread = new MyThread();
          thread.start();
-         Log.log_10002(odd, new Boolean(thousands), squareNumber, thread, new Date());
+         Log.log_10002(odd, new Boolean(thousands), squareNumber, thread.toString(), new Date());
       } catch (NumberFormatException nfe) {
          Log.log_10001(nfe);
          return new InvalidNumberResult();
@@ -76,25 +76,19 @@ public class LogdocImpl extends Logdoc  {
     * Example of an object that uses the LogdocSerializable interface
     * to write directly to the logdoc.
     */
-   class MyThread extends Thread implements LogdocSerializable {
-
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
+   class MyThread extends Thread {
 
       //-------------------------------------------------------------------------
       // Methods
       //-------------------------------------------------------------------------
 
-      public void serialize(LogdocStringBuffer buffer) {
+      public String toString() {
+         StringBuffer buffer = new StringBuffer();
          buffer.append(getName());
          buffer.append(" [");
          buffer.append(getPriority());
          buffer.append(']');
+         return buffer.toString();
       }
 
       public void run() {

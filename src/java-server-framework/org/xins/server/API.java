@@ -93,6 +93,11 @@ implements DefaultResultCodes {
    private static final String BUILD_XINS_VERSION_PROPERTY =
       "org.xins.api.build.version";
 
+   /**
+    * Class used to convert dates to String.
+    */
+   static final DateConverter DATE_CONVERTER = new DateConverter(true);
+
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -1121,15 +1126,14 @@ implements DefaultResultCodes {
          }
 
          // Prepare for transaction logging
-         LogdocSerializable serStart = new FormattedDate(start);
-         LogdocSerializable inParams =
-            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
-         LogdocSerializable outParams =
-            new FormattedParameters(result.getParameters(), result.getDataElement());
+         String serStart = DATE_CONVERTER.format(start);
+         String inParams =
+            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
+         String outParams =
+            new FormattedParameters(result.getParameters(), result.getDataElement()).toString();
 
          // Log transaction before returning the result
-         Log.log_3540(serStart, ip, functionName, duration, code, inParams,
-                      outParams);
+         Log.log_3540(serStart, ip, functionName, duration, code, inParams, outParams);
          Log.log_3541(serStart, ip, functionName, duration, code);
 
       // Handle normal functions
@@ -1139,7 +1143,7 @@ implements DefaultResultCodes {
             throw new NoSuchFunctionException(functionName);
          }
          if (function == null) {
-            LogdocSerializable inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+            String inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
             Log.log_3516(functionRequest.getFunctionName(), inParams);
             result = SUCCESSFUL_RESULT;
          } else {

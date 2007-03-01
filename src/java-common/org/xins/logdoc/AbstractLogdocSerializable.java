@@ -14,6 +14,7 @@ package org.xins.logdoc;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated since XINS 2.0, replace by the toString() method of the class.
  */
 public abstract class AbstractLogdocSerializable implements LogdocSerializable {
 
@@ -62,6 +63,33 @@ public abstract class AbstractLogdocSerializable implements LogdocSerializable {
     */
    public final void serialize(LogdocStringBuffer buffer)
    throws NullPointerException {
+
+      // Initialize this object if that is not done yet
+      if (_asString == null) {
+         _asString = initialize();
+         if (_asString == null) {
+            _asString = "";
+         }
+      }
+
+      buffer.append(_asString);
+   }
+
+   /**
+    * Serializes this object for logging to the specified string buffer
+    * (wrapper method). This method first checks if this object is already
+    * initialized. If it is, then {@link #serialize(LogdocStringBuffer)}
+    * is immediately called, otherwise {@link #initialize()} is called first,
+    * to initialize this object.
+    *
+    * @param buffer
+    *    the {@link StringBuffer} to serialize to, cannot be
+    *    <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>buffer == null</code>.
+    */
+   public final void serialize(StringBuffer buffer) throws NullPointerException {
 
       // Initialize this object if that is not done yet
       if (_asString == null) {

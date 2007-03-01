@@ -588,7 +588,7 @@
 		<entry id="3516" level="INFO">
 			<description>Skipped call to the function.</description>
 			<param name="functionName" />
-			<param name="inParams" type="serializable" />
+			<param name="inParams" type="text"         />
 		</entry>
 	</group>
 
@@ -623,17 +623,17 @@
 	<group id="runtime.tx" name="Transaction logging">
 		<entry id="3540" level="INFO">
 			<description>Function called. This entry differs from 3541 in that it logs all input and output parameters, while 3541 does not.</description>
-			<param name="start"        type="serializable" nullable="false" />
+			<param name="start"        type="text"         nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
 			<param name="functionName" type="text"         nullable="false" />
 			<param name="duration"     type="int64"        nullable="false" />
 			<param name="errorCode"    type="text"         nullable="false" />
-			<param name="inParams"     type="serializable" nullable="false" />
-			<param name="outParams"    type="serializable" nullable="false" />
+			<param name="inParams"     type="text"         nullable="false" />
+			<param name="outParams"    type="text"         nullable="false" />
 		</entry>
 		<entry id="3541" level="INFO">
 			<description>Function called. This entry differs from 3540 in that it does not log all input and output parameters, while 3540 does.</description>
-			<param name="start"        type="serializable" nullable="false" />
+			<param name="start"        type="text"         nullable="false" />
 			<param name="ip"           type="text"         nullable="false" />
 			<param name="functionName" type="text"         nullable="false" />
 			<param name="duration"     type="int64"        nullable="false" />

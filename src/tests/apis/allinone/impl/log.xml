@@ -20,7 +20,7 @@
 			<param name="odd" nullable="false" type="boolean" />
 			<param name="moreThousands" type="boolean" />
 			<param name="square" nullable="false" type="int64" />
-			<param name="thread" type="serializable" />
+			<param name="thread" type="text" />
 			<param name="date" nullable="false" type="object" />
 		</entry>
 		<entry id="10003" level="NOTICE" exception="true">

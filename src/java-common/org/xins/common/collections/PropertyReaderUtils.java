@@ -270,6 +270,8 @@ public final class PropertyReaderUtils {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
+    * 
+    * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static void serialize(PropertyReader properties,
                                 LogdocStringBuffer buffer)
@@ -394,6 +396,8 @@ public final class PropertyReaderUtils {
     *
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
+    * 
+    * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty) {
@@ -424,6 +428,8 @@ public final class PropertyReaderUtils {
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     *
     * @since XINS 1.4.0
+    * 
+    * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p,
                                               String         valueIfEmpty,
@@ -462,10 +468,31 @@ public final class PropertyReaderUtils {
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     *
     * @since XINS 2.0
+    * 
+    * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p, String valueIfEmpty,
          String prefixIfNotEmpty, String suffix, int maxValueLength) {
       return new SerializedPropertyReader(p, valueIfEmpty, prefixIfNotEmpty, suffix, maxValueLength);
+   }
+
+   /**
+    * REturns the String representation of the specified <code>PropertyReader</code>.
+    * For each entry, both the key and the value are encoded using the URL
+    * encoding (see {@link URLEncoding}).
+    * The key and value are separated by a literal equals sign
+    * (<code>'='</code>). The entries are separated using an ampersand
+    * (<code>'&amp;'</code>).
+    *
+    * <p>If the value for an entry is either <code>null</code> or an empty
+    * string (<code>""</code>), then nothing is added to the String for that
+    * entry.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to serialize, cannot be <code>null</code>.
+    */
+   public static String toString(PropertyReader properties) {
+      return toString(properties, null, null, null, -1);
    }
 
    /**
@@ -477,7 +504,7 @@ public final class PropertyReaderUtils {
     * an ampersand (<code>'&amp;'</code>).
     *
     * <p>If the value for an entry is either <code>null</code> or an empty
-    * string (<code>""</code>), then nothing is added to the buffer for that
+    * string (<code>""</code>), then nothing is added to the String for that
     * entry.
     *
     * @param properties
@@ -485,21 +512,144 @@ public final class PropertyReaderUtils {
     *
     * @param valueIfEmpty
     *    the string to append to the buffer in case
-    *    <code>properties == null || properties.size() == 0</code>; if this
-    *    argument is <code>null</code>, however, then nothing will be appended
-    *    in the mentioned case..
+    *    <code>properties == null || properties.size() == 0</code>.
     *
     * @return
-    *    the character string with the serialized data, never
-    *    <code>null</code>.
+    *    the String representation of the PropertyReader or the valueIfEmpty, never <code>null</code>.
+    *    If all parameters are <code>null</code> then an empty String is returned.
     */
    public static String toString(PropertyReader properties,
                                  String         valueIfEmpty) {
-      FastStringBuffer buffer = new FastStringBuffer(129);
-      serialize(properties, buffer, valueIfEmpty);
-      return buffer.toString();
+      return toString(properties, valueIfEmpty, null, null, -1);
    }
 
+
+   /**
+    * Returns the <code>String</code> representation for the specified 
+    * <code>PropertyReader</code>.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to construct a String for, or <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if the specified set of properties is either
+    *    <code>null</code> or empty, can be <code>null</code>.
+    *
+    * @param prefixIfNotEmpty
+    *    the prefix to add to the value if the <code>PropertyReader</code>
+    *    is not empty, can be <code>null</code>.
+    *
+    * @param suffix
+    *    the suffix to add to the value, can be <code>null</code>. The suffix
+    *    will be added even if the PropertyReaderis empty.
+    *
+    * @return
+    *    the String representation of the PropertyReader with the different artifacts, never <code>null</code>.
+    *    If all parameters are <code>null</code> then an empty String is returned.
+    *
+    * @since XINS 2.0
+    */
+   public static String toString(PropertyReader properties, String valueIfEmpty,
+         String prefixIfNotEmpty, String suffix) {
+      return toString(properties, valueIfEmpty, prefixIfNotEmpty, suffix, -1);
+   }
+
+   /**
+    * Returns the <code>String</code> representation for the specified 
+    * <code>PropertyReader</code>.
+    *
+    * @param properties
+    *    the {@link PropertyReader} to construct a String for, or <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if the specified set of properties is either
+    *    <code>null</code> or empty, can be <code>null</code>.
+    *
+    * @param prefixIfNotEmpty
+    *    the prefix to add to the value if the <code>PropertyReader</code>
+    *    is not empty, can be <code>null</code>.
+    *
+    * @param suffix
+    *    the suffix to add to the value, can be <code>null</code>. The suffix
+    *    will be added even if the PropertyReaderis empty.
+    *
+    * @param maxValueLength
+    *    the maximum of characters to set for the value, if the value is longer
+    *    than this limit '...' will be added after the limit.
+    *    If the value is -1, no limit will be set.
+    *
+    * @return
+    *    the String representation of the PropertyReader with the different artifacts, never <code>null</code>.
+    *    If all parameters are <code>null</code> then an empty String is returned.
+    *
+    * @since XINS 2.0
+    */
+   public static String toString(PropertyReader properties, String valueIfEmpty,
+         String prefixIfNotEmpty, String suffix, int maxValueLength) {
+
+      // If the property set if null, return the fallback
+      if (properties == null) {
+         if (suffix != null) {
+            return suffix;
+         } else {
+            return valueIfEmpty;
+         }
+      }
+
+      Iterator names = properties.getNames();
+
+      // If there are no parameters, then return the fallback
+      if (!names.hasNext()) {
+         if (suffix != null) {
+            return suffix;
+         } else {
+            return valueIfEmpty;
+         }
+      }
+
+      StringBuffer buffer = new StringBuffer(299);
+
+      boolean first = true;
+      do {
+
+         // Get the name and value
+         String name  = (String) names.next();
+         String value = properties.get(name);
+
+         // If the value is null or an empty string, then output nothing
+         if (value == null || value.length() == 0) {
+            continue;
+         }
+
+         // Append an ampersand, except for the first entry
+         if (!first) {
+            buffer.append('&');
+         } else {
+            first = false;
+            if (prefixIfNotEmpty != null) {
+               buffer.append(prefixIfNotEmpty);
+            }
+         }
+
+         // Append the key and the value, separated by an equals sign
+         buffer.append(URLEncoding.encode(name));
+         buffer.append('=');
+         String encodedValue = null;
+         if (maxValueLength == -1 || value.length() <= maxValueLength) {
+            encodedValue = URLEncoding.encode(value);
+         } else {
+            encodedValue = URLEncoding.encode(value.substring(0, maxValueLength)) + "...";
+         }
+         buffer.append(encodedValue);
+      } while (names.hasNext());
+
+      if (suffix != null) {
+         buffer.append('&');
+         buffer.append(suffix);
+      }
+
+      return buffer.toString();
+   }
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -513,8 +663,6 @@ public final class PropertyReaderUtils {
    private PropertyReaderUtils() {
       // empty
    }
-
-
    //-------------------------------------------------------------------------
    // Inner classes
    //-------------------------------------------------------------------------
@@ -525,6 +673,7 @@ public final class PropertyReaderUtils {
     *
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+    * @deprecated since XINS 2.0, use the correct toString() method.
     */
    private static final class SerializedPropertyReader
    extends AbstractLogdocSerializable {
