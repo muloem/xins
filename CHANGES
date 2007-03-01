@@ -52,6 +52,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     instead of the bootstrap.xml.
   - Improved layout of the help target.
   - Added new 'tools' target that displays the help for the tools targets.
+  - Improved the search of api.xml and impl.xml to know when the build file
+    should be recreated. This should the execution speed for all commands.
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
