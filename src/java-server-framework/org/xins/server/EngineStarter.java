@@ -470,8 +470,11 @@ final class EngineStarter {
     * @return
     *    the API name, or <code>"-"</code> if unknown, never
     *    <code>null</code>.
+    *
+    * @throws ServletException
+    *    if the API name is not set.
     */
-   String determineAPIName() {
+   String determineAPIName() throws ServletException {
 
       // Determine the name of the API
       String apiName = _config.getInitParameter(APIServlet.API_NAME_PROPERTY);
@@ -482,7 +485,7 @@ final class EngineStarter {
       // If the name is not set, then return a hyphen instead
       if (TextUtils.isEmpty(apiName)) {
          Log.log_3232(APIServlet.API_NAME_PROPERTY);
-         apiName = "-";
+         throw new ServletException("The API name is not set.");
       } else {
          apiName = apiName.trim();
          Log.log_3235(apiName);
