@@ -16,6 +16,7 @@ import org.xins.logdoc.AbstractLogdocSerializable;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ * @deprecated since XINS 2.0, use DateConverter.format()
  */
 final class FormattedDate
 extends AbstractLogdocSerializable {

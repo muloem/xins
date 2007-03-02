@@ -36,7 +36,6 @@ import org.xins.common.text.DateConverter;
 import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
-import org.xins.logdoc.LogdocSerializable;
 
 /**
  * Base class for API implementation classes.

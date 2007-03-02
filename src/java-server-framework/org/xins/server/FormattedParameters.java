@@ -12,8 +12,6 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 
-import org.xins.logdoc.AbstractLogdocSerializable;
-
 /**
  * Logdoc-serializable for parameters.
  *

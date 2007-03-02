@@ -9,8 +9,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 * Logdoc:
   - The following classes have been deprecated as no longer used: 
     AbstractLogdocSerializable, LogdocHexConverter, LogdocSerializable,
-    LogdocStringBuffer, UnsupportedLocaleError, MandatoryArgumentChecker and
-    ExceptionUtils.
+    LogdocStringBuffer, UnsupportedLocaleError, MandatoryArgumentChecker.
   - The type 'serializable' is no longer supported. LogdocSerializable is 
     replaced by the toString() method of the object passed as argument or 
     by passing directly the String.
@@ -38,6 +37,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - The new argument skipFunctionCall is now used in the XINS FF CC and the
     JSONRPCCallingConvention instead of the _NoOp meta function.
   - If no name is specified for an API, an exception is thrown.
+  - FormatterParameters no longer implements LogdocSerializable.
+  - FormattedDate has been deprecated.
 
 * XINS/Java Client Framework:
   - The class DataElement has been deprecated and replaced by

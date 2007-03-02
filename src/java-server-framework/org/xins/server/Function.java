@@ -9,8 +9,6 @@ package org.xins.server;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.manageable.Manageable;
 
-import org.xins.logdoc.LogdocSerializable;
-
 /**
  * Base class for function implementation classes.
  *
