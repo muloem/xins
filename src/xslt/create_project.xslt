@@ -253,6 +253,7 @@ rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$">
 	<logdoc />]]></replacevalue>
 			</replace>
 		</target>
+		<echo message="The logdoc files have been created in the apis/${{api.name}}/impl directory." />
 	</xsl:template>
 
 	<xsl:template name="createexample">
