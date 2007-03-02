@@ -381,6 +381,7 @@ public class HexConverter {
     *    if <code>buffer == null</code>.
     *
     * @since XINS 1.3.0
+    * @deprecated since XINS 2.0, use toHexString(byte).
     */
    public static void toHexString(FastStringBuffer buffer, byte n)
    throws IllegalArgumentException {
@@ -421,6 +422,7 @@ public class HexConverter {
     *    if <code>buffer == null</code>.
     *
     * @since XINS 1.3.0
+    * @deprecated since XINS 2.0, use toHexString(short).
     */
    public static void toHexString(FastStringBuffer buffer, short n)
    throws IllegalArgumentException {
@@ -461,6 +463,7 @@ public class HexConverter {
     *    if <code>buffer == null</code>.
     *
     * @since XINS 1.3.0
+    * @deprecated since XINS 2.0, use toHexString(char).
     */
    public static void toHexString(FastStringBuffer buffer, char n)
    throws IllegalArgumentException {
@@ -499,6 +502,7 @@ public class HexConverter {
     *
     * @throws IllegalArgumentException
     *    if <code>buffer == null</code>.
+    * @deprecated since XINS 2.0, use toHexString(int).
     */
    public static void toHexString(FastStringBuffer buffer, int n)
    throws IllegalArgumentException {
@@ -536,6 +540,7 @@ public class HexConverter {
     *
     * @throws IllegalArgumentException
     *    if <code>buffer == null</code>.
+    * @deprecated since XINS 2.0, use toHexString(long).
     */
    public static void toHexString(FastStringBuffer buffer, long n)
    throws IllegalArgumentException {
