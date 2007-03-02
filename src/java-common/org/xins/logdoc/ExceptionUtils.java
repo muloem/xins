@@ -18,7 +18,6 @@ import java.util.WeakHashMap;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.2.0
- * @deprecated since XINS 2.0, no longer used or only in deprecated methods.
  */
 public final class ExceptionUtils {
 
@@ -99,7 +98,9 @@ public final class ExceptionUtils {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
+      if (exception == null) {
+         throw new IllegalArgumentException("exception  == null");
+      }
 
       // Get the root cause of the exception
       Throwable cause = getCause(exception);
@@ -128,7 +129,9 @@ public final class ExceptionUtils {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
+      if (exception == null) {
+         throw new IllegalArgumentException("exception  == null");
+      }
 
       // On Java 1.4 (and up) use the Throwable.getCause() method
       if (GET_CAUSE != null) {
@@ -168,10 +171,10 @@ public final class ExceptionUtils {
    public static void setCause(Throwable exception, Throwable cause)
    throws IllegalArgumentException, IllegalStateException {
 
-      // TODO: Add unit test for IllegalStateException
-
       // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
+      if (exception == null) {
+         throw new IllegalArgumentException("exception  == null");
+      }
       if (exception == cause) {
          throw new IllegalArgumentException("exception == cause");
       }
