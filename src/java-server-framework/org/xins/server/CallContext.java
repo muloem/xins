@@ -161,7 +161,7 @@ public final class CallContext {
 
       if (_parameters != null && name.length() > 0 && !"function".equals(name) && name.charAt(0) != '_') {
          String value = _parameters.get(name);
-         return value;
+         return "".equals(value) ? null : value;
       }
       return null;
    }
