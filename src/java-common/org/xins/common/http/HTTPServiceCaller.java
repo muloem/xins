@@ -629,7 +629,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.1.0
     */
-   private HTTPCallResult call(HTTPCallRequest  requestrequest,
+   private HTTPCallResult call(HTTPCallRequest  request,
                               HTTPCallConfig   callConfig,
                               TargetDescriptor target)
    throws IllegalArgumentException,
