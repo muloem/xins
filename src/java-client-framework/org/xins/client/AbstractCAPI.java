@@ -383,7 +383,7 @@ public abstract class AbstractCAPI {
     * @return
     *    the {@link XINSServiceCaller} to use, never <code>null</code>.
     */
-   protected XINSServiceCaller getCaller() {
+   protected final XINSServiceCaller getCaller() {
       return _caller;
    }
 

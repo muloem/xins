@@ -22,7 +22,7 @@ import org.xins.common.types.standard.Text;
  *
  * @since XINS 1.0.0
  */
-public class List extends Type {
+public abstract class List extends Type {
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -152,11 +152,7 @@ public class List extends Type {
     * @return
     *    the new list created, never <code>null</code>.
     */
-   public ItemList createList() {
-
-      throw Utils.logProgrammingError("This method should not be called."
-            + " Only overriden methods should be used.");
-   }
+   public abstract ItemList createList();
 
    /**
     * Converts the specified <code>ItemList</code> to a string.

@@ -18,13 +18,15 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - The format 'hex' is no longer supported for integers. Note that it was
     never used or documented.
   - org.xins.logdoc.MandatoryArgumentChecker is no longer public.
-
+ 
 * XINS/Java Common Library:
   - Some methods in BeanUtils will throw an IllegalArgumentException instead
     of a NullPointerException.
   - Next version will be XINS 2.0 instead of XINS 2.0.0.
   - Removed CallTargetsTask as it's no longer used.
   - Added new method in ElementParser to parse XML based on an InputStream.
+  - Removed unused method in HTTPServiceCaller.
+  - Changed some methods that shouldn't be called from public to private.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR
@@ -35,6 +37,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Improved implementation of the FunctionRequest class.
   - The new argument skipFunctionCall is now used in the XINS FF CC and the
     JSONRPCCallingConvention instead of the _NoOp meta function.
+  - If no name is specified for an API, an exception is thrown.
 
 * XINS/Java Client Framework:
   - The class DataElement has been deprecated and replaced by

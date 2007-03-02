@@ -628,12 +628,8 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    all the other call attempts failed as well.
     *
     * @since XINS 1.1.0
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.1.0, since this method is expected to be
-    *    removed. Please do not use it directly.
     */
-   public HTTPCallResult call(HTTPCallRequest  request,
+   private HTTPCallResult call(HTTPCallRequest  requestrequest,
                               HTTPCallConfig   callConfig,
                               TargetDescriptor target)
    throws IllegalArgumentException,
@@ -641,7 +637,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
           HTTPCallException {
 
       // Get the parameters for logging
-      PropertyReader     p      = request.getParameters();
+      PropertyReader p = request.getParameters();
       String params = PropertyReaderUtils.toString(p, "", "?", null, 160);
 
       // Prepare a thread for execution of the call
@@ -786,44 +782,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       executor.dispose();
       return new HTTPCallResult(request, target, duration, null, data);
    }
-
-   /**
-    * Executes the specified HTTP call request on the specified target. If the
-    * call fails in any way, then a {@link CallException} is thrown.
-    *
-    * @param request
-    *    the call request to execute, cannot be <code>null</code>.
-    *
-    * @param target
-    *    the service target on which to execute the request, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the call result, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>target == null || request == null</code>.
-    *
-    * @throws GenericCallException
-    *    if the first call attempt failed due to a generic reason and all the
-    *    other call attempts failed as well.
-    *
-    * @throws HTTPCallException
-    *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts failed as well.
-    *
-    * @deprecated
-    *    Deprecated since XINS 1.0.0, since this method is expected to be
-    *    removed. Please do not use it directly.
-    */
-   public HTTPCallResult call(HTTPCallRequest  request,
-                              TargetDescriptor target)
-   throws IllegalArgumentException,
-          GenericCallException,
-          HTTPCallException {
-      return call(request, (HTTPCallConfig) null, target);
-   }
-
 
    /**
     * Constructs an appropriate <code>CallResult</code> object for a

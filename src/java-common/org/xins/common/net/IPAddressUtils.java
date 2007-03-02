@@ -183,7 +183,7 @@ public final class IPAddressUtils {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static String getLocalHostJava13() {
+   private static String getLocalHostJava13() {
       try {
          return InetAddress.getLocalHost().getHostName();
       } catch (UnknownHostException exception) {
@@ -201,7 +201,7 @@ public final class IPAddressUtils {
     *    possible the non-qualified host name for the localhost, otherwise
     *    the string <code>"localhost"</code>.
     */
-   public static String getLocalHostJava14() {
+   private static String getLocalHostJava14() {
 
       String hostname = "localhost";
 
