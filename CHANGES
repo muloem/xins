@@ -83,6 +83,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Examples:
   - Fixed the functions of the toolbox API.
+  - Added deploy-tomcat target to the nbbuild.xml of the petstore.
 
 * Documentation:
   - Improved description for integration with NetBeans.
