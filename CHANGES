@@ -75,6 +75,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Improved the search of api.xml and impl.xml to know when the build file
     should be recreated. This should the execution speed for all commands.
   - The create-logdoc now informs where are the files created.
+  - Always use the builddir variable to locate the location of the build
+    directory.
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
@@ -2887,6 +2889,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 ALPHA 2:
     to class ServiceCaller.
   - Changed the internal names of the standard types to start with an
     underscore. E.g. "int32" is now "_int32".
+
   - Changed HTTPServiceCaller to work with HttpClient 3.0 only. HttpClient 2.0
     is now no longer supported.
   - Added 'copyFrom' method to class ProtectedPropertyReader.
