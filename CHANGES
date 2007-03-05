@@ -84,6 +84,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Documentation:
   - Improved description for integration with NetBeans.
+  - Fixed how to use the Ant tasks.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
@@ -1470,6 +1471,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 1:
+
 
 NOTE: This release is based on XINS 1.3.0-rc2.
 
