@@ -1306,7 +1306,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
             }
             try {
                return new StringRequestEntity(queryString.toString(),
-                     "application/x-www-form-urlencoded", "US-ASCII");
+                     "application/x-www-form-urlencoded", "UTF-8");
             } catch (UnsupportedEncodingException ueex) {
                // Should never happen
                throw Utils.logProgrammingError(ueex);
