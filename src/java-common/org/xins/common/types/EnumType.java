@@ -101,12 +101,12 @@ public abstract class EnumType extends Type {
    /**
     * Map that links symbolic names to enumeration item objects.
     */
-   private final Map _namesToItems;
+   protected final Map _namesToItems;
 
    /**
     * Map that links enumeration values to enumeration item objects.
     */
-   private final Map _valuesToItems;
+   protected final Map _valuesToItems;
 
    /**
     * List of the <code>EnumItem</code>.
