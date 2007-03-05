@@ -26,7 +26,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Added new method in ElementParser to parse XML based on an InputStream.
   - Removed unused method in HTTPServiceCaller.
   - Changed some methods that shouldn't be called from public to private.
-  - Fixed bug #1665175 :Set the character encoding as UTF-8 as the server uses
+  - Fixed bug #1665175: Set the character encoding as UTF-8 as the server uses
     this setting to also decode the URL parameters.
 
 * XINS/Java Server Framework:
@@ -41,6 +41,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - If no name is specified for an API, an exception is thrown.
   - FormatterParameters no longer implements LogdocSerializable.
   - FormattedDate has been deprecated.
+  - Fixed bug #1665175: If no character encoding is specified, use UTF-8.
 
 * XINS/Java Client Framework:
   - The class DataElement has been deprecated and replaced by

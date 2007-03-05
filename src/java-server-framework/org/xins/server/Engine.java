@@ -438,6 +438,11 @@ final class Engine {
                 HttpServletResponse response)
    throws IOException {
 
+      // Set the correct character encoding for the request
+      if (request.getCharacterEncoding() == null) {
+         request.setCharacterEncoding("UTF-8");
+      }
+      
       // Associate the current diagnostic context identifier with this thread
       String contextID = determineContextID(request);
       NDC.push(contextID);
