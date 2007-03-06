@@ -95,7 +95,7 @@ public class LocalServletHandler {
          _apiServlet.init(servletConfig);
       } catch (ServletException exception) {
          Log.log_1508(exception);
-         throw (ServletException)exception;
+         throw exception;
       } catch (Exception exception) {
          Log.log_1509(exception);
          throw new ServletException(exception);
@@ -119,7 +119,7 @@ public class LocalServletHandler {
          _apiServlet.init();
       } catch (ServletException exception) {
          Log.log_1508(exception);
-         throw (ServletException)exception;
+         throw exception;
       } catch (Exception exception) {
          Log.log_1509(exception);
          throw new ServletException(exception);
