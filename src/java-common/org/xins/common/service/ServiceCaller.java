@@ -213,13 +213,10 @@ public abstract class ServiceCaller {
    throws UnsupportedProtocolException {
 
       // Store information
-      _className  = getClass().getName();
       setDescriptor(descriptor);
 
       // If no CallConfig is specified, then use a default one
       if (callConfig == null) {
-
-         final String SUBJECT_METHOD = "getDefaultCallConfig()";
 
          // Call getDefaultCallConfig() to get the default config...
          try {
@@ -244,11 +241,6 @@ public abstract class ServiceCaller {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The name of the current (concrete) class. Never <code>null</code>.
-    */
-   private final String _className;
 
    /**
     * The descriptor for this service. Can be <code>null</code>.

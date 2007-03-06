@@ -17,54 +17,8 @@ package org.xins.common;
 public final class MandatoryArgumentChecker {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The name of this class.
-    */
-   private static final String CLASSNAME =
-      MandatoryArgumentChecker.class.getName();
-
-   /**
-    * The name of the method that checks 1 argument. Used in exception
-    * handling and/or logging.
-    */
-   private static final String METHOD_1_NAME;
-
-   /**
-    * The name of the method that checks 2 arguments. Used in exception
-    * handling and/or logging.
-    */
-   private static final String METHOD_2_NAME;
-
-   /**
-    * The name of the method that checks 3 arguments. Used in exception
-    * handling and/or logging.
-    */
-   private static final String METHOD_3_NAME;
-
-   /**
-    * The name of the method that checks 4 arguments. Used in exception
-    * handling and/or logging.
-    */
-   private static final String METHOD_4_NAME;
-
-
-   //-------------------------------------------------------------------------
    // Class functions
    //-------------------------------------------------------------------------
-
-   static {
-      String start = "check(";
-      String arg = "java.lang.String,java.lang.String";
-      String end = ")";
-
-      METHOD_1_NAME = start + arg                                     + end;
-      METHOD_2_NAME = start + arg + ',' + arg                         + end;
-      METHOD_3_NAME = start + arg + ',' + arg + ',' + arg             + end;
-      METHOD_4_NAME = start + arg + ',' + arg + ',' + arg + ',' + arg + end;
-   }
 
    /**
     * Checks if the specified argument value is <code>null</code>. If it is

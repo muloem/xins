@@ -493,7 +493,7 @@ public class BeanUtils {
          String paramName = (String) nextParam.getKey();
          Object paramValue = nextParam.getValue();
          String stringValue = String.valueOf(paramValue);
-         stringMap.put(paramName, paramValue);
+         stringMap.put(paramName, stringValue);
       }
       return stringMap;
    }

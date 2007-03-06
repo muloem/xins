@@ -36,11 +36,6 @@ public class ElementBuilder {
    //-------------------------------------------------------------------------
 
    /**
-    * Fully-qualified name of this class. This field is not <code>null</code>.
-    */
-   private static final String CLASSNAME = ElementBuilder.class.getName();
-
-   /**
     * Initial state for the builder.
     */
    private static final State INITIAL = new State("INITIAL");

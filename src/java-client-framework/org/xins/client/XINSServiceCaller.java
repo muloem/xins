@@ -525,12 +525,6 @@ public final class XINSServiceCaller extends ServiceCaller {
           HTTPCallException,
           XINSCallException {
 
-      final String METHODNAME = "doCallImpl("
-                              + CallRequest.class.getName()
-                              + ','
-                              + TargetDescriptor.class.getName()
-                              + ')';
-
       // Check preconditions
       MandatoryArgumentChecker.check("request",    request,
                                      "callConfig", callConfig,

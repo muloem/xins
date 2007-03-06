@@ -32,11 +32,6 @@ public class XMLCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The request encoding format.
-    */
-   public static final String REQUEST_ENCODING = "UTF-8";
-
-   /**
     * The response encoding format.
     */
    public static final String RESPONSE_ENCODING = "UTF-8";

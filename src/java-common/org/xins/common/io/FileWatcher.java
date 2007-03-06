@@ -106,7 +106,6 @@ public final class FileWatcher extends Thread {
       _filePath      = _file.getPath();
       _interval      = interval;
       _listener      = listener;
-      _listenerClass = listener.getClass().getName();
       _state         = NOT_RUNNING;
 
       // Configure thread as daemon
@@ -147,7 +146,6 @@ public final class FileWatcher extends Thread {
       _filePath      = _file.getPath();
       _interval      = 0;
       _listener      = listener;
-      _listenerClass = listener.getClass().getName();
       _state         = NOT_RUNNING;
 
       // Configure thread as daemon
@@ -190,11 +188,6 @@ public final class FileWatcher extends Thread {
     * The listener. Not <code>null</code>
     */
    private final Listener _listener;
-
-   /**
-    * The name of the class of the listener. Not <code>null</code>
-    */
-   private final String _listenerClass;
 
    /**
     * Timestamp of the last modification of the file. The value

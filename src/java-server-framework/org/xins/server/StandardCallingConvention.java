@@ -36,11 +36,6 @@ public class StandardCallingConvention extends CallingConvention {
    //-------------------------------------------------------------------------
 
    /**
-    * The enconding for the data section.
-    */
-   public static final String DATA_ENCODING = "UTF-8";
-
-   /**
     * The response encoding format.
     */
    public static final String RESPONSE_ENCODING = "UTF-8";
