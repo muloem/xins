@@ -396,8 +396,8 @@ public final class XINSServiceCaller extends ServiceCaller {
          // a functional error code. We assume that a functional error code
          // can never fail-over, so this issue will have been logged at the
          // correct (non-error) level already.
-         if (! (exception instanceof UnsuccessfulXINSCallException &&
-               ((UnsuccessfulXINSCallException) exception).getType() == ErrorCodeSpec.FUNCTIONAL)) {
+         if (!(exception instanceof UnsuccessfulXINSCallException) ||
+               ((UnsuccessfulXINSCallException) exception).getType() != ErrorCodeSpec.FUNCTIONAL) {
 
             // Determine how long the call took
             long duration = System.currentTimeMillis() - start;

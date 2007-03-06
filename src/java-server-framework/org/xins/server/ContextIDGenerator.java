@@ -155,7 +155,7 @@ final class ContextIDGenerator extends Manageable {
 
       // Determine if the hostname has changed
       String hostname = properties.get(APIServlet.HOSTNAME_PROPERTY);
-      if (!(TextUtils.isEmpty(hostname) || hostname.equals(_hostname))) {
+      if (!TextUtils.isEmpty(hostname) && !hostname.equals(_hostname)) {
          Log.log_3310(_hostname, hostname);
          _hostname = hostname;
       }
