@@ -28,6 +28,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Changed some methods that shouldn't be called from public to private.
   - Fixed bug #1665175: Set the character encoding as UTF-8 as the server uses
     this setting to also decode the URL parameters.
+  - Added support for the setCharacterEncoding in the internal Servlet
+    container.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR
@@ -1468,6 +1470,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 2:
 * Libraries:
   - Upgraded Log4J from 1.2.12 to 1.2.13.
   - Upgraded Jakarta Commons HttpClient from 3.0-rc4 to 3.0 (final).
+
   - Upgraded xmlenc from 0.51 to 0.52.
 
 * Other:
@@ -3593,6 +3596,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
     . public static final CAPI create(PropertyReader, String, XINSCallConfig)
     . public static final CAPI create(PropertyReader, String)
     These methods construct a CAPI instance based on a set of properties and
+
     the name of an API. The optional XINSCallConfig object can be used to
     configure the XINS service caller.
 

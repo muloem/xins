@@ -253,6 +253,11 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private boolean _readerUsed = false;
 
+   /**
+    * Flags indicating that the reader has been used.
+    */
+   private String  _characterEncoding;
+
 
    //-------------------------------------------------------------------------
    // Methods
@@ -311,7 +316,7 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public void setCharacterEncoding(String str) {
-      throw new UnsupportedOperationException();
+      _characterEncoding = str;
    }
 
    public String[] getParameterValues(String str) {
@@ -433,7 +438,9 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getCharacterEncoding() {
-      if (_contentType == null) {
+      if (_characterEncoding != null) {
+         return _characterEncoding;
+      } else if (_contentType == null) {
          return null;
       } else {
          int charsetPos = _contentType.indexOf("charset=");
