@@ -163,7 +163,14 @@ public class XINSServletResponse implements HttpServletResponse {
    }
 
    public void addCookie(Cookie cookie) {
-      setHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue());
+      String cookieHeader = cookie.getName() + "=" + cookie.getValue();
+      if (cookie.getPath() != null) {
+         cookieHeader += "; path=" + cookie.getPath();
+      }
+      if (cookie.getDomain() != null) {
+         cookieHeader += "; domain=" + cookie.getDomain();
+      }
+      setHeader("Set-Cookie", cookieHeader);
    }
 
    public void setLocale(Locale locale) {
