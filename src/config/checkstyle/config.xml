@@ -62,7 +62,7 @@
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="MemberName">
-			<property name="format" value="^_[a-z][a-zA-Z0-9]*$" />
+			<property name="format" value="^[_a-z][a-zA-Z0-9]*$" />
 		</module>
 		<module name="MethodName">
 			<property name="format" value="^[a-z][a-zA-Z0-9]*$" />
@@ -112,7 +112,6 @@
 		</module>
 
 		<!-- Check imports -->
-		<module name="AvoidStarImport" />
 		<module name="RedundantImport" />
 		<module name="UnusedImports" />
 

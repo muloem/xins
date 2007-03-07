@@ -90,6 +90,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
 
+* Tools:
+  - Added more flexibity for the checkstyle tool.
+
 * Examples:
   - Fixed the functions of the toolbox API.
   - Added deploy-tomcat target to the nbbuild.xml of the petstore.
