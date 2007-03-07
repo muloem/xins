@@ -481,7 +481,6 @@ implements DefaultResultCodes {
          Log.log_3213(_name, className);
          try {
             m.bootstrap(_buildSettings);
-            Log.log_3214(_name, className);
 
          // Missing property
          } catch (MissingRequiredPropertyException exception) {
@@ -523,7 +522,6 @@ implements DefaultResultCodes {
          Log.log_3220(_name, functionName);
          try {
             f.bootstrap(_buildSettings);
-            Log.log_3221(_name, functionName);
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
@@ -686,7 +684,6 @@ implements DefaultResultCodes {
          Log.log_3416(_name, className);
          try {
             m.init(runtimeSettings);
-            Log.log_3417(_name, className);
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
@@ -725,7 +722,6 @@ implements DefaultResultCodes {
          Log.log_3421(_name, functionName);
          try {
             f.init(runtimeSettings);
-            Log.log_3422(_name, functionName);
 
          // Missing required property
          } catch (MissingRequiredPropertyException exception) {
@@ -872,7 +868,6 @@ implements DefaultResultCodes {
          Log.log_3603(_name, className);
          try {
             m.deinit();
-            Log.log_3604(_name, className);
          } catch (DeinitializationException exception) {
             Log.log_3605(_name, className, exception.getMessage());
          } catch (Throwable exception) {
@@ -891,7 +886,6 @@ implements DefaultResultCodes {
          Log.log_3607(_name, functionName);
          try {
             f.deinit();
-            Log.log_3608(_name, functionName);
          } catch (DeinitializationException exception) {
             Log.log_3609(_name, functionName, exception.getMessage());
          } catch (Throwable exception) {

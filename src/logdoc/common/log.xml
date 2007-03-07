@@ -53,9 +53,6 @@
 			<description>Calling HTTP service.</description>
 			<param name="url"	        type="text"         nullable="false" />
 			<param name="parameters"        type="text"         nullable="true"  />
-			<param name="totalTimeOut"      type="int32"        nullable="false" />
-			<param name="connectionTimeOut" type="int32"        nullable="false" />
-			<param name="socketTimeOut"     type="int32"        nullable="false" />
 		</entry>
 		<entry id="1101" level="INFO">
 			<description>HTTP service called.</description>

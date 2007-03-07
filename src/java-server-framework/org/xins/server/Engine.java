@@ -481,8 +481,8 @@ final class Engine {
       // XXX: Store "_context" in a constant
       String contextID = request.getParameter("_context");
       if (TextUtils.isEmpty(contextID)) {
-         Log.log_3580();
-         contextID = null;
+         contextID = _contextIDGenerator.generate();
+         Log.log_3583(contextID);
 
       // Indeed there is a context ID in the request, make sure it's valid
       } else {
@@ -496,12 +496,6 @@ final class Engine {
             Log.log_3582(contextID);
             contextID = null;
          }
-      }
-
-      // If we have no (acceptable) context ID yet, then generate one now
-      if (contextID == null) {
-         contextID = _contextIDGenerator.generate();
-         Log.log_3583(contextID);
       }
 
       return contextID;

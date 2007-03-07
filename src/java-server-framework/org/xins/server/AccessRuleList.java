@@ -281,8 +281,6 @@ public final class AccessRuleList implements AccessRuleContainer {
             }
 
             return allowed;
-         } else {
-            Log.log_3552(ip, functionName, i, ruleString);
          }
       }
       return null;

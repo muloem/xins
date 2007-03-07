@@ -550,7 +550,7 @@ public final class XINSServiceCaller extends ServiceCaller {
       int socketTimeOut     = target.getSocketTimeOut();
 
       // Log: Right before the call is performed
-      Log.log_2100(url, function, params, totalTimeOut, connectionTimeOut, socketTimeOut);
+      Log.log_2100(url, function, params);
 
       // Get the contained HTTP request from the XINS request
       HTTPCallRequest httpRequest = xinsRequest.getHTTPCallRequest();

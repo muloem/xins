@@ -651,7 +651,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       int    socketTimeOut     = target.getSocketTimeOut();
 
       // About to make an HTTP call
-      Log.log_1100(url, params, totalTimeOut, connectionTimeOut, socketTimeOut);
+      Log.log_1100(url, params);
 
       // Perform the HTTP call
       long start = System.currentTimeMillis();

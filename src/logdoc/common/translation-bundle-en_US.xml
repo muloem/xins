@@ -15,7 +15,7 @@
 	<translation entry="1052">Programming error detected by class <value-of-param name="detectingClass" />, method <value-of-param name="detectingMethod" /> in class <value-of-param name="subjectClass" />, method <value-of-param name="subjectMethod" />. Caught unexpected <exception-property name="class" />. Exception message: <exception-property name="message" format="quoted" />. Detail: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="1053"><value-of-param name="message" /></translation>
 
-	<translation entry="1100">Calling <value-of-param name="url" /><value-of-param name="parameters" />. Time-outs in ms: total=<value-of-param name="totalTimeOut" />, connection=<value-of-param name="connectionTimeOut" />, socket=<value-of-param name="socketTimeOut" />.</translation>
+	<translation entry="1100">Calling <value-of-param name="url" /><value-of-param name="parameters" />.</translation>
 	<translation entry="1101">Finished attempt to call <value-of-param name="url" /><value-of-param name="parameters" /> in <value-of-param name="duration" /> ms.</translation>
 	<translation entry="1102">Error while calling <value-of-param name="url" /><value-of-param name="parameters" /> in <value-of-param name="duration" /> ms: Unknown host.</translation>
 	<translation entry="1103">Error while calling <value-of-param name="url" /><value-of-param name="parameters" /> in <value-of-param name="duration" /> ms: Connection refused.</translation>

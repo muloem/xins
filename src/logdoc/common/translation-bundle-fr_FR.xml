@@ -15,7 +15,7 @@
 	<translation entry="1052">Une erreur de programmation dans <value-of-param name="subjectClass" />#<value-of-param name="subjectMethod" />() a été détectée par <value-of-param name="detectingClass" />#<value-of-param name="detectingMethod" />(). Attrapé une <exception-property name="class" /> non-attendue. Message de l'exception: <exception-property name="message" format="quoted" />. Détail: <value-of-param name="detail" format="quoted" />.</translation>
 	<translation entry="1053"><value-of-param name="message" /></translation>
 
-	<translation entry="1100">Appel de <value-of-param name="url" /><value-of-param name="parameters" />. Time-outs en ms: total=<value-of-param name="totalTimeOut" />, connection=<value-of-param name="connectionTimeOut" />, socket=<value-of-param name="socketTimeOut" />.</translation>
+	<translation entry="1100">Appel de <value-of-param name="url" /><value-of-param name="parameters" />.</translation>
 	<translation entry="1101">La tentative d'appel à <value-of-param name="url" /><value-of-param name="parameters" /> a terminé en <value-of-param name="duration" /> ms.</translation>
 	<translation entry="1102">Erreur lors de l'appel à <value-of-param name="url" /><value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Host inconnu.</translation>
 	<translation entry="1103">Erreur lors de l'appel à <value-of-param name="url" /><value-of-param name="parameters" /> en <value-of-param name="duration" /> ms: Connection refusé.</translation>

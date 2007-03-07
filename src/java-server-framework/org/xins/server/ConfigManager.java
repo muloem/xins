@@ -486,7 +486,7 @@ final class ConfigManager {
 
             // Non-negative value
             } else {
-               Log.log_3410(_configFile, prop, s);
+               Log.log_3410(_configFile, s);
             }
 
          // Not a valid number string
@@ -698,7 +698,6 @@ final class ConfigManager {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotModified() {
-         Log.log_3402(_configFile);
       }
 
       /**
