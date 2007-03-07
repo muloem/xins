@@ -85,8 +85,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - The create-logdoc now informs where are the files created.
   - Always use the builddir variable to locate the location of the build
     directory.
-  - Fixed an incorrect message about the creation of logdoc files was displayed
-    for every targets.
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
