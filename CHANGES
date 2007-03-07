@@ -68,9 +68,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     have a value anymore. It was only possible before XINS 1.0.
     This should improve the speed of the generation of the specdocs.
 
-* Generation of the API from the WSDL:
-  - Added possibility to generate the data section for unbounded elements.
-
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.
   - Fixed generation of the build.xml failed with Java 5/6 because of a
