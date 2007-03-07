@@ -50,6 +50,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - FormattedDate has been deprecated.
   - Fixed bug #1665175: If no character encoding is specified, use UTF-8.
   - Cleaned-up logging messages.
+  - Better detection of the XINS FF CC.
 
 * XINS/Java Client Framework:
   - The class DataElement has been deprecated and replaced by

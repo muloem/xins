@@ -289,6 +289,11 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       }
    }
 
+   protected boolean matches(HttpServletRequest httpRequest) {
+      
+      return httpRequest.getParameterMap().size() == 0 || !TextUtils.isEmpty(httpRequest.getParameter("command"));
+   }
+
    /**
     * Converts an HTTP request to a XINS request (implementation method). This
     * method should only be called from class {@link CustomCallingConvention}.
