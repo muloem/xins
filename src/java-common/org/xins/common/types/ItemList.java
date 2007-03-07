@@ -6,6 +6,11 @@
  */
 package org.xins.common.types;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -63,6 +68,51 @@ public class ItemList {
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+
+   /**
+    * Adds a list of items to the list or set. The items are added at the end of the list.
+    *
+    * @param items
+    *    the collection of items to add in the list, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>items == null</code>.
+    */
+   public final void add(Collection items) throws IllegalArgumentException {
+
+      MandatoryArgumentChecker.check("items", items);
+
+      Iterator itItems = items.iterator();
+      while (itItems.hasNext()) {
+         Object nextItem = itItems.next();
+
+         // A set can not have the same value twice
+         if (!_setType || !_list.contains(nextItem)) {
+            _list.add(nextItem);
+         }
+      }
+   }
+
+   /**
+    * Gets the list of items as a collection.
+    * A <code>java.util.Set</code> or a <code>java.util.List</code> is returned
+    * depending on the type of this list.
+    *
+    * @return
+    *    a List or a Set containing the items, never <code>null</code>.
+    *    the collection returned cannot be modified.
+    */
+   public final Collection get() {
+
+      if (_setType) {
+         Set set = new HashSet();
+         set.addAll(_list);
+         return Collections.unmodifiableSet(set);
+      } else {
+         return Collections.unmodifiableList(_list);
+      }
+   }
 
    /**
     * Adds an item to the list. The item is added at the end of the list.

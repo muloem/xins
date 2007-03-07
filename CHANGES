@@ -35,6 +35,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
     container.
   - Cleaned-up logging messages.
   - Added new method in TextUtils to remove a character in a text.
+  - Added method to convert a List.Value to a java.util.List and vice-versa.
+  - Added method to convert a Set.Value to a java.util.Set and vice-versa.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR
