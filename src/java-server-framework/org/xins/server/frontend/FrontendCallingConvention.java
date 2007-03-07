@@ -1136,7 +1136,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       Iterator itParameterNames = inputs.keySet().iterator();
       while (itParameterNames.hasNext()) {
          String nextParam = (String) itParameterNames.next();
-         String flatParam = removeUnderscores(nextParam);
+         String flatParam = TextUtils.removeCharacter('_', nextParam);
          if (parameter.equalsIgnoreCase(flatParam)) {
             return nextParam;
          }

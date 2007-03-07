@@ -714,7 +714,7 @@
 			<description>Could not instantiate a session manager.</description>
 		</entry>
 		<entry id="3701" level="ERROR" exception="true">
-			<description>Incorrect XSLT transformer configuration.</description>
+			<description>Unable to find or to compile the XSLT file.</description>
 			<param name="templateIdentifier" />
 		</entry>
 		<entry id="3702" level="ERROR" exception="true">
