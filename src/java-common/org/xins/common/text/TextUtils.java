@@ -238,7 +238,7 @@ public final class TextUtils {
    }
 
    /**
-    * Compile the given regular expression to a Perl5 pattern object.
+    * Compiles the given regular expression to a Perl5 pattern object.
     *
     * @param regexp
     *     the String value of the Perl5 regular expresssion, cannot be <code>null</code>.
@@ -262,6 +262,38 @@ public final class TextUtils {
          return pattern;
       } catch (MalformedPatternException exception) {
          throw Utils.logProgrammingError(exception);
+      }
+   }
+
+   /**
+    * Removes the given character from the given <code>String</code>.
+    *
+    * @param charToRemove
+    *     the character that should be removed from the String.
+    *
+    * @param text
+    *     the text from which the charecter should be removed, can be <code>null</code>.
+    *
+    * @return
+    *    the text without the character or <code>null</code> if the input text is <code>null</code>.
+    *
+    * @since XINS 2.0.
+    */
+   public static String removeCharacter(char charToRemove, String text) {
+      if (text == null) {
+         return null;
+      }
+      char[] inputText = text.toCharArray();
+      StringBuffer result = new StringBuffer(inputText.length);
+      for (int i = 0; i < inputText.length; i++) {
+         if (inputText[i] != '_') {
+            result.append(inputText[i]);
+         }
+      }
+      if (result.length() == inputText.length) {
+         return text;
+      } else {
+         return result.toString();
       }
    }
 

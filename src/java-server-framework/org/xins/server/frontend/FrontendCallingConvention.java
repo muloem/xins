@@ -110,38 +110,6 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     */
    private final static Class[] NO_ARGS_CLASS = {};
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   /**
-    * Removes all underscores from the specified character string.
-    *
-    * <p>TODO: Consider moving this method elsewhere, since it is also used
-    * from the {@link SessionManager} class.
-    *
-    * @param in
-    *    the character string to remove underscores from, should never be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the input string, but then with the underscores removed, never
-    *    <code>null</code>.
-    */
-   static String removeUnderscores(String in) {
-      int length = in.length();
-      StringBuffer out = new StringBuffer(length);
-      for (int i = 0; i < length; i++) {
-         char c = in.charAt(i);
-         if (c != '_') {
-            out.append(c);
-         }
-      }
-      return out.toString();
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -1133,7 +1101,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     */
    private String getRealParameter(String receivedParameter, String functionName) {
       if (receivedParameter.indexOf("_") != -1) {
-         receivedParameter = removeUnderscores(receivedParameter);
+         receivedParameter = TextUtils.removeCharacter('_', receivedParameter);
       }
       try {
          FunctionSpec function = _api.getAPISpecification().getFunction(functionName);

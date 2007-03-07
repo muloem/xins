@@ -34,6 +34,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Added support for path and domain for cookies in the internal Servlet
     container.
   - Cleaned-up logging messages.
+  - Added new method in TextUtils to remove a character in a text.
 
 * XINS/Java Server Framework:
   - Added a new method to get the InputStream of a resource located in the WAR

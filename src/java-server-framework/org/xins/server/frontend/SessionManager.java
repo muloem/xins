@@ -430,7 +430,7 @@ public class SessionManager extends Manageable {
     */
    private String getRealParameter(String receivedParameter, String functionName) {
       if (receivedParameter.indexOf("_") != -1) {
-         receivedParameter = FrontendCallingConvention.removeUnderscores(receivedParameter);
+         receivedParameter = TextUtils.removeCharacter('_', receivedParameter);
       }
       try {
          FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
