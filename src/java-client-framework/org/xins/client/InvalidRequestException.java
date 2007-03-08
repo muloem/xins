@@ -7,7 +7,6 @@
 package org.xins.client;
 
 import java.util.List;
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.xml.Element;
 
@@ -21,8 +20,7 @@ import org.xins.common.xml.Element;
  *
  * @since XINS 1.2.0
  */
-public class InvalidRequestException
-extends StandardErrorCodeException {
+public class InvalidRequestException extends StandardErrorCodeException {
 
    //-------------------------------------------------------------------------
    // Class functions

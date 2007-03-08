@@ -6,7 +6,6 @@
  */
 package org.xins.client;
 
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.service.CallException;
 import org.xins.common.service.TargetDescriptor;
 
