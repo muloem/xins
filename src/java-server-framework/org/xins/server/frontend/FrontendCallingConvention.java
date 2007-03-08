@@ -176,6 +176,11 @@ public class FrontendCallingConvention extends CustomCallingConvention {
    private String _loginPage;
 
    /**
+    * The error page or <code>null</code> if the framework does no have any special error page.
+    */
+   private String _errorPage;
+
+   /**
     * Redirection map. The key is the command and the value is the redirection
     * command.
     */
@@ -204,6 +209,11 @@ public class FrontendCallingConvention extends CustomCallingConvention {
    private Templates _templateControl;
 
    /**
+    * The template used for the error page.
+    */
+   private Templates _templateError;
+
+   /**
     * The list of the real function names for this API.
     */
    private List _functionList = new ArrayList();
@@ -218,6 +228,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
           InvalidPropertyValueException,
           BootstrapException {
       _loginPage = bootstrapProperties.get("xinsff.login.page");
+      _errorPage = bootstrapProperties.get("xinsff.error.page");
       _defaultCommand = bootstrapProperties.get("xinsff.default.command");
       if (_defaultCommand == null) {
          _defaultCommand = "DefaultCommand";
@@ -470,7 +481,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          String xsltLocation = _baseXSLTDir + command + ".xslt";
          try {
             Templates template = null;
-            if ("Control".equals(command)) {
+            if ("Control".equals(command) && _templateControl == null) {
                try {
                   StringReader controlXSLT = new StringReader(ControlResult.getControlTemplate());
                   _templateControl = _factory.newTemplates(new StreamSource(controlXSLT));
@@ -491,6 +502,10 @@ public class FrontendCallingConvention extends CustomCallingConvention {
             httpResponse.setStatus(HttpServletResponse.SC_OK);
             out.print(resultHTML);
             out.close();
+         } catch (TransformerConfigurationException tcex) {
+            showError(tcex, httpResponse, httpRequest);
+         } catch (TransformerException tex) {
+            showError(tex, httpResponse, httpRequest);
          } catch (Exception ex) {
 
             // Logging of the specific exception is done by the method called
@@ -1086,6 +1101,57 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          _conditionalRedirectionMap.put(command, conditionTemplate);
       } catch (TransformerConfigurationException tcex) {
          Log.log_3701(tcex, "conditional redirection for " + command + " command");
+      }
+   }
+
+   /**
+    * Displays the transformation error.
+    * 
+    * @param transformException
+    *    The exception that occured during the transformation, cannot be <code>null</code>.
+    * 
+    * @param httpResponse
+    *    where to send the response, cannot be <code>null</code>.
+    * 
+    * @param httpRequest
+    *    the request of the user, cannot be <code>null</code>.
+    * 
+    * @throws IOException
+    *    if this transformation also fails for any reason.
+    */
+   private void showError(Exception transformException, HttpServletResponse httpResponse,
+         HttpServletRequest httpRequest) throws IOException {
+      try {
+         FunctionResult errorResult = new ErrorResult(transformException, httpRequest);
+         if (_templateError == null) {
+            if (_errorPage == null) {
+               try {
+                  StringReader errorXSLT = new StringReader(ErrorResult.getDefaultErrorTemplate());
+                  _templateError = _factory.newTemplates(new StreamSource(errorXSLT));
+               } catch (TransformerConfigurationException tcex) {
+                  Log.log_3701(tcex, "error");
+               }
+            } else {
+               _templateError = getTemplate(_baseXSLTDir + _errorPage + ".xslt");
+            }
+         }
+         Element commandResult = createXMLResult(httpRequest, errorResult);
+         String commandResultXML = serializeResult(commandResult);
+         String resultHTML = translate(commandResultXML, _templateError);
+         String contentType = getContentType(_templateError.getOutputProperties());
+         PrintWriter out = httpResponse.getWriter();
+         httpResponse.setContentType(contentType);
+         httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+         out.print(resultHTML);
+         out.close();
+      } catch (Exception ex) {
+         if (ex instanceof IOException) {
+            throw (IOException)ex;
+         } else if (ex instanceof RuntimeException) {
+            throw (RuntimeException)ex;
+         } else {
+            throw new IOException(ex);
+         }
       }
    }
 
