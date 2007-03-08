@@ -691,11 +691,11 @@ ${sf.file}</fail>
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     command="update"
 				 dest="src/tools/installer" />
-		<echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
+		<!--echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
 		<ftp server="upload.sf.net" remotedir="incoming"
 		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
 			<fileset dir=".." includes="${name}-${exe.version}.exe" />
-		</ftp>
+		</ftp-->
 	</target>
 	<target name="-download-release" unless="release.file.exists">
 		<mkdir dir="build" />
