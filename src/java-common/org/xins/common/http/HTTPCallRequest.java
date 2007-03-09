@@ -209,14 +209,13 @@ public final class HTTPCallRequest extends CallRequest {
       // Lazily initialize the description of this call request object
       if (_asString == null) {
          StringBuffer description = new StringBuffer(193);
-         description.append("HTTP request #");
-
-         // Request number
-         description.append(_instanceNumber);
-
-         // HTTP config
-         description.append(" [config=");
-         description.append(TextUtils.quote(getCallConfig()));
+         description.append("HTTP");
+         if (getHTTPCallConfig() != null) {
+             description.append(" " + getMethod().toString());
+         } else {
+             description.append("(no method)");
+         }
+         description.append(" request ");
 
          // Parameters
          if (_parameters == null || _parameters.size() < 1) {
