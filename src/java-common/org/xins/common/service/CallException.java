@@ -26,31 +26,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public abstract class CallException extends Exception {
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   /**
-    * Determines the root cause for the specified exception. If the argument
-    * is <code>null</code>, then <code>null</code> is returned.
-    *
-    * @param t
-    *    the exception to determine the root cause for, or <code>null</code>.
-    *
-    * @return
-    *    the root cause of the specified exception, or <code>null</code> if
-    *    and only <code>t == null</code>.
-    */
-   private static final Throwable rootCauseFor(Throwable t) {
-      if (t == null) {
-         return null;
-      } else {
-         return ExceptionUtils.getRootCause(t);
-      }
-   }
-
-
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
@@ -178,34 +153,8 @@ public abstract class CallException extends Exception {
          buffer.append(_duration);
          buffer.append(" ms while executing ");
          buffer.append(_request.describe());
-
          buffer.append(" at ");
          buffer.append(_target.getURL());
-
-         buffer.append(" with connection time-out ");
-         int connectionTimeOut = _target.getConnectionTimeOut();
-         if (connectionTimeOut < 1) {
-            buffer.append("disabled, with socket time-out ");
-         } else {
-            buffer.append(connectionTimeOut);
-            buffer.append(" ms, with socket time-out ");
-         }
-
-         int socketTimeOut = _target.getSocketTimeOut();
-         if (socketTimeOut < 1) {
-            buffer.append("disabled and with total time-out ");
-         } else {
-            buffer.append(socketTimeOut);
-            buffer.append(" ms and with total time-out ");
-         }
-
-         int totalTimeOut = _target.getTotalTimeOut();
-         if (totalTimeOut < 1) {
-            buffer.append("disabled");
-         } else {
-            buffer.append(totalTimeOut);
-            buffer.append(" ms");
-         }
 
          if (_detail == null) {
             buffer.append('.');
@@ -219,9 +168,9 @@ public abstract class CallException extends Exception {
 
       if (_next != null) {
          if (_message.endsWith(".")) {
-            return _message + " Followed by: " + _next.toString();
+            return _message + " Followed by: " + _next.getMessage();
          } else {
-            return _message + ". Followed by: " + _next.toString();
+            return _message + ". Followed by: " + _next.getMessage();
          }
       } else {
          return _message;
@@ -242,7 +191,7 @@ public abstract class CallException extends Exception {
     * Returns the descriptor for the target that was attempted to be called.
     *
     * @return
-    *    the target descriptor, cannot be <code>null</code>.
+    *    the target descriptor, can be <code>null</code>.
     */
    public final TargetDescriptor getTarget() {
       return _target;
