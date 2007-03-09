@@ -14,19 +14,7 @@ package org.xins.common.service;
  *
  * @since XINS 1.0.0
  */
-public abstract class GenericCallException
-extends CallException {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Serial version UID. Used for serialization. The assigned value is for
-    * compatibility with XINS 1.2.5.
-    */
-   private static final long serialVersionUID = 3372509223668556012L;
-
+public abstract class GenericCallException extends CallException {
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -72,8 +60,7 @@ extends CallException {
    throws IllegalArgumentException {
 
       // Trace and then call constructor of superclass
-      super(shortReason,
-            request, target, duration, detail, cause);
+      super(shortReason, request, target, duration, detail, cause);
    }
 
 

@@ -19,17 +19,6 @@ public final class TotalTimeOutCallException
 extends GenericCallException {
 
    //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * Serial version UID. Used for serialization. The assigned value is for
-    * compatibility with XINS 1.2.5.
-    */
-   private static final long serialVersionUID = -6065489266853904044L;
-
-
-   //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
@@ -57,8 +46,7 @@ extends GenericCallException {
    throws IllegalArgumentException {
 
       // Call constructor of superclass
-      super("Total time-out",
-            request, target, duration, null, null);
+      super("Total time-out", request, target, duration, null, null);
    }
 
 
