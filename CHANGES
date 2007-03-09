@@ -10,6 +10,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Fixed the incorrect cause was set for the CallException (it was the cause
     of the cause).
   - Clarified the message showed when a CallException is thrown.
+  - Simplified the output when describing the HTTPCallRequest.
 
 * XINS/Java Server Framework:
   - Added a new bootstrap property to specify an error page when the
@@ -26,6 +27,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
     of RuntimeException.
   - Added new UnacceptableMessageException which is used for invalid messages.
   - If value is invalid, the invalid value is also given in the message.
+  - Simplified the output when describing the XINSCallRequest.
 
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.

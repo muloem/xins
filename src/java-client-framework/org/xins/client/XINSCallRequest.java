@@ -300,36 +300,28 @@ public final class XINSCallRequest extends CallRequest {
       // Lazily initialize the description of this call request object
       if (_asString == null) {
          StringBuffer description = new StringBuffer(193);
-         description.append("XINS HTTP request #");
-
-         // Request number
-         description.append(_instanceNumber);
-
-         // HTTP method
-         description.append(" [config=");
-         description.append(TextUtils.quote(getCallConfig()));
+         description.append("XINS ");
+         if (getXINSCallConfig() != null) {
+             description.append(getXINSCallConfig().getHTTPMethod().toString());
+         } else {
+             description.append("(no config)");
+         }
+         description.append(" HTTP request ");
 
          // Function name
-         description.append("; function=\"");
+         description.append("_function=");
          description.append(_functionName);
 
          // Parameters
-         if (_parameters == null || _parameters.size() < 1) {
-            description.append("\"; parameters=(null); contextID=");
-         } else {
-            description.append("\"; parameters=\"");
-            description.append(PropertyReaderUtils.toString(_parameters, "-"));
-            description.append("\"; contextID=");
+         if (_parameters != null && _parameters.size() > 0) {
+            description.append(PropertyReaderUtils.toString(_parameters, "-", "&", ""));
          }
 
          // Diagnostic context identifier
          String contextID = _httpParams.get(CONTEXT_ID_HTTP_PARAMETER_NAME);
-         if (contextID == null || contextID.length() < 1) {
-            description.append("(null)]");
-         } else {
-            description.append('"');
+         if (contextID != null && contextID.length() > 0) {
+            description.append("&_context=");
             description.append(contextID);
-            description.append("\"]");
          }
          _asString = description.toString();
       }
