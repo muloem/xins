@@ -67,8 +67,7 @@ public abstract class CallException extends Exception {
     *    the original request, cannot be <code>null</code>.
     *
     * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
+    *    descriptor for the target that was attempted to be called, can be <code>null</code>.
     *
     * @param duration
     *    the call duration in milliseconds, must be &gt;= 0.
@@ -83,7 +82,6 @@ public abstract class CallException extends Exception {
     * @throws IllegalArgumentException
     *    if <code>shortReason == null
     *          || request == null
-    *          || target == null
     *          || duration &lt; 0</code>.
     */
    protected CallException(String           shortReason,
@@ -95,9 +93,7 @@ public abstract class CallException extends Exception {
    throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("shortReason", shortReason,
-                                     "request",     request,
-                                     "target",      target);
+      MandatoryArgumentChecker.check("shortReason", shortReason, "request", request);
       if (duration < 0) {
          throw new IllegalArgumentException(
             "duration (" + duration + ") < 0");
