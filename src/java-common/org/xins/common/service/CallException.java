@@ -100,7 +100,9 @@ public abstract class CallException extends Exception {
       }
 
       // Associate this exception with the root cause
-      ExceptionUtils.setCause(this, rootCauseFor(cause));
+      if (cause != null) {
+        ExceptionUtils.setCause(this, cause);
+      }
 
       // Store information in fields
       _shortReason = shortReason;
