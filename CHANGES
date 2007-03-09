@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
     of the cause).
   - Clarified the message showed when a CallException is thrown.
   - Simplified the output when describing the HTTPCallRequest.
+  - Simplified description of the call configurations.
+  - The CallConfig classes are no longer Thread safe.
 
 * XINS/Java Server Framework:
   - Added a new bootstrap property to specify an error page when the
@@ -28,6 +30,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Added new UnacceptableMessageException which is used for invalid messages.
   - If value is invalid, the invalid value is also given in the message.
   - Simplified the output when describing the XINSCallRequest.
+  - Simplified description of the XINS call config.
+  - The XINSCallConfig class is no longer Thread safe.
 
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.

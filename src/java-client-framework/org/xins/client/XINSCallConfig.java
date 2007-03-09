@@ -16,27 +16,14 @@ import org.xins.common.text.TextUtils;
  * Call configuration for the XINS service caller. The HTTP method can be configured. 
  * By default it is set to <em>POST</em>.
  *
+ * <p>This class is not thread safe</p>
+ *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
  */
 public final class XINSCallConfig extends CallConfig {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The number of instances of this class. Initially zero.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
-    * Lock object for field <code>INSTANCE_COUNT</code>.
-    */
-   private static Object INSTANCE_COUNT_LOCK = new Object();
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -46,11 +33,6 @@ public final class XINSCallConfig extends CallConfig {
     * Constructs a new <code>XINSCallConfig</code> object.
     */
    public XINSCallConfig() {
-
-      // First determine instance number
-      synchronized (INSTANCE_COUNT_LOCK) {
-         _instanceNumber = ++INSTANCE_COUNT;
-      }
 
       // Construct an underlying HTTPCallConfig
       _httpCallConfig = new HTTPCallConfig();
@@ -66,13 +48,6 @@ public final class XINSCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
 
    /**
     * The underlying HTTP call config. Cannot be <code>null</code>.
@@ -135,15 +110,8 @@ public final class XINSCallConfig extends CallConfig {
     */
    public String describe() {
 
-      boolean    failOverAllowed;
-      HTTPMethod method;
-      synchronized (getLock()) {
-         failOverAllowed = isFailOverAllowed();
-         method          = _httpCallConfig.getMethod();
-      }
-
-      String description = "XINS call config #" + _instanceNumber + " [failOverAllowed=" +
-            failOverAllowed + "; method=" + TextUtils.quote(method.toString()) + ']';
+      String description = "XINS call config [failOverAllowed=" + isFailOverAllowed() + "; method=" + 
+            TextUtils.quote(_httpCallConfig.getMethod().toString()) + ']';
 
       return description;
    }

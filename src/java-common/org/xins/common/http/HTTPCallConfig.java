@@ -15,27 +15,14 @@ import org.xins.common.text.TextUtils;
  * <em>User-Agent</em> string can be configured. By default the HTTP method is
  * <em>POST</em> and the no <em>User-Agent</em> string is set.
  *
+ * <p>This class is not thread safe.</p>
+ *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
  */
 public final class HTTPCallConfig extends CallConfig {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   /**
-    * The number of instances of this class. Initially zero.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
-    * Lock object for field <code>INSTANCE_COUNT</code>.
-    */
-   private static Object INSTANCE_COUNT_LOCK = new Object();
-
 
    //-------------------------------------------------------------------------
    // Constructors
@@ -46,11 +33,6 @@ public final class HTTPCallConfig extends CallConfig {
     */
    public HTTPCallConfig() {
 
-      // First determine instance number
-      synchronized (INSTANCE_COUNT_LOCK) {
-         _instanceNumber = ++INSTANCE_COUNT;
-      }
-
       // Default to the POST method
       _method = HTTPMethod.POST;
    }
@@ -59,13 +41,6 @@ public final class HTTPCallConfig extends CallConfig {
    //-------------------------------------------------------------------------
    // Fields
    //-------------------------------------------------------------------------
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
 
    /**
     * The HTTP method to use. This field cannot be <code>null</code>.
@@ -89,9 +64,7 @@ public final class HTTPCallConfig extends CallConfig {
     *    the HTTP method, never <code>null</code>.
     */
    public HTTPMethod getMethod() {
-      synchronized (getLock()) {
-         return _method;
-      }
+     return _method;
    }
 
    /**
@@ -111,9 +84,7 @@ public final class HTTPCallConfig extends CallConfig {
       MandatoryArgumentChecker.check("method", method);
 
       // Store the new HTTP method
-      synchronized (getLock()) {
-         _method = method;
-      }
+      _method = method;
    }
 
    /**
@@ -126,9 +97,7 @@ public final class HTTPCallConfig extends CallConfig {
     * @since XINS 1.3.0
     */
    public void setUserAgent(String agent) {
-      synchronized (getLock()) {
-         _userAgent = agent;
-      }
+      _userAgent = agent;
    }
 
    /**
@@ -141,9 +110,7 @@ public final class HTTPCallConfig extends CallConfig {
     * @since XINS 1.3.0
     */
    public String getUserAgent() {
-      synchronized (getLock()) {
-         return _userAgent;
-      }
+      return _userAgent;
    }
 
    /**
@@ -156,19 +123,8 @@ public final class HTTPCallConfig extends CallConfig {
     */
    public String describe() {
 
-      boolean    failOverAllowed;
-      HTTPMethod method;
-      String     userAgent;
-      synchronized (getLock()) {
-         failOverAllowed = isFailOverAllowed();
-         method          = _method;
-         userAgent       = _userAgent;
-      }
-
-      String description = "HTTP call config #" + _instanceNumber +
-            " [failOverAllowed=" + failOverAllowed + "; method=" +
-            TextUtils.quote(method.toString()) + "; userAgent=" +
-            TextUtils.quote(userAgent) + "]";
+      String description = "HTTP call config [failOverAllowed=" + isFailOverAllowed() + "; method=" +
+            TextUtils.quote(_method.toString()) + "; userAgent=" + TextUtils.quote(_userAgent) + "]";
 
       return description;
    }
