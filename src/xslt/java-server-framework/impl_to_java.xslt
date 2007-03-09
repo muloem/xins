@@ -39,12 +39,7 @@
 		<xsl:value-of select="$api" />
 		<xsl:text><![CDATA[</code> API.
  */
-public class RuntimeProperties extends org.xins.server.RuntimeProperties {
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-]]></xsl:text>
+public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></xsl:text>
 
 		<xsl:apply-templates select="runtime-properties/property" mode="field" />
 
@@ -55,10 +50,6 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {
     */
    private java.util.List _descriptors;
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected void init(org.xins.common.collections.PropertyReader runtimeSettings)
    throws org.xins.common.collections.MissingRequiredPropertyException,

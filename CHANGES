@@ -37,6 +37,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.
 
+* XSLT:
+  - Removed unneeded comments.
+
 * Build- and release-process:
   - Disabled ftp upload for the exe file.
 

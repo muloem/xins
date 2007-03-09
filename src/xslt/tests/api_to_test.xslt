@@ -39,10 +39,6 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  */
 public class APITests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The Servlet server running the API. The value is &lt;code&gt;null&lt;/code&gt; if the server is not started.
     */
@@ -52,11 +48,6 @@ public class APITests extends TestCase {
     * Flag that indicates that the API has been started.
     */
    private static boolean API_STARTED = false;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a test suite with all test cases defined by this class.
@@ -87,10 +78,6 @@ public class APITests extends TestCase {
    }
 
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new &lt;code&gt;APITests&lt;/code&gt; test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -102,18 +89,10 @@ public class APITests extends TestCase {
       super(name);
    }
 
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Starts the web server.
     */
    public static class StartServer extends TestCase {
-
-      //-------------------------------------------------------------------------
-      // Class functions
-      //-------------------------------------------------------------------------
 
       /**
        * Returns a test suite with all test cases defined by this class.
@@ -125,11 +104,6 @@ public class APITests extends TestCase {
          return new TestSuite(StartServer.class);
       }
 
-
-      //-------------------------------------------------------------------------
-      // Constructor
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new &lt;code&gt;StartServer&lt;/code&gt; test suite with
        * the specified name. The name will be passed to the superconstructor.
@@ -140,11 +114,6 @@ public class APITests extends TestCase {
       public StartServer(String name) {
          super(name);
       }
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       public void testStartServer() throws Exception {
 
@@ -170,10 +139,6 @@ public class APITests extends TestCase {
     */
    public static class StopServer extends TestCase {
 
-      //-------------------------------------------------------------------------
-      // Class functions
-      //-------------------------------------------------------------------------
-
       /**
        * Returns a test suite with all test cases defined by this class.
        *
@@ -183,11 +148,6 @@ public class APITests extends TestCase {
       public static Test suite() {
          return new TestSuite(StopServer.class);
       }
-
-
-      //-------------------------------------------------------------------------
-      // Constructor
-      //-------------------------------------------------------------------------
 
       /**
        * Constructs a new &lt;code&gt;StopServer&lt;/code&gt; test suite with
@@ -199,11 +159,6 @@ public class APITests extends TestCase {
       public StopServer(String name) {
          super(name);
       }
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       public void testStopServer() throws Exception {
 

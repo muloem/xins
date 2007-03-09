@@ -55,10 +55,6 @@ import org.xins.server.API;
  */
 public class APIImpl extends API {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -135,10 +131,6 @@ public class APIImpl extends API {
 		<xsl:text><![CDATA[
 
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>APIImpl</code> instance.
     */
@@ -167,10 +159,6 @@ public class APIImpl extends API {
    }
 
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    private final RuntimeProperties _runtimeProperties;</xsl:text>
 
 		<xsl:for-each select="instance">
@@ -184,10 +172,6 @@ public class APIImpl extends API {
 		</xsl:for-each>
 		<xsl:text><![CDATA[
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the class used to access the defined runtime properties

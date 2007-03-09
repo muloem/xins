@@ -52,10 +52,6 @@ public final static class SuccessfulResult
 extends org.xins.server.FunctionResult
 implements Result {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>SuccessfulResult</code> object.
     */
@@ -75,10 +71,6 @@ implements Result {
 		<xsl:text>
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 </xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
 		<xsl:apply-templates select="output" />
@@ -89,10 +81,6 @@ implements Result {
 	</xsl:template>
 
 	<xsl:template match="output">
-		<xsl:text>
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------</xsl:text>
 		<xsl:apply-templates select="param">
 			<xsl:with-param name="methodImpl" select="'param'" />
 		</xsl:apply-templates>
@@ -440,9 +428,6 @@ implements Result {
 		public static final class </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[ {
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
 
       /**
        * Creates a new <code>]]></xsl:text>
@@ -454,21 +439,12 @@ implements Result {
 		<xsl:text>() {
       }
 
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
       /**
        * Element containing the values of this object.
        */
       private final org.xins.common.xml.ElementBuilder _elementBuilder = new org.xins.common.xml.ElementBuilder("</xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[");
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       /**
        * Returns the element containing the values of the data element.

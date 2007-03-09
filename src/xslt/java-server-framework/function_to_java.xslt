@@ -66,10 +66,6 @@ public abstract class ]]></xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[ extends org.xins.server.Function {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$functionName" />
@@ -109,10 +105,6 @@ public abstract class ]]></xsl:text>
    }
 
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The list of error codes supported by this function. This field cannot be
     * <code>null</code>.
@@ -130,10 +122,6 @@ public abstract class ]]></xsl:text>
 		</xsl:for-each>
 
 		<xsl:text>
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext _context)
    throws Throwable {</xsl:text>
@@ -222,13 +210,8 @@ public abstract class ]]></xsl:text>
     * @throws Throwable
     *    if anything went wrong.
     */
-   public abstract Result call(Request request)
-   throws Throwable;
+   public abstract Result call(Request request) throws Throwable;
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 ]]></xsl:text>
 
 		<!-- Generates the Request object used to get the input data. -->

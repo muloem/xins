@@ -58,10 +58,6 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text><![CDATA[ extends org.xins.client.AbstractCAPIErrorCodeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />

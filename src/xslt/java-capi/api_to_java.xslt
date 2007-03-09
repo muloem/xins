@@ -65,10 +65,6 @@
  */
 public final class CAPI extends org.xins.client.AbstractCAPI {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Initializes the map of error codes per function. This class function is
     * called from the constructors.
@@ -115,29 +111,16 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       return map;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Secret key used when creating <code>ProtectedPropertyReader</code>
     * instances.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------]]></xsl:text>
+]]></xsl:text>
 
 		<xsl:call-template name="constructor" />
 		<xsl:text><![CDATA[
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Error codes, per function. This field is never <code>null</code>. All
@@ -146,12 +129,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * supported error codes for that function, as <code>String</code>s, such
     * as <code>"ProcessingFailed"</code>.
     */
-   private final java.util.Map _errorCodesPerFunction;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------]]></xsl:text>
+   private final java.util.Map _errorCodesPerFunction;]]></xsl:text>
 
 		<!-- Loop through all <function/> elements within the <api/> element
 		     and process the corresponding .fnc function definition files. -->

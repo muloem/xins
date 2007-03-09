@@ -91,11 +91,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text> extends </xsl:text>
 		<xsl:value-of select="$superclass" />
-		<xsl:text><![CDATA[ {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------]]></xsl:text>
+		<xsl:text> {</xsl:text>
 
 		<xsl:if test="$kind = 'enum'">
 			<xsl:apply-templates select="enum/item" mode="field" />
@@ -109,12 +105,6 @@ public final class ]]></xsl:text>
 		<xsl:text> SINGLETON = new </xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text>();</xsl:text>
-		<xsl:text><![CDATA[
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------]]></xsl:text>
 
 		<!-- Pattern type -->
 		<xsl:choose>
@@ -263,10 +253,6 @@ public final class ]]></xsl:text>
 		</xsl:choose>
 
 		<xsl:text><![CDATA[
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>]]></xsl:text>
@@ -519,16 +505,7 @@ public final class ]]></xsl:text>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:text>);
-   }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------</xsl:text>
+   }</xsl:text>
 
 		<xsl:if test="$kind = 'list' or $kind = 'set'">
 			<xsl:variable name="innertype">
@@ -586,10 +563,6 @@ public final class ]]></xsl:text>
 
 			<xsl:if test="$kind = 'set'">
 	      <xsl:text>
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Creates a new set.
        */
@@ -599,10 +572,6 @@ public final class ]]></xsl:text>
 </xsl:text>
 			</xsl:if>
 			<xsl:text>
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Add a new element in the </xsl:text>
@@ -771,11 +740,6 @@ public final class ]]></xsl:text>
       return getItemByValue(value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Item of the <em>]]></xsl:text>
 		<xsl:value-of select="$type" />
@@ -813,10 +777,6 @@ public final class ]]></xsl:text>
    public static final class Item
    extends org.xins.common.types.EnumItem {
 
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Item</code> with the specified name and value.
        *
@@ -834,15 +794,6 @@ public final class ]]></xsl:text>
       throws IllegalArgumentException {
          super(name, value);
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
    }]]></xsl:text>
 		</xsl:if>
 

@@ -47,10 +47,6 @@
 		<xsl:value-of select="$accessmodifier" />
 		<xsl:text>class Log extends org.xins.logdoc.AbstractLog {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The fully-qualified name for this class.
     */
@@ -77,10 +73,6 @@
 
 		<xsl:text><![CDATA[
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes this class.
@@ -119,10 +111,6 @@
 		<xsl:text><![CDATA[
 
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructor for this class. Intentionally made <code>private</code>,
     * since no instances of this class should be created. Instead, the class
@@ -132,19 +120,10 @@
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Controller for this <code>Log</code> class.
     */
    private static final class Controller extends LogController {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
 
       /**
        * Constructs a new <code>Controller</code> for this log.
@@ -155,11 +134,6 @@
       public Controller() throws org.xins.logdoc.UnsupportedLocaleException {
          super();
       }
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       public String toString() {
          return getClass().getName();

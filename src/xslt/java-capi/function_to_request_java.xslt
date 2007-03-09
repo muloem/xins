@@ -63,10 +63,6 @@ public final class </xsl:text>
 		<xsl:text><![CDATA[
 extends org.xins.client.AbstractCAPICallRequest {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$className" />
@@ -89,11 +85,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 			<xsl:text>&quot;);</xsl:text>
 		</xsl:for-each>
 		<xsl:text>
-   }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------</xsl:text>
+   }</xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="methods" />
 

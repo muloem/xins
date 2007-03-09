@@ -100,20 +100,11 @@ final class </xsl:text>
 			<xsl:value-of select="$resultcodeIncludes2" />
 		</xsl:if>
 		<xsl:text> {
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 </xsl:text>
 		<xsl:call-template name="constructor">
 			<xsl:with-param name="className" select="$className" />
 		</xsl:call-template>
-		<xsl:text>
 
-   //-------------------------------------------------------------------------
-   // Field
-   //-------------------------------------------------------------------------
-</xsl:text>
 		<!-- Generate the set methods, the inner classes and the add methods -->
 		<xsl:apply-templates select="output" />
 

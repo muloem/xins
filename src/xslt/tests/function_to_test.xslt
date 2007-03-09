@@ -48,14 +48,6 @@ public class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text>Tests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -68,10 +60,6 @@ public class ]]></xsl:text>
 		<xsl:text>Tests.class);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new &lt;code&gt;</xsl:text>
@@ -88,19 +76,11 @@ public class ]]></xsl:text>
       super(name);
    }
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The XINServiceCaller of the API.
     */
    private XINSServiceCaller _caller;
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected void setUp() throws Exception {
       String target = System.getProperty("test.environment");
