@@ -23,6 +23,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - The call target is no longer required for a CallException.
   - The value of an invalid value for type error is now returned in the
     message.
+  - Fixed possible error if the function is empty.
 
 * XINS/Java Client Framework:
   - The UnacceptableRequestException now extends XINSCallException instead

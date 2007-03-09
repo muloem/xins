@@ -1088,7 +1088,7 @@ implements DefaultResultCodes {
 
       // Handle meta-functions
       FunctionResult result;
-      if (functionName.charAt(0) == '_') {
+      if (functionName.length() > 0 && functionName.charAt(0) == '_') {
 
          // Determine the call ID
          int callID;
@@ -1165,16 +1165,6 @@ implements DefaultResultCodes {
    private FunctionResult callMetaFunction(String          functionName,
                                            FunctionRequest functionRequest)
    throws NoSuchFunctionException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("functionName", functionName);
-      if (functionName.length() < 1) {
-         throw new IllegalArgumentException("functionName.length() < 1");
-      } else if (functionName.charAt(0) != '_') {
-         throw new IllegalArgumentException("Function name \"" +
-                                            functionName +
-                                            "\" is not a meta-function.");
-      }
 
       FunctionResult result;
 
