@@ -35,8 +35,7 @@ public abstract class XINSCallException extends CallException {
     *    the original request, cannot be <code>null</code>.
     *
     * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
+    *    descriptor for the target that was attempted to be called, can be <code>null</code>.
     *
     * @param duration
     *    the call duration in milliseconds, must be &gt;= 0.
@@ -51,7 +50,6 @@ public abstract class XINSCallException extends CallException {
     * @throws IllegalArgumentException
     *    if <code>shortReason == null
     *          || request == null
-    *          || target == null
     *          || duration &lt; 0</code>.
     */
    XINSCallException(String           shortReason,

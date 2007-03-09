@@ -12,7 +12,11 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - A default error message is displayed when the XSLT transformation fails
     in the XINS FF.
   - Fixed the template for the Control command was not cached in the XINS FF.
+  - The call target is no longer required for a CallException.
 
+* XINS/Java Client Framework:
+  - The UnacceptableRequestException now extends XINSCallException instead
+    of RuntimeException.
 
 * Build- and release-process:
   - Disabled ftp upload for the exe file.

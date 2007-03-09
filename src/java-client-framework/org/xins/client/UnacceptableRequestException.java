@@ -22,7 +22,7 @@ import org.xins.common.xml.ElementBuilder;
  * @since XINS 1.2.0
  */
 // TODO extend XINSCallException
-public final class UnacceptableRequestException extends RuntimeException {
+public final class UnacceptableRequestException extends XINSCallException {
 
    // TODO: Support XINSCallRequest objects?
    // TODO: Is the name UnacceptableRequestException okay?
@@ -41,7 +41,8 @@ public final class UnacceptableRequestException extends RuntimeException {
     *    may be <code>null</code>.
     */
    public UnacceptableRequestException(AbstractCAPICallRequest request) {
-
+      super("Invalid request", request.xinsCallRequest(), null, 0L, null, null);
+       
       // Store the information
       _request    = request;
    }
