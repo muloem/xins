@@ -31,7 +31,7 @@
 				</xsl:when>
 				<xsl:when test="$side='client' and (local-name() = 'output' or (local-name() = 'element' and local-name(../..) = 'output'))">
 					<!-- TODO: Create another class for this purpose. -->
-					<xsl:text>org.xins.client.UnacceptableRequestException</xsl:text>
+					<xsl:text>org.xins.client.UnacceptableMessageException</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -207,13 +207,15 @@
 				<xsl:text>
          _errorResult.addInvalidValueForType("</xsl:text>
 				<xsl:value-of select="@name" />
-				<xsl:text>", "</xsl:text>
-					<xsl:value-of select="@type" />
-					<xsl:if test="local-name() = 'attribute'">
-						<xsl:text>", "</xsl:text>
-						<xsl:value-of select="../@name" />
-					</xsl:if>
-					<xsl:text>");
+				<xsl:text>", </xsl:text>
+				<xsl:value-of select="$localJavaVariable" />
+				<xsl:text>, "</xsl:text>
+				<xsl:value-of select="@type" />
+				<xsl:if test="local-name() = 'attribute'">
+					<xsl:text>", "</xsl:text>
+					<xsl:value-of select="../@name" />
+				</xsl:if>
+				<xsl:text>");
       }</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
@@ -685,7 +687,7 @@
 			<xsl:text>this</xsl:text>
 		</xsl:if>
 		<xsl:if test="$side = 'client' and ancestor::output">
-			<xsl:text>null</xsl:text>
+			<xsl:text>_result</xsl:text>
 		</xsl:if>
 		<xsl:text>);
          }</xsl:text>

@@ -18,10 +18,17 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
     in the XINS FF.
   - Fixed the template for the Control command was not cached in the XINS FF.
   - The call target is no longer required for a CallException.
+  - The value of an invalid value for type error is now returned in the
+    message.
 
 * XINS/Java Client Framework:
   - The UnacceptableRequestException now extends XINSCallException instead
     of RuntimeException.
+  - Added new UnacceptableMessageException which is used for invalid messages.
+  - If value is invalid, the invalid value is also given in the message.
+
+* Generation of client-side Java code:
+  - Used the UnacceptableMessageException when an invalid result is received.
 
 * Build- and release-process:
   - Disabled ftp upload for the exe file.

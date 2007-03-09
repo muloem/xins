@@ -1150,7 +1150,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          } else if (ex instanceof RuntimeException) {
             throw (RuntimeException)ex;
          } else {
-            throw new IOException(ex);
+            throw new IOException(ex.getMessage());
          }
       }
    }

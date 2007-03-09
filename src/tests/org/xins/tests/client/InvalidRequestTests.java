@@ -143,7 +143,7 @@ public class InvalidRequestTests extends TestCase {
                       + "\") to contain a reference to parameter \""
                       + p
                       + "\" which has an invalid value.";
-         String find = "The value for parameter \""
+         String find = "The value \"a\" for the parameter \""
                      + p
                      + "\" is considered invalid";
          assertTrue(error, exDetail.indexOf(find) >= 0);

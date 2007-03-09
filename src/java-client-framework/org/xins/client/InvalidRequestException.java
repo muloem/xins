@@ -8,6 +8,7 @@ package org.xins.client;
 
 import java.util.List;
 import org.xins.common.service.TargetDescriptor;
+import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
 
 /**
@@ -95,24 +96,25 @@ public class InvalidRequestException extends StandardErrorCodeException {
          for (int i = 0; i < size; i++) {
             Element e = (Element) invalidValueElements.get(i);
             String paramName = e.getAttribute("param");
-            String typeName      = e.getAttribute("type");
-            String elementName   = e.getAttribute("element");
-            if (paramName != null && paramName.length() >= 1) {
-               detail.append("The value for parameter \""
-                           + paramName
-                           + "\" is considered invalid for the type \""
-                           + typeName
-                           + "\". ");
-            } else if (elementName != null &&  elementName.length() >= 1 && paramName != null && paramName.length() >= 1) {
-               detail.append("The value for attribute \""
-                           + paramName
-                           + "\" in the element \""
-                           + elementName
-                           + "\" is considered invalid for the type \""
-                           + typeName
-                           + "\". ");
+            String invalidValue = e.getAttribute("value");
+            String typeName = e.getAttribute("type");
+            String elementName = e.getAttribute("element");
+            if (!TextUtils.isEmpty(elementName) && !TextUtils.isEmpty(paramName)) {
+               detail.append("The value ");
+               if (invalidValue != null) {
+                   detail.append("\"" + invalidValue + "\" ");
+               }
+               detail.append("for the attribute \"" + paramName + "\" in the element \""
+                     + elementName + "\" is considered invalid for the type \""
+                     + typeName + "\". ");
+            } else if (!TextUtils.isEmpty(paramName)) {
+               detail.append("The value ");
+               if (invalidValue != null) {
+                   detail.append("\"" + invalidValue + "\" ");
+               }
+               detail.append("for the parameter \"" + paramName
+                     + "\" is considered invalid for the type \"" + typeName + "\". ");
             }
-            // XXX: Actual value is not specified in the message
          }
       }
 

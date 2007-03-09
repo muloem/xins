@@ -4,41 +4,92 @@
  * Copyright 2003-2007 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.server;
+package org.xins.client;
 
 import java.util.Iterator;
 import java.util.List;
+
+import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 /**
- * Result code that indicates that a request or a response parameter is either
- * missing or invalid.
+ * Exception that indicates that a request for an API call is considered
+ * unacceptable on the application-level. For example, a mandatory input
+ * parameter may be missing.
  *
  * @version $Revision$ $Date$
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 2.0
  */
-class InvalidMessageResult extends FunctionResult {
+public class UnacceptableMessageException extends XINSCallException {
+
+   // TODO: Support XINSCallRequest objects?
+   // TODO: Is the name UnacceptableRequestException okay?
+   // TODO: Log UnacceptableRequestException! (not in this class though)
 
    //-------------------------------------------------------------------------
    // Constructors
    //-------------------------------------------------------------------------
 
    /**
-    * Constructs a new <code>InvalidMessageResult</code> object.
+    * Constructs a new <code>UnacceptableMessageException</code> using the
+    * specified <code>AbstractCAPICallRequest</code>.
     *
-    * @param errorCode
-    *    the error code to return to the client, never <code>null</code>.
+    * @param request
+    *    the {@link AbstractCAPICallRequest} that is considered unacceptable,
+    *    cannot be <code>null</code>.
     */
-   InvalidMessageResult(String errorCode) {
-      super(errorCode);
+   UnacceptableMessageException(XINSCallRequest request) {
+      super("Invalid request", request, null, 0L, null, null);
    }
+
+   /**
+    * Constructs a new <code>UnacceptableMessageException</code> using the
+    * specified <code>XINSCallResult</code>.
+    * This constructor is used by the generated CAPI.
+    *
+    * @param result
+    *    the {@link XINSCallResult} that is considered unacceptable,
+    *    cannot be <code>null</code>.
+    */
+   public UnacceptableMessageException(XINSCallResult result) {
+      super("Invalid result", result, null, null);
+   }
+
+
+   //-------------------------------------------------------------------------
+   // Fields
+   //-------------------------------------------------------------------------
+
+   /**
+    * The DataElement containing the errors.
+    */
+   private Element _errors = new Element("data");
+
+   /**
+    * The error message.
+    */
+   private String _message;
 
 
    //-------------------------------------------------------------------------
    // Methods
    //-------------------------------------------------------------------------
+
+   /**
+    * Returns the message for this exception.
+    *
+    * @return
+    *    the exception message, can be <code>null</code>.
+    */
+   public String getMessage() {
+      if (_message == null) {
+         _message = InvalidRequestException.createMessage(_errors);
+      }
+      return _message;
+   }
 
    /**
     * Adds to the response that a paramater that is missing.
@@ -49,7 +100,7 @@ class InvalidMessageResult extends FunctionResult {
    public void addMissingParameter(String parameter) {
       ElementBuilder missingParam = new ElementBuilder("missing-param");
       missingParam.setAttribute("param", parameter);
-      add(missingParam.createElement());
+      _errors.addChild(missingParam.createElement());
    }
 
    /**
@@ -65,14 +116,14 @@ class InvalidMessageResult extends FunctionResult {
       ElementBuilder missingParam = new ElementBuilder("missing-param");
       missingParam.setAttribute("param", parameter);
       missingParam.setAttribute("element", element);
-      add(missingParam.createElement());
+      _errors.addChild(missingParam.createElement());
    }
 
    /**
     * Adds an invalid value for a specified type.
     *
     * @param parameter
-    *    the parameter passed by the user.
+    *    the name of the parameter passed by the user.
     *
     * @param type
     *    the type which this parameter should be compliant with.
@@ -83,27 +134,29 @@ class InvalidMessageResult extends FunctionResult {
       ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
       invalidValue.setAttribute("param", parameter);
       invalidValue.setAttribute("type", type);
-      add(invalidValue.createElement());
+      _errors.addChild(invalidValue.createElement());
    }
 
    /**
     * Adds an invalid value for a specified type.
     *
     * @param parameter
-    *    the parameter passed by the user.
+    *    the name of the parameter passed by the user.
     *
     * @param value
     *    the value of the parameter passed by the user.
     *
     * @param type
     *    the type which this parameter should be compliant with.
+    *
+    * @since XINS 2.0
     */
    public void addInvalidValueForType(String parameter, String value, String type) {
       ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
       invalidValue.setAttribute("param", parameter);
       invalidValue.setAttribute("value", value);
       invalidValue.setAttribute("type", type);
-      add(invalidValue.createElement());
+      _errors.addChild(invalidValue.createElement());
    }
 
    /**
@@ -120,6 +173,8 @@ class InvalidMessageResult extends FunctionResult {
     *
     * @param element
     *    the element in which the parameter is missing.
+    *
+    * @since XINS 2.0
     */
    public void addInvalidValueForType(String parameter, String value, String type, String element) {
       ElementBuilder invalidValue = new ElementBuilder("invalid-value-for-type");
@@ -127,7 +182,7 @@ class InvalidMessageResult extends FunctionResult {
       invalidValue.setAttribute("value", value);
       invalidValue.setAttribute("type", type);
       invalidValue.setAttribute("element", element);
-      add(invalidValue.createElement());
+      _errors.addChild(invalidValue.createElement());
    }
 
    /**
@@ -153,7 +208,7 @@ class InvalidMessageResult extends FunctionResult {
          paramCombo.addChild(param.createElement());
       }
 
-      add(paramCombo.createElement());
+      _errors.addChild(paramCombo.createElement());
    }
 
    /**
@@ -184,6 +239,6 @@ class InvalidMessageResult extends FunctionResult {
          attributeCombo.addChild(attribute.createElement());
       }
 
-      add(attributeCombo.createElement());
+      _errors.addChild(attributeCombo.createElement());
    }
 }

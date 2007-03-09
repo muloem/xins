@@ -663,7 +663,7 @@ public class CallingConventionTests extends TestCase {
          byte[] returnedData = post.getResponseBody();
          ElementParser parser = new ElementParser();
          String content = new String(returnedData);
-         System.err.println("content: " + content);
+         // System.out.println("content: " + content);
          Element result = parser.parse(new StringReader(content));
          return result;
       } finally {
