@@ -40,6 +40,17 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.
 
+* Generation of the API from the WSDL:
+  - If the WSDL parameter is all uppercase, the variable will be all lowercase.
+  - Process smart hungarian lower to parameter names.
+    e.g. HTTPInfo -> httpInfo.
+  - Added support of reference to another complex type or to an element from
+    an element.
+  - Fixed the XML Schema 's:' was not extended to 'xsd:'.
+  - Fixed the wsdl directory is created if it didn't exists when importing
+    from an URL.
+  - Unbounded elements are put in the data section.
+
 * XSLT:
   - Removed unneeded comments.
 
@@ -116,15 +127,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - Removed checking of the result code uniqueness as a result code cannot
     have a value anymore. It was only possible before XINS 1.0.
     This should improve the speed of the generation of the specdocs.
-
-* Generation of the API from the WSDL:
-  - If the WSDL parameter is all uppercase, the variable will be all lowercase.
-  - Added support of reference to another complex type or to an element from
-    an element.
-  - Fixed the XML Schema 's:' was not extended to 'xsd:'.
-  - Fixed the wsdl directory is created if it didn't exists when importing
-    from an URL.
-  - Unbounded elements are put in the data section.
 
 * Generated build file:
   - Fixed RFE/Bug 1632118: test-API target does not depend on war-API target.

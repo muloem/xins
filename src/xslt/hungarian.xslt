@@ -59,22 +59,43 @@
 
 	<!--
 	- Transform a property name in a hungarian-formatted string starting with an
-	- lowercase. If the word in uppercase, it creates a all lowercase word.
+	- lowercase and with the floowing rules:
+	- If the word is in uppercase, it creates a all lowercase word.
+	- If the word starts with several uppercases, it sets them expect the last one to lower (e.g. HTTPInfo -> httpInfo)
 	-->
-	<xsl:template name="hungarianLower2">
+	<xsl:template name="smartHungarianLower">
 		<xsl:param name="text" />
 
-		<xsl:variable name="upperText">
-			<xsl:value-of select="translate($text,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
-		</xsl:variable>
+		<xsl:variable name="upperText" select="translate($text,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 		<xsl:choose>
 			<xsl:when test="$upperText = $text">
 				<xsl:value-of select="translate($text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
 			</xsl:when>
-			<xsl:otherwise>
+			<xsl:when test="string-length($text) &lt; 3">">
 				<xsl:call-template name="hungarianLower">
 					<xsl:with-param name="text" select="$text" />
 				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
+				<xsl:variable name="rest" select="substring($text, 2)" />
+				<xsl:variable name="secondChar" select="substring($text, 2, 1)" />
+				<xsl:variable name="lowerSecondChar" select="translate($secondChar,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+				<xsl:variable name="thirdChar" select="substring($text, 3, 1)" />
+				<xsl:variable name="lowerThirdChar" select="translate($thirdChar,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+				<xsl:choose>
+					<xsl:when test="$secondChar != $lowerSecondChar and $thirdChar != $lowerThirdChar">
+						<xsl:value-of select="translate($firstChar,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+						<xsl:call-template name="smartHungarianLower">
+							<xsl:with-param name="text" select="$rest" />
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="hungarianLower">
+							<xsl:with-param name="text" select="$text" />
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

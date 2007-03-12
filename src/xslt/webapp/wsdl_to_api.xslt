@@ -382,7 +382,7 @@
 		<xsl:param name="elementName" />
 
 		<xsl:variable name="paramName">
-			<xsl:call-template name="hungarianLower2">
+			<xsl:call-template name="smartHungarianLower">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
@@ -488,7 +488,7 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="elementName">
-					<xsl:call-template name="hungarianLower2">
+					<xsl:call-template name="smartHungarianLower">
 						<xsl:with-param name="text" select="$localNameType" />
 					</xsl:call-template>
 				</xsl:variable>
@@ -557,7 +557,7 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="elementName">
-					<xsl:call-template name="hungarianLower2">
+					<xsl:call-template name="smartHungarianLower">
 						<xsl:with-param name="text" select="$localNameType" />
 					</xsl:call-template>
 				</xsl:variable>
