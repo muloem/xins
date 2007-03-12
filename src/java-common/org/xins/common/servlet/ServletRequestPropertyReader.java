@@ -32,10 +32,6 @@ import org.xins.common.text.URLEncoding;
 public final class ServletRequestPropertyReader
 extends AbstractPropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Sets a parameter to the specified value. If the parameter is already set
     * to a different value, then an exception is thrown.
@@ -76,11 +72,6 @@ extends AbstractPropertyReader {
 
       properties.put(key, value);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ServletRequestPropertyReader</code> for a
@@ -155,9 +146,4 @@ extends AbstractPropertyReader {
                                   "URL decoding failed.");
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

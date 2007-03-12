@@ -20,10 +20,6 @@ import org.xins.common.collections.MissingRequiredPropertyException;
  */
 public class RuntimeProperties {
 
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Initialize the runtime properties. This method should be overwritten
     * by a generated class if any runtime properties is declared in the

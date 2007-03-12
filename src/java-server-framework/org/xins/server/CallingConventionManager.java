@@ -39,10 +39,6 @@ import org.xins.common.text.TextUtils;
  */
 class CallingConventionManager extends Manageable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * List of the names of the calling conventions currently included in
     * XINS.
@@ -68,11 +64,6 @@ class CallingConventionManager extends Manageable {
     * convention object failed. Never <code>null</code>.
     */
    private final static Object CREATION_FAILED = new Object();
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a <code>CallingConventionManager</code> for the specified API.
     *
@@ -87,16 +78,11 @@ class CallingConventionManager extends Manageable {
       // Fill the list of the convention names with the pre defined conventions
       _conventionNames = new ArrayList();
       _conventionNames.addAll(CONVENTIONS);
-      
+
       // Create a map to store the conventions in
       _conventions = new HashMap(12);
 
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The API. Never <code>null</code>.
@@ -123,11 +109,6 @@ class CallingConventionManager extends Manageable {
     * constructed.
     */
    private final HashMap _conventions;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs the bootstrap procedure (actual implementation).
@@ -165,7 +146,7 @@ class CallingConventionManager extends Manageable {
 
       // Construct and bootstrap the default calling convention
       CallingConvention cc = create(properties, _defaultConventionName);
-      
+
       // If created, store the object and attempt bootstrapping
       if (cc != null) {
          _conventions.put(_defaultConventionName, cc);

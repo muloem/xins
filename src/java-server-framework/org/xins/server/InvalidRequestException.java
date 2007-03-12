@@ -17,10 +17,6 @@ import org.xins.logdoc.ExceptionUtils;
 public class InvalidRequestException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidRequestException</code> with the specified
     * detail message and cause exception.

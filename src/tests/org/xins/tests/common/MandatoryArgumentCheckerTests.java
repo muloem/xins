@@ -21,10 +21,6 @@ import org.xins.common.ProgrammingException;
  */
 public class MandatoryArgumentCheckerTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class MandatoryArgumentCheckerTests extends TestCase {
    public static Test suite() {
       return new TestSuite(MandatoryArgumentCheckerTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>MandatoryArgumentCheckerTests</code> test suite with
@@ -50,11 +41,6 @@ public class MandatoryArgumentCheckerTests extends TestCase {
    public MandatoryArgumentCheckerTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the check method that checks 1 argument.

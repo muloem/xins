@@ -26,10 +26,6 @@ import org.xins.tests.AllTests;
  */
 public class InvalidRequestTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -39,11 +35,6 @@ public class InvalidRequestTests extends TestCase {
    public static Test suite() {
       return new TestSuite(InvalidRequestTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>InvalidRequestTests</code> test suite with
@@ -56,21 +47,11 @@ public class InvalidRequestTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>XINSServiceCaller</code> used to call the API. This field is
     * initialized by {@link #setUp()}.
     */
    private XINSServiceCaller _caller;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
       String           url    = AllTests.url();

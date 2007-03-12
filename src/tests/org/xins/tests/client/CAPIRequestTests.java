@@ -27,10 +27,6 @@ import com.mycompany.allinone.types.TextList;
  */
 public class CAPIRequestTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -40,11 +36,6 @@ public class CAPIRequestTests extends TestCase {
    public static Test suite() {
       return new TestSuite(CAPIRequestTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>CAPIRequestTests</code> test suite with
@@ -56,10 +47,6 @@ public class CAPIRequestTests extends TestCase {
    public CAPIRequestTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests that the generated get methods return the last value set.
@@ -191,7 +178,7 @@ public class CAPIRequestTests extends TestCase {
       request.setInputList(null);
       assertNull(request.getInputList());
    }
-   
+
    public void testDefaultValues() {
       DefaultValueRequest request = new DefaultValueRequest();
       assertTrue(request.getInputBoolean().booleanValue());

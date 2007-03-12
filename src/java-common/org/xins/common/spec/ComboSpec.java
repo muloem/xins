@@ -19,10 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 class ComboSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>ComboSpec</code>.
     *
@@ -36,11 +32,6 @@ class ComboSpec {
       _type = type;
       _parameters = parameters;
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The type of the combo, never <code>null</code>.
     */
@@ -50,11 +41,6 @@ class ComboSpec {
     * The parameters of this combo, never <code>null</code>.
     */
    private final Map _parameters;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns whether the combo is a all-or-none type.

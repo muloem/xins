@@ -16,10 +16,6 @@ import org.xins.common.types.standard.Descriptor;
  */
 public class DescriptorTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -29,11 +25,6 @@ public class DescriptorTests extends TestCase {
    public static Test suite() {
       return new TestSuite(DescriptorTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>DescriptorTests</code> test suite with
@@ -46,15 +37,6 @@ public class DescriptorTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the fromStringForRequired method.

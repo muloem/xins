@@ -21,10 +21,6 @@ import org.xins.common.service.TargetDescriptor;
 public abstract class AbstractCAPIErrorCodeException
 extends UnsuccessfulXINSCallException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AbstractCAPIErrorCodeException</code>.
     *
@@ -55,9 +51,4 @@ extends UnsuccessfulXINSCallException {
    throws IllegalArgumentException {
       super(request, target, duration, resultData, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

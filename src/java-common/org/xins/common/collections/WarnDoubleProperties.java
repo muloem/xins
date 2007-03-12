@@ -20,11 +20,6 @@ import org.xins.common.Log;
  * @since XINS 1.4.0
  */
 public class WarnDoubleProperties extends Properties {
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public Object put(Object key, Object value) {
        Object oldValue = super.put(key, value);
        if (oldValue != null &&

@@ -91,11 +91,6 @@ extends HttpServlet {
 
    // TODO: Log 3611 and return an appropriate HTTP result when the API is not
    //       usable.
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
@@ -209,11 +204,6 @@ extends HttpServlet {
     */
    public static final String JSON_CALLING_CONVENTION = "_xins-json";
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Initializes the loggers to log to the console using a simple format
     * and no threshold. This is done by calling
@@ -223,11 +213,6 @@ extends HttpServlet {
       ConfigManager.configureLoggerFallback();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>APIServlet</code> object.
     */
@@ -235,21 +220,11 @@ extends HttpServlet {
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * XINS server engine. Initially <code>null</code> but set to a
     * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
     */
    private Engine _engine;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns information about this servlet, as plain text.

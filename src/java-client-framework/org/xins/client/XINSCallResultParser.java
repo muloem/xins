@@ -46,30 +46,16 @@ import org.xins.common.xml.ElementParser;
  */
 public class XINSCallResultParser {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>XINSCallResultParser</code>.
     */
    public XINSCallResultParser() {
       _parser = new ElementParser();
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * The parser used to parse the XML.
     */
-   private final ElementParser _parser; 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
+   private final ElementParser _parser;
    /**
     * Parses the given XML string to create a <code>XINSCallResultData</code>
     * object.
@@ -134,11 +120,6 @@ public class XINSCallResultParser {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * SAX event handler that will parse the result from a call to a XINS
     * service.
@@ -148,33 +129,28 @@ public class XINSCallResultParser {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static class XINSCallResultDataImpl implements XINSCallResultData {
-
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new <code>XINSCallResultDataImpl</code> instance.
-       * 
+       *
        * @param resultElement
        *    the parsed result, cannot be <code>null</code>.
-       * 
+       *
        * @throws ParseException
        *    if the parse XML does not match the XINS protocol.
        */
       private XINSCallResultDataImpl(Element resultElement) throws ParseException {
-         
+
          if (!"result".equals(resultElement.getLocalName())) {
             String detail = "Incorrect root element '" + resultElement.getLocalName() + "'. Excpected 'result'.";
             throw new ParseException(detail);
          }
          if (resultElement.getNamespaceURI() != null) {
-            String detail = "No namespace is allowed for the 'result' element. The namespace used is '" + 
+            String detail = "No namespace is allowed for the 'result' element. The namespace used is '" +
                   resultElement.getNamespaceURI() + "'.";
             throw new ParseException(detail);
          }
          if (resultElement.getText() != null && !resultElement.getText().trim().equals("")) {
-            String detail = "No PCDATA is allowed for the 'result' element. The PCDATA returned is '" + 
+            String detail = "No PCDATA is allowed for the 'result' element. The PCDATA returned is '" +
                   resultElement.getText() + "'.";
             throw new ParseException(detail);
          }
@@ -203,9 +179,9 @@ public class XINSCallResultParser {
                throw new ParseException("No parameter name specified for a parameter: " + nextParam.toString());
             }
             String paramValue = nextParam.getText();
-            if (_parameters != null && _parameters.get(paramName) != null && 
+            if (_parameters != null && _parameters.get(paramName) != null &&
                   !_parameters.get(paramName).equals(paramValue)) {
-               String detail = "Duplicate output parameter '" + paramName + 
+               String detail = "Duplicate output parameter '" + paramName +
                      "'with different values: '" + _parameters.get(paramName) +
                      "' and '" + paramValue + "'.";
                throw new ParseException(detail);
@@ -244,11 +220,6 @@ public class XINSCallResultParser {
        * The data section of the result, can be <code>null</code>.
        */
       private Element _dataSection;
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
 
       /**

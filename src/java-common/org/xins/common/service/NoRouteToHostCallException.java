@@ -18,10 +18,6 @@ package org.xins.common.service;
 public final class NoRouteToHostCallException
 extends ConnectionCallException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>NoRouteToHostCallException</code>.
     *
@@ -49,9 +45,4 @@ extends ConnectionCallException {
       super("No route to host",
             request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

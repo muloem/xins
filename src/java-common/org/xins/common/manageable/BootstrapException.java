@@ -24,10 +24,6 @@ import org.xins.logdoc.ExceptionUtils;
 public final class BootstrapException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a message based on the specified constructor argument.
     *
@@ -51,11 +47,6 @@ extends Exception {
 
       return message;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>BootstrapException</code> with the specified
@@ -83,9 +74,4 @@ extends Exception {
       super(createMessage(cause));
       ExceptionUtils.setCause(this, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

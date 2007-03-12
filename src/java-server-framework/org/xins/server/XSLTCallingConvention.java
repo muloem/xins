@@ -52,10 +52,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public class XSLTCallingConvention extends StandardCallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the runtime property that defines if the templates should be
     * cached. Should be either <code>"true"</code> or <code>"false"</code>.
@@ -99,11 +95,6 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     */
    public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>XSLTCallingConvention</code> object.
     */
@@ -115,11 +106,6 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       // Initialize the template cache
       _templateCache = new HashMap(89);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The XSLT transformer. Never <code>null</code>.
@@ -148,11 +134,6 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     * Cache for the XSLT templates. Never <code>null</code>.
     */
    private Map _templateCache;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected void initImpl(PropertyReader runtimeProperties)
    throws MissingRequiredPropertyException,

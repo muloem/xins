@@ -27,10 +27,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public final class HTTPCallResult extends CallResult implements HTTPCallResultData {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Checks the constructor arguments that cannot be <code>null</code>.
     *
@@ -65,11 +61,6 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
 
       return request;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPCallResult</code> object.
@@ -113,21 +104,11 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
       _data = data;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>HTTPCallResultData</code> object that contains the information
     * returned from the call. This field cannot be <code>null</code>.
     */
    private final HTTPCallResultData _data;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the HTTP status code.

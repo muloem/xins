@@ -12,18 +12,6 @@ package com.mycompany.allinone.api;
  */
 public class RuntimePropsImpl extends RuntimeProps {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>RuntimePropsImpl</code> instance.
     *
@@ -34,15 +22,6 @@ public class RuntimePropsImpl extends RuntimeProps {
    public RuntimePropsImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
       RuntimeProperties props = (RuntimeProperties) getAPI().getProperties();

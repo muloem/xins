@@ -15,10 +15,6 @@ import org.xins.common.types.standard.Boolean;
  */
 public class BooleanTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -28,11 +24,6 @@ public class BooleanTests extends TestCase {
    public static Test suite() {
       return new TestSuite(BooleanTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>BooleanTests</code> test suite with
@@ -45,15 +36,6 @@ public class BooleanTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the fromStringForRequired method of the Boolean type class.

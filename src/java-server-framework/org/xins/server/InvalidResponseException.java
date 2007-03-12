@@ -17,10 +17,6 @@ package org.xins.server;
 public final class InvalidResponseException
 extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidResponseException</code> with the
     * specified detail message.
@@ -31,9 +27,4 @@ extends RuntimeException {
    InvalidResponseException(String message) {
       super(message);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

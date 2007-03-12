@@ -17,10 +17,6 @@ package org.xins.logdoc;
  */
 final class MandatoryArgumentChecker {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Checks that the specified argument is not <code>null</code>.
     *
@@ -99,11 +95,6 @@ final class MandatoryArgumentChecker {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
     * is private since this no instances of this class should be created.
@@ -111,9 +102,4 @@ final class MandatoryArgumentChecker {
    private MandatoryArgumentChecker() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

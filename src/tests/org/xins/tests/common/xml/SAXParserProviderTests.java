@@ -22,10 +22,6 @@ import org.xins.common.xml.SAXParserProvider;
  */
 public class SAXParserProviderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class SAXParserProviderTests extends TestCase {
    public static Test suite() {
       return new TestSuite(SAXParserProviderTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>SAXParserProviderTests</code> test suite with
@@ -51,11 +42,6 @@ public class SAXParserProviderTests extends TestCase {
    public SAXParserProviderTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the <code>SAXParserProvider</code> class.
@@ -80,11 +66,6 @@ public class SAXParserProviderTests extends TestCase {
       o5 = SAXParserProvider.get();
       assertTrue("Expected SAXParserProvider to return same SAXParser instance when called twice from the same thread.", o1 == o5);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    private class TestThread extends Thread {
       private Object _result1;

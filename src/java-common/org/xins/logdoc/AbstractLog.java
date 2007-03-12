@@ -18,10 +18,6 @@ import org.apache.log4j.Level;
  */
 public abstract class AbstractLog {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <em>debug</em> log level.
     */
@@ -52,11 +48,6 @@ public abstract class AbstractLog {
     */
    public static final Level FATAL;
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Initializes this class.
     */
@@ -74,22 +65,12 @@ public abstract class AbstractLog {
       FATAL   = Level.FATAL;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AbstractLog</code> instance.
     */
    protected AbstractLog() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    /**
     * Log controller. Can be used by the <code>LogCentral</code> class to set
@@ -103,11 +84,6 @@ public abstract class AbstractLog {
     * @since XINS 1.0.0
     */
    protected static abstract class LogController {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>LogController</code> object.
        *
@@ -121,16 +97,6 @@ public abstract class AbstractLog {
          // instance
          LogCentral.registerLog(this);
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       /**
        * Checks if the specified locale is supported.
        *
@@ -165,11 +131,6 @@ public abstract class AbstractLog {
     * @since XINS 1.0.0
     */
    private static final class CustomLevel extends Level {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>CustomLevel</code> object.
        *

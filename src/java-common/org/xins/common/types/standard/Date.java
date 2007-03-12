@@ -48,10 +48,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Date extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -62,11 +58,6 @@ public class Date extends Type {
     */
    private final static SimpleDateFormat FORMATTER =
       new SimpleDateFormat("yyyyMMdd");
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a <code>Date.Value</code> with the value of the current date.
@@ -191,11 +182,6 @@ public class Date extends Type {
       return buffer.toString();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Date</code> instance.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -204,11 +190,6 @@ public class Date extends Type {
    private Date() {
       super("_date", Value.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String value) {
 
@@ -261,11 +242,6 @@ public class Date extends Type {
       return toString((Value) value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Value for the type <em>_date</em>. Represents a specific moment in
     * time, with day-precision.
@@ -276,11 +252,6 @@ public class Date extends Type {
     * @since XINS 1.0.0
     */
    public static final class Value implements Cloneable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new date value. The values will not be checked.
        *
@@ -377,20 +348,10 @@ public class Date extends Type {
          _calendar.setTime(date);
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * Calendar representing the moment in time.
        */
       private Calendar _calendar;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Creates and returns a copy of this object.

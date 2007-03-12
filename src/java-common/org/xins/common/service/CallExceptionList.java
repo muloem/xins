@@ -21,10 +21,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class CallExceptionList {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallExceptionList</code> object.
     */
@@ -33,21 +29,11 @@ public final class CallExceptionList {
       _exceptions = new ArrayList();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The underlying collection to store the <code>CallException</code>
     * objects in.
     */
    private final List _exceptions;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Adds a <code>CallException</code> to this list.

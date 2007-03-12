@@ -27,10 +27,6 @@ import org.xins.common.xml.ElementParser;
  */
 public final class ErrorCodeSpec {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Type indicating that the error code is functional.
     *
@@ -44,11 +40,6 @@ public final class ErrorCodeSpec {
     * @since XINS 1.4.0
     */
    public final static Type TECHNICAL = new Type();
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new instance of <code>ErrorCodeSpec</code>.
@@ -81,11 +72,6 @@ public final class ErrorCodeSpec {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Name of the function.
     */
@@ -110,11 +96,6 @@ public final class ErrorCodeSpec {
     * The type of the error code.
     */
    private Type _type;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the error code.
@@ -299,11 +280,6 @@ public final class ErrorCodeSpec {
          }
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Inner class
-   //-------------------------------------------------------------------------
-
    /**
     * Type of an error code.
     *

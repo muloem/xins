@@ -37,10 +37,6 @@ import java.io.Serializable;
  */
 public abstract class CallRequest implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallRequest</code>. This constructor is only
     * available to subclasses, since this class is <code>abstract</code>.
@@ -50,21 +46,11 @@ public abstract class CallRequest implements Serializable {
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>CallConfig</code> associated with this request, if any. Can be
     * -and initially is- <code>null</code>.
     */
    private CallConfig _callConfig;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Describes this request. The description should be trimmed and should fit

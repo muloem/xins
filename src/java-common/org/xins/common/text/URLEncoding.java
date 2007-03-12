@@ -24,10 +24,6 @@ import org.xins.common.Utils;
  */
 public final class URLEncoding {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The character zero (<code>'0'</code>) as an <code>int</code>.
     */
@@ -63,11 +59,6 @@ public final class URLEncoding {
     * elements). The size of this array is 127.
     */
    private static final String[] UNENCODED_TO_ENCODED;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    static {
       UNENCODED_TO_ENCODED = new String[255];
@@ -274,20 +265,10 @@ public final class URLEncoding {
       return decodedValue;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>URLEncoding</code> object.
     */
    private URLEncoding() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

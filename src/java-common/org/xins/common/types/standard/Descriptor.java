@@ -23,19 +23,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Descriptor extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Descriptor SINGLETON = new Descriptor();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a <code>org.xins.common.service.Descriptor</code> from the specified string
@@ -151,11 +142,6 @@ public class Descriptor extends Type {
       return buffer.toString();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Properties</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -164,16 +150,6 @@ public class Descriptor extends Type {
    private Descriptor() {
       super("_descriptor", org.xins.common.service.Descriptor.class);
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    protected final boolean isValidValueImpl(String string) {
 
       if (string == null) {

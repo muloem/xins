@@ -20,10 +20,6 @@ import org.xins.common.service.TargetDescriptor;
 public class DisabledFunctionException
 extends StandardErrorCodeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>DisabledFunctionException</code>.
     *
@@ -54,9 +50,4 @@ extends StandardErrorCodeException {
    throws IllegalArgumentException {
       super(request, target, duration, resultData, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

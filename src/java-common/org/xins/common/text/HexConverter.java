@@ -19,10 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class HexConverter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The number of characters written when converting a <code>byte</code> to
     * an unsigned hex string.
@@ -146,11 +142,6 @@ public class HexConverter {
     * The 'A' character lowered by 0xA.
     */
    private static final int CHAR_UP_A_FACTOR = CHAR_UP_A - 10;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified character is a hexadecimal digit. The following
@@ -818,20 +809,10 @@ public class HexConverter {
       return parseHexLong(s, 0);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>HexConverter</code> object.
     */
    private HexConverter() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

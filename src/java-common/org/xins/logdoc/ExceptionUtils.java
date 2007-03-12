@@ -21,10 +21,6 @@ import java.util.WeakHashMap;
  */
 public final class ExceptionUtils {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Reference to the <code>getCause()</code> method in class
     * <code>Throwable</code>. This reference will be <code>null</code> on Java
@@ -51,11 +47,6 @@ public final class ExceptionUtils {
     * set to <code>null</code>.
     */
    private static final Object NULL = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes this class.
@@ -210,20 +201,10 @@ public final class ExceptionUtils {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ExceptionUtils</code> object.
     */
    private ExceptionUtils() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

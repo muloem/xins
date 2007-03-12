@@ -38,10 +38,6 @@ import org.xins.common.text.ParseException;
  */
 public class ServletRequestPropertyReaderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -51,11 +47,6 @@ public class ServletRequestPropertyReaderTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ServletRequestPropertyReaderTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ServletRequestPropertyReaderTests</code> test
@@ -68,11 +59,6 @@ public class ServletRequestPropertyReaderTests extends TestCase {
    public ServletRequestPropertyReaderTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testServletRequestPropertyReader() {
 
@@ -154,34 +140,15 @@ public class ServletRequestPropertyReaderTests extends TestCase {
 		}
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    private static class ServletRequestMockup
    extends Object
    implements HttpServletRequest {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
 
       private ServletRequestMockup(String queryString) {
          _queryString = queryString;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       private final String _queryString;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       public Object getAttribute(String name) {
          throw new UnsupportedOperationException();

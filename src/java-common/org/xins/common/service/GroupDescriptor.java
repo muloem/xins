@@ -29,10 +29,6 @@ import org.xins.common.Utils;
  */
 public final class GroupDescriptor extends Descriptor {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The identifier of the <em>random</em> group type.
     */
@@ -57,11 +53,6 @@ public final class GroupDescriptor extends Descriptor {
     * Pseudo-random number generator.
     */
    private static final Random RANDOM = new Random();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Gets a group type by identifier.
@@ -91,11 +82,6 @@ public final class GroupDescriptor extends Descriptor {
          return null;
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>GroupDescriptor</code>. The members to be
@@ -178,11 +164,6 @@ public final class GroupDescriptor extends Descriptor {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The type of this group. Cannot be <code>null</code>.
     */
@@ -208,11 +189,6 @@ public final class GroupDescriptor extends Descriptor {
     * always &gt;= 1.
     */
    private int _targetCount;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if this descriptor denotes a group of descriptors.
@@ -298,11 +274,6 @@ public final class GroupDescriptor extends Descriptor {
       return (TargetDescriptor) _targetsByCRC.get(new Integer(crc));
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Type of a group.
     *
@@ -312,11 +283,6 @@ public final class GroupDescriptor extends Descriptor {
     * @since XINS 1.0.0
     */
    public static final class Type implements Serializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Type</code> with the specified description.
        *
@@ -328,20 +294,10 @@ public final class GroupDescriptor extends Descriptor {
          _description = description;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The description for this type.
        */
       private final String _description;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns a textual representation of this object.
@@ -357,11 +313,6 @@ public final class GroupDescriptor extends Descriptor {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Random iterator over the leaf target descriptors contained in this
     * group descriptor. Needed for the implementation of
@@ -373,11 +324,6 @@ public final class GroupDescriptor extends Descriptor {
     * @since XINS 1.0.0
     */
    private final class RandomIterator implements Iterator, Serializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>RandomIterator</code>.
        */
@@ -398,11 +344,6 @@ public final class GroupDescriptor extends Descriptor {
          _currentIterator = member.iterateTargets();
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The set of remaining descriptors. One is removed from a random index
        * each time {@link #next()} is called.
@@ -420,11 +361,6 @@ public final class GroupDescriptor extends Descriptor {
        * no more remaining services to be iterated over.
        */
       private Iterator _currentIterator;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Checks if there is a next element.
@@ -504,11 +440,6 @@ public final class GroupDescriptor extends Descriptor {
     * @since XINS 1.0.0
     */
    private final class OrderedIterator implements Iterator, Serializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>OrderedIterator</code>.
        */
@@ -520,11 +451,6 @@ public final class GroupDescriptor extends Descriptor {
          // Initialize the current iterator to link to that member's services
          _currentIterator = _members[0].iterateTargets();
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
 
       /**
        * The current index into the list of members. Will be set to a negative
@@ -539,11 +465,6 @@ public final class GroupDescriptor extends Descriptor {
        * no more remaining services to be iterated over.
        */
       private Iterator _currentIterator;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Checks if there is a next element.

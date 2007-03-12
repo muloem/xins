@@ -51,10 +51,6 @@ public abstract class API
 extends Manageable
 implements DefaultResultCodes {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Successful empty call result.
     */
@@ -96,11 +92,6 @@ implements DefaultResultCodes {
     * Class used to convert dates to String.
     */
    static final DateConverter DATE_CONVERTER = new DateConverter(true);
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>API</code> object.
@@ -154,11 +145,6 @@ implements DefaultResultCodes {
       _metaFunctionCallIDs.put("_DisableAPI",       new Counter());
       _metaFunctionCallIDs.put("_EnableAPI",        new Counter());
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The engine that owns this <code>API</code> object.
@@ -292,11 +278,6 @@ implements DefaultResultCodes {
     */
    private boolean _apiDisabled;
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Gets the name of this API.
     *
@@ -383,7 +364,7 @@ implements DefaultResultCodes {
     *
     * @param path
     *    the path for the resource, cannot be <code>null</code> and should start with /.
-    * 
+    *
     * @return
     *    the InputStream to use to read this resource or <code>null</code> if
     *    the resource cannot be found.
@@ -1598,11 +1579,6 @@ implements DefaultResultCodes {
    boolean isDisabled() {
        return _apiDisabled;
    }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Thread-safe <code>int</code> counter.
     *
@@ -1610,11 +1586,6 @@ implements DefaultResultCodes {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class Counter {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Counter</code> that initially returns the
        * value <code>0</code>.
@@ -1623,20 +1594,10 @@ implements DefaultResultCodes {
          // empty
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The wrapped <code>int</code> number. Initially <code>0</code>.
        */
       private int _value;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Retrieves the next value. The first time <code>0</code> is returned,

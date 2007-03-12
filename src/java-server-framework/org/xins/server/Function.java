@@ -26,20 +26,11 @@ public abstract class Function
 extends Manageable
 implements DefaultResultCodes {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Call result to be returned when a function is currently disabled. See
     * {@link #isEnabled()}.
     */
    private static final FunctionResult DISABLED_FUNCTION_RESULT = new FunctionResult("_DisabledFunction");
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>Function</code>.
@@ -75,11 +66,6 @@ implements DefaultResultCodes {
       // Notify the API that a Function has been added
       _api.functionAdded(this);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The API implementation this function is part of. This field cannot be
@@ -119,11 +105,6 @@ implements DefaultResultCodes {
     * <code>null</code>.
     */
    private final FunctionStatistics _statistics;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the API that contains this function.

@@ -51,10 +51,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 class CheckLinks {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>UnknownHostException</code>.
@@ -101,11 +97,6 @@ class CheckLinks {
     * HTTP retry handler that does not allow any retries.
     */
    private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Checks all the links in <code>TargetDescriptor</code>s inside the
@@ -548,22 +539,12 @@ class CheckLinks {
       return result;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>CheckLinks</code> object.
     */
    private CheckLinks() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    /**
     * Tries to connect to a URL provided in the
@@ -592,11 +573,6 @@ class CheckLinks {
     * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
     */
    private static final class URLChecker extends Thread {
-
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new <code>URLChecker</code> for the specified target
        * descriptor.
@@ -625,11 +601,6 @@ class CheckLinks {
             throw Utils.logProgrammingError("_url == null");
          }
       }
-
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
 
       /**
        * The target descriptor for which the URL needs to be checked. Never
@@ -666,11 +637,6 @@ class CheckLinks {
        * <code>-1</code>, when the <code>URLChecker</code> was not run yet.
        */
       private int _statusCode;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Runs this thread. It tries to connect to the URL provided in the

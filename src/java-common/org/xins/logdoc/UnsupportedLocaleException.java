@@ -17,10 +17,6 @@ package org.xins.logdoc;
  */
 public final class UnsupportedLocaleException extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>UnsupportedLocaleException</code>.
     *
@@ -45,21 +41,11 @@ public final class UnsupportedLocaleException extends RuntimeException {
       _locale = locale;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The locale that is unsupported. The value of this field cannot be
     * <code>null</code>.
     */
    private final String _locale;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the unsupported locale.

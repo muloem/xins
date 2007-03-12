@@ -20,19 +20,10 @@ import org.xins.common.types.TypeValueException;
  */
 public final class Set extends org.xins.common.types.List {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Set SINGLETON = new Set();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>Set</code>.
@@ -42,11 +33,6 @@ public final class Set extends org.xins.common.types.List {
    private Set() {
       super("_set", Text.SINGLETON);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public ItemList createList() {
       return new Value();
@@ -116,31 +102,16 @@ public final class Set extends org.xins.common.types.List {
       return SINGLETON.toString((ItemList) value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Inner class that represents a set of String.
     */
    public static final class Value extends ItemList {
-
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
       /**
        * Creates a new set.
        */
       public Value() {
          super(true);
       }
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Add a new element in the set.

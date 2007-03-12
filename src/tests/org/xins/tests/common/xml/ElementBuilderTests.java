@@ -25,10 +25,6 @@ import org.xins.common.xml.Element;
  */
 public class ElementBuilderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -38,11 +34,6 @@ public class ElementBuilderTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ElementBuilderTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ElementBuilderTests</code> test suite with
@@ -54,11 +45,6 @@ public class ElementBuilderTests extends TestCase {
    public ElementBuilderTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the <code>ElementBuilder</code> class.

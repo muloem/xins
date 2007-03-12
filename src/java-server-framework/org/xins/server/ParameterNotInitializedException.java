@@ -19,10 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class ParameterNotInitializedException extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ParameterNotInitializedException</code> for the
     * specified parameter.
@@ -41,9 +37,4 @@ public class ParameterNotInitializedException extends RuntimeException {
       // Check argument
       MandatoryArgumentChecker.check("paramName", paramName);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

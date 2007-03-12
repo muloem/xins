@@ -18,10 +18,6 @@ package org.xins.logdoc;
  */
 public final class UnsupportedLocaleError extends Error {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Determines the message for an instance of this exception class.
     *
@@ -43,11 +39,6 @@ public final class UnsupportedLocaleError extends Error {
 
       return exception.getMessage();
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>UnsupportedLocaleError</code>.
     *
@@ -71,21 +62,11 @@ public final class UnsupportedLocaleError extends Error {
       _locale = exception.getLocale();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The locale that is unsupported. The value of this field cannot be
     * <code>null</code>.
     */
    private final String _locale;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the unsupported locale.

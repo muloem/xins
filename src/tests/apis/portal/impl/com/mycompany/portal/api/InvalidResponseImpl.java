@@ -13,10 +13,6 @@ import org.xins.server.FunctionResult;
  */
 public class InvalidResponseImpl extends InvalidResponse {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidResponseImpl</code> instance.
     *
@@ -27,11 +23,6 @@ public class InvalidResponseImpl extends InvalidResponse {
    public InvalidResponseImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
 
@@ -44,11 +35,6 @@ public class InvalidResponseImpl extends InvalidResponse {
       result.setPattern("bla");
       return result;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    // XXX: This is a hack!
    private static final class NaughtyResult

@@ -40,10 +40,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 public class DataElement implements Cloneable {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>DataElement</code>.
     *
@@ -65,11 +61,6 @@ public class DataElement implements Cloneable {
       _namespaceURI = namespaceURI;
       _localName    = localName;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The namespace URI. This field can be <code>null</code>, but it can never
@@ -98,11 +89,6 @@ public class DataElement implements Cloneable {
     * The character content for this element. Can be <code>null</code>.
     */
    private String _text;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the namespace URI.
@@ -476,11 +462,6 @@ public class DataElement implements Cloneable {
       return clone;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Qualified name for an element or attribute. This is a combination of an
     * optional namespace URI and a mandatory local name.
@@ -490,11 +471,6 @@ public class DataElement implements Cloneable {
     * @since XINS 1.1.0
     */
    public static final class QualifiedName {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>QualifiedName</code> with the specified
        * namespace and local name.
@@ -526,11 +502,6 @@ public class DataElement implements Cloneable {
          _localName    = localName;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The hash code for this object.
        */
@@ -545,11 +516,6 @@ public class DataElement implements Cloneable {
        * The local name. Cannot be <code>null</code>.
        */
       private final String _localName;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns the hash code value for this object.

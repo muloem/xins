@@ -28,10 +28,6 @@ import org.xins.client.XINSCallResultParser;
  */
 public class XINSCallResultParserTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -41,11 +37,6 @@ public class XINSCallResultParserTests extends TestCase {
    public static Test suite() {
       return new TestSuite(XINSCallResultParserTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSCallResultParserTests</code> test suite with
@@ -57,11 +48,6 @@ public class XINSCallResultParserTests extends TestCase {
    public XINSCallResultParserTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the behaviour of <code>XINSCallResultParser</code>, method

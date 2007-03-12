@@ -74,10 +74,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public final class DescriptorBuilder {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Delimiter between tokens within a property value. This is the comma
     * character <code>','</code>.
@@ -105,11 +101,6 @@ public final class DescriptorBuilder {
     * Name identifying a group of descriptors.
     */
    public static final String GROUP_DESCRIPTOR_TYPE = "group";
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Tokenizes the specified string. The {@link #DELIMITER_AS_STRING} will be
@@ -432,11 +423,6 @@ public final class DescriptorBuilder {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>DescriptorBuilder</code>.
     */
@@ -445,9 +431,4 @@ public final class DescriptorBuilder {
 
       // NOTE: No tracing is performed, since this constructor is never used
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

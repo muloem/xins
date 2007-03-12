@@ -29,19 +29,10 @@ import org.xins.common.xml.Element;
  */
 public class BeanUtils {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Constant used to identified some methods.
     */
    private final static Class[] STRING_CLASS = {String.class};
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Get the values returned by the get methods of the source object and

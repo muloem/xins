@@ -21,10 +21,6 @@ import org.xins.common.xml.Element;
  */
 public final class CallContext {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallContext</code> and configures it for the
     * specified request.
@@ -68,11 +64,6 @@ public final class CallContext {
       _builder      = new FunctionResult();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The parameters of the request.
     */
@@ -103,11 +94,6 @@ public final class CallContext {
     * The IP address of the caller.
     */
    private final String _remoteIP;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the start time of the call.

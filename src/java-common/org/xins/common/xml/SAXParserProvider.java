@@ -30,10 +30,6 @@ import org.xml.sax.InputSource;
  */
 public class SAXParserProvider {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The factory for SAX parsers. This field is never <code>null</code>, it
     * is initialized by a class initializer.
@@ -45,11 +41,6 @@ public class SAXParserProvider {
     * field is never <code>null</code>.
     */
    private static ThreadLocal CACHE;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes this class.
@@ -120,20 +111,10 @@ public class SAXParserProvider {
       return parser;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>SAXParserProvider</code>.
     */
    private SAXParserProvider() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

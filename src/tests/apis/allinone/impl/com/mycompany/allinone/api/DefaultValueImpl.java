@@ -16,18 +16,6 @@ import java.util.Iterator;
  */
 public final class DefaultValueImpl extends DefaultValue {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>DefaultValueImpl</code> instance.
     *
@@ -38,15 +26,6 @@ public final class DefaultValueImpl extends DefaultValue {
    public DefaultValueImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Calls this function. If the function fails, it may throw any kind of
@@ -63,25 +42,25 @@ public final class DefaultValueImpl extends DefaultValue {
     */
    public Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
-      
+
       if (!request.getInputText().equals("copyright")) {
-         
+
          // copy the input value
          result.setOutputText(request.getInputText());
       }
-      
+
       Iterator itPersons = request.listPerson().iterator();
       if (itPersons.hasNext()) {
          Request.Person nextPerson = (Request.Person) itPersons.next();
          result.setCopyAge(nextPerson.getAge());
       }
-      
+
       OutputElement elem1 = new OutputElement();
       result.addOutputElement(elem1);
       OutputElement elem2 = new OutputElement();
       elem2.setOutputAttribute("another output");
       result.addOutputElement(elem2);
-      
+
       return result;
    }
 }

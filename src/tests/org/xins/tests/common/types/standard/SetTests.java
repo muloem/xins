@@ -23,10 +23,6 @@ import org.xins.common.types.standard.Set;
  */
 public class SetTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -36,11 +32,6 @@ public class SetTests extends TestCase {
    public static Test suite() {
       return new TestSuite(SetTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>SetTests</code> test suite with
@@ -52,11 +43,6 @@ public class SetTests extends TestCase {
    public SetTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testFromString() throws Throwable {
 
@@ -85,7 +71,7 @@ public class SetTests extends TestCase {
       assertEquals(name1, mySet.get(0));
       assertEquals(name2, mySet.get(1));
       assertEquals(name3, mySet.get(2));
-      
+
       // Test with 2 similar items
       String string2 = string + '&' + URLEncoder.encode(name1);
       Set.Value mySet2 = (Set.Value) Set.SINGLETON.fromString(string2);

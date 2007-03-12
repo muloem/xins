@@ -16,10 +16,6 @@ package org.xins.common.types;
  */
 public class PatternCompileException extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>PatternCompileException</code>.
     *
@@ -29,9 +25,4 @@ public class PatternCompileException extends RuntimeException {
    protected PatternCompileException(String message) {
       super(message);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

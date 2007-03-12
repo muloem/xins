@@ -22,10 +22,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public class UtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class UtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(UtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UtilsTests</code> test suite with
@@ -51,11 +42,6 @@ public class UtilsTests extends TestCase {
    public UtilsTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testGetCallingClassAndMethod() {
       // TODO: Test this for Java 1.3 (and down) as well?
@@ -192,7 +178,7 @@ public class UtilsTests extends TestCase {
            nothing.toString();
            fail("no NPE thrown as expected");
        } catch (NullPointerException npe) {
-           
+
            // Test that the logIgnoredException method does not fail
            Utils.logIgnoredException(npe);
        }

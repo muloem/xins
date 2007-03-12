@@ -24,21 +24,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class CustomCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CustomCallingConvention</code>.
     */
    public CustomCallingConvention() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified request can possibly be handled by this calling

@@ -22,10 +22,6 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  */
 public class StartServer extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class StartServer extends TestCase {
    public static Test suite() {
       return new TestSuite(StartServer.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>StartServer</code> test suite with
@@ -52,11 +43,6 @@ public class StartServer extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public void testStartServer() throws Exception {
 
       // Determine on which server socket to listen
@@ -67,7 +53,7 @@ public class StartServer extends TestCase {
       File xinsProps = new File(System.getProperty("user.dir"), "src/tests/xins.properties".replace('/', File.separatorChar));
       System.setProperty("org.xins.server.config", xinsProps.getAbsolutePath());
       AllTests.HTTP_SERVER = startServer("allinone", AllTests.port());
-      
+
       // Start portal API
       System.setProperty("org.xins.server.config", "");
       startServer("portal", port + 1);

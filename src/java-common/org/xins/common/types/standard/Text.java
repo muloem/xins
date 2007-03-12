@@ -19,19 +19,10 @@ import org.xins.common.types.TypeValueException;
  */
 public final class Text extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Text SINGLETON = new Text();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to a
@@ -80,11 +71,6 @@ public final class Text extends Type {
       return string;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Text</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -93,11 +79,6 @@ public final class Text extends Type {
    private Text() {
       super("_text", String.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected Object fromStringImpl(String string) {
       return string;

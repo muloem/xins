@@ -50,10 +50,6 @@ import org.xins.logdoc.LogCentral;
  */
 final class Engine {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Perl 5 pattern compiler.
     */
@@ -63,11 +59,6 @@ final class Engine {
     * Property used to start JMX.
     */
    private static final String JMX_PROPERTY = "org.xins.server.jmx";
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>Engine</code> object.
@@ -132,11 +123,6 @@ final class Engine {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The state machine for this engine. Never <code>null</code>.
     */
@@ -185,11 +171,6 @@ final class Engine {
     * field is indeed <code>null</code>.
     */
    private Pattern _contextIDPattern;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Bootstraps the API. The following steps will be performed:
@@ -442,7 +423,7 @@ final class Engine {
       if (request.getCharacterEncoding() == null) {
          request.setCharacterEncoding("UTF-8");
       }
-      
+
       // Associate the current diagnostic context identifier with this thread
       String contextID = determineContextID(request);
       NDC.push(contextID);

@@ -18,10 +18,6 @@ import java.util.Map;
  */
 public final class AttributeComboSpec extends ComboSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>AttributeComboSpec</code>.
     *
@@ -37,11 +33,6 @@ public final class AttributeComboSpec extends ComboSpec {
    AttributeComboSpec(String type, Map attributes) throws IllegalArgumentException {
       super(type, attributes);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the attributes defined in the attribute combo.

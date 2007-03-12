@@ -38,10 +38,6 @@ import org.xins.common.text.TextUtils;
  */
 public class ElementParser {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Error state for the SAX event handler.
     */
@@ -59,11 +55,6 @@ public class ElementParser {
     */
    private static final State FINISHED = new State("FINISHED");
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ElementParser</code>.
     */
@@ -71,11 +62,6 @@ public class ElementParser {
 
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Parses the specified String to create an XML <code>Element</code> object.
@@ -232,11 +218,6 @@ public class ElementParser {
       return element;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * SAX event handler that will parse XML.
     *
@@ -245,11 +226,6 @@ public class ElementParser {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static class Handler extends DefaultHandler {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Handler</code> instance.
        */
@@ -260,11 +236,6 @@ public class ElementParser {
          _characters       = new StringBuffer(145);
          _dataElementStack = new Stack();
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
 
       /**
        * The current state. Never <code>null</code>.
@@ -295,11 +266,6 @@ public class ElementParser {
        * root element (<code>result</code>), etc.
        */
       private int _level;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Receive notification of the beginning of an element.
@@ -501,11 +467,6 @@ public class ElementParser {
     * @since XINS 1.0.0
     */
    private static final class State {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>State</code> object.
        *
@@ -523,20 +484,10 @@ public class ElementParser {
          _name = name;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The name of this state. Cannot be <code>null</code>.
        */
       private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns the name of this state.

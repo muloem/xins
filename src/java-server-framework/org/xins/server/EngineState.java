@@ -15,11 +15,6 @@ import org.xins.common.MandatoryArgumentChecker;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 final class EngineState {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    static final Type INTERMEDIATE_STATE = new Type();
 
    static final Type USABLE_STATE = new Type();
@@ -98,11 +93,6 @@ final class EngineState {
    static final EngineState DISPOSED
       = new EngineState("DISPOSED", INTERMEDIATE_STATE);
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>EngineState</code> object.
     *
@@ -126,11 +116,6 @@ final class EngineState {
       _type = type;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of this state. Cannot be <code>null</code>.
     */
@@ -140,11 +125,6 @@ final class EngineState {
     * The type of this state. Never <code>null</code>.
     */
    private final Type _type;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the name of this state.
@@ -188,11 +168,6 @@ final class EngineState {
       return _name;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Categorization of an engine state.
     *
@@ -200,11 +175,6 @@ final class EngineState {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    static class Type {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new instance.
        */

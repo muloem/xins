@@ -18,20 +18,11 @@ package org.xins.common.service;
 public final class SocketTimeOutCallException
 extends GenericCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = 3960746542315816035L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>SocketTimeOutCallException</code>.
@@ -60,9 +51,4 @@ extends GenericCallException {
       super("Socket time-out",
             request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

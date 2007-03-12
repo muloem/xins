@@ -22,10 +22,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Base64 extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -35,11 +31,6 @@ public class Base64 extends Type {
     * The encoding used to convert a String to a byte[] and vice versa.
     */
    private final static String STRING_ENCODING = "US-ASCII";
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to an
@@ -121,11 +112,6 @@ public class Base64 extends Type {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Float32</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -155,11 +141,6 @@ public class Base64 extends Type {
       _maximum = maximum;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The minimum number of bytes this Base64 can have.
     */
@@ -169,11 +150,6 @@ public class Base64 extends Type {
     * The maximum number of bytes this Base64 can have.
     */
    private final int _maximum;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines if the specified <code>String</code> value is considered

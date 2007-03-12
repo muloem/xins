@@ -20,19 +20,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Float64 extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Float64 SINGLETON = new Float64();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to an
@@ -123,11 +114,6 @@ public class Float64 extends Type {
       return String.valueOf(value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Float64</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -157,11 +143,6 @@ public class Float64 extends Type {
       _maximum = maximum;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The minimum value that this Float64 can have.
     */
@@ -171,11 +152,6 @@ public class Float64 extends Type {
     * The maximum value that this Float64 can have.
     */
    private final double _maximum;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    protected boolean isValidValueImpl(String value) {
       try {
          double number = Double.parseDouble(value);

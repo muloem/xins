@@ -25,10 +25,6 @@ import com.mycompany.allinone.capi.DefinedTypesRequest;
  */
 public class BeanUtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -38,11 +34,6 @@ public class BeanUtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(BeanUtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>BeanUtilsTests</code> test suite with
@@ -55,11 +46,6 @@ public class BeanUtilsTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public void testPopulate() throws Exception {
 
       // Populate from request to pojo
@@ -70,7 +56,7 @@ public class BeanUtilsTests extends TestCase {
       assertEquals("Test123", pojo.getInputText());
       assertEquals("Test123", ((SimplePojo) pojo2).getInputText());
       assertEquals(pojo, pojo2);
-      
+
       // Populate from pojo to request
       pojo.setInputText("Another test");
       Object request2 = BeanUtils.populate(pojo, request);
@@ -80,7 +66,7 @@ public class BeanUtilsTests extends TestCase {
    }
 
    public void testPopulateWithMapping() throws Exception {
-      
+
       // Populate from request to pojo
       Properties mapping1 = new Properties();
       mapping1.setProperty("InputBoolean", "AlmostBoolean");
@@ -149,11 +135,11 @@ public class BeanUtilsTests extends TestCase {
       private Boolean _almostBoolean = Boolean.FALSE;
       private boolean _realBoolean = false;
       private int _simpleInt;
-      
+
       public void setInputText(String inputText) {
          _inputText = inputText;
       }
-      
+
       public String getInputText() {
          return _inputText;
       }
@@ -161,7 +147,7 @@ public class BeanUtilsTests extends TestCase {
       public void setAlmostBoolean(Boolean almostBoolean) {
          _almostBoolean = almostBoolean;
       }
-      
+
       public Boolean getAlmostBoolean() {
          return _almostBoolean;
       }
@@ -169,7 +155,7 @@ public class BeanUtilsTests extends TestCase {
       public void setRealBoolean(boolean realBoolean) {
          _realBoolean = realBoolean;
       }
-      
+
       public boolean getRealBoolean() {
          return _realBoolean;
       }
@@ -177,7 +163,7 @@ public class BeanUtilsTests extends TestCase {
       public void setSimpleInt(int anInt) {
          _simpleInt = anInt;
       }
-      
+
       public int getSimpleInt() {
          return _simpleInt;
       }

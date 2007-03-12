@@ -14,18 +14,6 @@ import java.util.List;
  */
 public final class DataSection4Impl extends DataSection4 {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>DataSection3Impl</code> instance.
     *
@@ -36,15 +24,6 @@ public final class DataSection4Impl extends DataSection4 {
    public DataSection4Impl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Calls this function. If the function fails, it may throw any kind of
@@ -60,8 +39,8 @@ public final class DataSection4Impl extends DataSection4 {
     *    if anything went wrong.
     */
    public Result call(Request request) throws Throwable {
-      
-      // List the person and address data and fails if 
+
+      // List the person and address data and fails if
       // the input is not as excepted.
       List persons = request.listPerson();
       if (persons.size() == 0) {
@@ -88,7 +67,7 @@ public final class DataSection4Impl extends DataSection4 {
       if (postAddress.length() == 0) {
          throw new Exception("No address given");
       }
-      
+
       SuccessfulResult result = new SuccessfulResult();
       return result;
    }

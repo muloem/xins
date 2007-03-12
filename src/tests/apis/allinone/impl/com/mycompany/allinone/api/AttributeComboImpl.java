@@ -10,25 +10,13 @@ import org.xins.common.types.standard.Date;
 
 /**
  * Implementation of the <code>AttributeCombo</code> function.
- * 
+ *
  * <p>Description: A function to test the attribute-combo.
  *
  * @version $Revision$ $Date$
  * @author John Doe (<a href="mailto:john.doe@mycompany.com">john.doe@mycompany.com</a>)
  */
 public final class AttributeComboImpl extends AttributeCombo {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AttributeComboImpl</code> instance.
@@ -40,15 +28,6 @@ public final class AttributeComboImpl extends AttributeCombo {
    public AttributeComboImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Calls this function. If the function fails, it may throw any kind of

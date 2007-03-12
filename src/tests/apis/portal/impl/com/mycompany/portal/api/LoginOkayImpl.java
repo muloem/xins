@@ -14,10 +14,6 @@ package com.mycompany.portal.api;
  */
 public final class LoginOkayImpl extends LoginOkay {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>LoginOkayImpl</code> instance.
     *
@@ -28,15 +24,6 @@ public final class LoginOkayImpl extends LoginOkay {
    public LoginOkayImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Calls this function. If the function fails, it may throw any kind of

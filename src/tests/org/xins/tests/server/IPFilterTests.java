@@ -20,10 +20,6 @@ import org.xins.common.text.ParseException;
  */
 public class IPFilterTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class IPFilterTests extends TestCase {
    public static Test suite() {
       return new TestSuite(IPFilterTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>IPFilterTests</code> test suite with
@@ -49,11 +40,6 @@ public class IPFilterTests extends TestCase {
    public IPFilterTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs setup for the tests.

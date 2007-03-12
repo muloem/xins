@@ -20,21 +20,12 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class BasicPropertyReader
 extends AbstractPropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>BasicPropertyReader</code>.
     */
    public BasicPropertyReader() {
       super(new HashMap(89));
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the specified property.

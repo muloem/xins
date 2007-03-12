@@ -28,21 +28,12 @@ import java.util.Set;
  */
 public class ChainedMap extends AbstractMap {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of <code>ChainedMap</code>.
     */
    public ChainedMap() {
       // empty
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The keys of the Map.
     */
@@ -52,11 +43,6 @@ public class ChainedMap extends AbstractMap {
     * The key/pair entries of the Map.
     */
    private List _entries = new ArrayList();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public Set entrySet() {
       return new ChainedSet(_entries);
@@ -84,11 +70,6 @@ public class ChainedMap extends AbstractMap {
          return oldValue;
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>Map.Entry</code> for this <code>ChainedMap</code>.
     *
@@ -96,11 +77,6 @@ public class ChainedMap extends AbstractMap {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class EntryMap implements Map.Entry {
-
-      //----------------------------------------------------------------------
-      // Constructor
-      //----------------------------------------------------------------------
-
       /**
        * Creates a new <code>EntryMap</code> instance.
        *
@@ -115,11 +91,6 @@ public class ChainedMap extends AbstractMap {
          _value = value;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The key. Can be <code>null</code>.
        */
@@ -129,11 +100,6 @@ public class ChainedMap extends AbstractMap {
        * The value. Can be <code>null</code>.
        */
       private Object _value;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
        public Object getKey() {
           return _key;
@@ -172,11 +138,6 @@ public class ChainedMap extends AbstractMap {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class ChainedSet extends AbstractSet {
-
-      //----------------------------------------------------------------------
-      // Constructor
-      //----------------------------------------------------------------------
-
       /**
        * Creates a new instance of <code>ChainedSet</code>.
        */
@@ -198,20 +159,10 @@ public class ChainedMap extends AbstractMap {
          }
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The values of the set.
        */
       private List _values = new ArrayList();
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       public int size() {
          return _values.size();
       }

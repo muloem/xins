@@ -24,30 +24,16 @@ import org.xins.common.net.IPAddressUtils;
  */
 public class HostnameTask extends Task {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Default name for the property to set.
     */
    public static final String DEFAULT_PROPERTY_NAME = "hostname";
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Name of the property to store the host name in. Default is
     * {@link #DEFAULT_PROPERTY_NAME}.
     */
    private String _propertyName = DEFAULT_PROPERTY_NAME;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the name of the property. If <code>null</code> or <code>""</code>

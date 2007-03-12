@@ -44,10 +44,6 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public class SOAPCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The response encoding format.
     */
@@ -88,11 +84,6 @@ public class SOAPCallingConvention extends CallingConvention {
     */
    private static final SimpleDateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>SOAPCallingConvention</code> instance.
     *
@@ -112,20 +103,10 @@ public class SOAPCallingConvention extends CallingConvention {
       _api = api;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API. Never <code>null</code>.
     */
    private final API _api;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };
@@ -317,25 +298,25 @@ public class SOAPCallingConvention extends CallingConvention {
    }
 
    /**
-    * Writes the fault section to the SOAP XML when an error code is returned 
+    * Writes the fault section to the SOAP XML when an error code is returned
     * from the function call.
-    * 
+    *
     * @param functionName
     *    the name of the function called.
-    * 
+    *
     * @param namespaceURI
     *    the namespace URI to use for the parameters.
-    * 
+    *
     * @param xinsResult
     *    the result of the call to the function.
-    * 
+    *
     * @param xmlout
     *    the XML outputter to write the parameters in.
-    * 
+    *
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeFaultSection(String functionName, String namespaceURI, FunctionResult xinsResult, XMLOutputter xmlout) 
+   private void writeFaultSection(String functionName, String namespaceURI, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
 
       // Write the fault start tag
@@ -364,20 +345,20 @@ public class SOAPCallingConvention extends CallingConvention {
 
    /**
     * Writes the output parameters to the SOAP XML.
-    * 
+    *
     * @param functionName
     *    the name of the function called.
-    * 
+    *
     * @param xinsResult
     *    the result of the call to the function.
-    * 
+    *
     * @param xmlout
     *    the XML outputter to write the parameters in.
-    * 
+    *
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeOutputParameters(String functionName, FunctionResult xinsResult, XMLOutputter xmlout) 
+   private void writeOutputParameters(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
       Iterator outputParameterNames = xinsResult.getParameters().getNames();
       while (outputParameterNames.hasNext()) {
@@ -403,20 +384,20 @@ public class SOAPCallingConvention extends CallingConvention {
 
    /**
     * Writes the output data section to the SOAP XML.
-    * 
+    *
     * @param functionName
     *    the name of the function called.
-    * 
+    *
     * @param xinsResult
     *    the result of the call to the function.
-    * 
+    *
     * @param xmlout
     *    the XML outputter to write the data section in.
-    * 
+    *
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeOutputDataSection(String functionName, FunctionResult xinsResult, XMLOutputter xmlout) 
+   private void writeOutputDataSection(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
       Element dataElement = xinsResult.getDataElement();
       if (dataElement != null) {

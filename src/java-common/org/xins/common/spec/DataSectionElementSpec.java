@@ -21,10 +21,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class DataSectionElementSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of <code>DataSectionElementSpec</code>.
     *
@@ -56,11 +52,6 @@ public final class DataSectionElementSpec {
       _subElements = subElements;
       _attributeCombos = attributeCombos;
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Name of the element, cannot be <code>null</code>.
     */
@@ -90,11 +81,6 @@ public final class DataSectionElementSpec {
     * The attribute combos of the element, cannot be <code>null</code>.
     */
    private final List _attributeCombos;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the data element.

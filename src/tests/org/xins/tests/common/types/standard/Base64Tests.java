@@ -16,10 +16,6 @@ import org.xins.common.types.standard.Base64;
  */
 public class Base64Tests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -29,11 +25,6 @@ public class Base64Tests extends TestCase {
    public static Test suite() {
       return new TestSuite(Base64Tests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>Base64Tests</code> test suite with
@@ -46,16 +37,7 @@ public class Base64Tests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    ShortBinary lowerLimit = new ShortBinary();
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testToString() throws Throwable {
       byte[] hello = { 'h', 'e', 'l', 'l', 'o' };

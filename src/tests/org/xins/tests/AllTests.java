@@ -19,20 +19,11 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  */
 public class AllTests extends TestSuite {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    private static final int DEFAULT_PORT = 9123;
 
    private static final boolean RUN_SERVER = true;
 
    public static HTTPServletHandler HTTP_SERVER;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the host to use to connect to the server.
@@ -198,11 +189,6 @@ public class AllTests extends TestSuite {
       return suite;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AllTests</code> object with the specified name.
     * The name will be passed to the superconstructor.
@@ -213,9 +199,4 @@ public class AllTests extends TestSuite {
    public AllTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

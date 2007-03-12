@@ -21,21 +21,12 @@ import org.xins.logdoc.AbstractLogdocSerializable;
 final class FormattedDate
 extends AbstractLogdocSerializable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Shared <code>DateConverter</code> instance. Used by all
     * <code>FormattedDate</code> instances. Needs to be locked first.
     */
    private static final DateConverter DATE_CONVERTER =
       new DateConverter(true);
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>FormattedDate</code> object.
@@ -48,20 +39,10 @@ extends AbstractLogdocSerializable {
       _epochDate = date;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The date, as a number of milliseconds since the UNIX Epoch.
     */
    private final long _epochDate;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes this <code>AbstractLogdocSerializable</code>.

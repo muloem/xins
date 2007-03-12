@@ -22,10 +22,6 @@ import org.xins.common.xml.Element;
  */
 class FormattedParameters {
 
-   //------------------------------------------------------------------------
-   // Constructors
-   //------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>FormattedParameters</code> object.
     *
@@ -50,11 +46,6 @@ class FormattedParameters {
       _dataSection = dataSection;
    }
 
-
-   //------------------------------------------------------------------------
-   // Fields
-   //------------------------------------------------------------------------
-
    /**
     * The parameters to serialize. This field can be <code>null</code>.
     */
@@ -64,11 +55,6 @@ class FormattedParameters {
     * The data section.
     */
    private final Element _dataSection;
-
-
-   //------------------------------------------------------------------------
-   // Methods
-   //------------------------------------------------------------------------
 
    /**
     * String representation of the parameters including the data section.

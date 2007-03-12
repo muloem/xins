@@ -31,10 +31,6 @@ import org.xins.tests.AllTests;
  */
 public class AsynchronousCallTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -44,11 +40,6 @@ public class AsynchronousCallTests extends TestCase {
    public static Test suite() {
       return new TestSuite(AsynchronousCallTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AsynchronousCallTests</code> test suite with
@@ -62,19 +53,11 @@ public class AsynchronousCallTests extends TestCase {
       super(name);
    }
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    private Boolean successfulTestOkay = null;
    private Throwable assertionSuccessfulTestException = null;
 
    private Boolean unsuccessfulTestOkay = null;
    private Throwable assertionUnsuccessfulTestException = null;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testSuccessfulAsynchronousCall() throws Throwable {
 

@@ -16,10 +16,6 @@ package org.xins.common;
  */
 public final class MandatoryArgumentChecker {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Checks if the specified argument value is <code>null</code>. If it is
     * <code>null</code>, then an {@link IllegalArgumentException} is thrown.
@@ -233,11 +229,6 @@ public final class MandatoryArgumentChecker {
       throw new IllegalArgumentException(message);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
     * is private since this no instances of this class should be created.
@@ -245,9 +236,4 @@ public final class MandatoryArgumentChecker {
    private MandatoryArgumentChecker() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

@@ -24,19 +24,10 @@ import org.xins.client.AbstractCAPICallRequest;
  */
 public class AsynchronousCall {
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * List containing the registered {@link CallListener}.
     */
    private List _listeners = new ArrayList();
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Adds a new listener for the call.
     *

@@ -34,10 +34,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class DateConverter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * All decimal digit characters, <code>'0'</code> to <code>'9'</code>.
     */
@@ -49,11 +45,6 @@ public class DateConverter {
     * Two-length string representations of the digits 0 to 99.
     */
    private static final char[][] VALUES;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Class initialized. Initializes the {@link #VALUES} array.
@@ -178,11 +169,6 @@ public class DateConverter {
       return buffer.toString();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>DateConverter</code>.
     *
@@ -208,11 +194,6 @@ public class DateConverter {
       // Pre-cache the current date
       recompute(System.currentTimeMillis());
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Date formatter that is used as a slow but accurate method for formatting
@@ -247,11 +228,6 @@ public class DateConverter {
     * {@link #_length}.
     */
    private char[] _cachedDateBuffer;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Recomputes the cached formatted date.

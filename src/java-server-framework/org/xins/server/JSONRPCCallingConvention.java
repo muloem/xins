@@ -55,11 +55,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public class JSONRPCCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-
    /**
     * Returns the XML-RPC equivalent for the XINS type.
     *
@@ -84,20 +79,10 @@ public class JSONRPCCallingConvention extends CallingConvention {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The content type of the HTTP response.
     */
    public static final String RESPONSE_CONTENT_TYPE = "application/json";
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>JSONRPCCallingConvention</code> instance.
@@ -113,20 +98,10 @@ public class JSONRPCCallingConvention extends CallingConvention {
       _api = api;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API. Never <code>null</code>.
     */
    private final API _api;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected String[] getSupportedMethods() {
       return new String[] { "GET", "POST" };

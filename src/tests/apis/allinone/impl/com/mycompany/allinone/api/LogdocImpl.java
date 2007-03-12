@@ -16,18 +16,6 @@ import org.xins.logdoc.LogdocStringBuffer;
  */
 public class LogdocImpl extends Logdoc  {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>LogdocImpl</code> instance.
     *
@@ -38,15 +26,6 @@ public class LogdocImpl extends Logdoc  {
    public LogdocImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public final Result call(Request request) throws Throwable {
       String input = request.getInputText();
@@ -77,10 +56,6 @@ public class LogdocImpl extends Logdoc  {
     * to write directly to the logdoc.
     */
    class MyThread extends Thread {
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       public String toString() {
          StringBuffer buffer = new StringBuffer();

@@ -18,10 +18,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class TypeValueException extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a message for the constructor after checking the arguments.
     *
@@ -58,11 +54,6 @@ public class TypeValueException extends Exception {
 
       return message;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>TypeValueException</code>.
@@ -107,11 +98,6 @@ public class TypeValueException extends Exception {
       _detail = detail;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The concerning parameter type. This field is never <code>null</code>.
     */
@@ -127,11 +113,6 @@ public class TypeValueException extends Exception {
     * <code>null</code>.
     */
    private final String _detail;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the type.

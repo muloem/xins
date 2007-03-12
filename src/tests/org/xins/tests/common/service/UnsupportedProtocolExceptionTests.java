@@ -21,10 +21,6 @@ import org.xins.common.service.UnsupportedProtocolException;
  */
 public class UnsupportedProtocolExceptionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(UnsupportedProtocolExceptionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnsupportedProtocolExceptionTests</code> test
@@ -51,11 +42,6 @@ public class UnsupportedProtocolExceptionTests extends TestCase {
    public UnsupportedProtocolExceptionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testContructor() throws Throwable {
       try {

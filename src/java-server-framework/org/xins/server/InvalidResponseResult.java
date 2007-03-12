@@ -17,10 +17,6 @@ package org.xins.server;
  */
 public class InvalidResponseResult extends InvalidMessageResult {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidResponseResult</code> object.
     */

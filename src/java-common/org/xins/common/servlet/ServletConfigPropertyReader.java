@@ -26,10 +26,6 @@ import org.xins.common.collections.PropertyReader;
  */
 public final class ServletConfigPropertyReader implements PropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ServletConfigPropertyReader</code>.
     *
@@ -48,11 +44,6 @@ public final class ServletConfigPropertyReader implements PropertyReader {
       _servletConfig = servletConfig;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The servlet configuration object.
     */
@@ -63,11 +54,6 @@ public final class ServletConfigPropertyReader implements PropertyReader {
     * {@link #size()}.
     */
    private int _size;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the value of the property with the specified name.

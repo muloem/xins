@@ -29,10 +29,6 @@ import org.xins.common.Utils;
  */
 public final class ExpiryStrategy {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The fully-qualified name of this class.
     */
@@ -47,11 +43,6 @@ public final class ExpiryStrategy {
     * Lock object for <code>INSTANCE_COUNT</code>.
     */
    private static final Object INSTANCE_COUNT_LOCK = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ExpiryStrategy</code> and starts the
@@ -124,11 +115,6 @@ public final class ExpiryStrategy {
       _timerThread.start();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The instance number of this instance.
     */
@@ -176,11 +162,6 @@ public final class ExpiryStrategy {
     * <code>false</code>, ofcourse.
     */
    private boolean _stop;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks whether this object is considered equal to the argument.
@@ -355,11 +336,6 @@ public final class ExpiryStrategy {
       return _asString;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Timer thread for an expiry strategy. It calls back the expiry strategy
     * at each so-called 'tick'. The interval between ticks is the precision of
@@ -371,22 +347,12 @@ public final class ExpiryStrategy {
     * @since XINS 1.0.0
     */
    private final class TimerThread extends Thread {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>TimerThread</code>.
        */
       public TimerThread() {
          super(ExpiryStrategy.this.toString() + " timer thread");
       }
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Runs this thread. The thread keeps running until the expiry strategy

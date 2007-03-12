@@ -24,10 +24,6 @@ public class UnsuccessfulXINSCallException
 extends XINSCallException
 implements XINSCallResultData {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Delegate for the constructor that determines the detail message based on
     * a <code>XINSCallResultData</code> object and an optional detailed
@@ -67,11 +63,6 @@ implements XINSCallResultData {
          return "Error code \"" + errorCode + "\": " + detail;
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
@@ -125,11 +116,6 @@ implements XINSCallResultData {
       _result = resultData;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The result data. The value of this field cannot be <code>null</code>.
     */
@@ -139,11 +125,6 @@ implements XINSCallResultData {
     * The type of the error.
     */
    private ErrorCodeSpec.Type _type;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the error code.

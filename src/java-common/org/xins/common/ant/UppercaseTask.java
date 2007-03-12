@@ -21,10 +21,6 @@ import org.apache.tools.ant.Task;
  */
 public class UppercaseTask extends Task {
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Name of the property to store the uppercase value in.
     */
@@ -34,11 +30,6 @@ public class UppercaseTask extends Task {
     * The text that has to be set in uppercase.
     */
    private String _text;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the name of the property.

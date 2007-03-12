@@ -27,10 +27,6 @@ import org.xins.tests.AllTests;
  */
 public class CallXINSTaskTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -40,11 +36,6 @@ public class CallXINSTaskTests extends TestCase {
    public static Test suite() {
       return new TestSuite(CallXINSTaskTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>CallXINSTaskTests</code> test suite with
@@ -56,10 +47,6 @@ public class CallXINSTaskTests extends TestCase {
    public CallXINSTaskTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testCallEcho() throws Exception {
       CallXINSTask callTask = createCallXINSTask();

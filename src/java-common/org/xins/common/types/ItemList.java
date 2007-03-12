@@ -25,10 +25,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class ItemList {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>ItemList</code>.
     * The list will be able to contain several instances of an object.
@@ -49,11 +45,6 @@ public class ItemList {
       _setType = setType;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The list that contains the items. Cannot <code>null</code>.
     */
@@ -63,11 +54,6 @@ public class ItemList {
     * Indicates whether this list accepts equal objects.
     */
    private final boolean _setType;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
 
    /**

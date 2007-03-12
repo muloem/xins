@@ -21,20 +21,11 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class UnexpectedExceptionCallException
 extends GenericCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -3071445845610955883L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnexpectedExceptionCallException</code>.
@@ -76,9 +67,4 @@ extends GenericCallException {
 
       // TODO: Check all arguments at once
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

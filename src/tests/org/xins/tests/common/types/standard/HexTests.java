@@ -18,10 +18,6 @@ import org.xins.common.types.standard.Hex;
  */
 public class HexTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -31,11 +27,6 @@ public class HexTests extends TestCase {
    public static Test suite() {
       return new TestSuite(HexTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HexTests</code> test suite with
@@ -47,14 +38,6 @@ public class HexTests extends TestCase {
    public HexTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests if fromStringForRequired() throws an IllegalArgumentException when the string is null

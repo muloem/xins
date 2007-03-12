@@ -19,20 +19,11 @@ import org.xins.common.service.TargetDescriptor;
  */
 public abstract class HTTPCallException extends CallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = 4843166618439269741L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPCallException</code> based on a short
@@ -74,9 +65,4 @@ public abstract class HTTPCallException extends CallException {
    throws IllegalArgumentException {
       super(shortReason, request, target, duration, detail, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

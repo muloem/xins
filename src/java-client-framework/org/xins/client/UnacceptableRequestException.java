@@ -19,10 +19,6 @@ package org.xins.client;
  */
 public final class UnacceptableRequestException extends UnacceptableMessageException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>UnacceptableRequestException</code> using the
     * specified <code>AbstractCAPICallRequest</code>.

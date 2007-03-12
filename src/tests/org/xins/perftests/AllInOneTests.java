@@ -51,16 +51,7 @@ import com.mycompany.allinone.types.TextList;
  */
 public class AllInOneTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    private static final int ROUNDS = 40;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a test suite with all test cases defined by this class.
@@ -71,11 +62,6 @@ public class AllInOneTests extends TestCase {
    public static Test suite() {
       return new TestSuite(AllInOneTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AllInOneTests</code> test suite with
@@ -88,20 +74,10 @@ public class AllInOneTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The HTTP server used to handle the requests.
     */
    private HTTPServletHandler _httpServer;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Starts the HTTP server with the correct parameters.

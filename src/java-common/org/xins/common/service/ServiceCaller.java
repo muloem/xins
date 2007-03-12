@@ -185,10 +185,6 @@ import org.xins.common.Utils;
  */
 public abstract class ServiceCaller {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ServiceCaller</code> with the specified
     * <code>CallConfig</code>.
@@ -237,11 +233,6 @@ public abstract class ServiceCaller {
       _callConfig = callConfig;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The descriptor for this service. Can be <code>null</code>.
     */
@@ -252,11 +243,6 @@ public abstract class ServiceCaller {
     * <code>null</code> if this is an old-style service caller.
     */
    private CallConfig _callConfig;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Asserts that the specified target descriptor is considered acceptable

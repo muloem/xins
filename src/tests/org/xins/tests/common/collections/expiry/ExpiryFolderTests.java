@@ -27,18 +27,9 @@ import org.xins.common.collections.expiry.ExpiryStrategy;
  */
 public class ExpiryFolderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    private final static int    DURATION  = 500;
    private final static int    PRECISION = 100;
    private final static String NAME      = "TestFolder";
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a test suite with all test cases defined by this class.
@@ -50,11 +41,6 @@ public class ExpiryFolderTests extends TestCase {
       return new TestSuite(ExpiryFolderTests.class);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ExpiryFolderTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -65,10 +51,6 @@ public class ExpiryFolderTests extends TestCase {
    public ExpiryFolderTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    // TODO: Stop all expiry strategies globally
 

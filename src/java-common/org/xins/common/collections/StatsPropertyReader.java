@@ -23,20 +23,11 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class StatsPropertyReader implements PropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Confidential object used to protect <code>ProtectedPropertyReader</code>
     * instances from unauthorized changes. Not <code>null</code>.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>StatsPropertyReader</code> based on the specified
@@ -75,11 +66,6 @@ public final class StatsPropertyReader implements PropertyReader {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The set of properties to retrieve values from. Never <code>null</code>.
     */
@@ -90,11 +76,6 @@ public final class StatsPropertyReader implements PropertyReader {
     * <code>null</code> if there are no more unused properties.
     */
    private ProtectedPropertyReader _unused;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the value of the property with the specified name.

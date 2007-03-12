@@ -18,10 +18,6 @@ package org.xins.common.threads;
 public final class QueueTimeOutException
 extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>QueueTimeOutException</code>.
     *
@@ -31,9 +27,4 @@ extends RuntimeException {
    public QueueTimeOutException(String message) {
       super(message);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

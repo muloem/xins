@@ -46,10 +46,6 @@ import org.xins.common.collections.PropertyReaderUtils;
  */
 public abstract class Manageable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <em>UNUSABLE</em> state.
     */
@@ -80,11 +76,6 @@ public abstract class Manageable {
     */
    public static final State DEINITIALIZING = new State(1, "DEINITIALIZING");
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Manageable</code>.
     */
@@ -92,11 +83,6 @@ public abstract class Manageable {
       _state     = UNUSABLE;
       _stateLock = new Object();
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The state of this manageable object.
@@ -107,11 +93,6 @@ public abstract class Manageable {
     * The lock for the state object.
     */
    private Object _stateLock;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the current state of this object.
@@ -491,11 +472,6 @@ public abstract class Manageable {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * State of a <code>Manageable</code> object.
     *
@@ -505,11 +481,6 @@ public abstract class Manageable {
     * @since XINS 1.0.0
     */
    public static final class State {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>State</code> object.
        *
@@ -531,11 +502,6 @@ public abstract class Manageable {
          _name  = name;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The level of this state.
        */
@@ -545,11 +511,6 @@ public abstract class Manageable {
        * The name of this state. Cannot be <code>null</code>.
        */
       private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns the level of this state.

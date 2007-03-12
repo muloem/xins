@@ -24,10 +24,6 @@ import org.xins.common.collections.ProtectedPropertyReader;
  */
 public class ProtectedPropertyReaderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -84,11 +80,6 @@ public class ProtectedPropertyReaderTests extends TestCase {
       assertEquals("one",  p.get("1"));
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ProtectedPropertyReader</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -99,11 +90,6 @@ public class ProtectedPropertyReaderTests extends TestCase {
    public ProtectedPropertyReaderTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testProtectedPropertyReader() throws Exception {
 

@@ -34,10 +34,6 @@ import com.mycompany.allinone.capi.CAPI;
  */
 public class DataSectionElementTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -47,11 +43,6 @@ public class DataSectionElementTests extends TestCase {
    public static Test suite() {
       return new TestSuite(DataSectionElementTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>DataSectionElementTests</code> test suite with
@@ -63,11 +54,6 @@ public class DataSectionElementTests extends TestCase {
    public DataSectionElementTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The API specification of the <i>allinone</i> API.
@@ -83,11 +69,6 @@ public class DataSectionElementTests extends TestCase {
     * The first data section element of the DataSection2 function.
     */
    private DataSectionElementSpec _packetElement;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

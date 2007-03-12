@@ -20,10 +20,6 @@ import javax.servlet.ServletException;
  */
 public class HTTPServletStarter {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Starts the Servlet container for the specific API.
     *
@@ -60,20 +56,10 @@ public class HTTPServletStarter {
          ioe.printStackTrace();
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The default port number.
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>HTTPServletStarter</code> for the specified WAR

@@ -48,20 +48,11 @@ import org.xins.common.text.ParseException;
  */
 public final class IPFilter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The character that delimits the IP address and the mask of the provided
     * filter.
     */
    private static final char IP_MASK_DELIMETER = '/';
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Creates an <code>IPFilter</code> object for the specified filter
@@ -159,11 +150,6 @@ public final class IPFilter {
       return mask;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates an <code>IPFilter</code> object for the specified filter
     * expression. The expression consists of a base IP address and a bit
@@ -187,11 +173,6 @@ public final class IPFilter {
       _mask         = mask;
       _shift        = 32 - _mask;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The expression of this filter, cannot be <code>null</code>.
@@ -218,11 +199,6 @@ public final class IPFilter {
     * between 0 and 32.
     */
    private final int _shift;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the filter expression.

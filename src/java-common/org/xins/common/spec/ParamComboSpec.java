@@ -18,10 +18,6 @@ import java.util.Map;
  */
 public final class ParamComboSpec extends ComboSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>ParamComboSpec</code>.
     *
@@ -37,11 +33,6 @@ public final class ParamComboSpec extends ComboSpec {
    ParamComboSpec(String type, Map parameters) throws IllegalArgumentException {
       super(type, parameters);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the parameters defined in the param combo.

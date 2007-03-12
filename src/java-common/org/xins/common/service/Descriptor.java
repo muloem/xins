@@ -19,10 +19,6 @@ import java.util.Iterator;
  */
 public abstract class Descriptor implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Descriptor</code>.
     */
@@ -30,11 +26,6 @@ public abstract class Descriptor implements Serializable {
 
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if this descriptor denotes a group of descriptor of descriptorss.

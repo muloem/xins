@@ -15,10 +15,6 @@ import org.xins.common.types.standard.Int64;
  */
 public class Int64Tests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -28,11 +24,6 @@ public class Int64Tests extends TestCase {
    public static Test suite() {
       return new TestSuite(Int64Tests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>Int64Tests</code> test suite with
@@ -45,16 +36,7 @@ public class Int64Tests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    ZeroToTenThousand lowerLimit = new ZeroToTenThousand();
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testToString() {
       assertEquals("lowerLimit.toString((long)12) should return a value of \"12\"", "12", lowerLimit.toString((long)12));

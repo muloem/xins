@@ -21,10 +21,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class PropertyReaderConverter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Converts the specified <code>PropertyReader</code> object to a new
     * <code>Properties</code> object.
@@ -55,20 +51,10 @@ public final class PropertyReaderConverter {
       return prop;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>PropertyReaderConverter</code>.
     */
    private PropertyReaderConverter() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

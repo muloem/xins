@@ -21,10 +21,6 @@ import org.xins.common.http.HTTPMethod;
  */
 public class XINSCallConfigTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class XINSCallConfigTests extends TestCase {
    public static Test suite() {
       return new TestSuite(XINSCallConfigTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSCallConfigTests</code> test suite with
@@ -50,11 +41,6 @@ public class XINSCallConfigTests extends TestCase {
    public XINSCallConfigTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testXINSCallConfig() throws Exception {
 

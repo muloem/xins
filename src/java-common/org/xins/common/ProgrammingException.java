@@ -19,10 +19,6 @@ import org.xins.logdoc.ExceptionUtils;
 public final class ProgrammingException
 extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Creates the exception message for the specified details.
     *
@@ -83,11 +79,6 @@ extends RuntimeException {
       return message;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ProgrammingException</code> for the specified
     * class and method, indicating which class and method detected the
@@ -139,11 +130,6 @@ extends RuntimeException {
       _detail          = detail;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the class that detected the problem. Is <code>null</code> if
     * unknown.
@@ -172,11 +158,6 @@ extends RuntimeException {
     * The detail message. Can be <code>null</code>.
     */
    private final String _detail;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the name of the class that detected the problem.

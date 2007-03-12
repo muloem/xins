@@ -33,10 +33,6 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class LocalServletConfig implements ServletConfig {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new Servlet configuration.
     *
@@ -59,11 +55,6 @@ public class LocalServletConfig implements ServletConfig {
          Log.log_1512(ex);
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the servlet.
     */
@@ -88,11 +79,6 @@ public class LocalServletConfig implements ServletConfig {
     * The WAR file.
     */
    private File _warFile;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Parses the web.xml file.
@@ -145,20 +131,10 @@ public class LocalServletConfig implements ServletConfig {
       return _warFile;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Parser for the web.xml containing the information about the Servlet.
     */
    private class WebInfoParser extends DefaultHandler {
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
       /**
        * The PCDATA element of the tag that is actually parsed.
        */
@@ -168,11 +144,6 @@ public class LocalServletConfig implements ServletConfig {
        * The name of the property that is currently parsed.
        */
       private String _paramName;
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       public void startElement(String     namespaceURI,
                                String     localName,

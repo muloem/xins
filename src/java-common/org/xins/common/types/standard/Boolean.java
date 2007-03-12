@@ -20,19 +20,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class Boolean extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Boolean SINGLETON = new org.xins.common.types.standard.Boolean();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to a
@@ -123,11 +114,6 @@ public final class Boolean extends Type {
       return value ? "true" : "false";
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Boolean</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -136,11 +122,6 @@ public final class Boolean extends Type {
    private Boolean() {
       super("_boolean", java.lang.Boolean.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines if the specified <code>String</code> value is considered

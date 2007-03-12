@@ -20,10 +20,6 @@ import org.xins.common.service.TargetDescriptor;
 public class InternalErrorException
 extends StandardErrorCodeException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InternalErrorException</code>.
     *
@@ -54,11 +50,6 @@ extends StandardErrorCodeException {
    throws IllegalArgumentException {
       super(request, target, duration, resultData, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    // XXX: Add methods for retrieval of details?
 }

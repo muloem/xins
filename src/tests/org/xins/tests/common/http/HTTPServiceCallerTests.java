@@ -37,10 +37,6 @@ import org.xins.common.service.UnsupportedProtocolException;
  */
 public class HTTPServiceCallerTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Total time-out to use for HTTP connections.
     */
@@ -55,11 +51,6 @@ public class HTTPServiceCallerTests extends TestCase {
     * Socket time-out to use on HTTP connections.
     */
    private final static int SOCKET_TO = 15000;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a test suite with all test cases defined by this class.
@@ -82,11 +73,6 @@ public class HTTPServiceCallerTests extends TestCase {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>HTTPServiceCaller</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -97,10 +83,6 @@ public class HTTPServiceCallerTests extends TestCase {
    public HTTPServiceCallerTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testConstructor() throws Exception {
 

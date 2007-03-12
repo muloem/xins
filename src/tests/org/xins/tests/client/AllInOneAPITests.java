@@ -50,10 +50,6 @@ import org.xins.tests.AllTests;
  */
 public class AllInOneAPITests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -63,11 +59,6 @@ public class AllInOneAPITests extends TestCase {
    public static Test suite() {
       return new TestSuite(AllInOneAPITests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AllInOneAPITests</code> test suite with
@@ -80,11 +71,6 @@ public class AllInOneAPITests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The target descriptor to use in all tests. This field is initialized by
     * {@link #setUp()}.
@@ -96,11 +82,6 @@ public class AllInOneAPITests extends TestCase {
     * initialized by {@link #setUp()}.
     */
    private CAPI _capi;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
       _target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);

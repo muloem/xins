@@ -24,10 +24,6 @@ import org.xins.common.text.URLEncoding;
  */
 public class URLEncodingTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -37,11 +33,6 @@ public class URLEncodingTests extends TestCase {
    public static Test suite() {
       return new TestSuite(URLEncodingTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>URLEncodingTests</code> test suite with
@@ -53,11 +44,6 @@ public class URLEncodingTests extends TestCase {
    public URLEncodingTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testURLEncodingDecode() throws Throwable {
 

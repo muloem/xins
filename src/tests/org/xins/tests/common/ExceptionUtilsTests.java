@@ -20,10 +20,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public class ExceptionUtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class ExceptionUtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ExceptionUtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ExceptionUtilsTests</code> test suite with
@@ -49,11 +40,6 @@ public class ExceptionUtilsTests extends TestCase {
    public ExceptionUtilsTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the constructor.

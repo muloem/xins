@@ -20,10 +20,6 @@ import org.xins.common.types.Type;
  */
 public final class ParameterSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of <code>ParameterSpec</code>.
     *
@@ -58,11 +54,6 @@ public final class ParameterSpec {
       _description   = description;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The reference class, never <code>null</code>.
     */
@@ -87,11 +78,6 @@ public final class ParameterSpec {
     * Description of the parameter, never <code>null</code>.
     */
    private final String _description;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the parameter.

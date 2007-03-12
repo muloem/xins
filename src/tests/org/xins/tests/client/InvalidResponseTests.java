@@ -30,10 +30,6 @@ import org.xins.tests.AllTests;
  */
 public class InvalidResponseTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -43,11 +39,6 @@ public class InvalidResponseTests extends TestCase {
    public static Test suite() {
       return new TestSuite(InvalidResponseTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>InvalidResponseTests</code> test suite with
@@ -60,20 +51,11 @@ public class InvalidResponseTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The <code>CAPI</code> object used to call the API. This field is
     * initialized by {@link #setUp()}.
     */
    private CAPI _capi;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void setUp() throws Exception {
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.InvalidResponseServlet", "/invalid");

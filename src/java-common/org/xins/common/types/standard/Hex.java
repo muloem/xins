@@ -21,19 +21,10 @@ import org.xins.common.text.HexConverter;
  */
 public class Hex extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Hex SINGLETON = new Hex();
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>byte[]</code> value.
@@ -114,11 +105,6 @@ public class Hex extends Type {
          return HexConverter.toHexString(value);
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Hex</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -148,11 +134,6 @@ public class Hex extends Type {
       _maximum = maximum;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The minimum number of bytes this Hex can have.
     */
@@ -162,11 +143,6 @@ public class Hex extends Type {
     * The maximum number of bytes this Hex can have.
     */
    private final int _maximum;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines if the specified <code>String</code> value is considered

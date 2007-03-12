@@ -18,10 +18,6 @@ import junit.framework.TestSuite;
  */
 public class StopServer extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -31,11 +27,6 @@ public class StopServer extends TestCase {
    public static Test suite() {
       return new TestSuite(StopServer.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>StopServer</code> test suite with
@@ -47,11 +38,6 @@ public class StopServer extends TestCase {
    public StopServer(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testStopServer() throws Exception {
 

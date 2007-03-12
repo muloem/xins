@@ -30,10 +30,6 @@ import com.mycompany.allinone.capi.CAPI;
  */
 public class ParamComboTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -43,11 +39,6 @@ public class ParamComboTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ParamComboTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ParamComboTests</code> test suite with
@@ -59,11 +50,6 @@ public class ParamComboTests extends TestCase {
    public ParamComboTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The exclusive input param combo specification of the
@@ -88,10 +74,6 @@ public class ParamComboTests extends TestCase {
     * <i>ParamComboNotAll</i> function.
     */
    private ParamComboSpec _notAll;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

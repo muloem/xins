@@ -41,10 +41,6 @@ import org.xins.common.text.TextUtils;
  */
 public final class TargetDescriptor extends Descriptor {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The number of instances of this class. Initially 0.
     */
@@ -64,11 +60,6 @@ public final class TargetDescriptor extends Descriptor {
     * The pattern for a URL.
     */
    private static Pattern PATTERN;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Computes the CRC-32 checksum for the specified character string.
@@ -96,11 +87,6 @@ public final class TargetDescriptor extends Descriptor {
       checksum.update(bytes, 0, bytes.length);
       return (int) (checksum.getValue() & 0x00000000ffffffffL);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>TargetDescriptor</code> for the specified URL.
@@ -258,11 +244,6 @@ public final class TargetDescriptor extends Descriptor {
       // NOTE: _asString is lazily initialized
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The 1-based sequence number of this instance. Since this number is
     * 1-based, the first instance of this class will have instance number 1
@@ -303,11 +284,6 @@ public final class TargetDescriptor extends Descriptor {
     * The CRC-32 checksum for the URL. See {@link #_url}.
     */
    private final int _crc;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if this descriptor denotes a group of descriptors.
@@ -524,11 +500,6 @@ public final class TargetDescriptor extends Descriptor {
       return _asString;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Iterator over this (single) target descriptor. Needed for the
     * implementation of {@link #iterateTargets()}.
@@ -539,11 +510,6 @@ public final class TargetDescriptor extends Descriptor {
     * @since XINS 1.0.0
     */
    private final class Iterator implements java.util.Iterator {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Iterator</code>.
        */
@@ -552,21 +518,11 @@ public final class TargetDescriptor extends Descriptor {
          // empty
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * Flag that indicates if this iterator is already done iterating over
        * the single element.
        */
       private boolean _done;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Checks if there is a next element.

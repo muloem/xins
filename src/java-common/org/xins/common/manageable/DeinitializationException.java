@@ -22,10 +22,6 @@ import org.xins.logdoc.ExceptionUtils;
 public final class DeinitializationException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a message based on the specified constructor argument.
     *
@@ -50,11 +46,6 @@ extends Exception {
       return message;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>DeinitializationException</code> with the
     * specified cause exception.
@@ -70,9 +61,4 @@ extends Exception {
       super(createMessage(cause));
       ExceptionUtils.setCause(this, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

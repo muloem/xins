@@ -22,10 +22,6 @@ import org.xins.common.text.TextUtils;
  */
 public class HungarianMapper implements FileNameMapper {
 
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Sets the <em>from</em> part of the transformation rule.
     *

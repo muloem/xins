@@ -18,10 +18,6 @@ package org.xins.logdoc;
  */
 public class LogdocStringBuffer {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>LogdocStringBuffer</code> object with the
     * specified initial capacity.
@@ -101,11 +97,6 @@ public class LogdocStringBuffer {
       s.getChars(0, _length, _buffer, 0);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The underlying character buffer. The size of this buffer is the capacity
     * of this string buffer object.
@@ -117,11 +108,6 @@ public class LogdocStringBuffer {
     * to the capacity.
     */
    private int _length;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Ensures that the specified needed capacity is actually available. If it

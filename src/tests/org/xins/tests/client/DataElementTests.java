@@ -20,10 +20,6 @@ import org.xins.client.DataElement;
  */
 public class DataElementTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class DataElementTests extends TestCase {
    public static Test suite() {
       return new TestSuite(DataElementTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>DataElementTests</code> test suite with
@@ -49,11 +40,6 @@ public class DataElementTests extends TestCase {
    public DataElementTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the behaviour of the <code>DataElement.QualifiedName</code> class.

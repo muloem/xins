@@ -13,7 +13,7 @@ import org.xins.common.service.CallConfig;
 import org.xins.common.text.TextUtils;
 
 /**
- * Call configuration for the XINS service caller. The HTTP method can be configured. 
+ * Call configuration for the XINS service caller. The HTTP method can be configured.
  * By default it is set to <em>POST</em>.
  *
  * <p>This class is not thread safe</p>
@@ -24,10 +24,6 @@ import org.xins.common.text.TextUtils;
  * @since XINS 1.1.0
  */
 public final class XINSCallConfig extends CallConfig {
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSCallConfig</code> object.
@@ -44,20 +40,10 @@ public final class XINSCallConfig extends CallConfig {
       // NOTE: HTTPCallConfig already defaults to HTTP POST
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The underlying HTTP call config. Cannot be <code>null</code>.
     */
    private HTTPCallConfig _httpCallConfig;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns an <code>HTTPCallConfig</code> object that corresponds with this
@@ -110,7 +96,7 @@ public final class XINSCallConfig extends CallConfig {
     */
    public String describe() {
 
-      String description = "XINS call config [failOverAllowed=" + isFailOverAllowed() + "; method=" + 
+      String description = "XINS call config [failOverAllowed=" + isFailOverAllowed() + "; method=" +
             TextUtils.quote(_httpCallConfig.getMethod().toString()) + ']';
 
       return description;

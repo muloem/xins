@@ -52,21 +52,12 @@ import org.xins.common.text.TextUtils;
  */
 public abstract class AbstractCAPI {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Set of all CAPI classes for which the XINS version at build-time has
     * already been checked against the XINS version at run-time. Never
     * <code>null</code>.
     */
    private final static Set VERSION_COMPARISIONS_DONE = new HashSet();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>AbstractCAPI</code> object, using the specified
@@ -198,11 +189,6 @@ public abstract class AbstractCAPI {
       checkXINSVersion();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the API. This field cannot be <code>null</code>.
     */
@@ -218,11 +204,6 @@ public abstract class AbstractCAPI {
     * {@link #getAPISpecification()}.
     */
    private APISpec _apiSpecification;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the name of the API (wrapper method).

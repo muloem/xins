@@ -18,20 +18,11 @@ package org.xins.common.service;
 public final class ConnectionTimeOutCallException
 extends ConnectionCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -1955586477316135304L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ConnectionTimeOutCallException</code>.
@@ -61,9 +52,4 @@ extends ConnectionCallException {
       super("Connection time-out",
             request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

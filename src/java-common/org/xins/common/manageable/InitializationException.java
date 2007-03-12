@@ -24,10 +24,6 @@ import org.xins.logdoc.ExceptionUtils;
 public final class InitializationException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a message based on the specified constructor argument.
     *
@@ -60,11 +56,6 @@ extends Exception {
 
       return message;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>InitializationException</code> with the specified
@@ -104,9 +95,4 @@ extends Exception {
          ExceptionUtils.setCause(this, cause);
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

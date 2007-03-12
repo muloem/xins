@@ -31,10 +31,6 @@ import org.xins.common.xml.ElementParser;
  */
 public class StandardCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The response encoding format.
     */
@@ -44,11 +40,6 @@ public class StandardCallingConvention extends CallingConvention {
     * The content type of the HTTP response.
     */
    public static final String RESPONSE_CONTENT_TYPE = "text/xml; charset=" + RESPONSE_ENCODING;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified request can be handled by this calling

@@ -18,19 +18,10 @@ package org.xins.common.collections;
 public final class IncorrectSecretKeyException
 extends IllegalArgumentException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>IncorrectSecretKeyException</code>.
     */
    IncorrectSecretKeyException() {
       super("Incorrect secret key.");
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

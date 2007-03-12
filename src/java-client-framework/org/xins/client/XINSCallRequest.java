@@ -44,10 +44,6 @@ import org.xins.common.text.TextUtils;
  */
 public final class XINSCallRequest extends CallRequest {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * HTTP status code verifier that will only approve 2xx codes.
     */
@@ -78,11 +74,6 @@ public final class XINSCallRequest extends CallRequest {
     * Secret key used to set the HTTP parameters.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
@@ -237,11 +228,6 @@ public final class XINSCallRequest extends CallRequest {
       setXINSCallConfig(callConfig);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The 1-based sequence number of this instance. Since this number is
     * 1-based, the first instance of this class will have instance number 1
@@ -283,11 +269,6 @@ public final class XINSCallRequest extends CallRequest {
     * Pattern matcher.
     */
    private final Perl5Matcher _patternMatcher = new Perl5Matcher();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Describes this request.
@@ -589,11 +570,6 @@ public final class XINSCallRequest extends CallRequest {
       return httpRequest;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * HTTP status code verifier that will only approve 2xx codes.
     *
@@ -604,27 +580,12 @@ public final class XINSCallRequest extends CallRequest {
     */
    private static final class HTTPStatusCodeVerifier
    implements org.xins.common.http.HTTPStatusCodeVerifier {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>HTTPStatusCodeVerifier</code>.
        */
       private HTTPStatusCodeVerifier() {
          // empty
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       /**
        * Checks if the specified HTTP status code is considered acceptable or
        * unacceptable.

@@ -74,10 +74,6 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public class FrontendCallingConvention extends CustomCallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The response encoding format.
     */
@@ -109,11 +105,6 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     * Argument used when finding a function with no parameters using the reflection API.
     */
    private final static Class[] NO_ARGS_CLASS = {};
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>FrontendCallingConvention</code> instance.
     *
@@ -139,11 +130,6 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          Log.log_3700(ex);
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The API. Never <code>null</code>.
@@ -217,11 +203,6 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     * The list of the real function names for this API.
     */
    private List _functionList = new ArrayList();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected void bootstrapImpl(PropertyReader bootstrapProperties)
    throws MissingRequiredPropertyException,
@@ -301,7 +282,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
    }
 
    protected boolean matches(HttpServletRequest httpRequest) {
-      
+
       return httpRequest.getParameterMap().size() == 0 || !TextUtils.isEmpty(httpRequest.getParameter("command"));
    }
 
@@ -533,7 +514,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       }
 
       String domain = host;
-      
+
       //strip subdomain from the host
       if (host.indexOf(".") != -1) {
          domain = host.substring(host.indexOf("."));
@@ -1106,16 +1087,16 @@ public class FrontendCallingConvention extends CustomCallingConvention {
 
    /**
     * Displays the transformation error.
-    * 
+    *
     * @param transformException
     *    The exception that occured during the transformation, cannot be <code>null</code>.
-    * 
+    *
     * @param httpResponse
     *    where to send the response, cannot be <code>null</code>.
-    * 
+    *
     * @param httpRequest
     *    the request of the user, cannot be <code>null</code>.
-    * 
+    *
     * @throws IOException
     *    if this transformation also fails for any reason.
     */

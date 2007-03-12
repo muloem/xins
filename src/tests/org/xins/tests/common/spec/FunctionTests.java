@@ -33,10 +33,6 @@ import com.mycompany.allinone.capi.CAPI;
  */
 public class FunctionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -46,11 +42,6 @@ public class FunctionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(FunctionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>FunctionTests</code> test suite with
@@ -63,20 +54,10 @@ public class FunctionTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API specification of the <i>allinone</i> API.
     */
    private APISpec _allInOneAPI;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

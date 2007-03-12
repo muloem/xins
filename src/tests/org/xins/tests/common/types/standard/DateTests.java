@@ -17,10 +17,6 @@ import org.xins.common.types.standard.Date;
  */
 public class DateTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -30,11 +26,6 @@ public class DateTests extends TestCase {
    public static Test suite() {
       return new TestSuite(DateTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>DateTests</code> test suite with
@@ -46,11 +37,6 @@ public class DateTests extends TestCase {
    public DateTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the <code>Date$Value</code> constructor that accepts a

@@ -128,10 +128,6 @@ boolean         failOver = true;
  */
 public final class XINSServiceCaller extends ServiceCaller {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>XINSServiceCaller</code> with the specified
     * descriptor and call configuration.
@@ -192,11 +188,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       this((Descriptor) null, (XINSCallConfig) null);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The result parser. This field cannot be <code>null</code>.
     */
@@ -215,11 +206,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     * is a {@link ServiceCaller}.
     */
    private HashMap _serviceCallers;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified protocol is supported (implementation method).
@@ -612,7 +598,7 @@ public final class XINSServiceCaller extends ServiceCaller {
          duration = System.currentTimeMillis() - start;
          Utils.logProgrammingError(exception);
 
-         String message = "Unexpected exception: " + exception.getClass().getName() 
+         String message = "Unexpected exception: " + exception.getClass().getName()
                + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
 
          // TODO: Call Utils.logProgrammingError ?
@@ -855,11 +841,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       return should;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Logdoc serializable that will serialize a chain of exceptions.
     *
@@ -869,11 +850,6 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>ExceptionFormatter</code> instance with the
        * specified exception being the first exception in the chain.
@@ -886,20 +862,10 @@ public final class XINSServiceCaller extends ServiceCaller {
          _first = first;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The first exception in the chain. Should not be <code>null</code>.
        */
       private Throwable _first;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       protected String initialize() {
          return _first.getMessage();

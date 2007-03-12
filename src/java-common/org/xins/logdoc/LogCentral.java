@@ -18,10 +18,6 @@ import org.apache.log4j.NDC;
  */
 public final class LogCentral {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the property that specifies which locale should be used.
     */
@@ -57,11 +53,6 @@ public final class LogCentral {
     * level of the message or not.
     */
    private static boolean STACK_TRACE_AT_MESSAGE_LEVEL = false;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Registers the specified <code>LogController</code>, which represents a
@@ -229,11 +220,6 @@ public final class LogCentral {
        return STACK_TRACE_AT_MESSAGE_LEVEL;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>LogCentral</code> instance. This constructor is
     * intentionally made <code>private</code>, since no instances should be
@@ -242,9 +228,4 @@ public final class LogCentral {
    private LogCentral() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

@@ -18,10 +18,6 @@ package org.xins.logdoc;
  */
 public class LogdocHexConverter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The number of characters written when converting a <code>long</code> to
     * an unsigned hex string.
@@ -78,11 +74,6 @@ public class LogdocHexConverter {
       '8' , '9' , 'a' , 'b' ,
       'c' , 'd' , 'e' , 'f'
    };
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified character is a hexadecimal digit. The following
@@ -421,20 +412,10 @@ public class LogdocHexConverter {
       return parseHexInt(s, 0);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>LogdocHexConverter</code> object.
     */
    private LogdocHexConverter() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

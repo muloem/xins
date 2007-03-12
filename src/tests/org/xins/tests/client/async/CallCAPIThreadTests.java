@@ -27,10 +27,6 @@ import org.xins.tests.AllTests;
  */
 public class CallCAPIThreadTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -40,11 +36,6 @@ public class CallCAPIThreadTests extends TestCase {
    public static Test suite() {
       return new TestSuite(CallCAPIThreadTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>CallCAPIThreadTests</code> test suite with
@@ -57,11 +48,6 @@ public class CallCAPIThreadTests extends TestCase {
    public CallCAPIThreadTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testSuccessfulCallCAPIThread() throws Throwable {
 

@@ -20,10 +20,6 @@ import org.xins.common.text.ParseException;
  */
 public class IPAddressUtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class IPAddressUtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(IPAddressUtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>IPAddressUtilsTests</code> test suite with
@@ -49,11 +40,6 @@ public class IPAddressUtilsTests extends TestCase {
    public IPAddressUtilsTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testIpToInt() throws Throwable {
       doTestIpToInt_INVALID("1");

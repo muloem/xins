@@ -39,10 +39,6 @@ import org.xins.common.text.TextUtils;
  */
 public final class ExpiryFolder {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of this class.
     */
@@ -63,11 +59,6 @@ public final class ExpiryFolder {
     * Lock object for <code>INSTANCE_COUNT</code>.
     */
    private static final Object INSTANCE_COUNT_LOCK = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ExpiryFolder</code> with the specified name and
@@ -129,11 +120,6 @@ public final class ExpiryFolder {
       // Constructed ExpiryFolder
       Log.log_1408(_instanceNum, _name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Lock object.
@@ -197,11 +183,6 @@ public final class ExpiryFolder {
     * The set of listeners. May be empty, but never is <code>null</code>.
     */
    private ArrayList _listeners;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks that the associated expiry strategy was not yet stopped. If it
@@ -840,11 +821,6 @@ public final class ExpiryFolder {
       return _asString;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Entry in an expiry folder. Combination of the referenced object and a
     * timestamp. The timestamp indicates when the object should be expired.
@@ -853,11 +829,6 @@ public final class ExpiryFolder {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private class Entry {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Entry</code>.
        *
@@ -870,11 +841,6 @@ public final class ExpiryFolder {
          touch();
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * Reference to the object. Should not be <code>null</code>.
        */
@@ -884,11 +850,6 @@ public final class ExpiryFolder {
        * The time at which this entry should expire.
        */
       private long _expiryTime;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns a hash code value for the object.

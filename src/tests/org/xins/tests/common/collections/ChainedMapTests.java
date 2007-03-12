@@ -25,10 +25,6 @@ import org.xins.common.collections.ChainedMap;
  */
 public class ChainedMapTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -38,11 +34,6 @@ public class ChainedMapTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ChainedMapTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ChainedMapTests</code> test suite with
@@ -54,10 +45,6 @@ public class ChainedMapTests extends TestCase {
    public ChainedMapTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testChainedMap() {
       int itemsCount = 20;

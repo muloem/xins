@@ -29,19 +29,10 @@ import org.xins.common.text.TextUtils;
  */
 public final class HTTPCallRequest extends CallRequest {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The number of instances of this class. Initially zero.
     */
    private static int INSTANCE_COUNT;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified
@@ -163,11 +154,6 @@ public final class HTTPCallRequest extends CallRequest {
       setCallConfig(callConfig);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The 1-based sequence number of this instance. Since this number is
     * 1-based, the first instance of this class will have instance number 1
@@ -192,11 +178,6 @@ public final class HTTPCallRequest extends CallRequest {
     * codes are allowed.
     */
    private final HTTPStatusCodeVerifier _statusCodeVerifier;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Describes this request.
@@ -258,13 +239,13 @@ public final class HTTPCallRequest extends CallRequest {
    }
 
    /**
-    * Returns the HTTP method associated with this call request. This is 
+    * Returns the HTTP method associated with this call request. This is
     * determined by getting the HTTP method on the associated call config, see
     * {@link #getHTTPCallConfig()}. If the associated call config is
     * <code>null</code>, then <code>null</code> is returned.
     *
     * @return
-    *    the HTTP method, or <code>null</code> if none is set for the call 
+    *    the HTTP method, or <code>null</code> if none is set for the call
     *    configuration associated with this request.
     */
    public HTTPMethod getMethod() {

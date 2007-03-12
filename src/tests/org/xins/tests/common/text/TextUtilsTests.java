@@ -22,10 +22,6 @@ import org.xins.common.text.TextUtils;
  */
 public class TextUtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class TextUtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(TextUtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>TextUtilsTests</code> test suite with
@@ -51,11 +42,6 @@ public class TextUtilsTests extends TestCase {
    public TextUtilsTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testReplace() throws Exception {
       String text = "hello ${world} ${name}";

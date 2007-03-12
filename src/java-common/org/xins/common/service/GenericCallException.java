@@ -16,10 +16,6 @@ package org.xins.common.service;
  */
 public abstract class GenericCallException extends CallException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>GenericCallException</code> based on a short
     * reason, the original request, target called, call duration, detail
@@ -62,9 +58,4 @@ public abstract class GenericCallException extends CallException {
       // Trace and then call constructor of superclass
       super(shortReason, request, target, duration, detail, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

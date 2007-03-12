@@ -26,10 +26,6 @@ import org.xins.common.service.CallException;
  */
 public class CallCAPIThread extends Thread {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Calls a CAPI function on a separate thread.
     *
@@ -43,11 +39,6 @@ public class CallCAPIThread extends Thread {
       _capi = capi;
       _request = request;
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The CAPI.
     */
@@ -72,11 +63,6 @@ public class CallCAPIThread extends Thread {
     * The exception thrown by the call.
     */
    private Exception _exception;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public void run() {
       long startTime = System.currentTimeMillis();
       try {

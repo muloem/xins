@@ -20,19 +20,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Int64 extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Int64 SINGLETON = new Int64();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to a
@@ -123,11 +114,6 @@ public class Int64 extends Type {
       return String.valueOf(value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Int64</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -157,11 +143,6 @@ public class Int64 extends Type {
       _maximum = maximum;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The minimum value that this Int34 can have.
     */
@@ -171,11 +152,6 @@ public class Int64 extends Type {
     * The maximum value that this Int34 can have.
     */
    private final long _maximum;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
       try {

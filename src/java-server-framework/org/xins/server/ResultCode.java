@@ -23,10 +23,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class ResultCode {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new generic <code>ResultCode</code>. This constructor can
     * only be called by classes in the same package.
@@ -79,11 +75,6 @@ public final class ResultCode {
       _api.resultCodeAdded(this);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API implementation this result code is defined within. Cannot be
     * <code>null</code>.
@@ -99,11 +90,6 @@ public final class ResultCode {
     * The value of this result code. This field cannot be <code>null</code>.
     */
    private final String _value;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the symbolic name of this result code.

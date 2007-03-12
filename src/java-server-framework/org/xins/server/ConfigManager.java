@@ -48,21 +48,11 @@ import org.xins.logdoc.UnsupportedLocaleException;
 final class ConfigManager {
 
    // XXX: Consider adding state checking
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The object to synchronize on when reading and initializing from the
     * runtime configuration file.
     */
    private static final Object RUNTIME_PROPERTIES_LOCK = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes the logging subsystem with fallback default settings.
@@ -98,11 +88,6 @@ final class ConfigManager {
       PropertyConfigurator.configure(settings);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ConfigManager</code> object.
     *
@@ -127,11 +112,6 @@ final class ConfigManager {
       _config             = config;
       _configFileListener = new ConfigurationFileListener();
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The <code>Engine</code> that owns this <code>ConfigManager</code>. Never
@@ -165,11 +145,6 @@ final class ConfigManager {
     * <code>null</code>.
     */
    private StatsPropertyReader _runtimeProperties;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines the name of the runtime configuration file. The system
@@ -561,11 +536,6 @@ final class ConfigManager {
          _configFileWatcher = null;
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Listener that reloads the configuration file if it changes.
     *
@@ -575,27 +545,12 @@ final class ConfigManager {
     * @since XINS 1.0.0
     */
    private final class ConfigurationFileListener implements FileWatcher.Listener {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>ConfigurationFileListener</code> object.
        */
       private ConfigurationFileListener() {
          // empty
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       /**
        * Re-initializes the framework. The run-time properties are re-read,
        * the configuration file reload interval is determined, the API is

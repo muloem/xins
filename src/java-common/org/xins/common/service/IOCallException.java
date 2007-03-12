@@ -21,20 +21,11 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class IOCallException
 extends GenericCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -1118963769763850776L;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Checks the arguments for the constructor and then returns the short
@@ -61,11 +52,6 @@ extends GenericCallException {
       // Return the short reason
       return "I/O error";
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>IOCallException</code>.
@@ -103,9 +89,4 @@ extends GenericCallException {
             null,
             ioException);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

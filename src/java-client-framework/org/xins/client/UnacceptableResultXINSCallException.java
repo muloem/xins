@@ -28,10 +28,6 @@ import org.xins.common.xml.Element;
 public class UnacceptableResultXINSCallException
 extends XINSCallException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Checks the mandatory <code>result</code> argument for the constructor
     * that accepts an <code>AbstractCAPICallResult</code>.
@@ -50,11 +46,6 @@ extends XINSCallException {
       MandatoryArgumentChecker.check("result", result);
       return result;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnacceptableCallResultException</code> using the
@@ -157,20 +148,10 @@ extends XINSCallException {
       _result = resultData;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The result that is considered unacceptable. Never <code>null</code>.
     */
    private final XINSCallResultData _result;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the error code.

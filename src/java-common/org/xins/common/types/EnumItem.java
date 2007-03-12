@@ -20,10 +20,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class EnumItem {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>EnumItem</code>.
     *
@@ -45,11 +41,6 @@ public class EnumItem {
       _value = value;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The symbolic (friendly) name for the enumeration value. Cannot be
     * <code>null</code>.
@@ -60,11 +51,6 @@ public class EnumItem {
     * The actual value of this enumeration item. Cannot <code>null</code>.
     */
    private final String _value;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the symbolic (friendly) name for the enumeration value.

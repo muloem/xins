@@ -25,20 +25,11 @@ import org.xins.common.collections.PropertyReader;
  */
 public class XINSServletResponse implements HttpServletResponse {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of <code>XINSServletResponse</code>.
     */
    public XINSServletResponse() {
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The content type of the result. Initially <code>null</code>.
     */
@@ -70,11 +61,6 @@ public class XINSServletResponse implements HttpServletResponse {
     * The headers.
     */
    private BasicPropertyReader _headers = new BasicPropertyReader();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void addDateHeader(String str, long param) {
       throw new UnsupportedOperationException();

@@ -25,10 +25,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public abstract class CallResult implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallResult</code> object.
     *
@@ -72,11 +68,6 @@ public abstract class CallResult implements Serializable {
       _exceptions      = exceptions;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The call request. This field cannot be <code>null</code>.
     */
@@ -98,11 +89,6 @@ public abstract class CallResult implements Serializable {
     * <code>null</code>.
     */
    private final CallExceptionList _exceptions;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the call request.

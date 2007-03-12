@@ -21,10 +21,6 @@ import org.xins.common.text.FastStringBuffer;
  */
 public class HexConverterTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class HexConverterTests extends TestCase {
    public static Test suite() {
       return new TestSuite(HexConverterTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HexConverterTests</code> test suite with
@@ -50,11 +41,6 @@ public class HexConverterTests extends TestCase {
    public HexConverterTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testParseHexString_String() throws Throwable {
 

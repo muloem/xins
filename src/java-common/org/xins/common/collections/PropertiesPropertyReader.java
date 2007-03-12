@@ -20,10 +20,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class PropertiesPropertyReader
 extends AbstractPropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>PropertiesPropertyReader</code>.
     *

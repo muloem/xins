@@ -28,11 +28,6 @@ public class UnacceptableMessageException extends XINSCallException {
    // TODO: Support XINSCallRequest objects?
    // TODO: Is the name UnacceptableRequestException okay?
    // TODO: Log UnacceptableRequestException! (not in this class though)
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>UnacceptableMessageException</code> using the
     * specified <code>AbstractCAPICallRequest</code>.
@@ -58,11 +53,6 @@ public class UnacceptableMessageException extends XINSCallException {
       super("Invalid result", result, null, null);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The DataElement containing the errors.
     */
@@ -72,11 +62,6 @@ public class UnacceptableMessageException extends XINSCallException {
     * The error message.
     */
    private String _message;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the message for this exception.

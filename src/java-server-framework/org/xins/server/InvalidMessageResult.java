@@ -21,10 +21,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 class InvalidMessageResult extends FunctionResult {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidMessageResult</code> object.
     *
@@ -34,11 +30,6 @@ class InvalidMessageResult extends FunctionResult {
    InvalidMessageResult(String errorCode) {
       super(errorCode);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Adds to the response that a paramater that is missing.

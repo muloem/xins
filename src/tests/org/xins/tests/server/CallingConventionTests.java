@@ -41,10 +41,6 @@ import org.xins.tests.AllTests;
  */
 public class CallingConventionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -55,20 +51,10 @@ public class CallingConventionTests extends TestCase {
       return new TestSuite(CallingConventionTests.class);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The random number generator.
     */
    private final static Random RANDOM = new Random();
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>CallingConventionTests</code> test suite with
@@ -80,11 +66,6 @@ public class CallingConventionTests extends TestCase {
    public CallingConventionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the standard calling convention which should be the default.
@@ -839,7 +820,7 @@ public class CallingConventionTests extends TestCase {
    }
 
    /**
-    * Tests that a HEAD request returns a correct Content-Length header, but 
+    * Tests that a HEAD request returns a correct Content-Length header, but
     * no actual content.
     */
    public void testContentLengthFromHEAD() throws Exception {

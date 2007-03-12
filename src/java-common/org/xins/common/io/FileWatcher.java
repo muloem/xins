@@ -27,10 +27,6 @@ import org.xins.common.Utils;
  */
 public final class FileWatcher extends Thread {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Fully-qualified name of this class.
     */
@@ -62,11 +58,6 @@ public final class FileWatcher extends Thread {
     * been told to stop.
     */
    private static final int SHOULD_STOP = 3;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>FileWatcher</code> for the specified file, with the
@@ -158,11 +149,6 @@ public final class FileWatcher extends Thread {
       firstCheck();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Unique instance identifier.
     */
@@ -212,11 +198,6 @@ public final class FileWatcher extends Thread {
     * {@link #NOT_RUNNING} again.
     */
    private int _state;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Configures the name of this thread.
@@ -506,11 +487,6 @@ public final class FileWatcher extends Thread {
          }
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    /**
     * Interface for file watcher listeners.

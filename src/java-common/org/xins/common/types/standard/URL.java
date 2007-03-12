@@ -22,19 +22,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class URL extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static URL SINGLETON = new org.xins.common.types.standard.URL();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to a
@@ -88,11 +79,6 @@ public final class URL extends Type {
          return string;
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Boolean</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -101,11 +87,6 @@ public final class URL extends Type {
    private URL() {
       super("_url", String.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected boolean isValidValueImpl(String value) {
       try {

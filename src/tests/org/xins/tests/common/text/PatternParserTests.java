@@ -22,10 +22,6 @@ import org.apache.oro.text.regex.Perl5Matcher;
  */
 public class PatternParserTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class PatternParserTests extends TestCase {
    public static Test suite() {
       return new TestSuite(PatternParserTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>SimplePatternParserTests</code> test suite with
@@ -51,11 +42,6 @@ public class PatternParserTests extends TestCase {
    public PatternParserTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testMatchPattern() throws Throwable {
       doTestMatchPattern(".*", "hello world", true);

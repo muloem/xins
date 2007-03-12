@@ -30,21 +30,12 @@ import org.xins.common.xml.Element;
  */
 public class CallXINSTask extends Task {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallTargetsTask</code> instance.
     */
    public CallXINSTask() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The function to call.
@@ -65,11 +56,6 @@ public class CallXINSTask extends Task {
     * The parameters to the function.
     */
    private Vector _params = new Vector();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the name of the API function to call.

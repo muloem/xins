@@ -26,10 +26,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public abstract class EnumType extends Type {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>EnumType</code> instance. The name of the type needs
     * to be specified. The value class (see {@link Type#getValueClass()}) is
@@ -83,11 +79,6 @@ public abstract class EnumType extends Type {
       System.arraycopy(values, 0, _values, 0, actualItems);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Map that links symbolic names to enumeration values.
     */
@@ -117,11 +108,6 @@ public abstract class EnumType extends Type {
     * The list of accepted values.
     */
    private final String[] _values;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Actually checks if the specified value is valid for this type. This

@@ -51,19 +51,10 @@ import org.xins.common.text.ParseException;
  */
 public final class AccessRuleList implements AccessRuleContainer {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * An empty access rule list. This field is never <code>null</code>.
     */
    static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Parses the specified character string to construct a new
@@ -136,11 +127,6 @@ public final class AccessRuleList implements AccessRuleContainer {
       return new AccessRuleList(rules);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>AccessRuleList</code> object. The passed
     * {@link AccessRuleContainer} array is assumed to be owned by the
@@ -182,11 +168,6 @@ public final class AccessRuleList implements AccessRuleContainer {
       _rules = rules;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The list of rules. Cannot be <code>null</code>.
     */
@@ -201,11 +182,6 @@ public final class AccessRuleList implements AccessRuleContainer {
     * Flag that indicates whether this object is disposed.
     */
    private boolean _disposed;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Counts the number of rules in this list.

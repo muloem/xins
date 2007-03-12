@@ -26,10 +26,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public abstract class CallException extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>CallException</code> based on a short reason, the
     * original request, target called, call duration, detail message and cause
@@ -87,11 +83,6 @@ public abstract class CallException extends Exception {
       _detail      = detail;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Short description of the reason. Cannot be <code>null</code>.
     */
@@ -130,11 +121,6 @@ public abstract class CallException extends Exception {
     * The exception message. Is <code>null</code> if unset.
     */
    private String _message;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the detail message string of this exception.

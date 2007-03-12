@@ -35,10 +35,6 @@ import org.xins.logdoc.LogdocStringBuffer;
  */
 public final class PropertyReaderUtils {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * An empty and unmodifiable <code>PropertyReader</code> instance. This
     * field is not <code>null</code>.
@@ -53,11 +49,6 @@ public final class PropertyReaderUtils {
     * <code>ProtectedPropertyReader</code> instances.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the property with the specified name and converts it to a
@@ -270,7 +261,7 @@ public final class PropertyReaderUtils {
     *
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
-    * 
+    *
     * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static void serialize(PropertyReader properties,
@@ -396,7 +387,7 @@ public final class PropertyReaderUtils {
     *
     * @return
     *    a new {@link LogdocSerializable}, never <code>null</code>.
-    * 
+    *
     * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p,
@@ -428,7 +419,7 @@ public final class PropertyReaderUtils {
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     *
     * @since XINS 1.4.0
-    * 
+    *
     * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p,
@@ -468,7 +459,7 @@ public final class PropertyReaderUtils {
     *    a new {@link LogdocSerializable}, never <code>null</code>.
     *
     * @since XINS 2.0
-    * 
+    *
     * @deprecated since XINS 2.0, use the correct toString() method.
     */
    public static LogdocSerializable serialize(PropertyReader p, String valueIfEmpty,
@@ -525,7 +516,7 @@ public final class PropertyReaderUtils {
 
 
    /**
-    * Returns the <code>String</code> representation for the specified 
+    * Returns the <code>String</code> representation for the specified
     * <code>PropertyReader</code>.
     *
     * @param properties
@@ -555,7 +546,7 @@ public final class PropertyReaderUtils {
    }
 
    /**
-    * Returns the <code>String</code> representation for the specified 
+    * Returns the <code>String</code> representation for the specified
     * <code>PropertyReader</code>.
     *
     * @param properties
@@ -650,11 +641,6 @@ public final class PropertyReaderUtils {
 
       return buffer.toString();
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>PropertyReaderUtils</code> object. This
     * constructor is marked as <code>private</code>, since no objects of this
@@ -663,9 +649,6 @@ public final class PropertyReaderUtils {
    private PropertyReaderUtils() {
       // empty
    }
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    /**
     * A <code>LogdocSerializable</code> implementation for a
@@ -677,11 +660,6 @@ public final class PropertyReaderUtils {
     */
    private static final class SerializedPropertyReader
    extends AbstractLogdocSerializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>SerializedPropertyReader</code> for the
        * specified <code>PropertyReader</code>.
@@ -719,11 +697,6 @@ public final class PropertyReaderUtils {
          _maxValueLength = maxValueLength;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The <code>PropertyReader</code> to serialize. Can be
        * <code>null</code>.
@@ -749,11 +722,6 @@ public final class PropertyReaderUtils {
        * The maximum length for the value.
        */
       private final int _maxValueLength;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Initializes this <code>AbstractLogdocSerializable</code> object.

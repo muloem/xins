@@ -24,20 +24,11 @@ import javax.servlet.http.HttpSessionContext;
  */
 public class XINSHttpSession implements HttpSession {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of XINSHttpSession.
     */
    XINSHttpSession() {
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The session attributes.
     */
@@ -52,11 +43,6 @@ public class XINSHttpSession implements HttpSession {
     * The ID of the session.
     */
    private int _sessionID = new Random().nextInt();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void removeValue(String value) {
       throw new UnsupportedOperationException();

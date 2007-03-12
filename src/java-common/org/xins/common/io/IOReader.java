@@ -24,10 +24,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public final class IOReader {
 
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Read an InputStream completly and put the content of the input stream in
     * a String.

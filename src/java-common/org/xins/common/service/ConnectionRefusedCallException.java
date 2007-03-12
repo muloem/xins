@@ -18,20 +18,11 @@ package org.xins.common.service;
 public final class ConnectionRefusedCallException
 extends ConnectionCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -7764503252933271908L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ConnectionRefusedCallException</code>.
@@ -61,9 +52,4 @@ extends ConnectionCallException {
       super("Connection refused",
             request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

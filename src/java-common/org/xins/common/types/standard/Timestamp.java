@@ -57,10 +57,6 @@ import org.xins.common.types.TypeValueException;
  */
 public class Timestamp extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
@@ -71,11 +67,6 @@ public class Timestamp extends Type {
     */
    private final static SimpleDateFormat FORMATTER =
       new SimpleDateFormat("yyyyMMddHHmmss");
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
 
    /**
@@ -232,11 +223,6 @@ public class Timestamp extends Type {
       return buffer.toString();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Timestamp</code> instance.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -245,11 +231,6 @@ public class Timestamp extends Type {
    private Timestamp() {
       super("_timestamp", Value.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String value) {
 
@@ -306,11 +287,6 @@ public class Timestamp extends Type {
       return toString((Value) value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Value for the type <em>_timestamp</em>. Represents a specific moment in
     * time, with second-precision.
@@ -322,11 +298,6 @@ public class Timestamp extends Type {
     * @since XINS 1.0.0
     */
    public static final class Value implements Cloneable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new timestamp value. The values will not be checked.
        *
@@ -438,20 +409,10 @@ public class Timestamp extends Type {
          _calendar.setTime(date);
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * Calendar representing the moment in time.
        */
       private Calendar _calendar;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Creates and returns a copy of this object.

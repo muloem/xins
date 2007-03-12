@@ -25,10 +25,6 @@ import org.xins.common.text.ParseException;
  */
 public final class IPAddressUtils {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Converts an IP address in the form <em>a.b.c.d</em> to an
     * <code>int</code>.
@@ -240,20 +236,10 @@ public final class IPAddressUtils {
       return new ParseException(detail);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>IPAddressUtils</code> object.
     */
    private IPAddressUtils() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

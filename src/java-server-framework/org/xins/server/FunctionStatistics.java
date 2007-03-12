@@ -27,10 +27,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 class FunctionStatistics {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * String to insert instead of a figure when the figure is unavailable.
     */
@@ -41,11 +37,6 @@ class FunctionStatistics {
     */
    private static final TimeZone TIME_ZONE = TimeZone.getDefault();
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>FunctionStatistics</code> instance.
     */
@@ -54,11 +45,6 @@ class FunctionStatistics {
       _unsuccessful        = new Statistic();
       _errorCodeStatistics = new TreeMap();
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Statistics for the successful calls. Never <code>null</code>.
@@ -76,11 +62,6 @@ class FunctionStatistics {
     * corresponding to the error code. Never <code>null</code>.
     */
    private final TreeMap _errorCodeStatistics;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Callback method that may be called after a call to this function. This
@@ -181,11 +162,6 @@ class FunctionStatistics {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Group of statistics data.
     *
@@ -196,22 +172,12 @@ class FunctionStatistics {
     * @since XINS 1.1.0
     */
    private static final class Statistic {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>Statistic</code> object.
        */
       private Statistic() {
          _min = Long.MAX_VALUE;
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
 
       /**
        * The number of successful calls executed up until now. Initially
@@ -258,11 +224,6 @@ class FunctionStatistics {
        * <code>0L</code>.
        */
       private long _maxStart;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Records a call.

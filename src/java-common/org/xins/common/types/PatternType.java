@@ -27,19 +27,10 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public abstract class PatternType extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>PatternType</code> instance. The name of the type
@@ -84,11 +75,6 @@ public abstract class PatternType extends Type {
       _patternString = pattern;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Pattern string. This is the uncompiled version of {@link #_pattern}.
     * This field cannot be <code>null</code>.
@@ -100,11 +86,6 @@ public abstract class PatternType extends Type {
     * {@link #_patternString}. This field cannot be <code>null</code>.
     */
    private final Pattern _pattern;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String value) {
 

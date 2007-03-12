@@ -18,10 +18,6 @@ package org.xins.common.service;
 public final class TotalTimeOutCallException
 extends GenericCallException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>TotalTimeOutCallException</code>.
     *
@@ -48,9 +44,4 @@ extends GenericCallException {
       // Call constructor of superclass
       super("Total time-out", request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

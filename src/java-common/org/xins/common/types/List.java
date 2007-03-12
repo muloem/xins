@@ -24,10 +24,6 @@ import org.xins.common.types.standard.Text;
  */
 public abstract class List extends Type {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>List</code> object (constructor for
     * subclasses).
@@ -45,20 +41,10 @@ public abstract class List extends Type {
       _itemType = itemType == null ? Text.SINGLETON : itemType;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The type for the values. Cannot be <code>null</code>.
     */
    private final Type _itemType;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines if the specified <code>String</code> value is considered

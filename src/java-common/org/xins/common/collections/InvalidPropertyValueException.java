@@ -21,10 +21,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class InvalidPropertyValueException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Creates message based on the specified constructor arguments.
     *
@@ -54,11 +50,6 @@ extends Exception {
 
       return message;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>InvalidPropertyValueException</code>.
@@ -111,11 +102,6 @@ extends Exception {
       _reason        = reason;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the property. Cannot be <code>null</code>.
     */
@@ -130,11 +116,6 @@ extends Exception {
     * The detailed reason. Can be <code>null</code>.
     */
    private final String _reason;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the name of the property.

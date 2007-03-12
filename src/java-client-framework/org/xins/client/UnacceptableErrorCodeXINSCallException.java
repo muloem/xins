@@ -22,10 +22,6 @@ import org.xins.common.service.TargetDescriptor;
 public class UnacceptableErrorCodeXINSCallException
 extends UnacceptableResultXINSCallException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a detail message for the constructor to pass up to the
     * superconstructor.
@@ -56,11 +52,6 @@ extends UnacceptableResultXINSCallException {
            + result.getErrorCode()
            + "\" is not acceptable for this function.";
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnacceptableErrorCodeXINSCallException</code>
@@ -96,9 +87,4 @@ extends UnacceptableResultXINSCallException {
 
       super(request, target, duration, resultData, getDetail(resultData));
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

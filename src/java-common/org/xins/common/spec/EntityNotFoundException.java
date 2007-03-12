@@ -16,10 +16,6 @@ package org.xins.common.spec;
  */
 public class EntityNotFoundException extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>InvalidSpecificationException</code> with the reason
     * of the problem.
@@ -30,9 +26,4 @@ public class EntityNotFoundException extends Exception {
    EntityNotFoundException(String message) {
       super(message);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
 }

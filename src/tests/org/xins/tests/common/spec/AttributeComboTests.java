@@ -30,10 +30,6 @@ import com.mycompany.allinone.capi.CAPI;
  */
 public class AttributeComboTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -43,11 +39,6 @@ public class AttributeComboTests extends TestCase {
    public static Test suite() {
       return new TestSuite(AttributeComboTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AttributeComboTests</code> test suite with
@@ -59,11 +50,6 @@ public class AttributeComboTests extends TestCase {
    public AttributeComboTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The exclusive input attribute combo specification of the
@@ -82,10 +68,6 @@ public class AttributeComboTests extends TestCase {
     * <i>AttributeCombo</i> function.
     */
    private AttributeComboSpec _allOrNoneCombo;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

@@ -25,10 +25,6 @@ import org.xins.common.text.ParseException;
  */
 public class HTTPCaller {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    public static HTTPCallerResult call(String httpVersion, String host, int port, String method, String queryString, Properties inputHeaders)
    throws IOException, ParseException {
 
@@ -125,11 +121,6 @@ public class HTTPCaller {
 
       result.addHeader(key, value);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    private HTTPCaller() {
    }

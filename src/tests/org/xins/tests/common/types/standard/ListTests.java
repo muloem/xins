@@ -23,10 +23,6 @@ import org.xins.common.types.standard.List;
  */
 public class ListTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -36,11 +32,6 @@ public class ListTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ListTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ListTests</code> test suite with
@@ -52,11 +43,6 @@ public class ListTests extends TestCase {
    public ListTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testFromString() throws Throwable {
 

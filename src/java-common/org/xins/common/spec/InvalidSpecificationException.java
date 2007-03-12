@@ -18,10 +18,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public class InvalidSpecificationException extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>InvalidSpecificationException</code> with the reason
     * of the problem.
@@ -49,10 +45,5 @@ public class InvalidSpecificationException extends Exception {
          ExceptionUtils.setCause(this, cause);
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
 }

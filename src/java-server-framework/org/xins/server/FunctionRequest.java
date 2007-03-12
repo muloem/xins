@@ -24,10 +24,6 @@ import org.xins.common.xml.Element;
  */
 public class FunctionRequest {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>FunctionRequest</code>. The function name must be
     * specified.
@@ -99,11 +95,6 @@ public class FunctionRequest {
       _skipFunctionCall = skipFunctionCall;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the function. This field is never <code>null</code>.
     */
@@ -124,11 +115,6 @@ public class FunctionRequest {
     * Flag indicating whether the function should be skipped or not.
     */
    private final boolean _skipFunctionCall;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the function.

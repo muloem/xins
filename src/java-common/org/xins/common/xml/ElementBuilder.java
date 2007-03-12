@@ -30,11 +30,6 @@ public class ElementBuilder {
    //       just called, for example.
 
    // TODO: Add one or more examples in the class comment.
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Initial state for the builder.
     */
@@ -44,11 +39,6 @@ public class ElementBuilder {
     * State that indicates that the builder has started to build the element.
     */
    private static final State STARTED = new State("STARTED");
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>ElementBuilder</code>.
@@ -91,11 +81,6 @@ public class ElementBuilder {
       _state = INITIAL;
       startElement(namespaceURI, localName);
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The current state. Never <code>null</code>.
     */
@@ -107,11 +92,6 @@ public class ElementBuilder {
     * <code>startElement</code> methods.
     */
    private Element _element;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the specified attribute. If the value for the specified
@@ -297,11 +277,6 @@ public class ElementBuilder {
       return _element;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * State of the builder.
     *
@@ -309,11 +284,6 @@ public class ElementBuilder {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static final class State {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>State</code> object.
        *
@@ -331,20 +301,10 @@ public class ElementBuilder {
          _name = name;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The name of this state. Cannot be <code>null</code>.
        */
       private final String _name;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns the name of this state.

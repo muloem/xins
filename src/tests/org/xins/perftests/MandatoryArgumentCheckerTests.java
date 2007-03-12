@@ -20,10 +20,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class MandatoryArgumentCheckerTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,17 +30,7 @@ public class MandatoryArgumentCheckerTests extends TestCase {
       return new TestSuite(MandatoryArgumentCheckerTests.class);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    private static final int ROUNDS = 100000000;
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>MandatoryArgumentCheckerTests</code> test suite
@@ -56,11 +42,6 @@ public class MandatoryArgumentCheckerTests extends TestCase {
    public MandatoryArgumentCheckerTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testMandatoryArgumentChecker() throws Exception {
 

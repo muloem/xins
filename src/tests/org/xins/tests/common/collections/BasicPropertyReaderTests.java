@@ -24,10 +24,6 @@ import org.xins.common.collections.BasicPropertyReader;
  */
 public class BasicPropertyReaderTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -37,11 +33,6 @@ public class BasicPropertyReaderTests extends TestCase {
    public static Test suite() {
       return new TestSuite(BasicPropertyReaderTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>BasicPropertyReader</code> test suite with
@@ -53,10 +44,6 @@ public class BasicPropertyReaderTests extends TestCase {
    public BasicPropertyReaderTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testSet() {
       BasicPropertyReader reader = new BasicPropertyReader();

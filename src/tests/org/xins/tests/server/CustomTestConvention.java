@@ -30,18 +30,6 @@ import org.xins.tests.AllTests;
  */
 public class CustomTestConvention extends CustomCallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>CustomTestConvention</code> instance.
     */
@@ -58,14 +46,6 @@ public class CustomTestConvention extends CustomCallingConvention {
          throw new IllegalArgumentException("api == null");
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected FunctionRequest convertRequestImpl(HttpServletRequest httpRequest)
    throws InvalidRequestException, FunctionNotSpecifiedException {

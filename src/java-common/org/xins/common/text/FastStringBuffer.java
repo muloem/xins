@@ -23,10 +23,6 @@ import org.xins.common.Log;
  */
 public class FastStringBuffer {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>FastStringBuffer</code> object with the specified
     * initial capacity.
@@ -108,11 +104,6 @@ public class FastStringBuffer {
       s.getChars(0, _length, _buffer, 0);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The underlying character buffer. The size of this buffer is the capacity
     * of this string buffer object.
@@ -124,11 +115,6 @@ public class FastStringBuffer {
     * to the capacity.
     */
    private int _length;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Ensures that the specified needed capacity is actually available. If it

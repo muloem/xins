@@ -45,10 +45,6 @@ import org.xins.tests.AllTests;
  */
 public class XINSServletRequestTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -58,11 +54,6 @@ public class XINSServletRequestTests extends TestCase {
    public static Test suite() {
       return new TestSuite(XINSServletRequestTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSServletRequestTests</code> test
@@ -76,11 +67,6 @@ public class XINSServletRequestTests extends TestCase {
    public XINSServletRequestTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testEmptyValues() {
       XINSServletRequest request = new XINSServletRequest(AllTests.url() + "?test1=bla&test2=&test3=");

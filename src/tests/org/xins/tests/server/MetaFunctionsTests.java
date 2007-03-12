@@ -40,10 +40,6 @@ import org.xins.tests.AllTests;
  */
 public class MetaFunctionsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -53,11 +49,6 @@ public class MetaFunctionsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(MetaFunctionsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>MetaFunctionsTests</code> test suite with
@@ -69,11 +60,6 @@ public class MetaFunctionsTests extends TestCase {
    public MetaFunctionsTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the _GetVersion meta function.
@@ -501,11 +487,6 @@ public class MetaFunctionsTests extends TestCase {
       // TODO: Make sure _GetStatistics returns proper _lastReset value
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Runs multiple threads which make a call to the server.
     * The call can be any call to the server.
@@ -534,10 +515,6 @@ public class MetaFunctionsTests extends TestCase {
     */
    private static final class MultiCallChecker extends Thread {
 
-      //-------------------------------------------------------------------------
-      // Constructors
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new <code>MultiCallChecker</code>.
        *
@@ -563,11 +540,6 @@ public class MetaFunctionsTests extends TestCase {
          _exception = null;
       }
 
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
       /**
        * The call request with the desired call to the server.
        */
@@ -587,11 +559,6 @@ public class MetaFunctionsTests extends TestCase {
        * The exception returned by the call to the server.
        */
       private Throwable _exception;
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       /**
        * Makes a call to the server using the caller and request.

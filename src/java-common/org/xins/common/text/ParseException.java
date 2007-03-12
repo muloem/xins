@@ -18,10 +18,6 @@ import org.xins.logdoc.ExceptionUtils;
  */
 public final class ParseException extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ParseException</code> with no message, no cause
     * exception and no detailed description of the parse problem.
@@ -64,20 +60,10 @@ public final class ParseException extends Exception {
       _detail = detail;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Description of the parse error. Can be <code>null</code>.
     */
    private final String _detail;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a description of the parse error.

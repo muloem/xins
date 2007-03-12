@@ -27,10 +27,6 @@ import org.xins.common.text.FastStringBuffer;
  */
 public class DateConverterTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -40,11 +36,6 @@ public class DateConverterTests extends TestCase {
    public static Test suite() {
       return new TestSuite(DateConverterTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>DateConverterTests</code> test suite with
@@ -56,11 +47,6 @@ public class DateConverterTests extends TestCase {
    public DateConverterTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testToDateString1() throws Exception {
       try {
@@ -161,7 +147,7 @@ public class DateConverterTests extends TestCase {
    public void testToDateString3() throws Exception {
       String epoch = DateConverter.toDateString(0L);
       assertTrue("Incorrect epoch time", epoch.startsWith("1970.01.01 "));
-      
+
       SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS");
       long now = System.currentTimeMillis();
       String expected = formatter.format(new Date(now));

@@ -42,10 +42,6 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public class XMLRPCCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns the XML-RPC equivalent for the XINS type.
     *
@@ -101,11 +97,6 @@ public class XMLRPCCallingConvention extends CallingConvention {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
     * objects.
@@ -142,11 +133,6 @@ public class XMLRPCCallingConvention extends CallingConvention {
     */
    public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>XMLRPCCallingConvention</code> instance.
     *
@@ -167,20 +153,10 @@ public class XMLRPCCallingConvention extends CallingConvention {
       _api = api;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API. Never <code>null</code>.
     */
    private final API _api;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

@@ -48,11 +48,6 @@ import org.xins.common.text.ParseException;
 public class HTTPServletHandler {
 
    // TODO: This class should be cleaned up further
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Initializes the logging subsystem with fallback default settings.
     */
@@ -65,11 +60,6 @@ public class HTTPServletHandler {
       settings.setProperty("log4j.logger.org.xins.",                          "INFO");
       PropertyConfigurator.configure(settings);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
 
    /**
     * The default port number is 8080.
@@ -90,11 +80,6 @@ public class HTTPServletHandler {
     * The line separator used by the HTTP protocol.
     */
    private final static String CRLF = "\r\n";
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet
@@ -218,11 +203,6 @@ public class HTTPServletHandler {
       addServlet(servletClassName, "/");
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The web server.
     */
@@ -242,11 +222,6 @@ public class HTTPServletHandler {
     * Mapping between the path and the servlet.
     */
    private Map _servlets = new HashMap();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Adds a WAR file to the server.
@@ -394,7 +369,7 @@ public class HTTPServletHandler {
       InputStream  inbound  = client.getInputStream();
       OutputStream outbound = client.getOutputStream();
 
-      // Delegate to httpQuery in a way it does not have to bother with 
+      // Delegate to httpQuery in a way it does not have to bother with
       // closing the streams
       try {
          httpQuery(inbound, outbound);
@@ -602,7 +577,7 @@ public class HTTPServletHandler {
       out.flush();
    }
 
- 
+
    /**
     * Finds the servlet that should handle a request at the specified virtual
     * path.
@@ -653,7 +628,7 @@ public class HTTPServletHandler {
                path = path.substring(0, i + 1);
             }
          }
-         
+
       } while (servlet == null && path.length() > 0);
 
       return servlet;

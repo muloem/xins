@@ -11,10 +11,6 @@ package com.mycompany.allinone.api;
  */
 public final class ParamComboNotAllImpl extends ParamComboNotAll {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ParamComboNotAllImpl</code> instance.
     *
@@ -25,15 +21,6 @@ public final class ParamComboNotAllImpl extends ParamComboNotAll {
    public ParamComboNotAllImpl(APIImpl api) {
       super(api);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Calls this function. If the function fails, it may throw any kind of

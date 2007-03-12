@@ -23,10 +23,6 @@ import java.io.Serializable;
  */
 public final class HTTPMethod implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The GET method.
     */
@@ -36,11 +32,6 @@ public final class HTTPMethod implements Serializable {
     * The POST method.
     */
    public static final HTTPMethod POST = new HTTPMethod("POST");
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPMethod</code> object with the specified name.
@@ -53,21 +44,11 @@ public final class HTTPMethod implements Serializable {
       _name = name;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of this method. For example <code>"GET"</code> or
     * <code>"POST"</code>. This field should never be <code>null</code>.
     */
    private final String _name;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a textual representation of this object. The implementation

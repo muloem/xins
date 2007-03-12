@@ -21,10 +21,6 @@ import org.xins.common.Utils;
  */
 public abstract class Type {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>Type</code> instance. Both the name of the type and
     * the value class must be specified. The value class in the class (or
@@ -53,11 +49,6 @@ public abstract class Type {
       _valueClass = valueClass == null ? Object.class : valueClass;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of this type. Never <code>null</code>.
     */
@@ -67,11 +58,6 @@ public abstract class Type {
     * The class for all values. Never <code>null</code>.
     */
    private final Class _valueClass;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Retrieves the name of this type.
@@ -208,7 +194,7 @@ public abstract class Type {
       //       ProgrammingException to be thrown
 
       if (!_valueClass.isInstance(value)) {
-         String detail = "The value returned is an instance of class " + value.getClass().getName() 
+         String detail = "The value returned is an instance of class " + value.getClass().getName()
                + " instead of an instance of " + _valueClass.getName() + '.';
          throw Utils.logProgrammingError(detail);
       }

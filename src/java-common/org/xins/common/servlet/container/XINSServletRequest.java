@@ -41,10 +41,6 @@ import org.xins.common.text.URLEncoding;
  */
 public class XINSServletRequest implements HttpServletRequest {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The localhost name.
     */
@@ -60,11 +56,6 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private static Map SESSIONS = new HashMap();
 
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    static {
       try {
          LOCALHOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
@@ -77,11 +68,6 @@ public class XINSServletRequest implements HttpServletRequest {
          LOCALHOST_NAME = "localhost";
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new Servlet request.
@@ -188,11 +174,6 @@ public class XINSServletRequest implements HttpServletRequest {
       parseURL(url);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The HTTP request method.
     */
@@ -257,11 +238,6 @@ public class XINSServletRequest implements HttpServletRequest {
     * Flags indicating that the reader has been used.
     */
    private String  _characterEncoding;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Parses the url to extract the parameters.
@@ -593,11 +569,6 @@ public class XINSServletRequest implements HttpServletRequest {
       return false;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Implementation of a <code>ServletInputStream</code> for this request.
     *
@@ -608,11 +579,6 @@ public class XINSServletRequest implements HttpServletRequest {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class InputStream extends ServletInputStream {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>InputStream</code> instance for the specified
        * data.
@@ -630,20 +596,10 @@ public class XINSServletRequest implements HttpServletRequest {
          }
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The data. Is <code>null</code> if there is no data.
        */
       private final ByteArrayInputStream _stream;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       public int read() throws IOException {
          return _stream.read();

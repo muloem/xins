@@ -17,10 +17,6 @@ package org.xins.server;
 public final class AccessDeniedException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates the error message for this exception.
     *
@@ -54,11 +50,6 @@ extends Exception {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AccessDeniedException</code> for the specified
     * IP address and function name.
@@ -75,11 +66,6 @@ extends Exception {
       _functionName = functionName;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The IP address which is denied for the given function. This field may be
     * <code>null</code>.
@@ -91,11 +77,6 @@ extends Exception {
     * be <code>null</code>.
     */
    private final String _functionName;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the IP address which is denied for the given function.

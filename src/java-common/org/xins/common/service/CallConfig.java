@@ -31,19 +31,10 @@ import java.io.Serializable;
  */
 public class CallConfig implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Flag that indicates whether fail-over is unconditionally allowed.
     */
    private boolean _failOverAllowed;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Describes this configuration.

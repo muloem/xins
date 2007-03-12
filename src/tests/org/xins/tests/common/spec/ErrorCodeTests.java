@@ -32,10 +32,6 @@ import com.mycompany.allinone.capi.CAPI;
  */
 public class ErrorCodeTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -45,11 +41,6 @@ public class ErrorCodeTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ErrorCodeTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ErrorCodeTests</code> test suite with
@@ -62,20 +53,10 @@ public class ErrorCodeTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The Error Code specification of the <i>ResultCode</i> function.
     */
    private ErrorCodeSpec _errorCode;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

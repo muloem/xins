@@ -21,10 +21,6 @@ import org.xins.common.text.SimplePatternParser;
  */
 public class SimplePatternParserTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class SimplePatternParserTests extends TestCase {
    public static Test suite() {
       return new TestSuite(SimplePatternParserTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>SimplePatternParserTests</code> test suite with
@@ -51,17 +42,7 @@ public class SimplePatternParserTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    private SimplePatternParser _parser;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs setup for the tests.

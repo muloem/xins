@@ -33,10 +33,6 @@ import org.xins.server.APIServlet;
  */
 public class APIServletTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -46,11 +42,6 @@ public class APIServletTests extends TestCase {
    public static Test suite() {
       return new TestSuite(APIServletTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>APIServletTests</code> test suite with
@@ -62,11 +53,6 @@ public class APIServletTests extends TestCase {
    public APIServletTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs setup for the tests.
@@ -127,25 +113,11 @@ public class APIServletTests extends TestCase {
       // TODO
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    private class TestServletConfig
    extends Object
    implements ServletConfig {
 
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       public ServletContext _context;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       public String getServletName() {
          return "servlet 1";
@@ -168,26 +140,13 @@ public class APIServletTests extends TestCase {
    extends Object
    implements ServletContext {
 
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       public TestServletContext() {
          // TODO
       }
 
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       public int _major = 2;
       public int _minor = 4;
       public String _serverInfo;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       public ServletContext getContext(String uripath) {
          return null;

@@ -54,21 +54,12 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class SimplePatternParser {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>SimplePatternParser</code> object.
     */
    public SimplePatternParser() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified simple pattern to a Perl 5 regular expression.

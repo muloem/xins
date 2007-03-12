@@ -29,19 +29,10 @@ import org.xins.common.collections.PropertyReader;
  */
 public class Properties extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Properties SINGLETON = new Properties();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a <code>PropertyReader</code> from the specified string
@@ -137,11 +128,6 @@ public class Properties extends Type {
       return buffer.toString();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Properties</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -173,11 +159,6 @@ public class Properties extends Type {
       _valueType = valueType == null ? Text.SINGLETON : valueType;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The type for property names. Cannot be <code>null</code>.
     */
@@ -187,11 +168,6 @@ public class Properties extends Type {
     * The type for property values. Cannot be <code>null</code>.
     */
    private final Type _valueType;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected final boolean isValidValueImpl(String string) {
 

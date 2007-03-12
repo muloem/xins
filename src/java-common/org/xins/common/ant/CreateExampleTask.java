@@ -41,10 +41,6 @@ import org.xins.common.xml.ElementParser;
  */
 public class CreateExampleTask extends Task {
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The URL to use to call the function.
     */
@@ -64,11 +60,6 @@ public class CreateExampleTask extends Task {
     * The location of the XSL style sheet to use to create the example.
     */
    private String _xslLocation;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Sets the URL to call the function.

@@ -20,24 +20,10 @@ import org.xins.common.types.TypeValueException;
  */
 public final class List extends org.xins.common.types.List {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static List SINGLETON = new List();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>List</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -46,16 +32,6 @@ public final class List extends org.xins.common.types.List {
    private List() {
       super("_list", Text.SINGLETON);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    public ItemList createList() {
       return new Value();
    }
@@ -124,20 +100,10 @@ public final class List extends org.xins.common.types.List {
       return SINGLETON.toString((ItemList) value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Inner class that represents a list of String.
     */
    public static final class Value extends ItemList {
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       /**
        * Add a new element in the list.
        *

@@ -16,11 +16,6 @@ package org.xins.common.http;
  */
 public interface HTTPCallResultData {
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Returns the HTTP status code.
     *

@@ -32,10 +32,6 @@ import org.xins.tests.AllTests;
  */
 public class XINSServiceCallerTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -45,11 +41,6 @@ public class XINSServiceCallerTests extends TestCase {
    public static Test suite() {
       return new TestSuite(XINSServiceCallerTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>XINSServiceCallerTests</code> test suite with
@@ -61,11 +52,6 @@ public class XINSServiceCallerTests extends TestCase {
    public XINSServiceCallerTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the constructor arguments.

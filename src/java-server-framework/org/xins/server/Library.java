@@ -20,10 +20,6 @@ import org.xins.common.text.TextUtils;
  */
 public final class Library {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Regular expression that production release versions of XINS match, and
     * non-production release version do not.
@@ -33,13 +29,8 @@ public final class Library {
    /**
     * The pattern for a URL.
     */
-   private static final Pattern PRODUCTION_RELEASE_PATTERN = 
+   private static final Pattern PRODUCTION_RELEASE_PATTERN =
          TextUtils.createPattern(PRODUCTION_RELEASE_PATTERN_STRING);
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the version of this library.
@@ -70,20 +61,10 @@ public final class Library {
       Perl5Matcher patternMatcher = new Perl5Matcher();
       return patternMatcher.matches(version, PRODUCTION_RELEASE_PATTERN);
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Library</code> object.
     */
    private Library() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

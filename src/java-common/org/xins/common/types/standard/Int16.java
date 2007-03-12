@@ -20,19 +20,10 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class Int16 extends Type {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Int16 SINGLETON = new Int16();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Converts the specified non-<code>null</code> string value to a
@@ -123,11 +114,6 @@ public class Int16 extends Type {
       return String.valueOf(value);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>Int16</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -157,11 +143,6 @@ public class Int16 extends Type {
       _maximum = maximum;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The minimum value that this Int16 can have.
     */
@@ -171,11 +152,6 @@ public class Int16 extends Type {
     * The maximum value that this Int16 can have.
     */
    private final short _maximum;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    protected boolean isValidValueImpl(String value) {
       try {
          short number = Short.parseShort(value);

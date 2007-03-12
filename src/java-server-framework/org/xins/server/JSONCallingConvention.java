@@ -24,11 +24,11 @@ import org.xins.common.xml.ElementParser;
 
 /**
  * The JSON calling convention.
- * 
+ *
  * This version support Yahoo style JSON calls.
  * For the definition of the calling convention, look at
  * http://developer.yahoo.com/common/json.html
- * 
+ *
  * This calling convention could be used for example with Google Web Toolkit.
  * For an example, look at
  * http://code.google.com/webtoolkit/documentation/examples/jsonrpc/
@@ -38,10 +38,6 @@ import org.xins.common.xml.ElementParser;
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class JSONCallingConvention extends CallingConvention {
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
 
    /**
     * The response encoding format.
@@ -53,11 +49,6 @@ public class JSONCallingConvention extends CallingConvention {
     */
    public static final String RESPONSE_CONTENT_TYPE = "text/javascript; charset=\"" + RESPONSE_ENCODING + "\"";
 
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    protected String[] getSupportedMethods() {
       return new String[] { "GET", "POST" };
    }
@@ -65,7 +56,7 @@ public class JSONCallingConvention extends CallingConvention {
    protected boolean matches(HttpServletRequest httpRequest) {
 
       String pathInfo = httpRequest.getPathInfo();
-      return "json".equals(httpRequest.getParameter("output")) && 
+      return "json".equals(httpRequest.getParameter("output")) &&
             !TextUtils.isEmpty(pathInfo) && !pathInfo.endsWith("/");
    }
 
@@ -98,7 +89,7 @@ public class JSONCallingConvention extends CallingConvention {
             throw new InvalidRequestException("Invalid XML created from JSON object.", pex);
          }
       }
-      
+
       return new FunctionRequest(functionName, params, dataElement);
    }
 

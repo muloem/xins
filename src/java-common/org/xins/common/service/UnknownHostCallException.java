@@ -18,20 +18,11 @@ package org.xins.common.service;
 public final class UnknownHostCallException
 extends ConnectionCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = 1266820641762046595L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnknownHostCallException</code>.
@@ -61,9 +52,4 @@ extends ConnectionCallException {
       super("Unknown host",
             request, target, duration, null, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

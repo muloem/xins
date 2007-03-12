@@ -19,10 +19,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public abstract class XINSCallException extends CallException {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>XINSCallException</code> based on a short reason,
     * the original request, target called, call duration, detail message and

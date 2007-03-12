@@ -25,19 +25,10 @@ import org.xins.common.collections.ProtectedList;
  */
 public class ProtectedListTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The secret key for the test protected list.
     */
    private final static Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a test suite with all test cases defined by this class.
@@ -49,11 +40,6 @@ public class ProtectedListTests extends TestCase {
       return new TestSuite(ProtectedListTests.class);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ProtectedList</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -64,11 +50,6 @@ public class ProtectedListTests extends TestCase {
    public ProtectedListTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testProtectedList() {
 

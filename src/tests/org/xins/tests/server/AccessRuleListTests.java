@@ -19,10 +19,6 @@ import org.xins.server.AccessRuleList;
  */
 public class AccessRuleListTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -32,11 +28,6 @@ public class AccessRuleListTests extends TestCase {
    public static Test suite() {
       return new TestSuite(AccessRuleListTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AccessRuleListTests</code> test suite with
@@ -48,11 +39,6 @@ public class AccessRuleListTests extends TestCase {
    public AccessRuleListTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs setup for the tests.

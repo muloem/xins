@@ -20,10 +20,6 @@ import org.xins.common.manageable.InitializationException;
  */
 public class InitializationExceptionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class InitializationExceptionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(InitializationExceptionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>InitializationExceptionTests</code>
@@ -50,11 +41,6 @@ public class InitializationExceptionTests extends TestCase {
    public InitializationExceptionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the <code>InitializationException</code> class.

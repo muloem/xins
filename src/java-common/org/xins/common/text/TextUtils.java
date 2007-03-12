@@ -29,11 +29,6 @@ public final class TextUtils {
     * Perl 5 pattern compiler.
     */
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Quotes the specified string, or returns <code>"(null)"</code> if it is
     * <code>null</code>.
@@ -296,20 +291,10 @@ public final class TextUtils {
          return result.toString();
       }
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>TextUtils</code> object.
     */
    private TextUtils() {
       // empty
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

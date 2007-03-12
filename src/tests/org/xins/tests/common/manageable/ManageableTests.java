@@ -21,10 +21,6 @@ import org.xins.common.manageable.*;
  */
 public class ManageableTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class ManageableTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ManageableTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ManageableTests</code>
@@ -51,11 +42,6 @@ public class ManageableTests extends TestCase {
    public ManageableTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the <code>Manageable</code> class.
@@ -131,11 +117,6 @@ public class ManageableTests extends TestCase {
          // as expected
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    private static final class TestManageable extends Manageable {
 

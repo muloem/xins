@@ -28,10 +28,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public final class InvalidResultXINSCallException extends XINSCallException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a <code>InvalidResultXINSCallException</code> for the situation
     * where no HTTP data is received.
@@ -145,16 +141,6 @@ public final class InvalidResultXINSCallException extends XINSCallException {
          request, target, duration, detail, cause);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidResultXINSCallException</code>.
     *
@@ -189,9 +175,4 @@ public final class InvalidResultXINSCallException extends XINSCallException {
       super("Invalid XINS call result",
             request, target, duration, detail, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

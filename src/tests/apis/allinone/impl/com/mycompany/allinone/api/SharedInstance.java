@@ -20,18 +20,6 @@ import org.xins.common.manageable.Manageable;
  */
 public class SharedInstance extends Manageable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>SharedInstance</code> instance.
     *
@@ -42,19 +30,10 @@ public class SharedInstance extends Manageable {
    public SharedInstance(APIImpl api) {
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The collection used to store the properties.
     */
    private Properties _sharedProperties;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected void initImpl(PropertyReader properties)
    throws MissingRequiredPropertyException,

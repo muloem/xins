@@ -23,20 +23,11 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class UnsupportedProtocolException
 extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = 2847976540646154938L;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Creates the message for the constructor to pass up to the
@@ -62,11 +53,6 @@ extends RuntimeException {
            + target.getProtocol()
            + "\".";
    }
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>UnsupportedProtocolException</code> for the
     * specified target descriptor.
@@ -87,21 +73,11 @@ extends RuntimeException {
       _target = target;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The target descriptor that has an unsupported protocol. Cannot be
     * <code>null</code>.
     */
    private final TargetDescriptor _target;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the target descriptor that has an unsupported protocol.

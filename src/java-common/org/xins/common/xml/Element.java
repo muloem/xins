@@ -39,10 +39,6 @@ import org.xins.common.text.ParseException;
  */
 public class Element implements Cloneable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Fully-qualified name of this class.
     */
@@ -52,11 +48,6 @@ public class Element implements Cloneable {
     * The secret key to use to add child elements.
     */
    private static final Object SECRET_KEY = new Object();
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>Element</code> with no namespace.
@@ -101,11 +92,6 @@ public class Element implements Cloneable {
       _localName = localName;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The namespace URI. This field can be <code>null</code>, but it can never
     * be an empty string.
@@ -133,11 +119,6 @@ public class Element implements Cloneable {
     * The character content for this element. Can be <code>null</code>.
     */
    private String _text;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the namespace URI.
@@ -260,9 +241,9 @@ public class Element implements Cloneable {
     * Gets the attributes of this element.
     *
     * @return
-    *    a {@link Map} (never <code>null</code>) which contains the attributes; 
-    *    each key in the <code>Map</code> is a {@link QualifiedName} instance 
-    *    (not <code>null</code>) and each value in it is a <code>String</code> 
+    *    a {@link Map} (never <code>null</code>) which contains the attributes;
+    *    each key in the <code>Map</code> is a {@link QualifiedName} instance
+    *    (not <code>null</code>) and each value in it is a <code>String</code>
     *    instance (not <code>null</code>).
     */
    public Map getAttributeMap() {
@@ -577,11 +558,6 @@ public class Element implements Cloneable {
       return serializer.serialize(this);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Qualified name for an element or attribute. This is a combination of an
     * optional namespace URI and a mandatory local name.
@@ -591,11 +567,6 @@ public class Element implements Cloneable {
     * @since XINS 1.1.0
     */
    public static final class QualifiedName {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>QualifiedName</code> with the specified
        * namespace and local name.
@@ -627,11 +598,6 @@ public class Element implements Cloneable {
          _localName    = localName;
       }
 
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
       /**
        * The hash code for this object.
        */
@@ -646,11 +612,6 @@ public class Element implements Cloneable {
        * The local name. Cannot be <code>null</code>.
        */
       private final String _localName;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Returns the hash code value for this object.

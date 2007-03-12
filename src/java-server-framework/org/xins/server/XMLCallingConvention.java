@@ -27,10 +27,6 @@ import org.xins.common.xml.Element;
  */
 public class XMLCallingConvention extends CallingConvention {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The response encoding format.
     */
@@ -40,11 +36,6 @@ public class XMLCallingConvention extends CallingConvention {
     * The content type of the HTTP response.
     */
    public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

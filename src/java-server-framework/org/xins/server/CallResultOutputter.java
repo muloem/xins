@@ -33,10 +33,6 @@ import org.znerd.xmlenc.XMLOutputter;
  */
 public final class CallResultOutputter {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The first output for each output conversion. Never <code>null</code>.
     */
@@ -71,11 +67,6 @@ public final class CallResultOutputter {
     * class initialized and then never <code>null</code>.
     */
    private static final XMLEncoder XML_ENCODER;
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    static {
       try {
@@ -155,11 +146,6 @@ public final class CallResultOutputter {
       // End the root element <result>
       out.write(DOCUMENT_SUFFIX);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>CallResultOutputter</code> object.

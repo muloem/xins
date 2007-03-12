@@ -20,10 +20,6 @@ import org.xins.common.text.FastStringBuffer;
  */
 public class FastStringBufferTest extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class FastStringBufferTest extends TestCase {
    public static Test suite() {
       return new TestSuite(FastStringBufferTest.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>FastStringBufferTest</code> test suite with
@@ -49,11 +40,6 @@ public class FastStringBufferTest extends TestCase {
    public FastStringBufferTest(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /*
     * test for void FastStringBuffer(int)

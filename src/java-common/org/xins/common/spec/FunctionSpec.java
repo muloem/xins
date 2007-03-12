@@ -29,10 +29,6 @@ import org.xins.common.xml.ElementParser;
  */
 public final class FunctionSpec {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new <code>Function</code> by parsing the function specification file.
     *
@@ -62,11 +58,6 @@ public final class FunctionSpec {
          throw new InvalidSpecificationException("[Function: " + functionName + "] Cannot read function.", ioe);
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * Name of the function, cannot be <code>null</code>.
@@ -114,11 +105,6 @@ public final class FunctionSpec {
     * The output data section elements of the function.
     */
    private Map _outputDataSectionElements = new ChainedMap();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the function.

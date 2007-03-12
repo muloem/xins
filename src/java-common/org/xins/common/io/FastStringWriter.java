@@ -25,19 +25,10 @@ import org.xins.common.text.FastStringBuffer;
  */
 public class FastStringWriter extends Writer {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The default initial internal buffer size.
     */
    private final static int DEFAULT_INITIAL_SIZE = 128;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>FastStringWriter</code> using a default initial
@@ -70,11 +61,6 @@ public class FastStringWriter extends Writer {
       _buffer = new FastStringBuffer(initialSize);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The buffer to write to.
     */
@@ -84,11 +70,6 @@ public class FastStringWriter extends Writer {
     * Flag that indicates if this stream has been closed.
     */
    private boolean _closed = false;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Writes a single character.

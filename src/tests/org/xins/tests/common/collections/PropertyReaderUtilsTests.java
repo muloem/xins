@@ -29,10 +29,6 @@ import org.xins.logdoc.LogdocStringBuffer;
  */
 public class PropertyReaderUtilsTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -42,11 +38,6 @@ public class PropertyReaderUtilsTests extends TestCase {
    public static Test suite() {
       return new TestSuite(PropertyReaderUtilsTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>PropertyReaderUtilsTests</code> test suite with
@@ -58,10 +49,6 @@ public class PropertyReaderUtilsTests extends TestCase {
    public PropertyReaderUtilsTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testEmptyReader() {
       PropertyReader r = PropertyReaderUtils.EMPTY_PROPERTY_READER;

@@ -19,10 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class NoSuchFunctionException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates the error message for this exception.
     *
@@ -44,11 +40,6 @@ extends Exception {
       return "The function \"" + functionName + "\" cannot be found.";
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>NoSuchFunctionException</code> for the specified
     * function name.
@@ -65,20 +56,10 @@ extends Exception {
       _functionName = functionName;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the function.
     */
    private final String _functionName;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the function.

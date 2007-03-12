@@ -45,10 +45,6 @@ import org.xins.common.text.TextUtils;
  */
 final class ContextIDGenerator extends Manageable {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The hexadecimal digits.
     */
@@ -56,11 +52,6 @@ final class ContextIDGenerator extends Manageable {
       '0', '1', '2', '3', '4', '5', '6', '7',
       '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
    };
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ContextIDGenerator</code>.
@@ -87,11 +78,6 @@ final class ContextIDGenerator extends Manageable {
       // Initialize a pseudo-random number generator
       _random = new Random();
    }
-
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
 
    /**
     * The name of the API. Never <code>null</code>.
@@ -124,11 +110,6 @@ final class ContextIDGenerator extends Manageable {
     * A pseudo-random number generator. Never <code>null</code>
     */
    private final Random _random;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Performs the initialization procedure (actual implementation). When this

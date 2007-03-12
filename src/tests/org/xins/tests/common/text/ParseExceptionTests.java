@@ -21,10 +21,6 @@ import org.xins.common.text.ParseException;
  */
 public class ParseExceptionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class ParseExceptionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ParseExceptionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ParseExceptionTests</code> test suite with
@@ -50,11 +41,6 @@ public class ParseExceptionTests extends TestCase {
    public ParseExceptionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testParseException() throws Throwable {
       ParseException p = new ParseException();

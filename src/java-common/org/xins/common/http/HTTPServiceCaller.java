@@ -147,10 +147,6 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  */
 public final class HTTPServiceCaller extends ServiceCaller {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Fully-qualified name of this class.
     */
@@ -182,11 +178,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * HTTP retry handler that does not allow any retries.
     */
    private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
-
-
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the {@link HttpClient} to use to contact the given target.
@@ -332,11 +323,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>HTTPServiceCaller</code> object with the
     * specified descriptor and call configuration.
@@ -383,11 +369,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    throws IllegalArgumentException, UnsupportedProtocolException {
       this(descriptor, null);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Checks if the specified protocol is supported (implementation method).
@@ -892,11 +873,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Executor of calls to an API.
     *
@@ -904,14 +880,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class CallExecutor extends Thread {
-
-      //-------------------------------------------------------------------------
-      // Class fields
-      //-------------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
 
       /**
        * Constructs a new <code>CallExecutor</code> for the specified call to
@@ -957,11 +925,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          String name = EXECUTOR_CLASSNAME + " #" + instanceID;
          setName(name);
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
 
       /**
        * The call request to execute. Never <code>null</code>.
@@ -1009,11 +972,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * executed yet.
        */
       private HTTPCallResultData _result;
-
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Runs this thread (wrapper method). It will call the HTTP service. If that call was
@@ -1201,11 +1159,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private final static class HTTPCallResultDataHandler
    implements HTTPCallResultData {
-
-      //-------------------------------------------------------------------------
-      // Constructor
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new <code>HTTPCallResultDataHandler</code> object.
        *
@@ -1220,11 +1173,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          _data = data;
       }
 
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
       /**
        * The HTTP status code.
        */
@@ -1234,11 +1182,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
        * The data returned.
        */
       private final byte[] _data;
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       /**
        * Returns the HTTP status code.
@@ -1273,22 +1216,12 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @since XINS 1.4.0
     */
    private static class UnicodePostMethod extends PostMethod {
-
-      //-------------------------------------------------------------------------
-      // Constructor
-      //-------------------------------------------------------------------------
-
       public UnicodePostMethod(String url) {
          super(url);
 
          // Disable retries
          getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
       }
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
-
       protected RequestEntity generateRequestEntity() {
          NameValuePair[] params = getParameters();
          int paramsCount = params.length;

@@ -29,10 +29,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 public abstract class AbstractCAPICallRequest implements Serializable {
 
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name the function to call, never <code>null</code>.
     */
@@ -59,11 +55,6 @@ public abstract class AbstractCAPICallRequest implements Serializable {
     * The data element builder, can be <code>null</code>.
     */
    private ElementBuilder _dataElementBuilder;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Creates a new <code>AbstractCAPICallRequest</code>.

@@ -23,10 +23,6 @@ import org.xins.common.xml.Element;
  */
 public class InvalidRequestException extends StandardErrorCodeException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Delegate for the constructor that determines the detail message based on
     * a <code>XINSCallResultData</code> object.
@@ -178,11 +174,6 @@ public class InvalidRequestException extends StandardErrorCodeException {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>InvalidRequestException</code>.
     *
@@ -214,9 +205,4 @@ public class InvalidRequestException extends StandardErrorCodeException {
 
       // TODO for XINS 1.3: Parse details
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

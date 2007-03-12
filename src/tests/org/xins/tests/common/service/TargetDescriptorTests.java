@@ -22,10 +22,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public class TargetDescriptorTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class TargetDescriptorTests extends TestCase {
    public static Test suite() {
       return new TestSuite(TargetDescriptorTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>TargetDescriptorTests</code> test suite with
@@ -51,11 +42,6 @@ public class TargetDescriptorTests extends TestCase {
    public TargetDescriptorTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testTargetDescriptor() throws Exception {
 

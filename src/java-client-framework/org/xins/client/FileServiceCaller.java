@@ -52,24 +52,11 @@ import org.xins.common.text.URLEncoding;
  */
 class FileServiceCaller extends ServiceCaller {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * The pool of the loaded XINS APIs. The key is the location of the WAR
     * file, as a {@link TargetDescriptor}, the value is the {@link LocalServletHandler}.
     */
    private static HashMap SERVLETS = new HashMap();
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPServiceCaller</code> object with the
@@ -116,14 +103,6 @@ class FileServiceCaller extends ServiceCaller {
 
       this(descriptor, (HTTPCallConfig) null);
    }
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns a default <code>CallConfig</code> object. This method is called
@@ -370,11 +349,6 @@ class FileServiceCaller extends ServiceCaller {
           HTTPCallException {
       return call(request, (HTTPCallConfig) null);
    }
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Container of the data part of an HTTP call result.
     *
@@ -385,11 +359,6 @@ class FileServiceCaller extends ServiceCaller {
     */
    private final static class HTTPCallResultDataHandler
    implements HTTPCallResultData {
-
-      //-------------------------------------------------------------------------
-      // Constructor
-      //-------------------------------------------------------------------------
-
       /**
        * Constructs a new <code>HTTPCallResultDataHandler</code> object.
        *
@@ -404,11 +373,6 @@ class FileServiceCaller extends ServiceCaller {
          _data = data;
       }
 
-
-      //-------------------------------------------------------------------------
-      // Fields
-      //-------------------------------------------------------------------------
-
       /**
        * The HTTP status code.
        */
@@ -418,11 +382,6 @@ class FileServiceCaller extends ServiceCaller {
        * The data returned.
        */
       private final byte[] _data;
-
-
-      //-------------------------------------------------------------------------
-      // Methods
-      //-------------------------------------------------------------------------
 
       /**
        * Returns the HTTP status code.

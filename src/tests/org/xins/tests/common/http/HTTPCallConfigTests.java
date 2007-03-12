@@ -23,10 +23,6 @@ import org.xins.common.http.HTTPMethod;
  */
 public class HTTPCallConfigTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -36,11 +32,6 @@ public class HTTPCallConfigTests extends TestCase {
    public static Test suite() {
       return new TestSuite(HTTPCallConfigTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>HTTPCallConfigTests</code> test suite with
@@ -53,11 +44,6 @@ public class HTTPCallConfigTests extends TestCase {
    public HTTPCallConfigTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testHTTPCallConfig() throws Exception {
 

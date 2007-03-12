@@ -33,10 +33,6 @@ import org.xins.common.xml.ElementParser;
  */
 public final class APISpec {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Gets the content of the file without the DTD declaration.
     *
@@ -68,11 +64,6 @@ public final class APISpec {
       return reader;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new instance of <code>APISpec</code>.
     *
@@ -99,11 +90,6 @@ public final class APISpec {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Name of the API, cannot be <code>null</code>.
     */
@@ -123,11 +109,6 @@ public final class APISpec {
     * The functions of the API, cannot be <code>null</code>.
     */
    private Map _functions = new ChainedMap();
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the name of the API.

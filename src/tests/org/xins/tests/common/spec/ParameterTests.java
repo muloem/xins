@@ -36,10 +36,6 @@ import com.mycompany.allinone.types.Username;
  */
 public class ParameterTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -49,11 +45,6 @@ public class ParameterTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ParameterTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ParameterTests</code> test suite with
@@ -66,11 +57,6 @@ public class ParameterTests extends TestCase {
       super(name);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The input parameter specification of the <i>DataSection</i> function.
     */
@@ -81,11 +67,6 @@ public class ParameterTests extends TestCase {
     * the <i>DefinedTypes</i> function.
     */
    private Map _userDefinedParams;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * @see junit.framework.TestCase#setUp()

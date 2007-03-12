@@ -22,10 +22,6 @@ import org.xins.common.xml.ElementBuilder;
  */
 public class FunctionResult {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a new successful <code>FunctionResult</code> instance.
     */
@@ -60,11 +56,6 @@ public class FunctionResult {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The result code. This field is <code>null</code> if no code was
     * returned.
@@ -81,11 +72,6 @@ public class FunctionResult {
     * data element.
     */
    private ElementBuilder _dataElementBuilder;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the result code.

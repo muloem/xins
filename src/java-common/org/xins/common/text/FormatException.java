@@ -19,10 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class FormatException
 extends RuntimeException {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a message for the constructor.
     *
@@ -54,11 +50,6 @@ extends RuntimeException {
       return message;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a <code>FormatException</code>.
     *
@@ -83,11 +74,6 @@ extends RuntimeException {
       _reason = reason;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The string that is considered invalid. Cannot be <code>null</code>.
     */
@@ -98,11 +84,6 @@ extends RuntimeException {
     * <code>null</code>.
     */
    private final String _reason;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the string that is considered invalid.

@@ -27,10 +27,6 @@ import java.util.jar.JarInputStream;
  */
 public class ServletClassLoader {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Gest the class loader that will loader the servlet.
     *
@@ -145,11 +141,6 @@ public class ServletClassLoader {
       out.close();
       return tempJarFile;
    }
-
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Use the current class loader to load the servlet and the libraries.
     */
@@ -180,11 +171,6 @@ public class ServletClassLoader {
     * Load the included external libraries from the WAR file.
     */
    public final static int USE_WAR_EXTERNAL_LIB = 5;
-
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
 
    /**
     * An almost trivial no-fuss implementation of a class loader

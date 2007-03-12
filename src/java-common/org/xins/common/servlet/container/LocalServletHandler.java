@@ -29,10 +29,6 @@ import org.xins.common.Log;
  */
 public class LocalServletHandler {
 
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
-
    /**
     * Creates a Servlet handler that allow to invoke a Servlet without starting
     * a HTTP server.
@@ -62,20 +58,10 @@ public class LocalServletHandler {
       initServlet(servletClassName);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The Servlet started by this Servlet handler.
     */
    private HttpServlet _apiServlet;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Initializes the Servlet.

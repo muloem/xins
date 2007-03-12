@@ -22,10 +22,6 @@ import org.xins.common.text.TextUtils;
 public final class MissingRequiredPropertyException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Creates message based on the specified constructor argument.
     *
@@ -54,11 +50,6 @@ extends Exception {
 
       return message;
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>MissingRequiredPropertyException</code>, with the
@@ -101,11 +92,6 @@ extends Exception {
       this(propertyName, null);
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The name of the property. Never <code>null</code>.
     */
@@ -116,11 +102,6 @@ extends Exception {
     * context. Can be <code>null</code>.
     */
    private final String _detail;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns the name of the property.

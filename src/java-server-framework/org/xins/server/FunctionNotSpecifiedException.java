@@ -16,19 +16,10 @@ package org.xins.server;
 public final class FunctionNotSpecifiedException
 extends Exception {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>FunctionNotSpecifiedException</code>.
     */
    public FunctionNotSpecifiedException() {
       super("Function not specified in incoming request.");
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

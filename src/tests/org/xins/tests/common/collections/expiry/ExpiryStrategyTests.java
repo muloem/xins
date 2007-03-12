@@ -20,10 +20,6 @@ import org.xins.common.collections.expiry.ExpiryStrategy;
  */
 public class ExpiryStrategyTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -33,11 +29,6 @@ public class ExpiryStrategyTests extends TestCase {
    public static Test suite() {
       return new TestSuite(ExpiryStrategyTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ExpiryStrategyTests</code> test suite with
@@ -49,10 +40,6 @@ public class ExpiryStrategyTests extends TestCase {
    public ExpiryStrategyTests(String name) {
       super(name);
    }
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testExpiryStrategy() throws Throwable {
       try {

@@ -24,10 +24,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public abstract class AbstractPropertyReader
 implements PropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AbstractPropertyReader</code>.
     *
@@ -50,20 +46,10 @@ implements PropertyReader {
       _properties = map;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The mappings from property keys to values. Never <code>null</code>.
     */
    private final Map _properties;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Gets the value of the property with the specified name.

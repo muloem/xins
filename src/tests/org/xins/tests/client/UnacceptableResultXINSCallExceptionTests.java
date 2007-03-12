@@ -22,10 +22,6 @@ import org.xins.client.XINSCallResult;
  */
 public class UnacceptableResultXINSCallExceptionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -35,11 +31,6 @@ public class UnacceptableResultXINSCallExceptionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(UnacceptableResultXINSCallExceptionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>UnacceptableResultXINSCallExceptionTests</code>
@@ -52,11 +43,6 @@ public class UnacceptableResultXINSCallExceptionTests extends TestCase {
    public UnacceptableResultXINSCallExceptionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Tests the behaviour of the

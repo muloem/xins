@@ -48,10 +48,6 @@ import org.xins.common.text.ParseException;
  */
 public class AccessRuleFile implements AccessRuleContainer {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns the next token in the descriptor.
     *
@@ -88,11 +84,6 @@ public class AccessRuleFile implements AccessRuleContainer {
          return tokenizer.nextToken();
       }
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>AccessRuleFile</code> based on a descriptor and
@@ -171,11 +162,6 @@ public class AccessRuleFile implements AccessRuleContainer {
       _asString = "file " + _file;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The ACL file.
     */
@@ -205,11 +191,6 @@ public class AccessRuleFile implements AccessRuleContainer {
     * Flag that indicates whether this object is disposed.
     */
    private boolean _disposed;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Determines if the specified IP address is allowed to access the
@@ -492,11 +473,6 @@ public class AccessRuleFile implements AccessRuleContainer {
       return _asString;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
    /**
     * Listener that reloads the ACL file if it changes.
     *
@@ -506,27 +482,12 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @since XINS 1.1.0
     */
    private final class FileListener implements FileWatcher.Listener {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
-
       /**
        * Constructs a new <code>FileListener</code> object.
        */
       FileListener() {
          // empty
       }
-
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
-
       /**
        * Callback method called when the configuration file is found while it
        * was previously not found.

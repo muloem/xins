@@ -34,10 +34,6 @@ import org.xins.logdoc.UnsupportedLocaleException;
  */
 final class EngineStarter {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ServletException</code> with the specified cause.
     *
@@ -71,11 +67,6 @@ final class EngineStarter {
       return servletException;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructor for the <code>EngineStarter</code> class.
     *
@@ -96,20 +87,10 @@ final class EngineStarter {
       _config = config;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The servlet config. Never <code>null</code>.
     */
    private ServletConfig _config;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Logs server version, warns if server version differs from common version

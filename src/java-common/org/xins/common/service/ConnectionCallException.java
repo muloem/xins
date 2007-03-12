@@ -18,20 +18,11 @@ package org.xins.common.service;
 public abstract class ConnectionCallException
 extends GenericCallException {
 
-   //-------------------------------------------------------------------------
-   // Class fields
-   //-------------------------------------------------------------------------
-
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -331358001038403428L;
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>ConnectionCallException</code>.
@@ -75,9 +66,4 @@ extends GenericCallException {
       super(shortReason,
             request, target, duration, detail, cause);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 }

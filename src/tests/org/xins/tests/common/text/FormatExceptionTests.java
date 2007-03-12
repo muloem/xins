@@ -21,10 +21,6 @@ import org.xins.common.text.FormatException;
  */
 public class FormatExceptionTests extends TestCase {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Returns a test suite with all test cases defined by this class.
     *
@@ -34,11 +30,6 @@ public class FormatExceptionTests extends TestCase {
    public static Test suite() {
       return new TestSuite(FormatExceptionTests.class);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Constructor
-   //-------------------------------------------------------------------------
 
    /**
     * Constructs a new <code>FormatExceptionTests</code> test suite with
@@ -50,11 +41,6 @@ public class FormatExceptionTests extends TestCase {
    public FormatExceptionTests(String name) {
       super(name);
    }
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    public void testFormatException() throws Throwable {
       try {

@@ -18,10 +18,6 @@ package org.xins.logdoc;
  */
 public abstract class AbstractLogdocSerializable implements LogdocSerializable {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AbstractLogdocSerializable</code> instance. This
     * constructor is only available for subclasses.
@@ -30,21 +26,11 @@ public abstract class AbstractLogdocSerializable implements LogdocSerializable {
       // empty
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The serialized version of this object. The value is <code>null</code> as
     * long as it has not been initialized yet.
     */
    private String _asString;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Serializes this object for logging to the specified string buffer

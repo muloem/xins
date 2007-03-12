@@ -37,10 +37,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class ProtectedPropertyReader
 extends AbstractPropertyReader {
 
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>ProtectedPropertyReader</code>.
     *
@@ -61,21 +57,11 @@ extends AbstractPropertyReader {
       _secretKey = secretKey;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The secret key. This field is initialized by the constructor and can
     * never be <code>null</code>.
     */
    private final Object _secretKey;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Verifies that the specified object matches the secret key. If not, an

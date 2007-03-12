@@ -56,10 +56,6 @@ import org.xins.common.text.SimplePatternParser;
  */
 public final class AccessRule implements AccessRuleContainer {
 
-   //-------------------------------------------------------------------------
-   // Class functions
-   //-------------------------------------------------------------------------
-
    /**
     * Parses the specified character string to construct a new
     * <code>AccessRule</code> object.
@@ -151,11 +147,6 @@ public final class AccessRule implements AccessRuleContainer {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
-
    /**
     * Constructs a new <code>AccessRule</code>.
     *
@@ -198,11 +189,6 @@ public final class AccessRule implements AccessRuleContainer {
       _asString          = asString;
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * If the access method is 'allow' or not.
     */
@@ -228,11 +214,6 @@ public final class AccessRule implements AccessRuleContainer {
     * Flag that indicates whether this object is disposed.
     */
    private boolean _disposed;
-
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
 
    /**
     * Returns if this rule is an <em>allow</em> or a <em>deny</em> rule.

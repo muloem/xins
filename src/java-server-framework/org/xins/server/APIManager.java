@@ -44,19 +44,10 @@ import org.xins.common.xml.Element;
  */
 public final class APIManager implements APIManagerMBean {
 
-   //-------------------------------------------------------------------------
-   // Static Fields
-   //-------------------------------------------------------------------------
-
    /**
     * Formatter to convert {@link String} to {@link java.util.Date}.
     */
    private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
-
-
-   //-------------------------------------------------------------------------
-   // Constructors
-   //-------------------------------------------------------------------------
 
    /**
     * Ctreates a new API manager MBean.
@@ -74,11 +65,6 @@ public final class APIManager implements APIManagerMBean {
       }
    }
 
-
-   //-------------------------------------------------------------------------
-   // Fields
-   //-------------------------------------------------------------------------
-
    /**
     * The API, never <code>null</code>.
     */
@@ -88,11 +74,6 @@ public final class APIManager implements APIManagerMBean {
     * The IP address runing this class, never <code>null</code>.
     */
    private String _ip;
-
-   //-------------------------------------------------------------------------
-   // Methods
-   //-------------------------------------------------------------------------
-
    /**
     * Gets the version of the API.
     *
