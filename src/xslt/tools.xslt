@@ -380,6 +380,7 @@ The name of the API is specified with the 'api.name' Ant property.
 		</target>
 
 		<target name="wsdl-to-api-download" unless="wsdl.file">
+			<mkdir dir="{$project_home}/build/wsdl" />
 			<get src="${{wsdl.location}}" dest="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
 		</target>
 
@@ -416,6 +417,7 @@ The name of the API is specified with the 'api.name' Ant property.
 				<replacefilter token="&lt;s:schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;s:" value="&lt;xsd:" />
 				<replacefilter token="&lt;/s:" value="&lt;/xsd:" />
+				<replacefilter token="&quot;s:" value="&quot;xsd:" />
 				<replacefilter token="&lt;schema " value="&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; " />
 				<replacefilter token="&lt;/schema" value="&lt;/schema" />
 				<replacefilter token="&lt;/schema" value="&lt;/xsd:schema" />
@@ -440,7 +442,7 @@ The name of the API is specified with the 'api.name' Ant property.
 				<param name="specsdir" expression="{$project_home}/apis/${{api.name}}/spec" />
 				<param name="api_name" expression="${{api.name}}" />
 			</xslt>
-			<delete file="${{wsdl.file}}.copy" />
+			<!--delete file="${{wsdl.file}}.copy" /-->
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
