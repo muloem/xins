@@ -270,10 +270,10 @@
 							<xsl:with-param name="text" select="@element" />
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
 				</xsl:when>
@@ -306,10 +306,10 @@
 
     <xsl:choose>
 			<xsl:when test="not(starts-with(@type, 'xsd:')) and not(/definitions/types/xsd:schema/xsd:simpleType[@name=$localNameType])">
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
 			</xsl:when>
