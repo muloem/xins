@@ -261,6 +261,7 @@
 				<xsl:when test="@type">
 					<xsl:call-template name="printParam">
 						<xsl:with-param name="section" select="$section" />
+						<xsl:with-param name="elementName" select="'param'" />
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:when test="@element">
@@ -269,17 +270,12 @@
 							<xsl:with-param name="text" select="@element" />
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxoccur = 'unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<!-- write the data section if needed -->
-					<xsl:call-template name="dataSection">
-						<xsl:with-param name="unboundedSet" select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType/xsd:sequence/xsd:element[@maxoccur = 'unbounded'] | /definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[@maxoccur = 'unbounded']" />
-						<xsl:with-param name="topLevel" select="'true'" />
-					</xsl:call-template>
 				</xsl:when>
 				<!-- otherwise no section -->
 			</xsl:choose>
@@ -290,29 +286,56 @@
 		<xsl:param name="section" />
 		<xsl:param name="elementName" select="'param'" />
 
+		<xsl:variable name="localNameType">
+			<xsl:call-template name="localname">
+				<xsl:with-param name="text" select="@type" />
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="type">
+			<xsl:choose>
+				<xsl:when test="starts-with(@type, 'xsd:')">
+					<xsl:call-template name="type_for_xsdtype">
+						<xsl:with-param name="xsdtype" select="$localNameType" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$localNameType" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+    <xsl:choose>
+			<xsl:when test="not(starts-with(@type, 'xsd:')) and not(/definitions/types/xsd:schema/xsd:simpleType[@name=$localNameType])">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+						<xsl:with-param name="section" select="$section" />
+					</xsl:apply-templates>
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]/xsd:complexContent/xsd:extension/xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+						<xsl:with-param name="section" select="$section" />
+					</xsl:apply-templates>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="printParam">
+					<xsl:with-param name="section" select="$section" />
+					<xsl:with-param name="elementName" select="$elementName" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="printParam">
+		<xsl:param name="section" />
+		<xsl:param name="elementName" />
+
+		<xsl:variable name="paramName">
+			<xsl:call-template name="hungarianLower2">
+				<xsl:with-param name="text" select="@name" />
+			</xsl:call-template>
+		</xsl:variable>
 		<xsl:variable name="required">
 			<xsl:choose>
 				<xsl:when test="@minOccurs = '0' or @nillable = 'true'">false</xsl:when>
 				<xsl:otherwise>true</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:call-template name="printParam">
-			<xsl:with-param name="section" select="$section" />
-			<xsl:with-param name="required" select="$required" />
-			<xsl:with-param name="elementName" select="$elementName" />
-		</xsl:call-template>
-	</xsl:template>
-
-	<xsl:template name="printParam">
-		<xsl:param name="section" />
-		<xsl:param name="required" select="'true'" />
-		<xsl:param name="elementName" />
-
-		<xsl:variable name="paramName">
-			<xsl:call-template name="hungarianLower">
-				<xsl:with-param name="text" select="@name" />
-			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="localNameType">
 			<xsl:call-template name="localname">
@@ -331,7 +354,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<!-- TODO elements containing other elements, especially when maxOccurs='1' -->
 
 		<xsl:value-of select="concat($return, $tab, $tab)" />
 		<xsl:if test="$elementName = 'attribute'">

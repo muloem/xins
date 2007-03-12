@@ -58,6 +58,28 @@
 	</xsl:template>
 
 	<!--
+	- Transform a property name in a hungarian-formatted string starting with an
+	- lowercase. If the word in uppercase, it creates a all lowercase word.
+	-->
+	<xsl:template name="hungarianLower2">
+		<xsl:param name="text" />
+
+		<xsl:variable name="upperText">
+			<xsl:value-of select="translate($text,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$upperText = $text">
+				<xsl:value-of select="translate($text,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="hungarianLower">
+					<xsl:with-param name="text" select="$text" />
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!--
 	- Splits a hungarian-formatted string into words using the specified
 	- separator.
 	-->
