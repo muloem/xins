@@ -165,6 +165,9 @@
 						</excludes>
 					</resource>
 				</resources-->
+				<finalName>
+					<xsl:value-of select="$api" />
+				</finalName>
 				<plugins>
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -248,6 +251,10 @@
 								</xsl:if>
 							</webResources>
 						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>

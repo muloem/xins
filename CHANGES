@@ -40,6 +40,9 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * XSLT:
   - Removed unneeded comments.
 
+* Tools:
+  - Added Jetty plug-in and name of the WAR file to the Maven pom.xml.
+
 * Build- and release-process:
   - Disabled ftp upload for the exe file.
 
