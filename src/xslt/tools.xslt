@@ -14,6 +14,7 @@
 	<xsl:template name="tools">
 		<xsl:param name="xins_home" />
 		<xsl:param name="project_home" />
+		<xsl:param name="builddir" />
 		<xsl:param name="cvsweb" />
 
 		<target name="-init-tools">
@@ -112,10 +113,10 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			<taskdef name="java2html" classname="com.java2html.Java2HTMLTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="{$project_home}/build/j2h/${{api.name}}" />
+			<mkdir dir="{$builddir}/j2h/${{api.name}}" />
 			<java2html
 			title="Source X-ref for ${{api.name}}"
-			destination="{$project_home}/build/j2h/${{api.name}}"
+			destination="{$builddir}/j2h/${{api.name}}"
 			footer="no">
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java" />
@@ -123,10 +124,10 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			</java2html>
 			<!--copy
 			file="{$xins_home}/src/j2h/front.html"
-			todir="{$project_home}/build/j2h/${{api.name}}"
+			todir="{$builddir}/j2h/${{api.name}}"
 			overwrite="true" /-->
 			<copy file="{$xins_home}/src/css/j2h/style.css"
-			tofile="{$project_home}/build/j2h/${{api.name}}/stylesheet.css"
+			tofile="{$builddir}/j2h/${{api.name}}/stylesheet.css"
 			overwrite="true" />
 		</target>
 
@@ -136,9 +137,9 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			</taskdef>
 			<property name="build.java.version" value="${{ant.java.version}}" />
 			<property name="pmd.rules" value="rulesets/basic.xml,rulesets/unusedcode.xml" />
-			<mkdir dir="{$project_home}/build/pmd/${{api.name}}" />
+			<mkdir dir="{$builddir}/pmd/${{api.name}}" />
 			<pmd rulesetfiles="${{pmd.rules}}" targetjdk="${{build.java.version}}">
-				<formatter type="html" toFile="{$project_home}/build/pmd/${{api.name}}/index.html"/>
+				<formatter type="html" toFile="{$builddir}/pmd/${{api.name}}/index.html"/>
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java" />
 				</fileset>
@@ -149,20 +150,20 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			<taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="{$project_home}/build/checkstyle/${{api.name}}" />
+			<mkdir dir="{$builddir}/checkstyle/${{api.name}}" />
 			<checkstyle config="{$xins_home}/src/config/checkstyle/config.xml" failOnViolation="false">
-				<formatter type="xml" tofile="{$project_home}/build/checkstyle/${{api.name}}/results.xml"/>
+				<formatter type="xml" tofile="{$builddir}/checkstyle/${{api.name}}/results.xml"/>
 				<fileset dir="${{api.source.dir}}">
 					<include name="**/*.java"/>
 				</fileset>
 			</checkstyle>
 			<xslt
-			in="{$project_home}/build/checkstyle/${{api.name}}/results.xml"
-			out="{$project_home}/build/checkstyle/${{api.name}}/index.html"
+			in="{$builddir}/checkstyle/${{api.name}}/results.xml"
+			out="{$builddir}/checkstyle/${{api.name}}/index.html"
 			style="{$xins_home}/src/xslt/checkstyle/index.xslt" />
 			<copy
 			file="{$xins_home}/src/css/checkstyle/style.css"
-			tofile="{$project_home}/build/checkstyle/${{api.name}}/stylesheet.css" />
+			tofile="{$builddir}/checkstyle/${{api.name}}/stylesheet.css" />
 		</target>
 
 		<target name="coverage" depends="-init-tools" description="Generates the unit tests code coverage report for an API.">
@@ -172,31 +173,31 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			<taskdef name="cobertura-report" classname="net.sourceforge.cobertura.ant.ReportTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<delete dir="{$project_home}/build/coverage/${{api.name}}" />
-			<mkdir dir="{$project_home}/build/coverage/${{api.name}}" />
+			<delete dir="{$builddir}/coverage/${{api.name}}" />
+			<mkdir dir="{$builddir}/coverage/${{api.name}}" />
 			<antcall target="classes-api-${{api.name}}" />
-			<cobertura-instrument todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes">
-				<fileset dir="{$project_home}/build/classes-api/${{api.name}}">
+			<cobertura-instrument todir="{$builddir}/coverage/${{api.name}}/instrumented-classes">
+				<fileset dir="{$builddir}/classes-api/${{api.name}}">
 					<include name="**/*.class" />
 					<exclude name="**/*$Request.class" />
 					<exclude name="**/*Result.class" />
 				</fileset>
 			</cobertura-instrument>
-			<copy todir="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" overwrite="false">
-				<fileset dir="{$project_home}/build/classes-api/${{api.name}}" includes="**/*.class" />
+			<copy todir="{$builddir}/coverage/${{api.name}}/instrumented-classes" overwrite="false">
+				<fileset dir="{$builddir}/classes-api/${{api.name}}" includes="**/*.class" />
 			</copy>
 			<antcall target="war-${{api.name}}">
-				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
+				<param name="classes.api.dir" value="{$builddir}/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
 			<!-- unless explicitly set to false, the API will be started at the same time -->
 			<property name="test.start.server" value="true" />
 			<antcall target="test-${{api.name}}">
 				<param name="test.start.server" value="${{test.start.server}}" />
-				<param name="classes.api.dir" value="{$project_home}/build/coverage/${{api.name}}/instrumented-classes" />
+				<param name="classes.api.dir" value="{$builddir}/coverage/${{api.name}}/instrumented-classes" />
 			</antcall>
-			<cobertura-report format="html"	destdir="{$project_home}/build/coverage/${{api.name}}"> <!-- datafile="{$project_home}/build/coverage/${{api.name}}/cobertura.ser" -->
+			<cobertura-report format="html"	destdir="{$builddir}/coverage/${{api.name}}"> <!-- datafile="{$builddir}/coverage/${{api.name}}/cobertura.ser" -->
 				<fileset dir="${{api.source.dir}}" includes="**/*.java" />
-				<fileset dir="{$project_home}/build/java-fundament/${{api.name}}" includes="**/*.java" />
+				<fileset dir="{$builddir}/java-fundament/${{api.name}}" includes="**/*.java" />
 			</cobertura-report>
 			<delete file="{$project_home}/cobertura.ser" />
 		</target>
@@ -204,12 +205,12 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generates the FindBugs report for an API.">
 			<fail message="Please, specify the findbugs.home property" unless="findbugs.home" />
 			<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${{findbugs.home}}/lib/findbugs-ant.jar" />
-			<mkdir dir="{$project_home}/build/findbugs/${{api.name}}" />
+			<mkdir dir="{$builddir}/findbugs/${{api.name}}" />
 			<findbugs home="${{findbugs.home}}"
 			output="html"
-			outputFile="{$project_home}/build/findbugs/${{api.name}}/index.html" >
+			outputFile="{$builddir}/findbugs/${{api.name}}/index.html" >
 				<sourcePath path="${{api.source.dir}}" />
-				<class location="{$project_home}/build/classes-api/${{api.name}}" />
+				<class location="{$builddir}/classes-api/${{api.name}}" />
 				<auxClasspath>
 					<path refid="xins.classpath" />
 				</auxClasspath>
@@ -220,7 +221,7 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			<taskdef name="lint4j" classname="com.jutils.lint4j.ant.Lint4jAntTask">
 				<classpath refid="tools-cp" />
 			</taskdef>
-			<mkdir dir="{$project_home}/build/lint4j/${{api.name}}" />
+			<mkdir dir="{$builddir}/lint4j/${{api.name}}" />
 			<lint4j>
 				<xsl:attribute name="packages">
 					<xsl:choose>
@@ -234,7 +235,7 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 				<sourcePath path="${{api.source.dir}}" />
 				<classpath>
 					<path refid="xins.classpath" />
-					<dirset dir="{$project_home}/build">
+					<dirset dir="{$builddir}">
 						<include name="java-fundament/${{api.name}}" />
 						<include name="classes-types/${{api.name}}" />
 						<include name="classes-api/${{api.name}}" />
@@ -242,28 +243,28 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 				</classpath>
 				<formatters>
 					<formatter type="text"/>
-					<formatter type="text" toFile="{$project_home}/build/lint4j/${{api.name}}/lint4j-report.txt"/>
-					<formatter type="xml" toFile="{$project_home}/build/lint4j/${{api.name}}/lint4j-report.xml"/>
+					<formatter type="text" toFile="{$builddir}/lint4j/${{api.name}}/lint4j-report.txt"/>
+					<formatter type="xml" toFile="{$builddir}/lint4j/${{api.name}}/lint4j-report.xml"/>
 				</formatters>
 			</lint4j>
 		</target>
 
 		<target name="jdepend" depends="-prepare-classes, -init-tools" description="Generates the JDepend report for an API.">
-			<mkdir dir="{$project_home}/build/jdepend/${{api.name}}" />
-			<jdepend classpathref="xins.classpath" format="xml" outputfile="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
+			<mkdir dir="{$builddir}/jdepend/${{api.name}}" />
+			<jdepend classpathref="xins.classpath" format="xml" outputfile="{$builddir}/jdepend/${{api.name}}/${{api.name}}-jdepend.xml">
 				<classespath>
-					<pathelement location="{$project_home}/build/classes-api/${{api.name}}"/>
+					<pathelement location="{$builddir}/classes-api/${{api.name}}"/>
 				</classespath>
 			</jdepend>
-			<xslt in="{$project_home}/build/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
-			out="{$project_home}/build/jdepend/${{api.name}}/index.html"
+			<xslt in="{$builddir}/jdepend/${{api.name}}/${{api.name}}-jdepend.xml"
+			out="{$builddir}/jdepend/${{api.name}}/index.html"
 			style="${{ant.home}}/etc/jdepend.xsl" />
 		</target>
 
 		<target name="cvschangelog" depends="-init-tools" description="Generates the CVS change logs report for an API.">
-			<mkdir dir="{$project_home}/build/cvschangelog/${{api.name}}" />
-			<cvschangelog dir="{$project_home}/apis/${{api.name}}" destfile="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml" />
-			<xslt in="{$project_home}/build/cvschangelog/${{api.name}}/changelog.xml"
+			<mkdir dir="{$builddir}/cvschangelog/${{api.name}}" />
+			<cvschangelog dir="{$project_home}/apis/${{api.name}}" destfile="{$builddir}/cvschangelog/${{api.name}}/changelog.xml" />
+			<xslt in="{$builddir}/cvschangelog/${{api.name}}/changelog.xml"
 			out="index.html"
 			style="${{ant.home}}/etc/changelog.xsl">
 				<param name="title" expression="Change Log for ${{api.name}} API"/>
@@ -273,10 +274,10 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 		</target>
 
 		<target name="jmeter" depends="-init-tools" description="Generates JMeter tests from the function examples.">
-			<mkdir dir="{$project_home}/build/jmeter/${{api.name}}" />
+			<mkdir dir="{$builddir}/jmeter/${{api.name}}" />
 			<xslt
 			in="apis/${{api.name}}/spec/api.xml"
-			out="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}.jmx"
+			out="{$builddir}/jmeter/${{api.name}}/${{api.name}}.jmx"
 			style="{$xins_home}/src/tools/jmeter/${{api.name}}/api_to_jmx.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_home" expression="{$project_home}" />
@@ -286,7 +287,7 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 		<target name="run-jmeter" depends="-init-tools" description="Executes some JMeter tests.">
 			<fail message="Please, specify the jmeter.home property" unless="jmeter.home" />
 			<taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask" classpath="${{jmeter.home}}/extras/ant-jmeter.jar" />
-			<property name="jmeter.test" value="{$project_home}/build/jmeter/${{api.name}}/${{api.name}}" />
+			<property name="jmeter.test" value="{$builddir}/jmeter/${{api.name}}/${{api.name}}" />
 			<jmeter jmeterhome="${{jmeter.home}}"
 			testplan="${{jmeter.test}}.jmx"
 			resultlog="${{jmeter.test}}.jlt">
@@ -296,7 +297,7 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 			</jmeter>
 			<xslt force="true"
 			in="${{jmeter.test}}.jlt"
-			out="{$project_home}/build/jmeter/${{api.name}}/index.html"
+			out="{$builddir}/jmeter/${{api.name}}/index.html"
 			style="${{jmeter.home}}/extras/jmeter-results-detail-report.xsl">
 			</xslt>
 		</target>
@@ -315,10 +316,10 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 
 		<target name="eclipse" depends="-init-tools" description="Generates Eclipse project files for an API.">
 			<!-- Create destination directories -->
-			<mkdir dir="{$project_home}/build/java-fundament/${{api.name}}" />
-			<mkdir dir="{$project_home}/build/java-types/${{api.name}}" />
-			<mkdir dir="{$project_home}/build/classes-api/${{api.name}}" />
-			<mkdir dir="{$project_home}/build/classes-types/${{api.name}}" />
+			<mkdir dir="{$builddir}/java-fundament/${{api.name}}" />
+			<mkdir dir="{$builddir}/java-types/${{api.name}}" />
+			<mkdir dir="{$builddir}/classes-api/${{api.name}}" />
+			<mkdir dir="{$builddir}/classes-types/${{api.name}}" />
 
 			<!-- Copy the build file for the API -->
 			<copy file="{$xins_home}/demo/xins-project/apis/petstore/nbbuild.xml"
@@ -389,8 +390,8 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 		</target>
 
 		<target name="wsdl-to-api-download" unless="wsdl.file">
-			<mkdir dir="{$project_home}/build/wsdl" />
-			<get src="${{wsdl.location}}" dest="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
+			<mkdir dir="{$builddir}/wsdl" />
+			<get src="${{wsdl.location}}" dest="{$builddir}/wsdl/${{api.name}}.wsdl" />
 		</target>
 
 		<target name="wsdl-to-api" description="Generates the XINS API files from the WSDL.">
@@ -409,7 +410,7 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 				</not>
 			</condition>
 			<antcall target="wsdl-to-api-download" />
-			<property name="wsdl.file" value="{$project_home}/build/wsdl/${{api.name}}.wsdl" />
+			<property name="wsdl.file" value="{$builddir}/wsdl/${{api.name}}.wsdl" />
 			<available property="wsdl.file.exists" file="${{wsdl.file}}" type="file" />
 			<fail message="No WSDL file &quot;${{wsdl.file}}&quot; found." unless="wsdl.file.exists" />
 			<!-- Execute some tranformations to be able to get the most of the WSDL -->

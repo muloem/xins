@@ -61,6 +61,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Load the build.properties in the -init-tools target.
   - Renamed target tools to help-tools.
   - Added required and optional build properties to run the tools.
+  - Use builddir variable to specify the build directory in tools.xslt.
 
 * Build- and release-process:
   - Disabled ftp upload for the exe file.

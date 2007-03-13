@@ -162,6 +162,7 @@ APIs in this project are:
 			<xsl:call-template name="tools">
 				<xsl:with-param name="xins_home" select="$xins_home" />
 				<xsl:with-param name="project_home" select="$project_home" />
+				<xsl:with-param name="builddir" select="$builddir" />
 				<xsl:with-param name="cvsweb" select="cvsweb/@href" />
 			</xsl:call-template>
 
