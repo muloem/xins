@@ -29,7 +29,7 @@
 			<fail message="No implementation directory found for API ${{api.name}}" unless="api.source.dir" />
 		</target>
 
-		<target name="tools"  description="Shows the supported commands for the tools.">
+		<target name="help-tools"  description="Shows the supported commands for the tools.">
 				<echo><![CDATA[Tools targets:
 - download-tools  Downloads the dependencies used by the tools.
 - java2html       Generates HTML pages which contains the API code.
@@ -45,10 +45,18 @@
 - run-jmeter      Executes some JMeter tests.
 - maven           Generates a POM file for an API.
 - eclipse         Generates Eclipse project files for an API.
-- xsd-to-types    Generates type files from XML Schema files.
+- xsd-to-types    Generates XINS type files from XML Schema files.
 - wsdl-to-api     Generates the XINS API files from the WSDL.
 
 The name of the API is specified with the 'api.name' Ant property.
+
+Some build properties can/should be set for some tools:
+findbugs.home     [required, findbugs, directory of FindBugs]
+pmd.rules         [optional, pmd, list of PMD rules]
+jmeter.home       [required, run-jmeter, directory of JMeter]
+jmeter.test       [optional, run-jmeter, test to execute]
+xsd.dir           [required, xsd-to-types, directory of xsd files]
+wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 ]]>
 </echo>
 		</target>

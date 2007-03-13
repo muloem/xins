@@ -59,6 +59,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * Tools:
   - Added Jetty plug-in and name of the WAR file to the Maven pom.xml.
   - Load the build.properties in the -init-tools target.
+  - Renamed target tools to help-tools.
+  - Added required and optional build properties to run the tools.
 
 * Build- and release-process:
   - Disabled ftp upload for the exe file.
@@ -3622,6 +3624,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 4:
   - Changed TargetDescriptor to support capitals in the protocol part of the
     URL. This fixes SF.net bug #1075248.
   - Added ProgrammingError class. An instance of this class should be thrown
+
 
     when appropriate, especially after any of the log messages 1050, 1052,
     2050, 2052, 3050 and 3052 [work in progress].
