@@ -363,9 +363,11 @@
 			<xsl:when test="not(starts-with(@type, 'xsd:')) and not(/definitions/types/xsd:schema/xsd:simpleType[@name=$localNameType])">
 				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 					<xsl:with-param name="section" select="$section" />
+					<xsl:with-param name="elementName" select="$elementName" />
 				</xsl:apply-templates>
 				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
 					<xsl:with-param name="section" select="$section" />
+					<xsl:with-param name="elementName" select="$elementName" />
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
