@@ -15,6 +15,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.text.HexConverter;
+import org.xins.common.text.PatternUtils;
 import org.xins.common.text.TextUtils;
 
 /**
@@ -214,7 +215,7 @@ public final class TargetDescriptor extends Descriptor {
       MandatoryArgumentChecker.check("url", url);
 
       if (PATTERN == null) {
-         PATTERN = TextUtils.createPattern(PATTERN_STRING);
+         PATTERN = PatternUtils.createPattern(PATTERN_STRING);
       }
       Perl5Matcher patternMatcher = new Perl5Matcher();
       if (! patternMatcher.matches(url, PATTERN)) {

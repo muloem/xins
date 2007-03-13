@@ -8,7 +8,7 @@ package org.xins.server;
 
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.xins.common.text.TextUtils;
+import org.xins.common.text.PatternUtils;
 
 /**
  * Class that represents the XINS/Java Server Framework library.
@@ -30,7 +30,7 @@ public final class Library {
     * The pattern for a URL.
     */
    private static final Pattern PRODUCTION_RELEASE_PATTERN =
-         TextUtils.createPattern(PRODUCTION_RELEASE_PATTERN_STRING);
+         PatternUtils.createPattern(PRODUCTION_RELEASE_PATTERN_STRING);
 
    /**
     * Returns the version of this library.

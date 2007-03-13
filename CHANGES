@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Simplified description of the call configurations.
   - The CallConfig classes are no longer Thread safe.
   - Removed unneeded comments.
+  - Moved createPattern method from TextUtils to PatternUtils. The 
+    HungarianMapperTask won't then fail because of missing oro library.
 
 * XINS/Java Server Framework:
   - Added a new bootstrap property to specify an error page when the

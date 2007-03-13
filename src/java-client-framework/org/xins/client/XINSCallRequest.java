@@ -7,27 +7,20 @@
 package org.xins.client;
 
 import java.util.Iterator;
-
 import org.apache.log4j.NDC;
-
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Matcher;
-
 import org.xins.common.MandatoryArgumentChecker;
-
+import org.xins.common.text.PatternUtils;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
-
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.ProtectedPropertyReader;
-
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
-
 import org.xins.common.service.CallRequest;
-
 import org.xins.common.text.TextUtils;
 
 /**
@@ -57,7 +50,7 @@ public final class XINSCallRequest extends CallRequest {
    /**
     * The pattern for a parameter name.
     */
-   private static final Pattern PARAMETER_NAME_PATTERN = TextUtils.createPattern(PARAMETER_NAME_PATTERN_STRING);
+   private static final Pattern PARAMETER_NAME_PATTERN = PatternUtils.createPattern(PARAMETER_NAME_PATTERN_STRING);
 
    /**
     * The name of the HTTP parameter that specifies the diagnostic context
