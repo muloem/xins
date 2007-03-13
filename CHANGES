@@ -56,6 +56,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 
 * Tools:
   - Added Jetty plug-in and name of the WAR file to the Maven pom.xml.
+  - Load the build.properties in the -init-tools target.
 
 * Build- and release-process:
   - Disabled ftp upload for the exe file.
@@ -716,6 +717,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 2:
 * Generated logdoc:
   - Changed generated Ant build files to use <xslt/> instead of the synonym
     <style/>, since the latter is considered deprecated as of Ant 1.7.0.
+
 
 * Generated build file:
   - Fixed SF.net bug #1531619: 'ant -lib lib tests' fails with Apache
