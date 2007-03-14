@@ -22,7 +22,7 @@
 	<!--
 	Creates the file
 	-->
-	<xsl:template match="xs:restriction | xsd:restriction" mode="restriction">
+	<xsl:template match="xs:restriction | xsd:restriction | xs:list | xsd:list" mode="restriction">
 		<xsl:variable name="elementName">
 			<xsl:choose>
 				<xsl:when test="../@name">
@@ -162,6 +162,31 @@
 					</xsl:attribute>
 				</xsl:if>
 			</int32>
+		</xsl:when>
+		<xsl:when test="local-name() = 'list'">
+			<xsl:variable name="itemList">
+				<xsl:choose>
+					<xsl:when test="@itemType">
+						<xsl:choose>
+							<xsl:when test="starts-with(@itemType, 'xs:') or starts-with(@itemType, 'xsd:')">
+								<xsl:call-template name="type_for_xsdtype">
+									<xsl:with-param name="xsdtype" select="substring-after(@itemType, ':')" />
+								</xsl:call-template>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@itemType" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:when test="xs:simpleType/@name | xsd:simpleType/@name">
+						<xsl:value-of select="xs:simpleType/@name | xsd:simpleType/@name" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>_text</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<list type="{$itemList}" />
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="no">

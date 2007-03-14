@@ -52,6 +52,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Fixed the wsdl directory is created if it didn't exists when importing
     from an URL.
   - Unbounded elements are put in the data section.
+  - Added support for XML Schema list type.
 
 * XSLT:
   - Removed unneeded comments.

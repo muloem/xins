@@ -20,6 +20,7 @@
                 version="2.0">
 
 	<xsl:include href="../hungarian.xslt"  />
+	<xsl:include href="../types.xslt"  />
 	<xsl:include href="xsd_to_types.xslt"  />
 
 	<xsl:param name="project_home" />
@@ -27,9 +28,9 @@
 
 	<!-- TODO test with XML special characters in xsd -->
 	<xsl:template match="xs:schema | xsd:schema">
-		<xsl:apply-templates select="xs:simpleType/xs:restriction" mode="restriction" />
-		<xsl:apply-templates select="xsd:simpleType/xsd:restriction" mode="restriction" />
-		<xsl:apply-templates select="//xs:element/xs:simpleType/xs:restriction" mode="restriction" />
-		<xsl:apply-templates select="//xsd:element/xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="//xs:simpleType/xs:restriction" mode="restriction" />
+		<xsl:apply-templates select="//xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="//xs:simpleType/xs:list" mode="restriction" />
+		<xsl:apply-templates select="//xsd:simpleType/xsd:list" mode="restriction" />
 	</xsl:template>
 </xsl:stylesheet>
