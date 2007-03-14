@@ -41,7 +41,8 @@
 			<xsl:with-param name="api_name" select="$api_name" />
 		</xsl:call-template>
 		<xsl:apply-templates select="portType/operation" />
-		<xsl:apply-templates select="types/xsd:schema/xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="//xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="//xsd:simpleType/xsd:list" mode="restriction" />
 		<xsl:apply-templates select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 			<xsl:sort select="@name" />
 		</xsl:apply-templates>

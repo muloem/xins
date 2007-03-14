@@ -28,8 +28,12 @@
 				<xsl:when test="../@name">
 					<xsl:value-of select="../@name" />
 				</xsl:when>
-				<xsl:when test="../../@name">
+				<xsl:when test="not(../@name) and ../../@name">
 					<xsl:value-of select="../../@name" />
+				</xsl:when>
+				<xsl:when test="not(../@name) and not(../../@name) and local-name(../..) = 'list' and ../../../@name">
+					<xsl:value-of select="../../../@name" />
+					<xsl:text>ListItem</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>Type</xsl:text>
@@ -180,6 +184,10 @@
 					</xsl:when>
 					<xsl:when test="xs:simpleType/@name | xsd:simpleType/@name">
 						<xsl:value-of select="xs:simpleType/@name | xsd:simpleType/@name" />
+					</xsl:when>
+					<xsl:when test="not(@itemType) and not(xs:simpleType/@name | xsd:simpleType/@name) and ../@name">
+						<xsl:value-of select="../@name" />
+						<xsl:text>ListItem</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>_text</xsl:text>
