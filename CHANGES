@@ -53,6 +53,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
     from an URL.
   - Unbounded elements are put in the data section.
   - Added support for XML Schema list type.
+  - Improved detection of XML Schema types.
 
 * XSLT:
   - Removed unneeded comments.
