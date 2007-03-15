@@ -113,6 +113,16 @@ public class Base64 extends Type {
    }
 
    /**
+    * The minimum number of bytes this Base64 can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum number of bytes this Base64 can have.
+    */
+   private final int _maximum;
+
+   /**
     * Constructs a new <code>Float32</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
@@ -140,16 +150,6 @@ public class Base64 extends Type {
       _minimum = minimum;
       _maximum = maximum;
    }
-
-   /**
-    * The minimum number of bytes this Base64 can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum number of bytes this Base64 can have.
-    */
-   private final int _maximum;
 
    /**
     * Determines if the specified <code>String</code> value is considered

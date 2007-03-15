@@ -80,6 +80,35 @@ extends RuntimeException {
    }
 
    /**
+    * The name of the class that detected the problem. Is <code>null</code> if
+    * unknown.
+    */
+   private final String _detectingClass;
+
+   /**
+    * The name of the method where the problem was detected. Is
+    * <code>null</code> if unknown.
+    */
+   private final String _detectingMethod;
+
+   /**
+    * The name of the class which exposes the programming error. Is
+    * <code>null</code> if unknown.
+    */
+   private final String _subjectClass;
+
+   /**
+    * The name of the method which exposes the programming error, or
+    * <code>null</code> if unknown.
+    */
+   private final String _subjectMethod;
+
+   /**
+    * The detail message. Can be <code>null</code>.
+    */
+   private final String _detail;
+
+   /**
     * Constructs a new <code>ProgrammingException</code> for the specified
     * class and method, indicating which class and method detected the
     * problem.
@@ -129,35 +158,6 @@ extends RuntimeException {
       _subjectMethod   = subjectMethod;
       _detail          = detail;
    }
-
-   /**
-    * The name of the class that detected the problem. Is <code>null</code> if
-    * unknown.
-    */
-   private final String _detectingClass;
-
-   /**
-    * The name of the method where the problem was detected. Is
-    * <code>null</code> if unknown.
-    */
-   private final String _detectingMethod;
-
-   /**
-    * The name of the class which exposes the programming error. Is
-    * <code>null</code> if unknown.
-    */
-   private final String _subjectClass;
-
-   /**
-    * The name of the method which exposes the programming error, or
-    * <code>null</code> if unknown.
-    */
-   private final String _subjectMethod;
-
-   /**
-    * The detail message. Can be <code>null</code>.
-    */
-   private final String _detail;
 
    /**
     * Returns the name of the class that detected the problem.

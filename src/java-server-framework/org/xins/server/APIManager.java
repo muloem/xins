@@ -50,6 +50,16 @@ public final class APIManager implements APIManagerMBean {
    private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
 
    /**
+    * The API, never <code>null</code>.
+    */
+   private final API _api;
+
+   /**
+    * The IP address runing this class, never <code>null</code>.
+    */
+   private String _ip;
+
+   /**
     * Ctreates a new API manager MBean.
     *
     * @param api
@@ -65,15 +75,6 @@ public final class APIManager implements APIManagerMBean {
       }
    }
 
-   /**
-    * The API, never <code>null</code>.
-    */
-   private final API _api;
-
-   /**
-    * The IP address runing this class, never <code>null</code>.
-    */
-   private String _ip;
    /**
     * Gets the version of the API.
     *

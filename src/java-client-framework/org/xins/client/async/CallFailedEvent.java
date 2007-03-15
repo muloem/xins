@@ -20,6 +20,11 @@ import org.xins.client.AbstractCAPICallRequest;
 public final class CallFailedEvent extends CallEvent {
 
    /**
+    * The exception thrown by the call.
+    */
+   private Exception _exception;
+
+   /**
     * Creates a failed call event.
     *
     * @param capi
@@ -39,10 +44,7 @@ public final class CallFailedEvent extends CallEvent {
       super(capi, request, duration);
       _exception = exception;
    }
-   /**
-    * The exception thrown by the call.
-    */
-   private Exception _exception;
+
    /**
     * Gets the exception thrown by the CAPI call.
     *

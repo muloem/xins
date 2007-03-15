@@ -31,6 +31,16 @@ public class FastStringWriter extends Writer {
    private final static int DEFAULT_INITIAL_SIZE = 128;
 
    /**
+    * The buffer to write to.
+    */
+   private FastStringBuffer _buffer;
+
+   /**
+    * Flag that indicates if this stream has been closed.
+    */
+   private boolean _closed = false;
+
+   /**
     * Creates a new <code>FastStringWriter</code> using a default initial
     * internal buffer size.
     */
@@ -60,16 +70,6 @@ public class FastStringWriter extends Writer {
       // Initialize internal buffer
       _buffer = new FastStringBuffer(initialSize);
    }
-
-   /**
-    * The buffer to write to.
-    */
-   private FastStringBuffer _buffer;
-
-   /**
-    * Flag that indicates if this stream has been closed.
-    */
-   private boolean _closed = false;
 
    /**
     * Writes a single character.

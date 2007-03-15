@@ -349,6 +349,7 @@ class FileServiceCaller extends ServiceCaller {
           HTTPCallException {
       return call(request, (HTTPCallConfig) null);
    }
+
    /**
     * Container of the data part of an HTTP call result.
     *
@@ -359,6 +360,17 @@ class FileServiceCaller extends ServiceCaller {
     */
    private final static class HTTPCallResultDataHandler
    implements HTTPCallResultData {
+
+      /**
+       * The HTTP status code.
+       */
+      private final int _code;
+
+      /**
+       * The data returned.
+       */
+      private final byte[] _data;
+
       /**
        * Constructs a new <code>HTTPCallResultDataHandler</code> object.
        *
@@ -372,16 +384,6 @@ class FileServiceCaller extends ServiceCaller {
          _code = code;
          _data = data;
       }
-
-      /**
-       * The HTTP status code.
-       */
-      private final int _code;
-
-      /**
-       * The data returned.
-       */
-      private final byte[] _data;
 
       /**
        * Returns the HTTP status code.

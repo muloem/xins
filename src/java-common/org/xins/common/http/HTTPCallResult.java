@@ -63,6 +63,12 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
    }
 
    /**
+    * The <code>HTTPCallResultData</code> object that contains the information
+    * returned from the call. This field cannot be <code>null</code>.
+    */
+   private final HTTPCallResultData _data;
+
+   /**
     * Constructs a new <code>HTTPCallResult</code> object.
     *
     * @param request
@@ -103,12 +109,6 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
 
       _data = data;
    }
-
-   /**
-    * The <code>HTTPCallResultData</code> object that contains the information
-    * returned from the call. This field cannot be <code>null</code>.
-    */
-   private final HTTPCallResultData _data;
 
    /**
     * Returns the HTTP status code.

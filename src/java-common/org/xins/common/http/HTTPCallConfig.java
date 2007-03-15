@@ -25,15 +25,6 @@ import org.xins.common.text.TextUtils;
 public final class HTTPCallConfig extends CallConfig {
 
    /**
-    * Constructs a new <code>HTTPCallConfig</code> object.
-    */
-   public HTTPCallConfig() {
-
-      // Default to the POST method
-      _method = HTTPMethod.POST;
-   }
-
-   /**
     * The HTTP method to use. This field cannot be <code>null</code>.
     */
    private HTTPMethod _method;
@@ -42,6 +33,15 @@ public final class HTTPCallConfig extends CallConfig {
     * The HTTP user agent. This field can be <code>null</code>.
     */
    private String _userAgent;
+
+   /**
+    * Constructs a new <code>HTTPCallConfig</code> object.
+    */
+   public HTTPCallConfig() {
+
+      // Default to the POST method
+      _method = HTTPMethod.POST;
+   }
 
    /**
     * Returns the HTTP method associated with this configuration.

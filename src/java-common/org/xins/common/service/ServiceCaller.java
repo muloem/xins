@@ -186,6 +186,17 @@ import org.xins.common.Utils;
 public abstract class ServiceCaller {
 
    /**
+    * The descriptor for this service. Can be <code>null</code>.
+    */
+   private Descriptor _descriptor;
+
+   /**
+    * The fall-back call config object for this service caller. Can only be
+    * <code>null</code> if this is an old-style service caller.
+    */
+   private CallConfig _callConfig;
+
+   /**
     * Constructs a new <code>ServiceCaller</code> with the specified
     * <code>CallConfig</code>.
     *
@@ -232,17 +243,6 @@ public abstract class ServiceCaller {
       // Set call configuration
       _callConfig = callConfig;
    }
-
-   /**
-    * The descriptor for this service. Can be <code>null</code>.
-    */
-   private Descriptor _descriptor;
-
-   /**
-    * The fall-back call config object for this service caller. Can only be
-    * <code>null</code> if this is an old-style service caller.
-    */
-   private CallConfig _callConfig;
 
    /**
     * Asserts that the specified target descriptor is considered acceptable

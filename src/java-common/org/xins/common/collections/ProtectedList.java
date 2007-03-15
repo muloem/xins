@@ -37,6 +37,16 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class ProtectedList extends AbstractList implements Cloneable {
 
    /**
+    * The secret key.
+    */
+   private final Object _secretKey;
+
+   /**
+    * The list containing the objects.
+    */
+   private ArrayList _list;
+
+   /**
     * Constructs an empty <code>ProtectedList</code> with the specified
     * initial capacity.
     *
@@ -114,16 +124,6 @@ public final class ProtectedList extends AbstractList implements Cloneable {
       _secretKey = secretKey;
       _list      = new ArrayList(c);
    }
-
-   /**
-    * The secret key.
-    */
-   private final Object _secretKey;
-
-   /**
-    * The list containing the objects.
-    */
-   private ArrayList _list;
 
    /**
     * Verifies that the specified object matches the secret key. If not, an

@@ -115,6 +115,16 @@ public class Int32 extends Type {
    }
 
    /**
+    * The minimum value that this Int32 can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum value that this Int32 can have.
+    */
+   private final int _maximum;
+
+   /**
     * Constructs a new <code>Int32</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
@@ -143,15 +153,6 @@ public class Int32 extends Type {
       _maximum = maximum;
    }
 
-   /**
-    * The minimum value that this Int32 can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum value that this Int32 can have.
-    */
-   private final int _maximum;
    protected boolean isValidValueImpl(String value) {
       try {
          int number = Integer.parseInt(value);

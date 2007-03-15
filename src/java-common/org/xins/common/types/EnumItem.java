@@ -21,6 +21,17 @@ import org.xins.common.MandatoryArgumentChecker;
 public class EnumItem {
 
    /**
+    * The symbolic (friendly) name for the enumeration value. Cannot be
+    * <code>null</code>.
+    */
+   private final String _name;
+
+   /**
+    * The actual value of this enumeration item. Cannot <code>null</code>.
+    */
+   private final String _value;
+
+   /**
     * Creates a new <code>EnumItem</code>.
     *
     * @param name
@@ -40,17 +51,6 @@ public class EnumItem {
       _name  = name;
       _value = value;
    }
-
-   /**
-    * The symbolic (friendly) name for the enumeration value. Cannot be
-    * <code>null</code>.
-    */
-   private final String _name;
-
-   /**
-    * The actual value of this enumeration item. Cannot <code>null</code>.
-    */
-   private final String _value;
 
    /**
     * Gets the symbolic (friendly) name for the enumeration value.

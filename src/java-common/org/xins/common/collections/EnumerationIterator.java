@@ -22,6 +22,11 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class EnumerationIterator implements Iterator {
 
    /**
+    * The underlying <code>Enumeration</code> object.
+    */
+   private final Enumeration _enumeration;
+
+   /**
     * Constructs a new <code>EnumerationIterator</code> on top of the
     * specified <code>Enumeration</code>.
     *
@@ -39,11 +44,6 @@ public final class EnumerationIterator implements Iterator {
 
       _enumeration = enumeration;
    }
-
-   /**
-    * The underlying <code>Enumeration</code> object.
-    */
-   private final Enumeration _enumeration;
 
    /**
     * Checks if the iteration has more elements.

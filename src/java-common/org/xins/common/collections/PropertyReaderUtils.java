@@ -641,6 +641,7 @@ public final class PropertyReaderUtils {
 
       return buffer.toString();
    }
+
    /**
     * Constructs a new <code>PropertyReaderUtils</code> object. This
     * constructor is marked as <code>private</code>, since no objects of this

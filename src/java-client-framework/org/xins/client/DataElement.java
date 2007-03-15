@@ -41,28 +41,6 @@ import org.xins.common.xml.ElementBuilder;
 public class DataElement implements Cloneable {
 
    /**
-    * Creates a new <code>DataElement</code>.
-    *
-    * @param namespaceURI
-    *    the namespace URI for the element, can be <code>null</code>; an empty
-    *    string is equivalent to <code>null</code>.
-    *
-    * @param localName
-    *    the local name of the element, cannot be <code>null</code>.
-    */
-   DataElement(String namespaceURI, String localName) {
-
-      // An empty namespace URI is equivalent to null
-      if (namespaceURI != null && namespaceURI.length() < 1) {
-         namespaceURI = null;
-      }
-
-      // Store namespace URI and local name
-      _namespaceURI = namespaceURI;
-      _localName    = localName;
-   }
-
-   /**
     * The namespace URI. This field can be <code>null</code>, but it can never
     * be an empty string.
     */
@@ -89,6 +67,28 @@ public class DataElement implements Cloneable {
     * The character content for this element. Can be <code>null</code>.
     */
    private String _text;
+
+   /**
+    * Creates a new <code>DataElement</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name of the element, cannot be <code>null</code>.
+    */
+   DataElement(String namespaceURI, String localName) {
+
+      // An empty namespace URI is equivalent to null
+      if (namespaceURI != null && namespaceURI.length() < 1) {
+         namespaceURI = null;
+      }
+
+      // Store namespace URI and local name
+      _namespaceURI = namespaceURI;
+      _localName    = localName;
+   }
 
    /**
     * Gets the namespace URI.
@@ -471,6 +471,22 @@ public class DataElement implements Cloneable {
     * @since XINS 1.1.0
     */
    public static final class QualifiedName {
+
+      /**
+       * The hash code for this object.
+       */
+      private final int _hashCode;
+
+      /**
+       * The namespace URI. Can be <code>null</code>.
+       */
+      private final String _namespaceURI;
+
+      /**
+       * The local name. Cannot be <code>null</code>.
+       */
+      private final String _localName;
+
       /**
        * Constructs a new <code>QualifiedName</code> with the specified
        * namespace and local name.
@@ -501,21 +517,6 @@ public class DataElement implements Cloneable {
          _namespaceURI = namespaceURI;
          _localName    = localName;
       }
-
-      /**
-       * The hash code for this object.
-       */
-      private final int _hashCode;
-
-      /**
-       * The namespace URI. Can be <code>null</code>.
-       */
-      private final String _namespaceURI;
-
-      /**
-       * The local name. Cannot be <code>null</code>.
-       */
-      private final String _localName;
 
       /**
        * Returns the hash code value for this object.

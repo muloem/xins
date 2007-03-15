@@ -27,6 +27,16 @@ public class UnacceptableMessageException extends XINSCallException {
 
    // TODO: Support XINSCallRequest objects?
    // TODO: Is the name UnacceptableRequestException okay?
+
+   /**
+    * The DataElement containing the errors.
+    */
+   private Element _errors = new Element("data");
+
+   /**
+    * The error message.
+    */
+   private String _message;
    // TODO: Log UnacceptableRequestException! (not in this class though)
    /**
     * Constructs a new <code>UnacceptableMessageException</code> using the
@@ -52,16 +62,6 @@ public class UnacceptableMessageException extends XINSCallException {
    public UnacceptableMessageException(XINSCallResult result) {
       super("Invalid result", result, null, null);
    }
-
-   /**
-    * The DataElement containing the errors.
-    */
-   private Element _errors = new Element("data");
-
-   /**
-    * The error message.
-    */
-   private String _message;
 
    /**
     * Returns the message for this exception.

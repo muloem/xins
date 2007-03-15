@@ -45,6 +45,54 @@ public final class ExpiryStrategy {
    private static final Object INSTANCE_COUNT_LOCK = new Object();
 
    /**
+    * The instance number of this instance.
+    */
+   private final int _instanceNum;
+
+   /**
+    * The time-out, in milliseconds.
+    */
+   private final long _timeOut;
+
+   /**
+    * The time-out precision, in milliseconds.
+    */
+   private final long _precision;
+
+   /**
+    * The number of slots that should be used by expiry collections that use
+    * this strategy.
+    */
+   private final int _slotCount;
+
+   /**
+    * A textual presentation of this object. This is returned by
+    * {@link #toString()}.
+    */
+   private final String _asString;
+
+   /**
+    * The list of folders associated with this strategy.
+    */
+   private final ArrayList _folders;
+
+   /**
+    * The timer thread. Not <code>null</code>.
+    */
+   private final TimerThread _timerThread;
+
+   /**
+    * Hash code for this object. The hash code is a constant.
+    */
+   private final int _hashCode;
+
+   /**
+    * Flag that indicates if the time thread should stop or not. Initially
+    * <code>false</code>, ofcourse.
+    */
+   private boolean _stop;
+
+   /**
     * Constructs a new <code>ExpiryStrategy</code> and starts the
     * corresponding thread.
     *
@@ -114,54 +162,6 @@ public final class ExpiryStrategy {
       _timerThread.setDaemon(false);
       _timerThread.start();
    }
-
-   /**
-    * The instance number of this instance.
-    */
-   private final int _instanceNum;
-
-   /**
-    * The time-out, in milliseconds.
-    */
-   private final long _timeOut;
-
-   /**
-    * The time-out precision, in milliseconds.
-    */
-   private final long _precision;
-
-   /**
-    * The number of slots that should be used by expiry collections that use
-    * this strategy.
-    */
-   private final int _slotCount;
-
-   /**
-    * A textual presentation of this object. This is returned by
-    * {@link #toString()}.
-    */
-   private final String _asString;
-
-   /**
-    * The list of folders associated with this strategy.
-    */
-   private final ArrayList _folders;
-
-   /**
-    * The timer thread. Not <code>null</code>.
-    */
-   private final TimerThread _timerThread;
-
-   /**
-    * Hash code for this object. The hash code is a constant.
-    */
-   private final int _hashCode;
-
-   /**
-    * Flag that indicates if the time thread should stop or not. Initially
-    * <code>false</code>, ofcourse.
-    */
-   private boolean _stop;
 
    /**
     * Checks whether this object is considered equal to the argument.

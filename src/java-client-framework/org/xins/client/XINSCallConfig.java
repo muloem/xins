@@ -26,6 +26,11 @@ import org.xins.common.text.TextUtils;
 public final class XINSCallConfig extends CallConfig {
 
    /**
+    * The underlying HTTP call config. Cannot be <code>null</code>.
+    */
+   private HTTPCallConfig _httpCallConfig;
+
+   /**
     * Constructs a new <code>XINSCallConfig</code> object.
     */
    public XINSCallConfig() {
@@ -39,11 +44,6 @@ public final class XINSCallConfig extends CallConfig {
 
       // NOTE: HTTPCallConfig already defaults to HTTP POST
    }
-
-   /**
-    * The underlying HTTP call config. Cannot be <code>null</code>.
-    */
-   private HTTPCallConfig _httpCallConfig;
 
    /**
     * Returns an <code>HTTPCallConfig</code> object that corresponds with this

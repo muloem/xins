@@ -34,6 +34,12 @@ public final class HTTPMethod implements Serializable {
    public static final HTTPMethod POST = new HTTPMethod("POST");
 
    /**
+    * The name of this method. For example <code>"GET"</code> or
+    * <code>"POST"</code>. This field should never be <code>null</code>.
+    */
+   private final String _name;
+
+   /**
     * Constructs a new <code>HTTPMethod</code> object with the specified name.
     *
     * @param name
@@ -43,12 +49,6 @@ public final class HTTPMethod implements Serializable {
    private HTTPMethod(String name) {
       _name = name;
    }
-
-   /**
-    * The name of this method. For example <code>"GET"</code> or
-    * <code>"POST"</code>. This field should never be <code>null</code>.
-    */
-   private final String _name;
 
    /**
     * Returns a textual representation of this object. The implementation

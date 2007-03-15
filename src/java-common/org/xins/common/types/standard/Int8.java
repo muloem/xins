@@ -102,6 +102,16 @@ public class Int8 extends Type {
    }
 
    /**
+    * The minimum value that this Int8 can have.
+    */
+   private final byte _minimum;
+
+   /**
+    * The maximum value that this Int8 can have.
+    */
+   private final byte _maximum;
+
+   /**
     * Converts the specified <code>byte</code> to a string.
     *
     * @param value
@@ -143,16 +153,6 @@ public class Int8 extends Type {
       _minimum = minimum;
       _maximum = maximum;
    }
-
-   /**
-    * The minimum value that this Int8 can have.
-    */
-   private final byte _minimum;
-
-   /**
-    * The maximum value that this Int8 can have.
-    */
-   private final byte _maximum;
 
    protected boolean isValidValueImpl(String value) {
       try {

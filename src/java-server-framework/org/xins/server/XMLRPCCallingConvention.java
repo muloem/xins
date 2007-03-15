@@ -134,6 +134,11 @@ public class XMLRPCCallingConvention extends CallingConvention {
    public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
    /**
+    * The API. Never <code>null</code>.
+    */
+   private final API _api;
+
+   /**
     * Creates a new <code>XMLRPCCallingConvention</code> instance.
     *
     * @param api
@@ -152,11 +157,6 @@ public class XMLRPCCallingConvention extends CallingConvention {
       // Store the API reference (can be null!)
       _api = api;
    }
-
-   /**
-    * The API. Never <code>null</code>.
-    */
-   private final API _api;
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

@@ -17,15 +17,6 @@ import org.xins.common.MandatoryArgumentChecker;
 final class EngineStateMachine {
 
    /**
-    * Constructs a new <code>EngineStateMachine</code> object. Initially the
-    * state will be {@link EngineState#INITIAL}.
-    */
-   EngineStateMachine() {
-      _stateLock = new Object();
-      _state     = EngineState.INITIAL;
-   }
-
-   /**
     * Lock for the <code>_state</code> field. This object must be locked on
     * before _state may be read or changed.
     */
@@ -35,6 +26,15 @@ final class EngineStateMachine {
     * The current state.
     */
    private EngineState _state;
+
+   /**
+    * Constructs a new <code>EngineStateMachine</code> object. Initially the
+    * state will be {@link EngineState#INITIAL}.
+    */
+   EngineStateMachine() {
+      _stateLock = new Object();
+      _state     = EngineState.INITIAL;
+   }
 
    /**
     * Gets the current state.

@@ -102,6 +102,16 @@ public class Float64 extends Type {
    }
 
    /**
+    * The minimum value that this Float64 can have.
+    */
+   private final double _minimum;
+
+   /**
+    * The maximum value that this Float64 can have.
+    */
+   private final double _maximum;
+
+   /**
     * Converts the specified <code>double</code> to a string.
     *
     * @param value
@@ -143,15 +153,6 @@ public class Float64 extends Type {
       _maximum = maximum;
    }
 
-   /**
-    * The minimum value that this Float64 can have.
-    */
-   private final double _minimum;
-
-   /**
-    * The maximum value that this Float64 can have.
-    */
-   private final double _maximum;
    protected boolean isValidValueImpl(String value) {
       try {
          double number = Double.parseDouble(value);

@@ -115,6 +115,16 @@ public class Int64 extends Type {
    }
 
    /**
+    * The minimum value that this Int34 can have.
+    */
+   private final long _minimum;
+
+   /**
+    * The maximum value that this Int34 can have.
+    */
+   private final long _maximum;
+
+   /**
     * Constructs a new <code>Int64</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
@@ -142,16 +152,6 @@ public class Int64 extends Type {
       _minimum = minimum;
       _maximum = maximum;
    }
-
-   /**
-    * The minimum value that this Int34 can have.
-    */
-   private final long _minimum;
-
-   /**
-    * The maximum value that this Int34 can have.
-    */
-   private final long _maximum;
 
    protected boolean isValidValueImpl(String value) {
       try {

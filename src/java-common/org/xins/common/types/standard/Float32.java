@@ -102,6 +102,16 @@ public class Float32 extends Type {
    }
 
    /**
+    * The minimum value that this Float32 can have.
+    */
+   private final float _minimum;
+
+   /**
+    * The maximum value that this Float32 can have.
+    */
+   private final float _maximum;
+
+   /**
     * Converts the specified <code>float</code> to a string.
     *
     * @param value
@@ -143,15 +153,6 @@ public class Float32 extends Type {
       _maximum = maximum;
    }
 
-   /**
-    * The minimum value that this Float32 can have.
-    */
-   private final float _minimum;
-
-   /**
-    * The maximum value that this Float32 can have.
-    */
-   private final float _maximum;
    protected boolean isValidValueImpl(String value) {
       try {
          float number = Float.parseFloat(value);

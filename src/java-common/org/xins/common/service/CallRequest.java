@@ -38,15 +38,6 @@ import java.io.Serializable;
 public abstract class CallRequest implements Serializable {
 
    /**
-    * Constructs a new <code>CallRequest</code>. This constructor is only
-    * available to subclasses, since this class is <code>abstract</code>.
-    */
-   protected CallRequest() {
-
-      // empty
-   }
-
-   /**
     * The <code>CallConfig</code> associated with this request, if any. Can be
     * -and initially is- <code>null</code>.
     */
@@ -63,6 +54,15 @@ public abstract class CallRequest implements Serializable {
     *    characters.
     */
    public abstract String describe();
+
+   /**
+    * Constructs a new <code>CallRequest</code>. This constructor is only
+    * available to subclasses, since this class is <code>abstract</code>.
+    */
+   protected CallRequest() {
+
+      // empty
+   }
 
    /**
     * Returns a textual presentation of this object.

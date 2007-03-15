@@ -94,59 +94,6 @@ implements DefaultResultCodes {
    static final DateConverter DATE_CONVERTER = new DateConverter(true);
 
    /**
-    * Constructs a new <code>API</code> object.
-    *
-    * @param name
-    *    the name of the API, cannot be <code>null</code> nor can it be an
-    *    empty string.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null
-    *          || name.{@link String#length() length()} &lt; 1</code>.
-    */
-   protected API(String name)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("name", name);
-      if (name.length() < 1) {
-         String message = "name.length() == "
-                        + name.length();
-         throw new IllegalArgumentException(message);
-      }
-
-      // Initialize fields
-      _name                = name;
-      _startupTimestamp    = System.currentTimeMillis();
-      _lastStatisticsReset = _startupTimestamp;
-      _manageableObjects   = new ArrayList(20);
-      _functionsByName     = new HashMap(89);
-      _functionList        = new ArrayList(80);
-      _resultCodesByName   = new HashMap(89);
-      _resultCodeList      = new ArrayList(80);
-      _emptyProperties     = new RuntimeProperties();
-      _timeZone            = TimeZone.getDefault();
-      _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
-      _apiDisabled         = false;
-
-      // Initialize mapping from meta-function to call ID
-      _metaFunctionCallIDs = new HashMap(89);
-      _metaFunctionCallIDs.put("_NoOp",             new Counter());
-      _metaFunctionCallIDs.put("_GetFunctionList",  new Counter());
-      _metaFunctionCallIDs.put("_GetStatistics",    new Counter());
-      _metaFunctionCallIDs.put("_GetVersion",       new Counter());
-      _metaFunctionCallIDs.put("_CheckLinks",       new Counter());
-      _metaFunctionCallIDs.put("_GetSettings",      new Counter());
-      _metaFunctionCallIDs.put("_DisableFunction",  new Counter());
-      _metaFunctionCallIDs.put("_EnableFunction",   new Counter());
-      _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
-      _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
-      _metaFunctionCallIDs.put("_WSDL",             new Counter());
-      _metaFunctionCallIDs.put("_DisableAPI",       new Counter());
-      _metaFunctionCallIDs.put("_EnableAPI",        new Counter());
-   }
-
-   /**
     * The engine that owns this <code>API</code> object.
     */
    private Engine _engine;
@@ -277,6 +224,59 @@ implements DefaultResultCodes {
     * Flag indicating that the API is down for maintenance.
     */
    private boolean _apiDisabled;
+
+   /**
+    * Constructs a new <code>API</code> object.
+    *
+    * @param name
+    *    the name of the API, cannot be <code>null</code> nor can it be an
+    *    empty string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null
+    *          || name.{@link String#length() length()} &lt; 1</code>.
+    */
+   protected API(String name)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+      if (name.length() < 1) {
+         String message = "name.length() == "
+                        + name.length();
+         throw new IllegalArgumentException(message);
+      }
+
+      // Initialize fields
+      _name                = name;
+      _startupTimestamp    = System.currentTimeMillis();
+      _lastStatisticsReset = _startupTimestamp;
+      _manageableObjects   = new ArrayList(20);
+      _functionsByName     = new HashMap(89);
+      _functionList        = new ArrayList(80);
+      _resultCodesByName   = new HashMap(89);
+      _resultCodeList      = new ArrayList(80);
+      _emptyProperties     = new RuntimeProperties();
+      _timeZone            = TimeZone.getDefault();
+      _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
+      _apiDisabled         = false;
+
+      // Initialize mapping from meta-function to call ID
+      _metaFunctionCallIDs = new HashMap(89);
+      _metaFunctionCallIDs.put("_NoOp",             new Counter());
+      _metaFunctionCallIDs.put("_GetFunctionList",  new Counter());
+      _metaFunctionCallIDs.put("_GetStatistics",    new Counter());
+      _metaFunctionCallIDs.put("_GetVersion",       new Counter());
+      _metaFunctionCallIDs.put("_CheckLinks",       new Counter());
+      _metaFunctionCallIDs.put("_GetSettings",      new Counter());
+      _metaFunctionCallIDs.put("_DisableFunction",  new Counter());
+      _metaFunctionCallIDs.put("_EnableFunction",   new Counter());
+      _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
+      _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
+      _metaFunctionCallIDs.put("_WSDL",             new Counter());
+      _metaFunctionCallIDs.put("_DisableAPI",       new Counter());
+      _metaFunctionCallIDs.put("_EnableAPI",        new Counter());
+   }
 
    /**
     * Gets the name of this API.
@@ -1579,6 +1579,7 @@ implements DefaultResultCodes {
    boolean isDisabled() {
        return _apiDisabled;
    }
+
    /**
     * Thread-safe <code>int</code> counter.
     *
@@ -1586,6 +1587,12 @@ implements DefaultResultCodes {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static final class Counter {
+
+      /**
+       * The wrapped <code>int</code> number. Initially <code>0</code>.
+       */
+      private int _value;
+
       /**
        * Constructs a new <code>Counter</code> that initially returns the
        * value <code>0</code>.
@@ -1593,11 +1600,6 @@ implements DefaultResultCodes {
       private Counter() {
          // empty
       }
-
-      /**
-       * The wrapped <code>int</code> number. Initially <code>0</code>.
-       */
-      private int _value;
 
       /**
        * Retrieves the next value. The first time <code>0</code> is returned,

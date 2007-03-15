@@ -61,67 +61,6 @@ public final class ExpiryFolder {
    private static final Object INSTANCE_COUNT_LOCK = new Object();
 
    /**
-    * Constructs a new <code>ExpiryFolder</code> with the specified name and
-    * strategy. When the strategy is stopped (see
-    * {@link ExpiryStrategy#stop()} then this folder becomes invalid and can
-    * no longer be used.
-    *
-    * @param name
-    *    description of this folder, to be used in log and exception messages,
-    *    not <code>null</code>.
-    *
-    * @param strategy
-    *    the strategy that should be applied, not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>name == null || strategy == null</code>.
-    *
-    * @throws IllegalStateException
-    *    if the strategy is already stopped.
-    *
-    * @since XINS 1.0.1
-    */
-   public ExpiryFolder(final String         name,
-                       final ExpiryStrategy strategy)
-   throws IllegalArgumentException, IllegalStateException {
-
-      // Determine instance number
-      synchronized (INSTANCE_COUNT_LOCK) {
-         _instanceNum = INSTANCE_COUNT++;
-      }
-
-      String constructorDetail = "#" + _instanceNum + " [name=" + TextUtils.quote(name)
-            + "; strategy=" + TextUtils.quote(strategy.toString()) + ']';
-
-      // Check arguments
-      MandatoryArgumentChecker.check("name", name, "strategy", strategy);
-
-      // Initialize fields
-      _lock             = new Object();
-      _name             = name;
-      _strategy         = strategy;
-      _strategyStopped  = false;
-      _asString         = CLASSNAME + ' ' + constructorDetail;
-      _recentlyAccessed = new HashMap(INITIAL_QUEUE_SIZE);
-      _slotCount        = strategy.getSlotCount();
-      _slots            = new HashMap[_slotCount];
-      _lastSlot         = _slotCount - 1;
-      _listeners        = new ArrayList(5);
-
-      // Initialize all slots to a new HashMap
-      for (int i = 0; i < _slotCount; i++) {
-         _slots[i] = new HashMap(INITIAL_QUEUE_SIZE);
-      }
-
-      // Notify the strategy that we listen to it. If the strategy has already
-      // stopped, then this will throw an IllegalStateException
-      strategy.folderAdded(this);
-
-      // Constructed ExpiryFolder
-      Log.log_1408(_instanceNum, _name);
-   }
-
-   /**
     * Lock object.
     */
    private final Object _lock;
@@ -183,6 +122,67 @@ public final class ExpiryFolder {
     * The set of listeners. May be empty, but never is <code>null</code>.
     */
    private ArrayList _listeners;
+
+   /**
+    * Constructs a new <code>ExpiryFolder</code> with the specified name and
+    * strategy. When the strategy is stopped (see
+    * {@link ExpiryStrategy#stop()} then this folder becomes invalid and can
+    * no longer be used.
+    *
+    * @param name
+    *    description of this folder, to be used in log and exception messages,
+    *    not <code>null</code>.
+    *
+    * @param strategy
+    *    the strategy that should be applied, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null || strategy == null</code>.
+    *
+    * @throws IllegalStateException
+    *    if the strategy is already stopped.
+    *
+    * @since XINS 1.0.1
+    */
+   public ExpiryFolder(final String         name,
+                       final ExpiryStrategy strategy)
+   throws IllegalArgumentException, IllegalStateException {
+
+      // Determine instance number
+      synchronized (INSTANCE_COUNT_LOCK) {
+         _instanceNum = INSTANCE_COUNT++;
+      }
+
+      String constructorDetail = "#" + _instanceNum + " [name=" + TextUtils.quote(name)
+            + "; strategy=" + TextUtils.quote(strategy.toString()) + ']';
+
+      // Check arguments
+      MandatoryArgumentChecker.check("name", name, "strategy", strategy);
+
+      // Initialize fields
+      _lock             = new Object();
+      _name             = name;
+      _strategy         = strategy;
+      _strategyStopped  = false;
+      _asString         = CLASSNAME + ' ' + constructorDetail;
+      _recentlyAccessed = new HashMap(INITIAL_QUEUE_SIZE);
+      _slotCount        = strategy.getSlotCount();
+      _slots            = new HashMap[_slotCount];
+      _lastSlot         = _slotCount - 1;
+      _listeners        = new ArrayList(5);
+
+      // Initialize all slots to a new HashMap
+      for (int i = 0; i < _slotCount; i++) {
+         _slots[i] = new HashMap(INITIAL_QUEUE_SIZE);
+      }
+
+      // Notify the strategy that we listen to it. If the strategy has already
+      // stopped, then this will throw an IllegalStateException
+      strategy.folderAdded(this);
+
+      // Constructed ExpiryFolder
+      Log.log_1408(_instanceNum, _name);
+   }
 
    /**
     * Checks that the associated expiry strategy was not yet stopped. If it

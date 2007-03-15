@@ -70,6 +70,71 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    /**
+    * The HTTP request method.
+    */
+   private final String _method;
+
+   /**
+    * The requested URL including the optional parameters.
+    */
+   private final String _url;
+
+   /**
+    * The parameters retrieved from the URL.
+    */
+   private HashMap _parameters = new HashMap();
+
+   /**
+    * The date when the request was created.
+    */
+   private long _date = System.currentTimeMillis();
+
+   /**
+    * The attributes of the request.
+    */
+   private Hashtable _attributes = new Hashtable();
+
+   /**
+    * The HTTP headers of the request.
+    */
+   private Hashtable _headers = new Hashtable();
+
+   /**
+    * The URL query string.
+    */
+   private String _queryString;
+
+   /**
+    * The content type of the query.
+    */
+   private String _contentType;
+
+   /**
+    * The content of the HTTP POST.
+    */
+   private String _postData;
+
+   /**
+    * The cookies of the request.
+    */
+   private Cookie[] _cookies;
+
+   /**
+    * Flags indicating that the input stream has been used.
+    */
+   private boolean _inputStreamUsed = false;
+
+   /**
+    * Flags indicating that the reader has been used.
+    */
+   private boolean _readerUsed = false;
+
+   /**
+    * Flags indicating that the reader has been used.
+    */
+   private String  _characterEncoding;
+
+   /**
     * Creates a new Servlet request.
     *
     * @param url
@@ -173,71 +238,6 @@ public class XINSServletRequest implements HttpServletRequest {
       _contentType = (String) headers.get("CONTENT-TYPE");
       parseURL(url);
    }
-
-   /**
-    * The HTTP request method.
-    */
-   private final String _method;
-
-   /**
-    * The requested URL including the optional parameters.
-    */
-   private final String _url;
-
-   /**
-    * The parameters retrieved from the URL.
-    */
-   private HashMap _parameters = new HashMap();
-
-   /**
-    * The date when the request was created.
-    */
-   private long _date = System.currentTimeMillis();
-
-   /**
-    * The attributes of the request.
-    */
-   private Hashtable _attributes = new Hashtable();
-
-   /**
-    * The HTTP headers of the request.
-    */
-   private Hashtable _headers = new Hashtable();
-
-   /**
-    * The URL query string.
-    */
-   private String _queryString;
-
-   /**
-    * The content type of the query.
-    */
-   private String _contentType;
-
-   /**
-    * The content of the HTTP POST.
-    */
-   private String _postData;
-
-   /**
-    * The cookies of the request.
-    */
-   private Cookie[] _cookies;
-
-   /**
-    * Flags indicating that the input stream has been used.
-    */
-   private boolean _inputStreamUsed = false;
-
-   /**
-    * Flags indicating that the reader has been used.
-    */
-   private boolean _readerUsed = false;
-
-   /**
-    * Flags indicating that the reader has been used.
-    */
-   private String  _characterEncoding;
 
    /**
     * Parses the url to extract the parameters.

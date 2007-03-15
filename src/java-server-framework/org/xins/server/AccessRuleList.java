@@ -128,6 +128,21 @@ public final class AccessRuleList implements AccessRuleContainer {
    }
 
    /**
+    * The list of rules. Cannot be <code>null</code>.
+    */
+   private AccessRuleContainer[] _rules;
+
+   /**
+    * The string representation of this instance. Cannot be <code>null</code>.
+    */
+   private String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
+   /**
     * Creates a new <code>AccessRuleList</code> object. The passed
     * {@link AccessRuleContainer} array is assumed to be owned by the
     * constructor.
@@ -167,21 +182,6 @@ public final class AccessRuleList implements AccessRuleContainer {
       // Store the rules
       _rules = rules;
    }
-
-   /**
-    * The list of rules. Cannot be <code>null</code>.
-    */
-   private AccessRuleContainer[] _rules;
-
-   /**
-    * The string representation of this instance. Cannot be <code>null</code>.
-    */
-   private String _asString;
-
-   /**
-    * Flag that indicates whether this object is disposed.
-    */
-   private boolean _disposed;
 
    /**
     * Counts the number of rules in this list.

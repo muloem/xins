@@ -34,28 +34,6 @@ import org.xml.sax.helpers.DefaultHandler;
 public class LocalServletConfig implements ServletConfig {
 
    /**
-    * Creates a new Servlet configuration.
-    *
-    * @param warFileLocation
-    *    the war file containing the servlet to deploy,
-    *    cannot be <code>null</code>.
-    */
-   public LocalServletConfig(File warFileLocation) {
-      _warFile = warFileLocation;
-      _initParameters = new Properties();
-      _context = new XINSServletContext(this);
-
-      try {
-         JarFile warFile = new JarFile(warFileLocation);
-         JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
-         InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
-         parseWebXML(webxmlInputStream);
-      } catch (Exception ex) {
-
-         Log.log_1512(ex);
-      }
-   }
-   /**
     * The name of the servlet.
     */
    private String _servletName;
@@ -79,6 +57,29 @@ public class LocalServletConfig implements ServletConfig {
     * The WAR file.
     */
    private File _warFile;
+
+   /**
+    * Creates a new Servlet configuration.
+    *
+    * @param warFileLocation
+    *    the war file containing the servlet to deploy,
+    *    cannot be <code>null</code>.
+    */
+   public LocalServletConfig(File warFileLocation) {
+      _warFile = warFileLocation;
+      _initParameters = new Properties();
+      _context = new XINSServletContext(this);
+
+      try {
+         JarFile warFile = new JarFile(warFileLocation);
+         JarEntry webxmlEntry = warFile.getJarEntry("WEB-INF/web.xml");
+         InputStream webxmlInputStream = warFile.getInputStream(webxmlEntry);
+         parseWebXML(webxmlInputStream);
+      } catch (Exception ex) {
+
+         Log.log_1512(ex);
+      }
+   }
 
    /**
     * Parses the web.xml file.

@@ -50,6 +50,34 @@ public class Element implements Cloneable {
    private static final Object SECRET_KEY = new Object();
 
    /**
+    * The namespace URI. This field can be <code>null</code>, but it can never
+    * be an empty string.
+    */
+   private final String _namespaceURI;
+
+   /**
+    * The local name. This field is never <code>null</code>.
+    */
+   private final String _localName;
+
+   /**
+    * The child elements. This field is lazily initialized is initially
+    * <code>null</code>.
+    */
+   private ArrayList _children;
+
+   /**
+    * The attributes. This field is lazily initialized and is initially
+    * <code>null</code>.
+    */
+   private HashMap _attributes;
+
+   /**
+    * The character content for this element. Can be <code>null</code>.
+    */
+   private String _text;
+
+   /**
     * Creates a new <code>Element</code> with no namespace.
     *
     * @param localName
@@ -91,34 +119,6 @@ public class Element implements Cloneable {
       _namespaceURI = namespaceURI;
       _localName = localName;
    }
-
-   /**
-    * The namespace URI. This field can be <code>null</code>, but it can never
-    * be an empty string.
-    */
-   private final String _namespaceURI;
-
-   /**
-    * The local name. This field is never <code>null</code>.
-    */
-   private final String _localName;
-
-   /**
-    * The child elements. This field is lazily initialized is initially
-    * <code>null</code>.
-    */
-   private ArrayList _children;
-
-   /**
-    * The attributes. This field is lazily initialized and is initially
-    * <code>null</code>.
-    */
-   private HashMap _attributes;
-
-   /**
-    * The character content for this element. Can be <code>null</code>.
-    */
-   private String _text;
 
    /**
     * Gets the namespace URI.
@@ -567,6 +567,22 @@ public class Element implements Cloneable {
     * @since XINS 1.1.0
     */
    public static final class QualifiedName {
+
+      /**
+       * The hash code for this object.
+       */
+      private final int _hashCode;
+
+      /**
+       * The namespace URI. Can be <code>null</code>.
+       */
+      private final String _namespaceURI;
+
+      /**
+       * The local name. Cannot be <code>null</code>.
+       */
+      private final String _localName;
+
       /**
        * Constructs a new <code>QualifiedName</code> with the specified
        * namespace and local name.
@@ -597,21 +613,6 @@ public class Element implements Cloneable {
          _namespaceURI = namespaceURI;
          _localName    = localName;
       }
-
-      /**
-       * The hash code for this object.
-       */
-      private final int _hashCode;
-
-      /**
-       * The namespace URI. Can be <code>null</code>.
-       */
-      private final String _namespaceURI;
-
-      /**
-       * The local name. Cannot be <code>null</code>.
-       */
-      private final String _localName;
 
       /**
        * Returns the hash code value for this object.

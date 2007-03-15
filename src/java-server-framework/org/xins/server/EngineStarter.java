@@ -68,6 +68,11 @@ final class EngineStarter {
    }
 
    /**
+    * The servlet config. Never <code>null</code>.
+    */
+   private ServletConfig _config;
+
+   /**
     * Constructor for the <code>EngineStarter</code> class.
     *
     * @param config
@@ -86,11 +91,6 @@ final class EngineStarter {
       // Store data
       _config = config;
    }
-
-   /**
-    * The servlet config. Never <code>null</code>.
-    */
-   private ServletConfig _config;
 
    /**
     * Logs server version, warns if server version differs from common version

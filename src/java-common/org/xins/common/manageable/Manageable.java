@@ -77,14 +77,6 @@ public abstract class Manageable {
    public static final State DEINITIALIZING = new State(1, "DEINITIALIZING");
 
    /**
-    * Constructs a new <code>Manageable</code>.
-    */
-   protected Manageable() {
-      _state     = UNUSABLE;
-      _stateLock = new Object();
-   }
-
-   /**
     * The state of this manageable object.
     */
    private State _state;
@@ -93,6 +85,14 @@ public abstract class Manageable {
     * The lock for the state object.
     */
    private Object _stateLock;
+
+   /**
+    * Constructs a new <code>Manageable</code>.
+    */
+   protected Manageable() {
+      _state     = UNUSABLE;
+      _stateLock = new Object();
+   }
 
    /**
     * Gets the current state of this object.

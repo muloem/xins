@@ -79,6 +79,7 @@ public final class URL extends Type {
          return string;
       }
    }
+
    /**
     * Constructs a new <code>Boolean</code>.
     * This constructor is private, the field {@link #SINGLETON} should be

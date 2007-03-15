@@ -26,6 +26,28 @@ import org.xins.common.MandatoryArgumentChecker;
 public abstract class CallResult implements Serializable {
 
    /**
+    * The call request. This field cannot be <code>null</code>.
+    */
+   private final CallRequest _request;
+
+   /**
+    * The target for which the call succeeded. This field cannot be
+    * <code>null</code>.
+    */
+   private final TargetDescriptor _succeededTarget;
+
+   /**
+    * The call duration, in milliseconds.
+    */
+   private final long _duration;
+
+   /**
+    * The list of <code>CallException</code>s. This field may be
+    * <code>null</code>.
+    */
+   private final CallExceptionList _exceptions;
+
+   /**
     * Constructs a new <code>CallResult</code> object.
     *
     * @param request
@@ -67,28 +89,6 @@ public abstract class CallResult implements Serializable {
       _duration        = duration;
       _exceptions      = exceptions;
    }
-
-   /**
-    * The call request. This field cannot be <code>null</code>.
-    */
-   private final CallRequest _request;
-
-   /**
-    * The target for which the call succeeded. This field cannot be
-    * <code>null</code>.
-    */
-   private final TargetDescriptor _succeededTarget;
-
-   /**
-    * The call duration, in milliseconds.
-    */
-   private final long _duration;
-
-   /**
-    * The list of <code>CallException</code>s. This field may be
-    * <code>null</code>.
-    */
-   private final CallExceptionList _exceptions;
 
    /**
     * Returns the call request.

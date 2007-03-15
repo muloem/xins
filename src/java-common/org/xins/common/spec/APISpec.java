@@ -65,6 +65,26 @@ public final class APISpec {
    }
 
    /**
+    * Name of the API, cannot be <code>null</code>.
+    */
+   private String _apiName;
+
+   /**
+    * Owner of the API, can be <code>null</code>.
+    */
+   private String _owner;
+
+   /**
+    * Description of the API, cannot be <code>null</code>.
+    */
+   private String _description;
+
+   /**
+    * The functions of the API, cannot be <code>null</code>.
+    */
+   private Map _functions = new ChainedMap();
+
+   /**
     * Creates a new instance of <code>APISpec</code>.
     *
     * @param reference
@@ -89,26 +109,6 @@ public final class APISpec {
          throw new InvalidSpecificationException("Cannot read API specification files.", ioe);
       }
    }
-
-   /**
-    * Name of the API, cannot be <code>null</code>.
-    */
-   private String _apiName;
-
-   /**
-    * Owner of the API, can be <code>null</code>.
-    */
-   private String _owner;
-
-   /**
-    * Description of the API, cannot be <code>null</code>.
-    */
-   private String _description;
-
-   /**
-    * The functions of the API, cannot be <code>null</code>.
-    */
-   private Map _functions = new ChainedMap();
 
    /**
     * Gets the name of the API.

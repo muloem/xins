@@ -35,6 +35,31 @@ public final class HTTPCallRequest extends CallRequest {
    private static int INSTANCE_COUNT;
 
    /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
+
+   /**
+    * Description of this HTTP call request. This field cannot be
+    * <code>null</code>, it is initialized during construction.
+    */
+   private String _asString;
+
+   /**
+    * The parameters for the HTTP call. This field cannot be
+    * <code>null</code>, it is initialized during construction.
+    */
+   private final PropertyReader _parameters;
+
+   /**
+    * The HTTP status code verifier, or <code>null</code> if all HTTP status
+    * codes are allowed.
+    */
+   private final HTTPStatusCodeVerifier _statusCodeVerifier;
+
+   /**
     * Constructs a new <code>HTTPCallRequest</code> with the specified
     * parameters and status code verifier. Fail-over is not unconditionally
     * allowed.
@@ -153,31 +178,6 @@ public final class HTTPCallRequest extends CallRequest {
       }
       setCallConfig(callConfig);
    }
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
-
-   /**
-    * Description of this HTTP call request. This field cannot be
-    * <code>null</code>, it is initialized during construction.
-    */
-   private String _asString;
-
-   /**
-    * The parameters for the HTTP call. This field cannot be
-    * <code>null</code>, it is initialized during construction.
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * The HTTP status code verifier, or <code>null</code> if all HTTP status
-    * codes are allowed.
-    */
-   private final HTTPStatusCodeVerifier _statusCodeVerifier;
 
    /**
     * Describes this request.

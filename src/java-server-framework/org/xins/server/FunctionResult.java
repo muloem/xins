@@ -23,6 +23,23 @@ import org.xins.common.xml.ElementBuilder;
 public class FunctionResult {
 
    /**
+    * The result code. This field is <code>null</code> if no code was
+    * returned.
+    */
+   private String _code;
+
+   /**
+    * The parameters and their values. This field is never <code>null</code>.
+    */
+   private BasicPropertyReader _parameters;
+
+   /**
+    * The data element builder. This field is <code>null</code> if there is no
+    * data element.
+    */
+   private ElementBuilder _dataElementBuilder;
+
+   /**
     * Creates a new successful <code>FunctionResult</code> instance.
     */
    public FunctionResult() {
@@ -55,23 +72,6 @@ public class FunctionResult {
         _parameters = parameters;
       }
    }
-
-   /**
-    * The result code. This field is <code>null</code> if no code was
-    * returned.
-    */
-   private String _code;
-
-   /**
-    * The parameters and their values. This field is never <code>null</code>.
-    */
-   private BasicPropertyReader _parameters;
-
-   /**
-    * The data element builder. This field is <code>null</code> if there is no
-    * data element.
-    */
-   private ElementBuilder _dataElementBuilder;
 
    /**
     * Returns the result code.

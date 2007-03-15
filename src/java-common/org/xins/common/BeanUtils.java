@@ -267,6 +267,7 @@ public class BeanUtils {
       }
       return valueClass;
    }
+
    /**
     * Fills the result object with of the content of the XML element object.
     *

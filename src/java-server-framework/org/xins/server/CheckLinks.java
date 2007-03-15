@@ -573,34 +573,6 @@ class CheckLinks {
     * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
     */
    private static final class URLChecker extends Thread {
-      /**
-       * Constructs a new <code>URLChecker</code> for the specified target
-       * descriptor.
-       *
-       * @param targetDescriptor
-       *    the {@link TargetDescriptor}, whose URL needs to be checked,
-       *    cannot be <code>null</code>.
-       *
-       * @throws IllegalArgumentException
-       *    if <code>targetDescriptor == null</code>.
-       */
-      public URLChecker(TargetDescriptor targetDescriptor)
-      throws IllegalArgumentException {
-
-         // Check preconditions
-         MandatoryArgumentChecker.check("targetDescriptor", targetDescriptor);
-
-         // Initialize fields
-         _targetDescriptor = targetDescriptor;
-         _url              = targetDescriptor.getURL();
-         _duration         = -1;
-         _statusCode       = -1;
-
-         // Check postconditions
-         if (_url == null) {
-            throw Utils.logProgrammingError("_url == null");
-         }
-      }
 
       /**
        * The target descriptor for which the URL needs to be checked. Never
@@ -637,6 +609,35 @@ class CheckLinks {
        * <code>-1</code>, when the <code>URLChecker</code> was not run yet.
        */
       private int _statusCode;
+
+      /**
+       * Constructs a new <code>URLChecker</code> for the specified target
+       * descriptor.
+       *
+       * @param targetDescriptor
+       *    the {@link TargetDescriptor}, whose URL needs to be checked,
+       *    cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>targetDescriptor == null</code>.
+       */
+      public URLChecker(TargetDescriptor targetDescriptor)
+      throws IllegalArgumentException {
+
+         // Check preconditions
+         MandatoryArgumentChecker.check("targetDescriptor", targetDescriptor);
+
+         // Initialize fields
+         _targetDescriptor = targetDescriptor;
+         _url              = targetDescriptor.getURL();
+         _duration         = -1;
+         _statusCode       = -1;
+
+         // Check postconditions
+         if (_url == null) {
+            throw Utils.logProgrammingError("_url == null");
+         }
+      }
 
       /**
        * Runs this thread. It tries to connect to the URL provided in the

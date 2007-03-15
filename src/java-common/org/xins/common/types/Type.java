@@ -22,6 +22,16 @@ import org.xins.common.Utils;
 public abstract class Type {
 
    /**
+    * The name of this type. Never <code>null</code>.
+    */
+   private final String _name;
+
+   /**
+    * The class for all values. Never <code>null</code>.
+    */
+   private final Class _valueClass;
+
+   /**
     * Creates a new <code>Type</code> instance. Both the name of the type and
     * the value class must be specified. The value class in the class (or
     * interface) that values for this type should be instances of. If
@@ -48,16 +58,6 @@ public abstract class Type {
       _name       = name;
       _valueClass = valueClass == null ? Object.class : valueClass;
    }
-
-   /**
-    * The name of this type. Never <code>null</code>.
-    */
-   private final String _name;
-
-   /**
-    * The class for all values. Never <code>null</code>.
-    */
-   private final Class _valueClass;
 
    /**
     * Retrieves the name of this type.

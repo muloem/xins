@@ -26,6 +26,17 @@ import org.xins.common.MandatoryArgumentChecker;
 public class ItemList {
 
    /**
+    * The list that contains the items. Cannot <code>null</code>.
+    */
+   private final java.util.List _list;
+
+   /**
+    * Indicates whether this list accepts equal objects.
+    */
+   private final boolean _setType;
+
+
+   /**
     * Creates a new <code>ItemList</code>.
     * The list will be able to contain several instances of an object.
     */
@@ -44,17 +55,6 @@ public class ItemList {
       _list = new java.util.ArrayList(10);
       _setType = setType;
    }
-
-   /**
-    * The list that contains the items. Cannot <code>null</code>.
-    */
-   private final java.util.List _list;
-
-   /**
-    * Indicates whether this list accepts equal objects.
-    */
-   private final boolean _setType;
-
 
    /**
     * Adds a list of items to the list or set. The items are added at the end of the list.

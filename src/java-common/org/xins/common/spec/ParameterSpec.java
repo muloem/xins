@@ -21,6 +21,31 @@ import org.xins.common.types.Type;
 public final class ParameterSpec {
 
    /**
+    * The reference class, never <code>null</code>.
+    */
+   private final Class _reference;
+
+   /**
+    * Name of the parameter, never <code>null</code>.
+    */
+   private final String _parameterName;
+
+   /**
+    * Type of the parameter, can be <code>null</code>.
+    */
+   private Type _parameterType;
+
+   /**
+    * Flags indicating if this parameter is required.
+    */
+   private final boolean _required;
+
+   /**
+    * Description of the parameter, never <code>null</code>.
+    */
+   private final String _description;
+
+   /**
     * Creates a new instance of <code>ParameterSpec</code>.
     *
     * @param reference
@@ -53,31 +78,6 @@ public final class ParameterSpec {
       _required      = required;
       _description   = description;
    }
-
-   /**
-    * The reference class, never <code>null</code>.
-    */
-   private final Class _reference;
-
-   /**
-    * Name of the parameter, never <code>null</code>.
-    */
-   private final String _parameterName;
-
-   /**
-    * Type of the parameter, can be <code>null</code>.
-    */
-   private Type _parameterType;
-
-   /**
-    * Flags indicating if this parameter is required.
-    */
-   private final boolean _required;
-
-   /**
-    * Description of the parameter, never <code>null</code>.
-    */
-   private final String _description;
 
    /**
     * Gets the name of the parameter.

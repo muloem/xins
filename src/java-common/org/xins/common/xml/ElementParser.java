@@ -226,16 +226,6 @@ public class ElementParser {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static class Handler extends DefaultHandler {
-      /**
-       * Constructs a new <code>Handler</code> instance.
-       */
-      private Handler() {
-
-         _state            = PARSING;
-         _level            = -1;
-         _characters       = new StringBuffer(145);
-         _dataElementStack = new Stack();
-      }
 
       /**
        * The current state. Never <code>null</code>.
@@ -266,6 +256,17 @@ public class ElementParser {
        * root element (<code>result</code>), etc.
        */
       private int _level;
+
+      /**
+       * Constructs a new <code>Handler</code> instance.
+       */
+      private Handler() {
+
+         _state            = PARSING;
+         _level            = -1;
+         _characters       = new StringBuffer(145);
+         _dataElementStack = new Stack();
+      }
 
       /**
        * Receive notification of the beginning of an element.
@@ -467,6 +468,7 @@ public class ElementParser {
     * @since XINS 1.0.0
     */
    private static final class State {
+
       /**
        * Constructs a new <code>State</code> object.
        *

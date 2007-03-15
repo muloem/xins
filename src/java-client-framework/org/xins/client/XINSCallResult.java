@@ -35,6 +35,13 @@ import org.xins.common.xml.Element;
 public final class XINSCallResult extends CallResult implements XINSCallResultData {
 
    /**
+    * The <code>XINSCallResultData</code> object that contains all the
+    * information returned from the call. This field cannot be
+    * <code>null</code>.
+    */
+   private final XINSCallResultData _data;
+
+   /**
     * Constructs a new <code>XINSCallResult</code> object.
     *
     * @param request
@@ -75,13 +82,6 @@ public final class XINSCallResult extends CallResult implements XINSCallResultDa
 
       _data = data;
    }
-
-   /**
-    * The <code>XINSCallResultData</code> object that contains all the
-    * information returned from the call. This field cannot be
-    * <code>null</code>.
-    */
-   private final XINSCallResultData _data;
 
    /**
     * Returns the error code. If <code>null</code> is returned the call was

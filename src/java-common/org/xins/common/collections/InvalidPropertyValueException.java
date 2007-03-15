@@ -52,6 +52,21 @@ extends Exception {
    }
 
    /**
+    * The name of the property. Cannot be <code>null</code>.
+    */
+   private final String _propertyName;
+
+   /**
+    * The (invalid) value of the property. Cannot be <code>null</code>.
+    */
+   private final String _propertyValue;
+
+   /**
+    * The detailed reason. Can be <code>null</code>.
+    */
+   private final String _reason;
+
+   /**
     * Constructs a new <code>InvalidPropertyValueException</code>.
     *
     * @param propertyName
@@ -101,21 +116,6 @@ extends Exception {
       _propertyValue = propertyValue;
       _reason        = reason;
    }
-
-   /**
-    * The name of the property. Cannot be <code>null</code>.
-    */
-   private final String _propertyName;
-
-   /**
-    * The (invalid) value of the property. Cannot be <code>null</code>.
-    */
-   private final String _propertyValue;
-
-   /**
-    * The detailed reason. Can be <code>null</code>.
-    */
-   private final String _reason;
 
    /**
     * Returns the name of the property.

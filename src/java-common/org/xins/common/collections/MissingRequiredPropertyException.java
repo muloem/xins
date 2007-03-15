@@ -52,6 +52,17 @@ extends Exception {
    }
 
    /**
+    * The name of the property. Never <code>null</code>.
+    */
+   private final String _propertyName;
+
+   /**
+    * Detailed description of why this property is required in the current
+    * context. Can be <code>null</code>.
+    */
+   private final String _detail;
+
+   /**
     * Constructs a new <code>MissingRequiredPropertyException</code>, with the
     * specified detail message.
     *
@@ -91,17 +102,6 @@ extends Exception {
    throws IllegalArgumentException {
       this(propertyName, null);
    }
-
-   /**
-    * The name of the property. Never <code>null</code>.
-    */
-   private final String _propertyName;
-
-   /**
-    * Detailed description of why this property is required in the current
-    * context. Can be <code>null</code>.
-    */
-   private final String _detail;
 
    /**
     * Returns the name of the property.

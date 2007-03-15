@@ -298,6 +298,12 @@ public class Timestamp extends Type {
     * @since XINS 1.0.0
     */
    public static final class Value implements Cloneable {
+
+      /**
+       * Calendar representing the moment in time.
+       */
+      private Calendar _calendar;
+
       /**
        * Constructs a new timestamp value. The values will not be checked.
        *
@@ -408,11 +414,6 @@ public class Timestamp extends Type {
          _calendar = Calendar.getInstance();
          _calendar.setTime(date);
       }
-
-      /**
-       * Calendar representing the moment in time.
-       */
-      private Calendar _calendar;
 
       /**
        * Creates and returns a copy of this object.

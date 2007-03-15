@@ -48,6 +48,11 @@ extends XINSCallException {
    }
 
    /**
+    * The result that is considered unacceptable. Never <code>null</code>.
+    */
+   private final XINSCallResultData _result;
+
+   /**
     * Constructs a new <code>UnacceptableCallResultException</code> using the
     * specified <code>XINSCallResult</code>.
     *
@@ -147,11 +152,6 @@ extends XINSCallException {
       // Store details
       _result = resultData;
    }
-
-   /**
-    * The result that is considered unacceptable. Never <code>null</code>.
-    */
-   private final XINSCallResultData _result;
 
    /**
     * Returns the error code.

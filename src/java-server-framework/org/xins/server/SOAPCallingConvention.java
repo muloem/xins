@@ -85,6 +85,11 @@ public class SOAPCallingConvention extends CallingConvention {
    private static final SimpleDateFormat SOAP_TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
    /**
+    * The API. Never <code>null</code>.
+    */
+   private final API _api;
+
+   /**
     * Creates a new <code>SOAPCallingConvention</code> instance.
     *
     * @param api
@@ -102,11 +107,6 @@ public class SOAPCallingConvention extends CallingConvention {
       // Store the API
       _api = api;
    }
-
-   /**
-    * The API. Never <code>null</code>.
-    */
-   private final API _api;
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

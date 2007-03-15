@@ -86,6 +86,36 @@ public class AccessRuleFile implements AccessRuleContainer {
    }
 
    /**
+    * The ACL file.
+    */
+   private String _file;
+
+   /**
+    * The interval used to check the ACL file for modification.
+    */
+   private int _interval;
+
+   /**
+    * Watcher for the ACL file.
+    */
+   private FileWatcher _fileWatcher;
+
+   /**
+    * The list of rules. Cannot be <code>null</code>.
+    */
+   private AccessRuleContainer[] _rules;
+
+   /**
+    * String representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
+   /**
     * Constructs a new <code>AccessRuleFile</code> based on a descriptor and
     * a file watch interval.
     *
@@ -161,36 +191,6 @@ public class AccessRuleFile implements AccessRuleContainer {
       // Generate the string representation
       _asString = "file " + _file;
    }
-
-   /**
-    * The ACL file.
-    */
-   private String _file;
-
-   /**
-    * The interval used to check the ACL file for modification.
-    */
-   private int _interval;
-
-   /**
-    * Watcher for the ACL file.
-    */
-   private FileWatcher _fileWatcher;
-
-   /**
-    * The list of rules. Cannot be <code>null</code>.
-    */
-   private AccessRuleContainer[] _rules;
-
-   /**
-    * String representation of this object. Cannot be <code>null</code>.
-    */
-   private final String _asString;
-
-   /**
-    * Flag that indicates whether this object is disposed.
-    */
-   private boolean _disposed;
 
    /**
     * Determines if the specified IP address is allowed to access the
@@ -482,12 +482,14 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @since XINS 1.1.0
     */
    private final class FileListener implements FileWatcher.Listener {
+
       /**
        * Constructs a new <code>FileListener</code> object.
        */
       FileListener() {
          // empty
       }
+
       /**
        * Callback method called when the configuration file is found while it
        * was previously not found.

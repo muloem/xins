@@ -23,6 +23,16 @@ import org.xins.common.xml.Element;
 class FormattedParameters {
 
    /**
+    * The parameters to serialize. This field can be <code>null</code>.
+    */
+   private final PropertyReader _parameters;
+
+   /**
+    * The data section.
+    */
+   private final Element _dataSection;
+
+   /**
     * Constructs a new <code>FormattedParameters</code> object.
     *
     * @param parameters
@@ -45,16 +55,6 @@ class FormattedParameters {
       _parameters = parameters;
       _dataSection = dataSection;
    }
-
-   /**
-    * The parameters to serialize. This field can be <code>null</code>.
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * The data section.
-    */
-   private final Element _dataSection;
 
    /**
     * String representation of the parameters including the data section.

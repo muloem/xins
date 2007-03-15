@@ -254,6 +254,7 @@ public final class TextUtils {
          return result.toString();
       }
    }
+
    /**
     * Constructs a new <code>TextUtils</code> object.
     */

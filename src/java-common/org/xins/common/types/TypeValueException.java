@@ -56,6 +56,22 @@ public class TypeValueException extends Exception {
    }
 
    /**
+    * The concerning parameter type. This field is never <code>null</code>.
+    */
+   private final Type _type;
+
+   /**
+    * The value that is considered invalid. This field is never <code>null</code>.
+    */
+   private final String _value;
+
+   /**
+    * The additional detail information passed to the constructor. Can be
+    * <code>null</code>.
+    */
+   private final String _detail;
+
+   /**
     * Creates a new <code>TypeValueException</code>.
     *
     * @param type
@@ -97,22 +113,6 @@ public class TypeValueException extends Exception {
       _value  = value;
       _detail = detail;
    }
-
-   /**
-    * The concerning parameter type. This field is never <code>null</code>.
-    */
-   private final Type _type;
-
-   /**
-    * The value that is considered invalid. This field is never <code>null</code>.
-    */
-   private final String _value;
-
-   /**
-    * The additional detail information passed to the constructor. Can be
-    * <code>null</code>.
-    */
-   private final String _detail;
 
    /**
     * Retrieves the type.

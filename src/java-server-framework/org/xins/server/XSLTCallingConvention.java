@@ -96,18 +96,6 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
    /**
-    * Constructs a new <code>XSLTCallingConvention</code> object.
-    */
-   public XSLTCallingConvention() {
-
-      // Create the transformer factory
-      _factory = TransformerFactory.newInstance();
-
-      // Initialize the template cache
-      _templateCache = new HashMap(89);
-   }
-
-   /**
     * The XSLT transformer. Never <code>null</code>.
     */
    private final TransformerFactory _factory;
@@ -134,6 +122,18 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     * Cache for the XSLT templates. Never <code>null</code>.
     */
    private Map _templateCache;
+
+   /**
+    * Constructs a new <code>XSLTCallingConvention</code> object.
+    */
+   public XSLTCallingConvention() {
+
+      // Create the transformer factory
+      _factory = TransformerFactory.newInstance();
+
+      // Initialize the template cache
+      _templateCache = new HashMap(89);
+   }
 
    protected void initImpl(PropertyReader runtimeProperties)
    throws MissingRequiredPropertyException,

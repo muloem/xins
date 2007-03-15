@@ -90,6 +90,47 @@ public final class TargetDescriptor extends Descriptor {
    }
 
    /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
+
+   /**
+    * A textual representation of this object. Lazily initialized by
+    * {@link #toString()} before returning it.
+    */
+   private String _asString;
+
+   /**
+    * The URL for the service. Cannot be <code>null</code>.
+    */
+   private final String _url;
+
+   /**
+    * The total time-out for the service. Is set to a 0 if no total time-out
+    * should be applied.
+    */
+   private final int _timeOut;
+
+   /**
+    * The connection time-out for the service. Always greater than 0 and
+    * smaller than or equal to the total time-out.
+    */
+   private final int _connectionTimeOut;
+
+   /**
+    * The socket time-out for the service. Always greater than 0 and smaller
+    * than or equal to the total time-out.
+    */
+   private final int _socketTimeOut;
+
+   /**
+    * The CRC-32 checksum for the URL. See {@link #_url}.
+    */
+   private final int _crc;
+
+   /**
     * Constructs a new <code>TargetDescriptor</code> for the specified URL.
     *
     * <p>Note: Both the connection time-out and the socket time-out will be
@@ -244,47 +285,6 @@ public final class TargetDescriptor extends Descriptor {
 
       // NOTE: _asString is lazily initialized
    }
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
-
-   /**
-    * A textual representation of this object. Lazily initialized by
-    * {@link #toString()} before returning it.
-    */
-   private String _asString;
-
-   /**
-    * The URL for the service. Cannot be <code>null</code>.
-    */
-   private final String _url;
-
-   /**
-    * The total time-out for the service. Is set to a 0 if no total time-out
-    * should be applied.
-    */
-   private final int _timeOut;
-
-   /**
-    * The connection time-out for the service. Always greater than 0 and
-    * smaller than or equal to the total time-out.
-    */
-   private final int _connectionTimeOut;
-
-   /**
-    * The socket time-out for the service. Always greater than 0 and smaller
-    * than or equal to the total time-out.
-    */
-   private final int _socketTimeOut;
-
-   /**
-    * The CRC-32 checksum for the URL. See {@link #_url}.
-    */
-   private final int _crc;
 
    /**
     * Checks if this descriptor denotes a group of descriptors.

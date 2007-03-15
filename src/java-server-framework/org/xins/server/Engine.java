@@ -61,6 +61,55 @@ final class Engine {
    private static final String JMX_PROPERTY = "org.xins.server.jmx";
 
    /**
+    * The state machine for this engine. Never <code>null</code>.
+    */
+   private final EngineStateMachine _stateMachine = new EngineStateMachine();
+
+   /**
+    * The starter of this engine. Never <code>null</code>.
+    */
+   private final EngineStarter _starter;
+
+   /**
+    * The stored servlet configuration object. Never <code>null</code>.
+    */
+   private final ServletConfig _servletConfig;
+
+   /**
+    * The API that this engine forwards requests to. Never <code>null</code>.
+    */
+   private final API _api;
+
+   /**
+    * Diagnostic context ID generator. Never <code>null</code>.
+    */
+   private ContextIDGenerator _contextIDGenerator;
+
+   /**
+    * The name of the API. Never <code>null</code>.
+    */
+   private String _apiName;
+
+   /**
+    * The manager for the runtime configuration file. Never <code>null</code>.
+    */
+   private final ConfigManager _configManager;
+
+   /**
+    * The manager for the calling conventions. This field can be and initially
+    * is <code>null</code>. This field is initialized by
+    * {@link #bootstrapAPI()}.
+    */
+   private CallingConventionManager _conventionManager;
+
+   /**
+    * Pattern which incoming diagnostic context identifiers must match. Can be
+    * <code>null</code> in case no pattern has been specified. Initially this
+    * field is indeed <code>null</code>.
+    */
+   private Pattern _contextIDPattern;
+
+   /**
     * Constructs a new <code>Engine</code> object.
     *
     * @param config
@@ -122,55 +171,6 @@ final class Engine {
          throw Utils.logProgrammingError("_apiName == null");
       }
    }
-
-   /**
-    * The state machine for this engine. Never <code>null</code>.
-    */
-   private final EngineStateMachine _stateMachine = new EngineStateMachine();
-
-   /**
-    * The starter of this engine. Never <code>null</code>.
-    */
-   private final EngineStarter _starter;
-
-   /**
-    * The stored servlet configuration object. Never <code>null</code>.
-    */
-   private final ServletConfig _servletConfig;
-
-   /**
-    * The API that this engine forwards requests to. Never <code>null</code>.
-    */
-   private final API _api;
-
-   /**
-    * Diagnostic context ID generator. Never <code>null</code>.
-    */
-   private ContextIDGenerator _contextIDGenerator;
-
-   /**
-    * The name of the API. Never <code>null</code>.
-    */
-   private String _apiName;
-
-   /**
-    * The manager for the runtime configuration file. Never <code>null</code>.
-    */
-   private final ConfigManager _configManager;
-
-   /**
-    * The manager for the calling conventions. This field can be and initially
-    * is <code>null</code>. This field is initialized by
-    * {@link #bootstrapAPI()}.
-    */
-   private CallingConventionManager _conventionManager;
-
-   /**
-    * Pattern which incoming diagnostic context identifiers must match. Can be
-    * <code>null</code> in case no pattern has been specified. Initially this
-    * field is indeed <code>null</code>.
-    */
-   private Pattern _contextIDPattern;
 
    /**
     * Bootstraps the API. The following steps will be performed:

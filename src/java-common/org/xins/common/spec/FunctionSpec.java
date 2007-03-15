@@ -30,36 +30,6 @@ import org.xins.common.xml.ElementParser;
 public final class FunctionSpec {
 
    /**
-    * Creates a new <code>Function</code> by parsing the function specification file.
-    *
-    * @param functionName
-    *    the name of the function, cannot be <code>null</code>.
-    *
-    * @param reference
-    *    the reference class used to get the defined type class, cannot be <code>null</code>.
-    *
-    * @param baseURL
-    *    the base URL path where are located the specifications, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null || reference == null || baseURL == null</code>.
-    *
-    * @throws InvalidSpecificationException
-    *    if the specification is incorrect or cannot be found.
-    */
-   FunctionSpec(String functionName, Class  reference, String baseURL)
-   throws IllegalArgumentException, InvalidSpecificationException {
-      MandatoryArgumentChecker.check("functionName", functionName, "reference", reference, "baseURL", baseURL);
-      _functionName = functionName;
-      try {
-         Reader reader = APISpec.getReader(baseURL, functionName + ".fnc");
-         parseFunction(reader, reference, baseURL);
-      } catch (IOException ioe) {
-         throw new InvalidSpecificationException("[Function: " + functionName + "] Cannot read function.", ioe);
-      }
-   }
-
-   /**
     * Name of the function, cannot be <code>null</code>.
     */
    private final String _functionName;
@@ -105,6 +75,36 @@ public final class FunctionSpec {
     * The output data section elements of the function.
     */
    private Map _outputDataSectionElements = new ChainedMap();
+
+   /**
+    * Creates a new <code>Function</code> by parsing the function specification file.
+    *
+    * @param functionName
+    *    the name of the function, cannot be <code>null</code>.
+    *
+    * @param reference
+    *    the reference class used to get the defined type class, cannot be <code>null</code>.
+    *
+    * @param baseURL
+    *    the base URL path where are located the specifications, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null || reference == null || baseURL == null</code>.
+    *
+    * @throws InvalidSpecificationException
+    *    if the specification is incorrect or cannot be found.
+    */
+   FunctionSpec(String functionName, Class  reference, String baseURL)
+   throws IllegalArgumentException, InvalidSpecificationException {
+      MandatoryArgumentChecker.check("functionName", functionName, "reference", reference, "baseURL", baseURL);
+      _functionName = functionName;
+      try {
+         Reader reader = APISpec.getReader(baseURL, functionName + ".fnc");
+         parseFunction(reader, reference, baseURL);
+      } catch (IOException ioe) {
+         throw new InvalidSpecificationException("[Function: " + functionName + "] Cannot read function.", ioe);
+      }
+   }
 
    /**
     * Gets the name of the function.

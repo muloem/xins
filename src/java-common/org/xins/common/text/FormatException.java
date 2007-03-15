@@ -51,6 +51,17 @@ extends RuntimeException {
    }
 
    /**
+    * The string that is considered invalid. Cannot be <code>null</code>.
+    */
+   private final String _string;
+
+   /**
+    * The reason for the string to be considered invalid. Can be
+    * <code>null</code>.
+    */
+   private final String _reason;
+
+   /**
     * Constructs a <code>FormatException</code>.
     *
     * @param string
@@ -73,17 +84,6 @@ extends RuntimeException {
       _string = string;
       _reason = reason;
    }
-
-   /**
-    * The string that is considered invalid. Cannot be <code>null</code>.
-    */
-   private final String _string;
-
-   /**
-    * The reason for the string to be considered invalid. Can be
-    * <code>null</code>.
-    */
-   private final String _reason;
 
    /**
     * Returns the string that is considered invalid.

@@ -82,6 +82,26 @@ public class HTTPServletHandler {
    private final static String CRLF = "\r\n";
 
    /**
+    * The web server.
+    */
+   private ServerSocket _serverSocket;
+
+   /**
+    * The thread that waits for connections from the client.
+    */
+   private SocketAcceptor _acceptor;
+
+   /**
+    * Flag indicating if the server should wait for other connections or stop.
+    */
+   private boolean _running;
+
+   /**
+    * Mapping between the path and the servlet.
+    */
+   private Map _servlets = new HashMap();
+
+   /**
     * Creates a new HTTPSevletHandler with no Servlet. Use the addServlet
     * methods to add the WAR files or the Servlets.
     *
@@ -202,26 +222,6 @@ public class HTTPServletHandler {
       this(port, daemon);
       addServlet(servletClassName, "/");
    }
-
-   /**
-    * The web server.
-    */
-   private ServerSocket _serverSocket;
-
-   /**
-    * The thread that waits for connections from the client.
-    */
-   private SocketAcceptor _acceptor;
-
-   /**
-    * Flag indicating if the server should wait for other connections or stop.
-    */
-   private boolean _running;
-
-   /**
-    * Mapping between the path and the servlet.
-    */
-   private Map _servlets = new HashMap();
 
    /**
     * Adds a WAR file to the server.

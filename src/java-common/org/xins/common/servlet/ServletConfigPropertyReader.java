@@ -27,6 +27,17 @@ import org.xins.common.collections.PropertyReader;
 public final class ServletConfigPropertyReader implements PropertyReader {
 
    /**
+    * The servlet configuration object.
+    */
+   private final ServletConfig _servletConfig;
+
+   /**
+    * The number of properties. This field is lazily initialized by
+    * {@link #size()}.
+    */
+   private int _size;
+
+   /**
     * Constructs a new <code>ServletConfigPropertyReader</code>.
     *
     * @param servletConfig
@@ -43,17 +54,6 @@ public final class ServletConfigPropertyReader implements PropertyReader {
 
       _servletConfig = servletConfig;
    }
-
-   /**
-    * The servlet configuration object.
-    */
-   private final ServletConfig _servletConfig;
-
-   /**
-    * The number of properties. This field is lazily initialized by
-    * {@link #size()}.
-    */
-   private int _size;
 
    /**
     * Retrieves the value of the property with the specified name.

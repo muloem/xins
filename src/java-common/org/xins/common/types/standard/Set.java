@@ -106,6 +106,7 @@ public final class Set extends org.xins.common.types.List {
     * Inner class that represents a set of String.
     */
    public static final class Value extends ItemList {
+
       /**
        * Creates a new set.
        */

@@ -34,15 +34,6 @@ import org.znerd.xmlenc.XMLOutputter;
 public final class ElementSerializer {
 
    /**
-    * Constructs a new <code>ElementSerializer</code>.
-    */
-   public ElementSerializer() {
-      // TODO: Set _instanceNumber
-      _lock       = new Object();
-      _namespaces = new HashMap();
-   }
-
-   /**
     * Lock object that is synchronized on when reading or writing
     * <code>_inUse</code>.
     */
@@ -59,6 +50,15 @@ public final class ElementSerializer {
     * the corresponding value is the associated prefix.
     */
    private HashMap _namespaces;
+
+   /**
+    * Constructs a new <code>ElementSerializer</code>.
+    */
+   public ElementSerializer() {
+      // TODO: Set _instanceNumber
+      _lock       = new Object();
+      _namespaces = new HashMap();
+   }
 
    /**
     * Serializes the element to XML. This method is not reentrant. Hence, it

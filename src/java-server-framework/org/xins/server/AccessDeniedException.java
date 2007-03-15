@@ -51,6 +51,18 @@ extends Exception {
    }
 
    /**
+    * The IP address which is denied for the given function. This field may be
+    * <code>null</code>.
+    */
+   private final String _ip;
+
+   /**
+    * The name of the function which does not grant the access. This field may
+    * be <code>null</code>.
+    */
+   private final String _functionName;
+
+   /**
     * Constructs a new <code>AccessDeniedException</code> for the specified
     * IP address and function name.
     *
@@ -65,18 +77,6 @@ extends Exception {
       _ip = ip;
       _functionName = functionName;
    }
-
-   /**
-    * The IP address which is denied for the given function. This field may be
-    * <code>null</code>.
-    */
-   private final String _ip;
-
-   /**
-    * The name of the function which does not grant the access. This field may
-    * be <code>null</code>.
-    */
-   private final String _functionName;
 
    /**
     * Gets the IP address which is denied for the given function.

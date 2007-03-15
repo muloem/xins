@@ -94,6 +94,16 @@ final class EngineState {
       = new EngineState("DISPOSED", INTERMEDIATE_STATE);
 
    /**
+    * The name of this state. Cannot be <code>null</code>.
+    */
+   private final String _name;
+
+   /**
+    * The type of this state. Never <code>null</code>.
+    */
+   private final Type _type;
+
+   /**
     * Constructs a new <code>EngineState</code> object.
     *
     * @param name
@@ -115,16 +125,6 @@ final class EngineState {
       _name = name;
       _type = type;
    }
-
-   /**
-    * The name of this state. Cannot be <code>null</code>.
-    */
-   private final String _name;
-
-   /**
-    * The type of this state. Never <code>null</code>.
-    */
-   private final Type _type;
 
    /**
     * Returns the name of this state.
@@ -175,6 +175,7 @@ final class EngineState {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    static class Type {
+
       /**
        * Constructs a new instance.
        */

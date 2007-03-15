@@ -129,6 +129,25 @@ boolean         failOver = true;
 public final class XINSServiceCaller extends ServiceCaller {
 
    /**
+    * The result parser. This field cannot be <code>null</code>.
+    */
+   private final XINSCallResultParser _parser;
+
+   /**
+    * The <code>CAPI</code> object that uses this caller. This field is
+    * <code>null</code> if this caller is not used by a <code>CAPI</code>
+    * class.
+    */
+   private AbstractCAPI _capi;
+
+   /**
+    * The map containing the service caller to call for the descriptor.
+    * The key of the {@link HashMap} is a {@link TargetDescriptor} and the value
+    * is a {@link ServiceCaller}.
+    */
+   private HashMap _serviceCallers;
+
+   /**
     * Constructs a new <code>XINSServiceCaller</code> with the specified
     * descriptor and call configuration.
     *
@@ -187,25 +206,6 @@ public final class XINSServiceCaller extends ServiceCaller {
    public XINSServiceCaller() {
       this((Descriptor) null, (XINSCallConfig) null);
    }
-
-   /**
-    * The result parser. This field cannot be <code>null</code>.
-    */
-   private final XINSCallResultParser _parser;
-
-   /**
-    * The <code>CAPI</code> object that uses this caller. This field is
-    * <code>null</code> if this caller is not used by a <code>CAPI</code>
-    * class.
-    */
-   private AbstractCAPI _capi;
-
-   /**
-    * The map containing the service caller to call for the descriptor.
-    * The key of the {@link HashMap} is a {@link TargetDescriptor} and the value
-    * is a {@link ServiceCaller}.
-    */
-   private HashMap _serviceCallers;
 
    /**
     * Checks if the specified protocol is supported (implementation method).
@@ -850,6 +850,12 @@ public final class XINSServiceCaller extends ServiceCaller {
     */
    private static final class ExceptionFormatter
    extends AbstractLogdocSerializable {
+
+      /**
+       * The first exception in the chain. Should not be <code>null</code>.
+       */
+      private Throwable _first;
+
       /**
        * Constructs a new <code>ExceptionFormatter</code> instance with the
        * specified exception being the first exception in the chain.
@@ -861,11 +867,6 @@ public final class XINSServiceCaller extends ServiceCaller {
       private ExceptionFormatter(Throwable first) {
          _first = first;
       }
-
-      /**
-       * The first exception in the chain. Should not be <code>null</code>.
-       */
-      private Throwable _first;
 
       protected String initialize() {
          return _first.getMessage();

@@ -41,6 +41,11 @@ extends Exception {
    }
 
    /**
+    * The name of the function.
+    */
+   private final String _functionName;
+
+   /**
     * Constructs a new <code>NoSuchFunctionException</code> for the specified
     * function name.
     *
@@ -55,11 +60,6 @@ extends Exception {
       super(createMessage(functionName));
       _functionName = functionName;
    }
-
-   /**
-    * The name of the function.
-    */
-   private final String _functionName;
 
    /**
     * Gets the name of the function.

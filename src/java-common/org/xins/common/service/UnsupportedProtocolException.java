@@ -53,6 +53,13 @@ extends RuntimeException {
            + target.getProtocol()
            + "\".";
    }
+
+   /**
+    * The target descriptor that has an unsupported protocol. Cannot be
+    * <code>null</code>.
+    */
+   private final TargetDescriptor _target;
+
    /**
     * Constructs a new <code>UnsupportedProtocolException</code> for the
     * specified target descriptor.
@@ -72,12 +79,6 @@ extends RuntimeException {
       // Store
       _target = target;
    }
-
-   /**
-    * The target descriptor that has an unsupported protocol. Cannot be
-    * <code>null</code>.
-    */
-   private final TargetDescriptor _target;
 
    /**
     * Returns the target descriptor that has an unsupported protocol.

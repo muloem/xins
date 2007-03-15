@@ -25,6 +25,27 @@ import org.xins.common.xml.Element;
 public class FunctionRequest {
 
    /**
+    * The name of the function. This field is never <code>null</code>.
+    */
+   private final String _functionName;
+
+   /**
+    * The parameters of the function. This field is never <code>null</code>
+    */
+   private final PropertyReader _parameters;
+
+   /**
+    * The data section of the function. If there is none, then this field is
+    * <code>null</code>.
+    */
+   private final Element _dataElement;
+
+   /**
+    * Flag indicating whether the function should be skipped or not.
+    */
+   private final boolean _skipFunctionCall;
+
+   /**
     * Creates a new <code>FunctionRequest</code>. The function name must be
     * specified.
     *
@@ -94,27 +115,6 @@ public class FunctionRequest {
 
       _skipFunctionCall = skipFunctionCall;
    }
-
-   /**
-    * The name of the function. This field is never <code>null</code>.
-    */
-   private final String _functionName;
-
-   /**
-    * The parameters of the function. This field is never <code>null</code>
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * The data section of the function. If there is none, then this field is
-    * <code>null</code>.
-    */
-   private final Element _dataElement;
-
-   /**
-    * Flag indicating whether the function should be skipped or not.
-    */
-   private final boolean _skipFunctionCall;
 
    /**
     * Gets the name of the function.

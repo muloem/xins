@@ -148,6 +148,32 @@ public final class AccessRule implements AccessRuleContainer {
    }
 
    /**
+    * If the access method is 'allow' or not.
+    */
+   private final boolean _allow;
+
+   /**
+    * The IP address filter used to create the access rule. Cannot be
+    * <code>null</code>.
+    */
+   private final IPFilter _ipFilter;
+
+   /**
+    * The function name pattern. Cannot be <code>null</code>.
+    */
+   private final Perl5Pattern _functionNameRegex;
+
+   /**
+    * String representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
+   /**
     * Constructs a new <code>AccessRule</code>.
     *
     * @param allow
@@ -188,32 +214,6 @@ public final class AccessRule implements AccessRuleContainer {
       _functionNameRegex = functionNameRegex;
       _asString          = asString;
    }
-
-   /**
-    * If the access method is 'allow' or not.
-    */
-   private final boolean _allow;
-
-   /**
-    * The IP address filter used to create the access rule. Cannot be
-    * <code>null</code>.
-    */
-   private final IPFilter _ipFilter;
-
-   /**
-    * The function name pattern. Cannot be <code>null</code>.
-    */
-   private final Perl5Pattern _functionNameRegex;
-
-   /**
-    * String representation of this object. Cannot be <code>null</code>.
-    */
-   private final String _asString;
-
-   /**
-    * Flag that indicates whether this object is disposed.
-    */
-   private boolean _disposed;
 
    /**
     * Returns if this rule is an <em>allow</em> or a <em>deny</em> rule.

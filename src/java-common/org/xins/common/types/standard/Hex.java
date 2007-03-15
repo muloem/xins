@@ -25,6 +25,7 @@ public class Hex extends Type {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static Hex SINGLETON = new Hex();
+
    /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>byte[]</code> value.
@@ -105,6 +106,17 @@ public class Hex extends Type {
          return HexConverter.toHexString(value);
       }
    }
+
+   /**
+    * The minimum number of bytes this Hex can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum number of bytes this Hex can have.
+    */
+   private final int _maximum;
+
    /**
     * Constructs a new <code>Hex</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -133,16 +145,6 @@ public class Hex extends Type {
       _minimum = minimum;
       _maximum = maximum;
    }
-
-   /**
-    * The minimum number of bytes this Hex can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum number of bytes this Hex can have.
-    */
-   private final int _maximum;
 
    /**
     * Determines if the specified <code>String</code> value is considered

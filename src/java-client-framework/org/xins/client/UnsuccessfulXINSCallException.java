@@ -65,6 +65,16 @@ implements XINSCallResultData {
    }
 
    /**
+    * The result data. The value of this field cannot be <code>null</code>.
+    */
+   private final XINSCallResultData _result;
+
+   /**
+    * The type of the error.
+    */
+   private ErrorCodeSpec.Type _type;
+
+   /**
     * Constructs a new <code>UnsuccessfulXINSCallException</code> based on a
     * <code>XINSCallResultData</code> instance.
     *
@@ -115,16 +125,6 @@ implements XINSCallResultData {
       // Store details
       _result = resultData;
    }
-
-   /**
-    * The result data. The value of this field cannot be <code>null</code>.
-    */
-   private final XINSCallResultData _result;
-
-   /**
-    * The type of the error.
-    */
-   private ErrorCodeSpec.Type _type;
 
    /**
     * Returns the error code.

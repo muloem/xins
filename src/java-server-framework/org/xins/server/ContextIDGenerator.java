@@ -54,32 +54,6 @@ final class ContextIDGenerator extends Manageable {
    };
 
    /**
-    * Constructs a new <code>ContextIDGenerator</code>.
-    *
-    * @param apiName
-    *    the name of the API, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>apiName == null</code>.
-    */
-   ContextIDGenerator(String apiName)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("apiName", apiName);
-
-      // Store API name and determine host name
-      _apiName  = apiName;
-      _hostname = IPAddressUtils.getLocalHost();
-
-      // Create a DateConverter that will not prepend the century
-      _dateConverter = new DateConverter(false);
-
-      // Initialize a pseudo-random number generator
-      _random = new Random();
-   }
-
-   /**
     * The name of the API. Never <code>null</code>.
     */
    private final String _apiName;
@@ -110,6 +84,32 @@ final class ContextIDGenerator extends Manageable {
     * A pseudo-random number generator. Never <code>null</code>
     */
    private final Random _random;
+
+   /**
+    * Constructs a new <code>ContextIDGenerator</code>.
+    *
+    * @param apiName
+    *    the name of the API, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>apiName == null</code>.
+    */
+   ContextIDGenerator(String apiName)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("apiName", apiName);
+
+      // Store API name and determine host name
+      _apiName  = apiName;
+      _hostname = IPAddressUtils.getLocalHost();
+
+      // Create a DateConverter that will not prepend the century
+      _dateConverter = new DateConverter(false);
+
+      // Initialize a pseudo-random number generator
+      _random = new Random();
+   }
 
    /**
     * Performs the initialization procedure (actual implementation). When this

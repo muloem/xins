@@ -27,6 +27,11 @@ extends HTTPCallException {
    private static final long serialVersionUID = 5165140514693822383L;
 
    /**
+    * The returned HTTP status code.
+    */
+   private final int _code;
+
+   /**
     * Constructs a new <code>StatusCodeHTTPCallException</code> based on the
     * original request, target called, call duration and HTTP status code.
     *
@@ -60,11 +65,6 @@ extends HTTPCallException {
 
       _code = code;
    }
-
-   /**
-    * The returned HTTP status code.
-    */
-   private final int _code;
 
    /**
     * Returns the HTTP status code.

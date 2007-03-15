@@ -105,31 +105,6 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     * Argument used when finding a function with no parameters using the reflection API.
     */
    private final static Class[] NO_ARGS_CLASS = {};
-   /**
-    * Creates a new <code>FrontendCallingConvention</code> instance.
-    *
-    * @param api
-    *    the API, needed for the SOAP messages, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>api == null</code>.
-    */
-   public FrontendCallingConvention(API api)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("api", api);
-
-      // Store the API
-      _api = api;
-
-      // Get the session manager manageable from the API
-      try {
-         _session = (SessionManager) api.getClass().getMethod("getSessionManager", NO_ARGS_CLASS).invoke(api, NO_ARGS);
-      } catch (Exception ex) {
-         Log.log_3700(ex);
-      }
-   }
 
    /**
     * The API. Never <code>null</code>.
@@ -203,6 +178,32 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     * The list of the real function names for this API.
     */
    private List _functionList = new ArrayList();
+
+   /**
+    * Creates a new <code>FrontendCallingConvention</code> instance.
+    *
+    * @param api
+    *    the API, needed for the SOAP messages, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null</code>.
+    */
+   public FrontendCallingConvention(API api)
+   throws IllegalArgumentException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("api", api);
+
+      // Store the API
+      _api = api;
+
+      // Get the session manager manageable from the API
+      try {
+         _session = (SessionManager) api.getClass().getMethod("getSessionManager", NO_ARGS_CLASS).invoke(api, NO_ARGS);
+      } catch (Exception ex) {
+         Log.log_3700(ex);
+      }
+   }
 
    protected void bootstrapImpl(PropertyReader bootstrapProperties)
    throws MissingRequiredPropertyException,

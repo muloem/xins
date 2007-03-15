@@ -33,6 +33,18 @@ public abstract class PatternType extends Type {
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
+    * Pattern string. This is the uncompiled version of {@link #_pattern}.
+    * This field cannot be <code>null</code>.
+    */
+   private final String _patternString;
+
+   /**
+    * Compiled pattern. This is the compiled version of
+    * {@link #_patternString}. This field cannot be <code>null</code>.
+    */
+   private final Pattern _pattern;
+
+   /**
     * Creates a new <code>PatternType</code> instance. The name of the type
     * needs to be specified. The value class (see
     * {@link Type#getValueClass()}) is set to {@link String String.class}.
@@ -74,18 +86,6 @@ public abstract class PatternType extends Type {
       // Store the original pattern string
       _patternString = pattern;
    }
-
-   /**
-    * Pattern string. This is the uncompiled version of {@link #_pattern}.
-    * This field cannot be <code>null</code>.
-    */
-   private final String _patternString;
-
-   /**
-    * Compiled pattern. This is the compiled version of
-    * {@link #_patternString}. This field cannot be <code>null</code>.
-    */
-   private final Pattern _pattern;
 
    protected final boolean isValidValueImpl(String value) {
 

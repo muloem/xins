@@ -22,6 +22,36 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class DataSectionElementSpec {
 
    /**
+    * Name of the element, cannot be <code>null</code>.
+    */
+   private final String _name;
+
+   /**
+    * Description of the element, cannot be <code>null</code>.
+    */
+   private final String _description;
+
+   /**
+    * Flag indicating that the element can have PCDATA.
+    */
+   private final boolean _isPCDataAllowed;
+
+   /**
+    * The sub elements of the element, cannot be <code>null</code>.
+    */
+   private final Map _subElements;
+
+   /**
+    * The attributes of the element, cannot be <code>null</code>.
+    */
+   private final Map _attributes;
+
+   /**
+    * The attribute combos of the element, cannot be <code>null</code>.
+    */
+   private final List _attributeCombos;
+
+   /**
     * Creates a new instance of <code>DataSectionElementSpec</code>.
     *
     * @param name
@@ -52,35 +82,6 @@ public final class DataSectionElementSpec {
       _subElements = subElements;
       _attributeCombos = attributeCombos;
    }
-   /**
-    * Name of the element, cannot be <code>null</code>.
-    */
-   private final String _name;
-
-   /**
-    * Description of the element, cannot be <code>null</code>.
-    */
-   private final String _description;
-
-   /**
-    * Flag indicating that the element can have PCDATA.
-    */
-   private final boolean _isPCDataAllowed;
-
-   /**
-    * The sub elements of the element, cannot be <code>null</code>.
-    */
-   private final Map _subElements;
-
-   /**
-    * The attributes of the element, cannot be <code>null</code>.
-    */
-   private final Map _attributes;
-
-   /**
-    * The attribute combos of the element, cannot be <code>null</code>.
-    */
-   private final List _attributeCombos;
 
    /**
     * Gets the name of the data element.

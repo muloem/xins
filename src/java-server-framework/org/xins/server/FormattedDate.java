@@ -29,6 +29,11 @@ extends AbstractLogdocSerializable {
       new DateConverter(true);
 
    /**
+    * The date, as a number of milliseconds since the UNIX Epoch.
+    */
+   private final long _epochDate;
+
+   /**
     * Constructs a new <code>FormattedDate</code> object.
     *
     * @param date
@@ -38,11 +43,6 @@ extends AbstractLogdocSerializable {
    public FormattedDate(long date) {
       _epochDate = date;
    }
-
-   /**
-    * The date, as a number of milliseconds since the UNIX Epoch.
-    */
-   private final long _epochDate;
 
    /**
     * Initializes this <code>AbstractLogdocSerializable</code>.

@@ -20,6 +20,16 @@ import org.xins.common.MandatoryArgumentChecker;
 class ComboSpec {
 
    /**
+    * The type of the combo, never <code>null</code>.
+    */
+   private final String _type;
+
+   /**
+    * The parameters of this combo, never <code>null</code>.
+    */
+   private final Map _parameters;
+
+   /**
     * Creates a new <code>ComboSpec</code>.
     *
     * @param type
@@ -32,15 +42,6 @@ class ComboSpec {
       _type = type;
       _parameters = parameters;
    }
-   /**
-    * The type of the combo, never <code>null</code>.
-    */
-   private final String _type;
-
-   /**
-    * The parameters of this combo, never <code>null</code>.
-    */
-   private final Map _parameters;
 
    /**
     * Returns whether the combo is a all-or-none type.

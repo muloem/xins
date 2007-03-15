@@ -42,6 +42,31 @@ public final class ErrorCodeSpec {
    public final static Type TECHNICAL = new Type();
 
    /**
+    * Name of the function.
+    */
+   private final String _errorCodeName;
+
+   /**
+    * Description of the function.
+    */
+   private String _description;
+
+   /**
+    * The output parameters of the function.
+    */
+   private Map _outputParameters = new ChainedMap();
+
+   /**
+    * The output data section elements of the function.
+    */
+   private Map _outputDataSectionElements;
+
+   /**
+    * The type of the error code.
+    */
+   private Type _type;
+
+   /**
     * Creates a new instance of <code>ErrorCodeSpec</code>.
     *
     * @param name
@@ -71,31 +96,6 @@ public final class ErrorCodeSpec {
          throw new InvalidSpecificationException("[ErrorCode: " + name + "] Cannot read error code.", ioe);
       }
    }
-
-   /**
-    * Name of the function.
-    */
-   private final String _errorCodeName;
-
-   /**
-    * Description of the function.
-    */
-   private String _description;
-
-   /**
-    * The output parameters of the function.
-    */
-   private Map _outputParameters = new ChainedMap();
-
-   /**
-    * The output data section elements of the function.
-    */
-   private Map _outputDataSectionElements;
-
-   /**
-    * The type of the error code.
-    */
-   private Type _type;
 
    /**
     * Gets the name of the error code.

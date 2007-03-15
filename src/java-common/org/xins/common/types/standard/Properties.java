@@ -129,6 +129,16 @@ public class Properties extends Type {
    }
 
    /**
+    * The type for property names. Cannot be <code>null</code>.
+    */
+   private final Type _nameType;
+
+   /**
+    * The type for property values. Cannot be <code>null</code>.
+    */
+   private final Type _valueType;
+
+   /**
     * Constructs a new <code>Properties</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
@@ -158,16 +168,6 @@ public class Properties extends Type {
       _nameType  = nameType  == null ? Text.SINGLETON : nameType;
       _valueType = valueType == null ? Text.SINGLETON : valueType;
    }
-
-   /**
-    * The type for property names. Cannot be <code>null</code>.
-    */
-   private final Type _nameType;
-
-   /**
-    * The type for property values. Cannot be <code>null</code>.
-    */
-   private final Type _valueType;
 
    protected final boolean isValidValueImpl(String string) {
 

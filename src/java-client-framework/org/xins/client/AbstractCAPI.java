@@ -60,6 +60,22 @@ public abstract class AbstractCAPI {
    private final static Set VERSION_COMPARISIONS_DONE = new HashSet();
 
    /**
+    * The name of the API. This field cannot be <code>null</code>.
+    */
+   private final String _apiName;
+
+   /**
+    * The XINS service caller to use. This field cannot be <code>null</code>.
+    */
+   private final XINSServiceCaller _caller;
+
+   /**
+    * The API specification. This field is lazily initialized by
+    * {@link #getAPISpecification()}.
+    */
+   private APISpec _apiSpecification;
+
+   /**
     * Creates a new <code>AbstractCAPI</code> object, using the specified
     * <code>XINSServiceCaller</code>.
     *
@@ -188,22 +204,6 @@ public abstract class AbstractCAPI {
       // Compare the XINS version at build- and run-time
       checkXINSVersion();
    }
-
-   /**
-    * The name of the API. This field cannot be <code>null</code>.
-    */
-   private final String _apiName;
-
-   /**
-    * The XINS service caller to use. This field cannot be <code>null</code>.
-    */
-   private final XINSServiceCaller _caller;
-
-   /**
-    * The API specification. This field is lazily initialized by
-    * {@link #getAPISpecification()}.
-    */
-   private APISpec _apiSpecification;
 
    /**
     * Retrieves the name of the API (wrapper method).

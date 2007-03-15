@@ -60,6 +60,56 @@ public final class FileWatcher extends Thread {
    private static final int SHOULD_STOP = 3;
 
    /**
+    * Unique instance identifier.
+    */
+   private final int _instanceID;
+
+   /**
+    * The file to watch. Not <code>null</code>.
+    */
+   private final File _file;
+
+   /**
+    * The path of the file to watch. Not <code>null</code>.
+    */
+   private final String _filePath;
+
+   /**
+    * Delay in seconds, at least 1. When the interval is uninitialized, the
+    * value of this field is less than 1.
+    */
+   private int _interval;
+
+   /**
+    * The listener. Not <code>null</code>
+    */
+   private final Listener _listener;
+
+   /**
+    * Timestamp of the last modification of the file. The value
+    * <code>-1L</code> indicates that the file could not be found the last
+    * time this was checked.
+    *
+    * <p>Initially this field is <code>-1L</code>.
+    */
+   private long _lastModified;
+
+   /**
+    * Current state. Never <code>null</code>. Value is one of the following
+    * values:
+    *
+    * <ul>
+    *    <li>{@link #NOT_RUNNING}
+    *    <li>{@link #RUNNING}
+    *    <li>{@link #SHOULD_STOP}
+    * </ul>
+    *
+    * Once the thread is stopped, the state will be changed to
+    * {@link #NOT_RUNNING} again.
+    */
+   private int _state;
+
+   /**
     * Creates a new <code>FileWatcher</code> for the specified file, with the
     * specified interval.
     *
@@ -148,56 +198,6 @@ public final class FileWatcher extends Thread {
       // Immediately check if the file can be read from
       firstCheck();
    }
-
-   /**
-    * Unique instance identifier.
-    */
-   private final int _instanceID;
-
-   /**
-    * The file to watch. Not <code>null</code>.
-    */
-   private final File _file;
-
-   /**
-    * The path of the file to watch. Not <code>null</code>.
-    */
-   private final String _filePath;
-
-   /**
-    * Delay in seconds, at least 1. When the interval is uninitialized, the
-    * value of this field is less than 1.
-    */
-   private int _interval;
-
-   /**
-    * The listener. Not <code>null</code>
-    */
-   private final Listener _listener;
-
-   /**
-    * Timestamp of the last modification of the file. The value
-    * <code>-1L</code> indicates that the file could not be found the last
-    * time this was checked.
-    *
-    * <p>Initially this field is <code>-1L</code>.
-    */
-   private long _lastModified;
-
-   /**
-    * Current state. Never <code>null</code>. Value is one of the following
-    * values:
-    *
-    * <ul>
-    *    <li>{@link #NOT_RUNNING}
-    *    <li>{@link #RUNNING}
-    *    <li>{@link #SHOULD_STOP}
-    * </ul>
-    *
-    * Once the thread is stopped, the state will be changed to
-    * {@link #NOT_RUNNING} again.
-    */
-   private int _state;
 
    /**
     * Configures the name of this thread.

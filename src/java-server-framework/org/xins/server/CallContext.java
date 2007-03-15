@@ -22,6 +22,37 @@ import org.xins.common.xml.Element;
 public final class CallContext {
 
    /**
+    * The parameters of the request.
+    */
+   private final PropertyReader _parameters;
+
+   /**
+    * The data section of the request.
+    */
+   private final Element _dataElement;
+
+   /**
+    * The call result builder. Cannot be <code>null</code>.
+    */
+   private final FunctionResult _builder;
+
+   /**
+    * The start time of the call, as a number of milliseconds since the UNIX
+    * Epoch.
+    */
+   private final long _start;
+
+   /**
+    * The call ID, unique in the context of the pertaining function.
+    */
+   private final int _callID;
+
+   /**
+    * The IP address of the caller.
+    */
+   private final String _remoteIP;
+
+   /**
     * Constructs a new <code>CallContext</code> and configures it for the
     * specified request.
     *
@@ -63,37 +94,6 @@ public final class CallContext {
       _remoteIP     = remoteIP;
       _builder      = new FunctionResult();
    }
-
-   /**
-    * The parameters of the request.
-    */
-   private final PropertyReader _parameters;
-
-   /**
-    * The data section of the request.
-    */
-   private final Element _dataElement;
-
-   /**
-    * The call result builder. Cannot be <code>null</code>.
-    */
-   private final FunctionResult _builder;
-
-   /**
-    * The start time of the call, as a number of milliseconds since the UNIX
-    * Epoch.
-    */
-   private final long _start;
-
-   /**
-    * The call ID, unique in the context of the pertaining function.
-    */
-   private final int _callID;
-
-   /**
-    * The IP address of the caller.
-    */
-   private final String _remoteIP;
 
    /**
     * Returns the start time of the call.

@@ -84,6 +84,7 @@ public abstract class AbstractLog {
     * @since XINS 1.0.0
     */
    protected static abstract class LogController {
+
       /**
        * Constructs a new <code>LogController</code> object.
        *
@@ -97,6 +98,7 @@ public abstract class AbstractLog {
          // instance
          LogCentral.registerLog(this);
       }
+
       /**
        * Checks if the specified locale is supported.
        *
@@ -131,6 +133,7 @@ public abstract class AbstractLog {
     * @since XINS 1.0.0
     */
    private static final class CustomLevel extends Level {
+
       /**
        * Constructs a new <code>CustomLevel</code> object.
        *

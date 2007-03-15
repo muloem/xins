@@ -29,12 +29,6 @@ import java.util.Set;
 public class ChainedMap extends AbstractMap {
 
    /**
-    * Creates a new instance of <code>ChainedMap</code>.
-    */
-   public ChainedMap() {
-      // empty
-   }
-   /**
     * The keys of the Map.
     */
    private List _keys = new ArrayList();
@@ -43,6 +37,13 @@ public class ChainedMap extends AbstractMap {
     * The key/pair entries of the Map.
     */
    private List _entries = new ArrayList();
+
+   /**
+    * Creates a new instance of <code>ChainedMap</code>.
+    */
+   public ChainedMap() {
+      // empty
+   }
 
    public Set entrySet() {
       return new ChainedSet(_entries);
@@ -70,6 +71,7 @@ public class ChainedMap extends AbstractMap {
          return oldValue;
       }
    }
+
    /**
     * The <code>Map.Entry</code> for this <code>ChainedMap</code>.
     *
@@ -77,6 +79,11 @@ public class ChainedMap extends AbstractMap {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class EntryMap implements Map.Entry {
+
+      /**
+       * The values of the set.
+       */
+
       /**
        * Creates a new <code>EntryMap</code> instance.
        *
@@ -138,6 +145,7 @@ public class ChainedMap extends AbstractMap {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static class ChainedSet extends AbstractSet {
+
       /**
        * Creates a new instance of <code>ChainedSet</code>.
        */
@@ -158,10 +166,6 @@ public class ChainedMap extends AbstractMap {
             _values.add(itCollection.next());
          }
       }
-
-      /**
-       * The values of the set.
-       */
       private List _values = new ArrayList();
       public int size() {
          return _values.size();

@@ -30,6 +30,17 @@ public final class StatsPropertyReader implements PropertyReader {
    private static final Object SECRET_KEY = new Object();
 
    /**
+    * The set of properties to retrieve values from. Never <code>null</code>.
+    */
+   private final Map _properties;
+
+   /**
+    * The set of unused properties. Initially contains all properties. Becomes
+    * <code>null</code> if there are no more unused properties.
+    */
+   private ProtectedPropertyReader _unused;
+
+   /**
     * Constructs a new <code>StatsPropertyReader</code> based on the specified
     * <code>PropertyReader</code>. The properties in <code>source</code> are
     * copied to an internal store.
@@ -65,17 +76,6 @@ public final class StatsPropertyReader implements PropertyReader {
          }
       }
    }
-
-   /**
-    * The set of properties to retrieve values from. Never <code>null</code>.
-    */
-   private final Map _properties;
-
-   /**
-    * The set of unused properties. Initially contains all properties. Becomes
-    * <code>null</code> if there are no more unused properties.
-    */
-   private ProtectedPropertyReader _unused;
 
    /**
     * Gets the value of the property with the specified name.

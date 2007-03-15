@@ -27,6 +27,45 @@ import org.xins.logdoc.ExceptionUtils;
 public abstract class CallException extends Exception {
 
    /**
+    * Short description of the reason. Cannot be <code>null</code>.
+    */
+   private final String _shortReason;
+
+   /**
+    * The original request. Cannot be <code>null</code>.
+    */
+   private final CallRequest _request;
+
+   /**
+    * Descriptor for the target that was attempted to be called. Cannot be
+    * <code>null</code>.
+    */
+   private final TargetDescriptor _target;
+
+   /**
+    * The time elapsed between the time the call attempt was started and the
+    * time the call returned. The duration is in milliseconds and is always
+    * &gt;= 0.
+    */
+   private final long _duration;
+
+   /**
+    * A detailed description of the problem. Can be <code>null</code>.
+    */
+   private String _detail;
+
+   /**
+    * The next linked <code>CallException</code>. Can be <code>null</code> if
+    * there is none or if it has not been set yet.
+    */
+   private CallException _next;
+
+   /**
+    * The exception message. Is <code>null</code> if unset.
+    */
+   private String _message;
+
+   /**
     * Constructs a new <code>CallException</code> based on a short reason, the
     * original request, target called, call duration, detail message and cause
     * exception.
@@ -82,45 +121,6 @@ public abstract class CallException extends Exception {
       _duration    = duration;
       _detail      = detail;
    }
-
-   /**
-    * Short description of the reason. Cannot be <code>null</code>.
-    */
-   private final String _shortReason;
-
-   /**
-    * The original request. Cannot be <code>null</code>.
-    */
-   private final CallRequest _request;
-
-   /**
-    * Descriptor for the target that was attempted to be called. Cannot be
-    * <code>null</code>.
-    */
-   private final TargetDescriptor _target;
-
-   /**
-    * The time elapsed between the time the call attempt was started and the
-    * time the call returned. The duration is in milliseconds and is always
-    * &gt;= 0.
-    */
-   private final long _duration;
-
-   /**
-    * A detailed description of the problem. Can be <code>null</code>.
-    */
-   private String _detail;
-
-   /**
-    * The next linked <code>CallException</code>. Can be <code>null</code> if
-    * there is none or if it has not been set yet.
-    */
-   private CallException _next;
-
-   /**
-    * The exception message. Is <code>null</code> if unset.
-    */
-   private String _message;
 
    /**
     * Returns the detail message string of this exception.

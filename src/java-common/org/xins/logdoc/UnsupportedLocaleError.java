@@ -39,6 +39,13 @@ public final class UnsupportedLocaleError extends Error {
 
       return exception.getMessage();
    }
+
+   /**
+    * The locale that is unsupported. The value of this field cannot be
+    * <code>null</code>.
+    */
+   private final String _locale;
+
    /**
     * Constructs a new <code>UnsupportedLocaleError</code>.
     *
@@ -61,12 +68,6 @@ public final class UnsupportedLocaleError extends Error {
       // Store locale?
       _locale = exception.getLocale();
    }
-
-   /**
-    * The locale that is unsupported. The value of this field cannot be
-    * <code>null</code>.
-    */
-   private final String _locale;
 
    /**
     * Retrieves the unsupported locale.

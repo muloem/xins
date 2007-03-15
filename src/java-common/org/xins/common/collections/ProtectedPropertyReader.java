@@ -38,6 +38,12 @@ public final class ProtectedPropertyReader
 extends AbstractPropertyReader {
 
    /**
+    * The secret key. This field is initialized by the constructor and can
+    * never be <code>null</code>.
+    */
+   private final Object _secretKey;
+
+   /**
     * Constructs a new <code>ProtectedPropertyReader</code>.
     *
     * @param secretKey
@@ -56,12 +62,6 @@ extends AbstractPropertyReader {
 
       _secretKey = secretKey;
    }
-
-   /**
-    * The secret key. This field is initialized by the constructor and can
-    * never be <code>null</code>.
-    */
-   private final Object _secretKey;
 
    /**
     * Verifies that the specified object matches the secret key. If not, an

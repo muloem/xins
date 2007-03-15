@@ -47,15 +47,17 @@ import org.xins.common.xml.ElementParser;
 public class XINSCallResultParser {
 
    /**
+    * The parser used to parse the XML.
+    */
+   private final ElementParser _parser;
+
+   /**
     * Constructs a new <code>XINSCallResultParser</code>.
     */
    public XINSCallResultParser() {
       _parser = new ElementParser();
    }
-   /**
-    * The parser used to parse the XML.
-    */
-   private final ElementParser _parser;
+
    /**
     * Parses the given XML string to create a <code>XINSCallResultData</code>
     * object.
@@ -129,6 +131,29 @@ public class XINSCallResultParser {
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static class XINSCallResultDataImpl implements XINSCallResultData {
+
+      /**
+       * The error code returned by the function or <code>null</code>, if no
+       * error code is returned.
+       *
+       * <p>The value will never return an empty string, so if the result is
+       * not <code>null</code>, then it is safe to assume the length of the
+       * string is at least 1 character.
+       */
+      private String _errorCode;
+
+      /**
+       * The list of the parameters (name/value) returned by the function.
+       * This field is <code>null</code> if there is no output parameters returned.
+       */
+      private BasicPropertyReader _parameters;
+
+      /**
+       * The data section of the result, can be <code>null</code>.
+       */
+      private Element _dataSection;
+
+
       /**
        * Constructs a new <code>XINSCallResultDataImpl</code> instance.
        *
@@ -199,28 +224,6 @@ public class XINSCallResultParser {
              _dataSection = resultElement.getUniqueChildElement("data");
          }
       }
-
-      /**
-       * The error code returned by the function or <code>null</code>, if no
-       * error code is returned.
-       *
-       * <p>The value will never return an empty string, so if the result is
-       * not <code>null</code>, then it is safe to assume the length of the
-       * string is at least 1 character.
-       */
-      private String _errorCode;
-
-      /**
-       * The list of the parameters (name/value) returned by the function.
-       * This field is <code>null</code> if there is no output parameters returned.
-       */
-      private BasicPropertyReader _parameters;
-
-      /**
-       * The data section of the result, can be <code>null</code>.
-       */
-      private Element _dataSection;
-
 
       /**
        * Returns the error code. If <code>null</code> is returned the call was

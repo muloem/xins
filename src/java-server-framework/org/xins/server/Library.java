@@ -61,6 +61,7 @@ public final class Library {
       Perl5Matcher patternMatcher = new Perl5Matcher();
       return patternMatcher.matches(version, PRODUCTION_RELEASE_PATTERN);
    }
+
    /**
     * Constructs a new <code>Library</code> object.
     */

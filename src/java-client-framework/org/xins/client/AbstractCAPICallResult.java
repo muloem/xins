@@ -26,6 +26,11 @@ import org.xins.common.service.TargetDescriptor;
 public abstract class AbstractCAPICallResult implements Serializable {
 
    /**
+    * The XINS call result. This field cannot be <code>null</code>.
+    */
+   private XINSCallResult _result;
+
+   /**
     * Creates a new <code>AbstractCAPICallResult</code> object, based on the
     * specified <code>XINSCallResult</code>.
     *
@@ -49,11 +54,6 @@ public abstract class AbstractCAPICallResult implements Serializable {
          throw new IllegalArgumentException("result.getErrorCode() != null");
       }
    }
-
-   /**
-    * The XINS call result. This field cannot be <code>null</code>.
-    */
-   private XINSCallResult _result;
 
    /**
     * Returns the underlying XINS call result.

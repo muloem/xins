@@ -172,12 +172,6 @@ class FunctionStatistics {
     * @since XINS 1.1.0
     */
    private static final class Statistic {
-      /**
-       * Constructs a new <code>Statistic</code> object.
-       */
-      private Statistic() {
-         _min = Long.MAX_VALUE;
-      }
 
       /**
        * The number of successful calls executed up until now. Initially
@@ -224,6 +218,13 @@ class FunctionStatistics {
        * <code>0L</code>.
        */
       private long _maxStart;
+
+      /**
+       * Constructs a new <code>Statistic</code> object.
+       */
+      private Statistic() {
+         _min = Long.MAX_VALUE;
+      }
 
       /**
        * Records a call.

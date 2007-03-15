@@ -214,17 +214,17 @@ extends HttpServlet {
    }
 
    /**
+    * XINS server engine. Initially <code>null</code> but set to a
+    * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
+    */
+   private Engine _engine;
+
+   /**
     * Constructs a new <code>APIServlet</code> object.
     */
    public APIServlet() {
       // empty
    }
-
-   /**
-    * XINS server engine. Initially <code>null</code> but set to a
-    * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
-    */
-   private Engine _engine;
 
    /**
     * Returns information about this servlet, as plain text.

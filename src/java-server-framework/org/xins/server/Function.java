@@ -33,41 +33,6 @@ implements DefaultResultCodes {
    private static final FunctionResult DISABLED_FUNCTION_RESULT = new FunctionResult("_DisabledFunction");
 
    /**
-    * Constructs a new <code>Function</code>.
-    *
-    * @param api
-    *    the API to which this function belongs, not <code>null</code>.
-    *
-    * @param name
-    *    the name, not <code>null</code>.
-    *
-    * @param version
-    *    the version of the specification this function implements, not
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>api == null || name == null || version == null</code>.
-    */
-   protected Function(API api, String name, String version)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("api",     api,
-                                     "name",    name,
-                                     "version", version);
-
-      // Initialize fields
-      _statistics   = new FunctionStatistics();
-      _api          = api;
-      _name         = name;
-      _version      = version;
-      _enabled      = true;
-
-      // Notify the API that a Function has been added
-      _api.functionAdded(this);
-   }
-
-   /**
     * The API implementation this function is part of. This field cannot be
     * <code>null</code>.
     */
@@ -105,6 +70,41 @@ implements DefaultResultCodes {
     * <code>null</code>.
     */
    private final FunctionStatistics _statistics;
+
+   /**
+    * Constructs a new <code>Function</code>.
+    *
+    * @param api
+    *    the API to which this function belongs, not <code>null</code>.
+    *
+    * @param name
+    *    the name, not <code>null</code>.
+    *
+    * @param version
+    *    the version of the specification this function implements, not
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>api == null || name == null || version == null</code>.
+    */
+   protected Function(API api, String name, String version)
+   throws IllegalArgumentException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("api",     api,
+                                     "name",    name,
+                                     "version", version);
+
+      // Initialize fields
+      _statistics   = new FunctionStatistics();
+      _api          = api;
+      _name         = name;
+      _version      = version;
+      _enabled      = true;
+
+      // Notify the API that a Function has been added
+      _api.functionAdded(this);
+   }
 
    /**
     * Returns the API that contains this function.

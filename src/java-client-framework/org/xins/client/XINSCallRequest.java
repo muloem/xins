@@ -69,6 +69,48 @@ public final class XINSCallRequest extends CallRequest {
    private static final Object SECRET_KEY = new Object();
 
    /**
+    * The 1-based sequence number of this instance. Since this number is
+    * 1-based, the first instance of this class will have instance number 1
+    * assigned to it.
+    */
+   private final int _instanceNumber;
+
+   /**
+    * Description of this XINS call request. This field cannot be
+    * <code>null</code>, it is initialized during construction.
+    */
+   private String _asString;
+
+   /**
+    * The name of the function to call. This field cannot be
+    * <code>null</code>.
+    */
+   private final String _functionName;
+
+   /**
+    * The parameters to pass in the request, and their respective values. This
+    * field can be <code>null</code>.
+    */
+   private final ProtectedPropertyReader _parameters;
+
+   /**
+    * The data section to pass in the request. This field can be
+    * <code>null</code>.
+    */
+   private Element _dataSection;
+
+   /**
+    * The parameters to send with the HTTP request. Cannot be
+    * <code>null</code>.
+    */
+   private final ProtectedPropertyReader _httpParams;
+
+   /**
+    * Pattern matcher.
+    */
+   private final Perl5Matcher _patternMatcher = new Perl5Matcher();
+
+   /**
     * Constructs a new <code>XINSCallRequest</code> for the specified function
     * with no parameters, disallowing fail-over unless the request was
     * definitely not (yet) accepted by the service.
@@ -220,48 +262,6 @@ public final class XINSCallRequest extends CallRequest {
       // Apply the configuration
       setXINSCallConfig(callConfig);
    }
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
-
-   /**
-    * Description of this XINS call request. This field cannot be
-    * <code>null</code>, it is initialized during construction.
-    */
-   private String _asString;
-
-   /**
-    * The name of the function to call. This field cannot be
-    * <code>null</code>.
-    */
-   private final String _functionName;
-
-   /**
-    * The parameters to pass in the request, and their respective values. This
-    * field can be <code>null</code>.
-    */
-   private final ProtectedPropertyReader _parameters;
-
-   /**
-    * The data section to pass in the request. This field can be
-    * <code>null</code>.
-    */
-   private Element _dataSection;
-
-   /**
-    * The parameters to send with the HTTP request. Cannot be
-    * <code>null</code>.
-    */
-   private final ProtectedPropertyReader _httpParams;
-
-   /**
-    * Pattern matcher.
-    */
-   private final Perl5Matcher _patternMatcher = new Perl5Matcher();
 
    /**
     * Describes this request.
@@ -573,12 +573,14 @@ public final class XINSCallRequest extends CallRequest {
     */
    private static final class HTTPStatusCodeVerifier
    implements org.xins.common.http.HTTPStatusCodeVerifier {
+
       /**
        * Constructs a new <code>HTTPStatusCodeVerifier</code>.
        */
       private HTTPStatusCodeVerifier() {
          // empty
       }
+
       /**
        * Checks if the specified HTTP status code is considered acceptable or
        * unacceptable.

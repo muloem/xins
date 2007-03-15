@@ -25,6 +25,11 @@ public abstract class AbstractPropertyReader
 implements PropertyReader {
 
    /**
+    * The mappings from property keys to values. Never <code>null</code>.
+    */
+   private final Map _properties;
+
+   /**
     * Constructs a new <code>AbstractPropertyReader</code>.
     *
     * @param map
@@ -45,11 +50,6 @@ implements PropertyReader {
       // Initialize fields
       _properties = map;
    }
-
-   /**
-    * The mappings from property keys to values. Never <code>null</code>.
-    */
-   private final Map _properties;
 
    /**
     * Gets the value of the property with the specified name.

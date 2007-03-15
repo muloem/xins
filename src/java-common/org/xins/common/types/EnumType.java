@@ -27,6 +27,36 @@ import org.xins.common.MandatoryArgumentChecker;
 public abstract class EnumType extends Type {
 
    /**
+    * Map that links symbolic names to enumeration values.
+    */
+   private final Map _namesToValues;
+
+   /**
+    * Map that links enumeration values to their symbolic names.
+    */
+   private final Map _valuesToNames;
+
+   /**
+    * Map that links symbolic names to enumeration item objects.
+    */
+   protected final Map _namesToItems;
+
+   /**
+    * Map that links enumeration values to enumeration item objects.
+    */
+   protected final Map _valuesToItems;
+
+   /**
+    * List of the <code>EnumItem</code>.
+    */
+   private final List _items;
+
+   /**
+    * The list of accepted values.
+    */
+   private final String[] _values;
+
+   /**
     * Creates a new <code>EnumType</code> instance. The name of the type needs
     * to be specified. The value class (see {@link Type#getValueClass()}) is
     * set to {@link String String.class}.
@@ -78,36 +108,6 @@ public abstract class EnumType extends Type {
       _values = new String[actualItems];
       System.arraycopy(values, 0, _values, 0, actualItems);
    }
-
-   /**
-    * Map that links symbolic names to enumeration values.
-    */
-   private final Map _namesToValues;
-
-   /**
-    * Map that links enumeration values to their symbolic names.
-    */
-   private final Map _valuesToNames;
-
-   /**
-    * Map that links symbolic names to enumeration item objects.
-    */
-   protected final Map _namesToItems;
-
-   /**
-    * Map that links enumeration values to enumeration item objects.
-    */
-   protected final Map _valuesToItems;
-
-   /**
-    * List of the <code>EnumItem</code>.
-    */
-   private final List _items;
-
-   /**
-    * The list of accepted values.
-    */
-   private final String[] _values;
 
    /**
     * Actually checks if the specified value is valid for this type. This

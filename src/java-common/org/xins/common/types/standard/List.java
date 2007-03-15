@@ -24,6 +24,7 @@ public final class List extends org.xins.common.types.List {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public final static List SINGLETON = new List();
+
    /**
     * Constructs a new <code>List</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
@@ -104,6 +105,7 @@ public final class List extends org.xins.common.types.List {
     * Inner class that represents a list of String.
     */
    public static final class Value extends ItemList {
+
       /**
        * Add a new element in the list.
        *

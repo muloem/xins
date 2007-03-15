@@ -115,6 +115,16 @@ public class Int16 extends Type {
    }
 
    /**
+    * The minimum value that this Int16 can have.
+    */
+   private final short _minimum;
+
+   /**
+    * The maximum value that this Int16 can have.
+    */
+   private final short _maximum;
+
+   /**
     * Constructs a new <code>Int16</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
@@ -143,15 +153,6 @@ public class Int16 extends Type {
       _maximum = maximum;
    }
 
-   /**
-    * The minimum value that this Int16 can have.
-    */
-   private final short _minimum;
-
-   /**
-    * The maximum value that this Int16 can have.
-    */
-   private final short _maximum;
    protected boolean isValidValueImpl(String value) {
       try {
          short number = Short.parseShort(value);

@@ -21,6 +21,16 @@ import org.xins.client.AbstractCAPICallRequest;
 class CallEvent extends EventObject {
 
    /**
+    * Duration of the call.
+    */
+   private long _duration;
+
+   /**
+    * Request of the call.
+    */
+   private AbstractCAPICallRequest _request;
+
+   /**
     * Creates a new call event.
     *
     * @param capi
@@ -37,15 +47,7 @@ class CallEvent extends EventObject {
       _request = request;
       _duration = duration;
    }
-   /**
-    * Duration of the call.
-    */
-   private long _duration;
 
-   /**
-    * Request of the call.
-    */
-   private AbstractCAPICallRequest _request;
    /**
     * Gets the time it took to call the function.
     *

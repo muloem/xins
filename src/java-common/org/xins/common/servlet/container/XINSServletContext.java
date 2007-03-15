@@ -31,6 +31,16 @@ import org.xins.common.Utils;
 public class XINSServletContext implements ServletContext {
 
    /**
+    * The configuration of the servlet.
+    */
+   private LocalServletConfig _config;
+
+   /**
+    * The root URL for the servlet.
+    */
+   private String _rootURL;
+
+   /**
     * Creates a new <code>XINSServletContext</code> instance.
     */
    public XINSServletContext() {
@@ -56,15 +66,6 @@ public class XINSServletContext implements ServletContext {
          _rootURL = "jar:" + config.getWarFile().toURI().toString() + "!";
       }
    }
-   /**
-    * The configuration of the servlet.
-    */
-   private LocalServletConfig _config;
-
-   /**
-    * The root URL for the servlet.
-    */
-   private String _rootURL;
 
    public void removeAttribute(String str) {
       throw new UnsupportedOperationException();

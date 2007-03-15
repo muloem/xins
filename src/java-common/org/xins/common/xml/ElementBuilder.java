@@ -41,6 +41,18 @@ public class ElementBuilder {
    private static final State STARTED = new State("STARTED");
 
    /**
+    * The current state. Never <code>null</code>.
+    */
+   private State _state;
+
+   /**
+    * The current <code>Element</code> that this builder is building.
+    * Initially <code>null</code>, but set to a value by the
+    * <code>startElement</code> methods.
+    */
+   private Element _element;
+
+   /**
     * Creates a new <code>ElementBuilder</code>.
     */
    public ElementBuilder() {
@@ -81,17 +93,6 @@ public class ElementBuilder {
       _state = INITIAL;
       startElement(namespaceURI, localName);
    }
-   /**
-    * The current state. Never <code>null</code>.
-    */
-   private State _state;
-
-   /**
-    * The current <code>Element</code> that this builder is building.
-    * Initially <code>null</code>, but set to a value by the
-    * <code>startElement</code> methods.
-    */
-   private Element _element;
 
    /**
     * Sets the specified attribute. If the value for the specified
@@ -284,6 +285,12 @@ public class ElementBuilder {
     * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
     */
    private static final class State {
+
+      /**
+       * The name of this state. Cannot be <code>null</code>.
+       */
+      private final String _name;
+
       /**
        * Constructs a new <code>State</code> object.
        *
@@ -300,11 +307,6 @@ public class ElementBuilder {
 
          _name = name;
       }
-
-      /**
-       * The name of this state. Cannot be <code>null</code>.
-       */
-      private final String _name;
 
       /**
        * Returns the name of this state.

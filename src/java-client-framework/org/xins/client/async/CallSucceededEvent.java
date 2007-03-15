@@ -22,6 +22,11 @@ import org.xins.client.AbstractCAPICallResult;
 public final class CallSucceededEvent extends CallEvent {
 
    /**
+    * The successful result returned by the function.
+    */
+   private AbstractCAPICallResult _result;
+
+   /**
     * Creates a successful call event.
     *
     * @param capi
@@ -42,10 +47,7 @@ public final class CallSucceededEvent extends CallEvent {
       super(capi, request, duration);
       _result = result;
    }
-   /**
-    * The successful result returned by the function.
-    */
-   private AbstractCAPICallResult _result;
+
    /**
     * Gets the result returned by the function. You may want then to cast the
     * {@link org.xins.client.AbstractCAPICallResult AbstractCAPICallResult}
