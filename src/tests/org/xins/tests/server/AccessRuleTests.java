@@ -24,16 +24,6 @@ import org.xins.common.text.ParseException;
 public class AccessRuleTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(AccessRuleTests.class);
-   }
-
-   /**
     * Constructs a new <code>AccessRuleTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -42,6 +32,16 @@ public class AccessRuleTests extends TestCase {
     */
    public AccessRuleTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(AccessRuleTests.class);
    }
 
    /**

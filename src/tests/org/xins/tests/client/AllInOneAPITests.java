@@ -51,16 +51,6 @@ import org.xins.tests.AllTests;
 public class AllInOneAPITests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(AllInOneAPITests.class);
-   }
-
-   /**
     * The target descriptor to use in all tests. This field is initialized by
     * {@link #setUp()}.
     */
@@ -81,6 +71,16 @@ public class AllInOneAPITests extends TestCase {
     */
    public AllInOneAPITests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(AllInOneAPITests.class);
    }
 
    public void setUp() throws Exception {

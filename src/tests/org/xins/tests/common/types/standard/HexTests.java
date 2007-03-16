@@ -19,16 +19,6 @@ import org.xins.common.types.standard.Hex;
 public class HexTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(HexTests.class);
-   }
-
-   /**
     * Constructs a new <code>HexTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -37,6 +27,16 @@ public class HexTests extends TestCase {
     */
    public HexTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(HexTests.class);
    }
 
    /**

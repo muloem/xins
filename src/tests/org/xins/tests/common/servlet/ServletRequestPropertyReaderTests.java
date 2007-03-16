@@ -39,16 +39,6 @@ import org.xins.common.text.ParseException;
 public class ServletRequestPropertyReaderTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ServletRequestPropertyReaderTests.class);
-   }
-
-   /**
     * Constructs a new <code>ServletRequestPropertyReaderTests</code> test
     * suite with the specified name. The name will be passed to the
     * superconstructor.
@@ -58,6 +48,16 @@ public class ServletRequestPropertyReaderTests extends TestCase {
     */
    public ServletRequestPropertyReaderTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ServletRequestPropertyReaderTests.class);
    }
 
    public void testServletRequestPropertyReader() {

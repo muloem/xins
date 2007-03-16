@@ -31,16 +31,6 @@ import org.xins.tests.AllTests;
 public class InvalidResponseTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(InvalidResponseTests.class);
-   }
-
-   /**
     * The <code>CAPI</code> object used to call the API. This field is
     * initialized by {@link #setUp()}.
     */
@@ -55,6 +45,16 @@ public class InvalidResponseTests extends TestCase {
     */
    public InvalidResponseTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(InvalidResponseTests.class);
    }
 
    public void setUp() throws Exception {

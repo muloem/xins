@@ -53,6 +53,17 @@ public class HTTPServiceCallerTests extends TestCase {
    private final static int SOCKET_TO = 15000;
 
    /**
+    * Constructs a new <code>HTTPServiceCaller</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public HTTPServiceCallerTests(String name) {
+      super(name);
+   }
+
+   /**
     * Returns a test suite with all test cases defined by this class.
     *
     * @return
@@ -71,17 +82,6 @@ public class HTTPServiceCallerTests extends TestCase {
       } catch (UnsupportedEncodingException exception) {
          throw new Error(exception);
       }
-   }
-
-   /**
-    * Constructs a new <code>HTTPServiceCaller</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public HTTPServiceCallerTests(String name) {
-      super(name);
    }
 
    public void testConstructor() throws Exception {

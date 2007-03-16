@@ -15,16 +15,6 @@ import org.xins.common.types.standard.URL;
  */
 public class URLTests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(URLTests.class);
-   }
-
 
    /**
     * Constructs a new <code>URLTests</code> test suite with
@@ -35,6 +25,16 @@ public class URLTests extends TestCase {
     */
    public URLTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(URLTests.class);
    }
 
    /**

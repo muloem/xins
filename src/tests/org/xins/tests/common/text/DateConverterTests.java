@@ -28,16 +28,6 @@ import org.xins.common.text.FastStringBuffer;
 public class DateConverterTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DateConverterTests.class);
-   }
-
-   /**
     * Constructs a new <code>DateConverterTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -46,6 +36,16 @@ public class DateConverterTests extends TestCase {
     */
    public DateConverterTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DateConverterTests.class);
    }
 
    public void testToDateString1() throws Exception {

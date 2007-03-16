@@ -27,16 +27,6 @@ import org.xins.common.xml.ElementSerializer;
 public class ElementSerializerTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ElementSerializerTests.class);
-   }
-
-   /**
     * Constructs a new <code>ElementSerializerTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -45,6 +35,16 @@ public class ElementSerializerTests extends TestCase {
     */
    public ElementSerializerTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ElementSerializerTests.class);
    }
 
    /**

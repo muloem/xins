@@ -18,16 +18,6 @@ import org.xins.common.types.standard.Date;
 public class DateTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DateTests.class);
-   }
-
-   /**
     * Constructs a new <code>DateTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -36,6 +26,16 @@ public class DateTests extends TestCase {
     */
    public DateTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DateTests.class);
    }
 
    /**

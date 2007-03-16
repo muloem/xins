@@ -25,16 +25,6 @@ import org.xins.common.text.FastStringBuffer;
  */
 public class DateConverterTests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DateConverterTests.class);
-   }
-
    private static final int ROUNDS = 1000000;
 
    private static final ThreadLocal THREAD_LOCAL = new ThreadLocal();
@@ -48,6 +38,16 @@ public class DateConverterTests extends TestCase {
     */
    public DateConverterTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DateConverterTests.class);
    }
 
    public void testDateConverterFormatString() throws Exception {

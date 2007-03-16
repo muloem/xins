@@ -23,16 +23,6 @@ import org.xins.common.service.TargetDescriptor;
 public class GroupDescriptorTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(GroupDescriptorTests.class);
-   }
-
-   /**
     * Constructs a new <code>GroupDescriptorTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -41,6 +31,16 @@ public class GroupDescriptorTests extends TestCase {
     */
    public GroupDescriptorTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(GroupDescriptorTests.class);
    }
 
    public void testGroupDescriptor() throws Exception {

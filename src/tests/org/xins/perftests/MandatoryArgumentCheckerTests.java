@@ -20,16 +20,6 @@ import org.xins.common.MandatoryArgumentChecker;
  */
 public class MandatoryArgumentCheckerTests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(MandatoryArgumentCheckerTests.class);
-   }
-
    private static final int ROUNDS = 100000000;
 
    /**
@@ -41,6 +31,16 @@ public class MandatoryArgumentCheckerTests extends TestCase {
     */
    public MandatoryArgumentCheckerTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(MandatoryArgumentCheckerTests.class);
    }
 
    public void testMandatoryArgumentChecker() throws Exception {

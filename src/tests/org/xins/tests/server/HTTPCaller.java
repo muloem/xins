@@ -121,8 +121,5 @@ public class HTTPCaller {
 
       result.addHeader(key, value);
    }
-
-   private HTTPCaller() {
-   }
 }
 

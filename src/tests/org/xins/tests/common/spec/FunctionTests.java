@@ -34,16 +34,6 @@ import com.mycompany.allinone.capi.CAPI;
 public class FunctionTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(FunctionTests.class);
-   }
-
-   /**
     * The API specification of the <i>allinone</i> API.
     */
    private APISpec _allInOneAPI;
@@ -57,6 +47,16 @@ public class FunctionTests extends TestCase {
     */
    public FunctionTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(FunctionTests.class);
    }
 
    /**

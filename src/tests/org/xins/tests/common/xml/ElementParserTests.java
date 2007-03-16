@@ -26,16 +26,6 @@ import org.xins.common.xml.Element;
 public class ElementParserTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ElementParserTests.class);
-   }
-
-   /**
     * Constructs a new <code>ElementParserTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -44,6 +34,16 @@ public class ElementParserTests extends TestCase {
     */
    public ElementParserTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ElementParserTests.class);
    }
 
    /**

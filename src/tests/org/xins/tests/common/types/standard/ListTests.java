@@ -24,16 +24,6 @@ import org.xins.common.types.standard.List;
 public class ListTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ListTests.class);
-   }
-
-   /**
     * Constructs a new <code>ListTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -42,6 +32,16 @@ public class ListTests extends TestCase {
     */
    public ListTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ListTests.class);
    }
 
    public void testFromString() throws Throwable {

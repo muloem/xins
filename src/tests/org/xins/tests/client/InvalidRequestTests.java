@@ -27,16 +27,6 @@ import org.xins.tests.AllTests;
 public class InvalidRequestTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(InvalidRequestTests.class);
-   }
-
-   /**
     * The <code>XINSServiceCaller</code> used to call the API. This field is
     * initialized by {@link #setUp()}.
     */
@@ -51,6 +41,16 @@ public class InvalidRequestTests extends TestCase {
     */
    public InvalidRequestTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(InvalidRequestTests.class);
    }
 
    public void setUp() throws Exception {

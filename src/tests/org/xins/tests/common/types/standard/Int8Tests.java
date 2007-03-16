@@ -15,16 +15,6 @@ import org.xins.common.types.standard.Int8;
  */
 public class Int8Tests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(Int8Tests.class);
-   }
-
    ZeroToTen lowerLimit = new ZeroToTen();
 
    /**
@@ -36,6 +26,16 @@ public class Int8Tests extends TestCase {
     */
    public Int8Tests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(Int8Tests.class);
    }
 
    public void testToString() throws Throwable {

@@ -46,16 +46,6 @@ import org.xins.tests.AllTests;
 public class XINSServletRequestTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(XINSServletRequestTests.class);
-   }
-
-   /**
     * Constructs a new <code>XINSServletRequestTests</code> test
     * suite with the specified name. The name will be passed to the
     * superconstructor.
@@ -66,6 +56,16 @@ public class XINSServletRequestTests extends TestCase {
     */
    public XINSServletRequestTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(XINSServletRequestTests.class);
    }
 
    public void testEmptyValues() {

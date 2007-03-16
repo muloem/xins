@@ -24,16 +24,6 @@ import org.xins.common.types.standard.Set;
 public class SetTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(SetTests.class);
-   }
-
-   /**
     * Constructs a new <code>SetTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -42,6 +32,16 @@ public class SetTests extends TestCase {
     */
    public SetTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(SetTests.class);
    }
 
    public void testFromString() throws Throwable {

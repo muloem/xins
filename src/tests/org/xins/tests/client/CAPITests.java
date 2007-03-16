@@ -35,16 +35,6 @@ import org.xins.tests.AllTests;
 public class CAPITests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(CAPITests.class);
-   }
-
-   /**
     * Constructs a new <code>CAPITests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -53,6 +43,16 @@ public class CAPITests extends TestCase {
     */
    public CAPITests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(CAPITests.class);
    }
 
    public void testCAPIConstruction_XINS_1_0() throws Exception {

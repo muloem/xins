@@ -31,16 +31,6 @@ public class ProtectedListTests extends TestCase {
    private final static Object SECRET_KEY = new Object();
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ProtectedListTests.class);
-   }
-
-   /**
     * Constructs a new <code>ProtectedList</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -49,6 +39,16 @@ public class ProtectedListTests extends TestCase {
     */
    public ProtectedListTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ProtectedListTests.class);
    }
 
    public void testProtectedList() {

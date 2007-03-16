@@ -30,16 +30,6 @@ import org.xins.logdoc.LogdocStringBuffer;
 public class PropertyReaderUtilsTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(PropertyReaderUtilsTests.class);
-   }
-
-   /**
     * Constructs a new <code>PropertyReaderUtilsTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -48,6 +38,16 @@ public class PropertyReaderUtilsTests extends TestCase {
     */
    public PropertyReaderUtilsTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(PropertyReaderUtilsTests.class);
    }
 
    public void testEmptyReader() {

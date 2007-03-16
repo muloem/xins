@@ -15,15 +15,7 @@ import org.xins.common.types.standard.Int16;
  */
 public class Int16Tests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(Int16Tests.class);
-   }
+   ZeroToTen lowerLimit = new ZeroToTen();
 
    /**
     * Constructs a new <code>Int16Tests</code> test suite with
@@ -36,7 +28,15 @@ public class Int16Tests extends TestCase {
       super(name);
    }
 
-   ZeroToTen lowerLimit = new ZeroToTen();
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(Int16Tests.class);
+   }
 
    public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((short)12) should return a value of \"12\"", "12", lowerLimit.toString((short)12));

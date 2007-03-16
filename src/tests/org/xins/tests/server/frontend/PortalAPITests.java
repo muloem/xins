@@ -45,16 +45,6 @@ import org.xins.tests.server.HTTPCallerResult;
  */
 public class PortalAPITests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(PortalAPITests.class);
-   }
-
    private TargetDescriptor _target;
    private CAPI _capi;
 
@@ -67,6 +57,16 @@ public class PortalAPITests extends TestCase {
     */
    public PortalAPITests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(PortalAPITests.class);
    }
 
    public void setUp() throws Exception {

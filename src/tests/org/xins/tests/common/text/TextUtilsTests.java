@@ -23,16 +23,6 @@ import org.xins.common.text.TextUtils;
 public class TextUtilsTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(TextUtilsTests.class);
-   }
-
-   /**
     * Constructs a new <code>TextUtilsTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -41,6 +31,16 @@ public class TextUtilsTests extends TestCase {
     */
    public TextUtilsTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(TextUtilsTests.class);
    }
 
    public void testReplace() throws Exception {

@@ -31,16 +31,6 @@ import com.mycompany.allinone.capi.CAPI;
 public class ParamComboTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ParamComboTests.class);
-   }
-
-   /**
     * The exclusive input param combo specification of the
     * <i>ParamCombo</i> function.
     */
@@ -73,6 +63,16 @@ public class ParamComboTests extends TestCase {
     */
    public ParamComboTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ParamComboTests.class);
    }
 
    /**

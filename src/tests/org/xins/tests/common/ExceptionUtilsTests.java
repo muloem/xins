@@ -21,16 +21,6 @@ import org.xins.logdoc.ExceptionUtils;
 public class ExceptionUtilsTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ExceptionUtilsTests.class);
-   }
-
-   /**
     * Constructs a new <code>ExceptionUtilsTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -39,6 +29,16 @@ public class ExceptionUtilsTests extends TestCase {
     */
    public ExceptionUtilsTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ExceptionUtilsTests.class);
    }
 
    /**

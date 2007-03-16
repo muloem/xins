@@ -54,16 +54,6 @@ public class AllInOneTests extends TestCase {
    private static final int ROUNDS = 40;
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(AllInOneTests.class);
-   }
-
-   /**
     * The HTTP server used to handle the requests.
     */
    private HTTPServletHandler _httpServer;
@@ -77,6 +67,16 @@ public class AllInOneTests extends TestCase {
     */
    public AllInOneTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(AllInOneTests.class);
    }
 
    /**

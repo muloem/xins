@@ -42,16 +42,6 @@ import org.xins.tests.AllTests;
 public class CallingConventionTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(CallingConventionTests.class);
-   }
-
-   /**
     * The random number generator.
     */
    private final static Random RANDOM = new Random();
@@ -65,6 +55,16 @@ public class CallingConventionTests extends TestCase {
     */
    public CallingConventionTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(CallingConventionTests.class);
    }
 
    /**

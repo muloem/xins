@@ -16,16 +16,6 @@ import org.xins.common.types.standard.Descriptor;
  */
 public class DescriptorTests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DescriptorTests.class);
-   }
-
 
    /**
     * Constructs a new <code>DescriptorTests</code> test suite with
@@ -36,6 +26,16 @@ public class DescriptorTests extends TestCase {
     */
    public DescriptorTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DescriptorTests.class);
    }
 
    /**

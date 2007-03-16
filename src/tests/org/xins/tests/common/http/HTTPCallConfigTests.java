@@ -24,16 +24,6 @@ import org.xins.common.http.HTTPMethod;
 public class HTTPCallConfigTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(HTTPCallConfigTests.class);
-   }
-
-   /**
     * Constructs a new <code>HTTPCallConfigTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -43,6 +33,16 @@ public class HTTPCallConfigTests extends TestCase {
     */
    public HTTPCallConfigTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(HTTPCallConfigTests.class);
    }
 
    public void testHTTPCallConfig() throws Exception {

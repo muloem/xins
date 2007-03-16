@@ -28,16 +28,6 @@ import org.xins.tests.AllTests;
 public class CallXINSTaskTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(CallXINSTaskTests.class);
-   }
-
-   /**
     * Constructs a new <code>CallXINSTaskTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -46,6 +36,16 @@ public class CallXINSTaskTests extends TestCase {
     */
    public CallXINSTaskTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(CallXINSTaskTests.class);
    }
 
    public void testCallEcho() throws Exception {

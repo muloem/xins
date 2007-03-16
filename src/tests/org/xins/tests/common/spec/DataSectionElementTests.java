@@ -35,16 +35,6 @@ import com.mycompany.allinone.capi.CAPI;
 public class DataSectionElementTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DataSectionElementTests.class);
-   }
-
-   /**
     * The API specification of the <i>allinone</i> API.
     */
    private APISpec _allInOneAPI;
@@ -68,6 +58,16 @@ public class DataSectionElementTests extends TestCase {
     */
    public DataSectionElementTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DataSectionElementTests.class);
    }
 
    /**

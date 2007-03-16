@@ -21,16 +21,6 @@ import org.xins.common.collections.expiry.ExpiryStrategy;
 public class ExpiryStrategyTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ExpiryStrategyTests.class);
-   }
-
-   /**
     * Constructs a new <code>ExpiryStrategyTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -39,6 +29,16 @@ public class ExpiryStrategyTests extends TestCase {
     */
    public ExpiryStrategyTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ExpiryStrategyTests.class);
    }
 
    public void testExpiryStrategy() throws Throwable {

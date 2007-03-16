@@ -37,16 +37,6 @@ import com.mycompany.allinone.types.Username;
 public class ParameterTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ParameterTests.class);
-   }
-
-   /**
     * The input parameter specification of the <i>DataSection</i> function.
     */
    private ParameterSpec _parameter;
@@ -66,6 +56,16 @@ public class ParameterTests extends TestCase {
     */
    public ParameterTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ParameterTests.class);
    }
 
    /**

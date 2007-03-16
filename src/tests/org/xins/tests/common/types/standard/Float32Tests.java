@@ -16,15 +16,7 @@ import org.xins.common.types.standard.Float32;
  */
 public class Float32Tests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(Float32Tests.class);
-   }
+   ZeroToTenThousand lowerLimit = new ZeroToTenThousand();
 
    /**
     * Constructs a new <code>Float32Tests</code> test suite with
@@ -37,7 +29,15 @@ public class Float32Tests extends TestCase {
       super(name);
    }
 
-   ZeroToTenThousand lowerLimit = new ZeroToTenThousand();
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(Float32Tests.class);
+   }
 
    public void testToString() {
       assertEquals("lowerLimit.toString(12.0F) should return a value of \"12.0\"", "12.0", lowerLimit.toString(12.0F));

@@ -30,16 +30,6 @@ import org.xins.common.service.TargetDescriptor;
  */
 public class DescriptorBuilderTests extends TestCase {
 
-   /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(DescriptorBuilderTests.class);
-   }
-
    private Properties _properties;
    private PropertyReader _propertyReader;
 
@@ -52,6 +42,16 @@ public class DescriptorBuilderTests extends TestCase {
     */
    public DescriptorBuilderTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(DescriptorBuilderTests.class);
    }
 
    /**

@@ -25,16 +25,6 @@ import org.xins.common.collections.StatsPropertyReader;
 public class StatsPropertyReaderTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(StatsPropertyReaderTests.class);
-   }
-
-   /**
     * Constructs a new <code>StatsPropertyReaderTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -43,6 +33,16 @@ public class StatsPropertyReaderTests extends TestCase {
     */
    public StatsPropertyReaderTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(StatsPropertyReaderTests.class);
    }
 
    public void testStatsPropertyReader() {

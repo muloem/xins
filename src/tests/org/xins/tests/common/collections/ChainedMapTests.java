@@ -26,16 +26,6 @@ import org.xins.common.collections.ChainedMap;
 public class ChainedMapTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ChainedMapTests.class);
-   }
-
-   /**
     * Constructs a new <code>ChainedMapTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -44,6 +34,16 @@ public class ChainedMapTests extends TestCase {
     */
    public ChainedMapTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ChainedMapTests.class);
    }
 
    public void testChainedMap() {

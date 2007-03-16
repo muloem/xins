@@ -15,6 +15,17 @@ import junit.framework.TestSuite;
 public class AllTests extends TestSuite {
 
    /**
+    * Constructs a new <code>AllTests</code> object with the specified name.
+    * The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test case.
+    */
+   public AllTests(String name) {
+      super(name);
+   }
+
+   /**
     * Returns a test suite with all test cases.
     *
     * @return
@@ -26,16 +37,5 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(DateConverterTests.class);
       suite.addTestSuite(MandatoryArgumentCheckerTests.class);
       return suite;
-   }
-
-   /**
-    * Constructs a new <code>AllTests</code> object with the specified name.
-    * The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test case.
-    */
-   public AllTests(String name) {
-      super(name);
    }
 }

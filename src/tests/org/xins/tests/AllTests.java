@@ -26,6 +26,17 @@ public class AllTests extends TestSuite {
    public static HTTPServletHandler HTTP_SERVER;
 
    /**
+    * Constructs a new <code>AllTests</code> object with the specified name.
+    * The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test case.
+    */
+   public AllTests(String name) {
+      super(name);
+   }
+
+   /**
     * Returns the host to use to connect to the server.
     *
     * @return
@@ -187,16 +198,5 @@ public class AllTests extends TestSuite {
       }
 
       return suite;
-   }
-
-   /**
-    * Constructs a new <code>AllTests</code> object with the specified name.
-    * The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test case.
-    */
-   public AllTests(String name) {
-      super(name);
    }
 }

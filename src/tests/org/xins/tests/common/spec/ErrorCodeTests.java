@@ -33,16 +33,6 @@ import com.mycompany.allinone.capi.CAPI;
 public class ErrorCodeTests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never <code>null</code>.
-    */
-   public static Test suite() {
-      return new TestSuite(ErrorCodeTests.class);
-   }
-
-   /**
     * The Error Code specification of the <i>ResultCode</i> function.
     */
    private ErrorCodeSpec _errorCode;
@@ -56,6 +46,16 @@ public class ErrorCodeTests extends TestCase {
     */
    public ErrorCodeTests(String name) {
       super(name);
+   }
+
+   /**
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never <code>null</code>.
+    */
+   public static Test suite() {
+      return new TestSuite(ErrorCodeTests.class);
    }
 
    /**
