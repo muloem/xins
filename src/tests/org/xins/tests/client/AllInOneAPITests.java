@@ -61,17 +61,6 @@ public class AllInOneAPITests extends TestCase {
    }
 
    /**
-    * Constructs a new <code>AllInOneAPITests</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public AllInOneAPITests(String name) {
-      super(name);
-   }
-
-   /**
     * The target descriptor to use in all tests. This field is initialized by
     * {@link #setUp()}.
     */
@@ -82,6 +71,17 @@ public class AllInOneAPITests extends TestCase {
     * initialized by {@link #setUp()}.
     */
    private CAPI _capi;
+
+   /**
+    * Constructs a new <code>AllInOneAPITests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public AllInOneAPITests(String name) {
+      super(name);
+   }
 
    public void setUp() throws Exception {
       _target = new TargetDescriptor(AllTests.url(), 5000, 1000, 4000);

@@ -25,6 +25,8 @@ public class Int8Tests extends TestCase {
       return new TestSuite(Int8Tests.class);
    }
 
+   ZeroToTen lowerLimit = new ZeroToTen();
+
    /**
     * Constructs a new <code>Int8Tests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -35,8 +37,6 @@ public class Int8Tests extends TestCase {
    public Int8Tests(String name) {
       super(name);
    }
-
-   ZeroToTen lowerLimit = new ZeroToTen();
 
    public void testToString() throws Throwable {
       assertEquals("lowerLimit.toString((byte)12) should return a value of \"12\"", "12", lowerLimit.toString((byte)12));

@@ -140,13 +140,13 @@ public class APIServletTests extends TestCase {
    extends Object
    implements ServletContext {
 
-      public TestServletContext() {
-         // TODO
-      }
-
       public int _major = 2;
       public int _minor = 4;
       public String _serverInfo;
+
+      public TestServletContext() {
+         // TODO
+      }
 
       public ServletContext getContext(String uripath) {
          return null;

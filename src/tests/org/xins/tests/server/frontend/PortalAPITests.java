@@ -55,6 +55,9 @@ public class PortalAPITests extends TestCase {
       return new TestSuite(PortalAPITests.class);
    }
 
+   private TargetDescriptor _target;
+   private CAPI _capi;
+
    /**
     * Constructs a new <code>PortalAPITests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -65,9 +68,6 @@ public class PortalAPITests extends TestCase {
    public PortalAPITests(String name) {
       super(name);
    }
-
-   private TargetDescriptor _target;
-   private CAPI _capi;
 
    public void setUp() throws Exception {
       int port = AllTests.port() + 1;

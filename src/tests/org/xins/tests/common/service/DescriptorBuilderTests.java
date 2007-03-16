@@ -40,6 +40,9 @@ public class DescriptorBuilderTests extends TestCase {
       return new TestSuite(DescriptorBuilderTests.class);
    }
 
+   private Properties _properties;
+   private PropertyReader _propertyReader;
+
    /**
     * Constructs a new <code>DescriptorBuilderTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -50,9 +53,6 @@ public class DescriptorBuilderTests extends TestCase {
    public DescriptorBuilderTests(String name) {
       super(name);
    }
-
-   private Properties _properties;
-   private PropertyReader _propertyReader;
 
    /**
     * Performs setup for the tests.

@@ -64,6 +64,11 @@ public class AllInOneTests extends TestCase {
    }
 
    /**
+    * The HTTP server used to handle the requests.
+    */
+   private HTTPServletHandler _httpServer;
+
+   /**
     * Constructs a new <code>AllInOneTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -73,11 +78,6 @@ public class AllInOneTests extends TestCase {
    public AllInOneTests(String name) {
       super(name);
    }
-
-   /**
-    * The HTTP server used to handle the requests.
-    */
-   private HTTPServletHandler _httpServer;
 
    /**
     * Starts the HTTP server with the correct parameters.

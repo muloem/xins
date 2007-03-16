@@ -41,6 +41,8 @@ public class ExpiryFolderTests extends TestCase {
       return new TestSuite(ExpiryFolderTests.class);
    }
 
+   // TODO: Stop all expiry strategies globally
+
    /**
     * Constructs a new <code>ExpiryFolderTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -51,8 +53,6 @@ public class ExpiryFolderTests extends TestCase {
    public ExpiryFolderTests(String name) {
       super(name);
    }
-
-   // TODO: Stop all expiry strategies globally
 
    public void testExpiryFolder() throws Exception {
 

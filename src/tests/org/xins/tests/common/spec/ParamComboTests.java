@@ -41,17 +41,6 @@ public class ParamComboTests extends TestCase {
    }
 
    /**
-    * Constructs a new <code>ParamComboTests</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public ParamComboTests(String name) {
-      super(name);
-   }
-
-   /**
     * The exclusive input param combo specification of the
     * <i>ParamCombo</i> function.
     */
@@ -74,6 +63,17 @@ public class ParamComboTests extends TestCase {
     * <i>ParamComboNotAll</i> function.
     */
    private ParamComboSpec _notAll;
+
+   /**
+    * Constructs a new <code>ParamComboTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public ParamComboTests(String name) {
+      super(name);
+   }
 
    /**
     * @see junit.framework.TestCase#setUp()

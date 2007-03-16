@@ -37,6 +37,12 @@ public class InvalidRequestTests extends TestCase {
    }
 
    /**
+    * The <code>XINSServiceCaller</code> used to call the API. This field is
+    * initialized by {@link #setUp()}.
+    */
+   private XINSServiceCaller _caller;
+
+   /**
     * Constructs a new <code>InvalidRequestTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -46,12 +52,6 @@ public class InvalidRequestTests extends TestCase {
    public InvalidRequestTests(String name) {
       super(name);
    }
-
-   /**
-    * The <code>XINSServiceCaller</code> used to call the API. This field is
-    * initialized by {@link #setUp()}.
-    */
-   private XINSServiceCaller _caller;
 
    public void setUp() throws Exception {
       String           url    = AllTests.url();

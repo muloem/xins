@@ -42,6 +42,11 @@ public class APITests extends TestCase {
    }
 
    /**
+    * The API specification of the <i>allinone</i> API.
+    */
+   private APISpec _allInOneAPI;
+
+   /**
     * Constructs a new <code>APITests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -51,11 +56,6 @@ public class APITests extends TestCase {
    public APITests(String name) {
       super(name);
    }
-
-   /**
-    * The API specification of the <i>allinone</i> API.
-    */
-   private APISpec _allInOneAPI;
 
    /**
     * @see junit.framework.TestCase#setUp()

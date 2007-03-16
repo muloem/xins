@@ -26,6 +26,8 @@ public class Base64Tests extends TestCase {
       return new TestSuite(Base64Tests.class);
    }
 
+   ShortBinary lowerLimit = new ShortBinary();
+
    /**
     * Constructs a new <code>Base64Tests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -36,8 +38,6 @@ public class Base64Tests extends TestCase {
    public Base64Tests(String name) {
       super(name);
    }
-
-   ShortBinary lowerLimit = new ShortBinary();
 
    public void testToString() throws Throwable {
       byte[] hello = { 'h', 'e', 'l', 'l', 'o' };

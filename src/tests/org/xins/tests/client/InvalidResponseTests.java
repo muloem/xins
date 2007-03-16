@@ -41,6 +41,12 @@ public class InvalidResponseTests extends TestCase {
    }
 
    /**
+    * The <code>CAPI</code> object used to call the API. This field is
+    * initialized by {@link #setUp()}.
+    */
+   private CAPI _capi;
+
+   /**
     * Constructs a new <code>InvalidResponseTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -50,12 +56,6 @@ public class InvalidResponseTests extends TestCase {
    public InvalidResponseTests(String name) {
       super(name);
    }
-
-   /**
-    * The <code>CAPI</code> object used to call the API. This field is
-    * initialized by {@link #setUp()}.
-    */
-   private CAPI _capi;
 
    public void setUp() throws Exception {
       AllTests.HTTP_SERVER.addServlet("org.xins.tests.client.InvalidResponseServlet", "/invalid");

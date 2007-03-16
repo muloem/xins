@@ -41,6 +41,12 @@ public class AsynchronousCallTests extends TestCase {
       return new TestSuite(AsynchronousCallTests.class);
    }
 
+   private Boolean successfulTestOkay = null;
+   private Throwable assertionSuccessfulTestException = null;
+
+   private Boolean unsuccessfulTestOkay = null;
+   private Throwable assertionUnsuccessfulTestException = null;
+
    /**
     * Constructs a new <code>AsynchronousCallTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -52,12 +58,6 @@ public class AsynchronousCallTests extends TestCase {
    public AsynchronousCallTests(String name) {
       super(name);
    }
-
-   private Boolean successfulTestOkay = null;
-   private Throwable assertionSuccessfulTestException = null;
-
-   private Boolean unsuccessfulTestOkay = null;
-   private Throwable assertionUnsuccessfulTestException = null;
 
    public void testSuccessfulAsynchronousCall() throws Throwable {
 

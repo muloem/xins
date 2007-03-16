@@ -41,17 +41,6 @@ public class AttributeComboTests extends TestCase {
    }
 
    /**
-    * Constructs a new <code>AttributeComboTests</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public AttributeComboTests(String name) {
-      super(name);
-   }
-
-   /**
     * The exclusive input attribute combo specification of the
     * <i>AttributeCombo</i> function.
     */
@@ -68,6 +57,17 @@ public class AttributeComboTests extends TestCase {
     * <i>AttributeCombo</i> function.
     */
    private AttributeComboSpec _allOrNoneCombo;
+
+   /**
+    * Constructs a new <code>AttributeComboTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public AttributeComboTests(String name) {
+      super(name);
+   }
 
    /**
     * @see junit.framework.TestCase#setUp()

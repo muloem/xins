@@ -47,17 +47,6 @@ public class ParameterTests extends TestCase {
    }
 
    /**
-    * Constructs a new <code>ParameterTests</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public ParameterTests(String name) {
-      super(name);
-   }
-
-   /**
     * The input parameter specification of the <i>DataSection</i> function.
     */
    private ParameterSpec _parameter;
@@ -67,6 +56,17 @@ public class ParameterTests extends TestCase {
     * the <i>DefinedTypes</i> function.
     */
    private Map _userDefinedParams;
+
+   /**
+    * Constructs a new <code>ParameterTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public ParameterTests(String name) {
+      super(name);
+   }
 
    /**
     * @see junit.framework.TestCase#setUp()

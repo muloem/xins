@@ -31,6 +31,8 @@ public class SimplePatternParserTests extends TestCase {
       return new TestSuite(SimplePatternParserTests.class);
    }
 
+   private SimplePatternParser _parser;
+
    /**
     * Constructs a new <code>SimplePatternParserTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -41,8 +43,6 @@ public class SimplePatternParserTests extends TestCase {
    public SimplePatternParserTests(String name) {
       super(name);
    }
-
-   private SimplePatternParser _parser;
 
    /**
     * Performs setup for the tests.

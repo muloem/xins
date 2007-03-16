@@ -25,6 +25,7 @@ public class URLTests extends TestCase {
       return new TestSuite(URLTests.class);
    }
 
+
    /**
     * Constructs a new <code>URLTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -35,7 +36,6 @@ public class URLTests extends TestCase {
    public URLTests(String name) {
       super(name);
    }
-
 
    /**
     * Tests the fromStringForRequired method of the Boolean type class.

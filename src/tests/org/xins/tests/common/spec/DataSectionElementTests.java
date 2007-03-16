@@ -45,17 +45,6 @@ public class DataSectionElementTests extends TestCase {
    }
 
    /**
-    * Constructs a new <code>DataSectionElementTests</code> test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public DataSectionElementTests(String name) {
-      super(name);
-   }
-
-   /**
     * The API specification of the <i>allinone</i> API.
     */
    private APISpec _allInOneAPI;
@@ -69,6 +58,17 @@ public class DataSectionElementTests extends TestCase {
     * The first data section element of the DataSection2 function.
     */
    private DataSectionElementSpec _packetElement;
+
+   /**
+    * Constructs a new <code>DataSectionElementTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public DataSectionElementTests(String name) {
+      super(name);
+   }
 
    /**
     * @see junit.framework.TestCase#setUp()

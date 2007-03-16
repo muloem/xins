@@ -25,6 +25,7 @@ public class BooleanTests extends TestCase {
       return new TestSuite(BooleanTests.class);
    }
 
+
    /**
     * Constructs a new <code>BooleanTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -35,7 +36,6 @@ public class BooleanTests extends TestCase {
    public BooleanTests(String name) {
       super(name);
    }
-
 
    /**
     * Tests the fromStringForRequired method of the Boolean type class.

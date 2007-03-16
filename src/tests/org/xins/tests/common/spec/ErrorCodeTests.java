@@ -43,6 +43,11 @@ public class ErrorCodeTests extends TestCase {
    }
 
    /**
+    * The Error Code specification of the <i>ResultCode</i> function.
+    */
+   private ErrorCodeSpec _errorCode;
+
+   /**
     * Constructs a new <code>ErrorCodeTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -52,11 +57,6 @@ public class ErrorCodeTests extends TestCase {
    public ErrorCodeTests(String name) {
       super(name);
    }
-
-   /**
-    * The Error Code specification of the <i>ResultCode</i> function.
-    */
-   private ErrorCodeSpec _errorCode;
 
    /**
     * @see junit.framework.TestCase#setUp()

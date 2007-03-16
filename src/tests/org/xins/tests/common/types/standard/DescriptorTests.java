@@ -26,6 +26,7 @@ public class DescriptorTests extends TestCase {
       return new TestSuite(DescriptorTests.class);
    }
 
+
    /**
     * Constructs a new <code>DescriptorTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
@@ -36,7 +37,6 @@ public class DescriptorTests extends TestCase {
    public DescriptorTests(String name) {
       super(name);
    }
-
 
    /**
     * Tests the fromStringForRequired method.

@@ -19,12 +19,12 @@ import java.util.List;
  */
 public class HTTPCallerResult {
 
-   HTTPCallerResult() {
-   }
-
    private String _status;
    private String _body;
    private HashMap _headers = new HashMap();
+
+   HTTPCallerResult() {
+   }
 
    void setStatus(String status) {
       _status = status;
