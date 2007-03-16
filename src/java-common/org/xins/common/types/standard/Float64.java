@@ -26,6 +26,45 @@ public class Float64 extends Type {
    public final static Float64 SINGLETON = new Float64();
 
    /**
+    * The minimum value that this Float64 can have.
+    */
+   private final double _minimum;
+
+   /**
+    * The maximum value that this Float64 can have.
+    */
+   private final double _maximum;
+
+   /**
+    * Constructs a new <code>Float64</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Float64() {
+      this("_float64", -Double.MAX_VALUE, Double.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Float64</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Float64(String name, double minimum, double maximum) {
+      super(name, Double.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to an
     * <code>double</code>.
     *
@@ -102,16 +141,6 @@ public class Float64 extends Type {
    }
 
    /**
-    * The minimum value that this Float64 can have.
-    */
-   private final double _minimum;
-
-   /**
-    * The maximum value that this Float64 can have.
-    */
-   private final double _maximum;
-
-   /**
     * Converts the specified <code>double</code> to a string.
     *
     * @param value
@@ -122,35 +151,6 @@ public class Float64 extends Type {
     */
    public static String toString(double value) {
       return String.valueOf(value);
-   }
-
-   /**
-    * Constructs a new <code>Float64</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Float64() {
-      this("_float64", -Double.MAX_VALUE, Double.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Float64</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Float64(String name, double minimum, double maximum) {
-      super(name, Double.class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    protected boolean isValidValueImpl(String value) {

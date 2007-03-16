@@ -55,6 +55,15 @@ public final class LogCentral {
    private static boolean STACK_TRACE_AT_MESSAGE_LEVEL = false;
 
    /**
+    * Constructs a new <code>LogCentral</code> instance. This constructor is
+    * intentionally made <code>private</code>, since no instances should be
+    * constructed of this class.
+    */
+   private LogCentral() {
+      // empty
+   }
+
+   /**
     * Registers the specified <code>LogController</code>, which represents a
     * <em>logdoc</em> <code>Log</code> class.
     *
@@ -218,14 +227,5 @@ public final class LogCentral {
     */
    public static boolean isStackTraceAtMessageLevel() {
        return STACK_TRACE_AT_MESSAGE_LEVEL;
-   }
-
-   /**
-    * Constructs a new <code>LogCentral</code> instance. This constructor is
-    * intentionally made <code>private</code>, since no instances should be
-    * constructed of this class.
-    */
-   private LogCentral() {
-      // empty
    }
 }

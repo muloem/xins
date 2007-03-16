@@ -19,43 +19,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public class TypeValueException extends Exception {
 
    /**
-    * Creates a message for the constructor after checking the arguments.
-    *
-    * @param type
-    *    the type, not <code>null</code>.
-    *
-    * @param value
-    *    the value, not <code>null</code>.
-    *
-    * @param detail
-    *    additional detail information, can be <code>null</code>.
-    *
-    * @return
-    *    the message to be passed up to the superconstructor, never
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>type == null || value == null</code>.
-    */
-   private static final String createMessage(Type   type,
-                                             String value,
-                                             String detail)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("type", type, "value", value);
-
-      String message = "The string \"" + value + "\" does not represent a valid value for the type " + type.getName();
-      if (detail != null) {
-         message += ": " + detail;
-      } else {
-         message += '.';
-      }
-
-      return message;
-   }
-
-   /**
     * The concerning parameter type. This field is never <code>null</code>.
     */
    private final Type _type;
@@ -112,6 +75,43 @@ public class TypeValueException extends Exception {
       _type   = type;
       _value  = value;
       _detail = detail;
+   }
+
+   /**
+    * Creates a message for the constructor after checking the arguments.
+    *
+    * @param type
+    *    the type, not <code>null</code>.
+    *
+    * @param value
+    *    the value, not <code>null</code>.
+    *
+    * @param detail
+    *    additional detail information, can be <code>null</code>.
+    *
+    * @return
+    *    the message to be passed up to the superconstructor, never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>type == null || value == null</code>.
+    */
+   private static final String createMessage(Type   type,
+                                             String value,
+                                             String detail)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("type", type, "value", value);
+
+      String message = "The string \"" + value + "\" does not represent a valid value for the type " + type.getName();
+      if (detail != null) {
+         message += ": " + detail;
+      } else {
+         message += '.';
+      }
+
+      return message;
    }
 
    /**

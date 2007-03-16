@@ -19,28 +19,6 @@ package org.xins.logdoc;
 public final class UnsupportedLocaleError extends Error {
 
    /**
-    * Determines the message for an instance of this exception class.
-    *
-    * @param exception
-    *    the source {@link UnsupportedLocaleException}, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the constructed message, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
-    */
-   private static String createMessage(UnsupportedLocaleException exception)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("exception", exception);
-
-      return exception.getMessage();
-   }
-
-   /**
     * The locale that is unsupported. The value of this field cannot be
     * <code>null</code>.
     */
@@ -67,6 +45,28 @@ public final class UnsupportedLocaleError extends Error {
 
       // Store locale?
       _locale = exception.getLocale();
+   }
+
+   /**
+    * Determines the message for an instance of this exception class.
+    *
+    * @param exception
+    *    the source {@link UnsupportedLocaleException}, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the constructed message, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>exception == null</code>.
+    */
+   private static String createMessage(UnsupportedLocaleException exception)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("exception", exception);
+
+      return exception.getMessage();
    }
 
    /**

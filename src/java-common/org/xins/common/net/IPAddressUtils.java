@@ -26,6 +26,13 @@ import org.xins.common.text.ParseException;
 public final class IPAddressUtils {
 
    /**
+    * Constructs a new <code>IPAddressUtils</code> object.
+    */
+   private IPAddressUtils() {
+      // empty
+   }
+
+   /**
     * Converts an IP address in the form <em>a.b.c.d</em> to an
     * <code>int</code>.
     *
@@ -234,12 +241,5 @@ public final class IPAddressUtils {
 
       // Return the exception
       return new ParseException(detail);
-   }
-
-   /**
-    * Constructs a new <code>IPAddressUtils</code> object.
-    */
-   private IPAddressUtils() {
-      // empty
    }
 }

@@ -18,6 +18,14 @@ package org.xins.logdoc;
 final class MandatoryArgumentChecker {
 
    /**
+    * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
+    * is private since this no instances of this class should be created.
+    */
+   private MandatoryArgumentChecker() {
+      // empty
+   }
+
+   /**
     * Checks that the specified argument is not <code>null</code>.
     *
     * @param argumentName
@@ -93,13 +101,5 @@ final class MandatoryArgumentChecker {
             throw new IllegalArgumentException(buffer.toString());
          }
       }
-   }
-
-   /**
-    * Constructs a new <code>MandatoryArgumentChecker</code>. This constructor
-    * is private since this no instances of this class should be created.
-    */
-   private MandatoryArgumentChecker() {
-      // empty
    }
 }

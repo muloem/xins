@@ -26,6 +26,45 @@ public class Int32 extends Type {
    public final static Int32 SINGLETON = new Int32();
 
    /**
+    * The minimum value that this Int32 can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum value that this Int32 can have.
+    */
+   private final int _maximum;
+
+   /**
+    * Constructs a new <code>Int32</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Int32() {
+      this("_int32", Integer.MIN_VALUE, Integer.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int32</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Int32(String name, int minimum, int maximum) {
+      super(name, Integer.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to an
     * <code>int</code>.
     *
@@ -112,45 +151,6 @@ public class Int32 extends Type {
     */
    public static String toString(int value) {
       return String.valueOf(value);
-   }
-
-   /**
-    * The minimum value that this Int32 can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum value that this Int32 can have.
-    */
-   private final int _maximum;
-
-   /**
-    * Constructs a new <code>Int32</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Int32() {
-      this("_int32", Integer.MIN_VALUE, Integer.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Int32</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Int32(String name, int minimum, int maximum) {
-      super(name, Integer.class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    protected boolean isValidValueImpl(String value) {

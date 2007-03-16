@@ -18,40 +18,13 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class IOCallException
-extends GenericCallException {
+public final class IOCallException extends GenericCallException {
 
    /**
     * Serial version UID. Used for serialization. The assigned value is for
     * compatibility with XINS 1.2.5.
     */
    private static final long serialVersionUID = -1118963769763850776L;
-
-   /**
-    * Checks the arguments for the constructor and then returns the short
-    * reason.
-    *
-    * @param request
-    *    the original request, cannot be <code>null</code>.
-    *
-    * @param target
-    *    descriptor for the target that was attempted to be called, cannot be
-    *    <code>null</code>.
-    *
-    * @param ioException
-    *    the cause {@link IOException}, cannot be <code>null</code>.
-    *
-    * @return
-    *    the short reason, never <code>null</code>.
-    */
-   private static String getShortReason(CallRequest      request,
-                                        TargetDescriptor target,
-                                        IOException      ioException)
-   {
-
-      // Return the short reason
-      return "I/O error";
-   }
 
    /**
     * Constructs a new <code>IOCallException</code>.
@@ -88,5 +61,30 @@ extends GenericCallException {
             duration,
             null,
             ioException);
+   }
+
+   /**
+    * Checks the arguments for the constructor and then returns the short
+    * reason.
+    *
+    * @param request
+    *    the original request, cannot be <code>null</code>.
+    *
+    * @param target
+    *    descriptor for the target that was attempted to be called, cannot be
+    *    <code>null</code>.
+    *
+    * @param ioException
+    *    the cause {@link IOException}, cannot be <code>null</code>.
+    *
+    * @return
+    *    the short reason, never <code>null</code>.
+    */
+   private static String getShortReason(CallRequest      request,
+                                        TargetDescriptor target,
+                                        IOException      ioException) {
+
+      // Return the short reason
+      return "I/O error";
    }
 }

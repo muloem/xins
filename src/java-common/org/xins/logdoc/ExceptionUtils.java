@@ -73,6 +73,13 @@ public final class ExceptionUtils {
    }
 
    /**
+    * Constructs a new <code>ExceptionUtils</code> object.
+    */
+   private ExceptionUtils() {
+      // empty
+   }
+
+   /**
     * Determines the root cause for the specified exception.
     *
     * @param exception
@@ -199,12 +206,5 @@ public final class ExceptionUtils {
          Object value = (cause == null) ? NULL : cause;
          CAUSE_TABLE.put(exception, value);
       }
-   }
-
-   /**
-    * Constructs a new <code>ExceptionUtils</code> object.
-    */
-   private ExceptionUtils() {
-      // empty
    }
 }

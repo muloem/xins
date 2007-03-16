@@ -30,31 +30,6 @@ extends RuntimeException {
    private static final long serialVersionUID = 2847976540646154938L;
 
    /**
-    * Creates the message for the constructor to pass up to the
-    * superconstructor.
-    *
-    * @param target
-    *    the {@link TargetDescriptor} that has an unsupported protocol, cannot
-    *    be <code>null</code>.
-    *
-    * @return
-    *    the created message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>target == null</code>.
-    */
-   private static String createMessage(TargetDescriptor target)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("target", target);
-
-      return "Unsupported protocol \""
-           + target.getProtocol()
-           + "\".";
-   }
-
-   /**
     * The target descriptor that has an unsupported protocol. Cannot be
     * <code>null</code>.
     */
@@ -78,6 +53,31 @@ extends RuntimeException {
 
       // Store
       _target = target;
+   }
+
+   /**
+    * Creates the message for the constructor to pass up to the
+    * superconstructor.
+    *
+    * @param target
+    *    the {@link TargetDescriptor} that has an unsupported protocol, cannot
+    *    be <code>null</code>.
+    *
+    * @return
+    *    the created message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>target == null</code>.
+    */
+   private static String createMessage(TargetDescriptor target)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("target", target);
+
+      return "Unsupported protocol \""
+           + target.getProtocol()
+           + "\".";
    }
 
    /**

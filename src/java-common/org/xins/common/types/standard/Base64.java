@@ -33,6 +33,45 @@ public class Base64 extends Type {
    private final static String STRING_ENCODING = "US-ASCII";
 
    /**
+    * The minimum number of bytes this Base64 can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum number of bytes this Base64 can have.
+    */
+   private final int _maximum;
+
+   /**
+    * Constructs a new <code>Float32</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Base64() {
+      this("_base64", 0, Integer.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Float32</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Base64(String name, int minimum, int maximum) {
+      super(name, byte[].class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to an
     * <code>byte[]</code>.
     *
@@ -110,45 +149,6 @@ public class Base64 extends Type {
             return null;
          }
       }
-   }
-
-   /**
-    * The minimum number of bytes this Base64 can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum number of bytes this Base64 can have.
-    */
-   private final int _maximum;
-
-   /**
-    * Constructs a new <code>Float32</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Base64() {
-      this("_base64", 0, Integer.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Float32</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Base64(String name, int minimum, int maximum) {
-      super(name, byte[].class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    /**

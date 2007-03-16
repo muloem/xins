@@ -35,6 +35,31 @@ import org.xins.logdoc.UnsupportedLocaleException;
 final class EngineStarter {
 
    /**
+    * The servlet config. Never <code>null</code>.
+    */
+   private ServletConfig _config;
+
+   /**
+    * Constructor for the <code>EngineStarter</code> class.
+    *
+    * @param config
+    *    servlet configuration, cannot be <code>null</code> and is guaranteed
+    *    to have a {@link ServletContext} associated with it.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>config == null</code>.
+    */
+   EngineStarter(ServletConfig config)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("config", config);
+
+      // Store data
+      _config = config;
+   }
+
+   /**
     * Constructs a new <code>ServletException</code> with the specified cause.
     *
     * @param t
@@ -65,31 +90,6 @@ final class EngineStarter {
       }
 
       return servletException;
-   }
-
-   /**
-    * The servlet config. Never <code>null</code>.
-    */
-   private ServletConfig _config;
-
-   /**
-    * Constructor for the <code>EngineStarter</code> class.
-    *
-    * @param config
-    *    servlet configuration, cannot be <code>null</code> and is guaranteed
-    *    to have a {@link ServletContext} associated with it.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>config == null</code>.
-    */
-   EngineStarter(ServletConfig config)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("config", config);
-
-      // Store data
-      _config = config;
    }
 
    /**

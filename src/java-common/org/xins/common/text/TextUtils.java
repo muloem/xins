@@ -21,6 +21,13 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class TextUtils {
 
    /**
+    * Constructs a new <code>TextUtils</code> object.
+    */
+   private TextUtils() {
+      // empty
+   }
+
+   /**
     * Quotes the specified string, or returns <code>"(null)"</code> if it is
     * <code>null</code>.
     *
@@ -253,12 +260,5 @@ public final class TextUtils {
       } else {
          return result.toString();
       }
-   }
-
-   /**
-    * Constructs a new <code>TextUtils</code> object.
-    */
-   private TextUtils() {
-      // empty
    }
 }

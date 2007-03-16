@@ -76,6 +76,13 @@ public class LogdocHexConverter {
    };
 
    /**
+    * Creates a new <code>LogdocHexConverter</code> object.
+    */
+   private LogdocHexConverter() {
+      // empty
+   }
+
+   /**
     * Checks if the specified character is a hexadecimal digit. The following
     * ranges of characters are considered hexadecimal digits:
     *
@@ -410,12 +417,5 @@ public class LogdocHexConverter {
       }
 
       return parseHexInt(s, 0);
-   }
-
-   /**
-    * Creates a new <code>LogdocHexConverter</code> object.
-    */
-   private LogdocHexConverter() {
-      // empty
    }
 }

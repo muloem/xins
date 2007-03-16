@@ -47,6 +47,40 @@ public class DateConverter {
    private static final char[][] VALUES;
 
    /**
+    * Date formatter that is used as a slow but accurate method for formatting
+    * the date. Never <code>null</code>.
+    */
+   private final SimpleDateFormat _formatter;
+
+   /**
+    * Length of the produced timestamp string. If the century is printed, it's
+    * 18, otherwise it's 16.
+    */
+   private final int _length;
+
+   /**
+    * Cached date, as a number of milliseconds since the Epoch.
+    */
+   private long _cachedDate;
+
+   /**
+    * Cached date, as a number of minutes since the Epoch.
+    */
+   private long _cachedMinutes;
+
+   /**
+    * Part of the cached date, the number of seconds in the current minute.
+    */
+   private long _cachedJustSeconds;
+
+   /**
+    * Character buffer containing the formatted version of the cached date.
+    * See {@link #_cachedDate}. The length is always equal to
+    * {@link #_length}.
+    */
+   private char[] _cachedDateBuffer;
+
+   /**
     * Class initialized. Initializes the {@link #VALUES} array.
     */
    static {
@@ -59,6 +93,32 @@ public class DateConverter {
          int second = ((int) '0') + (i % 10);
          VALUES[i] = new char[] { (char) first, (char) second };
       }
+   }
+
+   /**
+    * Creates a new <code>DateConverter</code>.
+    *
+    * @param withCentury
+    *    <code>true</code> if the century should be in the result,
+    *    <code>false</code> otherwise.
+    *
+    * @since XINS 1.3.0
+    */
+   public DateConverter(boolean withCentury) {
+
+      // Determine the length of the formatted date strings
+      _length           = withCentury ? 18 : 16;
+      _cachedDateBuffer = new char[_length];
+
+      // Construct a formatter for slow formatting
+      String format = "yyMMdd-HHmmssSSS";
+      if (withCentury) {
+         format = "yy" + format;
+      }
+      _formatter = new SimpleDateFormat(format);
+
+      // Pre-cache the current date
+      recompute(System.currentTimeMillis());
    }
 
    /**
@@ -167,66 +227,6 @@ public class DateConverter {
       buffer.append(String.valueOf(ms));
 
       return buffer.toString();
-   }
-
-   /**
-    * Date formatter that is used as a slow but accurate method for formatting
-    * the date. Never <code>null</code>.
-    */
-   private final SimpleDateFormat _formatter;
-
-   /**
-    * Length of the produced timestamp string. If the century is printed, it's
-    * 18, otherwise it's 16.
-    */
-   private final int _length;
-
-   /**
-    * Cached date, as a number of milliseconds since the Epoch.
-    */
-   private long _cachedDate;
-
-   /**
-    * Cached date, as a number of minutes since the Epoch.
-    */
-   private long _cachedMinutes;
-
-   /**
-    * Part of the cached date, the number of seconds in the current minute.
-    */
-   private long _cachedJustSeconds;
-
-   /**
-    * Character buffer containing the formatted version of the cached date.
-    * See {@link #_cachedDate}. The length is always equal to
-    * {@link #_length}.
-    */
-   private char[] _cachedDateBuffer;
-
-   /**
-    * Creates a new <code>DateConverter</code>.
-    *
-    * @param withCentury
-    *    <code>true</code> if the century should be in the result,
-    *    <code>false</code> otherwise.
-    *
-    * @since XINS 1.3.0
-    */
-   public DateConverter(boolean withCentury) {
-
-      // Determine the length of the formatted date strings
-      _length           = withCentury ? 18 : 16;
-      _cachedDateBuffer = new char[_length];
-
-      // Construct a formatter for slow formatting
-      String format = "yyMMdd-HHmmssSSS";
-      if (withCentury) {
-         format = "yy" + format;
-      }
-      _formatter = new SimpleDateFormat(format);
-
-      // Pre-cache the current date
-      recompute(System.currentTimeMillis());
    }
 
    /**

@@ -22,6 +22,13 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class PropertyReaderConverter {
 
    /**
+    * Constructs a new <code>PropertyReaderConverter</code>.
+    */
+   private PropertyReaderConverter() {
+      // empty
+   }
+
+   /**
     * Converts the specified <code>PropertyReader</code> object to a new
     * <code>Properties</code> object.
     *
@@ -49,12 +56,5 @@ public final class PropertyReaderConverter {
          prop.setProperty(key, value);
       }
       return prop;
-   }
-
-   /**
-    * Constructs a new <code>PropertyReaderConverter</code>.
-    */
-   private PropertyReaderConverter() {
-      // empty
    }
 }

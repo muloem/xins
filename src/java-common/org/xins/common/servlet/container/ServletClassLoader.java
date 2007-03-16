@@ -28,6 +28,37 @@ import java.util.jar.JarInputStream;
 public class ServletClassLoader {
 
    /**
+    * Use the current class loader to load the servlet and the libraries.
+    */
+   public final static int USE_CURRENT_CLASSPATH = 1;
+
+   /**
+    * Load the Servlet code from the WAR file and use the current
+    * classpath for the libraries.
+    */
+   public final static int USE_CLASSPATH_LIB = 2;
+
+   /**
+    * Load the servlet code from the WAR file and try to find the libraries
+    * in the same directory as this xins-common.jar and &lt:parent&gt;/lib
+    * directory.
+    */
+   public final static int USE_XINS_LIB = 3;
+
+   /**
+    * Load the servlet code and the libraries from the WAR file.
+    * This may take some time as the libraries need to be extracted from the
+    * WAR file.
+    */
+   public final static int USE_WAR_LIB = 4;
+
+   /**
+    * Load the servlet code and the standard libraries from the CLASSPATH.
+    * Load the included external libraries from the WAR file.
+    */
+   public final static int USE_WAR_EXTERNAL_LIB = 5;
+
+   /**
     * Gest the class loader that will loader the servlet.
     *
     * @param warFile
@@ -141,37 +172,6 @@ public class ServletClassLoader {
       out.close();
       return tempJarFile;
    }
-
-   /**
-    * Use the current class loader to load the servlet and the libraries.
-    */
-   public final static int USE_CURRENT_CLASSPATH = 1;
-
-   /**
-    * Load the Servlet code from the WAR file and use the current
-    * classpath for the libraries.
-    */
-   public final static int USE_CLASSPATH_LIB = 2;
-
-   /**
-    * Load the servlet code from the WAR file and try to find the libraries
-    * in the same directory as this xins-common.jar and &lt:parent&gt;/lib
-    * directory.
-    */
-   public final static int USE_XINS_LIB = 3;
-
-   /**
-    * Load the servlet code and the libraries from the WAR file.
-    * This may take some time as the libraries need to be extracted from the
-    * WAR file.
-    */
-   public final static int USE_WAR_LIB = 4;
-
-   /**
-    * Load the servlet code and the standard libraries from the CLASSPATH.
-    * Load the included external libraries from the WAR file.
-    */
-   public final static int USE_WAR_EXTERNAL_LIB = 5;
 
    /**
     * An almost trivial no-fuss implementation of a class loader

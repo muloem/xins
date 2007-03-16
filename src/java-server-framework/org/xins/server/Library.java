@@ -33,6 +33,13 @@ public final class Library {
          PatternUtils.createPattern(PRODUCTION_RELEASE_PATTERN_STRING);
 
    /**
+    * Constructs a new <code>Library</code> object.
+    */
+   private Library() {
+      // empty
+   }
+
+   /**
     * Returns the version of this library.
     *
     * @return
@@ -60,12 +67,5 @@ public final class Library {
    throws NullPointerException {
       Perl5Matcher patternMatcher = new Perl5Matcher();
       return patternMatcher.matches(version, PRODUCTION_RELEASE_PATTERN);
-   }
-
-   /**
-    * Constructs a new <code>Library</code> object.
-    */
-   private Library() {
-      // empty
    }
 }

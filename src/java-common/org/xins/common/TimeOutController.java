@@ -17,6 +17,13 @@ package org.xins.common;
 public final class TimeOutController {
 
    /**
+    * Constructs a new <code>TimeOutController</code> object.
+    */
+   private TimeOutController() {
+      // empty
+   }
+
+   /**
     * Runs the specified task with a specific time-out. If the task does
     * not finish within the specified time-out period, then the thread
     * executing that task is interrupted using the {@link Thread#interrupt()}
@@ -91,12 +98,5 @@ public final class TimeOutController {
 
          throw new TimeOutException();
       }
-   }
-
-   /**
-    * Constructs a new <code>TimeOutController</code> object.
-    */
-   private TimeOutController() {
-      // empty
    }
 }

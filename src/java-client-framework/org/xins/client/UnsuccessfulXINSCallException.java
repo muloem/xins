@@ -25,46 +25,6 @@ extends XINSCallException
 implements XINSCallResultData {
 
    /**
-    * Delegate for the constructor that determines the detail message based on
-    * a <code>XINSCallResultData</code> object and an optional detailed
-    * description.
-    *
-    * @param result
-    *    the {@link XINSCallResultData} instance, should not be
-    *    <code>null</code>.
-    *
-    * @param detail
-    *    detailed description to include, or <code>null</code> if unavailable.
-    *
-    * @return
-    *    the detail message for the constructor to use, never
-    *    <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
-    */
-   private static final String determineDetail(XINSCallResultData result,
-                                               String             detail)
-   throws IllegalArgumentException {
-
-      // Argument cannot be null
-      MandatoryArgumentChecker.check("result", result);
-
-      // Result must be unsuccessful
-      String errorCode = result.getErrorCode();
-      if (errorCode == null) {
-         throw new IllegalArgumentException("result.getErrorCode() == null");
-      }
-
-      if (detail == null || detail.length() < 1) {
-         return "Error code \"" + errorCode + "\".";
-      } else {
-         return "Error code \"" + errorCode + "\": " + detail;
-      }
-   }
-
-   /**
     * The result data. The value of this field cannot be <code>null</code>.
     */
    private final XINSCallResultData _result;
@@ -124,6 +84,46 @@ implements XINSCallResultData {
 
       // Store details
       _result = resultData;
+   }
+
+   /**
+    * Delegate for the constructor that determines the detail message based on
+    * a <code>XINSCallResultData</code> object and an optional detailed
+    * description.
+    *
+    * @param result
+    *    the {@link XINSCallResultData} instance, should not be
+    *    <code>null</code>.
+    *
+    * @param detail
+    *    detailed description to include, or <code>null</code> if unavailable.
+    *
+    * @return
+    *    the detail message for the constructor to use, never
+    *    <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null
+    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
+    */
+   private static final String determineDetail(XINSCallResultData result,
+                                               String             detail)
+   throws IllegalArgumentException {
+
+      // Argument cannot be null
+      MandatoryArgumentChecker.check("result", result);
+
+      // Result must be unsuccessful
+      String errorCode = result.getErrorCode();
+      if (errorCode == null) {
+         throw new IllegalArgumentException("result.getErrorCode() == null");
+      }
+
+      if (detail == null || detail.length() < 1) {
+         return "Error code \"" + errorCode + "\".";
+      } else {
+         return "Error code \"" + errorCode + "\": " + detail;
+      }
    }
 
    /**

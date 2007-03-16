@@ -26,6 +26,45 @@ public class Float32 extends Type {
    public final static Float32 SINGLETON = new Float32();
 
    /**
+    * The minimum value that this Float32 can have.
+    */
+   private final float _minimum;
+
+   /**
+    * The maximum value that this Float32 can have.
+    */
+   private final float _maximum;
+
+   /**
+    * Constructs a new <code>Float32</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Float32() {
+      this("_float32", -Float.MAX_VALUE, Float.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Float32</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Float32(String name, float minimum, float maximum) {
+      super(name, Float.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to an
     * <code>float</code>.
     *
@@ -102,16 +141,6 @@ public class Float32 extends Type {
    }
 
    /**
-    * The minimum value that this Float32 can have.
-    */
-   private final float _minimum;
-
-   /**
-    * The maximum value that this Float32 can have.
-    */
-   private final float _maximum;
-
-   /**
     * Converts the specified <code>float</code> to a string.
     *
     * @param value
@@ -122,35 +151,6 @@ public class Float32 extends Type {
     */
    public static String toString(float value) {
       return String.valueOf(value);
-   }
-
-   /**
-    * Constructs a new <code>Float32</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Float32() {
-      this("_float32", -Float.MAX_VALUE, Float.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Float32</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Float32(String name, float minimum, float maximum) {
-      super(name, Float.class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    protected boolean isValidValueImpl(String value) {

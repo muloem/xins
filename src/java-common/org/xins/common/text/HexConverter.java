@@ -144,6 +144,13 @@ public class HexConverter {
    private static final int CHAR_UP_A_FACTOR = CHAR_UP_A - 10;
 
    /**
+    * Creates a new <code>HexConverter</code> object.
+    */
+   private HexConverter() {
+      // empty
+   }
+
+   /**
     * Checks if the specified character is a hexadecimal digit. The following
     * ranges of characters are considered hexadecimal digits:
     *
@@ -807,12 +814,5 @@ public class HexConverter {
       }
 
       return parseHexLong(s, 0);
-   }
-
-   /**
-    * Creates a new <code>HexConverter</code> object.
-    */
-   private HexConverter() {
-      // empty
    }
 }

@@ -16,39 +16,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class FormatException
-extends RuntimeException {
-
-   /**
-    * Creates a message for the constructor.
-    *
-    * @param string
-    *    the character string that mismatches the format, cannot be
-    *    <code>null</code>.
-    *
-    * @param reason
-    *    description of the problem, can be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @return
-    *    the message the constructor can pass up to the superclass
-    *    constructor, never <code>null</code>.
-    */
-   private static String createMessage(String string, String reason)
-   throws IllegalArgumentException {
-
-      // Check the precondition
-      MandatoryArgumentChecker.check("string", string);
-
-      String message = "The string \"" + string + "\" is invalid.";
-      if (reason != null) {
-         message += " Reason: " + reason;
-      }
-
-      return message;
-   }
+public final class FormatException extends RuntimeException {
 
    /**
     * The string that is considered invalid. Cannot be <code>null</code>.
@@ -83,6 +51,37 @@ extends RuntimeException {
       // Store information
       _string = string;
       _reason = reason;
+   }
+
+   /**
+    * Creates a message for the constructor.
+    *
+    * @param string
+    *    the character string that mismatches the format, cannot be
+    *    <code>null</code>.
+    *
+    * @param reason
+    *    description of the problem, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @return
+    *    the message the constructor can pass up to the superclass
+    *    constructor, never <code>null</code>.
+    */
+   private static String createMessage(String string, String reason)
+   throws IllegalArgumentException {
+
+      // Check the precondition
+      MandatoryArgumentChecker.check("string", string);
+
+      String message = "The string \"" + string + "\" is invalid.";
+      if (reason != null) {
+         message += " Reason: " + reason;
+      }
+
+      return message;
    }
 
    /**

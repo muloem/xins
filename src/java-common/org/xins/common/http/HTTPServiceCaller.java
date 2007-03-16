@@ -180,6 +180,53 @@ public final class HTTPServiceCaller extends ServiceCaller {
    private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
 
    /**
+    * Constructs a new <code>HTTPServiceCaller</code> object with the
+    * specified descriptor and call configuration.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @param callConfig
+    *    the call configuration, or <code>null</code> if a default one should
+    *    be used.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol.
+    *
+    * @since XINS 1.1.0
+    */
+   public HTTPServiceCaller(Descriptor     descriptor,
+                            HTTPCallConfig callConfig)
+   throws IllegalArgumentException, UnsupportedProtocolException {
+
+      // Call superclass constructor
+      super(descriptor, callConfig);
+   }
+
+
+   /**
+    * Constructs a new <code>HTTPServiceCaller</code> object.
+    *
+    * @param descriptor
+    *    the descriptor of the service, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>descriptor == null</code>.
+    *
+    * @throws UnsupportedProtocolException
+    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
+    *    with an unsupported protocol (<em>since XINS 1.1.0</em>).
+    */
+   public HTTPServiceCaller(Descriptor descriptor)
+   throws IllegalArgumentException, UnsupportedProtocolException {
+      this(descriptor, null);
+   }
+
+   /**
     * Returns the {@link HttpClient} to use to contact the given target.
     *
     * @param target
@@ -321,53 +368,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
          String detail = "Unrecognized HTTP method \"" + method + "\".";
          throw Utils.logProgrammingError(detail);
       }
-   }
-
-   /**
-    * Constructs a new <code>HTTPServiceCaller</code> object with the
-    * specified descriptor and call configuration.
-    *
-    * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
-    *
-    * @param callConfig
-    *    the call configuration, or <code>null</code> if a default one should
-    *    be used.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws UnsupportedProtocolException
-    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
-    *    with an unsupported protocol.
-    *
-    * @since XINS 1.1.0
-    */
-   public HTTPServiceCaller(Descriptor     descriptor,
-                            HTTPCallConfig callConfig)
-   throws IllegalArgumentException, UnsupportedProtocolException {
-
-      // Call superclass constructor
-      super(descriptor, callConfig);
-   }
-
-
-   /**
-    * Constructs a new <code>HTTPServiceCaller</code> object.
-    *
-    * @param descriptor
-    *    the descriptor of the service, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>descriptor == null</code>.
-    *
-    * @throws UnsupportedProtocolException
-    *    if <code>descriptor</code> is or contains a {@link TargetDescriptor}
-    *    with an unsupported protocol (<em>since XINS 1.1.0</em>).
-    */
-   public HTTPServiceCaller(Descriptor descriptor)
-   throws IllegalArgumentException, UnsupportedProtocolException {
-      this(descriptor, null);
    }
 
    /**

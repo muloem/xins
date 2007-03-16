@@ -35,6 +35,47 @@ public class Properties extends Type {
    public final static Properties SINGLETON = new Properties();
 
    /**
+    * The type for property names. Cannot be <code>null</code>.
+    */
+   private final Type _nameType;
+
+   /**
+    * The type for property values. Cannot be <code>null</code>.
+    */
+   private final Type _valueType;
+
+   /**
+    * Constructs a new <code>Properties</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Properties() {
+      this("_properties", null, null);
+   }
+
+   /**
+    * Constructs a new <code>Properties</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param nameType
+    *    the type for property names, or <code>null</code> if {@link Text}
+    *    should be assumed.
+    *
+    * @param valueType
+    *    the type for property values, or <code>null</code> if {@link Text}
+    *    should be assumed.
+    */
+   protected Properties(String name, Type nameType, Type valueType) {
+      super(name, PropertyReader.class);
+
+      _nameType  = nameType  == null ? Text.SINGLETON : nameType;
+      _valueType = valueType == null ? Text.SINGLETON : valueType;
+   }
+
+   /**
     * Constructs a <code>PropertyReader</code> from the specified string
     * which is guaranteed to be non-<code>null</code>.
     *
@@ -126,47 +167,6 @@ public class Properties extends Type {
       }
 
       return buffer.toString();
-   }
-
-   /**
-    * The type for property names. Cannot be <code>null</code>.
-    */
-   private final Type _nameType;
-
-   /**
-    * The type for property values. Cannot be <code>null</code>.
-    */
-   private final Type _valueType;
-
-   /**
-    * Constructs a new <code>Properties</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Properties() {
-      this("_properties", null, null);
-   }
-
-   /**
-    * Constructs a new <code>Properties</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param nameType
-    *    the type for property names, or <code>null</code> if {@link Text}
-    *    should be assumed.
-    *
-    * @param valueType
-    *    the type for property values, or <code>null</code> if {@link Text}
-    *    should be assumed.
-    */
-   protected Properties(String name, Type nameType, Type valueType) {
-      super(name, PropertyReader.class);
-
-      _nameType  = nameType  == null ? Text.SINGLETON : nameType;
-      _valueType = valueType == null ? Text.SINGLETON : valueType;
    }
 
    protected final boolean isValidValueImpl(String string) {

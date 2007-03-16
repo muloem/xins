@@ -29,25 +29,6 @@ public class UnacceptableResultXINSCallException
 extends XINSCallException {
 
    /**
-    * Checks the mandatory <code>result</code> argument for the constructor
-    * that accepts an <code>AbstractCAPICallResult</code>.
-    *
-    * @param result
-    *    the argument for the constructor, cannot be <code>null</code>.
-    *
-    * @return
-    *    the argument <code>result</code>, guaranteed not <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null</code>.
-    */
-   private static AbstractCAPICallResult checkArguments(AbstractCAPICallResult result)
-   throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("result", result);
-      return result;
-   }
-
-   /**
     * The result that is considered unacceptable. Never <code>null</code>.
     */
    private final XINSCallResultData _result;
@@ -151,6 +132,25 @@ extends XINSCallException {
 
       // Store details
       _result = resultData;
+   }
+
+   /**
+    * Checks the mandatory <code>result</code> argument for the constructor
+    * that accepts an <code>AbstractCAPICallResult</code>.
+    *
+    * @param result
+    *    the argument for the constructor, cannot be <code>null</code>.
+    *
+    * @return
+    *    the argument <code>result</code>, guaranteed not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null</code>.
+    */
+   private static AbstractCAPICallResult checkArguments(AbstractCAPICallResult result)
+   throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("result", result);
+      return result;
    }
 
    /**

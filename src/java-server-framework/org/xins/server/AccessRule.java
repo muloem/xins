@@ -57,6 +57,74 @@ import org.xins.common.text.SimplePatternParser;
 public final class AccessRule implements AccessRuleContainer {
 
    /**
+    * If the access method is 'allow' or not.
+    */
+   private final boolean _allow;
+
+   /**
+    * The IP address filter used to create the access rule. Cannot be
+    * <code>null</code>.
+    */
+   private final IPFilter _ipFilter;
+
+   /**
+    * The function name pattern. Cannot be <code>null</code>.
+    */
+   private final Perl5Pattern _functionNameRegex;
+
+   /**
+    * String representation of this object. Cannot be <code>null</code>.
+    */
+   private final String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
+   /**
+    * Constructs a new <code>AccessRule</code>.
+    *
+    * @param allow
+    *    flag that indicates if this rule grants access (<code>true</code>) or
+    *    denies access (<code>false</code>).
+    *
+    * @param ipFilter
+    *    filter used for matching (or not) IP addresses, cannot be
+    *    <code>null</code>.
+    *
+    * @param asString
+    *    textual presentation of this access rule, cannot be
+    *    <code>null</code>.
+    *
+    * @param functionNameRegex
+    *    regular expression used for matching (or not) a function name; cannot
+    *    be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>ipFilter          == null
+    *          || functionNameRegex == null
+    *          || asString          == null</code>.
+    */
+   private AccessRule(boolean      allow,
+                      IPFilter     ipFilter,
+                      Perl5Pattern functionNameRegex,
+                      String       asString)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("ipFilter",          ipFilter,
+                                     "functionNameRegex", functionNameRegex,
+                                     "asString",          asString);
+
+      // Store the data
+      _allow             = allow;
+      _ipFilter          = ipFilter;
+      _functionNameRegex = functionNameRegex;
+      _asString          = asString;
+   }
+
+   /**
     * Parses the specified character string to construct a new
     * <code>AccessRule</code> object.
     *
@@ -145,74 +213,6 @@ public final class AccessRule implements AccessRuleContainer {
       } else {
          return tokenizer.nextToken();
       }
-   }
-
-   /**
-    * If the access method is 'allow' or not.
-    */
-   private final boolean _allow;
-
-   /**
-    * The IP address filter used to create the access rule. Cannot be
-    * <code>null</code>.
-    */
-   private final IPFilter _ipFilter;
-
-   /**
-    * The function name pattern. Cannot be <code>null</code>.
-    */
-   private final Perl5Pattern _functionNameRegex;
-
-   /**
-    * String representation of this object. Cannot be <code>null</code>.
-    */
-   private final String _asString;
-
-   /**
-    * Flag that indicates whether this object is disposed.
-    */
-   private boolean _disposed;
-
-   /**
-    * Constructs a new <code>AccessRule</code>.
-    *
-    * @param allow
-    *    flag that indicates if this rule grants access (<code>true</code>) or
-    *    denies access (<code>false</code>).
-    *
-    * @param ipFilter
-    *    filter used for matching (or not) IP addresses, cannot be
-    *    <code>null</code>.
-    *
-    * @param asString
-    *    textual presentation of this access rule, cannot be
-    *    <code>null</code>.
-    *
-    * @param functionNameRegex
-    *    regular expression used for matching (or not) a function name; cannot
-    *    be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>ipFilter          == null
-    *          || functionNameRegex == null
-    *          || asString          == null</code>.
-    */
-   private AccessRule(boolean      allow,
-                      IPFilter     ipFilter,
-                      Perl5Pattern functionNameRegex,
-                      String       asString)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("ipFilter",          ipFilter,
-                                     "functionNameRegex", functionNameRegex,
-                                     "asString",          asString);
-
-      // Store the data
-      _allow             = allow;
-      _ipFilter          = ipFilter;
-      _functionNameRegex = functionNameRegex;
-      _asString          = asString;
    }
 
    /**

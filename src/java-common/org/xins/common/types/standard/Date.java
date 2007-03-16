@@ -60,6 +60,15 @@ public class Date extends Type {
       new SimpleDateFormat("yyyyMMdd");
 
    /**
+    * Constructs a new <code>Date</code> instance.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Date() {
+      super("_date", Value.class);
+   }
+
+   /**
     * Constructs a <code>Date.Value</code> with the value of the current date.
     *
     * @return
@@ -180,15 +189,6 @@ public class Date extends Type {
       buffer.append(day);
 
       return buffer.toString();
-   }
-
-   /**
-    * Constructs a new <code>Date</code> instance.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Date() {
-      super("_date", Value.class);
    }
 
    protected final boolean isValidValueImpl(String value) {

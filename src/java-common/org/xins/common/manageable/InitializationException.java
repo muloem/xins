@@ -21,41 +21,7 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @see Manageable#init(org.xins.common.collections.PropertyReader)
  */
-public final class InitializationException
-extends Exception {
-
-   /**
-    * Creates a message based on the specified constructor argument.
-    *
-    * @param detail
-    *    the detail message passed to the constructor, or <code>null</code>.
-    *
-    * @param cause
-    *    the cause exception, or <code>null</code>.
-    *
-    * @return
-    *    the message, never <code>null</code>.
-    */
-   private static String createMessage(String detail, Throwable cause) {
-
-      String message = "Initialization failed";
-
-      if (detail != null) {
-         message += ": \"" + detail + '"';
-      }
-
-      if (cause != null) {
-         message += ". Caught "  +cause.getClass().getName();
-
-         String causeMessage = TextUtils.trim(cause.getMessage(), null);
-         if (causeMessage != null) {
-            message += " with message \"" + causeMessage + '"';
-         }
-      }
-      message += '.';
-
-      return message;
-   }
+public final class InitializationException extends Exception {
 
    /**
     * Constructs a new <code>InitializationException</code> with the specified
@@ -94,5 +60,38 @@ extends Exception {
       if (cause != null) {
          ExceptionUtils.setCause(this, cause);
       }
+   }
+
+   /**
+    * Creates a message based on the specified constructor argument.
+    *
+    * @param detail
+    *    the detail message passed to the constructor, or <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, or <code>null</code>.
+    *
+    * @return
+    *    the message, never <code>null</code>.
+    */
+   private static String createMessage(String detail, Throwable cause) {
+
+      String message = "Initialization failed";
+
+      if (detail != null) {
+         message += ": \"" + detail + '"';
+      }
+
+      if (cause != null) {
+         message += ". Caught "  +cause.getClass().getName();
+
+         String causeMessage = TextUtils.trim(cause.getMessage(), null);
+         if (causeMessage != null) {
+            message += " with message \"" + causeMessage + '"';
+         }
+      }
+      message += '.';
+
+      return message;
    }
 }

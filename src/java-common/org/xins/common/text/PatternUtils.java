@@ -29,6 +29,13 @@ public final class PatternUtils {
    private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    /**
+    * Constructs a new <code>PatternUtils</code> object.
+    */
+   private PatternUtils() {
+      // empty
+   }
+
+   /**
     * Compiles the given regular expression to a Perl5 pattern object.
     *
     * @param regexp
@@ -54,12 +61,5 @@ public final class PatternUtils {
       } catch (MalformedPatternException exception) {
          throw Utils.logProgrammingError(exception);
       }
-   }
-
-   /**
-    * Constructs a new <code>PatternUtils</code> object.
-    */
-   private PatternUtils() {
-      // empty
    }
 }

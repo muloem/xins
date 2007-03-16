@@ -21,42 +21,6 @@ import javax.servlet.ServletException;
 public class HTTPServletStarter {
 
    /**
-    * Starts the Servlet container for the specific API.
-    *
-    * @param args
-    *    The command line arguments, the first argument should be the location
-    *    of the WAR file or the name of the class of the servlet to load,
-    *    the optional second argument is the port number.
-    *    If no port number is specified, 8080 is used as default.
-    */
-   public static void main(String[] args) {
-      if (args.length < 1) {
-         System.err.println("Please, pass the location of the WAR file as argument.");
-         System.exit(-1);
-      }
-      int port = DEFAULT_PORT_NUMBER;
-      if (args.length > 1) {
-         try {
-            port = Integer.parseInt(args[1]);
-         } catch (NumberFormatException nfe) {
-            System.err.println("Warning: Incorrect port number \"" + args[1] +
-                  "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
-         }
-      }
-
-      File warFile = new File(args[0]);
-      if (!warFile.exists()) {
-         System.err.println("WAR file \"" + args[0] + "\" not found.");
-         System.exit(-1);
-      }
-      try {
-         // Starts the server and wait for connections
-         new HTTPServletStarter(warFile, port, false);
-      } catch (Exception ioe) {
-         ioe.printStackTrace();
-      }
-   }
-   /**
     * The default port number.
     */
    public final static int DEFAULT_PORT_NUMBER = 8080;
@@ -179,6 +143,43 @@ public class HTTPServletStarter {
          constructor.newInstance(constArgs);
       } catch (Exception ex) {
          ex.printStackTrace();
+      }
+   }
+
+   /**
+    * Starts the Servlet container for the specific API.
+    *
+    * @param args
+    *    The command line arguments, the first argument should be the location
+    *    of the WAR file or the name of the class of the servlet to load,
+    *    the optional second argument is the port number.
+    *    If no port number is specified, 8080 is used as default.
+    */
+   public static void main(String[] args) {
+      if (args.length < 1) {
+         System.err.println("Please, pass the location of the WAR file as argument.");
+         System.exit(-1);
+      }
+      int port = DEFAULT_PORT_NUMBER;
+      if (args.length > 1) {
+         try {
+            port = Integer.parseInt(args[1]);
+         } catch (NumberFormatException nfe) {
+            System.err.println("Warning: Incorrect port number \"" + args[1] +
+                  "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
+         }
+      }
+
+      File warFile = new File(args[0]);
+      if (!warFile.exists()) {
+         System.err.println("WAR file \"" + args[0] + "\" not found.");
+         System.exit(-1);
+      }
+      try {
+         // Starts the server and wait for connections
+         new HTTPServletStarter(warFile, port, false);
+      } catch (Exception ioe) {
+         ioe.printStackTrace();
       }
    }
 }

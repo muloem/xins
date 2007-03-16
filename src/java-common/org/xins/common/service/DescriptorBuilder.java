@@ -103,6 +103,15 @@ public final class DescriptorBuilder {
    public static final String GROUP_DESCRIPTOR_TYPE = "group";
 
    /**
+    * Constructs a new <code>DescriptorBuilder</code>.
+    */
+   private DescriptorBuilder() {
+      // empty
+
+      // NOTE: No tracing is performed, since this constructor is never used
+   }
+
+   /**
     * Tokenizes the specified string. The {@link #DELIMITER_AS_STRING} will be
     * used as the token delimiter. Every token will be one element in the
     * returned {@link String} array.
@@ -421,14 +430,5 @@ public final class DescriptorBuilder {
       } else {
          throw new InvalidPropertyValueException(propertyName, value, "Expected valid descriptor type: either \"" + TARGET_DESCRIPTOR_TYPE + "\" or \"" + GROUP_DESCRIPTOR_TYPE + "\".");
       }
-   }
-
-   /**
-    * Constructs a new <code>DescriptorBuilder</code>.
-    */
-   private DescriptorBuilder() {
-      // empty
-
-      // NOTE: No tracing is performed, since this constructor is never used
    }
 }

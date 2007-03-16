@@ -16,29 +16,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class NoSuchFunctionException
-extends Exception {
-
-   /**
-    * Creates the error message for this exception.
-    *
-    * @param functionName
-    *    the name of the function, or <code>null</code>.
-    *
-    * @return
-    *    the error message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>functionName == null</code>.
-    */
-   private static String createMessage(String functionName)
-   throws IllegalArgumentException {
-
-      // Function name specified
-      MandatoryArgumentChecker.check("functionName", functionName);
-
-      return "The function \"" + functionName + "\" cannot be found.";
-   }
+public final class NoSuchFunctionException extends Exception {
 
    /**
     * The name of the function.
@@ -59,6 +37,27 @@ extends Exception {
    throws IllegalArgumentException {
       super(createMessage(functionName));
       _functionName = functionName;
+   }
+
+   /**
+    * Creates the error message for this exception.
+    *
+    * @param functionName
+    *    the name of the function, or <code>null</code>.
+    *
+    * @return
+    *    the error message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>functionName == null</code>.
+    */
+   private static String createMessage(String functionName)
+   throws IllegalArgumentException {
+
+      // Function name specified
+      MandatoryArgumentChecker.check("functionName", functionName);
+
+      return "The function \"" + functionName + "\" cannot be found.";
    }
 
    /**

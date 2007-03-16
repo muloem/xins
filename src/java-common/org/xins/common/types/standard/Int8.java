@@ -26,6 +26,45 @@ public class Int8 extends Type {
    public final static Int8 SINGLETON = new Int8();
 
    /**
+    * The minimum value that this Int8 can have.
+    */
+   private final byte _minimum;
+
+   /**
+    * The maximum value that this Int8 can have.
+    */
+   private final byte _maximum;
+
+   /**
+    * Constructs a new <code>Int8</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Int8() {
+      this("_int8", Byte.MIN_VALUE, Byte.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int8</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Int8(String name, byte minimum, byte maximum) {
+      super(name, Byte.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>byte</code>.
     *
@@ -102,16 +141,6 @@ public class Int8 extends Type {
    }
 
    /**
-    * The minimum value that this Int8 can have.
-    */
-   private final byte _minimum;
-
-   /**
-    * The maximum value that this Int8 can have.
-    */
-   private final byte _maximum;
-
-   /**
     * Converts the specified <code>byte</code> to a string.
     *
     * @param value
@@ -123,35 +152,6 @@ public class Int8 extends Type {
    public static String toString(byte value) {
 
       return String.valueOf(value);
-   }
-
-   /**
-    * Constructs a new <code>Int8</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Int8() {
-      this("_int8", Byte.MIN_VALUE, Byte.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Int8</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Int8(String name, byte minimum, byte maximum) {
-      super(name, Byte.class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    protected boolean isValidValueImpl(String value) {

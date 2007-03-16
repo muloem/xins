@@ -14,8 +14,35 @@ package org.xins.server;
  *
  * @since XINS 1.0.0
  */
-public final class AccessDeniedException
-extends Exception {
+public final class AccessDeniedException extends Exception {
+
+   /**
+    * The IP address which is denied for the given function. This field may be
+    * <code>null</code>.
+    */
+   private final String _ip;
+
+   /**
+    * The name of the function which does not grant the access. This field may
+    * be <code>null</code>.
+    */
+   private final String _functionName;
+
+   /**
+    * Constructs a new <code>AccessDeniedException</code> for the specified
+    * IP address and function name.
+    *
+    * @param ip
+    *    the IP address, or <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function, or <code>null</code>.
+    */
+   AccessDeniedException(String ip, String functionName) {
+      super(createMessage(ip, functionName));
+      _ip = ip;
+      _functionName = functionName;
+   }
 
    /**
     * Creates the error message for this exception.
@@ -48,34 +75,6 @@ extends Exception {
       } else {
          return "An unspecified function cannot be accessed.";
       }
-   }
-
-   /**
-    * The IP address which is denied for the given function. This field may be
-    * <code>null</code>.
-    */
-   private final String _ip;
-
-   /**
-    * The name of the function which does not grant the access. This field may
-    * be <code>null</code>.
-    */
-   private final String _functionName;
-
-   /**
-    * Constructs a new <code>AccessDeniedException</code> for the specified
-    * IP address and function name.
-    *
-    * @param ip
-    *    the IP address, or <code>null</code>.
-    *
-    * @param functionName
-    *    the name of the function, or <code>null</code>.
-    */
-   AccessDeniedException(String ip, String functionName) {
-      super(createMessage(ip, functionName));
-      _ip = ip;
-      _functionName = functionName;
    }
 
    /**

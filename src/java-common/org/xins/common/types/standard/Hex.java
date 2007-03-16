@@ -27,6 +27,45 @@ public class Hex extends Type {
    public final static Hex SINGLETON = new Hex();
 
    /**
+    * The minimum number of bytes this Hex can have.
+    */
+   private final int _minimum;
+
+   /**
+    * The maximum number of bytes this Hex can have.
+    */
+   private final int _maximum;
+
+   /**
+    * Constructs a new <code>Hex</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Hex() {
+      this("_hex", 0, Integer.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Hex</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.# minimum number of bytes this Hex can have
+    *
+    * @param maximum
+    *    the maximum for the value.# maximum number of bytes this Hex can have
+    */
+   protected Hex(String name, int minimum, int maximum) {
+      super(name, byte[].class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>byte[]</code> value.
     *
@@ -105,45 +144,6 @@ public class Hex extends Type {
       } else {
          return HexConverter.toHexString(value);
       }
-   }
-
-   /**
-    * The minimum number of bytes this Hex can have.
-    */
-   private final int _minimum;
-
-   /**
-    * The maximum number of bytes this Hex can have.
-    */
-   private final int _maximum;
-
-   /**
-    * Constructs a new <code>Hex</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Hex() {
-      this("_hex", 0, Integer.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Hex</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.# minimum number of bytes this Hex can have
-    *
-    * @param maximum
-    *    the maximum for the value.# maximum number of bytes this Hex can have
-    */
-   protected Hex(String name, int minimum, int maximum) {
-      super(name, byte[].class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    /**

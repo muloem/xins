@@ -19,37 +19,7 @@ import org.xins.common.text.TextUtils;
  *
  * @see InvalidPropertyValueException
  */
-public final class MissingRequiredPropertyException
-extends Exception {
-
-   /**
-    * Creates message based on the specified constructor argument.
-    *
-    * @param propertyName
-    *    the name of the property, cannot be <code>null</code>.
-    *
-    * @param detail
-    *    a more detailed description of why this property is required in this
-    *    context, can be <code>null</code>.
-    *
-    * @return
-    *    the message, never <code>null</code>.
-    */
-   private static String createMessage(String propertyName, String detail) {
-
-      // Construct the message
-      String message = "No value is set for the required property \"" + propertyName;
-
-      // Append the detail message, if any
-      detail = TextUtils.trim(detail, null);
-      if (detail != null) {
-         message += "\": " + detail;
-      } else {
-         message += "\".";
-      }
-
-      return message;
-   }
+public final class MissingRequiredPropertyException extends Exception {
 
    /**
     * The name of the property. Never <code>null</code>.
@@ -101,6 +71,35 @@ extends Exception {
    public MissingRequiredPropertyException(String propertyName)
    throws IllegalArgumentException {
       this(propertyName, null);
+   }
+
+   /**
+    * Creates message based on the specified constructor argument.
+    *
+    * @param propertyName
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @param detail
+    *    a more detailed description of why this property is required in this
+    *    context, can be <code>null</code>.
+    *
+    * @return
+    *    the message, never <code>null</code>.
+    */
+   private static String createMessage(String propertyName, String detail) {
+
+      // Construct the message
+      String message = "No value is set for the required property \"" + propertyName;
+
+      // Append the detail message, if any
+      detail = TextUtils.trim(detail, null);
+      if (detail != null) {
+         message += "\": " + detail;
+      } else {
+         message += "\".";
+      }
+
+      return message;
    }
 
    /**

@@ -19,6 +19,13 @@ import org.xins.common.text.TextUtils;
 public final class Utils {
 
    /**
+    * Constructs a new <code>Utils</code> object.
+    */
+   private Utils() {
+      // empty
+   }
+
+   /**
     * Retrieves the actual (major) Java version.
     *
     * @return
@@ -592,12 +599,4 @@ public final class Utils {
 
       return getNameOfClass(object.getClass());
    }
-
-   /**
-    * Constructs a new <code>Utils</code> object.
-    */
-   private Utils() {
-      // empty
-   }
-
 }

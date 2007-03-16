@@ -21,32 +21,7 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @see Manageable#bootstrap(org.xins.common.collections.PropertyReader)
  */
-public final class BootstrapException
-extends Exception {
-
-   /**
-    * Creates a message based on the specified constructor argument.
-    *
-    * @param cause
-    *    the cause exception, cannot be <code>null</code>.
-    *
-    * @return
-    *    the message, never <code>null</code>.
-    */
-   private static String createMessage(Throwable cause)
-   throws IllegalArgumentException {
-
-      String exceptionMessage = cause.getMessage();
-
-      String message = "Caught " + cause.getClass().getName();
-      if (exceptionMessage != null && exceptionMessage.length() > 0) {
-         message += ". Message: \"" + exceptionMessage + "\".";
-      } else {
-         message += '.';
-      }
-
-      return message;
-   }
+public final class BootstrapException extends Exception {
 
    /**
     * Constructs a new <code>BootstrapException</code> with the specified
@@ -73,5 +48,29 @@ extends Exception {
    throws IllegalArgumentException {
       super(createMessage(cause));
       ExceptionUtils.setCause(this, cause);
+   }
+
+   /**
+    * Creates a message based on the specified constructor argument.
+    *
+    * @param cause
+    *    the cause exception, cannot be <code>null</code>.
+    *
+    * @return
+    *    the message, never <code>null</code>.
+    */
+   private static String createMessage(Throwable cause)
+   throws IllegalArgumentException {
+
+      String exceptionMessage = cause.getMessage();
+
+      String message = "Caught " + cause.getClass().getName();
+      if (exceptionMessage != null && exceptionMessage.length() > 0) {
+         message += ". Message: \"" + exceptionMessage + "\".";
+      } else {
+         message += '.';
+      }
+
+      return message;
    }
 }

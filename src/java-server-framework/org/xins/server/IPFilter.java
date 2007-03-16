@@ -55,6 +55,56 @@ public final class IPFilter {
    private static final char IP_MASK_DELIMETER = '/';
 
    /**
+    * The expression of this filter, cannot be <code>null</code>.
+    */
+   private final String _expression;
+
+   /**
+    * The base IP address, as a <code>String</code>. Never <code>null</code>.
+    */
+   private final String _baseIPString;
+
+   /**
+    * The base IP address.
+    */
+   private final int _baseIP;
+
+   /**
+    * The mask of this filter. Can only have a value between 0 and 32.
+    */
+   private final int _mask;
+
+   /**
+    * The shift value, which equals <code>32 - </code>{@link #_mask}. Always
+    * between 0 and 32.
+    */
+   private final int _shift;
+
+   /**
+    * Creates an <code>IPFilter</code> object for the specified filter
+    * expression. The expression consists of a base IP address and a bit
+    * count. The bit count indicates how many bits in an IP address must match
+    * the bits in the base IP address.
+    *
+    * @param ipString
+    *    the base IP address, as a character string, should not be
+    *    <code>null</code>.
+    *
+    * @param ip
+    *    the base IP address, as an <code>int</code>.
+    *
+    * @param mask
+    *    the mask, between 0 and 32 (inclusive).
+    */
+   private IPFilter(String ipString, int ip, int mask) {
+      _expression   = ipString + IP_MASK_DELIMETER + mask;
+      _baseIPString = ipString;
+      _baseIP       = ip;
+      _mask         = mask;
+      _shift        = 32 - _mask;
+   }
+
+   /**
     * Creates an <code>IPFilter</code> object for the specified filter
     * expression. The expression consists of a base IP address and a bit
     * count. The bit count indicates how many bits in an IP address must match
@@ -148,56 +198,6 @@ public final class IPFilter {
       }
 
       return mask;
-   }
-
-   /**
-    * The expression of this filter, cannot be <code>null</code>.
-    */
-   private final String _expression;
-
-   /**
-    * The base IP address, as a <code>String</code>. Never <code>null</code>.
-    */
-   private final String _baseIPString;
-
-   /**
-    * The base IP address.
-    */
-   private final int _baseIP;
-
-   /**
-    * The mask of this filter. Can only have a value between 0 and 32.
-    */
-   private final int _mask;
-
-   /**
-    * The shift value, which equals <code>32 - </code>{@link #_mask}. Always
-    * between 0 and 32.
-    */
-   private final int _shift;
-
-   /**
-    * Creates an <code>IPFilter</code> object for the specified filter
-    * expression. The expression consists of a base IP address and a bit
-    * count. The bit count indicates how many bits in an IP address must match
-    * the bits in the base IP address.
-    *
-    * @param ipString
-    *    the base IP address, as a character string, should not be
-    *    <code>null</code>.
-    *
-    * @param ip
-    *    the base IP address, as an <code>int</code>.
-    *
-    * @param mask
-    *    the mask, between 0 and 32 (inclusive).
-    */
-   private IPFilter(String ipString, int ip, int mask) {
-      _expression   = ipString + IP_MASK_DELIMETER + mask;
-      _baseIPString = ipString;
-      _baseIP       = ip;
-      _mask         = mask;
-      _shift        = 32 - _mask;
    }
 
    /**

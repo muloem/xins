@@ -57,6 +57,62 @@ public final class AccessRuleList implements AccessRuleContainer {
    static final AccessRuleList EMPTY = new AccessRuleList(new AccessRuleContainer[0]);
 
    /**
+    * The list of rules. Cannot be <code>null</code>.
+    */
+   private AccessRuleContainer[] _rules;
+
+   /**
+    * The string representation of this instance. Cannot be <code>null</code>.
+    */
+   private String _asString;
+
+   /**
+    * Flag that indicates whether this object is disposed.
+    */
+   private boolean _disposed;
+
+   /**
+    * Creates a new <code>AccessRuleList</code> object. The passed
+    * {@link AccessRuleContainer} array is assumed to be owned by the
+    * constructor.
+    *
+    * @param rules
+    *    the list of rules, not <code>null</code> and should not contain any
+    *    duplicate or <code>null</code> elements; if one of these latter 2
+    *    constraints are violated, the behaviour is undefined.
+    *
+    * @throws NullPointerException
+    *    if <code>rules == null</code>.
+    */
+   private AccessRuleList(AccessRuleContainer[] rules)
+   throws NullPointerException {
+
+      // Count number of rules (may throw NPE)
+      int ruleCount = rules.length;
+
+      // Build string representation and log
+      StringBuffer buffer = new StringBuffer(ruleCount * 40);
+      if (ruleCount > 0) {
+         String s = rules[0].toString();
+         buffer.append(s);
+         Log.log_3429(0, s);
+
+         for (int i = 1; i < ruleCount; i++) {
+            s = rules[i].toString();
+
+            buffer.append(';');
+            buffer.append(s);
+
+            Log.log_3429(i, s);
+         }
+      }
+      _asString = buffer.toString();
+
+      // Store the rules
+      _rules = rules;
+   }
+
+   /**
     * Parses the specified character string to construct a new
     * <code>AccessRuleList</code> object, with the specified watch interval
     * for referenced files.
@@ -125,62 +181,6 @@ public final class AccessRuleList implements AccessRuleContainer {
       }
 
       return new AccessRuleList(rules);
-   }
-
-   /**
-    * The list of rules. Cannot be <code>null</code>.
-    */
-   private AccessRuleContainer[] _rules;
-
-   /**
-    * The string representation of this instance. Cannot be <code>null</code>.
-    */
-   private String _asString;
-
-   /**
-    * Flag that indicates whether this object is disposed.
-    */
-   private boolean _disposed;
-
-   /**
-    * Creates a new <code>AccessRuleList</code> object. The passed
-    * {@link AccessRuleContainer} array is assumed to be owned by the
-    * constructor.
-    *
-    * @param rules
-    *    the list of rules, not <code>null</code> and should not contain any
-    *    duplicate or <code>null</code> elements; if one of these latter 2
-    *    constraints are violated, the behaviour is undefined.
-    *
-    * @throws NullPointerException
-    *    if <code>rules == null</code>.
-    */
-   private AccessRuleList(AccessRuleContainer[] rules)
-   throws NullPointerException {
-
-      // Count number of rules (may throw NPE)
-      int ruleCount = rules.length;
-
-      // Build string representation and log
-      StringBuffer buffer = new StringBuffer(ruleCount * 40);
-      if (ruleCount > 0) {
-         String s = rules[0].toString();
-         buffer.append(s);
-         Log.log_3429(0, s);
-
-         for (int i = 1; i < ruleCount; i++) {
-            s = rules[i].toString();
-
-            buffer.append(';');
-            buffer.append(s);
-
-            Log.log_3429(i, s);
-         }
-      }
-      _asString = buffer.toString();
-
-      // Store the rules
-      _rules = rules;
    }
 
    /**

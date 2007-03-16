@@ -55,35 +55,6 @@ public final class GroupDescriptor extends Descriptor {
    private static final Random RANDOM = new Random();
 
    /**
-    * Gets a group type by identifier.
-    *
-    * @param identifier
-    *    the identifier for the group, cannot be <code>null</code>.
-    *
-    * @return
-    *    the type with the specified identifier, or <code>null</code> if there
-    *    is no matching type.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>identifier == null</code>.
-    */
-   public static Type getType(String identifier)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("identifier", identifier);
-
-      // Match
-      if (RANDOM_TYPE_ID.equals(identifier)) {
-         return RANDOM_TYPE;
-      } else if (ORDERED_TYPE_ID.equals(identifier)) {
-         return ORDERED_TYPE;
-      } else {
-         return null;
-      }
-   }
-
-   /**
     * Constructs a new <code>GroupDescriptor</code>. The members to be
     * included must be passed. The array of members cannot contain any
     * <code>null</code> elements. It may contain duplicates, though.
@@ -128,6 +99,35 @@ public final class GroupDescriptor extends Descriptor {
       // Recursively add all TargetDescriptor instances to the Map
       _targetsByCRC = new HashMap();
       addTargetsByCRC(members);
+   }
+
+   /**
+    * Gets a group type by identifier.
+    *
+    * @param identifier
+    *    the identifier for the group, cannot be <code>null</code>.
+    *
+    * @return
+    *    the type with the specified identifier, or <code>null</code> if there
+    *    is no matching type.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>identifier == null</code>.
+    */
+   public static Type getType(String identifier)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("identifier", identifier);
+
+      // Match
+      if (RANDOM_TYPE_ID.equals(identifier)) {
+         return RANDOM_TYPE;
+      } else if (ORDERED_TYPE_ID.equals(identifier)) {
+         return ORDERED_TYPE;
+      } else {
+         return null;
+      }
    }
 
    /**

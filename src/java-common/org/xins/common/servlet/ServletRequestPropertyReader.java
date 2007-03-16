@@ -29,49 +29,7 @@ import org.xins.common.text.URLEncoding;
  *
  * @since XINS 1.0.0
  */
-public final class ServletRequestPropertyReader
-extends AbstractPropertyReader {
-
-   /**
-    * Sets a parameter to the specified value. If the parameter is already set
-    * to a different value, then an exception is thrown.
-    *
-    * <p>This function is used during parsing of a HTTP query string, which is
-    * why a {@link ParseException} is thrown in case of conflicting values.
-    *
-    * @param properties
-    *    the set of parameters, should not be <code>null</code>.
-    *
-    * @param key
-    *    the parameter key, should not be <code>null</code>.
-    *
-    * @param value
-    *    the parameter value, should not be <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>properties == null</code>.
-    *
-    * @throws ParseException
-    *    if a conflicting value is found for a certain parameter.
-    */
-   private static void add(Map properties, String key, String value)
-   throws NullPointerException, ParseException {
-
-      Object existingValue = properties.get(key);
-      if (existingValue != null && ! existingValue.equals(value)) {
-         String detail = "Conflicting values found for parameter \""
-                       + key
-                       + "\": \""
-                       + (String) existingValue
-                       + "\" versus \""
-                       + value
-                       + "\".";
-         throw new ParseException("Failed to parse HTTP query string.",
-                                  (Throwable) null, detail);
-      }
-
-      properties.put(key, value);
-   }
+public final class ServletRequestPropertyReader extends AbstractPropertyReader {
 
    /**
     * Constructs a new <code>ServletRequestPropertyReader</code> for a
@@ -145,5 +103,46 @@ extends AbstractPropertyReader {
                                   cause,
                                   "URL decoding failed.");
       }
+   }
+
+   /**
+    * Sets a parameter to the specified value. If the parameter is already set
+    * to a different value, then an exception is thrown.
+    *
+    * <p>This function is used during parsing of a HTTP query string, which is
+    * why a {@link ParseException} is thrown in case of conflicting values.
+    *
+    * @param properties
+    *    the set of parameters, should not be <code>null</code>.
+    *
+    * @param key
+    *    the parameter key, should not be <code>null</code>.
+    *
+    * @param value
+    *    the parameter value, should not be <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>properties == null</code>.
+    *
+    * @throws ParseException
+    *    if a conflicting value is found for a certain parameter.
+    */
+   private static void add(Map properties, String key, String value)
+   throws NullPointerException, ParseException {
+
+      Object existingValue = properties.get(key);
+      if (existingValue != null && ! existingValue.equals(value)) {
+         String detail = "Conflicting values found for parameter \""
+                       + key
+                       + "\": \""
+                       + (String) existingValue
+                       + "\" versus \""
+                       + value
+                       + "\".";
+         throw new ParseException("Failed to parse HTTP query string.",
+                                  (Throwable) null, detail);
+      }
+
+      properties.put(key, value);
    }
 }

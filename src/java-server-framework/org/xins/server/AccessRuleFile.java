@@ -49,43 +49,6 @@ import org.xins.common.text.ParseException;
 public class AccessRuleFile implements AccessRuleContainer {
 
    /**
-    * Returns the next token in the descriptor.
-    *
-    * @param descriptor
-    *    the original descriptor, useful when constructing the message for a
-    *    {@link ParseException}, when appropriate, should not be
-    *    <code>null</code>.
-    *
-    * @param tokenizer
-    *    the {@link StringTokenizer} to retrieve the next token from, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the next token, never <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>tokenizer == null</code>
-    *
-    * @throws ParseException
-    *    if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
-    *    hasMoreTokens}() == false</code>.
-    */
-   private static String nextToken(String          descriptor,
-                                   StringTokenizer tokenizer)
-   throws ParseException {
-
-      if (! tokenizer.hasMoreTokens()) {
-         String message = "The string \""
-                        + descriptor
-                        + "\" is invalid as an access rule file descriptor. "
-                        + "More tokens expected.";
-         throw new ParseException(message);
-      } else {
-         return tokenizer.nextToken();
-      }
-   }
-
-   /**
     * The ACL file.
     */
    private String _file;
@@ -190,6 +153,43 @@ public class AccessRuleFile implements AccessRuleContainer {
 
       // Generate the string representation
       _asString = "file " + _file;
+   }
+
+   /**
+    * Returns the next token in the descriptor.
+    *
+    * @param descriptor
+    *    the original descriptor, useful when constructing the message for a
+    *    {@link ParseException}, when appropriate, should not be
+    *    <code>null</code>.
+    *
+    * @param tokenizer
+    *    the {@link StringTokenizer} to retrieve the next token from, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the next token, never <code>null</code>.
+    *
+    * @throws NullPointerException
+    *    if <code>tokenizer == null</code>
+    *
+    * @throws ParseException
+    *    if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
+    *    hasMoreTokens}() == false</code>.
+    */
+   private static String nextToken(String          descriptor,
+                                   StringTokenizer tokenizer)
+   throws ParseException {
+
+      if (! tokenizer.hasMoreTokens()) {
+         String message = "The string \""
+                        + descriptor
+                        + "\" is invalid as an access rule file descriptor. "
+                        + "More tokens expected.";
+         throw new ParseException(message);
+      } else {
+         return tokenizer.nextToken();
+      }
    }
 
    /**

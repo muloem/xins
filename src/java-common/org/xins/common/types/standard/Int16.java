@@ -26,6 +26,45 @@ public class Int16 extends Type {
    public final static Int16 SINGLETON = new Int16();
 
    /**
+    * The minimum value that this Int16 can have.
+    */
+   private final short _minimum;
+
+   /**
+    * The maximum value that this Int16 can have.
+    */
+   private final short _maximum;
+
+   /**
+    * Constructs a new <code>Int16</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Int16() {
+      this("_int16", Short.MIN_VALUE, Short.MAX_VALUE);
+   }
+
+   /**
+    * Constructs a new <code>Int16</code> object (constructor for
+    * subclasses).
+    *
+    * @param name
+    *    the name of this type, cannot be <code>null</code>.
+    *
+    * @param minimum
+    *    the minimum for the value.
+    *
+    * @param maximum
+    *    the maximum for the value.
+    */
+   protected Int16(String name, short minimum, short maximum) {
+      super(name, Short.class);
+
+      _minimum = minimum;
+      _maximum = maximum;
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>short</code>.
     *
@@ -112,45 +151,6 @@ public class Int16 extends Type {
     */
    public static String toString(short value) {
       return String.valueOf(value);
-   }
-
-   /**
-    * The minimum value that this Int16 can have.
-    */
-   private final short _minimum;
-
-   /**
-    * The maximum value that this Int16 can have.
-    */
-   private final short _maximum;
-
-   /**
-    * Constructs a new <code>Int16</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Int16() {
-      this("_int16", Short.MIN_VALUE, Short.MAX_VALUE);
-   }
-
-   /**
-    * Constructs a new <code>Int16</code> object (constructor for
-    * subclasses).
-    *
-    * @param name
-    *    the name of this type, cannot be <code>null</code>.
-    *
-    * @param minimum
-    *    the minimum for the value.
-    *
-    * @param maximum
-    *    the maximum for the value.
-    */
-   protected Int16(String name, short minimum, short maximum) {
-      super(name, Short.class);
-
-      _minimum = minimum;
-      _maximum = maximum;
    }
 
    protected boolean isValidValueImpl(String value) {

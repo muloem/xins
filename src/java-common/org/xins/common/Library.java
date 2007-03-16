@@ -17,6 +17,13 @@ package org.xins.common;
 public final class Library {
 
    /**
+    * Constructs a new <code>Library</code> object.
+    */
+   private Library() {
+      // empty
+   }
+
+   /**
     * Returns the version of this library.
     *
     * @return
@@ -25,12 +32,5 @@ public final class Library {
     */
    public static String getVersion() {
       return "%%VERSION%%";
-   }
-
-   /**
-    * Constructs a new <code>Library</code> object.
-    */
-   private Library() {
-      // empty
    }
 }

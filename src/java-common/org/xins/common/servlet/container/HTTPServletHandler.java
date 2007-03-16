@@ -47,20 +47,6 @@ import org.xins.common.text.ParseException;
  */
 public class HTTPServletHandler {
 
-   // TODO: This class should be cleaned up further
-   /**
-    * Initializes the logging subsystem with fallback default settings.
-    */
-   private static final void configureLoggerFallback() {
-      Properties settings = new Properties();
-      settings.setProperty("log4j.rootLogger",                                "ALL, console");
-      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
-      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
-      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
-      settings.setProperty("log4j.logger.org.xins.",                          "INFO");
-      PropertyConfigurator.configure(settings);
-   }
-
    /**
     * The default port number is 8080.
     */
@@ -221,6 +207,20 @@ public class HTTPServletHandler {
    public HTTPServletHandler(String servletClassName, int port, boolean daemon) throws ServletException, IOException {
       this(port, daemon);
       addServlet(servletClassName, "/");
+   }
+
+   // TODO: This class should be cleaned up further
+   /**
+    * Initializes the logging subsystem with fallback default settings.
+    */
+   private static final void configureLoggerFallback() {
+      Properties settings = new Properties();
+      settings.setProperty("log4j.rootLogger",                                "ALL, console");
+      settings.setProperty("log4j.appender.console",                          "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console.layout",                   "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%16x %6c{1} %-6p %m%n");
+      settings.setProperty("log4j.logger.org.xins.",                          "INFO");
+      PropertyConfigurator.configure(settings);
    }
 
    /**

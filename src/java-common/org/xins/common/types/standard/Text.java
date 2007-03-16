@@ -25,6 +25,15 @@ public final class Text extends Type {
    public final static Text SINGLETON = new Text();
 
    /**
+    * Constructs a new <code>Text</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Text() {
+      super("_text", String.class);
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>String</code>. This is in fact a no-op, the method will just
     * return the input value. This method exists to be in line with the
@@ -69,15 +78,6 @@ public final class Text extends Type {
    public static String fromStringForOptional(String string)
    throws TypeValueException {
       return string;
-   }
-
-   /**
-    * Constructs a new <code>Text</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Text() {
-      super("_text", String.class);
    }
 
    protected Object fromStringImpl(String string) {

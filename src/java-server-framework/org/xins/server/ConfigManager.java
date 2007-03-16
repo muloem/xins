@@ -55,40 +55,6 @@ final class ConfigManager {
    private static final Object RUNTIME_PROPERTIES_LOCK = new Object();
 
    /**
-    * Initializes the logging subsystem with fallback default settings.
-    */
-   static void configureLoggerFallback() {
-
-      Properties settings = new Properties();
-
-      // Send all log messages to the logger named 'console'
-      settings.setProperty(
-         "log4j.rootLogger",
-         "ALL, console");
-
-      // Define an appender for the console
-      settings.setProperty(
-         "log4j.appender.console",
-         "org.apache.log4j.ConsoleAppender");
-
-      // Use a pattern-layout for the appender
-      settings.setProperty(
-         "log4j.appender.console.layout",
-         "org.apache.log4j.PatternLayout");
-
-      // Define the pattern for the appender
-      settings.setProperty(
-         "log4j.appender.console.layout.ConversionPattern",
-         "%16x %6c{1} %-6p %m%n");
-
-      // Do not show the debug logs produced by XINS.
-      settings.setProperty("log4j.logger.org.xins.", "INFO");
-
-      // Perform Log4J configuration
-      PropertyConfigurator.configure(settings);
-   }
-
-   /**
     * The <code>Engine</code> that owns this <code>ConfigManager</code>. Never
     * <code>null</code>.
     */
@@ -144,6 +110,40 @@ final class ConfigManager {
       _engine             = engine;
       _config             = config;
       _configFileListener = new ConfigurationFileListener();
+   }
+
+   /**
+    * Initializes the logging subsystem with fallback default settings.
+    */
+   static void configureLoggerFallback() {
+
+      Properties settings = new Properties();
+
+      // Send all log messages to the logger named 'console'
+      settings.setProperty(
+         "log4j.rootLogger",
+         "ALL, console");
+
+      // Define an appender for the console
+      settings.setProperty(
+         "log4j.appender.console",
+         "org.apache.log4j.ConsoleAppender");
+
+      // Use a pattern-layout for the appender
+      settings.setProperty(
+         "log4j.appender.console.layout",
+         "org.apache.log4j.PatternLayout");
+
+      // Define the pattern for the appender
+      settings.setProperty(
+         "log4j.appender.console.layout.ConversionPattern",
+         "%16x %6c{1} %-6p %m%n");
+
+      // Do not show the debug logs produced by XINS.
+      settings.setProperty("log4j.logger.org.xins.", "INFO");
+
+      // Perform Log4J configuration
+      PropertyConfigurator.configure(settings);
    }
 
    /**

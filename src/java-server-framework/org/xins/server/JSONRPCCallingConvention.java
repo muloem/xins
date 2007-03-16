@@ -56,30 +56,6 @@ import org.xins.logdoc.ExceptionUtils;
 public class JSONRPCCallingConvention extends CallingConvention {
 
    /**
-    * Returns the XML-RPC equivalent for the XINS type.
-    *
-    * @param parameterType
-    *    the XINS type, cannot be <code>null</code>.
-    *
-    * @return
-    *    the XML-RPC type, never <code>null</code>.
-    */
-   private static String convertType(Type parameterType) {
-      if (parameterType instanceof org.xins.common.types.standard.Boolean) {
-         return "bit";
-      } else if (parameterType instanceof org.xins.common.types.standard.Int8
-            || parameterType instanceof org.xins.common.types.standard.Int16
-            || parameterType instanceof org.xins.common.types.standard.Int32
-            || parameterType instanceof org.xins.common.types.standard.Int64
-            || parameterType instanceof org.xins.common.types.standard.Float32
-            || parameterType instanceof org.xins.common.types.standard.Float64) {
-         return "num";
-      } else {
-         return "str";
-      }
-   }
-
-   /**
     * The content type of the HTTP response.
     */
    public static final String RESPONSE_CONTENT_TYPE = "application/json";
@@ -101,6 +77,30 @@ public class JSONRPCCallingConvention extends CallingConvention {
    public JSONRPCCallingConvention(API api) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("api", api);
       _api = api;
+   }
+
+   /**
+    * Returns the XML-RPC equivalent for the XINS type.
+    *
+    * @param parameterType
+    *    the XINS type, cannot be <code>null</code>.
+    *
+    * @return
+    *    the XML-RPC type, never <code>null</code>.
+    */
+   private static String convertType(Type parameterType) {
+      if (parameterType instanceof org.xins.common.types.standard.Boolean) {
+         return "bit";
+      } else if (parameterType instanceof org.xins.common.types.standard.Int8
+            || parameterType instanceof org.xins.common.types.standard.Int16
+            || parameterType instanceof org.xins.common.types.standard.Int32
+            || parameterType instanceof org.xins.common.types.standard.Int64
+            || parameterType instanceof org.xins.common.types.standard.Float32
+            || parameterType instanceof org.xins.common.types.standard.Float64) {
+         return "num";
+      } else {
+         return "str";
+      }
    }
 
    protected String[] getSupportedMethods() {

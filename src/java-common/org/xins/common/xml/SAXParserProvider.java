@@ -54,6 +54,13 @@ public class SAXParserProvider {
    }
 
    /**
+    * Creates a new <code>SAXParserProvider</code>.
+    */
+   private SAXParserProvider() {
+      // empty
+   }
+
+   /**
     * Returns a <code>SAXParser</code> instance that can be used in the
     * current thread. The <code>SAXParser</code> won't perform the validation
     * of the XML.
@@ -109,12 +116,5 @@ public class SAXParserProvider {
          throw e;
       }
       return parser;
-   }
-
-   /**
-    * Creates a new <code>SAXParserProvider</code>.
-    */
-   private SAXParserProvider() {
-      // empty
    }
 }

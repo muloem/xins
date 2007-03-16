@@ -70,6 +70,14 @@ public class Timestamp extends Type {
 
 
    /**
+    * Constructs a new <code>Timestamp</code> instance.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Timestamp() {
+      super("_timestamp", Value.class);
+   }
+   /**
     * Constructs a <code>Timestamp.Value</code> with the value of the current
     * time.
     *
@@ -221,15 +229,6 @@ public class Timestamp extends Type {
       buffer.append(second);
 
       return buffer.toString();
-   }
-
-   /**
-    * Constructs a new <code>Timestamp</code> instance.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Timestamp() {
-      super("_timestamp", Value.class);
    }
 
    protected final boolean isValidValueImpl(String value) {

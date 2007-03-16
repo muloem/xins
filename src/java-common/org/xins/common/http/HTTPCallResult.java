@@ -28,41 +28,6 @@ import org.xins.common.service.TargetDescriptor;
 public final class HTTPCallResult extends CallResult implements HTTPCallResultData {
 
    /**
-    * Checks the constructor arguments that cannot be <code>null</code>.
-    *
-    * @param request
-    *    the call request that resulted in this result, cannot be
-    *    <code>null</code>.
-    *
-    * @param succeededTarget
-    *    the target for which the call succeeded, cannot be <code>null</code>.
-    *
-    * @param data
-    *    the {@link HTTPCallResultData} object returned from the call, cannot
-    *    be <code>null</code>.
-    *
-    * @return
-    *    the argument <code>request</code>, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>request         ==   null
-    *          || succeededTarget ==   null
-    *          || data            ==   null</code>.
-    */
-   private static HTTPCallRequest checkArguments(
-      HTTPCallRequest    request,
-      TargetDescriptor   succeededTarget,
-      HTTPCallResultData data) throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("request",         request,
-                                     "succeededTarget", succeededTarget,
-                                     "data",            data);
-
-      return request;
-   }
-
-   /**
     * The <code>HTTPCallResultData</code> object that contains the information
     * returned from the call. This field cannot be <code>null</code>.
     */
@@ -108,6 +73,41 @@ public final class HTTPCallResult extends CallResult implements HTTPCallResultDa
             succeededTarget, duration, exceptions);
 
       _data = data;
+   }
+
+   /**
+    * Checks the constructor arguments that cannot be <code>null</code>.
+    *
+    * @param request
+    *    the call request that resulted in this result, cannot be
+    *    <code>null</code>.
+    *
+    * @param succeededTarget
+    *    the target for which the call succeeded, cannot be <code>null</code>.
+    *
+    * @param data
+    *    the {@link HTTPCallResultData} object returned from the call, cannot
+    *    be <code>null</code>.
+    *
+    * @return
+    *    the argument <code>request</code>, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>request         ==   null
+    *          || succeededTarget ==   null
+    *          || data            ==   null</code>.
+    */
+   private static HTTPCallRequest checkArguments(
+      HTTPCallRequest    request,
+      TargetDescriptor   succeededTarget,
+      HTTPCallResultData data) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("request",         request,
+                                     "succeededTarget", succeededTarget,
+                                     "data",            data);
+
+      return request;
    }
 
    /**

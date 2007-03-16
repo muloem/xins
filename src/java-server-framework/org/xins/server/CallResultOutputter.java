@@ -79,6 +79,13 @@ public final class CallResultOutputter {
    }
 
    /**
+    * Constructs a new <code>CallResultOutputter</code> object.
+    */
+   private CallResultOutputter() {
+      // empty
+   }
+
+   /**
     * Generates XML for the specified call result. The XML is sent to the
     * specified output stream.
     *
@@ -145,12 +152,5 @@ public final class CallResultOutputter {
 
       // End the root element <result>
       out.write(DOCUMENT_SUFFIX);
-   }
-
-   /**
-    * Constructs a new <code>CallResultOutputter</code> object.
-    */
-   private CallResultOutputter() {
-      // empty
    }
 }

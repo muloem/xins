@@ -18,38 +18,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @see MissingRequiredPropertyException
  */
-public final class InvalidPropertyValueException
-extends Exception {
-
-   /**
-    * Creates message based on the specified constructor arguments.
-    *
-    * @param propertyName
-    *    the name of the property, cannot be <code>null</code>.
-    *
-    * @param propertyValue
-    *    the (invalid) value set for the property, cannot be
-    *    <code>null</code>.
-    *
-    * @param reason
-    *    additional description of the problem, or <code>null</code>.
-    *
-    * @return
-    *    the message, never <code>null</code>.
-    */
-   private static String createMessage(String propertyName, String propertyValue, String reason) {
-
-      // Construct the message
-      String message = "The value \"" + propertyValue +
-            "\" is invalid for property \"" + propertyName;
-      if (reason == null) {
-         message += "\".";
-      } else {
-         message += "\": " + reason;
-      }
-
-      return message;
-   }
+public final class InvalidPropertyValueException extends Exception {
 
    /**
     * The name of the property. Cannot be <code>null</code>.
@@ -115,6 +84,36 @@ extends Exception {
       _propertyName  = propertyName;
       _propertyValue = propertyValue;
       _reason        = reason;
+   }
+
+   /**
+    * Creates message based on the specified constructor arguments.
+    *
+    * @param propertyName
+    *    the name of the property, cannot be <code>null</code>.
+    *
+    * @param propertyValue
+    *    the (invalid) value set for the property, cannot be
+    *    <code>null</code>.
+    *
+    * @param reason
+    *    additional description of the problem, or <code>null</code>.
+    *
+    * @return
+    *    the message, never <code>null</code>.
+    */
+   private static String createMessage(String propertyName, String propertyValue, String reason) {
+
+      // Construct the message
+      String message = "The value \"" + propertyValue +
+            "\" is invalid for property \"" + propertyName;
+      if (reason == null) {
+         message += "\".";
+      } else {
+         message += "\": " + reason;
+      }
+
+      return message;
    }
 
    /**

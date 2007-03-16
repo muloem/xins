@@ -19,8 +19,23 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @since XINS 1.0.0
  */
-public final class DeinitializationException
-extends Exception {
+public final class DeinitializationException extends Exception {
+
+   /**
+    * Constructs a new <code>DeinitializationException</code> with the
+    * specified cause exception.
+    *
+    * @param cause
+    *    the cause exception, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>cause == null</code>.
+    */
+   DeinitializationException(Throwable cause)
+   throws IllegalArgumentException {
+      super(createMessage(cause));
+      ExceptionUtils.setCause(this, cause);
+   }
 
    /**
     * Creates a message based on the specified constructor argument.
@@ -44,21 +59,5 @@ extends Exception {
       }
 
       return message;
-   }
-
-   /**
-    * Constructs a new <code>DeinitializationException</code> with the
-    * specified cause exception.
-    *
-    * @param cause
-    *    the cause exception, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>cause == null</code>.
-    */
-   DeinitializationException(Throwable cause)
-   throws IllegalArgumentException {
-      super(createMessage(cause));
-      ExceptionUtils.setCause(this, cause);
    }
 }

@@ -28,6 +28,15 @@ public final class URL extends Type {
    public final static URL SINGLETON = new org.xins.common.types.standard.URL();
 
    /**
+    * Constructs a new <code>Boolean</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private URL() {
+      super("_url", String.class);
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>String</code>. This is in fact a no-op, the method will just
     * return the input value. This method exists to be in line with the
@@ -78,15 +87,6 @@ public final class URL extends Type {
       } else {
          return string;
       }
-   }
-
-   /**
-    * Constructs a new <code>Boolean</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private URL() {
-      super("_url", String.class);
    }
 
    protected boolean isValidValueImpl(String value) {

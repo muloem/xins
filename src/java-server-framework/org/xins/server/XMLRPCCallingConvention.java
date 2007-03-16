@@ -43,61 +43,6 @@ import org.znerd.xmlenc.XMLOutputter;
 public class XMLRPCCallingConvention extends CallingConvention {
 
    /**
-    * Returns the XML-RPC equivalent for the XINS type.
-    *
-    * @param parameterType
-    *    the XINS type, cannot be <code>null</code>.
-    *
-    * @return
-    *    the XML-RPC type, never <code>null</code>.
-    */
-   private static String convertType(Type parameterType) {
-      if (parameterType instanceof org.xins.common.types.standard.Boolean) {
-         return "boolean";
-      } else if (parameterType instanceof org.xins.common.types.standard.Int8
-            || parameterType instanceof org.xins.common.types.standard.Int16
-            || parameterType instanceof org.xins.common.types.standard.Int32) {
-         return "int";
-      } else if (parameterType instanceof org.xins.common.types.standard.Float32
-            || parameterType instanceof org.xins.common.types.standard.Float64) {
-         return "double";
-      } else if (parameterType instanceof org.xins.common.types.standard.Date
-            || parameterType instanceof org.xins.common.types.standard.Timestamp) {
-         return "dateTime.iso8601";
-      } else if (parameterType instanceof org.xins.common.types.standard.Base64) {
-         return "base64";
-      } else {
-         return "string";
-      }
-   }
-
-   /**
-    * Attribute a number for the error code.
-    *
-    * @param errorCode
-    *    the error code, cannot be <code>null</code>.
-    *
-    * @return
-    *    the error code number, always > 0;
-    */
-   private static int getErrorCodeNumber(String errorCode) {
-      if (errorCode.equals("_DisabledFunction")) {
-         return 1;
-      } else if (errorCode.equals("_InternalError")) {
-         return 2;
-      } else if (errorCode.equals("_InvalidRequest")) {
-         return 3;
-      } else if (errorCode.equals("_InvalidResponse")) {
-         return 4;
-      } else {
-
-         // Defined error code returned. For more information, see the
-         // faultString element.
-         return 99;
-      }
-   }
-
-   /**
     * Secret key used when accessing <code>ProtectedPropertyReader</code>
     * objects.
     */
@@ -156,6 +101,61 @@ public class XMLRPCCallingConvention extends CallingConvention {
 
       // Store the API reference (can be null!)
       _api = api;
+   }
+
+   /**
+    * Returns the XML-RPC equivalent for the XINS type.
+    *
+    * @param parameterType
+    *    the XINS type, cannot be <code>null</code>.
+    *
+    * @return
+    *    the XML-RPC type, never <code>null</code>.
+    */
+   private static String convertType(Type parameterType) {
+      if (parameterType instanceof org.xins.common.types.standard.Boolean) {
+         return "boolean";
+      } else if (parameterType instanceof org.xins.common.types.standard.Int8
+            || parameterType instanceof org.xins.common.types.standard.Int16
+            || parameterType instanceof org.xins.common.types.standard.Int32) {
+         return "int";
+      } else if (parameterType instanceof org.xins.common.types.standard.Float32
+            || parameterType instanceof org.xins.common.types.standard.Float64) {
+         return "double";
+      } else if (parameterType instanceof org.xins.common.types.standard.Date
+            || parameterType instanceof org.xins.common.types.standard.Timestamp) {
+         return "dateTime.iso8601";
+      } else if (parameterType instanceof org.xins.common.types.standard.Base64) {
+         return "base64";
+      } else {
+         return "string";
+      }
+   }
+
+   /**
+    * Attribute a number for the error code.
+    *
+    * @param errorCode
+    *    the error code, cannot be <code>null</code>.
+    *
+    * @return
+    *    the error code number, always > 0;
+    */
+   private static int getErrorCodeNumber(String errorCode) {
+      if (errorCode.equals("_DisabledFunction")) {
+         return 1;
+      } else if (errorCode.equals("_InternalError")) {
+         return 2;
+      } else if (errorCode.equals("_InvalidRequest")) {
+         return 3;
+      } else if (errorCode.equals("_InvalidResponse")) {
+         return 4;
+      } else {
+
+         // Defined error code returned. For more information, see the
+         // faultString element.
+         return 99;
+      }
    }
 
    protected String[] getSupportedMethods() {

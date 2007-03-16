@@ -24,6 +24,38 @@ import org.xins.common.xml.Element;
 public class InvalidRequestException extends StandardErrorCodeException {
 
    /**
+    * Constructs a new <code>InvalidRequestException</code>.
+    *
+    * @param request
+    *    the original request, guaranteed not to be <code>null</code>.
+    *
+    * @param target
+    *    the target on which the request was executed, guaranteed not to be
+    *    <code>null</code>.
+    *
+    * @param duration
+    *    the call duration, guaranteed to be &gt;= <code>0L</code>.
+    *
+    * @param resultData
+    *    the data returned from the call, guaranteed to be <code>null</code>
+    *    and must have an error code set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>result == null
+    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
+    */
+   InvalidRequestException(XINSCallRequest    request,
+                           TargetDescriptor   target,
+                           long               duration,
+                           XINSCallResultData resultData)
+   throws IllegalArgumentException {
+      super(request, target, duration, resultData,
+            determineDetail(resultData));
+
+      // TODO for XINS 1.3: Parse details
+   }
+
+   /**
     * Delegate for the constructor that determines the detail message based on
     * a <code>XINSCallResultData</code> object.
     *
@@ -172,37 +204,5 @@ public class InvalidRequestException extends StandardErrorCodeException {
       } else {
          return null;
       }
-   }
-
-   /**
-    * Constructs a new <code>InvalidRequestException</code>.
-    *
-    * @param request
-    *    the original request, guaranteed not to be <code>null</code>.
-    *
-    * @param target
-    *    the target on which the request was executed, guaranteed not to be
-    *    <code>null</code>.
-    *
-    * @param duration
-    *    the call duration, guaranteed to be &gt;= <code>0L</code>.
-    *
-    * @param resultData
-    *    the data returned from the call, guaranteed to be <code>null</code>
-    *    and must have an error code set.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>result == null
-    *          || result.{@link XINSCallResultData#getErrorCode() getErrorCode()} == null</code>.
-    */
-   InvalidRequestException(XINSCallRequest    request,
-                           TargetDescriptor   target,
-                           long               duration,
-                           XINSCallResultData resultData)
-   throws IllegalArgumentException {
-      super(request, target, duration, resultData,
-            determineDetail(resultData));
-
-      // TODO for XINS 1.3: Parse details
    }
 }

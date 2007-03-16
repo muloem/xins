@@ -51,6 +51,15 @@ public final class PropertyReaderUtils {
    private static final Object SECRET_KEY = new Object();
 
    /**
+    * Constructs a new <code>PropertyReaderUtils</code> object. This
+    * constructor is marked as <code>private</code>, since no objects of this
+    * class should be constructed.
+    */
+   private PropertyReaderUtils() {
+      // empty
+   }
+
+   /**
     * Gets the property with the specified name and converts it to a
     * <code>boolean</code>.
     *
@@ -643,15 +652,6 @@ public final class PropertyReaderUtils {
    }
 
    /**
-    * Constructs a new <code>PropertyReaderUtils</code> object. This
-    * constructor is marked as <code>private</code>, since no objects of this
-    * class should be constructed.
-    */
-   private PropertyReaderUtils() {
-      // empty
-   }
-
-   /**
     * A <code>LogdocSerializable</code> implementation for a
     * <code>PropertyReader</code>.
     *
@@ -661,6 +661,33 @@ public final class PropertyReaderUtils {
     */
    private static final class SerializedPropertyReader
    extends AbstractLogdocSerializable {
+
+      /**
+       * The <code>PropertyReader</code> to serialize. Can be
+       * <code>null</code>.
+       */
+      private final PropertyReader _propertyReader;
+
+      /**
+       * The value to return if the property reader is empty.
+       */
+      private final String _valueIfEmpty;
+
+      /**
+       * The prefix to add if the property reader is not empty.
+       */
+      private final String _prefixIfNotEmpty;
+
+      /**
+       * The suffix to add at the end of the Logdoc serializable.
+       */
+      private final String _suffix;
+
+      /**
+       * The maximum length for the value.
+       */
+      private final int _maxValueLength;
+
       /**
        * Constructs a new <code>SerializedPropertyReader</code> for the
        * specified <code>PropertyReader</code>.
@@ -697,32 +724,6 @@ public final class PropertyReaderUtils {
          _suffix = suffix;
          _maxValueLength = maxValueLength;
       }
-
-      /**
-       * The <code>PropertyReader</code> to serialize. Can be
-       * <code>null</code>.
-       */
-      private final PropertyReader _propertyReader;
-
-      /**
-       * The value to return if the property reader is empty.
-       */
-      private final String _valueIfEmpty;
-
-      /**
-       * The prefix to add if the property reader is not empty.
-       */
-      private final String _prefixIfNotEmpty;
-
-      /**
-       * The suffix to add at the end of the Logdoc serializable.
-       */
-      private final String _suffix;
-
-      /**
-       * The maximum length for the value.
-       */
-      private final int _maxValueLength;
 
       /**
        * Initializes this <code>AbstractLogdocSerializable</code> object.

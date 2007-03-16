@@ -14,9 +14,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Simplified description of the call configurations.
   - The CallConfig classes are no longer Thread safe.
   - Removed unneeded comments.
-  - Moved createPattern method from TextUtils to PatternUtils. The 
+  - Moved createPattern method from TextUtils to PatternUtils. The
     HungarianMapperTask won't then fail because of missing oro library.
   - Moved the class fields before the constructor.
+  - Moved the static methods after the constructor.
 
 * XINS/Java Server Framework:
   - Added a new bootstrap property to specify an error page when the
@@ -30,6 +31,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Fixed possible error if the function is empty.
   - Removed unneeded comments.
   - Moved the class fields before the constructor.
+  - Moved the static methods after the constructor.
 
 * XINS/Java Client Framework:
   - The UnacceptableRequestException now extends XINSCallException instead
@@ -41,6 +43,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - The XINSCallConfig class is no longer Thread safe.
   - Removed unneeded comments.
   - Moved the class fields before the constructor.
+  - Moved the static methods after the constructor.
 
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.
@@ -78,11 +81,11 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
 
 * Logdoc:
-  - The following classes have been deprecated as no longer used: 
+  - The following classes have been deprecated as no longer used:
     AbstractLogdocSerializable, LogdocHexConverter, LogdocSerializable,
     LogdocStringBuffer, UnsupportedLocaleError, MandatoryArgumentChecker.
-  - The type 'serializable' is no longer supported. LogdocSerializable is 
-    replaced by the toString() method of the object passed as argument or 
+  - The type 'serializable' is no longer supported. LogdocSerializable is
+    replaced by the toString() method of the object passed as argument or
     by passing directly the String.
     This change may break compatibility.
   - The format 'hex' is no longer supported for integers. Note that it was
@@ -178,7 +181,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 * XINS/Java Common Library:
   - The FastStringBuffer class has been deprecated and been replaced by String
     concatenation or the Stringbuffer class which are faster.
-  - The FastStringWriter class has been deprecated and been replaced by 
+  - The FastStringWriter class has been deprecated and been replaced by
     StringWriter which is faster.
   - Implemented RFE #1642379: Added support for path in internal servlet
     container.
@@ -192,7 +195,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     as there are not needed.
   - Added new class IOReader containing utilities methods to read input stream.
   - Removed CollectionUtils class as this class was not used.
-  - Methods getChildElements() and getAttributes() returns the original 
+  - Methods getChildElements() and getAttributes() returns the original
     structure of the XML element.
 
 * XINS/Java Server Framework:
@@ -237,7 +240,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
     method. The value of this object will be null if the parameter is not
     sent and there is no default.
     This change may break the compatibility of your code if you had optional
-    input parameters or attributes returning primitive types (int, short, 
+    input parameters or attributes returning primitive types (int, short,
     boolean, ...) you will need to change your code to use .intValue(), etc...
   - Fixed: the default attribute was not handled correctly in the generated
     Request object.
@@ -383,7 +386,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 2:
 
 * Build- and release-process:
   - Included the missing fileupload/lib directory in the release.
-  - The checkstyle target was failing because of missing libraries in the 
+  - The checkstyle target was failing because of missing libraries in the
     documentation and missing files in the release.
 
 * Documentation:

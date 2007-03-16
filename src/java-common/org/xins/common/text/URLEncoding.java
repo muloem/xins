@@ -85,6 +85,13 @@ public final class URLEncoding {
    }
 
    /**
+    * Constructs a new <code>URLEncoding</code> object.
+    */
+   private URLEncoding() {
+      // empty
+   }
+
+   /**
     * URL encodes the specified character string as specified by W3C.
     * http://www.w3.org/International/O-URL-code.html
     *
@@ -263,12 +270,5 @@ public final class URLEncoding {
          throw new FormatException(s, "Character at position " + index + " is not a hex digit. Value is " + charAsInt + '.');
       }
       return decodedValue;
-   }
-
-   /**
-    * Constructs a new <code>URLEncoding</code> object.
-    */
-   private URLEncoding() {
-      // empty
    }
 }

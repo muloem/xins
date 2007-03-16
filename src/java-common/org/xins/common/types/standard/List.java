@@ -33,6 +33,7 @@ public final class List extends org.xins.common.types.List {
    private List() {
       super("_list", Text.SINGLETON);
    }
+
    public ItemList createList() {
       return new Value();
    }

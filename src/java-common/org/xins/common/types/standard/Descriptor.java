@@ -29,6 +29,15 @@ public class Descriptor extends Type {
    public final static Descriptor SINGLETON = new Descriptor();
 
    /**
+    * Constructs a new <code>Properties</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Descriptor() {
+      super("_descriptor", org.xins.common.service.Descriptor.class);
+   }
+
+   /**
     * Constructs a <code>org.xins.common.service.Descriptor</code> from the specified string
     * which is guaranteed to be non-<code>null</code>.
     *
@@ -142,14 +151,6 @@ public class Descriptor extends Type {
       return buffer.toString();
    }
 
-   /**
-    * Constructs a new <code>Properties</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Descriptor() {
-      super("_descriptor", org.xins.common.service.Descriptor.class);
-   }
    protected final boolean isValidValueImpl(String string) {
 
       if (string == null) {

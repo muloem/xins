@@ -16,68 +16,7 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @since XINS 1.1.0
  */
-public final class ProgrammingException
-extends RuntimeException {
-
-   /**
-    * Creates the exception message for the specified details.
-    *
-    * @param detectingClass
-    *    the name of the class that detected the problem, or
-    *    <code>null</code> if unknown.
-    *
-    * @param detectingMethod
-    *    the name of the method within the <code>detectingClass</code> that
-    *    detected the problem, or <code>null</code> if unknown.
-    *
-    * @param subjectClass
-    *    the name of the class which exposes the programming error, or
-    *    <code>null</code> if unknown.
-    *
-    * @param subjectMethod
-    *    the name of the method (within the <code>subjectClass</code>) which
-    *    exposes the programming error, or <code>null</code> if unknown.
-    *
-    * @param detail
-    *    the detail message, can be <code>null</code>.
-    *
-    * @param cause
-    *    the cause exception, can be <code>null</code>.
-    *
-    * @return
-    *    the exception message, can be <code>null</code>.
-    */
-   private static String createMessage(String    detectingClass,
-                                       String    detectingMethod,
-                                       String    subjectClass,
-                                       String    subjectMethod,
-                                       String    detail,
-                                       Throwable cause) {
-
-      String message = "Programming error suspected";
-
-      if (subjectClass != null) {
-         message += " in class " + subjectClass;
-         if (subjectMethod != null) {
-            message += ", method " + subjectMethod;
-         }
-      }
-
-      if (detectingClass != null) {
-         message += ". Detected by class " + detectingClass;
-         if (detectingMethod != null) {
-            message += ", method " + detectingMethod;
-         }
-      }
-
-      if (detail != null) {
-         message += ". Detail: \"" + detail + "\"";
-      }
-
-      message += ".";
-
-      return message;
-   }
+public final class ProgrammingException extends RuntimeException {
 
    /**
     * The name of the class that detected the problem. Is <code>null</code> if
@@ -157,6 +96,66 @@ extends RuntimeException {
       _subjectClass    = subjectClass;
       _subjectMethod   = subjectMethod;
       _detail          = detail;
+   }
+
+   /**
+    * Creates the exception message for the specified details.
+    *
+    * @param detectingClass
+    *    the name of the class that detected the problem, or
+    *    <code>null</code> if unknown.
+    *
+    * @param detectingMethod
+    *    the name of the method within the <code>detectingClass</code> that
+    *    detected the problem, or <code>null</code> if unknown.
+    *
+    * @param subjectClass
+    *    the name of the class which exposes the programming error, or
+    *    <code>null</code> if unknown.
+    *
+    * @param subjectMethod
+    *    the name of the method (within the <code>subjectClass</code>) which
+    *    exposes the programming error, or <code>null</code> if unknown.
+    *
+    * @param detail
+    *    the detail message, can be <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, can be <code>null</code>.
+    *
+    * @return
+    *    the exception message, can be <code>null</code>.
+    */
+   private static String createMessage(String    detectingClass,
+                                       String    detectingMethod,
+                                       String    subjectClass,
+                                       String    subjectMethod,
+                                       String    detail,
+                                       Throwable cause) {
+
+      String message = "Programming error suspected";
+
+      if (subjectClass != null) {
+         message += " in class " + subjectClass;
+         if (subjectMethod != null) {
+            message += ", method " + subjectMethod;
+         }
+      }
+
+      if (detectingClass != null) {
+         message += ". Detected by class " + detectingClass;
+         if (detectingMethod != null) {
+            message += ", method " + detectingMethod;
+         }
+      }
+
+      if (detail != null) {
+         message += ". Detail: \"" + detail + "\"";
+      }
+
+      message += ".";
+
+      return message;
    }
 
    /**

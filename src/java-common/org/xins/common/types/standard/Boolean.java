@@ -26,6 +26,15 @@ public final class Boolean extends Type {
    public final static Boolean SINGLETON = new org.xins.common.types.standard.Boolean();
 
    /**
+    * Constructs a new <code>Boolean</code>.
+    * This constructor is private, the field {@link #SINGLETON} should be
+    * used.
+    */
+   private Boolean() {
+      super("_boolean", java.lang.Boolean.class);
+   }
+
+   /**
     * Converts the specified non-<code>null</code> string value to a
     * <code>boolean</code>.
     *
@@ -112,15 +121,6 @@ public final class Boolean extends Type {
     */
    public static String toString(boolean value) {
       return value ? "true" : "false";
-   }
-
-   /**
-    * Constructs a new <code>Boolean</code>.
-    * This constructor is private, the field {@link #SINGLETON} should be
-    * used.
-    */
-   private Boolean() {
-      super("_boolean", java.lang.Boolean.class);
    }
 
    /**

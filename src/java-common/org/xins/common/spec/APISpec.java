@@ -34,37 +34,6 @@ import org.xins.common.xml.ElementParser;
 public final class APISpec {
 
    /**
-    * Gets the content of the file without the DTD declaration.
-    *
-    * @param baseURL
-    *    the base URL used to located the specifications, cannot be <code>null</code>.
-    *
-    * @param fileName
-    *    the name of the file that contains the specifications, cannot be <code>null</code>.
-    *
-    * @return
-    *    the content of the file, never <code>null</code>.
-    *
-    * @throws InvalidSpecificationException
-    *    if the specified file cannot be found.
-    *
-    * @throws IOException
-    *    if the specification cannot be read.
-    */
-   static Reader getReader(String baseURL, String fileName)
-   throws InvalidSpecificationException, IOException {
-
-      URL fileURL = new URL(baseURL + fileName);
-      InputStream in = fileURL.openStream();
-      if (in == null) {
-         throw new InvalidSpecificationException("File \"" + fileName +"\" not found in the specifications.");
-      }
-
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-      return reader;
-   }
-
-   /**
     * Name of the API, cannot be <code>null</code>.
     */
    private String _apiName;
@@ -108,6 +77,37 @@ public final class APISpec {
       } catch (IOException ioe) {
          throw new InvalidSpecificationException("Cannot read API specification files.", ioe);
       }
+   }
+
+   /**
+    * Gets the content of the file without the DTD declaration.
+    *
+    * @param baseURL
+    *    the base URL used to located the specifications, cannot be <code>null</code>.
+    *
+    * @param fileName
+    *    the name of the file that contains the specifications, cannot be <code>null</code>.
+    *
+    * @return
+    *    the content of the file, never <code>null</code>.
+    *
+    * @throws InvalidSpecificationException
+    *    if the specified file cannot be found.
+    *
+    * @throws IOException
+    *    if the specification cannot be read.
+    */
+   static Reader getReader(String baseURL, String fileName)
+   throws InvalidSpecificationException, IOException {
+
+      URL fileURL = new URL(baseURL + fileName);
+      InputStream in = fileURL.openStream();
+      if (in == null) {
+         throw new InvalidSpecificationException("File \"" + fileName +"\" not found in the specifications.");
+      }
+
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+      return reader;
    }
 
    /**
