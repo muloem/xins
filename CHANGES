@@ -63,6 +63,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 
 * XSLT:
   - Removed unneeded comments.
+  - Moved the class fields before the constructor.
+  - Moved the static methods after the constructor.
 
 * Tools:
   - Added Jetty plug-in and name of the WAR file to the Maven pom.xml.
@@ -76,6 +78,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 
 * Examples:
   - Removed unneeded comments.
+  - Moved the class fields before the constructor.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
