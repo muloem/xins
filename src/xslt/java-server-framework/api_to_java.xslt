@@ -128,8 +128,21 @@ public class APIImpl extends API {
 			<xsl:text>Impl(SINGLETON);</xsl:text>
 		</xsl:for-each>
 
-		<xsl:text><![CDATA[
+		<xsl:text>
 
+   private final RuntimeProperties _runtimeProperties;</xsl:text>
+
+		<xsl:for-each select="instance">
+			<xsl:text>
+
+   private final </xsl:text>
+			<xsl:value-of select="@class" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>;</xsl:text>
+		</xsl:for-each>
+
+		<xsl:text><![CDATA[
 
    /**
     * Constructs a new <code>APIImpl</code> instance.
@@ -156,22 +169,9 @@ public class APIImpl extends API {
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>
-   }
+   }</xsl:text>
 
-
-   private final RuntimeProperties _runtimeProperties;</xsl:text>
-
-		<xsl:for-each select="instance">
-			<xsl:text>
-
-   private final </xsl:text>
-			<xsl:value-of select="@class" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>;</xsl:text>
-		</xsl:for-each>
 		<xsl:text><![CDATA[
-
 
    /**
     * Gets the class used to access the defined runtime properties

@@ -50,6 +50,17 @@ public class APITests extends TestCase {
    private static boolean API_STARTED = false;
 
    /**
+    * Constructs a new &lt;code&gt;APITests&lt;/code&gt; test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    * @param name
+    *    the name for this test suite.
+    */
+   public APITests(String name) {
+      super(name);
+   }
+
+   /**
     * Returns a test suite with all test cases defined by this class.
     *
     * @return
@@ -77,32 +88,10 @@ public class APITests extends TestCase {
       return suite;
    }
 
-
-   /**
-    * Constructs a new &lt;code&gt;APITests&lt;/code&gt; test suite with
-    * the specified name. The name will be passed to the superconstructor.
-    *
-    * @param name
-    *    the name for this test suite.
-    */
-   public APITests(String name) {
-      super(name);
-   }
-
    /**
     * Starts the web server.
     */
    public static class StartServer extends TestCase {
-
-      /**
-       * Returns a test suite with all test cases defined by this class.
-       *
-       * @return
-       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
-       */
-      public static Test suite() {
-         return new TestSuite(StartServer.class);
-      }
 
       /**
        * Constructs a new &lt;code&gt;StartServer&lt;/code&gt; test suite with
@@ -113,6 +102,16 @@ public class APITests extends TestCase {
        */
       public StartServer(String name) {
          super(name);
+      }
+
+      /**
+       * Returns a test suite with all test cases defined by this class.
+       *
+       * @return
+       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
+       */
+      public static Test suite() {
+         return new TestSuite(StartServer.class);
       }
 
       public void testStartServer() throws Exception {
@@ -140,16 +139,6 @@ public class APITests extends TestCase {
    public static class StopServer extends TestCase {
 
       /**
-       * Returns a test suite with all test cases defined by this class.
-       *
-       * @return
-       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
-       */
-      public static Test suite() {
-         return new TestSuite(StopServer.class);
-      }
-
-      /**
        * Constructs a new &lt;code&gt;StopServer&lt;/code&gt; test suite with
        * the specified name. The name will be passed to the superconstructor.
        *
@@ -158,6 +147,16 @@ public class APITests extends TestCase {
        */
       public StopServer(String name) {
          super(name);
+      }
+
+      /**
+       * Returns a test suite with all test cases defined by this class.
+       *
+       * @return
+       *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
+       */
+      public static Test suite() {
+         return new TestSuite(StopServer.class);
       }
 
       public void testStopServer() throws Exception {

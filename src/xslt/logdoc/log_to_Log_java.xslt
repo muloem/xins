@@ -96,6 +96,15 @@
    }
 
    /**
+    * Constructor for this class. Intentionally made <code>private</code>,
+    * since no instances of this class should be created. Instead, the class
+    * functions should be used.
+    */
+   private Log() {
+      // empty
+   }
+
+   /**
     * Retrieves the active translation bundle.
     *
     * @return
@@ -109,16 +118,6 @@
 		<xsl:apply-templates select="group/entry" />
 
 		<xsl:text><![CDATA[
-
-
-   /**
-    * Constructor for this class. Intentionally made <code>private</code>,
-    * since no instances of this class should be created. Instead, the class
-    * functions should be used.
-    */
-   private Log() {
-      // empty
-   }
 
    /**
     * Controller for this <code>Log</code> class.

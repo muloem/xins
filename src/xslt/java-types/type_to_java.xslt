@@ -547,11 +547,6 @@ public final class ]]></xsl:text>
       return new Value();
    }
 
-
-   //-------------------------------------------------------------------------
-   // Inner classes
-   //-------------------------------------------------------------------------
-
 	/**
 	 * Inner class that represents a ]]></xsl:text>
 			<xsl:value-of select="$kind" />

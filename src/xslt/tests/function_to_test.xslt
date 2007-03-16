@@ -49,17 +49,9 @@ public class ]]></xsl:text>
 		<xsl:text>Tests extends TestCase {
 
    /**
-    * Returns a test suite with all test cases defined by this class.
-    *
-    * @return
-    *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
+    * The XINServiceCaller of the API.
     */
-   public static Test suite() {
-      return new TestSuite(</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text>Tests.class);
-   }
-
+   private XINSServiceCaller _caller;
 
    /**
     * Constructs a new &lt;code&gt;</xsl:text>
@@ -77,10 +69,16 @@ public class ]]></xsl:text>
    }
 
    /**
-    * The XINServiceCaller of the API.
+    * Returns a test suite with all test cases defined by this class.
+    *
+    * @return
+    *    the test suite, never &lt;code&gt;null&lt;/code&gt;.
     */
-   private XINSServiceCaller _caller;
-
+   public static Test suite() {
+      return new TestSuite(</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text>Tests.class);
+   }
 
    protected void setUp() throws Exception {
       String target = System.getProperty("test.environment");

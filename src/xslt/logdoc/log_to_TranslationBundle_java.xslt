@@ -48,6 +48,10 @@
 
 		<xsl:text><![CDATA[
 
+   /**
+    * The name of this translation bundle.
+    */
+   private final String _name;
 
    /**
     * Constructs a new <code>TranslationBundle</code> subclass instance.
@@ -69,13 +73,6 @@
       // Store information
       _name = name;
    }
-
-
-   /**
-    * The name of this translation bundle.
-    */
-   private final String _name;
-
 
    /**
     * Retrieves the name of this translation bundle.

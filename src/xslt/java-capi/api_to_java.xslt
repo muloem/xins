@@ -66,6 +66,25 @@
 public final class CAPI extends org.xins.client.AbstractCAPI {
 
    /**
+    * Secret key used when creating <code>ProtectedPropertyReader</code>
+    * instances.
+    */
+   private static final Object SECRET_KEY = new Object();
+]]></xsl:text>
+
+		<xsl:call-template name="constructor" />
+		<xsl:text><![CDATA[
+
+   /**
+    * Error codes, per function. This field is never <code>null</code>. All
+    * keys are function names, such as <code>"ProcessOrder"</code>, and all
+    * values are {@link java.util.ArrayList} lists, which contain the
+    * supported error codes for that function, as <code>String</code>s, such
+    * as <code>"ProcessingFailed"</code>.
+    */
+   private final java.util.Map _errorCodesPerFunction;
+
+   /**
     * Initializes the map of error codes per function. This class function is
     * called from the constructors.
     *
@@ -109,27 +128,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 
       <xsl:text><![CDATA[
       return map;
-   }
-
-   /**
-    * Secret key used when creating <code>ProtectedPropertyReader</code>
-    * instances.
-    */
-   private static final Object SECRET_KEY = new Object();
-]]></xsl:text>
-
-		<xsl:call-template name="constructor" />
-		<xsl:text><![CDATA[
-
-
-   /**
-    * Error codes, per function. This field is never <code>null</code>. All
-    * keys are function names, such as <code>"ProcessOrder"</code>, and all
-    * values are {@link java.util.ArrayList} lists, which contain the
-    * supported error codes for that function, as <code>String</code>s, such
-    * as <code>"ProcessingFailed"</code>.
-    */
-   private final java.util.Map _errorCodesPerFunction;]]></xsl:text>
+   }]]></xsl:text>
 
 		<!-- Loop through all <function/> elements within the <api/> element
 		     and process the corresponding .fnc function definition files. -->

@@ -20,17 +20,9 @@
 		<xsl:text><![CDATA[</em> function.
     */
    public final static class Request implements java.io.Serializable {
-
-      //----------------------------------------------------------------------
-      // Constructors
-      //----------------------------------------------------------------------
 ]]></xsl:text>
 		<xsl:call-template name="constructor_request" />
 		<xsl:text>
-
-      //----------------------------------------------------------------------
-      // Fields
-      //----------------------------------------------------------------------
 
       /**
        * The IP address of the originating host.
@@ -49,10 +41,6 @@
 		</xsl:if>
 
 		<xsl:text><![CDATA[
-
-      //----------------------------------------------------------------------
-      // Methods
-      //----------------------------------------------------------------------
 
       /**
        * Gets the IP address of the originating host.
@@ -582,6 +570,11 @@
 		<xsl:text><![CDATA[ {
 
       /**
+       * Element containing the values of this object.
+       */
+      private final org.xins.common.xml.Element _element;
+
+      /**
        * Creates a new <code>]]></xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[</code> instance.
@@ -591,16 +584,11 @@
 		<xsl:text>(org.xins.common.xml.Element element) {
          _element = element;
       }
-
-      /**
-       * Element containing the values of this object.
-       */
-      private final org.xins.common.xml.Element _element;
-
 </xsl:text>
 
 			<xsl:if test="contains/pcdata">
 				<xsl:text><![CDATA[
+
       /**
        * Gets a <code>PCDATA</code> of the element.
        *

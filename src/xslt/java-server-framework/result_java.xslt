@@ -427,7 +427,14 @@ implements Result {
     */
 		public static final class </xsl:text>
 		<xsl:value-of select="$objectName" />
-		<xsl:text><![CDATA[ {
+		<xsl:text> {
+
+      /**
+       * Element containing the values of this object.
+       */
+      private final org.xins.common.xml.ElementBuilder _elementBuilder = new org.xins.common.xml.ElementBuilder("</xsl:text>
+		<xsl:value-of select="@name" />
+		<xsl:text><![CDATA[");
 
       /**
        * Creates a new <code>]]></xsl:text>
@@ -436,15 +443,8 @@ implements Result {
        */
       public ]]></xsl:text>
 		<xsl:value-of select="$objectName" />
-		<xsl:text>() {
+		<xsl:text><![CDATA[() {
       }
-
-      /**
-       * Element containing the values of this object.
-       */
-      private final org.xins.common.xml.ElementBuilder _elementBuilder = new org.xins.common.xml.ElementBuilder("</xsl:text>
-		<xsl:value-of select="@name" />
-		<xsl:text><![CDATA[");
 
       /**
        * Returns the element containing the values of the data element.
