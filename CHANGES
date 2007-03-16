@@ -47,6 +47,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 
 * Generation of client-side Java code:
   - Used the UnacceptableMessageException when an invalid result is received.
+  - If any of the specification files change, the CAPI.java should be
+    regenerated.
 
 * Generation of the API from the WSDL:
   - If the WSDL parameter is all uppercase, the variable will be all lowercase.

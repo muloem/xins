@@ -1470,6 +1470,16 @@ APIs in this project are:
 
 		<target name="-stubs-capi-{$api}" depends="-prepare-classes" >
 			<mkdir dir="{$builddir}/java-capi/{$api}/{$clientPackageAsDir}" />
+			<dependset>
+				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
+				<xsl:if test="string-length($typeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				</xsl:if>
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				</xsl:if>
+				<targetfileset dir="{$builddir}/java-capi/{$api}/{$clientPackageAsDir}" includes="CAPI.java" />
+			</dependset>
 			<xmlvalidate file="{$api_file}" warn="false">
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>
