@@ -260,16 +260,6 @@ extends org.xins.client.AbstractCAPICallResult {</xsl:text>
 			<xsl:with-param name="variable"     select="$paramValue" />
 		</xsl:call-template>
 		<xsl:text>;</xsl:text>
-		<!-- Work around as javatype_from_string_for_type does no throw IllegalArgumentException for list/set/enum -->
-		<xsl:if test="@required = 'true' and not(starts-with(@type, '_'))">
-			<xsl:text>
-         org.xins.common.MandatoryArgumentChecker.check("_</xsl:text>
-			<xsl:value-of select="$javaVariable" />
-			<xsl:text>", _</xsl:text>
-			<xsl:value-of select="$javaVariable" />
-			<xsl:text>);</xsl:text>
-		</xsl:if>
-
 	</xsl:template>
 
 	<xsl:template match="function/output/param" mode="field">

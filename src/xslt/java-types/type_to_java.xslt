@@ -547,13 +547,28 @@ public final class ]]></xsl:text>
       return new Value();
    }
 
-	/**
-	 * Inner class that represents a ]]></xsl:text>
+   public static Value fromStringForRequired(String string)
+   throws IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
+
+      // Check preconditions
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
+
+      return (Value) SINGLETON.fromString(string);
+   }
+
+   public static Value fromStringForOptional(String string)
+   throws org.xins.common.types.TypeValueException {
+      return (Value) SINGLETON.fromString(string);
+   }
+
+   /**
+    * Inner class that represents a ]]></xsl:text>
 			<xsl:value-of select="$kind" />
 	 		<xsl:text> of </xsl:text>
 			<xsl:value-of select="$javasimpletype" />
 			<xsl:text>.
-	 */
+    */
    public static final class Value extends org.xins.common.types.ItemList {</xsl:text>
 
 			<xsl:if test="$kind = 'set'">
@@ -663,12 +678,12 @@ public final class ]]></xsl:text>
       org.xins.common.MandatoryArgumentChecker.check("string", string);
 
       return getItemByValue(string);
-	 }
+   }
 
    public static Item fromStringForOptional(String string)
    throws org.xins.common.types.TypeValueException {
       return getItemByValue(string);
-	 }
+   }
 
    /**
     * Gets the <code>Item</code> for the specified string value.

@@ -392,7 +392,7 @@
 			</xsl:when>
 
 			<!-- Determine Java type for pattern type -->
-			<xsl:when test="count(document($type_file)/type/pattern) &gt; 0">
+			<xsl:when test="count(document($type_file)/type/pattern) &gt; 0 or count(document($type_file)/type/enum/item) &gt; 0 or document($type_file)/type/list or document($type_file)/type/set">
 				<xsl:variable name="class">
 					<xsl:call-template name="javatype_for_customtype">
 						<xsl:with-param name="project_node" select="$project_node" />
@@ -410,41 +410,6 @@
 						<xsl:text>.fromStringForOptional(</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:value-of select="$variable" />
-				<xsl:text>)</xsl:text>
-			</xsl:when>
-
-			<!-- Determine Java type for enum type -->
-			<xsl:when test="count(document($type_file)/type/enum/item) &gt; 0">
-				<xsl:variable name="class">
-					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api"          select="$api"          />
-						<xsl:with-param name="type"         select="$type"         />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<xsl:value-of select="$class" />
-				<xsl:text>.getItemByValue(</xsl:text>
-				<xsl:value-of select="$variable" />
-				<xsl:text>)</xsl:text>
-			</xsl:when>
-
-			<!-- Determine Java type for list type or set type-->
-			<xsl:when test="document($type_file)/type/list or document($type_file)/type/set">
-				<xsl:variable name="class">
-					<xsl:call-template name="javatype_for_customtype">
-						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api"          select="$api"          />
-						<xsl:with-param name="type"         select="$type"         />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<xsl:text>(</xsl:text>
-				<xsl:value-of select="$class" />
-				<xsl:text>.Value)</xsl:text>
-				<xsl:value-of select="$class" />
-				<xsl:text>.SINGLETON.fromString(</xsl:text>
 				<xsl:value-of select="$variable" />
 				<xsl:text>)</xsl:text>
 			</xsl:when>
@@ -890,6 +855,7 @@
 								<xsl:with-param name="type" select="'_base64'" />
 							</xsl:call-template>
 							<xsl:if test="$type_node/base64/@min">
+
 								<text:line-break/>
 								<xsl:text>The minimum length of the binary should be </xsl:text>
 									<xsl:value-of select="$type_node/base64/@min" />
