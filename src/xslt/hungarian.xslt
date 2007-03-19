@@ -21,7 +21,7 @@
 		<xsl:variable name="firstChar" select="substring($text, 1, 1)" />
 
 		<xsl:if test="string-length($firstChar) &gt; 0">
-			<xsl:variable name="skipChar" select="$firstChar = '.' or $firstChar = '-' or $firstChar = '_'" />
+			<xsl:variable name="skipChar" select="$firstChar = '.' or $firstChar = '-'" />
 			<xsl:if test="not($skipChar)">
 				<xsl:choose>
 					<xsl:when test="$startWithUpperCase">

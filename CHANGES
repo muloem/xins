@@ -75,6 +75,8 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
   - Removed unneeded comments.
   - Moved the class fields before the constructor.
   - Moved the static methods after the constructor.
+  - The underscore should not be skipped when changing a text to the
+    hungarian convention.
 
 * Tools:
   - Added Jetty plug-in and name of the WAR file to the Maven pom.xml.
