@@ -436,6 +436,16 @@ APIs in this project are:
 				</xsl:attribute>
 			</target>
 
+			<target name="tests" description="Tests all APIs that have tests.">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="//project/api/test">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>test-</xsl:text>
+						<xsl:value-of select="../@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
 			<target name="all" description="Generates everything">
 				<xsl:attribute name="depends">
 					<xsl:for-each select="//project/api">

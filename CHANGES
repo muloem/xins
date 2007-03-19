@@ -71,6 +71,10 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
     as a list.
   - Avoid duplication in function names.
 
+* Generated build file:
+  - Added new 'tests' target that runs the tests of all the APIs that have
+    tests.
+
 * XSLT:
   - Removed unneeded comments.
   - Moved the class fields before the constructor.
