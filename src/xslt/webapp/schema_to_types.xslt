@@ -32,5 +32,7 @@
 		<xsl:apply-templates select="//xsd:simpleType/xsd:restriction" mode="restriction" />
 		<xsl:apply-templates select="//xs:simpleType/xs:list" mode="restriction" />
 		<xsl:apply-templates select="//xsd:simpleType/xsd:list" mode="restriction" />
+		<xsl:apply-templates select="//xs:element[@maxOccurs='unbounded' and not(@type='xs:string')]" mode="list" />
+		<xsl:apply-templates select="//xsd:element[@maxOccurs='unbounded' and not(@type='xsd:string')]" mode="list" />
 	</xsl:template>
 </xsl:stylesheet>

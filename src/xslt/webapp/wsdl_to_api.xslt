@@ -34,15 +34,17 @@
 	<xsl:variable name="tab4"><xsl:text>				</xsl:text></xsl:variable>
 
 	<xsl:key name="faultnames" match="fault" use="@name" />
+	<xsl:key name="operationnames" match="operation" use="@name" />
 
 	<!-- Creates the different files -->
 	<xsl:template match="definitions">
 		<xsl:call-template name="apifile">
 			<xsl:with-param name="api_name" select="$api_name" />
 		</xsl:call-template>
-		<xsl:apply-templates select="portType/operation" />
-		<xsl:apply-templates select="//xsd:simpleType/xsd:restriction" mode="restriction" />
-		<xsl:apply-templates select="//xsd:simpleType/xsd:list" mode="restriction" />
+		<xsl:apply-templates select="portType/operation[generate-id() = generate-id(key('operationnames', @name))]" />
+		<xsl:apply-templates select="types/xsd:schema//xsd:simpleType/xsd:restriction" mode="restriction" />
+		<xsl:apply-templates select="types/xsd:schema//xsd:simpleType/xsd:list" mode="restriction" />
+		<xsl:apply-templates select="types/xsd:schema//xsd:element[@maxOccurs='unbounded' and not(@type='xsd:string')]" mode="list" />
 		<xsl:apply-templates select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 			<xsl:sort select="@name" />
 		</xsl:apply-templates>
@@ -73,7 +75,7 @@
 			<xsl:value-of select="concat($return, $return, $tab)" />
 
 			<!-- The list of the functions -->
-			<xsl:for-each select="portType/operation">
+			<xsl:for-each select="portType/operation[generate-id() = generate-id(key('operationnames', @name))]">
 				<xsl:variable name="functionName">
 					<xsl:call-template name="hungarianUpper">
 						<xsl:with-param name="text" select="@name" />
@@ -86,13 +88,23 @@
 			</xsl:for-each>
 
 			<!-- The list of the defined types -->
-			<xsl:if test="types/xsd:schema/xsd:simpleType">
+			<xsl:if test="types/xsd:schema//xsd:simpleType">
 				<xsl:value-of select="concat($return, $return, $tab)" />
 			</xsl:if>
-			<xsl:for-each select="types/xsd:schema/xsd:simpleType">
+			<xsl:for-each select="types/xsd:schema//xsd:simpleType">
 				<xsl:variable name="typeName">
 					<xsl:call-template name="hungarianUpper">
-						<xsl:with-param name="text" select="@name" />
+						<xsl:with-param name="text">
+							<xsl:choose>
+								<xsl:when test="not(@name) and ../../xsd:list">
+									<xsl:value-of select="../../@name" />
+									<xsl:text>ListItem</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@name" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<type name="{$typeName}" />
@@ -252,8 +264,6 @@
 			<xsl:call-template name="localname">
 				<xsl:with-param name="text" select="@message" />
 			</xsl:call-template>
-			<xsl:variable name="type">
-			</xsl:variable>
 		</xsl:variable>
 
 		<xsl:for-each select="/definitions/message[@name=$message]/part">
@@ -271,10 +281,10 @@
 							<xsl:with-param name="text" select="@element" />
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
-					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 						<xsl:with-param name="section" select="$section" />
 					</xsl:apply-templates>
 				</xsl:when>
@@ -348,25 +358,18 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="type">
-			<xsl:choose>
-				<xsl:when test="starts-with(@type, 'xsd:')">
-					<xsl:call-template name="type_for_xsdtype">
-						<xsl:with-param name="xsdtype" select="$localNameType" />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$localNameType" />
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:call-template name="paramType">
+				<xsl:with-param name="localNameType" select="$localNameType" />
+			</xsl:call-template>
 		</xsl:variable>
 
     <xsl:choose>
 			<xsl:when test="not(starts-with(@type, 'xsd:')) and not(/definitions/types/xsd:schema/xsd:simpleType[@name=$localNameType])">
-				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 					<xsl:with-param name="section" select="$section" />
 					<xsl:with-param name="elementName" select="$elementName" />
 				</xsl:apply-templates>
-				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded')]">
+				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 					<xsl:with-param name="section" select="$section" />
 					<xsl:with-param name="elementName" select="$elementName" />
 				</xsl:apply-templates>
@@ -401,16 +404,9 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="type">
-			<xsl:choose>
-				<xsl:when test="starts-with(@type, 'xsd:')">
-					<xsl:call-template name="type_for_xsdtype">
-						<xsl:with-param name="xsdtype" select="$localNameType" />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$localNameType" />
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:call-template name="paramType">
+				<xsl:with-param name="localNameType" select="$localNameType" />
+			</xsl:call-template>
 		</xsl:variable>
 
 		<xsl:value-of select="concat($return, $tab, $tab)" />
@@ -427,7 +423,7 @@
 			<xsl:attribute name="type">
 				<xsl:value-of select="$type" />
 			</xsl:attribute>
-			<xsl:if test="@default">
+			<xsl:if test="@default and $required='false'">
 				<xsl:attribute name="default">
 					<xsl:value-of select="@default" />
 				</xsl:attribute>
@@ -441,6 +437,9 @@
 					<xsl:when test="xsd:annotation/xsd:documenation">
 						<xsl:value-of select="xsd:annotation/xsd:documenation/text()" />
 					</xsl:when>
+					<xsl:when test="not(xsd:annotation/xsd:documenation) and $elementName = 'attribute'">
+						<xsl:value-of select="concat($paramName, ' attribute.')" />
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="concat($paramName, ' ', $section, ' parameter.')" />
 					</xsl:otherwise>
@@ -453,12 +452,36 @@
 		</xsl:element>
 	</xsl:template>
 
+	<xsl:template name="paramType">
+		<xsl:param name="localNameType" />
+
+		<xsl:choose>
+			<xsl:when test="@maxOccurs='unbounded' and @type='xsd:string'">
+				<xsl:text>_list</xsl:text>
+			</xsl:when>
+			<xsl:when test="@maxOccurs='unbounded' and not(@type='xsd:string') and (starts-with(@type, 'xsd:') or key('simpletypenames', $localNameType))">
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text" select="$localNameType" />
+				</xsl:call-template>
+				<xsl:text>List</xsl:text>
+			</xsl:when>
+			<xsl:when test="starts-with(@type, 'xsd:') and not(@maxOccurs='unbounded')">
+				<xsl:call-template name="type_for_xsdtype">
+					<xsl:with-param name="xsdtype" select="$localNameType" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$localNameType" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<!-- Returns a word starting with 'true' if at least on of the elements is unbounded -->
 	<xsl:template name="dataSectionDefined">
 		<xsl:param name="messageElement" />
 
 		<xsl:choose>
-			<xsl:when test="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType//xsd:sequence/xsd:element[@maxOccurs='unbounded'] or /definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]//xsd:sequence/xsd:element[@maxOccurs='unbounded']">
+			<xsl:when test="/definitions/types/xsd:schema/xsd:element[@name=$messageElement]/xsd:complexType//xsd:sequence/xsd:element[@maxOccurs='unbounded' and not(starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':')))] or /definitions/types/xsd:schema/xsd:complexType[@name=$messageElement]//xsd:sequence/xsd:element[@maxOccurs='unbounded' and not(starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':')))]">
 				<xsl:text>true</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -470,9 +493,11 @@
 								<xsl:with-param name="text" select="@type" />
 							</xsl:call-template>
 						</xsl:variable>
-						<xsl:call-template name="dataSectionDefined">
-							<xsl:with-param name="messageElement" select="$localNameType" />
-						</xsl:call-template>
+						<xsl:if test="not(key('simpletypenames', $localNameType))">
+							<xsl:call-template name="dataSectionDefined">
+								<xsl:with-param name="messageElement" select="$localNameType" />
+							</xsl:call-template>
+						</xsl:if>
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:otherwise>
@@ -484,7 +509,7 @@
 		<xsl:param name="section" />
 
 		<xsl:choose>
-			<xsl:when test="@maxOccurs='unbounded'">
+			<xsl:when test="@maxOccurs='unbounded' and not(starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':')))">
 				<xsl:variable name="localNameType">
 					<xsl:call-template name="localname">
 						<xsl:with-param name="text" select="@type" />
@@ -553,7 +578,7 @@
 	<!-- Prints the contains part for the elements or data section -->
 	<xsl:template match="xsd:element" mode="contained">
 		<xsl:choose>
-			<xsl:when test="@maxOccurs='unbounded'">
+			<xsl:when test="@maxOccurs='unbounded' and not(starts-with(@type, 'xsd:'))">
 				<xsl:variable name="localNameType">
 					<xsl:call-template name="localname">
 						<xsl:with-param name="text" select="@type" />
@@ -564,11 +589,13 @@
 						<xsl:with-param name="text" select="$localNameType" />
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:value-of select="concat($return, $tab4)" />
-				<contained name="{$elementName}" />
+				<xsl:if test="not(key('simpletypenames', $localNameType))">
+					<xsl:value-of select="concat($return, $tab4)" />
+					<contained element="{$elementName}" />
+				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:if test="@type and not(starts-with(@type, 'xsd:'))">
+				<xsl:if test="@type">
 					<xsl:variable name="localNameType">
 						<xsl:call-template name="localname">
 							<xsl:with-param name="text" select="@type" />
@@ -577,20 +604,6 @@
 					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element" mode="contained" />
 					<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element" mode="contained" />
 				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<!-- Removes any namespace prefix to the text if any -->
-	<xsl:template name="localname">
-		<xsl:param name="text" />
-
-		<xsl:choose>
-			<xsl:when test="contains($text, ':')">
-				<xsl:value-of select="substring-after($text, ':')" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$text" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

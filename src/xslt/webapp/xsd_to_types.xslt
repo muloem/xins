@@ -19,6 +19,8 @@
                 exclude-result-prefixes="xs saxon xt xalan"
                 version="2.0">
 
+	<xsl:key name="simpletypenames" match="xs:simpleType | xsd:simpleType" use="@name" />
+
 	<!--
 	Creates the file
 	-->
@@ -46,8 +48,17 @@
 				<xsl:with-param name="text" select="$elementName" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="typeFile" select="concat($typeName, '.typ')" />
+		<xsl:call-template name="create-type">
+			<xsl:with-param name="elementName" select="$elementName" />
+			<xsl:with-param name="typeName" select="$typeName" />
+		</xsl:call-template>
+	</xsl:template>
 
+	<xsl:template name="create-type">
+		<xsl:param name="elementName" />
+		<xsl:param name="typeName" />
+
+		<xsl:variable name="typeFile" select="concat($typeName, '.typ')" />
 		<!-- The XSLT processor will choose which tag it can interpret -->
 		<!-- xsl:result-document href="{$typeFile}" format="typ_doctype">
 			<xsl:call-template name="xml_type">
@@ -196,6 +207,28 @@
 			</xsl:variable>
 			<list type="{$itemList}" />
 		</xsl:when>
+		<xsl:when test="@maxOccurs = 'unbounded'">
+			<xsl:variable name="localNameType">
+				<xsl:call-template name="localname">
+					<xsl:with-param name="text" select="@type" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="itemList">
+				<xsl:choose>
+					<xsl:when test="starts-with(@type, 'xs:') or starts-with(@type, 'xsd:')">
+						<xsl:call-template name="type_for_xsdtype">
+							<xsl:with-param name="xsdtype" select="$localNameType" />
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="hungarianUpper">
+							<xsl:with-param name="text" select="$localNameType" />
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<list type="{$itemList}" />
+		</xsl:when>
 		<xsl:otherwise>
 			<xsl:message terminate="no">
 				<xsl:text>No XINS type created for XSD type </xsl:text>
@@ -206,5 +239,39 @@
 	<xsl:text>
 </xsl:text>
 </type>
+	</xsl:template>
+
+	<xsl:template match="xs:element | xsd:element" mode="list">
+		<xsl:variable name="localNameType">
+			<xsl:call-template name="localname">
+				<xsl:with-param name="text" select="@type" />
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<xsl:if test="starts-with(@type, 'xs:') or starts-with(@type, 'xsd:') or key('simpletypenames', $localNameType)">
+			<xsl:variable name="typeName">
+				<xsl:call-template name="hungarianUpper">
+					<xsl:with-param name="text" select="$localNameType" />
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:call-template name="create-type">
+				<xsl:with-param name="elementName" select="@name" />
+				<xsl:with-param name="typeName" select="concat($typeName, 'List')" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Removes any namespace prefix to the text if any -->
+	<xsl:template name="localname">
+		<xsl:param name="text" />
+
+		<xsl:choose>
+			<xsl:when test="contains($text, ':')">
+				<xsl:value-of select="substring-after($text, ':')" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$text" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
