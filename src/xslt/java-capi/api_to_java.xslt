@@ -70,10 +70,6 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * instances.
     */
    private static final Object SECRET_KEY = new Object();
-]]></xsl:text>
-
-		<xsl:call-template name="constructor" />
-		<xsl:text><![CDATA[
 
    /**
     * Error codes, per function. This field is never <code>null</code>. All
@@ -83,7 +79,10 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * as <code>"ProcessingFailed"</code>.
     */
    private final java.util.Map _errorCodesPerFunction;
+]]></xsl:text>
 
+		<xsl:call-template name="constructor" />
+		<xsl:text><![CDATA[
    /**
     * Initializes the map of error codes per function. This class function is
     * called from the constructors.
@@ -259,7 +258,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
                </xsl:choose>
                <xsl:value-of select="$name" />
                <xsl:text>".equals(errorCode)) {
-         String    function  = request.getFunctionName();
+         String function  = request.getFunctionName();
          java.util.ArrayList supported = (java.util.ArrayList) _errorCodesPerFunction.get(function);
          if (supported == null || !supported.contains("</xsl:text>
                <xsl:value-of select="$name" />

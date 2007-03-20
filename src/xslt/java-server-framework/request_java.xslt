@@ -20,14 +20,11 @@
 		<xsl:text><![CDATA[</em> function.
     */
    public final static class Request implements java.io.Serializable {
-]]></xsl:text>
-		<xsl:call-template name="constructor_request" />
-		<xsl:text>
 
       /**
        * The IP address of the originating host.
        */
-      private final String __ip;</xsl:text>
+      private final String __ip;]]></xsl:text>
 
 		<xsl:apply-templates select="input/param" mode="field" />
 
@@ -40,6 +37,7 @@
       private final org.xins.common.xml.Element __dataSection;</xsl:text>
 		</xsl:if>
 
+		<xsl:call-template name="constructor_request" />
 		<xsl:text><![CDATA[
 
       /**

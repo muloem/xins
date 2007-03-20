@@ -106,152 +106,7 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text>();</xsl:text>
 
-		<!-- Pattern type -->
-		<xsl:choose>
-			<xsl:when test="$kind = 'pattern'">
-				<xsl:text><![CDATA[
-
-   /**
-    * Converts the specified character string to a value for this type. The
-    * character string cannot be <code>null</code>. If it is, then an
-    * exception is thrown.
-    *
-    * @param string
-    *    the character string to convert to a value for this type, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the converted value for this type, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws org.xins.common.types.TypeValueException
-    *    if the specified character string is not considered valid for this
-    *    type.
-    */
-   public static String fromStringForRequired(String string)
-   throws IllegalArgumentException,
-          org.xins.common.types.TypeValueException {
-
-      // Check preconditions
-      org.xins.common.MandatoryArgumentChecker.check("string", string);
-
-      return (String) SINGLETON.fromString(string);
-   }
-
-   /**
-    * Converts the specified character string -or <code>null</code>- to a
-    * value for this type. The character string can be <code>null</code> in
-    * which case <code>null</code> is also returned.
-    *
-    * @param string
-    *    the character string to convert to a value for this type, can be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the converted value for this type, or <code>null</code>.
-    *
-    * @throws org.xins.common.types.TypeValueException
-    *    if the specified character string is not considered valid for this
-    *    type.
-    */
-   public static String fromStringForOptional(String string)
-   throws org.xins.common.types.TypeValueException {
-      return (String) SINGLETON.fromString(string);
-   }
-]]></xsl:text>
-			</xsl:when>
-
-			<!-- Number type -->
-			<xsl:when test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
-				<xsl:variable name="required_object">
-					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_node"     select="$project_node" />
-						<xsl:with-param name="specsdir"     select="$specsdir" />
-						<xsl:with-param name="api"     select="$api" />
-						<xsl:with-param name="type"     select="concat('_', $kind)" />
-						<xsl:with-param name="required" select="'true'" />
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:variable name="optional_object">
-					<xsl:call-template name="javatype_for_type">
-						<xsl:with-param name="project_node"     select="$project_node" />
-						<xsl:with-param name="specsdir"     select="$specsdir" />
-						<xsl:with-param name="api"     select="$api" />
-						<xsl:with-param name="type"     select="concat('_', $kind)" />
-						<xsl:with-param name="required" select="'false'" />
-					</xsl:call-template>
-				</xsl:variable>
-
-				<xsl:text><![CDATA[
-
-   /**
-    * Converts the specified character string to a value for this type. The
-    * character string cannot be <code>null</code>. If it is, then an
-    * exception is thrown.
-    *
-    * @param string
-    *    the character string to convert to a value for this type, cannot be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the converted value for this type.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>string == null</code>.
-    *
-    * @throws org.xins.common.types.TypeValueException
-    *    if the specified character string is not considered valid for this
-    *    type.
-    */
-   public static ]]></xsl:text>
-				<xsl:value-of select="$required_object"/>
-				<xsl:text> fromStringForRequired(String string)
-   throws IllegalArgumentException,
-          org.xins.common.types.TypeValueException {
-
-      // Check preconditions
-      org.xins.common.MandatoryArgumentChecker.check("string", string);
-
-      return ((</xsl:text>
-				<xsl:value-of select="$optional_object"/>
-				<xsl:text>)SINGLETON.fromString(string)).</xsl:text>
-				<xsl:value-of select="$required_object"/>
-				<xsl:text>Value();
-   }
-</xsl:text>
-				<xsl:text><![CDATA[
-
-   /**
-    * Converts the specified character string -or <code>null</code>- to a
-    * value for this type. The character string can be <code>null</code> in
-    * which case <code>null</code> is also returned.
-    *
-    * @param string
-    *    the character string to convert to a value for this type, can be
-    *    <code>null</code>.
-    *
-    * @return
-    *    the converted value for this type, or <code>null</code>.
-    *
-    * @throws org.xins.common.types.TypeValueException
-    *    if the specified character string is not considered valid for this
-    *    type.
-    */
-   public static ]]></xsl:text>
-				<xsl:value-of select="$optional_object"/>
-				<xsl:text> fromStringForOptional(String string)
-   throws org.xins.common.types.TypeValueException {
-      return (</xsl:text>
-				<xsl:value-of select="$optional_object"/>
-				<xsl:text>) SINGLETON.fromString(string);
-   }</xsl:text>
-
-			</xsl:when>
-			<!-- XXX: otherwise? -->
-		</xsl:choose>
-
+		<!-- The constructor -->
 		<xsl:text><![CDATA[
 
    /**
@@ -506,6 +361,152 @@ public final class ]]></xsl:text>
 		</xsl:choose>
 		<xsl:text>);
    }</xsl:text>
+
+		<!-- Pattern type -->
+		<xsl:choose>
+			<xsl:when test="$kind = 'pattern'">
+				<xsl:text><![CDATA[
+
+   /**
+    * Converts the specified character string to a value for this type. The
+    * character string cannot be <code>null</code>. If it is, then an
+    * exception is thrown.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static String fromStringForRequired(String string)
+   throws IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
+
+      // Check preconditions
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
+
+      return (String) SINGLETON.fromString(string);
+   }
+
+   /**
+    * Converts the specified character string -or <code>null</code>- to a
+    * value for this type. The character string can be <code>null</code> in
+    * which case <code>null</code> is also returned.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, or <code>null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static String fromStringForOptional(String string)
+   throws org.xins.common.types.TypeValueException {
+      return (String) SINGLETON.fromString(string);
+   }
+]]></xsl:text>
+			</xsl:when>
+
+			<!-- Number type -->
+			<xsl:when test="$kind = 'int8' or $kind = 'int16' or $kind = 'int32' or $kind = 'int64' or $kind = 'float32' or $kind = 'float64'">
+				<xsl:variable name="required_object">
+					<xsl:call-template name="javatype_for_type">
+						<xsl:with-param name="project_node"     select="$project_node" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"     select="$api" />
+						<xsl:with-param name="type"     select="concat('_', $kind)" />
+						<xsl:with-param name="required" select="'true'" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="optional_object">
+					<xsl:call-template name="javatype_for_type">
+						<xsl:with-param name="project_node"     select="$project_node" />
+						<xsl:with-param name="specsdir"     select="$specsdir" />
+						<xsl:with-param name="api"     select="$api" />
+						<xsl:with-param name="type"     select="concat('_', $kind)" />
+						<xsl:with-param name="required" select="'false'" />
+					</xsl:call-template>
+				</xsl:variable>
+
+				<xsl:text><![CDATA[
+
+   /**
+    * Converts the specified character string to a value for this type. The
+    * character string cannot be <code>null</code>. If it is, then an
+    * exception is thrown.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, cannot be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>string == null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static ]]></xsl:text>
+				<xsl:value-of select="$required_object"/>
+				<xsl:text> fromStringForRequired(String string)
+   throws IllegalArgumentException,
+          org.xins.common.types.TypeValueException {
+
+      // Check preconditions
+      org.xins.common.MandatoryArgumentChecker.check("string", string);
+
+      return ((</xsl:text>
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text>)SINGLETON.fromString(string)).</xsl:text>
+				<xsl:value-of select="$required_object"/>
+				<xsl:text>Value();
+   }
+</xsl:text>
+				<xsl:text><![CDATA[
+
+   /**
+    * Converts the specified character string -or <code>null</code>- to a
+    * value for this type. The character string can be <code>null</code> in
+    * which case <code>null</code> is also returned.
+    *
+    * @param string
+    *    the character string to convert to a value for this type, can be
+    *    <code>null</code>.
+    *
+    * @return
+    *    the converted value for this type, or <code>null</code>.
+    *
+    * @throws org.xins.common.types.TypeValueException
+    *    if the specified character string is not considered valid for this
+    *    type.
+    */
+   public static ]]></xsl:text>
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text> fromStringForOptional(String string)
+   throws org.xins.common.types.TypeValueException {
+      return (</xsl:text>
+				<xsl:value-of select="$optional_object"/>
+				<xsl:text>) SINGLETON.fromString(string);
+   }</xsl:text>
+
+			</xsl:when>
+			<!-- XXX: otherwise? -->
+		</xsl:choose>
 
 		<xsl:if test="$kind = 'list' or $kind = 'set'">
 			<xsl:variable name="innertype">

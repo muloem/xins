@@ -67,6 +67,24 @@ public abstract class ]]></xsl:text>
 		<xsl:text><![CDATA[ extends org.xins.server.Function {
 
    /**
+    * The list of error codes supported by this function. This field cannot be
+    * <code>null</code>.
+    */
+   private final java.util.HashSet _errorCodes;
+]]></xsl:text>
+		<xsl:for-each select="document($impl_file)/impl/instance">
+			<xsl:text>
+   protected final </xsl:text>
+			<xsl:value-of select="@class" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>;
+</xsl:text>
+		</xsl:for-each>
+
+		<xsl:text><![CDATA[
+
+   /**
     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[</code> instance.
@@ -101,27 +119,8 @@ public abstract class ]]></xsl:text>
          <xsl:value-of select="@name" />
          <xsl:text>");</xsl:text>
       </xsl:for-each>
-		<xsl:text><![CDATA[
-   }
-
-
-   /**
-    * The list of error codes supported by this function. This field cannot be
-    * <code>null</code>.
-    */
-   private final java.util.HashSet _errorCodes;
-]]></xsl:text>
-		<xsl:for-each select="document($impl_file)/impl/instance">
-			<xsl:text>
-   protected final </xsl:text>
-			<xsl:value-of select="@class" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@name" />
-			<xsl:text>;
-</xsl:text>
-		</xsl:for-each>
-
 		<xsl:text>
+   }
 
    protected final org.xins.server.FunctionResult handleCall(org.xins.server.CallContext _context)
    throws Throwable {</xsl:text>

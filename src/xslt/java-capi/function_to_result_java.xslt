@@ -57,9 +57,6 @@ public final class </xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text>
 extends org.xins.client.AbstractCAPICallResult {</xsl:text>
-		<xsl:call-template name="constructor">
-			<xsl:with-param name="className" select="$className" />
-		</xsl:call-template>
 
 		<xsl:apply-templates select="output/param" mode="field" />
 		<xsl:if test="output/data/element">
@@ -71,7 +68,13 @@ extends org.xins.client.AbstractCAPICallResult {</xsl:text>
     */
    private final org.xins.common.xml.Element _dataElement;]]></xsl:text>
 		</xsl:if>
+
+		<xsl:call-template name="constructor">
+			<xsl:with-param name="className" select="$className" />
+		</xsl:call-template>
+
 		<xsl:apply-templates select="output/param" mode="method" />
+
 		<xsl:if test="output/data/element">
 			<xsl:text><![CDATA[
 
