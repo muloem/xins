@@ -73,38 +73,38 @@ public final class ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[ {
 
-   /**
-    * Constructs a new <code>]]></xsl:text>
+    /**
+     * Constructs a new <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[Impl</code> instance.
-    *
-    * @param api
-    *    the API to which this function belongs, guaranteed to be not
-    *    <code>null</code>.
-    */
-   public ]]></xsl:text>
+     *
+     * @param api
+     *    the API to which this function belongs, guaranteed to be not
+     *    <code>null</code>.
+     */
+    public ]]></xsl:text>
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[Impl(APIImpl api) {
-      super(api);
-   }
+        super(api);
+    }
 
-   /**
-    * Calls this function. If the function fails, it may throw any kind of
-    * exception. All exceptions will be handled by the caller.
-    *
-    * @param request
-    *    the request, never <code>null</code>.
-    *
-    * @return
-    *    the result of the function call, should never be <code>null</code>.
-    *
-    * @throws Throwable
-    *    if anything went wrong.
-    */
-   public Result call(Request request) throws Throwable {]]></xsl:text>
+    /**
+     * Calls this function. If the function fails, it may throw any kind of
+     * exception. All exceptions will be handled by the caller.
+     *
+     * @param request
+     *    the request, never <code>null</code>.
+     *
+     * @return
+     *    the result of the function call, should never be <code>null</code>.
+     *
+     * @throws Throwable
+     *    if anything went wrong.
+     */
+    public Result call(Request request) throws Throwable {]]></xsl:text>
 		<xsl:call-template name="callcontent" />
 		<xsl:text>
-   }</xsl:text>
+    }</xsl:text>
 		<xsl:call-template name="aftercall" />
 		<xsl:text>
 }
@@ -142,11 +142,11 @@ public final class ]]></xsl:text>
 	<!-- Write the content of the call method -->
 	<xsl:template name="callcontent">
 		<xsl:text>
-      SuccessfulResult result = new SuccessfulResult();
-      // TO</xsl:text>
+        SuccessfulResult result = new SuccessfulResult();
+        // TO</xsl:text>
 		<!-- Split this text up so it does not match when searched for -->
 		<xsl:text>DO
-      return result;</xsl:text>
+        return result;</xsl:text>
 	</xsl:template>
 
 	<!-- Write the text that should be generated after the call method -->

@@ -16,6 +16,10 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 
 * XSLT:
   - Moved the class fields before the constructor.
+  - Changed the default indentation in editable generated Java files to 4
+    spaces as specified in the Java coding convention.
+    If you use another indentation, use the 'Reformat code' feature of your
+    favorite IDE.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:

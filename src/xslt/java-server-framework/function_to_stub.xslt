@@ -19,7 +19,7 @@
 	<xsl:template name="callcontent">
 		<xsl:apply-templates select="example" mode="if" />
 		<xsl:text>
-      throw new Exception("Not implemented in stub.");</xsl:text>
+        throw new Exception("Not implemented in stub.");</xsl:text>
 	</xsl:template>
 
 	<!-- Write the text that should be generated after the call method -->
@@ -36,7 +36,7 @@
 			<xsl:when test="@resultcode and starts-with(@resultcode, '_')" />
 			<xsl:otherwise>
 				<xsl:text>
-      if (</xsl:text>
+        if (</xsl:text>
 				<xsl:if test="not(input-example)">
 					<xsl:text>true</xsl:text>
 				</xsl:if>
@@ -50,7 +50,7 @@
 					</xsl:variable>
 					<xsl:if test="position() &gt; 1">
 						<xsl:text> &amp;&amp;
-            </xsl:text>
+                </xsl:text>
 					</xsl:if>
 					<xsl:if test="not(/function/input/param[@name=$inputName]/@required = 'true') and not(/function/input/param[@name=$inputName]/@default)">
 						<xsl:text>request.isSet</xsl:text>
@@ -66,10 +66,10 @@
 					<xsl:text>")</xsl:text>
 				</xsl:for-each>
 				<xsl:text>) {
-         return example</xsl:text>
+            return example</xsl:text>
 				<xsl:value-of select="position()" />
 				<xsl:text>();
-      }</xsl:text>
+        }</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -97,10 +97,10 @@
 
 				<xsl:text>
 
-   public Result example</xsl:text>
+    public Result example</xsl:text>
 				<xsl:value-of select="position()" />
 				<xsl:text>() throws Exception {
-      </xsl:text>
+        </xsl:text>
 				<xsl:value-of select="$resultclass" />
 				<xsl:text> result = new </xsl:text>
 				<xsl:value-of select="$resultclass" />
@@ -131,15 +131,15 @@
 					</xsl:variable>
 
 					<xsl:text>
-      result.set</xsl:text>
+        result.set</xsl:text>
 					<xsl:value-of select="$hungarianName" />
 					<xsl:text>(</xsl:text>
 					<xsl:call-template name="javatype_from_string_for_type">
 						<xsl:with-param name="project_node" select="$project_node" />
-						<xsl:with-param name="api"      select="$api"      />
+						<xsl:with-param name="api"        select="$api"        />
 						<xsl:with-param name="required" select="'true'" />
 						<xsl:with-param name="specsdir" select="$specsdir" />
-						<xsl:with-param name="type"     select="$type"     />
+						<xsl:with-param name="type"      select="$type"      />
 						<xsl:with-param name="variable" select="concat('&quot;', $resultText, '&quot;')" />
 					</xsl:call-template>
 					<xsl:text>);</xsl:text>
@@ -151,8 +151,8 @@
 					<xsl:with-param name="errorcode" select="@resultcode" />
 				</xsl:apply-templates>
 				<xsl:text>
-      return result;
-   }</xsl:text>
+        return result;
+    }</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -182,7 +182,7 @@
 		</xsl:variable>
 
 		<xsl:text>
-      </xsl:text>
+        </xsl:text>
 		<xsl:value-of select="$elementObject" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$elementVariable" />
@@ -214,14 +214,14 @@
 			</xsl:variable>
 
 			<xsl:text>
-      </xsl:text>
+        </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.set</xsl:text>
 			<xsl:value-of select="$attributeObject" />
 			<xsl:text>(</xsl:text>
 			<xsl:call-template name="javatype_from_string_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
-				<xsl:with-param name="api"      select="$api"      />
+				<xsl:with-param name="api"      select="$api"   />
 				<xsl:with-param name="required" select="'true'" />
 				<xsl:with-param name="specsdir" select="$specsdir" />
 				<xsl:with-param name="type"     select="$type"     />
@@ -232,7 +232,7 @@
 
 		<xsl:if test="pcdata-example">
 			<xsl:text>
-      </xsl:text>
+        </xsl:text>
 			<xsl:value-of select="$elementVariable" />
 			<xsl:text>.pcdata("</xsl:text>
 			<xsl:call-template name="pcdata_to_java_string">
@@ -248,7 +248,7 @@
 			<xsl:with-param name="errorcode" select="$errorcode" />
 		</xsl:apply-templates>
 		<xsl:text>
-      </xsl:text>
+        </xsl:text>
 		<xsl:value-of select="$parent" />
 		<xsl:text>.add</xsl:text>
 		<xsl:value-of select="$elementObject" />
