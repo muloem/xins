@@ -602,7 +602,6 @@ public final class ]]></xsl:text>
       public void add(</xsl:text>
 			<xsl:value-of select="$javasimpletype" />
 			<xsl:text> value) {
-
 			</xsl:text>
 			<xsl:if test="$typeIsPrimary = 'false'">
          org.xins.common.MandatoryArgumentChecker.check("value", value);
@@ -643,7 +642,6 @@ public final class ]]></xsl:text>
       public </xsl:text>
 			<xsl:value-of select="$javasimpletype" />
 			<xsl:text> get(int index) {
-
          return </xsl:text>
 			<xsl:choose>
 				<xsl:when test="$typeIsPrimary = 'true'">
@@ -663,7 +661,6 @@ public final class ]]></xsl:text>
 			<xsl:if test="$typeIsPrimary = 'false'">
 			</xsl:if>
 			<xsl:text>;
-
       }
    }</xsl:text>
 		</xsl:if>

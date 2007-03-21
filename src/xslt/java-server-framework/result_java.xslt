@@ -425,7 +425,7 @@ implements Result {
 		<xsl:value-of select="$objectName" />
 		<xsl:text> element.
     */
-		public static final class </xsl:text>
+   public static final class </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text> {
 
