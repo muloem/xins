@@ -70,7 +70,6 @@ public class APIImpl extends API {
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="rcd_node" select="document(concat($specsdir, '/', $name, '.rcd'))/resultcode" />
 			<xsl:variable name="fieldname">
 				<xsl:call-template name="toupper">
 					<xsl:with-param name="text">
