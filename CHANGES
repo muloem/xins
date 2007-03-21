@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
 
+* Generation of the API from the WSDL:
+  - Added more comments in the code.
+
 * XSLT:
   - Moved the class fields before the constructor.
 
@@ -2161,6 +2164,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
 * Tests:
   - Added a link to an ACL file from the runtime properties used for the unit
     tests.
+
   - Added a unit test for the SOAP calling convention.
   - Added a unit test for the CustomCallingConvention. This test is not
     executed as conflicts with other unit tests.
