@@ -272,7 +272,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 4:
 
 * Generation of server-side Java code:
   - The old directory structure is not supported anymore.
-  - The ParameterNotInitializedException if no longer thrown for optional
+  - The ParameterNotInitializedException is no longer thrown for optional
     parameter or attributes in the request. If you have an optional parameter
     or attribute in the input, an object will always be returned from the get
     method. The value of this object will be null if the parameter is not
