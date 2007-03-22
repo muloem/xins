@@ -56,19 +56,6 @@ public class XINSServletRequest implements HttpServletRequest {
     */
    private static Map SESSIONS = new HashMap();
 
-   static {
-      try {
-         LOCALHOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
-      } catch (UnknownHostException exception) {
-         LOCALHOST_ADDRESS = "127.0.0.1";
-      }
-      try {
-         LOCALHOST_NAME = InetAddress.getLocalHost().getHostName();
-      } catch (UnknownHostException exception) {
-         LOCALHOST_NAME = "localhost";
-      }
-   }
-
    /**
     * The HTTP request method.
     */
@@ -133,6 +120,19 @@ public class XINSServletRequest implements HttpServletRequest {
     * Flags indicating that the reader has been used.
     */
    private String  _characterEncoding;
+
+   static {
+      try {
+         LOCALHOST_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+      } catch (UnknownHostException exception) {
+         LOCALHOST_ADDRESS = "127.0.0.1";
+      }
+      try {
+         LOCALHOST_NAME = InetAddress.getLocalHost().getHostName();
+      } catch (UnknownHostException exception) {
+         LOCALHOST_NAME = "localhost";
+      }
+   }
 
    /**
     * Creates a new Servlet request.

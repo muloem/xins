@@ -205,6 +205,12 @@ extends HttpServlet {
    public static final String JSON_CALLING_CONVENTION = "_xins-json";
 
    /**
+    * XINS server engine. Initially <code>null</code> but set to a
+    * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
+    */
+   private Engine _engine;
+
+   /**
     * Initializes the loggers to log to the console using a simple format
     * and no threshold. This is done by calling
     * {@link Engine#configureLoggerFallback()}.
@@ -212,12 +218,6 @@ extends HttpServlet {
    static {
       ConfigManager.configureLoggerFallback();
    }
-
-   /**
-    * XINS server engine. Initially <code>null</code> but set to a
-    * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
-    */
-   private Engine _engine;
 
    /**
     * Constructs a new <code>APIServlet</code> object.
