@@ -597,7 +597,7 @@
 		<!-- ************************************************************* -->
 		<!-- Check data section                                            -->
 		<!-- ************************************************************* -->
-		<xsl:if test="local-name() = 'input' or local-name() = 'output'">
+		<xsl:if test="data/contains/contained">
 			<xsl:text>
       if (</xsl:text>
 			<xsl:value-of select="$context" />

@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
     spaces as specified in the Java coding convention.
     If you use another indentation, use the 'Reformat code' feature of your
     favorite IDE.
+  - Avoid unnecesasry if condition in checkParameters().
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
