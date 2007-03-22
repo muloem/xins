@@ -745,7 +745,7 @@ class CallingConventionManager extends Manageable {
       } else {
          Log.log_3510();
          String noMatches = "Request does not specify a calling convention, it "
-               + "cannot be handled by the default calling convention and it was"
+               + "cannot be handled by the default calling convention and it was "
                + "not possible to find any calling convention that can handle it.";
          throw new InvalidRequestException(noMatches);
       }
