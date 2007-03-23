@@ -6,8 +6,14 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 
+* XINS/Java Common Library:
+  - Fixed missing _list, _set and _hex in the list of the possible pre-defined
+    types in the spec package.
+
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
+  - Added _SMD meta function for better integration with DOJO toolkit.
+  - Used the put method to fill in the JSON object instead of append.
 
 * Generation of the API from the WSDL:
   - Added more comments in the code.
