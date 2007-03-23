@@ -165,6 +165,12 @@ public final class ParameterSpec {
          return org.xins.common.types.standard.Properties.SINGLETON;
       } else if (typeName.equals("_url")) {
          return org.xins.common.types.standard.URL.SINGLETON;
+      } else if (typeName.equals("_hex")) {
+         return org.xins.common.types.standard.Hex.SINGLETON;
+      } else if (typeName.equals("_list")) {
+         return org.xins.common.types.standard.List.SINGLETON;
+      } else if (typeName.equals("_set")) {
+         return org.xins.common.types.standard.Set.SINGLETON;
       } else if (typeName.charAt(0) != '_') {
          String className = _reference.getName();
          int truncatePos = className.lastIndexOf(".capi.CAPI");
