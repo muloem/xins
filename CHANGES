@@ -28,6 +28,11 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
     favorite IDE.
   - Avoid unnecesasry if condition in checkParameters().
 
+* Tools:
+  - Added new 'smd' target that generates the SMD (Simple Method Description)
+    file for an API.
+    The location of the API can be specified with the smd.endpoint.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 

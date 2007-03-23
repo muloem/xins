@@ -48,6 +48,7 @@
 - eclipse         Generates Eclipse project files for an API.
 - xsd-to-types    Generates XINS type files from XML Schema files.
 - wsdl-to-api     Generates the XINS API files from the WSDL.
+- smd             Generates the Simple Method Description for an API.
 
 The name of the API is specified with the 'api.name' Ant property.
 
@@ -58,6 +59,7 @@ jmeter.home       [required, run-jmeter, directory of JMeter]
 jmeter.test       [optional, run-jmeter, test to execute]
 xsd.dir           [required, xsd-to-types, directory of xsd files]
 wsdl.location     [optional, wsdl-to-api, location of the WSDL]
+smd.endpoint      [optional, smd, the enpoint of the API]
 ]]>
 </echo>
 		</target>
@@ -453,6 +455,19 @@ wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 				<param name="api_name" expression="${{api.name}}" />
 			</xslt>
 			<!--delete file="${{wsdl.file}}.copy" /-->
+		</target>
+
+		<target name="smd" depends="-init-tools" description="Generates the SMD file for an API.">
+			<mkdir dir="{$builddir}/smd" />
+			<property name="smd.endpoint" value="" />
+			<xslt
+			in="apis/${{api.name}}/spec/api.xml"
+			out="{$builddir}/smd/${{api.name}}.smd"
+			style="{$xins_home}/src/tools/dojo/api_to_smd.xslt">
+				<xmlcatalog refid="all-dtds" />
+				<param name="project_home" expression="{$project_home}" />
+				<param name="endpoint" expression="${{smd.endpoint}}" />
+			</xslt>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
