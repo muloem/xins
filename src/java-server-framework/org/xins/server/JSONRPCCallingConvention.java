@@ -166,16 +166,16 @@ public class JSONRPCCallingConvention extends CallingConvention {
       try {
          String version = (String) httpRequest.getSession().getAttribute("version");
          if (version != null) {
-            returnObject.append("version", version);
+            returnObject.put("version", version);
          }
          if (xinsResult.getErrorCode() != null) {
             if (version == null) {
-               returnObject.append("result", null);
+               returnObject.putOpt("result", (Object) null);
             }
             JSONObject errorObject = new JSONObject();
             String errorCode = xinsResult.getErrorCode();
-            errorObject.append("name", errorCode);
-            errorObject.append("code", new Integer(123));
+            errorObject.put("name", errorCode);
+            errorObject.put("code", new Integer(123));
             if (functionName != null) {
                try {
                   ErrorCodeSpec errorSpec = _api.getAPISpecification().getFunction(functionName).getErrorCode(errorCode);
@@ -183,24 +183,24 @@ public class JSONRPCCallingConvention extends CallingConvention {
                   if (errorDescription.indexOf(". ") != -1) {
                      errorDescription = errorDescription.substring(0, errorDescription.indexOf(". "));
                   }
-                  errorObject.append("message", errorDescription);
+                  errorObject.put("message", errorDescription);
                } catch (Exception ex) {
-                  errorObject.append("message", "Unknown error: " + ex.getMessage());
+                  errorObject.put("message", "Unknown error: " + ex.getMessage());
                }
             }
             JSONObject paramsObject = createResultObject(xinsResult);
-            errorObject.append("error", paramsObject);
-            returnObject.append("error", errorObject);
+            errorObject.put("error", paramsObject);
+            returnObject.put("error", errorObject);
          } else {
             JSONObject paramsObject = createResultObject(xinsResult);
-            returnObject.append("result", paramsObject);
+            returnObject.put("result", paramsObject);
             if (version == null) {
-               returnObject.append("error", null);
+               returnObject.putOpt("error", (Object) null);
             }
          }
          Object requestId = httpRequest.getSession().getAttribute("id");
          if (requestId != null) {
-            returnObject.append("id", requestId);
+            returnObject.put("id", requestId);
          }
 
          // Write the result to the servlet response
@@ -407,16 +407,16 @@ public class JSONRPCCallingConvention extends CallingConvention {
     */
    private JSONObject createServiceDescriptionObject(String address) throws JSONException {
       JSONObject serviceObject = new JSONObject();
-      serviceObject.append("sdversion", "1.0");
-      serviceObject.append("name", _api.getName());
+      serviceObject.put("sdversion", "1.0");
+      serviceObject.put("name", _api.getName());
       String apiClassName = _api.getClass().getName();
-      serviceObject.append("id", "xins:" + apiClassName.substring(0, apiClassName.indexOf(".api.API")));
-      serviceObject.append("version", _api.getBootstrapProperties().get(API.API_VERSION_PROPERTY));
+      serviceObject.put("id", "xins:" + apiClassName.substring(0, apiClassName.indexOf(".api.API")));
+      serviceObject.put("version", _api.getBootstrapProperties().get(API.API_VERSION_PROPERTY));
       try {
          APISpec apiSpec = _api.getAPISpecification();
          String description = apiSpec.getDescription();
-         serviceObject.append("summary", description);
-         serviceObject.append("address", address);
+         serviceObject.put("summary", description);
+         serviceObject.put("address", address);
 
          // Add the functions
          JSONArray procs = new JSONArray();
@@ -424,15 +424,15 @@ public class JSONRPCCallingConvention extends CallingConvention {
          while (itFunctions.hasNext()) {
             Map.Entry nextFunction = (Map.Entry) itFunctions.next();
             JSONObject functionObject = new JSONObject();
-            functionObject.append("name", (String) nextFunction.getKey());
+            functionObject.put("name", (String) nextFunction.getKey());
             FunctionSpec functionSpec = (FunctionSpec) nextFunction.getValue();
-            functionObject.append("summary", functionSpec.getDescription());
+            functionObject.put("summary", functionSpec.getDescription());
             JSONArray params = getParamsDescription(functionSpec.getInputParameters(), functionSpec.getInputDataSectionElements());
-            functionObject.append("params", params);
+            functionObject.put("params", params);
             JSONArray result = getParamsDescription(functionSpec.getOutputParameters(), functionSpec.getOutputDataSectionElements());
-            functionObject.append("return", result);
+            functionObject.put("return", result);
          }
-         serviceObject.append("procs", procs);
+         serviceObject.put("procs", procs);
       } catch (InvalidSpecificationException ex) {
          // TODO log
          System.err.println(ex.getMessage());
@@ -456,15 +456,15 @@ public class JSONRPCCallingConvention extends CallingConvention {
     * @throws JSONException
     *    if the JSON object cannot be created.
     */
-   private JSONArray getParamsDescription(Map paramsSpecs, Map dataSectionSpecs) throws JSONException {
+   static JSONArray getParamsDescription(Map paramsSpecs, Map dataSectionSpecs) throws JSONException {
       JSONArray params = new JSONArray();
       Iterator itParams = paramsSpecs.entrySet().iterator();
       while (itParams.hasNext()) {
          Map.Entry nextParam = (Map.Entry) itParams.next();
          JSONObject paramObject = new JSONObject();
-         paramObject.append("name", (String) nextParam.getKey());
+         paramObject.put("name", (String) nextParam.getKey());
          String jsonType = convertType(((ParameterSpec) nextParam.getValue()).getType());
-         paramObject.append("type", jsonType);
+         paramObject.put("type", jsonType);
          params.put(paramObject);
          // TODO data section
       }
