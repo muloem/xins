@@ -274,6 +274,7 @@ implements DefaultResultCodes {
       _metaFunctionCallIDs.put("_ResetStatistics",  new Counter());
       _metaFunctionCallIDs.put("_ReloadProperties", new Counter());
       _metaFunctionCallIDs.put("_WSDL",             new Counter());
+      _metaFunctionCallIDs.put("_SMD",              new Counter());
       _metaFunctionCallIDs.put("_DisableAPI",       new Counter());
       _metaFunctionCallIDs.put("_EnableAPI",        new Counter());
    }
@@ -1211,6 +1212,10 @@ implements DefaultResultCodes {
 
       // Return the WSDL description of the API
       } else if ("_WSDL".equals(functionName)) {
+         result = SUCCESSFUL_RESULT;
+
+      // Return the SMD (Simple Method Description) description of the API
+      } else if ("_SMD".equals(functionName)) {
          result = SUCCESSFUL_RESULT;
 
       // Disable the API

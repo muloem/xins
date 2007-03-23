@@ -6,17 +6,16 @@
  */
 package org.xins.server;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -28,6 +27,9 @@ import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -35,6 +37,9 @@ import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.io.IOReader;
 import org.xins.common.manageable.InitializationException;
+import org.xins.common.spec.APISpec;
+import org.xins.common.spec.EntityNotFoundException;
+import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
@@ -108,6 +113,12 @@ final class Engine {
     * field is indeed <code>null</code>.
     */
    private Pattern _contextIDPattern;
+
+   /**
+    * The SMD (Simple Method Description) of this API. This value is <code>null</code>
+    * until the meta function <i>_SMD</i> is called.
+    */
+   private String _smd;
 
    /**
     * Constructs a new <code>Engine</code> object.
@@ -861,6 +872,12 @@ final class Engine {
          return;
       }
 
+      // Shortcut for the _SMD meta function
+      if (xinsRequest.getFunctionName().equals("_SMD")) {
+         handleSmdRequest(response);
+         return;
+      }
+
       // Convert the XINS result to an HTTP response
       try {
          cc.convertResult(result, response, request);
@@ -1039,5 +1056,76 @@ final class Engine {
       Writer outputResponse = response.getWriter();
       outputResponse.write(wsdlText);
       outputResponse.close();
+   }
+
+   /**
+    * Handles the request for the _SMD meta function.
+    *
+    * @param response
+    *    the response to fill, never <code>null</code>.
+    */
+   private void handleSmdRequest(HttpServletResponse response) throws IOException {
+      if (_smd == null) {
+         try {
+            _smd = createSMD();
+         } catch (Exception ex) {
+            // TODO log
+            throw new IOException(ex.getMessage());
+         }
+      }
+
+      // Write the text to the output
+      response.setContentType(JSONRPCCallingConvention.RESPONSE_CONTENT_TYPE);
+      response.setStatus(HttpServletResponse.SC_OK);
+      Writer outputResponse = response.getWriter();
+      outputResponse.write(_smd);
+      outputResponse.close();
+   }
+
+   /**
+    * Creates the SMD for this API.
+    * More info at http://dojo.jot.com/SMD and 
+    * http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book9.
+    * 
+    * @return
+    *    the String representation of the SMD JSON Object, never <code>null</code>.
+    * 
+    * @throws InvalidSpecificationException
+    *    if the specification of the API cannot be found.
+    * 
+    * @throws EntityNotFoundException
+    *    if the specification of a function cannot be found.
+    * 
+    * @throws JSONException
+    *    if the JSON object cannot be created correctly.
+    */
+   private String createSMD() 
+   throws InvalidSpecificationException, EntityNotFoundException, JSONException {
+      APISpec apiSpec = _api.getAPISpecification();
+      JSONObject smdObject = new JSONObject();
+      smdObject.put("SMDVersion", ".1");
+      smdObject.put("objectName", _api.getName());
+      smdObject.put("serviceType", "JSON-RPC");
+      smdObject.put("serviceURL", "?_convention=_json-rpc");
+      JSONArray methods = new JSONArray();
+      Iterator itFunctions = _api.getFunctionList().iterator();
+      while (itFunctions.hasNext()) {
+         String nextFunction = ((Function) itFunctions.next()).getName();
+         JSONObject functionObject = new JSONObject();
+         functionObject.put("name", nextFunction);
+         JSONArray inputParameters = new JSONArray();
+         Map inputParamSpecs = apiSpec.getFunction(nextFunction).getInputParameters();
+         Iterator itParamNames = inputParamSpecs.keySet().iterator();
+         while (itParamNames.hasNext()) {
+            String nextParam = (String) itParamNames.next();
+            JSONObject paramObject = new JSONObject();
+            paramObject.put("name", nextParam);
+            inputParameters.put(paramObject);
+         }
+         functionObject.put("parameters",inputParameters);
+         methods.put(functionObject);
+      }
+      smdObject.put("methods", methods);
+      return smdObject.toString();
    }
 }
