@@ -369,20 +369,24 @@
 		<!-- otherwise create the parameter or the attribute. -->
     <xsl:choose>
 			<xsl:when test="not(starts-with(@type, 'xsd:')) and not(key('simpletypenames', $localNameType))">
-				<xsl:variable name="lowerType">
-					<xsl:call-template name="smartHungarianLower">
-						<xsl:with-param name="text" select="$localNameType" />
-					</xsl:call-template>
+				<xsl:variable name="new-prefix">
+					<xsl:value-of select="$prefix" />
+					<xsl:if test="count(../xsd:element) &gt; 1">
+						<xsl:call-template name="smartHungarianLower">
+							<xsl:with-param name="text" select="@name" />
+						</xsl:call-template>
+						<xsl:text>.</xsl:text>
+					</xsl:if>
 				</xsl:variable>
 				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:element[@name=$localNameType]/xsd:complexType//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 					<xsl:with-param name="section" select="$section" />
 					<xsl:with-param name="elementName" select="$elementName" />
-					<xsl:with-param name="prefix" select="concat($prefix, $lowerType, '.')" />
+					<xsl:with-param name="prefix" select="$new-prefix" />
 				</xsl:apply-templates>
 				<xsl:apply-templates select="/definitions/types/xsd:schema/xsd:complexType[@name=$localNameType]//xsd:sequence/xsd:element[not(@maxOccurs='unbounded') or starts-with(@type, 'xsd:') or key('simpletypenames', @type) or key('simpletypenames', substring-after(@type, ':'))]">
 					<xsl:with-param name="section" select="$section" />
 					<xsl:with-param name="elementName" select="$elementName" />
-					<xsl:with-param name="prefix" select="concat($prefix, $lowerType, '.')" />
+					<xsl:with-param name="prefix" select="$new-prefix" />
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
