@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added more comments in the code.
   - When recursively going into complex types, add a prefix to the element
     name.
+  - Added declaration of the lists in the api.xml.
 
 * XSLT:
   - Moved the class fields before the constructor.

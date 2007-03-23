@@ -94,6 +94,7 @@
 				<xsl:value-of select="concat($return, $return, $tab)" />
 			</xsl:if>
 			<xsl:for-each select="types/xsd:schema//xsd:simpleType">
+				<xsl:sort select="@name" />
 				<xsl:variable name="typeName">
 					<xsl:call-template name="hungarianUpper">
 						<xsl:with-param name="text">
@@ -112,6 +113,24 @@
 				<type name="{$typeName}" />
 				<xsl:if test="position() != last()">
 					<xsl:value-of select="concat($return, $tab)" />
+				</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="types/xsd:schema//xsd:element[@maxOccurs='unbounded' and not(@type='xsd:string')]">
+				<xsl:variable name="type" select="@type" />
+				<xsl:variable name="localNameType">
+					<xsl:call-template name="localname">
+						<xsl:with-param name="text" select="@type" />
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:if test="(starts-with(@type, 'xsd:') or key('simpletypenames', $localNameType)) and not(preceding::xsd:element[@maxOccurs='unbounded' and @type = $type])">
+					<xsl:variable name="typeName">
+						<xsl:call-template name="hungarianUpper">
+							<xsl:with-param name="text" select="$localNameType" />
+						</xsl:call-template>
+						<xsl:text>List</xsl:text>
+					</xsl:variable>
+					<xsl:value-of select="concat($return, $tab)" />
+					<type name="{$typeName}" />
 				</xsl:if>
 			</xsl:for-each>
 
