@@ -7,13 +7,14 @@
 package org.xins.common;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import org.xins.common.collections.ChainedMap;
 import org.xins.common.text.TextUtils;
-
 import org.xins.common.types.EnumItem;
+import org.xins.common.types.ItemList;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
@@ -196,6 +197,18 @@ public class BeanUtils {
             // Convert a String to a timestamp
             } else if (origValue instanceof String && destClass == Timestamp.Value.class) {
                return Timestamp.SINGLETON.fromString((String) origValue);
+
+            // Convert a Collection (List,Set) to a ListItem
+            } else if (origValue instanceof Collection && ItemList.class.isAssignableFrom(destClass)) {
+               ItemList destValue = (ItemList) destClass.newInstance();
+               destValue.add((Collection) origValue);
+               return destValue;
+
+            // Convert a ListItem to a collection
+            } else if (origValue instanceof ItemList && Collection.class.isAssignableFrom(destClass)) {
+               Collection destValue = (Collection) destClass.newInstance();
+               Collection values = ((ItemList) origValue).get();
+               destValue.addAll(values);
 
             // Convert a String to whatever is asked
             } else if (origValue instanceof String) {
