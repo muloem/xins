@@ -6,7 +6,9 @@
  */
 package org.xins.common;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -209,6 +211,22 @@ public class BeanUtils {
                Collection destValue = (Collection) destClass.newInstance();
                Collection values = ((ItemList) origValue).get();
                destValue.addAll(values);
+
+            // Convert a Date or Calendar to a Date.Value or a Timestamp.Value
+            } else if ((origValue instanceof java.util.Date | origValue instanceof Calendar) && 
+                  (destClass == Date.Value.class || destClass == Timestamp.Value.class)) {
+               Class[] idemClass = {origValue.getClass()};
+               Object[] valueArgs = {origValue};
+               Constructor dateConstructor = destClass.getConstructor(idemClass);
+               return dateConstructor.newInstance(valueArgs);
+
+            // Convert a Date.Value to a Date
+            } else if (origValue instanceof Date.Value && destClass == java.util.Date.class) {
+               return ((Date.Value) origValue).toDate();
+
+            // Convert a Timestamp.Value to a Date
+            } else if (origValue instanceof Timestamp.Value && destClass == java.util.Date.class) {
+               return ((Timestamp.Value) origValue).toDate();
 
             // Convert a String to whatever is asked
             } else if (origValue instanceof String) {

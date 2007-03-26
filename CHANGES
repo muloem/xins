@@ -10,6 +10,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Fixed missing _list, _set and _hex in the list of the possible pre-defined
     types in the spec package.
   - Added convertion in BeanUtils from ItemList to a Collection and vice-versa.
+  - Added convertion in BeanUtils from Java Date to a XINS Date or Timestamp
+    and vice-versa.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
@@ -2153,6 +2155,7 @@ CHANGES INTRODUCED IN XINS 1.3.0 BETA 2:
   - Removed unused imports and unused variables.
 
 * XINS/Java Client Framework:
+
   - Removed unused imports and unused variables.
 
 * Generated types:
