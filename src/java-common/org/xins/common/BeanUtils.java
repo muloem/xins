@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import org.xins.common.collections.ChainedMap;
+import org.xins.common.collections.PropertyReader;
+import org.xins.common.collections.PropertyReaderConverter;
+import org.xins.common.service.Descriptor;
 import org.xins.common.text.TextUtils;
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.ItemList;
@@ -491,7 +494,7 @@ public class BeanUtils {
 
    /**
     * Gets the values returned by the get methods of the given POJO,
-    * transform it to e String object and put the values in a <code>Map</code>.
+    * transform it to a String object and put the values in a <code>Map</code>.
     * The property names returned start with a lowercase.
     *
     * @param source
@@ -515,6 +518,53 @@ public class BeanUtils {
          Map.Entry nextParam = (Map.Entry) itParams.next();
          String paramName = (String) nextParam.getKey();
          Object paramValue = nextParam.getValue();
+         String stringValue = String.valueOf(paramValue);
+         stringMap.put(paramName, stringValue);
+      }
+      return stringMap;
+   }
+
+   /**
+    * This method is similar to {@link #getParameters()} except that objects
+    * using classes of org.xins.common.type.* packages will be translated into
+    * standard Java object java.* packages.
+    *
+    * @param source
+    *    the object from which the values are extracted and put in the Map, should not be <code>null</code>
+    *
+    * @return
+    *     the property values of the source object. The key of the Map is
+    *     the name of the property and the value is a standard Java object representation of
+    *     the value as returned by the get method. Never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>source == null</code>.
+    *
+    * @since XINS 2.0.
+    */
+   public static Map getParametersAsObject(Object source) throws IllegalArgumentException {
+      ChainedMap stringMap = new ChainedMap();
+      Map originalMap = getParameters(source);
+      Iterator itParams = originalMap.entrySet().iterator();
+      while (itParams.hasNext()) {
+         Map.Entry nextParam = (Map.Entry) itParams.next();
+         String paramName = (String) nextParam.getKey();
+         Object paramValue = nextParam.getValue();
+         
+         // Convertion of the XINS types.
+         if (paramValue instanceof Date.Value) {
+            paramValue = ((Date.Value) paramValue).toDate();
+         } else if (paramValue instanceof Timestamp.Value) {
+            paramValue = ((Date.Value) paramValue).toDate();
+         } else if (paramValue instanceof PropertyReader) {
+            paramValue = PropertyReaderConverter.toProperties((PropertyReader) paramValue);
+         } else if (paramValue instanceof ItemList) {
+            paramValue = ((ItemList) paramValue).get();
+         } else if (paramValue instanceof EnumItem) {
+            paramValue = ((EnumItem) paramValue).getValue();
+         } else if (paramValue instanceof Descriptor) {
+            // TODO: Not supported yet
+         }
          String stringValue = String.valueOf(paramValue);
          stringMap.put(paramName, stringValue);
       }

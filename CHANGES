@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added convertion in BeanUtils from ItemList to a Collection and vice-versa.
   - Added convertion in BeanUtils from Java Date to a XINS Date or Timestamp
     and vice-versa.
+  - Added a new method in BeanUtils to get the parameters of the Request (on
+    the server side) or of the Result (on the client side) as standard Java
+    objects.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
