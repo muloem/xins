@@ -39,26 +39,26 @@ import org.xins.common.servlet.container.HTTPServletHandler;
  */
 public class APITests extends TestCase {
 
-     /**
-      * The Servlet server running the API. The value is &lt;code&gt;null&lt;/code&gt; if the server is not started.
-      */
-     private static HTTPServletHandler API_SERVER;
+    /**
+     * The Servlet server running the API. The value is &lt;code&gt;null&lt;/code&gt; if the server is not started.
+     */
+    private static HTTPServletHandler API_SERVER;
 
-     /**
-      * Flag that indicates that the API has been started.
-      */
-     private static boolean API_STARTED = false;
+    /**
+     * Flag that indicates that the API has been started.
+     */
+    private static boolean API_STARTED = false;
 
-     /**
-      * Constructs a new &lt;code&gt;APITests&lt;/code&gt; test suite with
-      * the specified name. The name will be passed to the superconstructor.
-      *
-      * @param name
-      *      the name for this test suite.
-      */
-     public APITests(String name) {
-          super(name);
-     }
+    /**
+     * Constructs a new &lt;code&gt;APITests&lt;/code&gt; test suite with
+     * the specified name. The name will be passed to the superconstructor.
+     *
+     * @param name
+     *      the name for this test suite.
+     */
+    public APITests(String name) {
+        super(name);
+    }
 
     /**
      * Returns a test suite with all test cases defined by this class.
