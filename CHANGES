@@ -15,6 +15,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added a new method in BeanUtils to get the parameters of the Request (on
     the server side) or of the Result (on the client side) as standard Java
     objects.
+  - Added a new method in BeanUtils to be able to provide a mapping of 
+    element names and/or attribute name for the xmlToObject method.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.

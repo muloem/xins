@@ -309,12 +309,19 @@ public class BeanUtils {
     *    the XML element object, can be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
+    * @param elementMapping
+    *    a Map&lt;String, String&gt; that maps the name of the source element
+    *    to the name of the destination object, can be <code>null</code>.
+    * @param attributeMapping
+    *    a Map&lt;String, String&gt; that maps the attributes of the elements, 
+    *    can be <code>null</code>.
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   public static Object xmlToObject(Element element, Object result) {
-      return xmlToObject(element, result, true);
+   public static Object xmlToObject(Element element, Object result, 
+         Map elementMapping, Map attributeMapping) {
+      return xmlToObject(element, result, elementMapping, attributeMapping, true);
    }
 
    /**
@@ -324,6 +331,27 @@ public class BeanUtils {
     *    the XML element object, can be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
+    *
+    * @return
+    *    the result object filled with the values of the element object, never <code>null</code>.
+    */
+   public static Object xmlToObject(Element element, Object result) {
+      return xmlToObject(element, result, null, null, true);
+   }
+
+   /**
+    * Fills the result object with of the content of the XML element object.
+    *
+    * @param element
+    *    the XML element object, can be <code>null</code>.
+    * @param result
+    *    the object to put the values in, cannot be <code>null</code>.
+    * @param elementMapping
+    *    a Map&lt;String, String&gt; that maps the name of the source element
+    *    to the name of the destination object, can be <code>null</code>.
+    * @param attributeMapping
+    *    a Map&lt;String, String&gt; that maps the attributes of the elements, 
+    *    can be <code>null</code>.
     * @param topLevel
     *    <code>true</code> if the element passed is the top element,
     *    <code>false</code> if it is a sub-element.
@@ -331,7 +359,8 @@ public class BeanUtils {
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   private static Object xmlToObject(Element element, Object result, boolean topLevel) {
+   private static Object xmlToObject(Element element, Object result, 
+         Map elementMapping, Map attributeMapping, boolean topLevel) {
 
       // Short-circuit if arg is null
       if (element == null) {
@@ -342,14 +371,17 @@ public class BeanUtils {
          Iterator itChildren = element.getChildElements().iterator();
          while (itChildren.hasNext()) {
             Element nextChild = (Element) itChildren.next();
-            xmlToObject(nextChild, result, true);
+            xmlToObject(nextChild, result, elementMapping, attributeMapping, true);
          }
       } else {
          try {
             String hungarianName = TextUtils.firstCharUpper(elementName);
-            Class[] argsClasses = {getElementClass(elementName, result)};
+            if (elementMapping.containsKey(elementName)) {
+               hungarianName = TextUtils.firstCharUpper((String) elementMapping.get(elementName));
+            }
+            Class[] argsClasses = {getElementClass(hungarianName, result)};
             Method addMethod = result.getClass().getMethod("add" + hungarianName, argsClasses);
-            Object childElement = elementToObject(element, result);
+            Object childElement = elementToObject(element, result, elementMapping, attributeMapping);
             Object[] addArgs = { childElement };
             if (childElement != null) {
                addMethod.invoke(result, addArgs);
@@ -365,8 +397,8 @@ public class BeanUtils {
    /**
     * Gets the class matching the XML element.
     *
-    * @param elementName
-    *    the name of the XML element, cannot be <code>null</code>.
+    * @param hungarianName
+    *    the name of the XML element starting with an uppercase, cannot be <code>null</code>.
     * @param result
     *    the base object to get the class from, cannot be <code>null</code>.
     *
@@ -376,8 +408,7 @@ public class BeanUtils {
     * @throws ClassNotFoundException
     *    if the class cannot be found.
     */
-   private static Class getElementClass(String elementName, Object result) throws ClassNotFoundException {
-      String hungarianName = TextUtils.firstCharUpper(elementName);
+   private static Class getElementClass(String hungarianName, Object result) throws ClassNotFoundException {
       String elementClassName = result.getClass().getName();
       if (elementClassName.indexOf("$") != -1) {
          elementClassName = elementClassName.substring(0, elementClassName.indexOf("$"));
@@ -398,12 +429,16 @@ public class BeanUtils {
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   private static Object elementToObject(Element element, Object result) {
+   private static Object elementToObject(Element element, Object result, Map elementMapping, Map attributeMapping) {
       String elementName = element.getLocalName();
+      String hungarianName = TextUtils.firstCharUpper(elementName);
+      if (elementMapping.containsKey(elementName)) {
+         hungarianName = TextUtils.firstCharUpper((String) elementMapping.get(elementName));
+      }
       //String newElementClassName = result.getClass().getName() + "." + elementName;
       Object newElement = null;
       try {
-         newElement = getElementClass(elementName, result).newInstance();
+         newElement = getElementClass(hungarianName, result).newInstance();
       } catch (Exception ex) {
          Utils.logIgnoredException(ex);
          return null;
@@ -413,7 +448,10 @@ public class BeanUtils {
       Iterator itAttr = element.getAttributeMap().entrySet().iterator();
       while (itAttr.hasNext()) {
          Map.Entry attr = (Map.Entry) itAttr.next();
-         String name  = ((Element.QualifiedName) attr.getKey()).getLocalName();
+         String name = ((Element.QualifiedName) attr.getKey()).getLocalName();
+         if (attributeMapping.containsKey(name)) {
+            name = (String) attributeMapping.get(name);
+         }
          String value = (String) attr.getValue();
          try {
             Object setArg = convertObject(value, newElement, name);
@@ -443,7 +481,7 @@ public class BeanUtils {
       Iterator itChildren = element.getChildElements().iterator();
       while (itChildren.hasNext()) {
          Element child = (Element) itChildren.next();
-         xmlToObject(child, newElement, false);
+         xmlToObject(child, newElement, elementMapping, attributeMapping, false);
       }
 
       return newElement;
