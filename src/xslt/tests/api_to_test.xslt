@@ -114,6 +114,13 @@ public class APITests extends TestCase {
             return new TestSuite(StartServer.class);
         }
 
+        /**
+         * Unit test that is only used to start the Servlet API if the 
+         * test.start.server build properties is set to true.
+         *
+         * @throws Exception
+         *    if the internal Servlet container cannot be started for any reasons.
+         */
         public void testStartServer() throws Exception {
 
             String warLocation = "build/webapps/</xsl:text>
@@ -159,6 +166,13 @@ public class APITests extends TestCase {
             return new TestSuite(StopServer.class);
         }
 
+        /**
+         * Unit test that is only used to stop the Servlet API if the servlet
+         * is started.
+         *
+         * @throws Exception
+         *    if the internal Servlet container cannot be stopped for any reasons.
+         */
         public void testStopServer() throws Exception {
 
             if (API_STARTED) {

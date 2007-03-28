@@ -28,6 +28,7 @@ package ]]></xsl:text>
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
@@ -37,6 +38,7 @@ import org.xins.client.XINSServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
+
 /**
  * Implementation of the <code>]]></xsl:text>
 		<xsl:value-of select="@name" />
@@ -51,7 +53,12 @@ public class ]]></xsl:text>
     /**
      * The XINServiceCaller of the API.
      */
-    private XINSServiceCaller _caller;
+    private XINSServiceCaller caller;
+
+    /**
+     * The URL of the tested API.
+     */
+    private String target;
 
     /**
      * Constructs a new &lt;code&gt;</xsl:text>
@@ -80,14 +87,21 @@ public class ]]></xsl:text>
 		<xsl:text>Tests.class);
     }
 
+    /**
+     * Executes just this test.
+     */
+    public static void main(String args[]) {
+        TestRunner.run(suite());
+    }
+
     protected void setUp() throws Exception {
-        String target = System.getProperty("test.environment");
+        target = System.getProperty("test.environment");
         if (target == null || target.trim().equals("")) {
             target = "http://localhost:8080/</xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text>/";
         }
-        _caller = new XINSServiceCaller(new TargetDescriptor(target));
+        caller = new XINSServiceCaller(new TargetDescriptor(target));
     }
 
     protected void tearDown() throws Exception {
@@ -132,7 +146,7 @@ public class ]]></xsl:text>
 			<xsl:when test="@resultcode">
 				<xsl:text>
         try {
-            XINSCallResult result = _caller.call(request);
+            XINSCallResult result = caller.call(request);
             fail("An error code \"</xsl:text>
 				<xsl:value-of select="@resultcode" />
 				<xsl:text>\" was expected but did not occur.");
@@ -151,7 +165,7 @@ public class ]]></xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>
-        XINSCallResult result = _caller.call(request);</xsl:text>
+        XINSCallResult result = caller.call(request);</xsl:text>
 				<xsl:apply-templates select="output-example">
 					<xsl:with-param name="resultVariable" select="'result'" />
 				</xsl:apply-templates>
