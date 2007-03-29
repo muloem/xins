@@ -114,6 +114,20 @@ public class ]]></xsl:text>
 	<xsl:template match="example" mode="method">
 		<xsl:text>
 
+    /**
+     * Tests the </xsl:text>
+		<xsl:value-of select="/function/@name" />
+		<xsl:text> function by executing the example </xsl:text>
+		<xsl:value-of select="position()" />
+		<xsl:text>.
+     *
+     * Description: </xsl:text>
+		<xsl:value-of select="description/text()" />
+		<xsl:text>
+     *
+     * @throws Exception
+     *    if an unexpected error occurs.
+     */
     public void test</xsl:text>
 		<xsl:value-of select="/function/@name" />
 		<xsl:text>Example</xsl:text>

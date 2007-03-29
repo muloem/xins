@@ -37,6 +37,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
     name.
   - Added declaration of the lists in the api.xml.
 
+* Generation of the unit tests:
+  - Added Javadoc to the tests.
+
 * XSLT:
   - Moved the class fields before the constructor.
   - Changed the default indentation in editable generated Java files to 4
@@ -718,6 +721,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
     conventions now return a proper Content-Length header.
   - Fixed SF.net bug #1252449. HTTP calls performed by the _CheckLinks
     function are never retried anymore.
+
   - Fixed a small issue, the HTTP method was converted to upper case, although
     the W3C explicitly says the HTTP method is case-sensitive.
   - Refactored the way HTTP OPTIONS is handled.
