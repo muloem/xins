@@ -91,7 +91,7 @@
 		</xsl:if>
 		<xsl:text>.
  */
-final class </xsl:text>
+public final class </xsl:text>
 		<xsl:value-of select="$className" />
 		<xsl:text> extends org.xins.server.FunctionResult </xsl:text>
 		<!-- This class should implements the UnsuccessfulResult from all the functions
