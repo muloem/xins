@@ -127,20 +127,6 @@ implements DefaultResultCodes {
    private final List _functionList;
 
    /**
-    * Map that maps result code names to <code>ResultCode</code> instances.
-    * Contains all result codes associated with this API.
-    *
-    * <p />This field is initialized to a non-<code>null</code> value by the
-    * constructor.
-    */
-   private final Map _resultCodesByName;
-
-   /**
-    * List of all result codes. This field cannot be <code>null</code>.
-    */
-   private final List _resultCodeList;
-
-   /**
     * The build-time settings. This field is initialized exactly once by
     * {@link #bootstrap(PropertyReader)}. It can be <code>null</code> before
     * that.
@@ -254,8 +240,6 @@ implements DefaultResultCodes {
       _manageableObjects   = new ArrayList(20);
       _functionsByName     = new HashMap(89);
       _functionList        = new ArrayList(80);
-      _resultCodesByName   = new HashMap(89);
-      _resultCodeList      = new ArrayList(80);
       _emptyProperties     = new RuntimeProperties();
       _timeZone            = TimeZone.getDefault();
       _localIPAddress      = IPAddressUtils.getLocalHostIPAddress();
@@ -905,21 +889,6 @@ implements DefaultResultCodes {
 
       _functionsByName.put(function.getName(), function);
       _functionList.add(function);
-   }
-
-   /**
-    * Callback method invoked when a result code is constructed.
-    *
-    * @param resultCode
-    *    the result code that is added, not <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if <code>resultCode == null</code>.
-    */
-   final void resultCodeAdded(ResultCode resultCode)
-   throws NullPointerException {
-      _resultCodesByName.put(resultCode.getName(), resultCode);
-      _resultCodeList.add(resultCode);
    }
 
    /**
