@@ -120,6 +120,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * Generated build file:
   - Added new 'tests' target that runs the tests of all the APIs that have
     tests.
+  - Added json.jar as a dependency in the WAR file.
 
 * XSLT:
   - Removed unneeded comments.
@@ -1468,6 +1469,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 1:
 * Generation of the specdocs:
   - Changed the Help page to be more informal. Not describing all individual
     rules anymore.
+
 
 * Generated build file:
   - Added a create-example target that creates the specification of an

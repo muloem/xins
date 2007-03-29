@@ -1200,7 +1200,7 @@ APIs in this project are:
 					<lib dir="{$xins_home}/build" includes="xins-common.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-server.jar" />
 					<lib dir="{$xins_home}/build" includes="xins-client.jar" />
-					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar" />
+					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar json.jar" />
 					<xsl:apply-templates select="$impl_node/dependency" mode="lib" />
 					<xsl:apply-templates select="$impl_node/content" />
 					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
