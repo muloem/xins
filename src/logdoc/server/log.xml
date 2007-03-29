@@ -190,11 +190,6 @@
 			<param name="name"      />
 			<param name="className" />
 		</entry>
-		<entry id="3238" level="DEBUG">
-			<description>Created calling convention.</description>
-			<param name="name"      />
-			<param name="className" />
-		</entry>
 		<entry id="3239" level="ERROR" exception="true">
 			<description>Error while creating calling convention.</description>
 			<param name="name"      nullable="false" />
@@ -202,10 +197,6 @@
 		</entry>
 		<entry id="3240" level="DEBUG">
 			<description>Bootstrapping calling convention.</description>
-			<param name="name" />
-		</entry>
-		<entry id="3241" level="DEBUG">
-			<description>Bootstrapped calling convention.</description>
 			<param name="name" />
 		</entry>
 		<entry id="3242" level="FATAL">

@@ -21,6 +21,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 * XINS/Java Server Framework:
   - Removed unused variables in API.java.
   - Removed some methods and constructors in ResultCode.java.
+  - Removed unneeded log messages about the calling convention.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.

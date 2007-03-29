@@ -246,7 +246,6 @@ class CallingConventionManager extends Manageable {
 
       // Constructed successfully
       if (cc != null) {
-         Log.log_3238(name, className);
          cc.setAPI(_api);
       }
 
@@ -379,7 +378,6 @@ class CallingConventionManager extends Manageable {
 
       try {
          cc.bootstrap(properties);
-         Log.log_3241(name);
 
       // Missing property
       } catch (MissingRequiredPropertyException exception) {
