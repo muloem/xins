@@ -18,10 +18,17 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added a new method in BeanUtils to be able to provide a mapping of 
     element names and/or attribute name for the xmlToObject method.
 
+* XINS/Java Server Framework:
+  - Removed unused variables in API.java.
+  - Removed some methods and constructors in ResultCode.java.
+
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
   - Added _SMD meta function for better integration with DOJO toolkit.
   - Used the put method to fill in the JSON object instead of append.
+  - Removed unneeded creation of error code in APIImpl.java.
+  - Fixed errors with shared error code.
+  - Generated error code are now public.
 
 * Generation of the API from the WSDL:
   - Added more comments in the code.
