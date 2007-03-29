@@ -25,7 +25,14 @@
 					<xsl:variable name="function_file" select="concat($specsdir, '/', @name, '.fnc')" />
 					<xsl:variable name="function_node" select="document($function_file)/function" />
 					<xsl:for-each select="$function_node/output/resultcode-ref">
-						<resultcode name="{@name}" />
+						<xsl:choose>
+							<xsl:when test="contains(@name, '/')">
+								<resultcode name="{substring-after(@name, '/')}" />
+							</xsl:when>
+							<xsl:otherwise>
+								<resultcode name="{@name}" />
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:for-each>
 				</function>
 			</xsl:for-each>

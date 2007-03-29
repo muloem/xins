@@ -65,12 +65,6 @@
 public abstract class ]]></xsl:text>
 		<xsl:value-of select="$functionName" />
 		<xsl:text><![CDATA[ extends org.xins.server.Function {
-
-   /**
-    * The list of error codes supported by this function. This field cannot be
-    * <code>null</code>.
-    */
-   private final java.util.HashSet _errorCodes;
 ]]></xsl:text>
 		<xsl:for-each select="document($impl_file)/impl/instance">
 			<xsl:text>
@@ -103,22 +97,12 @@ public abstract class ]]></xsl:text>
 		<xsl:text>");</xsl:text>
 		<xsl:for-each select="document($impl_file)/impl/instance">
 			<xsl:text>
-		</xsl:text>
+      </xsl:text>
 			<xsl:value-of select="@name" />
 			<xsl:text> = api.</xsl:text>
 			<xsl:value-of select="@getter" />
 			<xsl:text>();</xsl:text>
 		</xsl:for-each>
-		<xsl:text><![CDATA[
-
-      // Initialize list of error codes
-      _errorCodes = new java.util.HashSet();]]></xsl:text>
-      <xsl:for-each select="output/resultcode-ref">
-         <xsl:text>
-      _errorCodes.add("</xsl:text>
-         <xsl:value-of select="@name" />
-         <xsl:text>");</xsl:text>
-      </xsl:for-each>
 		<xsl:text>
    }
 
@@ -171,26 +155,30 @@ public abstract class ]]></xsl:text>
 
       // The method should never return null
       if (_result == null) {
-         throw org.xins.common.Utils.logProgrammingError("Return value is null.");
+         throw org.xins.common.Utils.logProgrammingError("Return result value for " + getClass().getName() + " is null.");
       }
 
-      // Check that the Result object is really a FunctionResult instance. If
-      // not, then the developer must have implemented his own class that
-      // implements Result. He should never do this.
-      if (! (_result instanceof org.xins.server.FunctionResult)) {
-         throw org.xins.common.Utils.logProgrammingError(
-            "Return value is an instance of class " + _result.getClass().getName() + ", which is not derived from class org.xins.server.FunctionResult."
-         );
+      // Check that the object return is one of the accepted class.
+      if (!(_result instanceof SuccessfulResult)</xsl:text>
+			<xsl:for-each select="output/resultcode-ref">
+				<xsl:text> &amp;&amp; !(_result instanceof </xsl:text>
+				<xsl:choose>
+					<xsl:when test="contains(@name, '/')">
+						<xsl:value-of select="substring-after(@name, '/')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@name" />
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>Result)</xsl:text>
+			</xsl:for-each>
+			<xsl:text>) {
+         throw org.xins.common.Utils.logProgrammingError("The result is not a successful result or a defined error code: " +
+            _result.getClass().getName());
       }
 
       // Convert the Result object to a proper FunctionResult instance
       org.xins.server.FunctionResult _fr = (org.xins.server.FunctionResult) _result;
-
-      // Check that if an error code is set, it is a supported one
-      String _errorCode = _fr.getErrorCode();
-      if (_errorCode != null &amp;&amp; !_errorCodes.contains(_errorCode) &amp;&amp; _fr instanceof UnsuccessfulResult) {
-         throw org.xins.common.Utils.logProgrammingError("The error code \"" + _errorCode + "\" is not supported by this function.");
-      }
 
       return _fr;</xsl:text>
 		<xsl:text><![CDATA[

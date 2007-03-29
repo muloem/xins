@@ -64,15 +64,6 @@ public interface DefaultResultCodes {]]></xsl:text>
 			</xsl:call-template>
 			<xsl:text> = new ResultCode("</xsl:text>
 			<xsl:value-of select="@name" />
-			<xsl:text>", "</xsl:text>
-			<xsl:choose>
-				<xsl:when test="@value">
-					<xsl:value-of select="@value" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="@name" />
-				</xsl:otherwise>
-			</xsl:choose>
 			<xsl:text>");
 </xsl:text>
 		</xsl:for-each>
