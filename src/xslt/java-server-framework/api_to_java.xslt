@@ -59,43 +59,6 @@ public class APIImpl extends API {
     * The only instance of this class. This field is never <code>null</code>.
     */
    public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
-		<xsl:for-each select="$api_node/resultcode">
-			<xsl:variable name="name">
-				<xsl:choose>
-					<xsl:when test="contains(@name, '/')">
-						<xsl:value-of select="substring-after(@name, '/')" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@name" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="fieldname">
-				<xsl:call-template name="toupper">
-					<xsl:with-param name="text">
-						<xsl:call-template name="hungarianWordSplit">
-							<xsl:with-param name="text" select="$name" />
-							<xsl:with-param name="separator" select="'_'" />
-						</xsl:call-template>
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:variable>
-
-			<xsl:text><![CDATA[
-
-   /**
-    * The <em>]]></xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text><![CDATA[</em> result code.
-    */
-   public final static org.xins.server.ResultCode ]]></xsl:text>
-			<xsl:value-of select="$fieldname" />
-			<xsl:text> = new org.xins.server.ResultCode(SINGLETON, "</xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text>", "</xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text>");</xsl:text>
-		</xsl:for-each>
 
 		<xsl:for-each select="$api_node/function">
 			<xsl:variable name="name"    select="@name" />
