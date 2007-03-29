@@ -20,6 +20,6 @@ public class InvalidRequestResult extends InvalidMessageResult {
     * Constructs a new <code>InvalidRequestResult</code> object.
     */
    public InvalidRequestResult() {
-      super(DefaultResultCodes._INVALID_REQUEST.getValue());
+      super(DefaultResultCodes._INVALID_REQUEST.getName());
    }
 }

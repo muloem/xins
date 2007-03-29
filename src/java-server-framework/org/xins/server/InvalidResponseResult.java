@@ -21,6 +21,6 @@ public class InvalidResponseResult extends InvalidMessageResult {
     * Constructs a new <code>InvalidResponseResult</code> object.
     */
    public InvalidResponseResult() {
-      super(DefaultResultCodes._INVALID_RESPONSE.getValue());
+      super(DefaultResultCodes._INVALID_RESPONSE.getName());
    }
 }
