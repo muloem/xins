@@ -40,6 +40,13 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 * Generation of the unit tests:
   - Added Javadoc to the tests.
 
+* Generation of the web.xml:
+  - Added the build java version used to compile the API.
+
+* Generated build file:
+  - Added json.jar as a dependency in the WAR file.
+  - Added the build java version used to compile the API.
+
 * XSLT:
   - Moved the class fields before the constructor.
   - Changed the default indentation in editable generated Java files to 4
@@ -124,7 +131,6 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:
 * Generated build file:
   - Added new 'tests' target that runs the tests of all the APIs that have
     tests.
-  - Added json.jar as a dependency in the WAR file.
 
 * XSLT:
   - Removed unneeded comments.

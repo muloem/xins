@@ -1182,6 +1182,7 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"           />
 					<param name="api_file"     expression="{$api_file}"      />
 					<param name="api_version"  expression="${{api.version}}" />
+					<param name="java_version" expression="${{build.java.version}}" />
 					<param name="hostname"     expression="${{hostname}}"    />
 					<param name="timestamp"    expression="${{timestamp}}"   />
 				</xslt>
