@@ -60,29 +60,12 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    private final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
-    * The name of the runtime property that defines the location of the XSLT
-    * templates. Should indicate a directory, either locally or remotely.
-    * Local locations will be interpreted as relative to the user home
-    * directory. The value should be a URL or a relative directory.
-    *
-    * <p>Examples of valid locations include:
-    *
-    * <ul>
-    * <li><code>projects/dubey/xslt/</code></li>
-    * <li><code>file:///home/john.doe/projects/dubey/xslt/</code></li>
-    * <li><code>http://johndoe.com/projects/dubey/xslt/</code></li>
-    * <li><code>https://xslt.johndoe.com/</code></li>
-    * </ul>
+    * The name of the runtime property that defines the prefix for the _template
+    * parameter.
+    * If this runtime property is not set or the value is empty,
+    * the _template parameter is not allowed.
     */
-   public final static String TEMPLATES_LOCATION_PROPERTY = "templates.callingconvention.source";
-
-   /**
-    * The name of the runtime property that defines the possibility to pass
-    * the XSLT template as parameter to the request.
-    * Should be either <code>"true"</code> or <code>"false"</code>.
-    * Default value is <code>"false"</code>.
-    */
-   public final static String TEMPLATES_AS_PARAMETER_PROPERTY = "templates.callingconvention.parameter";
+   public final static String TEMPLATES_PARAMETER_PREFIX = "templates.parameter.prefix";
 
    /**
     * The name of the input parameter that specifies the location of the XSLT
@@ -107,10 +90,11 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    private boolean _cacheTemplates;
 
    /**
-    * Flag that indicates whether the templates can be passed as parameter to the request.
+    * The prefix to use for the _template parameter.
     * This field is set during initialization.
+    * If the value is <code>null</code> the _template parameter is not allowed.
     */
-   private boolean _templatesAsParameter = false;
+   private String _templatesPrefix;
 
    /**
     * Location of the XSLT templates. This field is initially
@@ -148,13 +132,12 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       initXSLTLocation(runtimeProperties);
 
       // Determine whether template location can be passed as parameter
-      String templatesAsParameter = runtimeProperties.get(TEMPLATES_AS_PARAMETER_PROPERTY);
-      if (!TextUtils.isEmpty(templatesAsParameter) && !"true".equals(templatesAsParameter) &&
-            !"false".equals(templatesAsParameter)) {
-         throw new InvalidPropertyValueException(TEMPLATES_AS_PARAMETER_PROPERTY,
-               templatesAsParameter, "Expected either \"true\" or \"false\".");
+      String templatesPrefix = runtimeProperties.get(TEMPLATES_PARAMETER_PREFIX);
+      if (TextUtils.isEmpty(templatesPrefix) ||  templatesPrefix.trim().equals("")) {
+         _templatesPrefix = null;
+      } else {
+         _templatesPrefix = templatesPrefix;
       }
-      _templatesAsParameter = "true".equals(templatesAsParameter);
    }
 
    /**
@@ -200,7 +183,18 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    /**
     * Initializes the location for the XSLT templates. Examples include:
     *
+    * The name of the runtime property that defines the location of the XSLT
+    * templates should indicate a directory, either locally or remotely.
+    * Local locations will be interpreted as relative to the user home
+    * directory. The value should be a URL or a relative directory.
+    *
+    * <p>Examples of valid locations include:
+    *
     * <ul>
+    *    <li><code>projects/dubey/xslt/</code></li>
+    *    <li><code>file:///home/john.doe/projects/dubey/xslt/</code></li>
+    *    <li><code>http://johndoe.com/projects/dubey/xslt/</code></li>
+    *    <li><code>https://xslt.johndoe.com/</code></li>
     *    <li><code>http://xslt.mycompany.com/myapi/</code></li>
     *    <li><code>file:///c:/home/</code></li>
     * </ul>
@@ -214,7 +208,8 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    private void initXSLTLocation(PropertyReader runtimeProperties) {
 
       // Get the value of the property
-      _location = runtimeProperties.get(TEMPLATES_LOCATION_PROPERTY);
+      String templatesProperty = "templates." + getAPI().getName() + ".xins-xslt.source";
+      _location = runtimeProperties.get(templatesProperty);
 
       // If the value is not a URL, it's considered as a relative path.
       // Relative URLs use the user directory as base dir.
@@ -266,8 +261,12 @@ public class XSLTCallingConvention extends StandardCallingConvention {
 
       // Get the location of the XSLT file.
       String xsltLocation = null;
-      if (_templatesAsParameter) {
-         xsltLocation = httpRequest.getParameter(TEMPLATE_PARAMETER);
+      if (_templatesPrefix != null) {
+         String templatesSuffix = httpRequest.getParameter(TEMPLATE_PARAMETER);
+         if (templatesSuffix.indexOf("..") != -1) {
+            throw new IOException("Incorrect _template parameter: " + templatesSuffix);
+         }
+         xsltLocation = _templatesPrefix + templatesSuffix;
       }
       if (xsltLocation == null) {
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";

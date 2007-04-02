@@ -22,6 +22,13 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Removed unused variables in API.java.
   - Removed some methods and constructors in ResultCode.java.
   - Removed unneeded log messages about the calling convention.
+  - Replaced the templates.callingconvention.source property of the _xins-xslt
+    CC to templates.<api name>.xins-xslt.source.
+  - Removed the templates.callingconvention.parameter runtime property for the
+    xins-xslt CC.
+  - Added the templates.parameter.prefix for the xins-xslt CC that defines the
+    prefix of the _template parameter. If not set or empty, the _template
+    parameter is not allowed.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
