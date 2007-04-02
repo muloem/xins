@@ -925,14 +925,8 @@ APIs in this project are:
 				<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
 				<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
 				<target
-					name="-impl-{$api}{$implName2}-{$function}-unavail"
-					depends="-impl-{$api}{$implName2}-existencechecks"
-					if="exists-{$api}{$implName2}-{$classname}">
-					<echo message="Not overwriting existing file: {$javaImplFile}" />
-				</target>
-				<target
 					name="-skeleton-impl-{$api}{$implName2}-{$function}"
-					depends="-impl-{$api}{$implName2}-{$function}-unavail, -prepare-classes"
+					depends="-impl-{$api}{$implName2}-existencechecks, -prepare-classes"
 					unless="exists-{$api}{$implName2}-{$classname}">
 					<xmlvalidate file="{$api_specsdir}/{$function}.fnc" warn="false">
 						<xmlcatalog refid="all-dtds" />
