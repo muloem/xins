@@ -873,8 +873,8 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	</target>
 
 	<!-- Package XINS to be put in the Maven repository -->
-	<target name="package-maven" depends="-init">
-		<property name="stable.version" value="1.5.0" />
+	<target name="maven" depends="-load-sfproperties,-init">
+		<property name="stable.version" value="1.5.2" />
 		<mkdir dir="build/maven" />
 		<!-- source code -->
 		<jar destfile="build/maven/logdoc-${stable.version}-sources.jar">
@@ -926,5 +926,29 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 			<zipfileset file="../xins-${stable.version}/build/xins-server.jar" fullpath="xins-server-${stable.version}.jar" />
 			<zipfileset file="src/tools/maven/xins-server.pom" fullpath="pom.xml" />
 		</jar>
+		<scp
+		todir="${www.target}/maven"
+		password="${sf.password}"
+		trust="true">
+			<fileset dir="build/maven" includes="*-${stable.version}.jar" />
+		</scp>
+		<echo>
+Go to http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&amp;issuetype=3
+Description: New version of XINS for Maven2 repository
+URL: http://${www.host}/
+Name ref: http://sourceforge.net/users/agoubard/
+
+Hi,
+
+Here are new JAR file that I'd like to have uploaded in Maven:
+
+http://${www.host}/maven/xins-server-${stable.version}.jar
+http://${www.host}/maven/xins-common-${stable.version}.jar
+http://${www.host}/maven/xins-client-${stable.version}.jar
+http://${www.host}/maven/logdoc-${stable.version}.jar
+
+Kind regards,
+Anthony
+		</echo>
 	</target>
 </project>

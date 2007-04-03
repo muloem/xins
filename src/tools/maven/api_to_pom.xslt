@@ -100,22 +100,22 @@
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-common</artifactId>
-					<version>1.5.0</version>
+					<version>1.5.2</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-server</artifactId>
-					<version>1.5.0</version>
+					<version>1.5.2</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>logdoc</artifactId>
-					<version>1.5.0</version>
+					<version>1.5.2</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-client</artifactId>
-					<version>1.5.0</version>
+					<version>1.5.2</version>
 				</dependency>
 				<dependency>
 					<groupId>log4j</groupId>
