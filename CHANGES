@@ -74,6 +74,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Changed the package-maven target to the maven target.
   - The maven target now also upload the created jar file to sourceforge and
     print the issue to create in Maven.
+  - Added Javadoc to the Maven modules.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 ALPHA 6:

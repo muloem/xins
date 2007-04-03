@@ -876,56 +876,31 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	<target name="maven" depends="-load-sfproperties,-init">
 		<property name="stable.version" value="1.5.2" />
 		<mkdir dir="build/maven" />
-		<!-- source code -->
-		<jar destfile="build/maven/logdoc-${stable.version}-sources.jar">
-			<fileset dir="../xins-${stable.version}/src/java-common">
-				<include name="org/xins/logdoc/*.java" />
-			</fileset>
-		</jar>
-		<jar destfile="build/maven/xins-common-${stable.version}-sources.jar">
-			<fileset dir="../xins-${stable.version}/src/java-common">
-				<include name="org/xins/common/*.java" />
-			</fileset>
-		</jar>
-		<jar destfile="build/maven/xins-client-${stable.version}-sources.jar">
-			<fileset dir="../xins-${stable.version}/src/java-client-framework">
-				<include name="**/*.java" />
-			</fileset>
-		</jar>
-		<jar destfile="build/maven/xins-server-${stable.version}-sources.jar">
-			<fileset dir="../xins-${stable.version}/src/java-server-framework">
-				<include name="**/*.java" />
-			</fileset>
-		</jar>
-		<!-- Creates the distribution files -->
-		<jar destfile="build/maven/logdoc-${stable.version}.jar">
-			<fileset dir="build/maven">
-				<include name="logdoc-${stable.version}-sources.jar" />
-			</fileset>
-			<zipfileset file="../xins-${stable.version}/build/logdoc.jar" fullpath="logdoc-${stable.version}.jar" />
-			<zipfileset file="src/tools/maven/logdoc.pom" fullpath="pom.xml" />
-		</jar>
-		<jar destfile="build/maven/xins-common-${stable.version}.jar">
-			<fileset dir="build/maven">
-				<include name="xins-common-${stable.version}-sources.jar" />
-			</fileset>
-			<zipfileset file="../xins-${stable.version}/build/xins-common.jar" fullpath="xins-common-${stable.version}.jar" />
-			<zipfileset file="src/tools/maven/xins-common.pom" fullpath="pom.xml" />
-		</jar>
-		<jar destfile="build/maven/xins-client-${stable.version}.jar">
-			<fileset dir="build/maven">
-				<include name="xins-client-${stable.version}-sources.jar" />
-			</fileset>
-			<zipfileset file="../xins-${stable.version}/build/xins-client.jar" fullpath="xins-client-${stable.version}.jar" />
-			<zipfileset file="src/tools/maven/xins-client.pom" fullpath="pom.xml" />
-		</jar>
-		<jar destfile="build/maven/xins-server-${stable.version}.jar">
-			<fileset dir="build/maven">
-				<include name="xins-server-${stable.version}-sources.jar" />
-			</fileset>
-			<zipfileset file="../xins-${stable.version}/build/xins-server.jar" fullpath="xins-server-${stable.version}.jar" />
-			<zipfileset file="src/tools/maven/xins-server.pom" fullpath="pom.xml" />
-		</jar>
+
+		<!-- Creates the JAR files -->
+		<antcall target="-maven-module">
+			<param name="maven.module" value="logdoc" />
+			<param name="xins_version" value="${stable.version}" />
+			<param name="maven.module.dir" value="java-common" />
+			<param name="maven.module.includes" value="org/xins/logdoc/**" />
+		</antcall>
+		<antcall target="-maven-module">
+			<param name="maven.module" value="xins-common" />
+			<param name="xins_version" value="${stable.version}" />
+			<param name="maven.module.dir" value="java-common" />
+			<param name="maven.module.includes" value="org/xins/common/**" />
+		</antcall>
+		<antcall target="-maven-module">
+			<param name="maven.module" value="xins-server" />
+			<param name="xins_version" value="${stable.version}" />
+			<param name="maven.module.dir" value="java-server-framework" />
+		</antcall>
+		<antcall target="-maven-module">
+			<param name="maven.module" value="xins-client" />
+			<param name="xins_version" value="${stable.version}" />
+			<param name="maven.module.dir" value="java-client-framework" />
+		</antcall>
+
 		<scp
 		todir="${www.target}/maven"
 		password="${sf.password}"
@@ -950,5 +925,79 @@ http://${www.host}/maven/logdoc-${stable.version}.jar
 Kind regards,
 Anthony
 		</echo>
+	</target>
+
+	<target
+	name="-maven-module"
+	depends="-javadoc-sourcepath">
+
+		<property name="maven.module.includes" value="org/xins/**" />
+
+		<!-- source code -->
+		<jar destfile="build/maven/${maven.module}-${xins_version}-sources.jar">
+			<fileset dir="../xins-${xins_version}/src/${maven.module.dir}">
+				<include name="${maven.module.includes}" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.html" />
+			</fileset>
+		</jar>
+
+		<!-- Javadoc -->
+		<property name="javadoc.private" value="no" />
+		<property name="javadoc.destdir" value="docs/javadoc" />
+		<property name="javadoc.title"   value="${title} ${xins_version}" />
+		<property name="javadoc.footer"  value="See &lt;a target=&quot;_top&quot; href='${www.url}'&gt;${www.url}&lt;/a&gt;." />
+		<property name="javadoc.maven.destdir" value="${javadoc.destdir}-${maven.module}" />
+
+		<mkdir dir="${javadoc.maven.destdir}" />
+		<javadoc
+		sourcepath="${javadoc.sourcepath}"
+		destdir="${javadoc.maven.destdir}"
+		source="1.3"
+		version="yes"
+		use="yes"
+		author="yes"
+		private="${javadoc.private}"
+		windowtitle="${javadoc.title}"
+		doctitle="${javadoc.title}"
+		bottom="${javadoc.footer}">
+			<packageset dir="../xins-${xins_version}/src/${maven.module.dir}" includes="${maven.module.includes}" />
+
+			<group title="XINS/Java Logdoc"           packages="org.xins.logdoc*" />
+			<group title="XINS/Java Common Library"   packages="org.xins.common*" />
+			<group title="XINS/Java Client Framework" packages="org.xins.client*" />
+			<group title="XINS/Java Server Framework" packages="org.xins.server*" />
+
+			<classpath>
+				<fileset dir="lib"             includes="*.jar" />
+				<fileset dir="${ant.home}/lib" includes="*.jar" />
+			</classpath>
+
+			<link offline="true" packagelistloc="src/package-lists/servlet/"            href="http://tomcat.apache.org/tomcat-5.5-doc/servletapi/"   />
+			<link offline="true" packagelistloc="src/package-lists/j2se/"               href="http://java.sun.com/j2se/1.4.2/docs/api"               />
+			<link offline="true" packagelistloc="src/package-lists/log4j/"              href="http://jakarta.apache.org/log4j/docs/api/"             />
+			<link offline="true" packagelistloc="src/package-lists/commons-logging/"    href="http://jakarta.apache.org/commons/logging/api/"        />
+			<link offline="true" packagelistloc="src/package-lists/commons-httpclient/" href="http://jakarta.apache.org/commons/httpclient/apidocs/" />
+			<link offline="true" packagelistloc="src/package-lists/oro/"                href="http://jakarta.apache.org/oro/api/"                    />
+			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.52/"           />
+			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://xmlenc.sourceforge.net/ant-1.6.2-docs/"         />
+		</javadoc>
+		<copy
+		file="src/css/javadoc/style.css"
+		tofile="${javadoc.maven.destdir}/stylesheet.css"
+		overwrite="true" />
+		<jar destfile="build/maven/${maven.module}-${xins_version}-javadoc.jar">
+			<fileset dir="${javadoc.maven.destdir}" />
+		</jar>
+		
+		<!-- distribution jar -->
+		<jar destfile="build/maven/${maven.module}-${xins_version}.jar">
+			<fileset dir="build/maven">
+				<include name="${maven.module}-${xins_version}-sources.jar" />
+				<include name="${maven.module}-${xins_version}-javadoc.jar" />
+			</fileset>
+			<zipfileset file="../xins-${xins_version}/build/${maven.module}.jar" fullpath="${maven.module}-${xins_version}.jar" />
+			<zipfileset file="src/tools/maven/${maven.module}.pom" fullpath="pom.xml" />
+		</jar>
 	</target>
 </project>
