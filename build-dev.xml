@@ -982,6 +982,7 @@ Anthony
 			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.52/"           />
 			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://xmlenc.sourceforge.net/ant-1.6.2-docs/"         />
 			<link offline="true" packagelistloc="src/package-lists/json/"               href="http://www.json.org/javadoc/"                          />
+			<link offline="true" packagelistloc="src/package-lists/xins/"               href="http://www.xins.org/javadoc/${xins_version}/"          />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"
