@@ -563,7 +563,7 @@ public class BeanUtils {
    }
 
    /**
-    * This method is similar to {@link #getParameters()} except that objects
+    * This method is similar to {@link #getParameters(Object)} except that objects
     * using classes of org.xins.common.type.* packages will be translated into
     * standard Java object java.* packages.
     *

@@ -126,7 +126,7 @@ public final class TargetDescriptor extends Descriptor {
    private final int _socketTimeOut;
 
    /**
-    * The CRC-32 checksum for the URL. See {@link #_url}.
+    * The CRC-32 checksum for the URL.
     */
    private final int _crc;
 

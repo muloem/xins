@@ -341,7 +341,7 @@ public final class Utils {
     *
     * @since XINS 1.3.0
     *
-    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(Throwable exception)}
+    * @deprecated Since XINS 2.0, use {@link #logProgrammingError(Throwable exception)}
     */
    public static void logIgnoredException(String    detectingClass,
                                           String    detectingMethod,
@@ -469,7 +469,7 @@ public final class Utils {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     *
-    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(String detail, Throwable cause)}
+    * @deprecated Since XINS 2.0, use {@link #logProgrammingError(String detail, Throwable cause)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,
@@ -527,7 +527,7 @@ public final class Utils {
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
     *
-    * @deperecated Since XINS 2.0, use {@link #logProgrammingError(String detail)}
+    * @deprecated Since XINS 2.0, use {@link #logProgrammingError(String detail)}
     */
    public static ProgrammingException
    logProgrammingError(String    detectingClass,

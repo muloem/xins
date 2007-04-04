@@ -981,6 +981,7 @@ Anthony
 			<link offline="true" packagelistloc="src/package-lists/oro/"                href="http://jakarta.apache.org/oro/api/"                    />
 			<link offline="true" packagelistloc="src/package-lists/xmlenc/"             href="http://xmlenc.sourceforge.net/javadoc/0.52/"           />
 			<link offline="true" packagelistloc="src/package-lists/ant/"                href="http://xmlenc.sourceforge.net/ant-1.6.2-docs/"         />
+			<link offline="true" packagelistloc="src/package-lists/json/"               href="http://www.json.org/javadoc/"                          />
 		</javadoc>
 		<copy
 		file="src/css/javadoc/style.css"

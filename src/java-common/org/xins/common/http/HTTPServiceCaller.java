@@ -72,18 +72,8 @@ import org.xins.common.text.URLEncoding;
  *
  * <h2>Load-balancing and fail-over</h2>
  *
- * <p>There are 2 ways to perform an HTTP call using a
- * <code>HTTPServiceCaller</code> instance:
- *
- * <ul>
- *    <li>to a single HTTP service, using
- *        {@link #call(HTTPCallRequest,TargetDescriptor)};
- *    <li>to a set of one or more HTTP services, using
- *        {@link #call(HTTPCallRequest)};
- * </ul>
- *
- * <p>With the second form of a HTTP call, fail-over and load-balancing can be
- * performed.
+ * <p>To perform an HTTP call using a
+ * <code>HTTPServiceCaller</code> use {@link #call(HTTPCallRequest)}.
  *
  * <p>How load-balancing is done (in the second form) depends on the
  * {@link Descriptor} passed to the
@@ -448,10 +438,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * Executes a request towards the specified target. If the call succeeds,
     * then a {@link HTTPCallResult} object is returned, otherwise a
     * {@link CallException} is thrown.
-    *
-    * <p>The implementation of this method in class
-    * <code>HTTPServiceCaller</code> delegates to
-    * {@link #call(HTTPCallRequest,TargetDescriptor)}.
     *
     * @param request
     *    the call request to be executed, must be an instance of class

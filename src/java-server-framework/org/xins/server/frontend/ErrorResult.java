@@ -29,11 +29,11 @@ class ErrorResult extends FunctionResult {
    /**
     * Creates the result for a transformation error.
     *
-    * @param api
-    *    the API, cannot be <code>null</code>.
+    * @param exception
+    *    the exception during the transformation, cannot be <code>null</code>.
     *
-    * @param sessionManager
-    *    the sessionManager, cannot be <code>null</code>.
+    * @param httpRequest
+    *    the HTTP request, cannot be <code>null</code>.
     */
    ErrorResult(Exception exception, HttpServletRequest httpRequest) {
 
