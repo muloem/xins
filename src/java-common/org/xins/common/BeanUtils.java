@@ -141,7 +141,7 @@ public class BeanUtils {
    }
 
    /**
-    * Converts the source object to an object of class destClass.
+    * Converts the source object to an object of another class.
     *
     * @param origValue
     *    the original value of the object to be converted, if needed. Cannot be <code>null</code>.
@@ -151,10 +151,13 @@ public class BeanUtils {
     * @return
     *    the converted object or <code>null</code> if the object cannot be converted.
     *
-    * @since XINS 1.5.0.
+    * @since XINS 2.0.
     */
    public static Object convert(Object origValue, Class destClass) {
 
+      if (origValue.getClass() == destClass) {
+         return origValue;
+      }
       try {
          // Convert a String or an EnumItem to another EnumItem.
          if (EnumItem.class.isAssignableFrom(destClass)) {
