@@ -141,6 +141,107 @@ public class BeanUtils {
    }
 
    /**
+    * Converts the source object to an object of class destClass.
+    *
+    * @param origValue
+    *    the original value of the object to be converted, if needed. Cannot be <code>null</code>.
+    * @param destClass
+    *    the destination class in which the object should be converted, cannot be <code>null</code>.
+    *
+    * @return
+    *    the converted object or <code>null</code> if the object cannot be converted.
+    *
+    * @since XINS 1.5.0.
+    */
+   public static Object convert(Object origValue, Class destClass) {
+
+      try {
+         // Convert a String or an EnumItem to another EnumItem.
+         if (EnumItem.class.isAssignableFrom(destClass)) {
+            String enumTypeClassName = destClass.getName().substring(0, destClass.getName().length() - 5);
+            Object enumType = Class.forName(enumTypeClassName).getDeclaredField("SINGLETON").get(null);
+            Method convertionMethod = enumType.getClass().getMethod("getItemByValue", STRING_CLASS);
+            Object[] convertParams = {origValue.toString()};
+            Object convertedObj = convertionMethod.invoke(null, convertParams);
+            return convertedObj;
+
+         // Convert whatever to a String
+         } else if (destClass == String.class) {
+            return origValue.toString();
+
+         // Convert an Object to a boolean
+         } else if (destClass == Boolean.class || destClass == Boolean.TYPE) {
+            if ("true".equals(origValue) || Boolean.TRUE.equals(origValue)) {
+               return Boolean.TRUE;
+            } else if ("false".equals(origValue) || Boolean.FALSE.equals(origValue)) {
+               return Boolean.FALSE;
+            }
+
+         // Convert a String to a date
+         } else if (origValue instanceof String && destClass == Date.Value.class) {
+            return Date.SINGLETON.fromString((String) origValue);
+
+         // Convert a String to a timestamp
+         } else if (origValue instanceof String && destClass == Timestamp.Value.class) {
+            return Timestamp.SINGLETON.fromString((String) origValue);
+
+         // Convert a Collection (List,Set) to a ListItem
+         } else if (origValue instanceof Collection && ItemList.class.isAssignableFrom(destClass)) {
+            ItemList destValue = (ItemList) destClass.newInstance();
+            destValue.add((Collection) origValue);
+            return destValue;
+
+         // Convert a ListItem to a collection
+         } else if (origValue instanceof ItemList && Collection.class.isAssignableFrom(destClass)) {
+            Collection destValue = (Collection) destClass.newInstance();
+            Collection values = ((ItemList) origValue).get();
+            destValue.addAll(values);
+            return destValue;
+
+         // Convert a Date or Calendar to a Date.Value or a Timestamp.Value
+         } else if ((origValue instanceof java.util.Date | origValue instanceof Calendar) && 
+               (destClass == Date.Value.class || destClass == Timestamp.Value.class)) {
+            Class[] idemClass = {origValue.getClass()};
+            Object[] valueArgs = {origValue};
+            Constructor dateConstructor = destClass.getConstructor(idemClass);
+            return dateConstructor.newInstance(valueArgs);
+
+         // Convert a Date.Value to a Date
+         } else if (origValue instanceof Date.Value && destClass == java.util.Date.class) {
+            return ((Date.Value) origValue).toDate();
+
+         // Convert a Timestamp.Value to a Date
+         } else if (origValue instanceof Timestamp.Value && destClass == java.util.Date.class) {
+            return ((Timestamp.Value) origValue).toDate();
+
+         // Convert a String to whatever is asked
+         } else if (origValue instanceof String) {
+            Method convertionMethod = null;
+            try {
+               convertionMethod = destClass.getMethod("valueOf", STRING_CLASS);
+            } catch (NoSuchMethodException nsmex) {
+               //Ignore
+            }
+            if (convertionMethod == null) {
+               try {
+                  convertionMethod = destClass.getMethod("fromStringForOptional", STRING_CLASS);
+               } catch (NoSuchMethodException nsmex) {
+                  //Ignore
+               }
+            }
+            if (convertionMethod != null) {
+               String[] convertParams = {origValue.toString()};
+               Object convertedObj = convertionMethod.invoke(null, convertParams);
+               return convertedObj;
+            }
+         }
+      } catch (Exception ex) {
+         // TODO log
+      }
+      return null;
+   }
+
+   /**
     * Converts the value of an object to another object in case that the
     * set method doesn't accept the same obejct as the get method.
     *
@@ -173,84 +274,9 @@ public class BeanUtils {
       for (int i = 0; i < destMethods.length; i++) {
          if (destMethods[i].getName().equals(setMethodName)) {
             Class destClass = destMethods[i].getParameterTypes()[0];
-
-            // Convert a String or an EnumItem to another EnumItem.
-            if (EnumItem.class.isAssignableFrom(destClass)) {
-               String enumTypeClassName = destClass.getName().substring(0, destClass.getName().length() - 5);
-               Object enumType = Class.forName(enumTypeClassName).getDeclaredField("SINGLETON").get(null);
-               Method convertionMethod = enumType.getClass().getMethod("getItemByValue", STRING_CLASS);
-               Object[] convertParams = {origValue.toString()};
-               Object convertedObj = convertionMethod.invoke(null, convertParams);
-               return convertedObj;
-
-            // Convert whatever to a String
-            } else if (destClass == String.class) {
-               return origValue.toString();
-
-            // Convert an Object to a boolean
-            } else if (destClass == Boolean.class || destClass == Boolean.TYPE) {
-               if ("true".equals(origValue) || Boolean.TRUE.equals(origValue)) {
-                  return Boolean.TRUE;
-               } else if ("false".equals(origValue) || Boolean.FALSE.equals(origValue)) {
-                  return Boolean.FALSE;
-               }
-
-            // Convert a String to a date
-            } else if (origValue instanceof String && destClass == Date.Value.class) {
-               return Date.SINGLETON.fromString((String) origValue);
-
-            // Convert a String to a timestamp
-            } else if (origValue instanceof String && destClass == Timestamp.Value.class) {
-               return Timestamp.SINGLETON.fromString((String) origValue);
-
-            // Convert a Collection (List,Set) to a ListItem
-            } else if (origValue instanceof Collection && ItemList.class.isAssignableFrom(destClass)) {
-               ItemList destValue = (ItemList) destClass.newInstance();
-               destValue.add((Collection) origValue);
-               return destValue;
-
-            // Convert a ListItem to a collection
-            } else if (origValue instanceof ItemList && Collection.class.isAssignableFrom(destClass)) {
-               Collection destValue = (Collection) destClass.newInstance();
-               Collection values = ((ItemList) origValue).get();
-               destValue.addAll(values);
-
-            // Convert a Date or Calendar to a Date.Value or a Timestamp.Value
-            } else if ((origValue instanceof java.util.Date | origValue instanceof Calendar) && 
-                  (destClass == Date.Value.class || destClass == Timestamp.Value.class)) {
-               Class[] idemClass = {origValue.getClass()};
-               Object[] valueArgs = {origValue};
-               Constructor dateConstructor = destClass.getConstructor(idemClass);
-               return dateConstructor.newInstance(valueArgs);
-
-            // Convert a Date.Value to a Date
-            } else if (origValue instanceof Date.Value && destClass == java.util.Date.class) {
-               return ((Date.Value) origValue).toDate();
-
-            // Convert a Timestamp.Value to a Date
-            } else if (origValue instanceof Timestamp.Value && destClass == java.util.Date.class) {
-               return ((Timestamp.Value) origValue).toDate();
-
-            // Convert a String to whatever is asked
-            } else if (origValue instanceof String) {
-               Method convertionMethod = null;
-               try {
-                  convertionMethod = destClass.getMethod("valueOf", STRING_CLASS);
-               } catch (NoSuchMethodException nsmex) {
-                  //Ignore
-               }
-               if (convertionMethod == null) {
-                  try {
-                     convertionMethod = destClass.getMethod("fromStringForOptional", STRING_CLASS);
-                  } catch (NoSuchMethodException nsmex) {
-                     //Ignore
-                  }
-               }
-               if (convertionMethod != null) {
-                  String[] convertParams = {origValue.toString()};
-                  Object convertedObj = convertionMethod.invoke(null, convertParams);
-                  return convertedObj;
-               }
+            Object converted = convert(origValue, destClass);
+            if (converted != null) {
+               return converted;
             }
          }
       }
