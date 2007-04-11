@@ -96,7 +96,7 @@ public class FunctionResult {
     *    an {@link InvalidResponseResult} instance if at least one output
     *    parameter is missing or invalid, or <code>null</code> otherwise.
     */
-   protected InvalidResponseResult checkOutputParameters() {
+   public InvalidResponseResult checkOutputParameters() {
       return null;
    }
 
