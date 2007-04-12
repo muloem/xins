@@ -71,6 +71,7 @@
 	<translation entry="3308">Failed to change the locale for log messages to <value-of-param name="failedLocale" />. Locale remains <value-of-param name="currentLocale" />.</translation>
 	<translation entry="3309">The locale <value-of-param name="locale" format="quoted" /> is not supported by the API.</translation>
 	<translation entry="3310">Changed hostname used for the context identifier from <value-of-param name="oldHostname" /> to <value-of-param name="newHostname" />.</translation>
+	<translation entry="3311">The runtime properties file (<value-of-param name="configFile" format="quoted" />) contains multiple keys with the same name, look at the logs of the API or of the Servlet container for more details.</translation>
 
 	<translation entry="3400">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be opened.</translation>
 	<translation entry="3401">XINS/Java Server Framework cannot be re-initialized. System administration issue detected. Runtime properties file (<value-of-param name="configFile" format="quoted" />) cannot be read due to a security restriction.</translation>

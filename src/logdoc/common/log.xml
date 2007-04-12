@@ -196,6 +196,12 @@
 			<param name="oldValue" type="text" nullable="false" />
 			<param name="newValue" type="text" />
 		</entry>
+		<entry id="1351" level="ERROR">
+			<description>A property value has changed.</description>
+			<param name="key" type="text" nullable="false" />
+			<param name="oldValue" type="text" nullable="false" />
+			<param name="newValue" type="text" />
+		</entry>
 	</group>
 
 	<group id="collections.expiry" name="Expiry-related collection classes">

@@ -71,6 +71,7 @@
 	<translation entry="3308">Le changement de la locale pour les message de log à <value-of-param name="failedLocale" /> a échoué. La locale <value-of-param name="currentLocale" /> est maintenue.</translation>
 	<translation entry="3309">La locale <value-of-param name="locale" format="quoted" /> n'est pas supportée par l'API.</translation>
 	<translation entry="3310">Changement de l'hostname utilisé pour l'indentificateur de context de <value-of-param name="oldHostname" /> à <value-of-param name="newHostname" />.</translation>
+	<translation entry="3311">Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) contient de propriétés qui ont une clé identique. Voir les logs de l'API ou du containeur de Servlet pour plus de détails.</translation>
 
 	<translation entry="3400">Le XINS/Java Server Framework ne peut pas être ré-initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être ouvert.</translation>
 	<translation entry="3401">Le XINS/Java Server Framework ne peut pas être ré-initialisé. Un problème d'administration du système a été détecté. Le fichier des propriétés d'exécution (<value-of-param name="configFile" format="quoted" />) ne peut pas être lu à cause de restriction de sécurité.</translation>

@@ -36,6 +36,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added JSON as library for the Javadoc.
   - The FunctionResult.checkOutputParameters() method is now public in order
     to enable external validation.
+  - If a runtime property is set more than once in the runtime property file
+    the API will logs it as error and fail to start.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.

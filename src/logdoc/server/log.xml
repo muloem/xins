@@ -294,6 +294,10 @@
 			<param name="oldHostname" />
 			<param name="newHostname" />
 		</entry>
+		<entry id="3311" level="FATAL">
+			<description>Incorrect runtime properties file because of mutiple identical keys.</description>
+			<param name="configFile" />
+		</entry>
 	</group>
 
 	<group id="lifespan.init" name="Initialization">

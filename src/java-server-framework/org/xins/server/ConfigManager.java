@@ -29,6 +29,7 @@ import org.xins.common.collections.PropertiesPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.StatsPropertyReader;
+import org.xins.common.collections.UniqueProperties;
 import org.xins.common.collections.WarnDoubleProperties;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.TextUtils;
@@ -181,10 +182,14 @@ final class ConfigManager {
     * with the read properties and then stores those properties on the engine.
     * If the _configFile is empty, then an empty set of properties is set on
     * the engine.
+    * 
+    * @return
+    *    <code>true</code> if the properties were loaded successfully, <code>false</code>
+    *    otherwise.
     */
-   void readRuntimeProperties() {
+   boolean readRuntimeProperties() {
 
-      Properties properties = new WarnDoubleProperties();
+      UniqueProperties properties = new UniqueProperties();
       InputStream in = null;
 
       // If the value is not set only localhost can access the API.
@@ -201,7 +206,7 @@ final class ConfigManager {
             // Use the default settings
             Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
             _runtimeProperties = null;
-            return;
+            return true;
          } else {
             Log.log_3248();
          }
@@ -227,14 +232,17 @@ final class ConfigManager {
          } catch (FileNotFoundException exception) {
             String detail = TextUtils.trim(exception.getMessage(), null);
             Log.log_3301(_configFile, detail);
+            return false;
 
          // Security issue
          } catch (SecurityException exception) {
             Log.log_3302(exception, _configFile);
+            return false;
 
          // Other I/O error
          } catch (IOException exception) {
             Log.log_3303(exception, _configFile);
+            return false;
 
          // Always close the input stream
          } finally {
@@ -242,11 +250,7 @@ final class ConfigManager {
                try {
                   in.close();
                } catch (Throwable exception) {
-                  Utils.logIgnoredException(ConfigManager.class.getName(),
-                                            "readRuntimeProperties()",
-                                            in.getClass().getName(),
-                                            "close()",
-                                            exception);
+                  Utils.logIgnoredException(exception);
                }
             }
          }
@@ -257,10 +261,16 @@ final class ConfigManager {
          // Attempt to configure Log4J
          configureLogger(properties);
 
+         if (!properties.isUnique()) {
+            Log.log_3311(_configFile);
+            return false;
+         }
+
          // Convert to a PropertyReader
          PropertyReader pr = new PropertiesPropertyReader(properties);
          _runtimeProperties = new StatsPropertyReader(pr);
       }
+      return true;
    }
 
    /**
@@ -527,11 +537,7 @@ final class ConfigManager {
          try {
             _configFileWatcher.end();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(ConfigManager.class.getName(),
-                                      "destroy()",
-                                      _configFileWatcher.getClass().getName(),
-                                      "end()",
-                                      exception);
+            Utils.logIgnoredException(exception);
          }
          _configFileWatcher = null;
       }
@@ -568,18 +574,20 @@ final class ConfigManager {
             Log.log_3407("WEB-INF/xins.properties");
          }
 
-         boolean reinitialized;
+         boolean reinitialized = false;
 
          synchronized (RUNTIME_PROPERTIES_LOCK) {
 
             // Apply the new runtime settings to the logging subsystem
-            readRuntimeProperties();
+            boolean read = readRuntimeProperties();
 
-            // Re-initialize the API
-            reinitialized = _engine.initAPI();
+            if (read) {
+               // Re-initialize the API
+               reinitialized = _engine.initAPI();
 
-            // Update the file watch interval
-            updateFileWatcher();
+               // Update the file watch interval
+               updateFileWatcher();
+            }
          }
 
          // API re-initialized successfully, so log each unused property...

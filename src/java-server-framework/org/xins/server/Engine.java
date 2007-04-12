@@ -151,7 +151,11 @@ final class Engine {
 
       // Read configuration details
       _configManager.determineConfigFile();
-      _configManager.readRuntimeProperties();
+      boolean read = _configManager.readRuntimeProperties();
+      if (!read) {
+         _stateMachine.setState(EngineState.FRAMEWORK_BOOTSTRAP_FAILED);
+         throw new ServletException();
+      }
 
       // Log boot messages
       _starter.logBootMessages();
@@ -952,10 +956,7 @@ final class Engine {
          try {
             _configManager.destroy();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(
-               Engine.class.getName(),              "destroy()",
-               _configManager.getClass().getName(), "destroy()",
-               exception);
+            Utils.logIgnoredException(exception);
          }
       }
 
@@ -964,10 +965,7 @@ final class Engine {
          try {
             _api.deinit();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(
-               Engine.class.getName(),    "destroy()",
-               _api.getClass().getName(), "deinit()",
-               exception);
+            Utils.logIgnoredException(exception);
          }
       }
 
