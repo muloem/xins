@@ -64,6 +64,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added the build java version used to compile the API.
   - Removed unneeded comment printed to the console.
   - The NoBannerLogger is now used when executing the build.xml.
+  - If a category changes, the index.html of the specdocs should also be
+    regenerated.
 
 * XSLT:
   - Moved the class fields before the constructor.

@@ -524,6 +524,9 @@ APIs in this project are:
 				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
 				</xsl:if>
+				<xsl:if test="string-length($categoryIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$categoryIncludes}" />
+				</xsl:if>
 				<targetfileset dir="{$builddir}/specdocs/{$api}" includes="index.html" />
 			</dependset>
 			<dependset>
