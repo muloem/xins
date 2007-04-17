@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Removed old deprecated methods of the Servlet container package.
   - Fixed incorrect links in the Javadoc.
   - Added new public method BeanUtils.convert() for objects convertion.
+  - Added the possibility to change the local name of an XML element.
 
 * XINS/Java Server Framework:
   - Removed unused variables in API.java.
@@ -37,7 +38,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - The FunctionResult.checkOutputParameters() method is now public in order
     to enable external validation.
   - If a runtime property is set more than once in the runtime property file
-    the API will logs it as error and fail to start.
+    the API will log it as an error and fail to start.
+  - Fixed _ReloadProperties meta function which was doing nothing when the
+    watch interval was different of 0.
 
 * Generation of server-side Java code:
   - Fixed transformation error when shared error code is used.
