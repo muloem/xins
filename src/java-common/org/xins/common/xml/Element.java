@@ -58,7 +58,7 @@ public class Element implements Cloneable {
    /**
     * The local name. This field is never <code>null</code>.
     */
-   private final String _localName;
+   private String _localName;
 
    /**
     * The child elements. This field is lazily initialized is initially
@@ -139,6 +139,20 @@ public class Element implements Cloneable {
     */
    public String getLocalName() {
       return _localName;
+   }
+
+   /**
+    * Sets the local name.
+    *
+    * @param localName
+    *    the local name of this element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void setLocalName(String localName) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("localName", localName);
+      _localName = localName;
    }
 
    /**
