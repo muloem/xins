@@ -30,7 +30,6 @@ import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.StatsPropertyReader;
 import org.xins.common.collections.UniqueProperties;
-import org.xins.common.collections.WarnDoubleProperties;
 import org.xins.common.io.FileWatcher;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.LogCentral;
@@ -87,6 +86,11 @@ final class ConfigManager {
     * <code>null</code>.
     */
    private StatsPropertyReader _runtimeProperties;
+
+   /**
+    * Flag indicating that the runtime properties were read correcly.
+    */
+   private boolean _propertiesRead;
 
    /**
     * Constructs a new <code>ConfigManager</code> object.
@@ -182,12 +186,8 @@ final class ConfigManager {
     * with the read properties and then stores those properties on the engine.
     * If the _configFile is empty, then an empty set of properties is set on
     * the engine.
-    * 
-    * @return
-    *    <code>true</code> if the properties were loaded successfully, <code>false</code>
-    *    otherwise.
     */
-   boolean readRuntimeProperties() {
+   void readRuntimeProperties() {
 
       UniqueProperties properties = new UniqueProperties();
       InputStream in = null;
@@ -206,7 +206,8 @@ final class ConfigManager {
             // Use the default settings
             Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
             _runtimeProperties = null;
-            return true;
+            _propertiesRead = true;
+            return;
          } else {
             Log.log_3248();
          }
@@ -218,6 +219,8 @@ final class ConfigManager {
          _configFile = _configFile.replace('\\', File.separatorChar);
       }
 
+      boolean propertiesRead = false;
+
       synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
 
          try {
@@ -227,22 +230,20 @@ final class ConfigManager {
                in = new FileInputStream(_configFile);
             }
             properties.load(in);
+            propertiesRead = true;
 
          // No such file
          } catch (FileNotFoundException exception) {
             String detail = TextUtils.trim(exception.getMessage(), null);
             Log.log_3301(_configFile, detail);
-            return false;
 
          // Security issue
          } catch (SecurityException exception) {
             Log.log_3302(exception, _configFile);
-            return false;
 
          // Other I/O error
          } catch (IOException exception) {
             Log.log_3303(exception, _configFile);
-            return false;
 
          // Always close the input stream
          } finally {
@@ -263,14 +264,17 @@ final class ConfigManager {
 
          if (!properties.isUnique()) {
             Log.log_3311(_configFile);
-            return false;
+            propertiesRead = false;
          }
 
-         // Convert to a PropertyReader
-         PropertyReader pr = new PropertiesPropertyReader(properties);
-         _runtimeProperties = new StatsPropertyReader(pr);
+         if (propertiesRead) {
+
+            // Convert to a PropertyReader
+            PropertyReader pr = new PropertiesPropertyReader(properties);
+            _runtimeProperties = new StatsPropertyReader(pr);
+         }
+         _propertiesRead = propertiesRead;
       }
-      return true;
    }
 
    /**
@@ -387,7 +391,9 @@ final class ConfigManager {
       if (_configFileWatcher == null) {
          _configFileListener.reinit();
       } else {
-         _configFileWatcher.interrupt();
+         synchronized (_configFileWatcher) {
+            _configFileWatcher.notify();
+         }
       }
    }
 
@@ -528,6 +534,17 @@ final class ConfigManager {
    }
 
    /**
+    * Indicates whether the runtime property file was read successfully.
+    * 
+    * @retrun
+    *    <code>true</code> if the runtime properties are loaded correctly, 
+    *    <code>false</code> otherwise.
+    */
+   boolean propertiesRead() {
+      return _propertiesRead;
+   }
+   
+   /**
     * Stops the config file watcher thread.
     */
    void destroy() {
@@ -579,15 +596,13 @@ final class ConfigManager {
          synchronized (RUNTIME_PROPERTIES_LOCK) {
 
             // Apply the new runtime settings to the logging subsystem
-            boolean read = readRuntimeProperties();
+            readRuntimeProperties();
 
-            if (read) {
-               // Re-initialize the API
-               reinitialized = _engine.initAPI();
+            // Re-initialize the API
+            reinitialized = _engine.initAPI();
 
-               // Update the file watch interval
-               updateFileWatcher();
-            }
+            // Update the file watch interval if needed
+            updateFileWatcher();
          }
 
          // API re-initialized successfully, so log each unused property...

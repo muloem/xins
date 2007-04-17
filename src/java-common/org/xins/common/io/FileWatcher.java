@@ -269,32 +269,23 @@ public final class FileWatcher extends Thread {
       // Loop while we should keep running
       boolean shouldStop = false;
       while (! shouldStop) {
-         try {
-            while(! shouldStop) {
-
-               synchronized (this) {
-                  interval = _interval;
-               }
+         synchronized (this) {
+            try {
 
                // Wait for the designated amount of time
-               sleep(((long) interval) * 1000L);
+               wait(((long) interval) * 1000L);
 
-               // Should we stop?
-               synchronized (this) {
-                  shouldStop = (_state != RUNNING);
-                  // XXX: Optimization: Call check() in this block
-               }
-
-
-               // If we do not have to stop yet, check if the file changed
-               if (! shouldStop) {
-                  check();
-               }
+            } catch (InterruptedException exception) {
+               // The thread has been notified
             }
-         } catch (InterruptedException exception) {
-            // TODO: (#HERE#) Compute how much time we still need to sleep
-            // before checking the file, depending on the new interval (if
-            // that caused the InterruptedException here)
+
+            // Should we stop?
+            shouldStop = (_state != RUNNING);
+         }
+
+         // If we do not have to stop yet, check if the file changed
+         if (! shouldStop) {
+            check();
          }
       }
 
