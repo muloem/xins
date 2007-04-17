@@ -151,8 +151,8 @@ final class Engine {
 
       // Read configuration details
       _configManager.determineConfigFile();
-      boolean read = _configManager.readRuntimeProperties();
-      if (!read) {
+      _configManager.readRuntimeProperties();
+      if (!_configManager.propertiesRead()) {
          _stateMachine.setState(EngineState.FRAMEWORK_BOOTSTRAP_FAILED);
          throw new ServletException();
       }
@@ -288,17 +288,21 @@ final class Engine {
 
       _stateMachine.setState(EngineState.INITIALIZING_API);
 
-      // Determine the current runtime properties
-      PropertyReader properties = _configManager.getRuntimeProperties();
-
-      boolean succeeded = false;
-
       // Determine the locale for logging
       boolean localeInitialized = _configManager.determineLogLocale();
-      if (! localeInitialized) {
+      if (!localeInitialized) {
          _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
          return false;
       }
+
+      // Check that the runtime properties were correct
+      if (!_configManager.propertiesRead()) {
+         _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
+         return false;
+      }
+
+      // Determine the current runtime properties
+      PropertyReader properties = _configManager.getRuntimeProperties();
 
       // Determine at what level should the stack traces be displayed
       String stackTraceAtMessageLevel = properties.get(LogCentral.LOG_STACK_TRACE_AT_MESSAGE_LEVEL);
@@ -311,6 +315,8 @@ final class Engine {
          _stateMachine.setState(EngineState.API_INITIALIZATION_FAILED);
          return false;
       }
+
+      boolean succeeded = false;
 
       try {
 
