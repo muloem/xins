@@ -73,6 +73,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - The NoBannerLogger is now used when executing the build.xml.
   - If a category changes, the index.html of the specdocs should also be
     regenerated.
+  - The WSDL should be regenerated when the specifications change.
 
 * XSLT:
   - Moved the class fields before the constructor.

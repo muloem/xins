@@ -835,6 +835,16 @@ APIs in this project are:
 		</xsl:if>
 
 		<target name="wsdl-{$api}" depends="-load-dtds" description="Generates the WSDL specification of the '{$api}' API">
+			<dependset>
+				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
+				<xsl:if test="string-length($typeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				</xsl:if>
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				</xsl:if>
+				<targetfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" />
+			</dependset>
 			<property file="{$builddir}.properties" />
 			<property name="wsdl.endpoint" value="" />
 			<mkdir dir="{$builddir}/wsdl" />
