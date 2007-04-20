@@ -169,7 +169,7 @@ public class SessionManager extends Manageable {
          }
          try {
             Map specInputParameters = _api.getAPISpecification().getFunction(functionName).getInputParameters();
-            Iterator itInputParameters = inputParameters.entrySet().iterator();
+            Iterator itInputParameters = ((Map) inputParameters.clone()).entrySet().iterator();
             while (itInputParameters.hasNext()) {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
@@ -185,6 +185,7 @@ public class SessionManager extends Manageable {
             }
          } catch (Exception ex) {
             // Ignore
+            Utils.logIgnoredException(ex);
          }
       }
    }
