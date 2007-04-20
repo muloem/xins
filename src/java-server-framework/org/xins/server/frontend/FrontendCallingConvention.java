@@ -858,7 +858,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     */
    private String getContentType(Properties outputProperties) {
       String mimeType = outputProperties.getProperty("media-type");
-      if (mimeType == null) {
+      if (TextUtils.isEmpty(mimeType)) {
          String method = outputProperties.getProperty("method");
          if ("xml".equals(method)) {
             mimeType = "text/xml";
@@ -869,10 +869,10 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          }
       }
       String encoding = outputProperties.getProperty("encoding");
-      if (mimeType != null && encoding != null) {
+      if (!TextUtils.isEmpty(mimeType) && !TextUtils.isEmpty(encoding)) {
          mimeType += ";charset=" + encoding;
       }
-      if (mimeType != null) {
+      if (!TextUtils.isEmpty(mimeType)) {
          return mimeType;
       } else {
          return HTML_CONTENT_TYPE;
