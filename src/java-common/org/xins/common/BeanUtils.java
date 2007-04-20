@@ -405,7 +405,7 @@ public class BeanUtils {
       } else {
          try {
             String hungarianName = TextUtils.firstCharUpper(elementName);
-            if (elementMapping.containsKey(elementName)) {
+            if (elementMapping != null && elementMapping.containsKey(elementName)) {
                hungarianName = TextUtils.firstCharUpper((String) elementMapping.get(elementName));
             }
             Class[] argsClasses = {getElementClass(hungarianName, result)};
@@ -461,7 +461,7 @@ public class BeanUtils {
    private static Object elementToObject(Element element, Object result, Map elementMapping, Map attributeMapping) {
       String elementName = element.getLocalName();
       String hungarianName = TextUtils.firstCharUpper(elementName);
-      if (elementMapping.containsKey(elementName)) {
+      if (elementMapping != null && elementMapping.containsKey(elementName)) {
          hungarianName = TextUtils.firstCharUpper((String) elementMapping.get(elementName));
       }
       //String newElementClassName = result.getClass().getName() + "." + elementName;
@@ -478,7 +478,7 @@ public class BeanUtils {
       while (itAttr.hasNext()) {
          Map.Entry attr = (Map.Entry) itAttr.next();
          String name = ((Element.QualifiedName) attr.getKey()).getLocalName();
-         if (attributeMapping.containsKey(name)) {
+         if (attributeMapping != null && attributeMapping.containsKey(name)) {
             name = (String) attributeMapping.get(name);
          }
          String value = (String) attr.getValue();
