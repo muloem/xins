@@ -7,11 +7,11 @@
 package org.xins.common.io;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -31,6 +31,9 @@ public final class IOReader {
     * @param inputStream
     *    the input stream to read, cannot be <code>null</code>.
     *
+    * @return
+    *    the content of the input stream using the default encoding, never <code>null</code>.
+    * 
     * @throws IllegalArgumentException
     *    if <code>inputStream == null</code>.
     *
@@ -52,5 +55,37 @@ public final class IOReader {
       input.close();
       output.close();
       return output.toString();
+   }
+
+   /**
+    * Read an InputStream completly and put the content of the input stream in
+    * a byte[].
+    *
+    * @param inputStream
+    *    the input stream to read, cannot be <code>null</code>.
+    * 
+    * @return
+    *    the content of the input stream, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>inputStream == null</code>.
+    *
+    * @throws IOException
+    *    if there are some problems reading the input stream.
+    */
+   public static byte[] readFullyAsBytes(InputStream inputStream) throws IllegalArgumentException, IOException {
+      MandatoryArgumentChecker.check("inputStream", inputStream);
+
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      byte[] buffer = new byte[1024];
+      while (true) {
+         int availableBytes = inputStream.available();
+         int length = inputStream.read(buffer, 0, Math.min(1024, availableBytes));
+         if (length <= 0) break;
+         output.write(buffer, 0, length);
+      }
+      inputStream.close();
+      output.close();
+      return output.toByteArray();
    }
 }

@@ -22,6 +22,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added new public method BeanUtils.convert() for objects convertion.
   - Added the possibility to change the local name of an XML element.
   - Fixed possible NullPointerException in BeanUtils.xmlToObject().
+  - Added new method in IOReader to read the bytes of an InputStream.
 
 * XINS/Java Server Framework:
   - Removed unused variables in API.java.

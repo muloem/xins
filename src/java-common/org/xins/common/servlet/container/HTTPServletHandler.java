@@ -36,6 +36,7 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.io.IOReader;
 import org.xins.common.text.ParseException;
 
 /**
@@ -376,26 +377,18 @@ public class HTTPServletHandler {
 
       // Clean up for httpQuery, if necessary
       } finally{
-         String thisClass  = getClass().getName();
-         String thisMethod = "serviceClient(java.net.Socket)";
-         String thatMethod = "close()";
-
          if (inbound != null) {
             try {
                inbound.close();
             } catch (Throwable exception) {
-               String thatClass = inbound.getClass().getName();
-               Utils.logIgnoredException(thisClass, thisMethod,
-                                         thatClass, thatMethod, exception);
+               Utils.logIgnoredException(exception);
             }
          }
          if (outbound != null) {
             try {
                outbound.close();
             } catch (Throwable exception) {
-               String thatClass = outbound.getClass().getName();
-               Utils.logIgnoredException(thisClass, thisMethod,
-                                         thatClass, thatMethod, exception);
+               Utils.logIgnoredException(exception);
             }
          }
       }
@@ -425,14 +418,8 @@ public class HTTPServletHandler {
    throws IOException {
 
       // Read the input
-      // XXX: Buffer size determines maximum request size
-      byte[] buffer = new byte[16384];
-      int length = in.read(buffer);
-      if (length < 0) {
-         sendBadRequest(out);
-         return;
-      }
-      String request = new String(buffer, 0, length, REQUEST_ENCODING);
+      byte[] requestBytes = IOReader.readFullyAsBytes(in);
+      String request = new String(requestBytes, 0, requestBytes.length, REQUEST_ENCODING);
 
       // Read the first line
       int eolIndex = request.indexOf(CRLF);
@@ -560,7 +547,7 @@ public class HTTPServletHandler {
             String result = response.getResult();
             if (result != null) {
                responseEncoding = response.getCharacterEncoding();
-               length = response.getContentLength();
+               int length = response.getContentLength();
                if (length < 0) {
                   length = result.getBytes(responseEncoding).length;
                }
