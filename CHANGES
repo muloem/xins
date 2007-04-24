@@ -15,7 +15,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added a new method in BeanUtils to get the parameters of the Request (on
     the server side) or of the Result (on the client side) as standard Java
     objects.
-  - Added a new method in BeanUtils to be able to provide a mapping of 
+  - Added a new method in BeanUtils to be able to provide a mapping of
     element names and/or attribute name for the xmlToObject method.
   - Removed old deprecated methods of the Servlet container package.
   - Fixed incorrect links in the Javadoc.
@@ -23,6 +23,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Added the possibility to change the local name of an XML element.
   - Fixed possible NullPointerException in BeanUtils.xmlToObject().
   - Added new method in IOReader to read the bytes of an InputStream.
+  - Added new package org.xins.common.spring to ease integration with the
+    Spring framework.
 
 * XINS/Java Server Framework:
   - Removed unused variables in API.java.
@@ -43,7 +45,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
     the API will log it as an error and fail to start.
   - Fixed _ReloadProperties meta function which was doing nothing when the
     watch interval was different of 0.
-  - Clone the input parameters in the SessionManager to avoid 
+  - Clone the input parameters in the SessionManager to avoid
     ConcurentAccessException.
 
 * Generation of server-side Java code:
@@ -716,6 +718,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 4:
 
 * Generation of specdocs:
   - Fixed SF.net #1409765: No function status on category page.
+
 
 * Generated build file:
   - The xins-eclipse.user-libraries to use for Eclipse will be in

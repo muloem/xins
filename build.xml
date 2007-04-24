@@ -75,7 +75,6 @@ ${version.file}</fail>
 		<property name="javac.debug"         value="true"       />
 		<property name="javac.deprecation"   value="true"       />
 		<property name="javac.optimize"      value="false"      />
-		<property name="javac.encoding"      value="ISO-8859-1" />
 		<property name="tests.deprecation"   value="false"      />
 
 		<!-- Javadoc-related properties -->
@@ -112,8 +111,7 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}"
-		encoding="${javac.encoding}">
+		target="${javac.targetvm}">
 			<classpath>
 				<fileset dir="lib" includes="*.jar" />
 			</classpath>
@@ -171,6 +169,30 @@ ${version.file}</fail>
 		</antcall>
 	</target>
 
+	<target name="java-tools" depends="java-common, java-client, java-server" description="Compiles the XINS/Java tools and put them in xins-common.jar">
+		<javac
+		destdir="build/classes/java-common"
+		debug="${javac.debug}"
+		deprecation="${javac.deprecation}"
+		optimize="${javac.optimize}"
+		source="${javac.targetvm}"
+		target="${javac.targetvm}">
+			<src path="src/java-common" />
+			<classpath>
+				<path refid="path.common" />
+				<pathelement location="build/logdoc.jar" />
+				<pathelement location="build/xins-client.jar" />
+				<pathelement location="build/xins-server.jar" />
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</javac>
+		<jar
+		destfile="build/xins-common.jar"
+		basedir="build/classes/java-common"
+		update="true"
+		includes="org/xins/common/spring/**" />
+	</target>
+
 	<target name="-build-framework">
 		<mkdir dir="build/src/java-${src.side}" />
 		<copy file="src/java-${src.side}/org/xins/${side}/Library.java" todir="build/src/java-${src.side}/org/xins/${side}/" />
@@ -183,8 +205,7 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}"
-		encoding="${javac.encoding}">
+		target="${javac.targetvm}">
 			<src path="build/src/java-${src.side}" />
 			<include name="org/xins/${side}/Library.java" />
 			<classpath>
@@ -199,12 +220,12 @@ ${version.file}</fail>
 		deprecation="${javac.deprecation}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}"
-		encoding="${javac.encoding}">
+		target="${javac.targetvm}">
 			<src path="src/java-${src.side}" />
 			<src path="build/src/java-${src.side}" />
 			<exclude name="org/xins/${side}/Library.java" />
 			<exclude name="org/xins/logdoc/**" />
+			<exclude name="org/xins/common/spring/**" />
 			<classpath>
 				<path refid="path.common" />
 				<pathelement location="build/logdoc.jar" />
@@ -227,7 +248,7 @@ ${version.file}</fail>
 		manifest="build/MANIFEST.MF" />
 	</target>
 
-	<target name="java" depends="java-logdoc,java-common,java-client,java-server" description="Compiles the XINS/Java java code (common, server and client)"/>
+	<target name="java" depends="java-logdoc,java-common,java-client,java-server,java-tools" description="Compiles the XINS/Java java code (logdoc, common, server and client)"/>
 
 	<target name="-prepare-logdoc-server">
 		<antcall target="-prepare-logdoc">
