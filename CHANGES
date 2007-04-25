@@ -91,6 +91,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
     The location of the API can be specified with the smd.endpoint.
   - Upgraded maven to 1.5.2.
   - Improved use of nbbrowse task in NetBeans to open a local file correctly.
+  - Added debug fix (apply patch) in the project pop-up menu in NetBeans.
 
 * Build- and release-process:
   - Changed the package-maven target to the maven target.
