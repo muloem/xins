@@ -1130,14 +1130,14 @@ public abstract class API extends Manageable {
 
          // Determine value of 'detailed' argument
          String detailedArg = functionRequest.getParameters().get("detailed");
-         boolean detailed   = "true".equals(detailedArg);
+         boolean detailed = !"false".equals(detailedArg);
 
          // Get the statistics
          result = doGetStatistics(detailed);
 
          // Determine value of 'reset' argument
          String resetArg = functionRequest.getParameters().get("reset");
-         boolean reset   = "true".equals(resetArg);
+         boolean reset = "true".equals(resetArg);
          if (reset) {
             doResetStatistics();
          }
