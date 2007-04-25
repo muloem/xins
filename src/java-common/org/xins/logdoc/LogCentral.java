@@ -21,14 +21,14 @@ public final class LogCentral {
    /**
     * The name of the property that specifies which locale should be used.
     */
-   public final static String LOG_LOCALE_PROPERTY = "org.xins.logdoc.locale";
+   public static final String LOG_LOCALE_PROPERTY = "org.xins.logdoc.locale";
 
    /**
     * The name of the property that specifies if the stack traces should be displayed at the message level.
     *
     * @since XINS 1.4.0
     */
-   public final static String LOG_STACK_TRACE_AT_MESSAGE_LEVEL = "org.xins.logdoc.stackTraceAtMessageLevel";
+   public static final String LOG_STACK_TRACE_AT_MESSAGE_LEVEL = "org.xins.logdoc.stackTraceAtMessageLevel";
 
    /**
     * The default locale used at start-up, if no locale is specified in a

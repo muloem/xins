@@ -51,12 +51,12 @@ public class Date extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Date SINGLETON = new Date();
+   public static final Date SINGLETON = new Date();
 
    /**
     * Formatter that converts a date to a string.
     */
-   private final static SimpleDateFormat FORMATTER =
+   private static final SimpleDateFormat FORMATTER =
       new SimpleDateFormat("yyyyMMdd");
 
    /**

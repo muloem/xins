@@ -60,12 +60,12 @@ public class Timestamp extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Timestamp SINGLETON = new Timestamp();
+   public static final Timestamp SINGLETON = new Timestamp();
 
    /**
     * Formatter that converts a date to a string.
     */
-   private final static SimpleDateFormat FORMATTER =
+   private static final SimpleDateFormat FORMATTER =
       new SimpleDateFormat("yyyyMMddHHmmss");
 
 

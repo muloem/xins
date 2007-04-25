@@ -51,22 +51,22 @@ public class HTTPServletHandler {
    /**
     * The default port number is 8080.
     */
-   public final static int DEFAULT_PORT_NUMBER = 8080;
+   public static final int DEFAULT_PORT_NUMBER = 8080;
 
    /**
     * The map containing the MIME type information. Never <code>null</code>
     */
-   private final static FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
+   private static final FileNameMap MIME_TYPES_MAP = URLConnection.getFileNameMap();
 
    /**
     * The encoding of the request.
     */
-   private final static String REQUEST_ENCODING = "ISO-8859-1";
+   private static final String REQUEST_ENCODING = "ISO-8859-1";
 
    /**
     * The line separator used by the HTTP protocol.
     */
-   private final static String CRLF = "\r\n";
+   private static final String CRLF = "\r\n";
 
    /**
     * The web server.

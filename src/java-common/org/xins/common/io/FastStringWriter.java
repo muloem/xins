@@ -28,7 +28,7 @@ public class FastStringWriter extends Writer {
    /**
     * The default initial internal buffer size.
     */
-   private final static int DEFAULT_INITIAL_SIZE = 128;
+   private static final int DEFAULT_INITIAL_SIZE = 128;
 
    /**
     * The buffer to write to.

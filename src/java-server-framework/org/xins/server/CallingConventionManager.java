@@ -106,7 +106,7 @@ class CallingConventionManager extends Manageable {
     * List of the names of the calling conventions currently included in
     * XINS.
     */
-   private final static List CONVENTIONS = Arrays.asList(new String[] {
+   private static final List CONVENTIONS = Arrays.asList(new String[] {
       STANDARD_CALLING_CONVENTION,
       XML_CALLING_CONVENTION,
       XSLT_CALLING_CONVENTION,
@@ -120,13 +120,13 @@ class CallingConventionManager extends Manageable {
     * Array of type <code>Class</code> that is used when constructing a
     * <code>CallingConvention</code> instance via RMI.
     */
-   private final static Class[] CONSTRUCTOR_ARG_CLASSES = { API.class };
+   private static final Class[] CONSTRUCTOR_ARG_CLASSES = { API.class };
 
    /**
     * Placeholder object used to indicate that the construction of a calling
     * convention object failed. Never <code>null</code>.
     */
-   private final static Object CREATION_FAILED = new Object();
+   private static final Object CREATION_FAILED = new Object();
 
    /**
     * The API. Never <code>null</code>.

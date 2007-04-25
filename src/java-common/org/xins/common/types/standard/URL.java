@@ -25,7 +25,7 @@ public final class URL extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static URL SINGLETON = new org.xins.common.types.standard.URL();
+   public static final URL SINGLETON = new org.xins.common.types.standard.URL();
 
    /**
     * Constructs a new <code>Boolean</code>.

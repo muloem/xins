@@ -94,17 +94,17 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     * cached. Should be either <code>"true"</code> or <code>"false"</code>.
     * By default the cache is enabled.
     */
-   private final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
+   private static final String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
     * Argument used when calling function with no parameters using the reflection API.
     */
-   private final static Object[] NO_ARGS = {};
+   private static final Object[] NO_ARGS = {};
 
    /**
     * Argument used when finding a function with no parameters using the reflection API.
     */
-   private final static Class[] NO_ARGS_CLASS = {};
+   private static final Class[] NO_ARGS_CLASS = {};
 
    /**
     * The API. Never <code>null</code>.

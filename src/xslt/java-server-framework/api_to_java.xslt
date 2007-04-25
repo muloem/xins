@@ -81,7 +81,7 @@ public class APIImpl extends API {
 			<xsl:value-of select="$name" />
 			<xsl:text><![CDATA[</em> function.
     */
-   public final static ]]></xsl:text>
+   public static final ]]></xsl:text>
 			<xsl:value-of select="$name" />
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="$fieldname" />

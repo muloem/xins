@@ -1143,7 +1143,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.0.0
     */
-   private final static class HTTPCallResultDataHandler
+   private static final class HTTPCallResultDataHandler
    implements HTTPCallResultData {
       /**
        * Constructs a new <code>HTTPCallResultDataHandler</code> object.

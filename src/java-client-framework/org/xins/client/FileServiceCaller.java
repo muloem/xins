@@ -358,7 +358,7 @@ class FileServiceCaller extends ServiceCaller {
     *
     * @since XINS 1.5.0
     */
-   private final static class HTTPCallResultDataHandler
+   private static final class HTTPCallResultDataHandler
    implements HTTPCallResultData {
 
       /**

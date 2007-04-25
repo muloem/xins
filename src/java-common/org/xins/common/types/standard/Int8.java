@@ -23,7 +23,7 @@ public class Int8 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Int8 SINGLETON = new Int8();
+   public static final Int8 SINGLETON = new Int8();
 
    /**
     * The minimum value that this Int8 can have.

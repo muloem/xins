@@ -19,7 +19,7 @@
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
     */
-   public final static class Request implements java.io.Serializable {
+   public static final class Request implements java.io.Serializable {
 
       /**
        * The IP address of the originating host.
@@ -563,7 +563,7 @@
 		<xsl:value-of select="$objectName" />
 		<xsl:text> element.
     */
-   public final static class </xsl:text>
+   public static final class </xsl:text>
 		<xsl:value-of select="$objectName" />
 		<xsl:text><![CDATA[ {
 

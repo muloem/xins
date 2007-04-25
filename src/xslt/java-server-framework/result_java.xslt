@@ -48,7 +48,7 @@ public interface UnsuccessfulResult extends Result {
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> function.
  */
-public final static class SuccessfulResult
+public static final class SuccessfulResult
 extends org.xins.server.FunctionResult
 implements Result {
 

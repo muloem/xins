@@ -57,7 +57,7 @@ public abstract class AbstractCAPI {
     * already been checked against the XINS version at run-time. Never
     * <code>null</code>.
     */
-   private final static Set VERSION_COMPARISIONS_DONE = new HashSet();
+   private static final Set VERSION_COMPARISIONS_DONE = new HashSet();
 
    /**
     * The name of the API. This field cannot be <code>null</code>.

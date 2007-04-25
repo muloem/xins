@@ -23,7 +23,7 @@ public class HTTPServletStarter {
    /**
     * The default port number.
     */
-   public final static int DEFAULT_PORT_NUMBER = 8080;
+   public static final int DEFAULT_PORT_NUMBER = 8080;
 
    /**
     * Creates a new <code>HTTPServletStarter</code> for the specified WAR

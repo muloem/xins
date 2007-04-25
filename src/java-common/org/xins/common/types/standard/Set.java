@@ -23,7 +23,7 @@ public final class Set extends org.xins.common.types.List {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Set SINGLETON = new Set();
+   public static final Set SINGLETON = new Set();
 
    /**
     * Constructs a new <code>Set</code>.

@@ -23,7 +23,7 @@ public class Float32 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Float32 SINGLETON = new Float32();
+   public static final Float32 SINGLETON = new Float32();
 
    /**
     * The minimum value that this Float32 can have.

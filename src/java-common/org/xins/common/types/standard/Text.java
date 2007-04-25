@@ -22,7 +22,7 @@ public final class Text extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Text SINGLETON = new Text();
+   public static final Text SINGLETON = new Text();
 
    /**
     * Constructs a new <code>Text</code>.

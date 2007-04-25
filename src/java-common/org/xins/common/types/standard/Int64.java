@@ -23,7 +23,7 @@ public class Int64 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Int64 SINGLETON = new Int64();
+   public static final Int64 SINGLETON = new Int64();
 
    /**
     * The minimum value that this Int34 can have.

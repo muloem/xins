@@ -24,7 +24,7 @@ public class Hex extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Hex SINGLETON = new Hex();
+   public static final Hex SINGLETON = new Hex();
 
    /**
     * The minimum number of bytes this Hex can have.

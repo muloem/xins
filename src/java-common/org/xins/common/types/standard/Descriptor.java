@@ -26,7 +26,7 @@ public class Descriptor extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Descriptor SINGLETON = new Descriptor();
+   public static final Descriptor SINGLETON = new Descriptor();
 
    /**
     * Constructs a new <code>Properties</code>.

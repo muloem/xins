@@ -32,14 +32,14 @@ public final class ErrorCodeSpec {
     *
     * @since XINS 1.4.0
     */
-   public final static Type FUNCTIONAL = new Type();
+   public static final Type FUNCTIONAL = new Type();
 
    /**
     * Type indicating that the error code is technical.
     *
     * @since XINS 1.4.0
     */
-   public final static Type TECHNICAL = new Type();
+   public static final Type TECHNICAL = new Type();
 
    /**
     * Name of the function.

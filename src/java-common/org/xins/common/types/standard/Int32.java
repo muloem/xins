@@ -23,7 +23,7 @@ public class Int32 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Int32 SINGLETON = new Int32();
+   public static final Int32 SINGLETON = new Int32();
 
    /**
     * The minimum value that this Int32 can have.

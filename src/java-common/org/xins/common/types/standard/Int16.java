@@ -23,7 +23,7 @@ public class Int16 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Int16 SINGLETON = new Int16();
+   public static final Int16 SINGLETON = new Int16();
 
    /**
     * The minimum value that this Int16 can have.

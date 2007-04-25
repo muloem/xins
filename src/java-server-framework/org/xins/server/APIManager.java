@@ -47,7 +47,7 @@ public final class APIManager implements APIManagerMBean {
    /**
     * Formatter to convert {@link String} to {@link java.util.Date}.
     */
-   private final static DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
+   private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy.MM.DD HH:MM:ss.SSS");
 
    /**
     * The API, never <code>null</code>.

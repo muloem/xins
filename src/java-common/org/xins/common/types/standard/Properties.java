@@ -32,7 +32,7 @@ public class Properties extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Properties SINGLETON = new Properties();
+   public static final Properties SINGLETON = new Properties();
 
    /**
     * The type for property names. Cannot be <code>null</code>.

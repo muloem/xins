@@ -25,12 +25,12 @@ public class Base64 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Base64 SINGLETON = new Base64();
+   public static final Base64 SINGLETON = new Base64();
 
    /**
     * The encoding used to convert a String to a byte[] and vice versa.
     */
-   private final static String STRING_ENCODING = "US-ASCII";
+   private static final String STRING_ENCODING = "US-ASCII";
 
    /**
     * The minimum number of bytes this Base64 can have.

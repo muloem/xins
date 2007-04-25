@@ -100,7 +100,7 @@ public final class ]]></xsl:text>
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static ]]></xsl:text>
+   public static final ]]></xsl:text>
 		<xsl:value-of select="$classname" />
 		<xsl:text> SINGLETON = new </xsl:text>
 		<xsl:value-of select="$classname" />

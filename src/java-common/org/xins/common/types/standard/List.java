@@ -23,7 +23,7 @@ public final class List extends org.xins.common.types.List {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static List SINGLETON = new List();
+   public static final List SINGLETON = new List();
 
    /**
     * Constructs a new <code>List</code>.

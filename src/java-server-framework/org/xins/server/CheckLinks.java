@@ -55,43 +55,43 @@ class CheckLinks {
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>UnknownHostException</code>.
     */
-   private final static String UNKNOWN_HOST = "UnknownHost";
+   private static final String UNKNOWN_HOST = "UnknownHost";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>ConnectTimeoutException</code> or the message
     * of the exception starts with "Connect timed out".
     */
-   private final static String CONNECTION_TIMEOUT = "ConnectionTimeout";
+   private static final String CONNECTION_TIMEOUT = "ConnectionTimeout";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>ConnectException</code>.
     */
-   private final static String CONNECTION_REFUSAL = "ConnectionRefusal";
+   private static final String CONNECTION_REFUSAL = "ConnectionRefusal";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>SocketTimeoutException</code>.
     */
-   private final static String SOCKET_TIMEOUT = "SocketTimeout";
+   private static final String SOCKET_TIMEOUT = "SocketTimeout";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is <code>IOException</code>.
     */
-   private final static String OTHER_IO_ERROR = "OtherIOError";
+   private static final String OTHER_IO_ERROR = "OtherIOError";
 
    /**
     * The failure message to be added in the <code>FunctionResult</code> when
     * the exception is an unknown <code>Exception</code>.
     */
-   private final static String OTHER_FAILURE = "OtherFailure";
+   private static final String OTHER_FAILURE = "OtherFailure";
 
    /**
     * The success message to be added in the <code>FunctionResult</code>.
     */
-   private final static String SUCCESS = "Success";
+   private static final String SUCCESS = "Success";
 
    /**
     * HTTP retry handler that does not allow any retries.

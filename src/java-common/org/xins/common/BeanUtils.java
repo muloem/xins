@@ -38,7 +38,7 @@ public class BeanUtils {
    /**
     * Constant used to identified some methods.
     */
-   private final static Class[] STRING_CLASS = {String.class};
+   private static final Class[] STRING_CLASS = {String.class};
 
    /**
     * Get the values returned by the get methods of the source object and

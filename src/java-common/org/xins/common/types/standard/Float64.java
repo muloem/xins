@@ -23,7 +23,7 @@ public class Float64 extends Type {
    /**
     * The only instance of this class. This field is never <code>null</code>.
     */
-   public final static Float64 SINGLETON = new Float64();
+   public static final Float64 SINGLETON = new Float64();
 
    /**
     * The minimum value that this Float64 can have.
