@@ -22,9 +22,7 @@ import org.xins.common.manageable.Manageable;
  *
  * @since XINS 1.0.0
  */
-public abstract class Function
-extends Manageable
-implements DefaultResultCodes {
+public abstract class Function extends Manageable {
 
    /**
     * Call result to be returned when a function is currently disabled. See

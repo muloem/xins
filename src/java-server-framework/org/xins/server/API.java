@@ -47,9 +47,7 @@ import org.xins.common.xml.ElementBuilder;
  *
  * @since XINS 1.0.0
  */
-public abstract class API
-extends Manageable
-implements DefaultResultCodes {
+public abstract class API extends Manageable {
 
    /**
     * Successful empty call result.
