@@ -217,6 +217,9 @@ extends HttpServlet {
     *
     * @throws IOException
     *    if there is an error error writing to the response output stream.
+    *
+    * @deprecated the {@link #service(HttpServletRequest, HttpServletResponse)}
+    *    should be used.
     */
    public void service(ServletRequest  request,
                        ServletResponse response)
