@@ -58,7 +58,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   public static final String RESPONSE_CONTENT_TYPE = "application/json";
+   protected static final String RESPONSE_CONTENT_TYPE = "application/json";
 
    /**
     * The API. Never <code>null</code>.

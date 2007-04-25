@@ -63,26 +63,26 @@ implements DefaultResultCodes {
    private static final String ACL_PROPERTY = "org.xins.server.acl";
 
    /**
-    * The name of the build property that specifies the version of the API.
+    * The name of the bootstrap property that specifies the version of the API.
     */
    static final String API_VERSION_PROPERTY = "org.xins.api.version";
 
    /**
-    * The name of the build property that specifies the hostname of the
+    * The name of the bootstrap property that specifies the hostname of the
     * machine the package was built on.
     */
    private static final String BUILD_HOST_PROPERTY =
       "org.xins.api.build.host";
 
    /**
-    * The name of the build property that specifies the time the package was
+    * The name of the bootstrap property that specifies the time the package was
     * built.
     */
    private static final String BUILD_TIME_PROPERTY =
       "org.xins.api.build.time";
 
    /**
-    * The name of the build property that specifies which version of XINS was
+    * The name of the bootstrap property that specifies which version of XINS was
     * used to build the package.
     */
    private static final String BUILD_XINS_VERSION_PROPERTY =
@@ -606,9 +606,9 @@ implements DefaultResultCodes {
 
       // TODO: Investigate whether we can take the configuration file reload
       //       interval from somewhere (ConfigManager? Engine?).
-      String propName  = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
+      String propName  = ConfigManager.CONFIG_RELOAD_INTERVAL_PROPERTY;
       String propValue = runtimeSettings.get(propName);
-      int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+      int interval = ConfigManager.DEFAULT_CONFIG_RELOAD_INTERVAL;
       if (propValue != null && propValue.trim().length() > 0) {
          try {
             interval = Integer.parseInt(propValue);

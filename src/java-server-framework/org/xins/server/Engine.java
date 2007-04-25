@@ -727,7 +727,7 @@ final class Engine {
          if (exception instanceof InvalidRequestException) {
 
             String method = request.getMethod();
-            String ccName = request.getParameter(APIServlet.CALLING_CONVENTION_PARAMETER);
+            String ccName = request.getParameter(CallingConventionManager.CALLING_CONVENTION_PARAMETER);
             // Check if the method is known by at least one CC (otherwise 501)
             if (!_conventionManager.getSupportedMethods().contains(method)) {
                statusCode = HttpServletResponse.SC_NOT_IMPLEMENTED;

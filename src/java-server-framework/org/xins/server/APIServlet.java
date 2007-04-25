@@ -89,121 +89,6 @@ import org.xins.common.MandatoryArgumentChecker;
 public final class APIServlet
 extends HttpServlet {
 
-   // TODO: Log 3611 and return an appropriate HTTP result when the API is not
-   //       usable.
-   /**
-    * Serial version UID. Used for serialization. The assigned value is for
-    * compatibility with XINS 1.2.5.
-    */
-   private static final long serialVersionUID = -1117062458458353841L;
-
-   /**
-    * The name of the system property that specifies the location of the
-    * configuration file.
-    */
-   public static final String CONFIG_FILE_SYSTEM_PROPERTY =
-      "org.xins.server.config";
-
-   /**
-    * The name of the runtime property that specifies the interval
-    * for the configuration file modification checks, in seconds.
-    */
-   public static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
-      "org.xins.server.config.reload";
-
-   /**
-    * The name of the runtime property that hostname for the server
-    * running the API.
-    */
-   public static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
-
-   /**
-    * The default configuration file modification check interval, in seconds.
-    */
-   public static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
-
-   /**
-    * The name of the build property that specifies the name of the
-    * API class to load.
-    */
-   public static final String API_CLASS_PROPERTY = "org.xins.api.class";
-
-   /**
-    * The name of the build property that specifies the name of the
-    * API.
-    */
-   public static final String API_NAME_PROPERTY = "org.xins.api.name";
-
-   /**
-    * The name of the build property that specifies the version with which the
-    * API was built.
-    */
-   public static final String API_BUILD_VERSION_PROPERTY =
-      "org.xins.api.build.version";
-
-   /**
-    * The name of the build property that specifies the name of the default
-    * calling convention.
-    */
-   public static final String API_CALLING_CONVENTION_PROPERTY =
-      "org.xins.api.calling.convention";
-
-   /**
-    * The name of the build property that specifies the class of the default
-    * calling convention.
-    */
-   public static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
-      "org.xins.api.calling.convention.class";
-
-   /**
-    * The name of the request parameter that specifies the name of the calling
-    * convention to use.
-    */
-   public static final String CALLING_CONVENTION_PARAMETER = "_convention";
-
-   /**
-    * The name of the XINS standard calling convention.
-    */
-   public static final String STANDARD_CALLING_CONVENTION = "_xins-std";
-
-   /**
-    * The XINS XML calling convention.
-    */
-   public static final String XML_CALLING_CONVENTION = "_xins-xml";
-
-   /**
-    * The XINS XSLT calling convention.
-    */
-   public static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
-
-   /**
-    * The name of the SOAP calling convention.
-    *
-    * @since XINS 1.3.0
-    */
-   public static final String SOAP_CALLING_CONVENTION = "_xins-soap";
-
-   /**
-    * The name of the XML-RPC calling convention.
-    *
-    * @since XINS 1.3.0
-    */
-   public static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
-
-   /**
-    * The name of the JSON-RPC calling convention.
-    *
-    * @since XINS 2.0.
-    */
-   public static final String JSON_RPC_CALLING_CONVENTION = "_xins-jsonrpc";
-
-   /**
-    * The name of the JSON calling convention. The call is a Yahoo! style call.
-    *
-    * @since XINS 2.0.
-    */
-   public static final String JSON_CALLING_CONVENTION = "_xins-json";
-
    /**
     * XINS server engine. Initially <code>null</code> but set to a
     * non-<code>null</code> value in the {@link #init(ServletConfig)} method.
@@ -241,7 +126,7 @@ extends HttpServlet {
     * Initializes this servlet using the specified configuration.
     *
     * @param config
-    *    the {@link ServletConfig} object which contains build properties for
+    *    the {@link ServletConfig} object which contains bootstrap properties for
     *    this servlet, as specified by the <em>assembler</em>, cannot be
     *    <code>null</code>.
     *
@@ -298,7 +183,7 @@ extends HttpServlet {
 
    /**
     * Returns the <code>ServletConfig</code> object which contains the
-    * build properties for this servlet. The returned {@link ServletConfig}
+    * bootstrap properties for this servlet. The returned {@link ServletConfig}
     * object is the one passed to the {@link #init(ServletConfig)} method.
     *
     * @return

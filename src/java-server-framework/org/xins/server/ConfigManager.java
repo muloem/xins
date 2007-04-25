@@ -47,6 +47,25 @@ import org.xins.logdoc.UnsupportedLocaleException;
  */
 final class ConfigManager {
 
+   /**
+    * The name of the system property that specifies the location of the
+    * configuration file.
+    */
+   static final String CONFIG_FILE_SYSTEM_PROPERTY =
+      "org.xins.server.config";
+
+   /**
+    * The name of the runtime property that specifies the interval
+    * for the configuration file modification checks, in seconds.
+    */
+   static final String CONFIG_RELOAD_INTERVAL_PROPERTY =
+      "org.xins.server.config.reload";
+
+   /**
+    * The default configuration file modification check interval, in seconds.
+    */
+   static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
+
    // XXX: Consider adding state checking
    /**
     * The object to synchronize on when reading and initializing from the
@@ -160,20 +179,19 @@ final class ConfigManager {
    void determineConfigFile() {
 
       // Get the value of the appropriate system property
-      String prop = APIServlet.CONFIG_FILE_SYSTEM_PROPERTY;
       String configFile = null;
       try {
-         configFile = System.getProperty(prop);
+         configFile = System.getProperty(CONFIG_FILE_SYSTEM_PROPERTY);
       } catch (SecurityException exception) {
-         Log.log_3230(exception, prop);
+         Log.log_3230(exception, CONFIG_FILE_SYSTEM_PROPERTY);
       }
 
       // If the name of the configuration file is not set in a system property
       // (typically passed on the command-line) try to get it from the servlet
       // initialization properties (typically set in a web.xml file)
       if (configFile == null || configFile.length() < 1) {
-         Log.log_3231(prop);
-         configFile = _config.getInitParameter(prop);
+         Log.log_3231(CONFIG_FILE_SYSTEM_PROPERTY);
+         configFile = _config.getInitParameter(CONFIG_FILE_SYSTEM_PROPERTY);
       }
 
       // Store the name of the configuration file
@@ -204,7 +222,7 @@ final class ConfigManager {
          if (in == null) {
 
             // Use the default settings
-            Log.log_3205(APIServlet.CONFIG_FILE_SYSTEM_PROPERTY);
+            Log.log_3205(CONFIG_FILE_SYSTEM_PROPERTY);
             _runtimeProperties = null;
             _propertiesRead = true;
             return;
@@ -298,7 +316,7 @@ final class ConfigManager {
    void init() {
 
       // Determine the reload interval
-      int interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+      int interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       if (_configFile != null) {
          try {
             interval = determineConfigReloadInterval();
@@ -461,7 +479,7 @@ final class ConfigManager {
       }
 
       // Get the runtime property
-      String prop = APIServlet.CONFIG_RELOAD_INTERVAL_PROPERTY;
+      String prop = CONFIG_RELOAD_INTERVAL_PROPERTY;
       String s = _runtimeProperties.get(prop);
       int interval = -1;
 
@@ -489,7 +507,7 @@ final class ConfigManager {
       // Property not set, use the default
       } else {
          Log.log_3408(_configFile, prop);
-         interval = APIServlet.DEFAULT_CONFIG_RELOAD_INTERVAL;
+         interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
       return interval;

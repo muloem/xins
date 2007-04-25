@@ -30,12 +30,12 @@ public class XMLCallingConvention extends CallingConvention {
    /**
     * The response encoding format.
     */
-   public static final String RESPONSE_ENCODING = "UTF-8";
+   protected static final String RESPONSE_ENCODING = "UTF-8";
 
    /**
     * The content type of the HTTP response.
     */
-   public static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   protected static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

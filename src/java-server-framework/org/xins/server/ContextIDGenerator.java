@@ -54,6 +54,12 @@ final class ContextIDGenerator extends Manageable {
    };
 
    /**
+    * The name of the runtime property that hostname for the server
+    * running the API.
+    */
+   private static final String HOSTNAME_PROPERTY = "org.xins.server.hostname";
+
+   /**
     * The name of the API. Never <code>null</code>.
     */
    private final String _apiName;
@@ -135,7 +141,7 @@ final class ContextIDGenerator extends Manageable {
           InitializationException {
 
       // Determine if the hostname has changed
-      String hostname = properties.get(APIServlet.HOSTNAME_PROPERTY);
+      String hostname = properties.get(HOSTNAME_PROPERTY);
       if (!TextUtils.isEmpty(hostname) && !hostname.equals(_hostname)) {
          Log.log_3310(_hostname, hostname);
          _hostname = hostname;

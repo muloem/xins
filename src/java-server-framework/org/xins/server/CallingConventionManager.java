@@ -40,17 +40,80 @@ import org.xins.common.text.TextUtils;
 class CallingConventionManager extends Manageable {
 
    /**
+    * The name of the bootstrap property that specifies the name of the default
+    * calling convention.
+    */
+   private static final String API_CALLING_CONVENTION_PROPERTY =
+      "org.xins.api.calling.convention";
+
+   /**
+    * The name of the bootstrap property that specifies the class of the default
+    * calling convention.
+    */
+   private static final String API_CALLING_CONVENTION_CLASS_PROPERTY =
+      "org.xins.api.calling.convention.class";
+
+   /**
+    * The name of the request parameter that specifies the name of the calling
+    * convention to use.
+    */
+   static final String CALLING_CONVENTION_PARAMETER = "_convention";
+
+   /**
+    * The name of the XINS standard calling convention.
+    */
+   private static final String STANDARD_CALLING_CONVENTION = "_xins-std";
+
+   /**
+    * The XINS XML calling convention.
+    */
+   private static final String XML_CALLING_CONVENTION = "_xins-xml";
+
+   /**
+    * The XINS XSLT calling convention.
+    */
+   private static final String XSLT_CALLING_CONVENTION = "_xins-xslt";
+
+   /**
+    * The name of the SOAP calling convention.
+    *
+    * @since XINS 1.3.0
+    */
+   private static final String SOAP_CALLING_CONVENTION = "_xins-soap";
+
+   /**
+    * The name of the XML-RPC calling convention.
+    *
+    * @since XINS 1.3.0
+    */
+   private static final String XML_RPC_CALLING_CONVENTION = "_xins-xmlrpc";
+
+   /**
+    * The name of the JSON-RPC calling convention.
+    *
+    * @since XINS 2.0.
+    */
+   public static final String JSON_RPC_CALLING_CONVENTION = "_xins-jsonrpc";
+
+   /**
+    * The name of the JSON calling convention. The call is a Yahoo! style call.
+    *
+    * @since XINS 2.0.
+    */
+   private static final String JSON_CALLING_CONVENTION = "_xins-json";
+
+   /**
     * List of the names of the calling conventions currently included in
     * XINS.
     */
    private final static List CONVENTIONS = Arrays.asList(new String[] {
-      APIServlet.STANDARD_CALLING_CONVENTION,
-      APIServlet.XML_CALLING_CONVENTION,
-      APIServlet.XSLT_CALLING_CONVENTION,
-      APIServlet.SOAP_CALLING_CONVENTION,
-      APIServlet.XML_RPC_CALLING_CONVENTION,
-      APIServlet.JSON_RPC_CALLING_CONVENTION,
-      APIServlet.JSON_CALLING_CONVENTION
+      STANDARD_CALLING_CONVENTION,
+      XML_CALLING_CONVENTION,
+      XSLT_CALLING_CONVENTION,
+      SOAP_CALLING_CONVENTION,
+      XML_RPC_CALLING_CONVENTION,
+      JSON_RPC_CALLING_CONVENTION,
+      JSON_CALLING_CONVENTION
    });
 
    /**
@@ -138,8 +201,8 @@ class CallingConventionManager extends Manageable {
       Iterator itCustomCC = properties.getNames();
       while (itCustomCC.hasNext()) {
          String nextProperty = (String) itCustomCC.next();
-         if (nextProperty.startsWith(APIServlet.API_CALLING_CONVENTION_PROPERTY + '.') &&
-             !nextProperty.equals(APIServlet.API_CALLING_CONVENTION_CLASS_PROPERTY)) {
+         if (nextProperty.startsWith(API_CALLING_CONVENTION_PROPERTY + '.') &&
+             !nextProperty.equals(API_CALLING_CONVENTION_CLASS_PROPERTY)) {
             String conventionName = nextProperty.substring(32, nextProperty.length() - 6);
             _conventionNames.add(conventionName);
          }
@@ -183,7 +246,7 @@ class CallingConventionManager extends Manageable {
           InvalidPropertyValueException {
 
       // Name of the default calling convention (if any)
-      String name = TextUtils.trim(properties.get(APIServlet.API_CALLING_CONVENTION_PROPERTY), null);
+      String name = TextUtils.trim(properties.get(API_CALLING_CONVENTION_PROPERTY), null);
 
       // No calling convention defined
       if (name == null) {
@@ -192,7 +255,7 @@ class CallingConventionManager extends Manageable {
          Log.log_3246();
 
          // Fallback to the XINS-specified default calling convention
-         name = APIServlet.STANDARD_CALLING_CONVENTION;
+         name = STANDARD_CALLING_CONVENTION;
       }
 
       // Log: Determined default calling convention
@@ -228,7 +291,7 @@ class CallingConventionManager extends Manageable {
       if (name.charAt(0) == '_') {
          className = classNameForRegular(name);
       } else {
-         className = properties.get(APIServlet.API_CALLING_CONVENTION_PROPERTY + '.' + name + ".class");
+         className = properties.get(API_CALLING_CONVENTION_PROPERTY + '.' + name + ".class");
       }
 
       // If the class could not be determined, then return null
@@ -269,31 +332,31 @@ class CallingConventionManager extends Manageable {
    private String classNameForRegular(String name) {
 
       // XINS standard
-      if (name.equals(APIServlet.STANDARD_CALLING_CONVENTION)) {
+      if (name.equals(STANDARD_CALLING_CONVENTION)) {
          return "org.xins.server.StandardCallingConvention";
 
       // XINS XML
-      } else if (name.equals(APIServlet.XML_CALLING_CONVENTION)) {
+      } else if (name.equals(XML_CALLING_CONVENTION)) {
          return "org.xins.server.XMLCallingConvention";
 
       // XSLT
-      } else if (name.equals(APIServlet.XSLT_CALLING_CONVENTION)) {
+      } else if (name.equals(XSLT_CALLING_CONVENTION)) {
          return "org.xins.server.XSLTCallingConvention";
 
       // SOAP
-      } else if (name.equals(APIServlet.SOAP_CALLING_CONVENTION)) {
+      } else if (name.equals(SOAP_CALLING_CONVENTION)) {
          return "org.xins.server.SOAPCallingConvention";
 
       // XML-RPC
-      } else if (name.equals(APIServlet.XML_RPC_CALLING_CONVENTION)) {
+      } else if (name.equals(XML_RPC_CALLING_CONVENTION)) {
          return "org.xins.server.XMLRPCCallingConvention";
 
       // JSON-RPC
-      } else if (name.equals(APIServlet.JSON_RPC_CALLING_CONVENTION)) {
+      } else if (name.equals(JSON_RPC_CALLING_CONVENTION)) {
          return "org.xins.server.JSONRPCCallingConvention";
 
       // JSON
-      } else if (name.equals(APIServlet.JSON_CALLING_CONVENTION)) {
+      } else if (name.equals(JSON_CALLING_CONVENTION)) {
          return "org.xins.server.JSONCallingConvention";
 
       // Unrecognized
@@ -508,8 +571,7 @@ class CallingConventionManager extends Manageable {
    throws InvalidRequestException {
 
       // Get the value of the input parameter that determines the convention
-      String paramName = APIServlet.CALLING_CONVENTION_PARAMETER;
-      String ccName    = request.getParameter(paramName);
+      String ccName    = request.getParameter(CALLING_CONVENTION_PARAMETER);
 
       // If a calling convention is specified then use that one
       if (! TextUtils.isEmpty(ccName)) {

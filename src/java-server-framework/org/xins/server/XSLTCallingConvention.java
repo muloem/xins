@@ -57,7 +57,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     * cached. Should be either <code>"true"</code> or <code>"false"</code>.
     * By default the cache is enabled.
     */
-   private final static String TEMPLATES_CACHE_PROPERTY = "templates.cache";
+   protected static final String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
     * The name of the runtime property that defines the prefix for the _template
@@ -65,18 +65,18 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     * If this runtime property is not set or the value is empty,
     * the _template parameter is not allowed.
     */
-   public final static String TEMPLATES_PARAMETER_PREFIX = "templates.parameter.prefix";
+   protected static final String TEMPLATES_PARAMETER_PREFIX = "templates.parameter.prefix";
 
    /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
-   public final static String TEMPLATE_PARAMETER = "_template";
+   protected static final String TEMPLATE_PARAMETER = "_template";
 
    /**
     * The name of the input parameter used to clear the template cache.
     */
-   public final static String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
+   protected static final String CLEAR_TEMPLATE_CACHE_PARAMETER = "_cleartemplatecache";
 
    /**
     * The XSLT transformer. Never <code>null</code>.

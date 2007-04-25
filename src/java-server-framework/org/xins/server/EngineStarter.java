@@ -35,6 +35,25 @@ import org.xins.logdoc.UnsupportedLocaleException;
 final class EngineStarter {
 
    /**
+    * The name of the bootstrap property that specifies the name of the
+    * API class to load.
+    */
+   private static final String API_CLASS_PROPERTY = "org.xins.api.class";
+
+   /**
+    * The name of the bootstrap property that specifies the name of the
+    * API.
+    */
+   private static final String API_NAME_PROPERTY = "org.xins.api.name";
+
+   /**
+    * The name of the bootstrap property that specifies the version with which the
+    * API was built.
+    */
+   private static final String API_BUILD_VERSION_PROPERTY =
+      "org.xins.api.build.version";
+
+   /**
     * The servlet config. Never <code>null</code>.
     */
    private ServletConfig _config;
@@ -137,7 +156,7 @@ final class EngineStarter {
 
       // Warn if API build version is more recent than running version
       if (Library.isProductionRelease(serverVersion)) {
-         String propName     = APIServlet.API_BUILD_VERSION_PROPERTY;
+         String propName     = API_BUILD_VERSION_PROPERTY;
          String buildVersion = _config.getInitParameter(propName);
          if (buildVersion == null) {
             Log.log_3232(propName);
@@ -191,7 +210,7 @@ final class EngineStarter {
          String detail = "Value of static field SINGLETON in class "
             + apiClassName
             + " is null.";
-         Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
          throw new ServletException();
       }
 
@@ -200,7 +219,7 @@ final class EngineStarter {
          String detail = "Value of static field SINGLETON in class "
             + apiClassName
             + " is not an instance of that class.";
-         Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
          throw new ServletException();
       }
    }
@@ -238,7 +257,7 @@ final class EngineStarter {
             + apiClassName
             + '.';
          Utils.logProgrammingError(detail, exception);
-         Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
          throw servletExceptionFor(exception);
       }
       return api;
@@ -272,7 +291,7 @@ final class EngineStarter {
       try {
          apiClass = Class.forName(apiClassName);
       } catch (Throwable exception) {
-         Log.log_3207(exception, APIServlet.API_CLASS_PROPERTY, apiClassName);
+         Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
          throw servletExceptionFor(exception);
       }
 
@@ -283,7 +302,7 @@ final class EngineStarter {
             + " is not derived from "
             + API.class.getName()
             + '.';
-         Log.log_3208(APIServlet.API_CLASS_PROPERTY, apiClassName, detail);
+         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
          throw new ServletException();
       }
       return apiClass;
@@ -299,12 +318,12 @@ final class EngineStarter {
     */
    private String determineAPIClassName()
    throws ServletException {
-      String apiClassName = _config.getInitParameter(APIServlet.API_CLASS_PROPERTY);
+      String apiClassName = _config.getInitParameter(API_CLASS_PROPERTY);
       apiClassName = TextUtils.isEmpty(apiClassName)
             ? null
             : apiClassName.trim();
       if (apiClassName == null) {
-         Log.log_3206(APIServlet.API_CLASS_PROPERTY);
+         Log.log_3206(API_CLASS_PROPERTY);
          throw new ServletException();
       }
       return apiClassName;
@@ -426,8 +445,7 @@ final class EngineStarter {
    private String determineLogdocName() {
 
       // Determine the name of the API class
-      String apiClassName = _config.getInitParameter(
-         APIServlet.API_CLASS_PROPERTY);
+      String apiClassName = _config.getInitParameter(API_CLASS_PROPERTY);
 
       // Determine the class prefix, which is everything before the
       // unqualified class name
@@ -458,14 +476,14 @@ final class EngineStarter {
    String determineAPIName() throws ServletException {
 
       // Determine the name of the API
-      String apiName = _config.getInitParameter(APIServlet.API_NAME_PROPERTY);
+      String apiName = _config.getInitParameter(API_NAME_PROPERTY);
       if (apiName != null) {
          apiName = apiName.trim();
       }
 
       // If the name is not set, then return a hyphen instead
       if (TextUtils.isEmpty(apiName)) {
-         Log.log_3232(APIServlet.API_NAME_PROPERTY);
+         Log.log_3232(API_NAME_PROPERTY);
          throw new ServletException("The API name is not set.");
       } else {
          apiName = apiName.trim();
