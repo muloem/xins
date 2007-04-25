@@ -88,7 +88,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
 * Tools:
   - Added new 'smd' target that generates the SMD (Simple Method Description)
     file for an API.
-    The location of the API can be specified with the smd.endpoint.
+    The location of the API can be specified with the smd.endpoint build
+    property.
   - Upgraded maven to 1.5.2.
   - Improved use of nbbrowse task in NetBeans to open a local file correctly.
   - Added debug fix (apply patch) in the project pop-up menu in NetBeans.
