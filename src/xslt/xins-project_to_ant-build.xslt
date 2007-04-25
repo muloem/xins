@@ -482,6 +482,20 @@ APIs in this project are:
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
+		<xsl:variable name="typeIncludesAll">
+			<xsl:for-each select="$api_node/type">
+				<xsl:if test="position() &gt; 1">,</xsl:if>
+				<xsl:choose>
+					<xsl:when test="contains(@name, '/')">
+						<xsl:value-of select="concat('../../', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.typ')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@name" />
+						<xsl:text>.typ</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:variable>
 		<xsl:variable name="resultcodeIncludes">
 			<xsl:for-each select="$api_node/resultcode">
 				<xsl:if test="not(contains(@name, '/'))">
@@ -489,6 +503,20 @@ APIs in this project are:
 					<xsl:value-of select="@name" />
 					<xsl:text>.rcd</xsl:text>
 				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="resultcodeIncludesAll">
+			<xsl:for-each select="$api_node/resultcode">
+				<xsl:if test="position() &gt; 1">,</xsl:if>
+				<xsl:choose>
+					<xsl:when test="contains(@name, '/')">
+						<xsl:value-of select="concat('../../', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@name" />
+						<xsl:text>.rcd</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="categoryIncludes">
@@ -518,11 +546,11 @@ APIs in this project are:
       <mkdir dir="{$builddir}/specdocs/{$api}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($typeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
 				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
 				</xsl:if>
 				<xsl:if test="string-length($categoryIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="{$categoryIncludes}" />
@@ -837,11 +865,11 @@ APIs in this project are:
 		<target name="wsdl-{$api}" depends="-load-dtds" description="Generates the WSDL specification of the '{$api}' API">
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($typeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
 				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
 				</xsl:if>
 				<targetfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" />
 			</dependset>
@@ -873,11 +901,11 @@ APIs in this project are:
 			<mkdir dir="{$builddir}/opendoc/{$api}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($typeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
 				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
 				</xsl:if>
 				<targetfileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
 			</dependset>
@@ -1490,11 +1518,11 @@ APIs in this project are:
 			<mkdir dir="{$builddir}/java-capi/{$api}/{$clientPackageAsDir}" />
 			<dependset>
 				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($typeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludes}" />
+				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
 				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludes}" />
+				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
+					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
 				</xsl:if>
 				<targetfileset dir="{$builddir}/java-capi/{$api}/{$clientPackageAsDir}" includes="CAPI.java" />
 			</dependset>

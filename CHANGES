@@ -76,6 +76,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - If a category changes, the index.html of the specdocs should also be
     regenerated.
   - The WSDL should be regenerated when the specifications change.
+  - Generated files depending on the content of types and error code should
+    also be regenerated when a shared type or shared error code changes. 
 
 * XSLT:
   - Moved the class fields before the constructor.
