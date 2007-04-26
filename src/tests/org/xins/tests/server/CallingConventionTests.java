@@ -252,7 +252,7 @@ public class CallingConventionTests extends TestCase {
       params.set("_convention", "_xins-xslt");
       if (useTemplateParam) {
          String userDir = new File(System.getProperty("user.dir")).toURL().toString();
-         params.set("_template", userDir + "src/tests/getVersion2.xslt");
+         params.set("_template", "src/tests/getVersion2.xslt");
       }
       HTTPCallRequest request = new HTTPCallRequest(params);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
