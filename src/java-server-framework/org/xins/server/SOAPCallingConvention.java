@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
+import org.xins.common.collections.PropertyReader;
 import org.xins.common.spec.DataSectionElementSpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.FunctionSpec;
@@ -184,7 +185,6 @@ public class SOAPCallingConvention extends CallingConvention {
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
       httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
 
-      // Parse the input parameters
       Element parametersElem = null;
       List parametersList = functionElem.getChildElements("parameters");
       if (parametersList.size() == 0) {
@@ -193,49 +193,11 @@ public class SOAPCallingConvention extends CallingConvention {
          parametersElem = (Element) parametersList.get(0);
       }
 
-      BasicPropertyReader parameters = new BasicPropertyReader();
-      Iterator itParameters = parametersElem.getChildElements().iterator();
-      while (itParameters.hasNext()) {
-         Element parameterElem = (Element) itParameters.next();
-         String parameterName = parameterElem.getLocalName();
-         String parameterValue = parameterElem.getText();
-         try {
-            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-            Type parameterType = functionSpec.getInputParameter(parameterName).getType();
-            parameterValue = soapInputValueTransformation(parameterType, parameterValue);
-         } catch (InvalidSpecificationException ise) {
-
-            // keep the old value
-         } catch (EntityNotFoundException enfe) {
-
-            // keep the old value
-         }
-         parameters.set(parameterName, parameterValue);
-      }
+      // Parse the input parameters
+      BasicPropertyReader parameters = readInputParameters(parametersElem, functionName);
 
       // Parse the input data section
-      Element dataSection = null;
-      Element transformedDataSection = null;
-      List dataSectionList = parametersElem.getChildElements("data");
-      if (dataSectionList.size() == 1) {
-         dataSection = (Element) dataSectionList.get(0);
-
-         try {
-            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-            Map dataSectionSpec = functionSpec.getInputDataSectionElements();
-            transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
-         } catch (InvalidSpecificationException ise) {
-
-            // keep the old value
-            transformedDataSection = dataSection;
-         } catch (EntityNotFoundException enfe) {
-
-            // keep the old value
-            transformedDataSection = dataSection;
-         }
-      } else if (dataSectionList.size() > 1) {
-         throw new InvalidRequestException("Only one data section is allowed.");
-      }
+      Element transformedDataSection = readDataSection(parametersElem, functionName);
 
       return new FunctionRequest(functionName, parameters, transformedDataSection);
    }
@@ -298,6 +260,83 @@ public class SOAPCallingConvention extends CallingConvention {
    }
 
    /**
+    * Reads the input parameters.
+    *
+    * @param parametersElem
+    *    the XML element which contains the parameters, cannot be <code>null</code>
+    *
+    * @param functionName
+    *    the name of the function called, cannot be <code>null</code>.
+    *
+    * @return
+    *    the parameters for the function, never <code>null</code>.
+    */
+   protected BasicPropertyReader readInputParameters(Element parametersElem, String functionName) {
+      BasicPropertyReader parameters = new BasicPropertyReader();
+      Iterator itParameters = parametersElem.getChildElements().iterator();
+      while (itParameters.hasNext()) {
+         Element parameterElem = (Element) itParameters.next();
+         String parameterName = parameterElem.getLocalName();
+         String parameterValue = parameterElem.getText();
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Type parameterType = functionSpec.getInputParameter(parameterName).getType();
+            parameterValue = soapInputValueTransformation(parameterType, parameterValue);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+         }
+         parameters.set(parameterName, parameterValue);
+      }
+      return parameters;
+   }
+
+   /**
+    * Reads the input parameters.
+    *
+    * @param parametersElem
+    *    the XML element which contains the parameters and data section,
+    *    cannot be <code>null</code>
+    *
+    * @param functionName
+    *    the name of the function called, cannot be <code>null</code>.
+    *
+    * @return
+    *    the data section for the function, can be <code>null</code>.
+    *
+    * @throws InvalidRequestException
+    *    if the SOAP request is invalid.
+    */
+   protected Element readDataSection(Element parametersElem, String functionName) throws InvalidRequestException {
+      Element dataSection = null;
+      Element transformedDataSection = null;
+      List dataSectionList = parametersElem.getChildElements("data");
+      if (dataSectionList.size() == 1) {
+         dataSection = (Element) dataSectionList.get(0);
+
+         try {
+            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+            Map dataSectionSpec = functionSpec.getInputDataSectionElements();
+            transformedDataSection = soapElementTransformation(dataSectionSpec, true, dataSection, true);
+         } catch (InvalidSpecificationException ise) {
+
+            // keep the old value
+            transformedDataSection = dataSection;
+         } catch (EntityNotFoundException enfe) {
+
+            // keep the old value
+            transformedDataSection = dataSection;
+         }
+      } else if (dataSectionList.size() > 1) {
+         throw new InvalidRequestException("Only one data section is allowed.");
+      }
+      return transformedDataSection;
+   }
+
+   /**
     * Writes the fault section to the SOAP XML when an error code is returned
     * from the function call.
     *
@@ -316,7 +355,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeFaultSection(String functionName, String namespaceURI, FunctionResult xinsResult, XMLOutputter xmlout)
+   protected void writeFaultSection(String functionName, String namespaceURI, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
 
       // Write the fault start tag
@@ -358,7 +397,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeOutputParameters(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
+   protected void writeOutputParameters(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
       Iterator outputParameterNames = xinsResult.getParameters().getNames();
       while (outputParameterNames.hasNext()) {
@@ -397,7 +436,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws IOException
     *    if the data cannot be written to the XML outputter for any reason.
     */
-   private void writeOutputDataSection(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
+   protected void writeOutputDataSection(String functionName, FunctionResult xinsResult, XMLOutputter xmlout)
    throws IOException {
       Element dataElement = xinsResult.getDataElement();
       if (dataElement != null) {
@@ -437,7 +476,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private String soapInputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
+   protected String soapInputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
       if (parameterType instanceof org.xins.common.types.standard.Boolean) {
          if (value.equals("1")) {
             return "true";
@@ -479,7 +518,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws InvalidSpecificationException
     *    if the specification is incorrect.
     */
-   private String soapOutputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
+   protected String soapOutputValueTransformation(Type parameterType, String value) throws InvalidSpecificationException {
       if (parameterType instanceof org.xins.common.types.standard.Date) {
          try {
             Date date = XINS_DATE_FORMATTER.parse(value);
@@ -521,7 +560,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @return
     *    the converted value, never <code>null</code>.
     */
-   private Element soapElementTransformation(Map dataSection, boolean input, Element element, boolean top) {
+   protected Element soapElementTransformation(Map dataSection, boolean input, Element element, boolean top) {
       String elementName = element.getLocalName();
       String elementNameSpaceURI = element.getNamespaceURI();
       Map elementAttributes = element.getAttributeMap();
