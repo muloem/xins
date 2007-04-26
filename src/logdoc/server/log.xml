@@ -488,8 +488,10 @@
 			<description>XSLT template cache in the XSLT calling convention is disabled.</description>
 		</entry>
 		<entry id="3442" level="INFO">
-			<description>Determined base directory for the XSLT templates used by the XSLT calling convention.</description>
-			<param name="dir" />
+			<description>Determined a XSLT location for runtime properties used by the XSLT calling convention.</description>
+			<param name="apiName" />
+			<param name="propertySuffix" />
+			<param name="xsltLocation" />
 		</entry>
 		<entry id="3443" level="DEBUG">
 			<description>Loading and compiling XSLT style sheet.</description>

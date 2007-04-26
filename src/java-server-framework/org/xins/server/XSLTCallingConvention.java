@@ -129,15 +129,10 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       initCacheEnabled(cacheEnabled);
 
       // Get the base directory of the style sheets.
-      initXSLTLocation(runtimeProperties);
+      _location = getXSLTLocation(runtimeProperties, "source");
 
       // Determine whether template location can be passed as parameter
-      String templatesPrefix = runtimeProperties.get(TEMPLATES_PARAMETER_PREFIX);
-      if (TextUtils.isEmpty(templatesPrefix) ||  templatesPrefix.trim().equals("")) {
-         _templatesPrefix = null;
-      } else {
-         _templatesPrefix = templatesPrefix;
-      }
+      _templatesPrefix = getXSLTLocation(runtimeProperties, "parameter.prefix");
    }
 
    /**
@@ -181,7 +176,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    }
 
    /**
-    * Initializes the location for the XSLT templates. Examples include:
+    * Initializes the location for the XSLT templates.
     *
     * The name of the runtime property that defines the location of the XSLT
     * templates should indicate a directory, either locally or remotely.
@@ -204,19 +199,23 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     *
     * @param runtimeProperties
     *    the runtime properties, cannot be <code>null</code>.
+    *
+    * @param propertySuffix
+    *    the suffix of the runtime property we're looking for, cannot be <code>null</code>.
     */
-   private void initXSLTLocation(PropertyReader runtimeProperties) {
+   private String getXSLTLocation(PropertyReader runtimeProperties, String propertySuffix) {
 
       // Get the value of the property
-      String templatesProperty = "templates." + getAPI().getName() + ".xins-xslt.source";
-      _location = runtimeProperties.get(templatesProperty);
+      String templatesProperty = "templates." + getAPI().getName() + ".xins-xslt." + propertySuffix;
+      String location = runtimeProperties.get(templatesProperty);
+
+      if (TextUtils.isEmpty(location)) {
+         return null;
+      }
 
       // If the value is not a URL, it's considered as a relative path.
       // Relative URLs use the user directory as base dir.
-      if (TextUtils.isEmpty(_location) || _location.indexOf("://") == -1) {
-
-         // Trim the location and make sure it's never null
-         _location = TextUtils.trim(_location, "");
+      if (location.indexOf("://") == -1) {
 
          // Attempt to convert the home directory to a URL
          String home    = System.getProperty("user.dir");
@@ -226,18 +225,16 @@ public class XSLTCallingConvention extends StandardCallingConvention {
 
          // If the conversion to a URL failed, then just use the original
          } catch (IOException exception) {
-            Utils.logIgnoredException(
-               XSLTCallingConvention.class.getName(), "initImpl",
-               "java.io.File",                        "toURL()",
-               exception);
+            Utils.logIgnoredException(exception);
          }
 
          // Prepend the home directory URL
-         _location = homeURL + _location;
+         location = homeURL + location;
       }
 
       // Log the base directory for XSLT templates
-      Log.log_3442(_location);
+      Log.log_3442(getAPI().getName(), propertySuffix, location);
+      return location;
    }
 
    protected void convertResultImpl(FunctionResult      xinsResult,

@@ -62,6 +62,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 1:
   - Generated error code are now public.
   - Methods in the SOAP calling convention are protected in order to ease
     custom parsing and creation of SOAP messages.
+  - Renamed templates.parameter.prefix runtime property to
+    templates.<api name>.xins-xslt.parameter.prefix.
 
 * Generation of the API from the WSDL:
   - Added more comments in the code.
