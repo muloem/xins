@@ -135,6 +135,17 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    /**
+    * Creates a new Servlet request.
+    *
+    * @param url
+    *    the request URL or the list of the parameters (name=value) separated
+    *    with comma's. Cannot be <code>null</code>.
+    */
+   public XINSServletRequest(String url) {
+      this("GET", url, null, null);
+   }
+
+   /**
     * Creates a new servlet request with the specified method.
     *
     * @param method
@@ -142,14 +153,14 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @param url
     *    the request URL or the list of the parameters (name=value) separated
-    *    with ampersands.
+    *    with ampersands, cannot be <code>null</code>.
     *
     * @param data
-    *    the content of the request.
+    *    the content of the request, can be <code>null</code>.
     *
     * @param headers
     *    the HTTP headers of the request. The key and the value of the Map
-    *    is a String. The keys should all be in upper case.
+    *    is a String. The keys should all be in upper case. Can be <code>null</code>.
     *
     * @since XINS 1.5.0
     */
@@ -157,8 +168,12 @@ public class XINSServletRequest implements HttpServletRequest {
       _method   = method;
       _url      = url;
       _postData = data;
-      _headers.putAll(headers);
-      _contentType = (String) headers.get("CONTENT-TYPE");
+      if (headers == null) {
+         _contentType = "application/x-www-form-urlencoded";
+      } else {
+         _headers.putAll(headers);
+         _contentType = (String) headers.get("CONTENT-TYPE");
+      }
       parseURL(url);
    }
 
