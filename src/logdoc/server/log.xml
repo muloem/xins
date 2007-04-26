@@ -491,6 +491,10 @@
 			<description>Determined base directory for the XSLT templates used by the XSLT calling convention.</description>
 			<param name="dir" />
 		</entry>
+		<entry id="3443" level="DEBUG">
+			<description>Loading and compiling XSLT style sheet.</description>
+			<param name="xsltLocation" />
+		</entry>
 	</group>
 
 	<group id="runtime" name="Runtime">

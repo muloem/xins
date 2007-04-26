@@ -116,6 +116,7 @@
 	<translation entry="3440">Le cache des modèles XSLT pour la convention d'appel XSLT est activée.</translation>
 	<translation entry="3441">Le cache des modèles XSLT pour la convention d'appel XSLT est désactivée.</translation>
 	<translation entry="3442">Le répertoire de base des fichiers XSLT pour la convention d'appel XSLT est <value-of-param name="dir" format="quoted" />.</translation>
+	<translation entry="3443">Chargement et compilation du fichier XSLT situé à <value-of-param name="xsltLocation" />.</translation>
 
 	<translation entry="3500">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Exception attrapée.</translation>
 	<translation entry="3501">Appel à <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: la fonction a retouné une réponse invalide. Détails: <value-of-param name="details" /></translation>

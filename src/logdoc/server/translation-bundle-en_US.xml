@@ -116,6 +116,7 @@
 	<translation entry="3440">XSLT template cache in the XSLT calling convention is enabled.</translation>
 	<translation entry="3441">XSLT template cache in the XSLT calling convention is disabled.</translation>
 	<translation entry="3442">Base directory for the XSLT calling convention templates is <value-of-param name="dir" format="quoted" />.</translation>
+	<translation entry="3443">Loading and compiling template located at <value-of-param name="xsltLocation" />.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function. Details: <value-of-param name="details" />.</translation>

@@ -263,10 +263,12 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       String xsltLocation = null;
       if (_templatesPrefix != null) {
          String templatesSuffix = httpRequest.getParameter(TEMPLATE_PARAMETER);
-         if (templatesSuffix.indexOf("..") != -1) {
+         if (templatesSuffix != null && templatesSuffix.indexOf("..") != -1) {
             throw new IOException("Incorrect _template parameter: " + templatesSuffix);
          }
-         xsltLocation = _templatesPrefix + templatesSuffix;
+         if (templatesSuffix != null ) {
+            xsltLocation = _templatesPrefix + templatesSuffix;
+         }
       }
       if (xsltLocation == null) {
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
@@ -279,6 +281,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
          if (_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
             templates = (Templates) _templateCache.get(xsltLocation);
          } else {
+            Log.log_3443(xsltLocation);
             templates = _factory.newTemplates(new StreamSource(xsltLocation));
             if (_cacheTemplates) {
                _templateCache.put(xsltLocation, templates);
