@@ -418,8 +418,16 @@ public class HTTPServletHandler {
    throws IOException {
 
       // Read the input
-      byte[] requestBytes = IOReader.readFullyAsBytes(in);
-      String request = new String(requestBytes, 0, requestBytes.length, REQUEST_ENCODING);
+      // XXX: Buffer size determines maximum request size
+      byte[] buffer = new byte[16384];
+      int lengthRead = in.read(buffer);
+      if (lengthRead < 0) {
+         sendBadRequest(out);
+         return;
+      }
+      String request = new String(buffer, 0, lengthRead, REQUEST_ENCODING);
+      //byte[] requestBytes = IOReader.readFullyAsBytes(in);
+      //String request = new String(requestBytes, 0, requestBytes.length, REQUEST_ENCODING);
 
       // Read the first line
       int eolIndex = request.indexOf(CRLF);
