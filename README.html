@@ -65,13 +65,15 @@
 			<li><i>org.xins.client.DataElement</i> has been replaced by <i>org.xins.common.xml.Element</i>.<br/>
 			As both classes have the same methods, just replace <i>DataElement</i> with <i>Element</i> in
 			your code and remove any use of the <i>.toXMLElement()</i> method.</li>
-			<li>On the server side, the <i>ParameterNotInitialized</i> exception is no longer thrown, 
+			<li>On the server side, the <i>ParameterNotInitialized</i> exception is no longer thrown,
 			<i>null</i> is returned if the parameter is not set.</li>
 			<li>On the server side, the request.get...() method for optional input parameter
 			of primary types (boolean, int, ...) will return an object (e.g. Integer instead of int, ...).</li>
       <li>The logdoc type <i>serializable</i> is no longer supported, pass the String instead.</li>
-      <li>The templates.callingconvention.source runtime property has been replaced with
-			templates.&lt;api name&gt;.xins-xslt.source runtime property.</li>
+      <li>The templates.callingconvention.source runtime property has been renamed to
+			<i>templates.&lt;api name&gt;.xins-xslt.source</i> runtime property.</li>
+      <li>The _template parameter used in the _xins-xslt calling convention requires a
+			<i>templates.&lt;api name&gt;.xins-xslt.parameter.prefix</i> runtime property.</li>
 		</ul>
 	</body>
 </html>
