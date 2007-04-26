@@ -59,7 +59,7 @@ public final class IOReader {
 
    /**
     * Read an InputStream completly and put the content of the input stream in
-    * a byte[].
+    * a byte[]. The input stream is not closed.
     *
     * @param inputStream
     *    the input stream to read, cannot be <code>null</code>.
@@ -77,15 +77,11 @@ public final class IOReader {
       MandatoryArgumentChecker.check("inputStream", inputStream);
 
       ByteArrayOutputStream output = new ByteArrayOutputStream();
-      byte[] buffer = new byte[1024];
-      while (true) {
-         int availableBytes = inputStream.available();
-         int length = inputStream.read(buffer, 0, Math.min(1024, availableBytes));
-         if (length <= 0) break;
+      byte[] buffer = new byte[8096];
+      int length;
+      while ((length = inputStream.read(buffer)) > 0) {
          output.write(buffer, 0, length);
       }
-      inputStream.close();
-      output.close();
       return output.toByteArray();
    }
 }
