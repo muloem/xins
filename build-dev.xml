@@ -150,8 +150,7 @@ ${sf.file}</fail>
 		debug="true"
 		deprecation="${tests.deprecation}"
 		source="${javac.targetvm}"
-		target="${javac.targetvm}"
-		encoding="${javac.encoding}">
+		target="${javac.targetvm}">
 			<src path="src/tests" />
 			<classpath refid="tests.classpath" />
 		</javac>
