@@ -60,14 +60,6 @@ public class XSLTCallingConvention extends StandardCallingConvention {
    protected static final String TEMPLATES_CACHE_PROPERTY = "templates.cache";
 
    /**
-    * The name of the runtime property that defines the prefix for the _template
-    * parameter.
-    * If this runtime property is not set or the value is empty,
-    * the _template parameter is not allowed.
-    */
-   protected static final String TEMPLATES_PARAMETER_PREFIX = "templates.parameter.prefix";
-
-   /**
     * The name of the input parameter that specifies the location of the XSLT
     * template to use.
     */
