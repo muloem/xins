@@ -69,7 +69,12 @@ ${sf.file}</fail>
 		<property name="tests.deprecation" value="false"  />
 	</target>
 
-	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
+	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init,clean-release" />
+
+	<target name="clean-release" depends="clean">
+		<delete dir="docs" />
+		<delete dir="demo" />
+	</target>
 
 	<target name="do-upload-logdoc"
 	depends="-load-sfproperties,-init"
@@ -723,7 +728,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		</fail>
 	</target>
 
-	<target name="-nodiffs-check" depends="clean">
+	<target name="-nodiffs-check">
 		<tempfile destdir="${java.io.tmpdir}" prefix="${name}-release-diff." property="diff-file" suffix=".diff" />
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     failonerror="true" command="diff" output="${diff-file}" quiet="true" />
@@ -990,7 +995,7 @@ Anthony
 		<jar destfile="build/maven/${maven.module}-${xins_version}-javadoc.jar">
 			<fileset dir="${javadoc.maven.destdir}" />
 		</jar>
-		
+
 		<!-- distribution jar -->
 		<jar destfile="build/maven/${maven.module}-${xins_version}.jar">
 			<fileset dir="build/maven">
