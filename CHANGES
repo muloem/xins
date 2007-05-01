@@ -6,6 +6,20 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
+* Logdoc:
+  - The following classes have been removed as no longer used:
+    AbstractLogdocSerializable, LogdocHexConverter, LogdocSerializable,
+    LogdocStringBuffer, UnsupportedLocaleError, MandatoryArgumentChecker.
+
+* XINS/Java Common Library:
+  - Removed methods using the LogdocSerializable class.
+
+* XINS/Java Server Framework:
+  - Removed deprecated class FormattedDate.
+
+* XINS/Java Client Framework:
+  - Removed methods using the LogdocSerializable class.
+
 * Build- and release-process:
   - Added new clean-release target.
   - Upgraded installer to Inno Setup version 5.1.12.
