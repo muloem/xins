@@ -69,11 +69,13 @@
 			<i>null</i> is returned if the parameter is not set.</li>
 			<li>On the server side, the request.get...() method for optional input parameter
 			of primary types (boolean, int, ...) will return an object (e.g. Integer instead of int, ...).</li>
-      <li>The logdoc type <i>serializable</i> is no longer supported, pass the String instead.</li>
+      <li>The logdoc type <i>serializable</i> is no longer supported, pass a String instead.</li>
       <li>The templates.callingconvention.source runtime property has been renamed to
 			<i>templates.&lt;api name&gt;.xins-xslt.source</i> runtime property.</li>
       <li>The _template parameter used in the _xins-xslt calling convention requires a
 			<i>templates.&lt;api name&gt;.xins-xslt.parameter.prefix</i> runtime property.</li>
+      <li>The <i>FastStringBuffer</i> and <i>FastStringWriter</i> classes have been deprecated.
+			Use <i>java.lang.StringBuffer</i> and <i>java.io.StringWriter</i> instead.</li>
 		</ul>
 	</body>
 </html>
