@@ -69,7 +69,7 @@ ${sf.file}</fail>
 		<property name="tests.deprecation" value="false"  />
 	</target>
 
-	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init,clean-release" />
+	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
 
 	<target name="clean-release" depends="clean">
 		<delete dir="docs" />
@@ -512,7 +512,7 @@ ${sf.file}</fail>
 		</copy>
 	</target>
 
-	<target name="package" depends="-init-release-properties,javadoc,java-server,java-client,logdoc-html,copy-demo,copy-docs" description="Builds a complete distribution archive">
+	<target name="package" depends="-init-release-properties,clean-release,java,javadoc,logdoc-html,copy-demo,copy-docs" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
@@ -540,6 +540,7 @@ ${sf.file}</fail>
 			<include name="lib/log4j.LICENSE"              />
 			<include name="lib/junit.LICENSE"              />
 			<include name="lib/json.LICENSE"               />
+			<include name="lib/xmlenc.LICENSE"             />
 			<include name="docs/**/*.html"                 />
 			<include name="docs/**/*.css"                  />
 			<include name="docs/javadoc/package-list"      />
