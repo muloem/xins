@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
 * Build- and release-process:
   - Added new clean-release target.
+  - Upgraded installer to Inno Setup version 5.1.12.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 1:
