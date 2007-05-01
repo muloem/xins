@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
 * XINS/Java Common Library:
   - Removed methods using the LogdocSerializable class.
+  - Deprecated the org.xins.common.threads.QueueTimeOutException class as not
+    used.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.
