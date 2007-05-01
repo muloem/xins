@@ -9,7 +9,6 @@ package org.xins.client;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.xins.logdoc.AbstractLogdocSerializable;
 import org.xins.logdoc.ExceptionUtils;
 
 import org.xins.common.MandatoryArgumentChecker;
@@ -839,37 +838,5 @@ public final class XINSServiceCaller extends ServiceCaller {
       }
 
       return should;
-   }
-
-   /**
-    * Logdoc serializable that will serialize a chain of exceptions.
-    *
-    * @version $Revision$ $Date$
-    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
-    * @deprecated since XINS 2.0, use exception.getMessage();
-    */
-   private static final class ExceptionFormatter
-   extends AbstractLogdocSerializable {
-
-      /**
-       * The first exception in the chain. Should not be <code>null</code>.
-       */
-      private Throwable _first;
-
-      /**
-       * Constructs a new <code>ExceptionFormatter</code> instance with the
-       * specified exception being the first exception in the chain.
-       *
-       *
-       * @param first
-       *    the first exception in the chain, should not be <code>null</code>.
-       */
-      private ExceptionFormatter(Throwable first) {
-         _first = first;
-      }
-
-      protected String initialize() {
-         return _first.getMessage();
-      }
    }
 }

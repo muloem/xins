@@ -5,16 +5,13 @@ package com.mycompany.allinone.api;
 
 import java.util.Date;
 
-import org.xins.logdoc.LogdocSerializable;
-import org.xins.logdoc.LogdocStringBuffer;
-
 /**
  * Implementation of the <code>Logdoc</code> function.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
-public class LogdocImpl extends Logdoc  {
+public class LogdocImpl extends Logdoc {
 
    /**
     * Constructs a new <code>LogdocImpl</code> instance.
