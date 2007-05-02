@@ -121,7 +121,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
       String destination = AllTests.url() + "allinone/?_convention=_xins-jsonrpc";
       String input = "{ \"method\": \"ResultCode\", \"params\": [\"true\", \"" + randomFive + "\"], \"id\": 18}";
       String jsonResult = CallingConventionTests.postData(destination, input, "application/json", 200);
-      System.err.println("1_0: " + jsonResult);
+      // System.err.println("1_0: " + jsonResult);
       JSONObject jsonObject = new JSONObject(jsonResult);
       int id = jsonObject.getInt("id");
       assertEquals(18, id);
@@ -154,7 +154,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
       String destination = AllTests.url() + "allinone/?_convention=_xins-jsonrpc";
       String input = "{ \"version\" : \"1.1\", \"method\"  : \"ResultCode\", \"params\"  : { \"useDefault\" : false, \"inputText\" : \"" + randomFive + "\" } }";
       String jsonResult = CallingConventionTests.postData(destination, input, "application/json", 200);
-      System.err.println("1_1: " + jsonResult);
+      // System.err.println("1_1: " + jsonResult);
       JSONObject jsonObject = new JSONObject(jsonResult);
       String version = jsonObject.getString("version");
       assertEquals("1.1", version);
