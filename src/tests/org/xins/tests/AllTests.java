@@ -124,6 +124,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.service.UnsupportedProtocolExceptionTests.class);
 
       suite.addTestSuite(org.xins.tests.common.servlet.ServletRequestPropertyReaderTests.class);
+      suite.addTestSuite(org.xins.tests.common.servlet.container.HTTPServletHandlerTests.class);
       suite.addTestSuite(org.xins.tests.common.servlet.container.XINSServletRequestTests.class);
 
       suite.addTestSuite(org.xins.tests.common.text.DateConverterTests.class);
@@ -180,6 +181,11 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
+      suite.addTestSuite(org.xins.tests.server.StandardCallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.SOAPCallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.XMLCallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.XMLRPCCallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.XSLTCallingConventionTests.class);
 
       suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
 
