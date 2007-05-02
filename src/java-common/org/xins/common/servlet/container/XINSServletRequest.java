@@ -87,6 +87,11 @@ public class XINSServletRequest implements HttpServletRequest {
    private Hashtable _headers = new Hashtable();
 
    /**
+    * The URL path.
+    */
+   private String _pathInfo;
+
+   /**
     * The URL query string.
     */
    private String _queryString;
@@ -187,13 +192,25 @@ public class XINSServletRequest implements HttpServletRequest {
    private void parseURL(String url) {
 
       // Parse the URL
+      int doubleSlashPos = url.lastIndexOf("://");
+      int startPathPos = url.indexOf("/", doubleSlashPos + 1) + 1;
+      
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos == url.length() - 1) {
          _queryString = "";
+         if (startPathPos < questionMarkPos) {
+            _pathInfo = url.substring(startPathPos, questionMarkPos);
+         }
       } else if (questionMarkPos != -1) {
          _queryString = url.substring(questionMarkPos + 1);
+         if (startPathPos < questionMarkPos) {
+             _pathInfo = url.substring(startPathPos, questionMarkPos);
+         }
       } else {
          _queryString = null;
+         if (startPathPos < url.length()) {
+            _pathInfo = url.substring(startPathPos);
+         }
          return;
       }
 
@@ -308,19 +325,19 @@ public class XINSServletRequest implements HttpServletRequest {
    }
 
    public String getPathTranslated() {
-      if (_queryString == null) {
-          return null;
-      }
-      int questionPos = _queryString.indexOf('?');
-      if (questionPos > 0) {
-         return _queryString.substring(0, questionPos);
-      } else {
+      // We consider that the first dir is the servlet name
+      if (_pathInfo == null) {
          return null;
       }
+      int firstSlashPos = _pathInfo.indexOf("/");
+      if (firstSlashPos == -1 || firstSlashPos == _pathInfo.length() - 1) {
+         return null;
+      }
+      return _pathInfo.substring(firstSlashPos + 1);
    }
 
    public String getPathInfo() {
-      return getPathTranslated();
+      return _pathInfo;
    }
 
    public Enumeration getParameterNames() {
