@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Deprecated the org.xins.common.threads.QueueTimeOutException class as not
     used.
   - Fixed getPathInfo and getPathTranslated in the XINSServletRequest.
+  - Removed the package org.xins.common.threads as it is not used.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.
@@ -2894,6 +2895,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
     details in exception message.
 
 * XINS/Java Server Framework:
+
 
   - Fixed SF.net bug #1187660: State change failed in APIServlet. This bug was
     introduced after XINS 1.1.0.
