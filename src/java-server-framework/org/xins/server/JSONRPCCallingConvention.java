@@ -170,27 +170,29 @@ public class JSONRPCCallingConvention extends CallingConvention {
          }
          if (xinsResult.getErrorCode() != null) {
             if (version == null) {
-               returnObject.putOpt("result", (Object) null);
-            }
-            JSONObject errorObject = new JSONObject();
-            String errorCode = xinsResult.getErrorCode();
-            errorObject.put("name", errorCode);
-            errorObject.put("code", new Integer(123));
-            if (functionName != null) {
-               try {
-                  ErrorCodeSpec errorSpec = _api.getAPISpecification().getFunction(functionName).getErrorCode(errorCode);
-                  String errorDescription = errorSpec.getDescription();
-                  if (errorDescription.indexOf(". ") != -1) {
-                     errorDescription = errorDescription.substring(0, errorDescription.indexOf(". "));
+               returnObject.put("result", (Object) null);
+               returnObject.put("error", xinsResult.getErrorCode());
+            } else {
+               JSONObject errorObject = new JSONObject();
+               String errorCode = xinsResult.getErrorCode();
+               errorObject.put("name", errorCode);
+               errorObject.put("code", new Integer(123));
+               if (functionName != null) {
+                  try {
+                     ErrorCodeSpec errorSpec = _api.getAPISpecification().getFunction(functionName).getErrorCode(errorCode);
+                     String errorDescription = errorSpec.getDescription();
+                     if (errorDescription.indexOf(". ") != -1) {
+                        errorDescription = errorDescription.substring(0, errorDescription.indexOf(". "));
+                     }
+                     errorObject.put("message", errorDescription);
+                  } catch (Exception ex) {
+                     errorObject.put("message", "Unknown error: " + ex.getMessage());
                   }
-                  errorObject.put("message", errorDescription);
-               } catch (Exception ex) {
-                  errorObject.put("message", "Unknown error: " + ex.getMessage());
                }
+               JSONObject paramsObject = createResultObject(xinsResult);
+               errorObject.put("error", paramsObject);
+               returnObject.put("error", errorObject);
             }
-            JSONObject paramsObject = createResultObject(xinsResult);
-            errorObject.put("error", paramsObject);
-            returnObject.put("error", errorObject);
          } else {
             JSONObject paramsObject = createResultObject(xinsResult);
             returnObject.put("result", paramsObject);
@@ -204,7 +206,8 @@ public class JSONRPCCallingConvention extends CallingConvention {
          }
 
          // Write the result to the servlet response
-         out.print(returnObject.toString());
+         String returnString = returnObject.toString();
+         out.print(returnString);
       } catch (JSONException jsonex) {
          throw new IOException(jsonex.getMessage());
       }
@@ -242,7 +245,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
       } else {
          functionName = query.substring(query.lastIndexOf("/"), questionMarkPos);
       }
-      httpRequest.getSession().setAttribute("functionName", functionName);
+      httpRequest.getSession(true).setAttribute("functionName", functionName);
       if (functionName.equals("system.describe")) {
          return new FunctionRequest(functionName, null, null, true);
       }
@@ -312,13 +315,13 @@ public class JSONRPCCallingConvention extends CallingConvention {
       try {
          JSONObject requestObject = new JSONObject(requestString);
 
-         String version = requestObject.optString("version");
+         Object version = requestObject.opt("version");
          if (version != null) {
-            httpRequest.getSession().setAttribute("version", version);
+            httpRequest.getSession(true).setAttribute("version", (String) version);
          }
 
          functionName = requestObject.getString("method");
-         httpRequest.getSession().setAttribute("functionName", functionName);
+         httpRequest.getSession(true).setAttribute("functionName", functionName);
          if (functionName.equals("system.describe")) {
             return new FunctionRequest(functionName, null, null, true);
          }
@@ -335,7 +338,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
                functionParams.set(nextParamName, String.valueOf(nextParamValue));
                paramPos++;
             }
-         } else if(paramsParam instanceof JSONArray) {
+         } else if (paramsParam instanceof JSONObject) {
             JSONObject paramsObject = (JSONObject) paramsParam;
             JSONArray paramNames = paramsObject.names();
             for (int i = 0; i < paramNames.length(); i++) {
@@ -351,7 +354,9 @@ public class JSONRPCCallingConvention extends CallingConvention {
             }
          }
          Object id = requestObject.opt("id");
-         httpRequest.getSession().setAttribute("id", id);
+         if (id != null) {
+            httpRequest.getSession().setAttribute("id", id);
+         }
       } catch (ParseException parseEx) {
          throw new InvalidRequestException(parseEx.getMessage());
       } catch (JSONException jsonex) {
