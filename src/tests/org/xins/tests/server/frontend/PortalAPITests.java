@@ -16,7 +16,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.client.DataElement;
 import org.xins.client.InternalErrorException;
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;

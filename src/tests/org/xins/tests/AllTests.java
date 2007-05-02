@@ -154,6 +154,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.common.types.standard.ListTests.class);
       suite.addTestSuite(org.xins.tests.common.types.standard.SetTests.class);
 
+      suite.addTestSuite(org.xins.tests.common.xml.ElementTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.ElementBuilderTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.ElementParserTests.class);
       suite.addTestSuite(org.xins.tests.common.xml.ElementSerializerTests.class);
@@ -162,7 +163,6 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.client.AllInOneAPITests.class);
       suite.addTestSuite(org.xins.tests.client.CAPIRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.CAPITests.class);
-      suite.addTestSuite(org.xins.tests.client.DataElementTests.class);
       suite.addTestSuite(org.xins.tests.client.InvalidRequestTests.class);
       suite.addTestSuite(org.xins.tests.client.InvalidResponseTests.class);
       suite.addTestSuite(org.xins.tests.client.UnacceptableResultXINSCallExceptionTests.class);

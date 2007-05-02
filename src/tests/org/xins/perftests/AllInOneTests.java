@@ -27,7 +27,6 @@ import org.xins.common.service.TargetDescriptor;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 
-import org.xins.client.DataElement;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;

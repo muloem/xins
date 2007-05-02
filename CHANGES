@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
+  - Removed the DataElement class replaced by org.xins.common.xml.Element.
 
 * Tests:
   - Splitted the CallingCallingTests class in several classes according to
@@ -2892,6 +2893,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 * XINS/Java Client Framework:
 
   - Added partial unit test for SF.net RFE #1115233: Show _InvalidRequest
+
     details in exception message.
 
 * XINS/Java Server Framework:
