@@ -47,7 +47,7 @@ public class JSONCallingConvention extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   protected static final String RESPONSE_CONTENT_TYPE = "text/javascript; charset=\"" + RESPONSE_ENCODING + "\"";
+   protected static final String RESPONSE_CONTENT_TYPE = "text/javascript; charset=" + RESPONSE_ENCODING + "";
 
    protected String[] getSupportedMethods() {
       return new String[] { "GET", "POST" };
@@ -78,7 +78,7 @@ public class JSONCallingConvention extends CallingConvention {
 
       Element dataElement = null;
       String dataString = httpRequest.getParameter("_data");
-      if (TextUtils.isEmpty(dataString)) {
+      if (!TextUtils.isEmpty(dataString)) {
          try {
             JSONObject dataSectionObject = new JSONObject(dataString);
             String dataSectionString = XML.toString(dataSectionObject);
@@ -112,7 +112,8 @@ public class JSONCallingConvention extends CallingConvention {
          if (!TextUtils.isEmpty(callback)) {
             out.print(callback + "(");
          }
-         out.print(jsonResult.toString());
+         String jsonString = jsonResult.toString();
+         out.print(jsonString);
          if (!TextUtils.isEmpty(callback)) {
             out.print(")");
          }
