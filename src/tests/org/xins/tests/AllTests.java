@@ -180,6 +180,8 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.APIServletTests.class);
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
+      suite.addTestSuite(org.xins.tests.server.JSONCallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.JSONRPCCallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.MetaFunctionsTests.class);
       suite.addTestSuite(org.xins.tests.server.StandardCallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.SOAPCallingConventionTests.class);
