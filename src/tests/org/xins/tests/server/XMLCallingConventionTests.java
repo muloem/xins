@@ -6,28 +6,13 @@
  */
 package org.xins.tests.server;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.OptionsMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.http.HTTPCallRequest;
-import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPServiceCaller;
-import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.HexConverter;
-import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementParser;
 
 import org.xins.tests.AllTests;
 
@@ -39,11 +24,6 @@ import org.xins.tests.AllTests;
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class XMLCallingConventionTests extends TestCase {
-
-   /**
-    * The random number generator.
-    */
-   private final static Random RANDOM = new Random();
 
    /**
     * Constructs a new <code>XMLCallingConventionTests</code> test suite with
@@ -70,7 +50,7 @@ public class XMLCallingConventionTests extends TestCase {
     * Test the XML calling convention.
     */
    public void testXMLCallingConvention() throws Throwable {
-      String randomLong = HexConverter.toHexString(RANDOM.nextLong());
+      String randomLong = HexConverter.toHexString(new Random().nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call

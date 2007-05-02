@@ -6,28 +6,12 @@
  */
 package org.xins.tests.server;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.OptionsMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-import org.xins.common.collections.BasicPropertyReader;
-import org.xins.common.http.HTTPCallRequest;
-import org.xins.common.http.HTTPCallResult;
-import org.xins.common.http.HTTPServiceCaller;
-import org.xins.common.service.TargetDescriptor;
-import org.xins.common.text.HexConverter;
-import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementParser;
 
 import org.xins.tests.AllTests;
 

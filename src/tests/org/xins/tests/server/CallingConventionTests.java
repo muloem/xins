@@ -13,10 +13,7 @@ import java.util.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.OptionsMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
 import org.xins.common.collections.BasicPropertyReader;
@@ -24,8 +21,6 @@ import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.service.TargetDescriptor;
-import org.xins.common.text.HexConverter;
-import org.xins.common.text.ParseException;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
@@ -98,6 +93,39 @@ public class CallingConventionTests extends TestCase {
       } catch (IOException ioe) {
          assertTrue(ioe.getMessage(), ioe.getMessage().indexOf(" 400") != -1);
       }
+   }
+
+   /**
+    * Call the ResultCode function with the specified calling convention.
+    * Parameters are pass in as URL parameters.
+    *
+    * @param convention
+    *    the name of the calling convention parameter, or <code>null</code>
+    *    if no calling convention parameter should be sent.
+    *
+    * @param inputText
+    *    the value of the parameter to send as input.
+    *
+    * @return
+    *    the data returned by the API.
+    *
+    * @throw Throwable
+    *    if anything goes wrong.
+    */
+   static String callResultCode(String convention, String inputText) throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/", 2000);
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("_function",  "ResultCode");
+      params.set("useDefault",  "false");
+      params.set("inputText",  inputText);
+      if (convention != null) {
+         params.set("_convention", convention);
+      }
+      HTTPCallRequest request = new HTTPCallRequest(params);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+
+      HTTPCallResult result = caller.call(request);
+      return result.getString();
    }
 
    /**
@@ -210,8 +238,42 @@ public class CallingConventionTests extends TestCase {
    static Element postXML(String destination, String data, int expectedStatus)
    throws Exception {
 
+      String content = postData(destination, data, "text/xml; charset=UTF-8", expectedStatus);
+      ElementParser parser = new ElementParser();
+      Element result = parser.parse(new StringReader(content));
+      return result;
+   }
+
+   /**
+    * Posts the data the the given destination.
+    *
+    * @param destination
+    *    the destination where the data has to be posted.
+    *
+    * @param data
+    *    the data to post.
+    *
+    * @param contentType
+    *    the content type of the data to post.
+    *
+    * @param expectedStatus
+    *    the HTTP status code that is expected.
+    *
+    * @return
+    *    the data returned by the API.
+    *
+    * @throw Exception
+    *    if anything goes wrong.
+    */
+   static String postData(String destination, String data, String contentType, int expectedStatus)
+   throws Exception {
+
       PostMethod post = new PostMethod(destination);
-      post.setRequestHeader("Content-Type", "text/xml; charset=UTF-8");
+      if (contentType != null) {
+         post.setRequestHeader("Accept", contentType);
+         post.setRequestHeader("Content-Type", contentType);
+      }
+      post.setRequestHeader("User-Agent", "PostMethod");
       post.setRequestBody(data);
       HttpClient client = new HttpClient();
       client.setConnectionTimeout(5000);
@@ -219,11 +281,11 @@ public class CallingConventionTests extends TestCase {
       try {
          int code = client.executeMethod(post);
          assertEquals(expectedStatus, code);
-         byte[] returnedData = post.getResponseBody();
-         ElementParser parser = new ElementParser();
-         String content = new String(returnedData);
-         // System.out.println("content: " + content);
-         Element result = parser.parse(new StringReader(content));
+         if (contentType != null) {
+            String returnedContentType = post.getResponseHeader("Content-Type").getValue();
+            assertEquals(contentType, returnedContentType);
+         }
+         String result = post.getResponseBodyAsString();
          return result;
       } finally {
 

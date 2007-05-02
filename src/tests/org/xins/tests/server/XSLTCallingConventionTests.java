@@ -6,28 +6,19 @@
  */
 package org.xins.tests.server;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.OptionsMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
 import org.xins.common.http.HTTPServiceCaller;
+import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.HexConverter;
-import org.xins.common.text.ParseException;
-import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementParser;
 
 import org.xins.tests.AllTests;
 
@@ -88,13 +79,29 @@ public class XSLTCallingConventionTests extends TestCase {
       CallingConventionTests.doTestMultipleParamValues("_xins-xslt");
    }
 
+   /**
+    * Tests that when no XSLT is provided it fails
+    * _xins-xslt calling convention, it must return a 400 status code
+    * (invalid HTTP request).
+    */
+   public void testXSLTCallingConvention3() throws Throwable {
+      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomFive = randomLong.substring(0, 5);
+      try {
+        CallingConventionTests.callResultCode("_xins-xslt", randomFive);
+        fail("No XSLT Stylesheet should return and error.");
+      } catch (StatusCodeHTTPCallException schcex) {
+          int code = schcex.getStatusCode();
+          assertEquals("Unexpected status code returned: " + code, 500, code);
+      }
+   }
+
    private String getHTMLVersion(boolean useTemplateParam) throws Exception {
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
       BasicPropertyReader params = new BasicPropertyReader();
       params.set("_function",  "_GetVersion");
       params.set("_convention", "_xins-xslt");
       if (useTemplateParam) {
-         String userDir = new File(System.getProperty("user.dir")).toURL().toString();
          params.set("_template", "src/tests/getVersion2.xslt");
       }
       HTTPCallRequest request = new HTTPCallRequest(params);

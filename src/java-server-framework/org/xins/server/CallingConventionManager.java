@@ -414,7 +414,8 @@ class CallingConventionManager extends Manageable {
 
       // Secondly try a constructor with no arguments
       try {
-         return (CallingConvention) clazz.newInstance();
+         CallingConvention cc = (CallingConvention) clazz.newInstance();
+         return cc;
       } catch (Throwable exception) {
          Log.log_3239(exception, name, className);
          return null;
