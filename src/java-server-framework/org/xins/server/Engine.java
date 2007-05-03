@@ -1088,29 +1088,29 @@ final class Engine {
 
    /**
     * Creates the SMD for this API.
-    * More info at http://dojo.jot.com/SMD and 
+    * More info at http://dojo.jot.com/SMD and
     * http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book9.
-    * 
+    *
     * @return
     *    the String representation of the SMD JSON Object, never <code>null</code>.
-    * 
+    *
     * @throws InvalidSpecificationException
     *    if the specification of the API cannot be found.
-    * 
+    *
     * @throws EntityNotFoundException
     *    if the specification of a function cannot be found.
-    * 
+    *
     * @throws JSONException
     *    if the JSON object cannot be created correctly.
     */
-   private String createSMD() 
+   private String createSMD()
    throws InvalidSpecificationException, EntityNotFoundException, JSONException {
       APISpec apiSpec = _api.getAPISpecification();
       JSONObject smdObject = new JSONObject();
       smdObject.put("SMDVersion", ".1");
       smdObject.put("objectName", _api.getName());
       smdObject.put("serviceType", "JSON-RPC");
-      smdObject.put("serviceURL", "?_convention=_json-rpc");
+      smdObject.put("serviceURL", "?_convention=_xins-jsonrpc");
       JSONArray methods = new JSONArray();
       Iterator itFunctions = _api.getFunctionList().iterator();
       while (itFunctions.hasNext()) {

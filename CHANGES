@@ -22,6 +22,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Removed deprecated class FormattedDate.
   - Various bug fixes in the JSONCallingConvention.
   - Various bug fixes in the JSONRPCCallingConvention.
+  - Fixed incorrect serviceURL for the _SMD meta function.
 
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
