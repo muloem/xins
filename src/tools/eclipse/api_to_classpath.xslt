@@ -10,12 +10,12 @@
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-	<xsl:output 
-		omit-xml-declaration="no" 
+	<xsl:output
+		omit-xml-declaration="no"
 		encoding="UTF-8"
-		method="xml" 
+		method="xml"
 		indent="yes" />
-	
+
 	<xsl:template match="api">
 		<xsl:variable name="api" select="@name" />
 

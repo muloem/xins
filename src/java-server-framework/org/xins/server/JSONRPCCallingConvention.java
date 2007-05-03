@@ -110,6 +110,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
    protected boolean matches(HttpServletRequest httpRequest)
    throws Exception {
 
+      // Note that matches will only accept calls that matches the 1.1 specification of JSON-RPC.
       if (httpRequest.getHeader("User-Agent") == null) {
          return false;
       }
@@ -177,18 +178,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
                String errorCode = xinsResult.getErrorCode();
                errorObject.put("name", errorCode);
                errorObject.put("code", new Integer(123));
-               if (functionName != null) {
-                  try {
-                     ErrorCodeSpec errorSpec = _api.getAPISpecification().getFunction(functionName).getErrorCode(errorCode);
-                     String errorDescription = errorSpec.getDescription();
-                     if (errorDescription.indexOf(". ") != -1) {
-                        errorDescription = errorDescription.substring(0, errorDescription.indexOf(". "));
-                     }
-                     errorObject.put("message", errorDescription);
-                  } catch (Exception ex) {
-                     errorObject.put("message", "Unknown error: " + ex.getMessage());
-                  }
-               }
+               errorObject.put("message", getErrorDescription(functionName, errorCode));
                JSONObject paramsObject = createResultObject(xinsResult);
                errorObject.put("error", paramsObject);
                returnObject.put("error", errorObject);
@@ -236,25 +226,18 @@ public class JSONRPCCallingConvention extends CallingConvention {
       PropertyReader functionParams = null;
       Element dataElement = null;
 
-      String query = httpRequest.getQueryString();
-      int questionMarkPos = query.indexOf("?");
-      if (query.lastIndexOf("/") == query.length()) {
+      String pathInfo = httpRequest.getPathInfo();
+      if (pathInfo.lastIndexOf("/") == pathInfo.length() - 1) {
          throw new FunctionNotSpecifiedException();
-      } else if (questionMarkPos == -1) {
-         functionName = query.substring(query.lastIndexOf("/"));
       } else {
-         functionName = query.substring(query.lastIndexOf("/"), questionMarkPos);
+         functionName = pathInfo.substring(pathInfo.lastIndexOf("/") + 1);
       }
       httpRequest.getSession(true).setAttribute("functionName", functionName);
       if (functionName.equals("system.describe")) {
          return new FunctionRequest(functionName, null, null, true);
       }
       httpRequest.getSession().setAttribute("version", "1.1");
-      try {
-         functionParams = gatherParams(httpRequest);
-      } catch (InvalidRequestException ex) {
-         throw new FunctionNotSpecifiedException();
-      }
+      functionParams = gatherParams(httpRequest);
 
       // Get data section
       String dataSectionValue = httpRequest.getParameter("_data");
@@ -266,6 +249,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
          // I/O error, should never happen on a StringReader
          } catch (IOException exception) {
             throw Utils.logProgrammingError(exception);
+
          // Parsing error
          } catch (ParseException exception) {
             String detail = "Cannot parse the data section.";
@@ -474,5 +458,41 @@ public class JSONRPCCallingConvention extends CallingConvention {
          // TODO data section
       }
       return params;
+   }
+
+   /**
+    * Gets a description of the error.
+    *
+    * @param functionName
+    *   the name of the function called, cannot be <code>null</code>.
+    * @param errorCode
+    *   the error code returned by the function, cannot be <code>null</code>.
+    *
+    * @return
+    *    a single sentence containing the description of the error.
+    */
+   private String getErrorDescription(String functionName, String errorCode) {
+      if (errorCode.equals("_InvalidRequest")) {
+         // TODO explain what is invalid
+         return "The request is invalid.";
+      } else if (errorCode.equals("_InvalidResponse")) {
+         return "The response is invalid.";
+      } else if (errorCode.equals("_DisabledFunction")) {
+         return "The \"" + functionName + "\" function is disabled.";
+      } else if (errorCode.equals("_InternalError")) {
+         return "There was an internal error.";
+      }
+      try {
+         ErrorCodeSpec errorSpec = _api.getAPISpecification().getFunction(functionName).getErrorCode(errorCode);
+         String errorDescription = errorSpec.getDescription();
+         if (errorDescription.indexOf(". ") != -1) {
+            errorDescription = errorDescription.substring(0, errorDescription.indexOf(". "));
+         } else if (errorDescription.indexOf(".\n") != -1) {
+            errorDescription = errorDescription.substring(0, errorDescription.indexOf(".\n"));
+         }
+         return errorDescription;
+      } catch (Exception ex) {
+         return "Unknown error: \"" + errorCode + "\".";
+      }
    }
 }

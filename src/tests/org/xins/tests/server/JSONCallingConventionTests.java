@@ -123,10 +123,10 @@ public class JSONCallingConventionTests extends TestCase {
    private String callResultCode(String inputText) throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/ResultCode", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
-      params.set("_convention",  "_xins-json");
-      params.set("useDefault",  "false");
-      params.set("inputText",  inputText);
-      params.set("output",  "json");
+      params.set("_convention", "_xins-json");
+      params.set("useDefault", "false");
+      params.set("inputText", inputText);
+      params.set("output", "json");
       HTTPCallRequest request = new HTTPCallRequest(params);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
 
