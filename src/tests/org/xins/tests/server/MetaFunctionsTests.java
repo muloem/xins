@@ -6,6 +6,9 @@
  */
 package org.xins.tests.server;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,11 +18,17 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
+import org.xins.common.http.HTTPCallRequest;
+import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPMethod;
+import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.xml.Element;
@@ -28,6 +37,7 @@ import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
+import org.xins.common.xml.ElementParser;
 
 import org.xins.tests.AllTests;
 
@@ -358,6 +368,91 @@ public class MetaFunctionsTests extends TestCase {
       assertNull("The function returned a result code.", result.getErrorCode());
       assertNull("The function returned a data element.", result.getDataElement());
       assertNull("The function returned some parameters.", result.getParameters());
+   }
+
+   /**
+    * Tests the _WSDL meta function.
+    * This test just tests if the meta function return with a WSDL file.
+    */
+   public void testWSDL() throws Throwable {
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone", 2000);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+      caller.getHTTPCallConfig().setMethod(HTTPMethod.GET);
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("_function", "_WSDL");
+      HTTPCallRequest request = new HTTPCallRequest(params);
+      HTTPCallResult result = caller.call(request);
+      String wsdlResult = result.getString();
+      assertNotNull(wsdlResult);
+      assertTrue("Incorrect XML received: " + wsdlResult, wsdlResult.startsWith("<?xml version=\"1.0\""));
+      assertTrue("Incorrect WSDL definition received: " + wsdlResult, wsdlResult.trim().endsWith("definitions>"));
+      ElementParser parser = new ElementParser();
+      Element definitions = parser.parse(wsdlResult);
+      assertEquals("allinone", definitions.getAttribute("name"));
+      definitions.getUniqueChildElement("types");
+      definitions.getUniqueChildElement("portType");
+      definitions.getUniqueChildElement("binding");
+      definitions.getUniqueChildElement("service");
+   }
+
+   /**
+    * Tests the _SMD meta function.
+    */
+   public void testSMD() throws Throwable {
+      URL url = new URL(AllTests.url() + "allinone/?_function=_SMD");
+
+      // Read all the text returned by the server
+      BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+      StringBuffer buffer = new StringBuffer();
+      String str;
+      while ((str = in.readLine()) != null) {
+         buffer.append(str + "\n");
+      }
+      in.close();
+      String smdResult = buffer.toString();
+      assertNotNull(smdResult);
+      assertTrue("Incorrect result: " + smdResult, smdResult.startsWith("{"));
+      JSONObject smdObject = new JSONObject(smdResult);
+      assertEquals(".1", smdObject.getString("SMDVersion"));
+      assertEquals("allinone", smdObject.getString("objectName"));
+      assertEquals("JSON-RPC", smdObject.getString("serviceType"));
+      assertEquals("?_convention=_xins-jsonrpc", smdObject.getString("serviceURL"));
+      JSONArray methods = smdObject.getJSONArray("methods");
+      assertEquals(16, methods.length());
+   }
+
+   /**
+    * Tests the _DisableAPI and _EnableAPI meta functions.
+    */
+   public void testDisableEnableAPI() throws Throwable {
+      // Test that a call to _GetVersion returns a correct result.
+      XINSCallRequest request = new XINSCallRequest("_GetVersion", null);
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
+      XINSServiceCaller caller = new XINSServiceCaller(descriptor);
+      XINSCallResult result = caller.call(request);
+      assertNull(result.getErrorCode());
+
+      // Disable the API
+      XINSCallRequest request2 = new XINSCallRequest("_DisableAPI", null);
+      XINSCallResult result2 = caller.call(request2);
+      assertNull(result2.getErrorCode());
+
+      // Test that a call to _GetVersion fails.
+      try {
+         caller.call(request);
+         fail("The API should be disabled");
+      } catch (StatusCodeHTTPCallException exception) {
+         assertEquals("Incorrect status code found.", 503, exception.getStatusCode());
+      }
+
+      // Enable the API
+      XINSCallRequest request3 = new XINSCallRequest("_EnableAPI", null);
+      XINSCallResult result3 = caller.call(request3);
+      assertNull(result3.getErrorCode());
+
+      // Test that a call to _GetVersion returns a correct result.
+      XINSCallResult result4 = caller.call(request);
+      assertNull(result4.getErrorCode());
    }
 
    /**

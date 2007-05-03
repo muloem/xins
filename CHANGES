@@ -36,6 +36,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
     the calling convention tested.
   - Added tests for JSON and JSON-RPC calling conventions.
   - Added call to the smd target.
+  - Added tests for the new meta functions _WSDL, _SMD, _DisableAPI and
+    _EnableAPI.
 
 * Build- and release-process:
   - Added new clean-release target.
