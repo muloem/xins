@@ -14,11 +14,13 @@
 		encoding="UTF-8"
 		method="text"
 		indent="yes" />
-	
+
 	<xsl:param name="project_home" />
 	<xsl:param name="endpoint" select="''" />
 
 	<xsl:template match="api">
+		<xsl:variable name="project_file" select="concat($project_home, '/xins-project.xml')" />
+		<xsl:variable name="project_node" select="document($project_file)/project" />
 		<xsl:variable name="apiname" select="@name" />
 		<xsl:variable name="location">
 			<xsl:choose>
