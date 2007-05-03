@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPCallResult;
+import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.HTTPServiceCaller;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.HexConverter;
@@ -66,7 +67,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
    /**
     * Test the JSON calling convention using the 1.0 specifications.
     */
-   public void testJSONCallingConvention1_0() throws Throwable {
+   public void testJSONRPCCallingConvention1_0() throws Throwable {
       String randomLong = HexConverter.toHexString(new Random().nextLong());
       String randomFive = randomLong.substring(0, 5);
 
@@ -80,7 +81,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
    /**
     * Test the JSON calling convention using the 1.1 specifications.
     */
-   public void testJSONCallingConvention1_1() throws Throwable {
+   public void testJSONRPCCallingConvention1_1() throws Throwable {
       String randomLong = HexConverter.toHexString(new Random().nextLong());
       String randomFive = randomLong.substring(0, 5);
 
@@ -89,6 +90,61 @@ public class JSONRPCCallingConventionTests extends TestCase {
 
       // Unsuccessful call
       postJSONRPCRequest1_1(randomFive, false);
+   }
+
+   /**
+    * Test the JSON calling convention using the 1.1 specifications with HTTP GET.
+    */
+   public void testJSONRPCCallingConventionGet() throws Throwable {
+      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomFive = randomLong.substring(0, 5);
+
+      TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/ResultCode", 2000);
+      BasicPropertyReader params = new BasicPropertyReader();
+      params.set("_convention", "_xins-jsonrpc");
+      params.set("useDefault", "false");
+      params.set("inputText", randomFive);
+      params.set("output", "json");
+      HTTPCallRequest request = new HTTPCallRequest(params);
+      HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
+      caller.getHTTPCallConfig().setMethod(HTTPMethod.GET);
+
+      HTTPCallResult result = caller.call(request);
+      String jsonResult = result.getString();
+      // System.err.println("1_1 Get : " + jsonResult);
+      JSONObject jsonObject = new JSONObject(jsonResult);
+      String version = jsonObject.getString("version");
+      assertEquals("1.1", version);
+      JSONObject error = jsonObject.optJSONObject("error");
+      JSONObject resultObject = jsonObject.getJSONObject("result");
+      String outputText = resultObject.getString("outputText");
+      assertEquals("Incorrect result received: " + outputText, randomFive + " added.", outputText);
+      assertNull(error);
+   }
+
+   /**
+    * Tests an invalid request.
+    */
+   public void testInvalidJSONRPCRequest() throws Throwable {
+      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomFive = randomLong.substring(0, 5);
+      String destination = AllTests.url() + "allinone/?_convention=_xins-jsonrpc";
+      String input = "{ \"version\" : \"1.1\", \"method\"  : \"ResultCode\", \"params\"  : { \"inputText\" : \"" + randomFive + "\" } }";
+      String jsonResult = CallingConventionTests.postData(destination, input, "application/json", 200);
+      JSONObject jsonObject = new JSONObject(jsonResult);
+      String version = jsonObject.getString("version");
+      assertEquals("1.1", version);
+      JSONObject error = jsonObject.optJSONObject("error");
+      assertNotNull(error);
+      String errorName = error.getString("name");
+      assertEquals("Incorrect error code received: " + errorName, "_InvalidRequest", errorName);
+      int errorCode = error.getInt("code");
+      assertTrue(errorCode >=100 && errorCode <= 999);
+      String errorMessage = error.getString("message");
+      assertEquals("Unexpected error message: " + errorMessage, "The request is invalid.", errorMessage);
+      JSONObject errorParams = error.getJSONObject("error");
+      JSONObject dataSection = errorParams.getJSONObject("data");
+      assertNotNull(dataSection);
    }
 
    /**
