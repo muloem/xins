@@ -67,8 +67,8 @@ public class CallingConventionTests extends TestCase {
    public void testInvalidCallingConvention() throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
       BasicPropertyReader params = new BasicPropertyReader();
-      params.set("_function",  "ResultCode");
-      params.set("inputText",  "blablabla");
+      params.set("_function", "ResultCode");
+      params.set("inputText", "blablabla");
       params.set("_convention", "_xins-bla");
       HTTPCallRequest request = new HTTPCallRequest(params);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
@@ -115,8 +115,8 @@ public class CallingConventionTests extends TestCase {
    static String callResultCode(String convention, String inputText) throws Throwable {
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/", 2000);
       BasicPropertyReader params = new BasicPropertyReader();
-      params.set("_function",  "ResultCode");
-      params.set("useDefault",  "false");
+      params.set("_function", "ResultCode");
+      params.set("useDefault", "false");
       params.set("inputText",  inputText);
       if (convention != null) {
          params.set("_convention", convention);
@@ -368,7 +368,7 @@ public class CallingConventionTests extends TestCase {
     */
    public void testUnsupportedHTTPMethods() throws Exception {
 
-      String[] unsupported = new String[] { "GET",  "HEAD", };
+      String[] unsupported = new String[] { "GET", "HEAD", };
 
       String     queryString = "/?_convention=_xins-xml";
       String     host        = AllTests.host();
@@ -393,7 +393,7 @@ public class CallingConventionTests extends TestCase {
     */
    public void testUnknownHTTPMethods() throws Exception {
 
-      String[] unknown = new String[] { "PUT", "DELETE", "POLL",  "JO-JO", "get", "post" };
+      String[] unknown = new String[] { "PUT", "DELETE", "POLL", "JO-JO", "get", "post" };
 
       String     queryString = "/?_convention=_xins-xml";
       String     host        = AllTests.host();

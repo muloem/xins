@@ -99,7 +99,7 @@ public class XSLTCallingConventionTests extends TestCase {
    private String getHTMLVersion(boolean useTemplateParam) throws Exception {
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url(), 2000);
       BasicPropertyReader params = new BasicPropertyReader();
-      params.set("_function",  "_GetVersion");
+      params.set("_function", "_GetVersion");
       params.set("_convention", "_xins-xslt");
       if (useTemplateParam) {
          params.set("_template", "src/tests/getVersion2.xslt");
