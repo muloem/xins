@@ -31,6 +31,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Splitted the CallingCallingTests class in several classes according to
     the calling convention tested.
   - Added tests for JSON and JSON-RPC calling conventions.
+  - Added call to the smd target.
 
 * Build- and release-process:
   - Added new clean-release target.

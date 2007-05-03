@@ -128,6 +128,9 @@ ${sf.file}</fail>
 		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
 		<ant antfile="build/build.xml" dir="src/tests" target="wsdl-allinone"     />
+		<ant antfile="build/build.xml" dir="src/tests" target="smd">
+			<property name="api.name" value="allinone" />
+		</ant>
 
 		<!-- Store the path for compilation and execution -->
 		<path id="tests.classpath">
