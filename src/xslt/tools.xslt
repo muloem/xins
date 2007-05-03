@@ -23,7 +23,7 @@
 					<include name="**/*.jar"/>
 				</fileset>
 			</path>
-			<loadproperties srcFile="{$project_home}/build.properties" />
+			<property file="{$project_home}/build.properties" />
 			<input addproperty="api.name"
 						 message="Please, enter the name of the api:" />
 			<available property="api.source.dir" value="apis/${{api.name}}/impl" file="apis/${{api.name}}/impl" type="dir" />

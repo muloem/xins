@@ -167,7 +167,7 @@ APIs in this project are:
 			</xsl:call-template>
 
 			<target name="-prepare">
-				<property file="{$builddir}.properties" />
+				<property file="build.properties" />
 				<property name="reload.stylesheet" value="false" />
 			</target>
 
