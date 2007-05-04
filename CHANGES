@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Added call to the smd target.
   - Added tests for the new meta functions _WSDL, _SMD, _DisableAPI and
     _EnableAPI.
+  - Added tests for the Element class.
 
 * Build- and release-process:
   - Added new clean-release target.
@@ -1472,6 +1473,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 2:
   - Fixed incorrect Javadoc for generated SuccessfulResult class.
 
 * Generation of specification documentation:
+
   - Declared XSLT global variables also inside the template to prevent the
     XSLT transformation to fail with Java 1.4.1.
 

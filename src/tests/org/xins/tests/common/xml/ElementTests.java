@@ -9,6 +9,7 @@ package org.xins.tests.common.xml;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.xins.common.text.ParseException;
 
 import org.xins.common.xml.Element;
 
@@ -17,14 +18,15 @@ import org.xins.common.xml.Element;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  */
 public class ElementTests extends TestCase {
 
    /**
      * Constructs a new <code>ElementTests</code> test suite with
      * the specified name. The name will be passed to the superconstructor.
-     * 
-     * 
+     *
+     *
      * @param name
      *    the name for this test suite.
      */
@@ -40,6 +42,103 @@ public class ElementTests extends TestCase {
     */
    public static Test suite() {
       return new TestSuite(ElementTests.class);
+   }
+
+   /**
+    * Tests the behaviour of the <code>Element.QualifiedName</code> class.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testElementCreation() throws Exception {
+      Element element1 = new Element("hello");
+      assertEquals("hello", element1.getLocalName());
+      assertNull(element1.getNamespaceURI());
+      assertEquals(0, element1.getChildElements().size());
+      assertNull(element1.getText());
+
+      Element element2 = new Element("ns0", "hello2");
+      assertEquals("hello2", element2.getLocalName());
+      assertEquals("ns0", element2.getNamespaceURI());
+   }
+
+   /**
+    * Tests the set methods of Element.
+    */
+   public void testElementSet() throws Exception {
+      createElement();
+   }
+
+   /**
+    * Tests add child methods.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testElementAdd() throws Exception {
+      Element mainElement = new Element("main");
+      Element element1 = createElement();
+      Element element2 = createElement();
+      assertEquals(0, mainElement.getChildElements().size());
+      assertEquals(0, mainElement.getChildElements("hello").size());
+      try {
+         Element child = mainElement.getUniqueChildElement("hello");
+         fail("getUniqueChildElement should have failed.");
+      } catch (ParseException pe) {
+         // normal
+      }
+
+      mainElement.addChild(element1);
+      assertEquals(1, mainElement.getChildElements().size());
+      assertEquals(1, mainElement.getChildElements("hello").size());
+      Element child = mainElement.getUniqueChildElement("hello");
+      mainElement.setText("content2");
+      assertEquals("content2", mainElement.getText());
+
+      mainElement.addChild(element2);
+      assertEquals(2, mainElement.getChildElements().size());
+      try {
+         mainElement.getUniqueChildElement("hello");
+         fail("getUniqueChildElement should have failed.");
+      } catch (ParseException pe) {
+         // normal
+      }
+      assertEquals(2, mainElement.getChildElements("hello").size());
+      assertEquals("content2", mainElement.getText());
+   }
+
+   /**
+    * Tests add child methods.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testElementUpdate() throws Exception {
+      Element element1 = createElement();
+      element1.setLocalName("hello2");
+      assertEquals("hello2", element1.getLocalName());
+      element1.setAttribute("attr1", "valueA");
+      element1.setAttribute("ns1", "attr1", "valueB");
+      assertEquals("valueA", element1.getAttribute("attr1"));
+      assertEquals("valueB", element1.getAttribute("ns1", "attr1"));
+      element1.setText("contentA");
+      assertEquals("contentA", element1.getText());
+   }
+
+   /**
+    * Creates and tests an element.
+    */
+   private Element createElement() {
+      Element element1 = new Element("hello");
+      element1.setAttribute("attr1", "value1");
+      element1.setAttribute("ns1", "attr1", "value2");
+      assertEquals("value1", element1.getAttribute("attr1"));
+      assertEquals("value2", element1.getAttribute("ns1", "attr1"));
+      element1.setLocalName("hello1");
+      assertEquals("hello1", element1.getLocalName());
+      element1.setText("content1");
+      assertEquals("content1", element1.getText());
+      return element1;
    }
 
    /**
