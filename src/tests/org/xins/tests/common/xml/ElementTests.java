@@ -82,7 +82,7 @@ public class ElementTests extends TestCase {
       assertEquals(0, mainElement.getChildElements().size());
       assertEquals(0, mainElement.getChildElements("hello").size());
       try {
-         Element child = mainElement.getUniqueChildElement("hello");
+         Element child = mainElement.getUniqueChildElement("hello1");
          fail("getUniqueChildElement should have failed.");
       } catch (ParseException pe) {
          // normal
@@ -90,20 +90,20 @@ public class ElementTests extends TestCase {
 
       mainElement.addChild(element1);
       assertEquals(1, mainElement.getChildElements().size());
-      assertEquals(1, mainElement.getChildElements("hello").size());
-      Element child = mainElement.getUniqueChildElement("hello");
+      assertEquals(1, mainElement.getChildElements("hello1").size());
+      Element child = mainElement.getUniqueChildElement("hello1");
       mainElement.setText("content2");
       assertEquals("content2", mainElement.getText());
 
       mainElement.addChild(element2);
       assertEquals(2, mainElement.getChildElements().size());
       try {
-         mainElement.getUniqueChildElement("hello");
+         mainElement.getUniqueChildElement("hello1");
          fail("getUniqueChildElement should have failed.");
       } catch (ParseException pe) {
          // normal
       }
-      assertEquals(2, mainElement.getChildElements("hello").size());
+      assertEquals(2, mainElement.getChildElements("hello1").size());
       assertEquals("content2", mainElement.getText());
    }
 
