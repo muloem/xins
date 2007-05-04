@@ -6,8 +6,11 @@
  */
 package org.xins.tests.common;
 
-import com.mycompany.allinone.types.Salutation;
+
+import com.mycompany.allinone.types.TextList;
+import java.util.Map;
 import java.util.Properties;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,6 +19,8 @@ import org.xins.common.BeanUtils;
 
 import com.mycompany.allinone.capi.SimpleTypesRequest;
 import com.mycompany.allinone.capi.DefinedTypesRequest;
+import com.mycompany.allinone.types.Salutation;
+import org.xins.common.types.standard.Date;
 
 /**
  * Tests for class <code>BeanUtils</code>
@@ -127,6 +132,96 @@ public class BeanUtilsTests extends TestCase {
       mapping2.setProperty("InputText", "InputSalutation");
       BeanUtils.populate(pojo2, request2, mapping2);
       assertEquals(Salutation.MISTER, request2.getInputSalutation());
+   }
+
+   public void testConvert() throws Exception {
+      Integer convert1 = (Integer) BeanUtils.convert(new Integer(123), Integer.class);
+      assertEquals(new Integer(123), convert1);
+
+      String enumToString = (String) BeanUtils.convert(Salutation.LADY, String.class);
+      assertEquals("Miss", enumToString);
+
+      Salutation.Item stringToEnum = (Salutation.Item) BeanUtils.convert("Miss", Salutation.Item.class);
+      assertEquals(Salutation.LADY, stringToEnum);
+
+      String dateToString = (String) BeanUtils.convert(Date.fromStringForRequired("20061211"), String.class);
+      assertEquals("20061211", dateToString);
+
+      Date.Value stringToDate = (Date.Value) BeanUtils.convert("20061211", Date.Value.class);
+      assertEquals("20061211", stringToDate.toString());
+
+      java.util.Date dateToDate = (java.util.Date) BeanUtils.convert(stringToDate, java.util.Date.class);
+      assertEquals(106, dateToDate.getYear());
+
+      TextList.Value list1 = TextList.fromStringForOptional("15&16&bla");
+      java.util.List listToList1 = (java.util.List) BeanUtils.convert(list1, java.util.List.class);
+      assertEquals(3, listToList1.size());
+      assertEquals("15", listToList1.get(0));
+      assertEquals("16", listToList1.get(1));
+      assertEquals("bla", listToList1.get(2));
+      TextList.Value listToList2 = (TextList.Value) BeanUtils.convert(listToList1, TextList.Value.class);
+      assertEquals(3, listToList2.getSize());
+      assertEquals("15", listToList2.get(0));
+      assertEquals("16", listToList2.get(1));
+      assertEquals("bla", listToList2.get(2));
+
+      // TODO convertion from String to Number or Number.TYPE
+   }
+
+   public void testGetParameters() throws Exception {
+      SimplePojo pojo = createPOJO();
+      Map mapPojo = BeanUtils.getParameters(pojo);
+      assertEquals(4, mapPojo.size());
+      assertEquals(Boolean.TRUE, mapPojo.get("almostBoolean"));
+      assertEquals(Boolean.TRUE, mapPojo.get("realBoolean"));
+      assertEquals("input", mapPojo.get("inputText"));
+      assertEquals(new Integer(123), mapPojo.get("simpleInt"));
+   }
+
+   public void testGetParametersAsString() throws Exception {
+      SimplePojo pojo = createPOJO();
+      Map mapPojo = BeanUtils.getParametersAsString(pojo);
+      assertEquals(4, mapPojo.size());
+      assertEquals("true", mapPojo.get("almostBoolean"));
+      assertEquals("true", mapPojo.get("realBoolean"));
+      assertEquals("input", mapPojo.get("inputText"));
+      assertEquals("123", mapPojo.get("simpleInt"));
+   }
+
+   public void testGetParametersAsObject() throws Exception {
+      SimplePojo pojo = createPOJO();
+      Map mapPojo = BeanUtils.getParametersAsObject(pojo);
+      assertEquals(4, mapPojo.size());
+      Object almostBoolean = mapPojo.get("almostBoolean");
+      assertEquals(Boolean.TRUE, almostBoolean);
+      assertEquals(Boolean.TRUE, mapPojo.get("realBoolean"));
+      assertEquals("input", mapPojo.get("inputText"));
+      assertEquals(new Integer(123), mapPojo.get("simpleInt"));
+
+      DefinedTypesRequest request = new DefinedTypesRequest();
+      request.setInputSalutation(Salutation.LADY);
+      request.setInputAge((byte) 18);
+      TextList.Value list1 = TextList.fromStringForOptional("15&16&bla");
+      request.setInputList(list1);
+      Map mapRequest = BeanUtils.getParametersAsObject(request);
+      assertEquals(5, mapRequest.size());
+      assertEquals(new Byte((byte) 18), mapRequest.get("inputAge"));
+      assertEquals("Miss", mapRequest.get("inputSalutation"));
+      java.util.List list2 = (java.util.List) mapRequest.get("inputList");
+      assertEquals(3, list2.size());
+      assertEquals("15", list2.get(0));
+      assertEquals("16", list2.get(1));
+      assertEquals("bla", list2.get(2));
+      assertNull(mapRequest.get("inputShared"));
+   }
+
+   private SimplePojo createPOJO() {
+      SimplePojo pojo = new SimplePojo();
+      pojo.setAlmostBoolean(Boolean.TRUE);
+      pojo.setRealBoolean(true);
+      pojo.setInputText("input");
+      pojo.setSimpleInt(123);
+      return pojo;
    }
 
    public class SimplePojo {

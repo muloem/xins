@@ -47,6 +47,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Added tests for the new meta functions _WSDL, _SMD, _DisableAPI and
     _EnableAPI.
   - Added tests for the Element class.
+  - Added more tests for the BeanUtils class.
 
 * Build- and release-process:
   - Added new clean-release target.
