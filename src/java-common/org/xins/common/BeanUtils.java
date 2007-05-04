@@ -8,11 +8,17 @@ package org.xins.common;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.AbstractList;
+import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
@@ -196,13 +202,19 @@ public class BeanUtils {
 
          // Convert a ListItem to a collection
          } else if (origValue instanceof ItemList && Collection.class.isAssignableFrom(destClass)) {
-            Collection destValue = (Collection) destClass.newInstance();
+            Class collectionClass = destClass;
+            if (destClass.isAssignableFrom(AbstractList.class) || destClass == List.class || destClass == Collection.class) {
+               collectionClass = ArrayList.class;
+            } else if (destClass.isAssignableFrom(AbstractSet.class) || destClass == Set.class) {
+               collectionClass = HashSet.class;
+            }
+            Collection destValue = (Collection) collectionClass.newInstance();
             Collection values = ((ItemList) origValue).get();
             destValue.addAll(values);
             return destValue;
 
          // Convert a Date or Calendar to a Date.Value or a Timestamp.Value
-         } else if ((origValue instanceof java.util.Date | origValue instanceof Calendar) && 
+         } else if ((origValue instanceof java.util.Date | origValue instanceof Calendar) &&
                (destClass == Date.Value.class || destClass == Timestamp.Value.class)) {
             Class[] idemClass = {origValue.getClass()};
             Object[] valueArgs = {origValue};
@@ -342,13 +354,13 @@ public class BeanUtils {
     *    a Map&lt;String, String&gt; that maps the name of the source element
     *    to the name of the destination object, can be <code>null</code>.
     * @param attributeMapping
-    *    a Map&lt;String, String&gt; that maps the attributes of the elements, 
+    *    a Map&lt;String, String&gt; that maps the attributes of the elements,
     *    can be <code>null</code>.
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   public static Object xmlToObject(Element element, Object result, 
+   public static Object xmlToObject(Element element, Object result,
          Map elementMapping, Map attributeMapping) {
       return xmlToObject(element, result, elementMapping, attributeMapping, true);
    }
@@ -379,7 +391,7 @@ public class BeanUtils {
     *    a Map&lt;String, String&gt; that maps the name of the source element
     *    to the name of the destination object, can be <code>null</code>.
     * @param attributeMapping
-    *    a Map&lt;String, String&gt; that maps the attributes of the elements, 
+    *    a Map&lt;String, String&gt; that maps the attributes of the elements,
     *    can be <code>null</code>.
     * @param topLevel
     *    <code>true</code> if the element passed is the top element,
@@ -388,7 +400,7 @@ public class BeanUtils {
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
     */
-   private static Object xmlToObject(Element element, Object result, 
+   private static Object xmlToObject(Element element, Object result,
          Map elementMapping, Map attributeMapping, boolean topLevel) {
 
       // Short-circuit if arg is null
@@ -610,14 +622,14 @@ public class BeanUtils {
     * @since XINS 2.0.
     */
    public static Map getParametersAsObject(Object source) throws IllegalArgumentException {
-      ChainedMap stringMap = new ChainedMap();
+      ChainedMap objectMap = new ChainedMap();
       Map originalMap = getParameters(source);
       Iterator itParams = originalMap.entrySet().iterator();
       while (itParams.hasNext()) {
          Map.Entry nextParam = (Map.Entry) itParams.next();
          String paramName = (String) nextParam.getKey();
          Object paramValue = nextParam.getValue();
-         
+
          // Convertion of the XINS types.
          if (paramValue instanceof Date.Value) {
             paramValue = ((Date.Value) paramValue).toDate();
@@ -632,10 +644,9 @@ public class BeanUtils {
          } else if (paramValue instanceof Descriptor) {
             // TODO: Not supported yet
          }
-         String stringValue = String.valueOf(paramValue);
-         stringMap.put(paramName, stringValue);
+         objectMap.put(paramName, paramValue);
       }
-      return stringMap;
+      return objectMap;
    }
 
    /**
