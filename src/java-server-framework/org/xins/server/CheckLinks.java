@@ -729,12 +729,7 @@ class CheckLinks {
             // Just ignore (and log) any exception as we do not want to fail
             // if the connection is not properly released.
             } catch (Throwable ignorable) {
-               Utils.logIgnoredException(
-                  CheckLinks.URLChecker.class.getName(),
-                  "releaseConnection(HttpMethodBase)",
-                  method.getClass().getName(),
-                  "releaseConnection()",
-                  ignorable);
+               Utils.logIgnoredException(ignorable);
             }
          }
       }

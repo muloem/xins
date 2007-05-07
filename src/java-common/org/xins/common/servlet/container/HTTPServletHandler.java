@@ -777,7 +777,7 @@ public class HTTPServletHandler {
                   serviceClient(clientSocket);
                } catch (Exception ex) {
                   // If anything goes wrong still continue accepting clients
-                  Utils.logIgnoredException("SocketAcceptor", "serviceClient", "SocketAcceptor", "run", ex);
+                  Utils.logIgnoredException(ex);
                } finally {
                   try {
                      clientSocket.close();

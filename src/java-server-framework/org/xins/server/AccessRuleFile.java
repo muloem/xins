@@ -271,11 +271,7 @@ public class AccessRuleFile implements AccessRuleContainer {
             try {
                rule.dispose();
             } catch (Throwable exception) {
-               Utils.logIgnoredException(AccessRuleFile.class.getName(),
-                                         "dispose()",
-                                         rule.getClass().getName(),
-                                         "dispose()",
-                                         exception);
+               Utils.logIgnoredException(exception);
             }
          }
       }
@@ -286,11 +282,7 @@ public class AccessRuleFile implements AccessRuleContainer {
          try {
             _fileWatcher.end();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(AccessRuleFile.class.getName(),
-                                      "dispose()",
-                                      _fileWatcher.getClass().getName(),
-                                      "end()",
-                                      exception);
+            Utils.logIgnoredException(exception);
          }
          _fileWatcher = null;
       }
@@ -342,21 +334,13 @@ public class AccessRuleFile implements AccessRuleContainer {
          try {
             fileReader.close();
          } catch (Throwable exception) {
-            Utils.logIgnoredException(AccessRuleFile.class.getName(),
-                                      "parseAndApply",
-                                      "java.io.FileReader",
-                                      "close()",
-                                      exception);
+            Utils.logIgnoredException(exception);
          }
          if (buffReader != null) {
             try {
                buffReader.close();
             } catch (Throwable exception) {
-               Utils.logIgnoredException(AccessRuleFile.class.getName(),
-                                         "parseAndApply",
-                                         "java.io.BufferedReader",
-                                         "close()",
-                                         exception);
+               Utils.logIgnoredException(exception);
             }
          }
       }
@@ -459,11 +443,7 @@ public class AccessRuleFile implements AccessRuleContainer {
 
       // If the parsing fails, then log the exception
       } catch (Throwable exception) {
-         Utils.logIgnoredException(AccessRuleFile.class.getName(),
-                                   "reinit()",
-                                   AccessRuleFile.class.getName(),
-                                   "parseAndApply",
-                                   exception);
+         Utils.logIgnoredException(exception);
          _rules = new AccessRuleContainer[0];
          // TODO: The framework re-initialization should fail
       }

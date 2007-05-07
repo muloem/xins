@@ -294,11 +294,7 @@ public final class AccessRuleList implements AccessRuleContainer {
             try {
                rule.dispose();
             } catch (Throwable exception) {
-               Utils.logIgnoredException(AccessRuleList.class.getName(),
-                                         "dispose()",
-                                         rule.getClass().getName(),
-                                         "dispose()",
-                                         exception);
+               Utils.logIgnoredException(exception);
             }
          }
       }

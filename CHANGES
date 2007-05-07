@@ -22,12 +22,14 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - BeanUtils.getParametersAsObject should not convert values to String.
   - Improved detected source class and source method when logging an ignored
     exception or a programming error.
+  - Removed unneeded parameters to the call to Utils.logIgnoredException.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.
   - Various bug fixes in the JSONCallingConvention.
   - Various bug fixes in the JSONRPCCallingConvention.
   - Fixed incorrect serviceURL for the _SMD meta function.
+  - Removed unneeded parameters to the call to Utils.logIgnoredException.
 
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
