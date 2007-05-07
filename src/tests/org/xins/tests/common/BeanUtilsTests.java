@@ -7,7 +7,9 @@
 package org.xins.tests.common;
 
 
-import com.mycompany.allinone.types.TextList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -16,11 +18,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.xins.common.BeanUtils;
+import org.xins.common.types.standard.Date;
 
 import com.mycompany.allinone.capi.SimpleTypesRequest;
 import com.mycompany.allinone.capi.DefinedTypesRequest;
 import com.mycompany.allinone.types.Salutation;
-import org.xins.common.types.standard.Date;
+import com.mycompany.allinone.types.TextList;
+import org.xins.common.xml.Element;
 
 /**
  * Tests for class <code>BeanUtils</code>
@@ -165,7 +169,10 @@ public class BeanUtilsTests extends TestCase {
       assertEquals("16", listToList2.get(1));
       assertEquals("bla", listToList2.get(2));
 
-      // TODO convertion from String to Number or Number.TYPE
+      Integer integer1 = (Integer) BeanUtils.convert(new Integer(42), Integer.class);
+      assertEquals(new Integer(42), integer1);
+      Integer integer2 = (Integer) BeanUtils.convert(new Integer(43), Integer.TYPE);
+      assertEquals(new Integer(43), integer2);
    }
 
    public void testGetParameters() throws Exception {
@@ -215,6 +222,61 @@ public class BeanUtilsTests extends TestCase {
       assertNull(mapRequest.get("inputShared"));
    }
 
+   public void testSetParameters() throws Exception {
+      SimplePojo pojo = new SimplePojo();
+      Map map = new HashMap();
+      map.put("almostBoolean", "true");
+      map.put("realBoolean", Boolean.TRUE);
+      map.put("simpleInt", new Integer("33"));
+      BeanUtils.setParameters(map, pojo);
+      assertEquals(Boolean.TRUE, pojo.getAlmostBoolean());
+      assertEquals(true, pojo.getRealBoolean());
+      assertEquals(33, pojo.getSimpleInt());
+      assertNull(pojo.getInputText());
+
+      // Update the POJO
+      Map map2 = new HashMap();
+      map2.put("simpleInt", new Integer("44"));
+      BeanUtils.setParameters(map2, pojo);
+      assertEquals(true, pojo.getRealBoolean());
+      assertEquals(44, pojo.getSimpleInt());
+   }
+
+   public void testXmlToObject1() throws Exception {
+      Element element1 = new Element("simplePojo");
+      element1.setAttribute("simpleInt", "33");
+      element1.setAttribute("almostBoolean", "true");
+      PojoContainer pojoContainer = new PojoContainer();
+      assertEquals(0, pojoContainer.listSimplePojo().size());
+      BeanUtils.xmlToObject(element1, pojoContainer);
+      assertEquals(1, pojoContainer.listSimplePojo().size());
+      SimplePojo pojo1 = (SimplePojo) pojoContainer.listSimplePojo().get(0);
+      assertEquals(33, pojo1.getSimpleInt());
+      assertEquals(Boolean.TRUE, pojo1.getAlmostBoolean());
+      assertEquals(false, pojo1.getRealBoolean());
+      assertNull(pojo1.getInputText());
+   }
+
+   public void testXmlToObject2() throws Exception {
+      Element element1 = new Element("pojo");
+      element1.setAttribute("simpleInt", "33");
+      element1.setAttribute("almostBoolean", "true");
+      Properties mappingElement = new Properties();
+      mappingElement.setProperty("pojo", "SimplePojo");
+      Properties mappingAttributes = new Properties();
+      mappingAttributes.setProperty("almostBoolean", "realBoolean");
+      mappingAttributes.setProperty("simpleInt", "inputText");
+      PojoContainer pojoContainer = new PojoContainer();
+      assertEquals(0, pojoContainer.listSimplePojo().size());
+      BeanUtils.xmlToObject(element1, pojoContainer, mappingElement, mappingAttributes);
+      assertEquals(1, pojoContainer.listSimplePojo().size());
+      SimplePojo pojo1 = (SimplePojo) pojoContainer.listSimplePojo().get(0);
+      assertEquals(0, pojo1.getSimpleInt());
+      assertEquals(Boolean.FALSE, pojo1.getAlmostBoolean());
+      assertEquals(true, pojo1.getRealBoolean());
+      assertEquals("33", pojo1.getInputText());
+   }
+
    private SimplePojo createPOJO() {
       SimplePojo pojo = new SimplePojo();
       pojo.setAlmostBoolean(Boolean.TRUE);
@@ -224,7 +286,7 @@ public class BeanUtilsTests extends TestCase {
       return pojo;
    }
 
-   public class SimplePojo {
+   public static class SimplePojo {
 
       private String _inputText;
       private Boolean _almostBoolean = Boolean.FALSE;
@@ -261,6 +323,18 @@ public class BeanUtilsTests extends TestCase {
 
       public int getSimpleInt() {
          return _simpleInt;
+      }
+   }
+
+   public class PojoContainer {
+      
+      private List pojoList = new ArrayList();
+      
+      public void addSimplePojo(SimplePojo pojo) {
+         pojoList.add(pojo);
+      }
+      public List listSimplePojo() {
+         return pojoList;
       }
    }
 }
