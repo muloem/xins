@@ -53,7 +53,7 @@ public class SOAPCallingConvention extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   protected static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   protected static final String RESPONSE_CONTENT_TYPE = "text/xml; charset=" + RESPONSE_ENCODING;
 
    /**
     * The key used to store the name of the function in the request attributes.

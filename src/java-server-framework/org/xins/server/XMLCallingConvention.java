@@ -35,7 +35,7 @@ public class XMLCallingConvention extends CallingConvention {
    /**
     * The content type of the HTTP response.
     */
-   protected static final String RESPONSE_CONTENT_TYPE = "text/xml;charset=" + RESPONSE_ENCODING;
+   protected static final String RESPONSE_CONTENT_TYPE = "text/xml; charset=" + RESPONSE_ENCODING;
 
    protected String[] getSupportedMethods() {
       return new String[] { "POST" };

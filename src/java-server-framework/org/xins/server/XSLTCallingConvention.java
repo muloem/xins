@@ -332,7 +332,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       }
       String encoding = outputProperties.getProperty("encoding");
       if (mimeType != null && encoding != null) {
-         mimeType += ";charset=" + encoding;
+         mimeType += "; charset=" + encoding;
       }
       return mimeType;
    }
