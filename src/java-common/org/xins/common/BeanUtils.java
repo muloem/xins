@@ -116,11 +116,7 @@ public class BeanUtils {
                if (value != null) {
                   Object setValue = convertObject(value, destination, destProperty);
                   if (setValue != null) {
-                     Class setMethodArgClass = getClassForObject(setValue, destination, setMethodName);
-                     Class[] returnType = {setMethodArgClass};
-                     Method setMethod = destination.getClass().getMethod(setMethodName, returnType);
-                     Object[] setParams = {setValue};
-                     setMethod.invoke(destination, setParams);
+                     invokeMethod(destination, setMethodName, setValue);
                   }
                }
             } catch (Exception nsmex) {
@@ -232,6 +228,21 @@ public class BeanUtils {
          // Convert a String to whatever is asked
          } else if (origValue instanceof String) {
             Method convertionMethod = null;
+            if (destClass.isPrimitive()) {
+               if (destClass == Byte.TYPE) {
+                  destClass = Byte.class;
+               } else if (destClass == Short.TYPE) {
+                  destClass = Short.class;
+               } else if (destClass == Integer.TYPE) {
+                  destClass = Integer.class;
+               } else if (destClass == Long.TYPE) {
+                  destClass = Long.class;
+               } else if (destClass == Float.TYPE) {
+                  destClass = Float.class;
+               } else if (destClass == Double.TYPE) {
+                  destClass = Double.class;
+               }
+            }
             try {
                convertionMethod = destClass.getMethod("valueOf", STRING_CLASS);
             } catch (NoSuchMethodException nsmex) {
@@ -249,6 +260,10 @@ public class BeanUtils {
                Object convertedObj = convertionMethod.invoke(null, convertParams);
                return convertedObj;
             }
+
+         // Convert a Number to the primitive type
+         } else if (origValue instanceof Number && destClass.isPrimitive()) {
+            return origValue;
          }
       } catch (Exception ex) {
          // TODO log
@@ -298,49 +313,6 @@ public class BeanUtils {
 
       // No method found
       return null;
-   }
-
-   /**
-    * Gets the class for an object.
-    *
-    * In most of cases it will be <code>object.getClass()</code> except for
-    * primitive type where it can be the primitive class.
-    *
-    * @param value
-    *    the value of the object.
-    *
-    * @param destination
-    *    the object containing the set method.
-    *
-    * @param setMethodName
-    *    the name of the set method.
-    *
-    * @return
-    *    the {@link java.lang.Class} object to use for the set method, never <code>null</code>.
-    */
-   private static Class getClassForObject(Object value, Object destination, String setMethodName) {
-      Class valueClass = value.getClass();
-      if (value instanceof Byte || value instanceof Short || value instanceof Character
-            || value instanceof Integer || value instanceof Long || value instanceof Float
-            || value instanceof Double || value instanceof Boolean) {
-         try {
-            Class primitiveClass = (Class) valueClass.getDeclaredField("TYPE").get(value);
-            Class[] setArgsClasses = {primitiveClass};
-            try {
-               destination.getClass().getMethod(setMethodName, setArgsClasses);
-
-               // The destination has a set method associated with the primitive type.
-               return primitiveClass;
-            } catch (NoSuchMethodException nsmex) {
-               // Ignore no primitive set method found
-            }
-         } catch (IllegalAccessException iaex) {
-            // Ignore
-         } catch (NoSuchFieldException nsfex) {
-            // Ignore
-         }
-      }
-      return valueClass;
    }
 
    /**
@@ -423,8 +395,8 @@ public class BeanUtils {
             Class[] argsClasses = {getElementClass(hungarianName, result)};
             Method addMethod = result.getClass().getMethod("add" + hungarianName, argsClasses);
             Object childElement = elementToObject(element, result, elementMapping, attributeMapping);
-            Object[] addArgs = { childElement };
             if (childElement != null) {
+               Object[] addArgs = { childElement };
                addMethod.invoke(result, addArgs);
             }
          } catch (Exception ex) {
@@ -496,11 +468,7 @@ public class BeanUtils {
          String value = (String) attr.getValue();
          try {
             Object setArg = convertObject(value, newElement, name);
-            Class[] convertionMethodReturnClass = { setArg.getClass() };
-            Method setMethod = newElement.getClass().getMethod(
-                  "set" + TextUtils.firstCharUpper(name), convertionMethodReturnClass);
-            Object[] setArgs = { setArg };
-            setMethod.invoke(newElement, setArgs);
+            invokeMethod(newElement, "set" + TextUtils.firstCharUpper(name), setArg);
          } catch (Exception ex) {
             Utils.logIgnoredException(ex);
          }
@@ -684,14 +652,45 @@ public class BeanUtils {
             Object propertyValue = nextProp.getValue();
             String methodName = "set" + TextUtils.firstCharUpper(propertyName);
             Object methodArg = convertObject(propertyValue, destination, propertyName);
-            Class[] argsClasses = { methodArg.getClass() };
-            Object[] args = { methodArg };
-            Method setMethod = destination.getClass().getMethod(methodName, argsClasses);
-            setMethod.invoke(destination, args);
+            invokeMethod(destination, methodName, methodArg);
          } catch (Exception ex) {
             Utils.logIgnoredException(ex);
          }
       }
       return destination;
   }
+  
+   /**
+    * Invokes the given method with the given argument.
+    * 
+    * @param destination
+    *    the object upon which the method should be invoked, cannnot be <code>null</code>.
+    * 
+    * @param methodName
+    *    the name of the method to invoke, cannot be <code>null</code>.
+    * 
+    * @param argument
+    *    the argument for the method, can be <code>null</code>.
+    */
+   private static void invokeMethod(Object destination, String methodName, Object argument) throws Exception {
+      Class argumentClass = argument.getClass();
+      Class[] argsClasses = { argumentClass };
+      if (argument instanceof Boolean) {
+         try {
+            destination.getClass().getMethod(methodName, argsClasses);
+         } catch (NoSuchMethodException nsmex) {
+            argumentClass = Boolean.TYPE;
+         }
+      } else if (argument instanceof Number) {
+         try {
+            destination.getClass().getMethod(methodName, argsClasses);
+         } catch (NoSuchMethodException nsmex) {
+            argumentClass = (Class) argumentClass.getDeclaredField("TYPE").get(argument);
+         }
+      }
+      Class[] argsClasses2 = { argumentClass };
+      Object[] args = { argument };
+      Method setMethod = destination.getClass().getMethod(methodName, argsClasses2);
+      setMethod.invoke(destination, args);
+   }
 }
