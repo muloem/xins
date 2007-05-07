@@ -299,9 +299,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
             throw (IOException) exception;
          } else {
             String message = "Cannot transform the result with the XSLT "
-                           + "located at \""
-                           + xsltLocation
-                           + "\".";
+                  + "located at \"" + xsltLocation + "\".";
             IOException ioe = new IOException(message);
             ExceptionUtils.setCause(ioe, exception);
             throw ioe;
