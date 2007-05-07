@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Fixed possible NullPointerException in the Element.QualifiedName class.
   - BeanUtils.convert can also convert to a List or Abstract collection.
   - BeanUtils.getParametersAsObject should not convert values to String.
+  - Improved detected source class and source method when logging an ignored
+    exception or a programming error.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.

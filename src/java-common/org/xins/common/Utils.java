@@ -283,28 +283,39 @@ public final class Utils {
    public static void logIgnoredException(Throwable exception)
    throws IllegalArgumentException {
 
-      String sourceClass;
-      String sourceMethod;
+      // Determine detecting class and method
+      String detectingClass  = getCallingClass();
+      String detectingMethod = getCallingMethod();
+
+      String sourceClass = null;
+      String sourceMethod = null;
 
       try {
 
          // Determine the source of the exception
          StackTraceElement[] trace  = exception.getStackTrace();
-         StackTraceElement   source = trace[trace.length - 1];
 
-         // Determine source class and method
-         sourceClass  = source.getClassName();
-         sourceMethod = source.getMethodName();
+         for (int i = 1; i < trace.length && sourceClass == null; i++) {
+            StackTraceElement stackTraceElement = trace[i];
+            if (stackTraceElement.getClassName().equals(detectingClass) && 
+                  stackTraceElement.getMethodName().equals(detectingMethod)) {
+
+               // Go one level up the stack trace to know which method threw the exception
+               StackTraceElement source = trace[i - 1];
+               sourceClass  = source.getClassName();
+               sourceMethod = source.getMethodName();
+            }
+         }
+         if (sourceClass == null) {
+            sourceClass  = "<unknown>";
+            sourceMethod = "<unknown>";
+         }
 
       // If there's any exception, then fallback to default values
       } catch (Throwable t) {
          sourceClass  = "<unknown>";
          sourceMethod = "<unknown>";
       }
-
-      // Determine detecting class and method
-      String detectingClass  = getCallingClass();
-      String detectingMethod = getCallingMethod();
 
       // Call alternative method with detail set to null
       logIgnoredException(detectingClass, detectingMethod,
@@ -409,28 +420,39 @@ public final class Utils {
     */
    public static ProgrammingException logProgrammingError(String detail, Throwable cause) {
 
-      String sourceClass;
-      String sourceMethod;
+      // Determine detecting class and method
+      String detectingClass  = getCallingClass();
+      String detectingMethod = getCallingMethod();
+
+      String sourceClass = null;
+      String sourceMethod = null;
 
       try {
 
          // Determine the source of the exception
-         StackTraceElement[] trace  = cause.getStackTrace();
-         StackTraceElement   source = trace[trace.length - 1];
+         StackTraceElement[] trace = cause.getStackTrace();
 
-         // Determine source class and method
-         sourceClass  = source.getClassName();
-         sourceMethod = source.getMethodName();
+         for (int i = 1; i < trace.length && sourceClass == null; i++) {
+            StackTraceElement stackTraceElement = trace[i];
+            if (stackTraceElement.getClassName().equals(detectingClass) && 
+                  stackTraceElement.getMethodName().equals(detectingMethod)) {
+
+               // Go one level up the stack trace to know which method threw the exception
+               StackTraceElement source = trace[i - 1];
+               sourceClass  = source.getClassName();
+               sourceMethod = source.getMethodName();
+            }
+         }
+         if (sourceClass == null) {
+            sourceClass  = "<unknown>";
+            sourceMethod = "<unknown>";
+         }
 
       // If there's any exception, then fallback to default values
       } catch (Throwable t) {
          sourceClass  = "<unknown>";
          sourceMethod = "<unknown>";
       }
-
-      // Determine detecting class and method
-      String detectingClass  = getCallingClass();
-      String detectingMethod = getCallingMethod();
 
       // Log the programming error
       return logProgrammingError(detectingClass, detectingMethod,
