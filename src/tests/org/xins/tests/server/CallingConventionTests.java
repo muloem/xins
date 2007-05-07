@@ -125,6 +125,9 @@ public class CallingConventionTests extends TestCase {
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
 
       HTTPCallResult result = caller.call(request);
+      if (result.getStatusCode() != 200) {
+         throw new IOException("Received HTTP code " + result.getStatusCode());
+      }
       return result.getString();
    }
 
@@ -283,7 +286,9 @@ public class CallingConventionTests extends TestCase {
          assertEquals(expectedStatus, code);
          if (contentType != null) {
             String returnedContentType = post.getResponseHeader("Content-Type").getValue();
-            assertEquals(contentType, returnedContentType);
+            assertEquals("Content type received '" + returnedContentType  + 
+                  "' does not match the content type '" + contentType + "' sent.", 
+                  contentType, returnedContentType);
          }
          String result = post.getResponseBodyAsString();
          return result;
