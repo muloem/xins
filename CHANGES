@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
     exception or a programming error.
   - Removed unneeded parameters to the call to Utils.logIgnoredException.
   - Improved handling of primitive types for converting objects.
+  - Removed IOReader.readFullyAsBytes as it doesn't work correctly.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.

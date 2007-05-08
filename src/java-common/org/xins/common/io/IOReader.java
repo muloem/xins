@@ -56,32 +56,4 @@ public final class IOReader {
       output.close();
       return output.toString();
    }
-
-   /**
-    * Read an InputStream completly and put the content of the input stream in
-    * a byte[]. The input stream is not closed.
-    *
-    * @param inputStream
-    *    the input stream to read, cannot be <code>null</code>.
-    * 
-    * @return
-    *    the content of the input stream, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>inputStream == null</code>.
-    *
-    * @throws IOException
-    *    if there are some problems reading the input stream.
-    */
-   public static byte[] readFullyAsBytes(InputStream inputStream) throws IllegalArgumentException, IOException {
-      MandatoryArgumentChecker.check("inputStream", inputStream);
-
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      byte[] buffer = new byte[8096];
-      int length;
-      while ((length = inputStream.read(buffer)) > 0) {
-         output.write(buffer, 0, length);
-      }
-      return output.toByteArray();
-   }
 }
