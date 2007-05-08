@@ -64,7 +64,7 @@ public class UppercaseTask extends Task {
       }
 
       if (_text == null) {
-         throw new BuildException("A property value needs to be specified.");
+         throw new BuildException("A text value needs to be specified.");
       }
 
       if (getProject().getUserProperty(_propertyName) != null) {
