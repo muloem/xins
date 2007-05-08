@@ -91,6 +91,8 @@ public class AllTests extends TestSuite {
 
       suite.addTestSuite(org.xins.tests.common.ant.CallXINSTaskTests.class);
       suite.addTestSuite(org.xins.tests.common.ant.HostnameTaskTests.class);
+      suite.addTestSuite(org.xins.tests.common.ant.HungarianMapperTests.class);
+      suite.addTestSuite(org.xins.tests.common.ant.UppercaseTaskTests.class);
 
       suite.addTestSuite(org.xins.tests.common.collections.BasicPropertyReaderTests.class);
       suite.addTestSuite(org.xins.tests.common.collections.ChainedMapTests.class);

@@ -57,6 +57,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Added tests for the Element class.
   - Added more tests for the BeanUtils class.
   - Fixed tests for the frontend framework.
+  - Added tests for HungarianMapper and UppercaseTask.
 
 * Build- and release-process:
   - Added new clean-release target.
