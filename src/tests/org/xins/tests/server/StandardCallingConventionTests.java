@@ -89,7 +89,7 @@ public class StandardCallingConventionTests extends TestCase {
     */
    public void callResultCodeStandard(String convention) throws Throwable {
       ElementParser parser = new ElementParser();
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       String result1Data = CallingConventionTests.callResultCode(convention, randomFive);

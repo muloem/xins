@@ -38,7 +38,7 @@ public class CallingConventionTests extends TestCase {
    /**
     * The random number generator.
     */
-   private final static Random RANDOM = new Random();
+   public final static Random RANDOM = new Random();
 
    /**
     * Constructs a new <code>CallingConventionTests</code> test suite with

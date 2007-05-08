@@ -68,7 +68,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
     * Test the JSON calling convention using the 1.0 specifications.
     */
    public void testJSONRPCCallingConvention1_0() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call
@@ -82,7 +82,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
     * Test the JSON calling convention using the 1.1 specifications.
     */
    public void testJSONRPCCallingConvention1_1() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call
@@ -96,7 +96,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
     * Test the JSON calling convention using the 1.1 specifications with HTTP GET.
     */
    public void testJSONRPCCallingConventionGet() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       TargetDescriptor descriptor = new TargetDescriptor(AllTests.url() + "allinone/ResultCode", 2000);
@@ -126,7 +126,7 @@ public class JSONRPCCallingConventionTests extends TestCase {
     * Tests an invalid request.
     */
    public void testInvalidJSONRPCRequest() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
       String destination = AllTests.url() + "allinone/?_convention=_xins-jsonrpc";
       String input = "{ \"version\" : \"1.1\", \"method\"  : \"ResultCode\", \"params\"  : { \"inputText\" : \"" + randomFive + "\" } }";

@@ -25,11 +25,6 @@ import org.xins.tests.AllTests;
 public class XMLRPCCallingConventionTests extends TestCase {
 
    /**
-    * The random number generator.
-    */
-   private final static Random RANDOM = new Random();
-
-   /**
     * Constructs a new <code>XMLRPCCallingConventionTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *

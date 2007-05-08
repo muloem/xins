@@ -33,11 +33,6 @@ import org.xins.tests.AllTests;
 public class XSLTCallingConventionTests extends TestCase {
    
    /**
-    * The random number generator.
-    */
-   private final static Random RANDOM = new Random();
-   
-   /**
     * Constructs a new <code>XSLTCallingConventionTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -86,7 +81,7 @@ public class XSLTCallingConventionTests extends TestCase {
     * (invalid HTTP request).
     */
    public void testXSLTCallingConvention3() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
       try {
          CallingConventionTests.callResultCode("_xins-xslt", randomFive);

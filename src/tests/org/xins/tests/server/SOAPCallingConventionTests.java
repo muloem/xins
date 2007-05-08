@@ -26,11 +26,6 @@ import org.xins.tests.AllTests;
 public class SOAPCallingConventionTests extends TestCase {
 
    /**
-    * The random number generator.
-    */
-   private final static Random RANDOM = new Random();
-
-   /**
     * Constructs a new <code>SOAPCallingConventionTests</code> test suite with
     * the specified name. The name will be passed to the superconstructor.
     *
@@ -55,7 +50,7 @@ public class SOAPCallingConventionTests extends TestCase {
     * Tests the SOAP calling convention.
     */
    public void testSOAPCallingConvention() throws Throwable {
-      String randomLong = HexConverter.toHexString(RANDOM.nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call

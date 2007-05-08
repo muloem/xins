@@ -50,7 +50,7 @@ public class XMLCallingConventionTests extends TestCase {
     * Test the XML calling convention.
     */
    public void testXMLCallingConvention() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call

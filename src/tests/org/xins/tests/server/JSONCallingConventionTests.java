@@ -66,7 +66,7 @@ public class JSONCallingConventionTests extends TestCase {
     * Test the JSON calling convention.
     */
    public void testJSONCallingConvention() throws Throwable {
-      String randomLong = HexConverter.toHexString(new Random().nextLong());
+      String randomLong = HexConverter.toHexString(CallingConventionTests.RANDOM.nextLong());
       String randomFive = randomLong.substring(0, 5);
 
       // Successful call
