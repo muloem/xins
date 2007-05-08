@@ -34,6 +34,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Fixed incorrect serviceURL for the _SMD meta function.
   - Removed unneeded parameters to the call to Utils.logIgnoredException.
   - Conditional redirection will not happen if the function returns an error.
+  - Removed deprecated method
+    APIServlet.service(ServletRequest, ServletResponse).
 
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.

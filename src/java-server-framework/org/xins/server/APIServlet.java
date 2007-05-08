@@ -196,53 +196,6 @@ extends HttpServlet {
    }
 
    /**
-    * Handles a request to this servlet. If any of the arguments is
-    * <code>null</code>, then the behaviour of this method is undefined.
-    *
-    * @param request
-    *    the servlet request, should not be <code>null</code>.
-    *
-    * @param response
-    *    the servlet response, should not be <code>null</code>.
-    *
-    * @throws NullPointerException
-    *    if this servlet is yet uninitialized.
-    *
-    * @throws ClassCastException
-    *    if <code>! (request instanceof {@link HttpServletRequest}
-    *    &amp;&amp; response instanceof {@link HttpServletResponse})</code>.
-    *
-    * @throws ServletException
-    *    if this servlet failed for some other reason that an I/O error.
-    *
-    * @throws IOException
-    *    if there is an error error writing to the response output stream.
-    *
-    * @deprecated the {@link #service(HttpServletRequest, HttpServletResponse)}
-    *    should be used.
-    */
-   public void service(ServletRequest  request,
-                       ServletResponse response)
-   throws NullPointerException,
-          ClassCastException,
-          ServletException,
-          IOException {
-
-      // Convert request and response to HTTP-specific variants
-      HttpServletRequest  httpRequest  = (HttpServletRequest)  request;
-      HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-      // Engine failed to initialize, return '500 Internal Server Error'
-      if (_engine == null) {
-         httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-         return;
-      }
-
-      // Pass control to the Engine
-      _engine.service(httpRequest, httpResponse);
-   }
-
-   /**
     * Handles an HTTP request to this servlet. If any of the arguments is
     * <code>null</code>, then the behaviour of this method is undefined.
     *
