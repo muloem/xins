@@ -554,7 +554,7 @@ final class ConfigManager {
    /**
     * Indicates whether the runtime property file was read successfully.
     * 
-    * @retrun
+    * @return
     *    <code>true</code> if the runtime properties are loaded correctly, 
     *    <code>false</code> otherwise.
     */

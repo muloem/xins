@@ -273,7 +273,7 @@ public final class PropertyReaderUtils {
     * @throws IllegalArgumentException
     *    if <code>properties == null || buffer == null</code>.
     *
-    * @deprecated since XINS 2.0, use {@link #serialize(PropertyReader, String)}
+    * @deprecated since XINS 2.0, use {@link #toString(PropertyReader, String)}
     */
    public static void serialize(PropertyReader   properties,
                                 FastStringBuffer buffer,
