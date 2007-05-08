@@ -953,7 +953,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          redirection = _loginPage + "&targetcommand=" + command;
       }
 
-      if (redirection == null && _conditionalRedirectionMap.get(functionName) != null) {
+      if (redirection == null && xinsResult.getErrorCode() == null && _conditionalRedirectionMap.get(functionName) != null) {
          Templates conditionTemplate = (Templates) _conditionalRedirectionMap.get(functionName);
          try {
             redirection = translate(xmlResult, conditionTemplate);
@@ -974,7 +974,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       // Return the location of the redirection
       if (redirection.equals("/")) {
          redirection = _defaultCommand;
-      } else if (!redirection.startsWith("http://")) {
+      } else if (!redirection.startsWith("http://") && !redirection.startsWith("https://")) {
          redirection = "?command=" + redirection;
          PropertyReader parameters = xinsResult.getParameters();
          if (parameters != null) {
