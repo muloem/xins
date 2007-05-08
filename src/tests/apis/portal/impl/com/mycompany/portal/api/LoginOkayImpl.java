@@ -41,7 +41,11 @@ public final class LoginOkayImpl extends LoginOkay {
    public Result call(Request request) throws Throwable {
       SuccessfulResult result = new SuccessfulResult();
       // TODO do this in the framework when the login page is successful
+      if (request.getUserName().equals("superman")) {
+         throw new Exception("kriptonite");
+      }
       _session.setProperty(_session.getSessionId(), Boolean.TRUE);
+      _session.removeProperty("password");
       return result;
    }
 }

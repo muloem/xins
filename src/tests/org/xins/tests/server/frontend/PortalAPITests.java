@@ -149,7 +149,7 @@ public class PortalAPITests extends TestCase {
       assertEquals("", result);
    }
 
-   /* test failing public void testSourceMode() throws Exception {
+   public void testSourceMode() throws Exception {
       BasicPropertyReader params = createLoginParams();
       callCommand(params);
       BasicPropertyReader params2 = new BasicPropertyReader();
@@ -161,7 +161,7 @@ public class PortalAPITests extends TestCase {
       assertEquals("commandresult", result.getLocalName());
       assertEquals(4, result.getChildElements("parameter").size());
       assertEquals(1, result.getAttributeMap().size());
-   }*/
+   }
 
    public void testTemplateMode() throws Exception {
       BasicPropertyReader params = createLoginParams();
@@ -172,7 +172,7 @@ public class PortalAPITests extends TestCase {
       assertEquals("stylesheet", result.getLocalName());
    }
 
-   /*public void testInvalidRequest() throws Exception {
+   public void testInvalidRequest() throws Exception {
       BasicPropertyReader params = createLoginParams();
       params.set("username", "bla@bla");
       params.remove("password");
@@ -183,11 +183,15 @@ public class PortalAPITests extends TestCase {
       Element result = parser.parse(new StringReader(xmlResult));
       assertEquals("commandresult", result.getLocalName());
       assertTrue("No FieldError found", xmlResult.indexOf("error.type\">FieldError") != -1);
-      assertTrue("No mantatory field found", xmlResult.indexOf("type=\"mand\" field=\"password\"") != -1);
-      assertTrue("Invalid field found", xmlResult.indexOf("type=\"format\" field=\"username\"") != -1);
-   }*/
+      assertTrue("No mantatory field found", 
+            xmlResult.indexOf("type=\"mand\" field=\"password\"") != -1 ||
+            xmlResult.indexOf("field=\"password\" type=\"mand\"") != -1);
+      assertTrue("Invalid field found", 
+            xmlResult.indexOf("type=\"format\" field=\"username\"") != -1 ||
+            xmlResult.indexOf("field=\"username\" type=\"format\"") != -1);
+   }
 
-   /*public void testInvalidRequest() throws Exception {
+   public void testInvalidRequest2() throws Exception {
       BasicPropertyReader params = createLoginParams();
       params.remove("password");
       params.set("mode", "source");
@@ -199,17 +203,41 @@ public class PortalAPITests extends TestCase {
       Element error = result.getUniqueChildElement("data").getUniqueChildElement("errorlist").getUniqueChildElement("fielderror");
       assertEquals("mand", error.getAttribute("type"));
       assertEquals("password", error.getAttribute("field"));
-   }*/
+   }
 
-   /*public void testSimpleRedirection() throws Exception {
+   public void testSimpleRedirection() throws Exception {
+      BasicPropertyReader paramsLogin = createLoginParams();
+      String xmlResult = callCommand(paramsLogin);
+      
       BasicPropertyReader params = new BasicPropertyReader();
       String redirection = callRedirection(params);
-      assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=DefaultCommand"));
+      assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=MainPage"));
+   }
 
-      params.set("command", "DefaultCommand");
-      String redirection2 = callRedirection(params);
-      assertTrue("Incorrect returned redirection: " + redirection2, redirection2.endsWith("?command=Login"));
-   }*/
+   public void testInternalError() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("username", "superman");
+      String result = callCommand(params);
+      assertTrue(result.indexOf("<html ") != -1);
+      assertTrue(result.indexOf("An unknown error has occurred") != -1);
+   }
+
+   public void testXSLTError() throws Exception {
+      BasicPropertyReader params = createLoginParams();
+      params.set("username", "superhuman");
+      callCommand(params);
+      
+      BasicPropertyReader params2 = new BasicPropertyReader();
+      params2.set("command", "MainPage");
+      HTTPServiceCaller callControl = new HTTPServiceCaller(_target);
+      HTTPCallRequest callRequest = new HTTPCallRequest(params2);
+      HTTPCallResult callResult = callControl.call(callRequest);
+      assertTrue("Incorrect status code returned: " + callResult.getStatusCode(),
+            callResult.getStatusCode() == 500);
+      String htmlResult = callResult.getString();
+      assertTrue(htmlResult.indexOf("<html ") != -1);
+      assertTrue(htmlResult.indexOf("A technical error occured") != -1);
+   }
 
    public void testConditionalRedirection() throws Exception {
       BasicPropertyReader params = createLoginParams();

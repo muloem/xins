@@ -11,10 +11,14 @@
 			<xsl:call-template name="header">
 				<xsl:with-param name="title" select="'Search pet'" />
 			</xsl:call-template>
+
 			<body>
 				<xsl:call-template name="page-header">
 					<xsl:with-param name="title" select="'Search pet'" />
 				</xsl:call-template>
+				<xsl:if test="parameter[@name='session.username'] = 'superhuman'">
+					<xsl:message terminate="yes">Only human allowed!</xsl:message>
+				</xsl:if>
 				<div id="content">
 					<xsl:call-template name="error" />
 					<form name="form1" method="{$form-method}" action="{$application-url}">
