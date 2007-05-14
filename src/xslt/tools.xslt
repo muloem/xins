@@ -468,6 +468,9 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 				<param name="project_home" expression="{$project_home}" />
 				<param name="endpoint" expression="${{smd.endpoint}}" />
 			</xslt>
+			<replace file="{$builddir}/smd/${{api.name}}.smd">
+				<replacefilter token="//?_convention=_xins-jsonrpc" value="/?_convention=_xins-jsonrpc" />
+			</replace>
 		</target>
 	</xsl:template>
 </xsl:stylesheet>
