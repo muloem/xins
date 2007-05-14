@@ -216,10 +216,8 @@ public final class FileWatcher extends Thread {
     */
    private void firstCheck() {
 
-      String subjectMethod = "canRead";
       try {
          if (_file.canRead()) {
-            subjectMethod = "lastModified()";
             _lastModified = _file.lastModified();
          }
 
@@ -428,7 +426,6 @@ public final class FileWatcher extends Thread {
 
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
-            String subjectMethod = "fileNotFound()";
             Utils.logIgnoredException(exception);
          }
 
@@ -444,7 +441,6 @@ public final class FileWatcher extends Thread {
 
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
-            String subjectMethod = "fileFound()";
             Utils.logIgnoredException(exception);
          }
 
@@ -460,7 +456,6 @@ public final class FileWatcher extends Thread {
 
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
-            String subjectMethod = "fileModified()";
             Utils.logIgnoredException(exception);
          }
 
@@ -473,7 +468,6 @@ public final class FileWatcher extends Thread {
 
          // Ignore any exceptions thrown by the listener callback method
          } catch (Throwable exception) {
-            String subjectMethod = "fileNotModified()";
             Utils.logIgnoredException(exception);
          }
       }
