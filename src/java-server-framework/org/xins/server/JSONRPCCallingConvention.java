@@ -27,7 +27,6 @@ import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
-import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.ErrorCodeSpec;
@@ -171,7 +170,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
          }
          if (xinsResult.getErrorCode() != null) {
             if (version == null) {
-               returnObject.put("result", (Object) null);
+               returnObject.put("result", JSONObject.NULL);
                returnObject.put("error", xinsResult.getErrorCode());
             } else {
                JSONObject errorObject = new JSONObject();
@@ -187,7 +186,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
             JSONObject paramsObject = createResultObject(xinsResult);
             returnObject.put("result", paramsObject);
             if (version == null) {
-               returnObject.putOpt("error", (Object) null);
+               returnObject.put("error", JSONObject.NULL);
             }
          }
          Object requestId = httpRequest.getSession().getAttribute("id");
