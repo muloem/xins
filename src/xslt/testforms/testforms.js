@@ -16,7 +16,7 @@ function doRequest(form) {
 
    iframe.src = "about:blank";
    for (var i = 0; i != elems.length; i++) {
-      if (!(name = elems[i].name) || name == '_environment') {
+      if (!(name = elems[i].name) || name == '_environment' || name == '_autofill') {
          continue;
       }
 
