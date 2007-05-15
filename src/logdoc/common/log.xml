@@ -321,7 +321,5 @@
 		</entry>
 	</group>
 
-	<group id="threads" name="Threading" />
-
 	<group id="types" name="Types" />
 </log>
