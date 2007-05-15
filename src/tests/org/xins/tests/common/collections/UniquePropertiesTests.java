@@ -6,12 +6,8 @@
  */
 package org.xins.tests.common.collections;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.io.ByteArrayInputStream;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -62,7 +58,7 @@ public class UniquePropertiesTests extends TestCase {
    public void testUniquePropertiesStream() throws Exception {
       UniqueProperties props = new UniqueProperties();
       String data = "hello=world\nhi=world\nhello=world2";
-      StringReader reader = new StringReader(data);
+      ByteArrayInputStream reader = new ByteArrayInputStream(data.getBytes());
       props.load(reader);
       assertFalse(props.isUnique());
       assertEquals("world2", props.get("hello"));
