@@ -51,8 +51,6 @@ public class InvalidRequestException extends StandardErrorCodeException {
    throws IllegalArgumentException {
       super(request, target, duration, resultData,
             determineDetail(resultData));
-
-      // TODO for XINS 1.3: Parse details
    }
 
    /**

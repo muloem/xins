@@ -37,7 +37,7 @@ public class UnacceptableMessageException extends XINSCallException {
     * The error message.
     */
    private String _message;
-   // TODO: Log UnacceptableRequestException! (not in this class though)
+
    /**
     * Constructs a new <code>UnacceptableMessageException</code> using the
     * specified <code>AbstractCAPICallRequest</code>.

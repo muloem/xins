@@ -74,8 +74,6 @@ implements XINSCallResultData {
       // Check additional precondition
       MandatoryArgumentChecker.check("resultData", resultData);
 
-      // TODO: Check all mandatory arguments at once
-
       // Result object must be unsuccessful
       String errorCode = resultData.getErrorCode();
       if (errorCode == null) {

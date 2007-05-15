@@ -179,8 +179,6 @@ public abstract class AbstractCAPI {
       MandatoryArgumentChecker.check("properties", properties,
                                      "apiName",    apiName);
 
-      // TODO: Check validity of API name
-
       // Determine property name
       String propName = "capis." + apiName;
 

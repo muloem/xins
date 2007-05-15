@@ -89,7 +89,6 @@ public abstract class AbstractCAPICallResult implements Serializable {
     * @since XINS 1.1.0
     */
    public final long duration() {
-      // TODO: Duration of succeeded call or of the complete attempt?
       return _result.getDuration();
    }
 

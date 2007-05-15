@@ -351,9 +351,6 @@ public final class XINSCallRequest extends CallRequest {
       // Since XINS 1.0.1: Use XINS 1.0 standard calling convention
       _httpParams.set(SECRET_KEY, "_convention", "_xins-std");
 
-      // TODO: Get convention parameter name from a class in XINS/Java Common Library
-      // TODO: Get convention name from a class in XINS/Java Common Library
-
       // Add the diagnostic context ID to the parameter list, if there is one
       String contextID = NDC.peek();
       if (contextID != null) {
@@ -517,7 +514,6 @@ public final class XINSCallRequest extends CallRequest {
       if (dataSection == null) {
          _httpParams.set(SECRET_KEY, "_data", null);
       } else {
-         // TODO: Do not recreate ElementSerializer each time
          ElementSerializer serializer = new ElementSerializer();
          String xmlDataSection = serializer.serialize(dataSection);
          _httpParams.set(SECRET_KEY, "_data", xmlDataSection);

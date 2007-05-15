@@ -128,8 +128,6 @@ extends XINSCallException {
       // Check additional precondition
       MandatoryArgumentChecker.check("resultData", resultData);
 
-      // TODO: Check all mandatory arguments at once
-
       // Store details
       _result = resultData;
    }

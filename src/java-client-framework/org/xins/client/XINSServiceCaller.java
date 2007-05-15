@@ -398,9 +398,6 @@ public final class XINSServiceCaller extends ServiceCaller {
             // Serialize the exception chain
             String chain = exception.getMessage();
 
-            // TODO: Will dataSection.toString() serialize the dataSection
-            //       appropriately? For example, will '=' be escaped properly?
-
             Log.log_2113(request.getFunctionName(), params, duration, chain);
          }
 
@@ -600,7 +597,6 @@ public final class XINSServiceCaller extends ServiceCaller {
          String message = "Unexpected exception: " + exception.getClass().getName()
                + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
 
-         // TODO: Call Utils.logProgrammingError ?
          Log.log_2111(exception, url, function, params, duration);
          throw new UnexpectedExceptionCallException(request, target, duration, message, exception);
       }

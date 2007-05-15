@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
   - Removed the DataElement class replaced by org.xins.common.xml.Element.
+  - Removed some TODO statement no longer relevant.
 
 * Generated build file:
   - Use <property file="..."/> instead of <loadproperties/> task as
