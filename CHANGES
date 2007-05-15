@@ -28,6 +28,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Fixed incorrect possible error message in UppercaseTask.
   - Added comment that the container package should not be used as it may
     be removed.
+  - Added support for TargetDescriptor for BeanUtils.getParametersAsObject().
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.
@@ -43,7 +44,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
   - Removed the DataElement class replaced by org.xins.common.xml.Element.
-  - Removed some TODO statement no longer relevant.
+  - Removed some TODO statements no longer relevant.
 
 * Generated build file:
   - Use <property file="..."/> instead of <loadproperties/> task as
@@ -700,6 +701,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Do not check the dependency type in impl.xml as a dependency cannot have a
     type.
   - Ask confirmation before generating the stub files.
+
 
 * Lodoc:
   - Ignorable exceptions shouldn't be logged at ERROR level.

@@ -23,6 +23,7 @@ import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.service.Descriptor;
+import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.TextUtils;
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.ItemList;
@@ -609,6 +610,8 @@ public class BeanUtils {
             paramValue = ((ItemList) paramValue).get();
          } else if (paramValue instanceof EnumItem) {
             paramValue = ((EnumItem) paramValue).getValue();
+         } else if (paramValue instanceof TargetDescriptor) {
+            paramValue = ((TargetDescriptor) paramValue).getURL();
          } else if (paramValue instanceof Descriptor) {
             // TODO: Not supported yet
          }
