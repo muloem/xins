@@ -1030,12 +1030,12 @@ final class Engine {
             if (pathURL != null) {
                baseURL = pathURL.toExternalForm();
             } else {
-               // TODO log
+               Log.log_3517(path, null);
             }
          }
       } catch (MalformedURLException muex) {
          // Let the base URL be null
-         // TODO log with the detail of the exception
+         Log.log_3517(path, muex.getMessage());
       }
       return baseURL;
    }

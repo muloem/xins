@@ -135,6 +135,7 @@
 	<translation entry="3514">Caching parsed request XML.</translation>
 	<translation entry="3515">Not caching parsed request XML since the content-type is not "text/xml".</translation>
 	<translation entry="3516">Skipped call to the function name <value-of-param name="functionName" format="quoted" /> with input paramter <value-of-param name="inParams" />.</translation>
+	<translation entry="3517">Impossible to find the path located at <value-of-param name="path" />. Reason: <value-of-param name="reason" />.</translation>
 
 	<translation entry="3520">Received an invalid HTTP request from <value-of-param name="ip" />. The request method <value-of-param name="method" format="quoted" /> is not supported/allowed. Query string is <value-of-param name="queryString" format="quoted" />.</translation>
 	<translation entry="3521">Received HTTP <value-of-param name="method" /> request from <value-of-param name="ip" />, path is <value-of-param name="path" format="quoted" />, query string is <value-of-param name="queryString" format="quoted" />.</translation>

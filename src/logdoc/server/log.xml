@@ -571,6 +571,11 @@
 			<param name="functionName" />
 			<param name="inParams" type="text"         />
 		</entry>
+		<entry id="3517" level="WARNING">
+			<description>Unable to find the specified path in the WAR file.</description>
+			<param name="path" />
+			<param name="reason" />
+		</entry>
 	</group>
 
 	<group id="runtime.http" name="HTTP-level">
