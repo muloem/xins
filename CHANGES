@@ -30,6 +30,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
     be removed.
   - Added support for TargetDescriptor for BeanUtils.getParametersAsObject().
   - Added a log when the convertion fails in BeanUtils.
+  - Removed some TODO statements no longer relevant.
 
 * XINS/Java Server Framework:
   - Removed deprecated class FormattedDate.

@@ -64,7 +64,5 @@ extends GenericCallException {
       super("Unexpected exception caught",
             request, target, duration, detail, cause);
       MandatoryArgumentChecker.check("cause", cause);
-
-      // TODO: Check all arguments at once
    }
 }

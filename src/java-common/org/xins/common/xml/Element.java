@@ -361,7 +361,6 @@ public class Element implements Cloneable {
       if (child == this) {
          String message = "child == this";
          Log.log_1050(CLASSNAME, METHODNAME, Utils.getCallingClass(), Utils.getCallingMethod(), message);
-         // TODO: Log.log_1050 for every IllegalArgumentException
          throw new IllegalArgumentException(message);
       }
 
@@ -392,7 +391,6 @@ public class Element implements Cloneable {
       if (child == this) {
          String message = "child == this";
          Log.log_1050(CLASSNAME, METHODNAME, Utils.getCallingClass(), Utils.getCallingMethod(), message);
-         // TODO: Log.log_1050 for every IllegalArgumentException
          throw new IllegalArgumentException(message);
       }
 

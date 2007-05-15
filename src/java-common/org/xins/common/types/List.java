@@ -109,8 +109,6 @@ public abstract class List extends Type {
    protected final Object fromStringImpl(String string)
    throws TypeValueException {
 
-      // TODO: Unit test this method!
-
       // Construct a ItemList to store the values in
       ItemList list = createList();
 

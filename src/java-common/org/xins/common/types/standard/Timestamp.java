@@ -233,8 +233,6 @@ public class Timestamp extends Type {
 
    protected final boolean isValidValueImpl(String value) {
 
-      // TODO: Use parse methods available in J2SE for more accuracy
-
       // First check the length
       if (value.length() != 14) {
          return false;
