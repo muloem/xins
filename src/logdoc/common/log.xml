@@ -322,4 +322,15 @@
 	</group>
 
 	<group id="types" name="Types" />
+
+	<group id="utils" name="Utilities">
+		<entry id="1600" level="WARNING">
+			<description>Error when trying to convert a value.</description>
+			<param name="value" type="text" />
+			<param name="valueClass" type="text" />
+			<param name="destClass" type="text" />
+			<param name="exceptionClass" type="text" nullable="false" />
+			<param name="reason" type="text" />
+		</entry>
+	</group>
 </log>

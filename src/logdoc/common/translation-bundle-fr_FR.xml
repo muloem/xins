@@ -75,4 +75,6 @@
 	<translation entry="1514">Pas de resource trouvée dans le fichier WAR à <value-of-param name="location" format="quoted" />. Raison: <value-of-param name="reason" /></translation>
 
 	<translation entry="1550">Le système n'a pas pu créé un parseur SAX.</translation>
+
+	<translation entry="1600">Erreur (<value-of-param name="exceptionClass" />) lors de la convertion de <value-of-param name="value" format="quoted" /> de la classe <value-of-param name="valueClass" /> vers <value-of-param name="destClass" />. Détails: <value-of-param name="reason" /></translation>
 </translation-bundle>

@@ -267,7 +267,8 @@ public class BeanUtils {
             return origValue;
          }
       } catch (Exception ex) {
-         // TODO log
+         Class valueClass = origValue == null ? null : origValue.getClass();
+         Log.log_1600(String.valueOf(origValue), valueClass.getName(), destClass.getName(), ex.getClass().getName(), ex.getMessage());
       }
       return null;
    }
