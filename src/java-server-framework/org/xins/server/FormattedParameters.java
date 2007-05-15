@@ -58,7 +58,6 @@ class FormattedParameters {
 
    /**
     * String representation of the parameters including the data section.
-    * TODO This class should move to common to also be used by the client.
     *
     * @return
     *    the String representation of the request or "-" if the request is empty.

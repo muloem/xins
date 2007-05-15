@@ -717,8 +717,6 @@ public abstract class API extends Manageable {
          }
       }
 
-      // TODO: Call initImpl2(PropertyReader) ?
-
       Log.log_3406(_name);
    }
 
