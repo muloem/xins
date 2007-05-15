@@ -1073,7 +1073,6 @@ final class Engine {
          try {
             _smd = createSMD();
          } catch (Exception ex) {
-            // TODO log
             throw new IOException(ex.getMessage());
          }
       }

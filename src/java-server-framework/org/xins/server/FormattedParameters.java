@@ -13,7 +13,7 @@ import org.xins.common.text.URLEncoding;
 import org.xins.common.xml.Element;
 
 /**
- * Logdoc-serializable for parameters.
+ * Convert parameters to (semi) human readable text.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>

@@ -602,8 +602,6 @@ public abstract class API extends Manageable {
       // Store runtime settings
       _runtimeSettings = runtimeSettings;
 
-      // TODO: Investigate whether we can take the configuration file reload
-      //       interval from somewhere (ConfigManager? Engine?).
       String propName  = ConfigManager.CONFIG_RELOAD_INTERVAL_PROPERTY;
       String propValue = runtimeSettings.get(propName);
       int interval = ConfigManager.DEFAULT_CONFIG_RELOAD_INTERVAL;

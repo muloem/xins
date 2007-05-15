@@ -309,7 +309,6 @@ public class JSONRPCCallingConvention extends CallingConvention {
             return new FunctionRequest(functionName, null, null, true);
          }
 
-         // TODO take the other way to pass parameter into account
          Object paramsParam = requestObject.get("params");
          if (paramsParam instanceof JSONArray) {
             JSONArray paramsArray = (JSONArray) paramsParam;
@@ -422,8 +421,6 @@ public class JSONRPCCallingConvention extends CallingConvention {
          }
          serviceObject.put("procs", procs);
       } catch (InvalidSpecificationException ex) {
-         // TODO log
-         System.err.println(ex.getMessage());
          return serviceObject;
       }
       return serviceObject;
@@ -472,7 +469,6 @@ public class JSONRPCCallingConvention extends CallingConvention {
     */
    private String getErrorDescription(String functionName, String errorCode) {
       if (errorCode.equals("_InvalidRequest")) {
-         // TODO explain what is invalid
          return "The request is invalid.";
       } else if (errorCode.equals("_InvalidResponse")) {
          return "The response is invalid.";

@@ -97,66 +97,6 @@ abstract class CallingConvention extends Manageable {
    }
 
    /**
-    * Changes a parameter set to remove all parameters that should not be
-    * passed to functions.
-    *
-    * <p>A parameter will be removed if it matches any of the following
-    * conditions:
-    *
-    * <ul>
-    *    <li>parameter name is <code>null</code>;
-    *    <li>parameter name is empty;
-    *    <li>parameter value is <code>null</code>;
-    *    <li>parameter value is empty;
-    *    <li>parameter name equals <code>"function"</code>.
-    * </ul>
-    *
-    * <p>TODO: Move this method elsewhere, as this behaviour is specific for
-    * certain calling conventions, it is considered deprecated and it is
-    * likely to be changed in XINS 2.0.
-    *
-    * @param parameters
-    *    the {@link BasicPropertyReader} containing the set of parameters
-    *    to investigate, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>parameters == null</code>.
-    */
-   static void cleanUpParameters(BasicPropertyReader parameters)
-   throws IllegalArgumentException {
-
-      // Check arguments
-      MandatoryArgumentChecker.check("parameters", parameters);
-
-      // Get the parameter names
-      Iterator names = parameters.getNames();
-
-      // Loop through all parameters
-      ArrayList toRemove = new ArrayList();
-      while (names.hasNext()) {
-
-         // Determine parameter name and value
-         String name  = (String) names.next();
-         String value = parameters.get(name);
-
-         // If the parameter name or value is empty, or if the name is
-         // "function", then mark the parameter as 'to be removed'.
-         // Parameters starting with an underscore are reserved for XINS, so
-         // mark these as 'to be removed' as well.
-         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) || "function".equals(name) || name.charAt(0) == '_') {
-            toRemove.add(name);
-         }
-      }
-
-      // If there is anything to remove, then do so
-      Iterator itRemove = toRemove.iterator();
-      while (itRemove.hasNext()) {
-         String name = (String) itRemove.next();
-         parameters.set(name, null);
-      }
-   }
-
-   /**
     * Determines the current API.
     *
     * @return
@@ -293,10 +233,6 @@ abstract class CallingConvention extends Manageable {
       // NOTE: We do not log this exception, because it would possibly show up
       //       in the logs on a regular basis, drawing attention to a
       //       non-issue.
-      //
-      // TODO: There is a conflict with the documentation of the matches
-      //       method. The latter indicates an exception thrown by that method
-      //       is logged as an ignorable exception
       } catch (Throwable exception) {
          return false;
       }
@@ -710,6 +646,62 @@ abstract class CallingConvention extends Manageable {
          } while (params.hasMoreElements());
       }
       return pr;
+   }
+
+   /**
+    * Changes a parameter set to remove all parameters that should not be
+    * passed to functions.
+    *
+    * <p>A parameter will be removed if it matches any of the following
+    * conditions:
+    *
+    * <ul>
+    *    <li>parameter name is <code>null</code>;
+    *    <li>parameter name is empty;
+    *    <li>parameter value is <code>null</code>;
+    *    <li>parameter value is empty;
+    *    <li>parameter name equals <code>"function"</code>.
+    * </ul>
+    *
+    * @param parameters
+    *    the {@link BasicPropertyReader} containing the set of parameters
+    *    to investigate, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>parameters == null</code>.
+    */
+   static void cleanUpParameters(BasicPropertyReader parameters)
+   throws IllegalArgumentException {
+
+      // Check arguments
+      MandatoryArgumentChecker.check("parameters", parameters);
+
+      // Get the parameter names
+      Iterator names = parameters.getNames();
+
+      // Loop through all parameters
+      ArrayList toRemove = new ArrayList();
+      while (names.hasNext()) {
+
+         // Determine parameter name and value
+         String name  = (String) names.next();
+         String value = parameters.get(name);
+
+         // If the parameter name or value is empty, or if the name is
+         // "function", then mark the parameter as 'to be removed'.
+         // Parameters starting with an underscore are reserved for XINS, so
+         // mark these as 'to be removed' as well.
+         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(value) || "function".equals(name) || name.charAt(0) == '_') {
+            toRemove.add(name);
+         }
+      }
+
+      // If there is anything to remove, then do so
+      Iterator itRemove = toRemove.iterator();
+      while (itRemove.hasNext()) {
+         String name = (String) itRemove.next();
+         parameters.set(name, null);
+      }
    }
 
    /**

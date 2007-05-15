@@ -43,6 +43,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
     APIServlet.service(ServletRequest, ServletResponse).
   - Null JSON objects should be specified with JSONObject.NULL and not null.
   - Added logging when the requested path cannot be found in the WAR file.
+  - Removed some TODO statements no longer relevant.
 
 * XINS/Java Client Framework:
   - Removed methods using the LogdocSerializable class.
