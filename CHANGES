@@ -66,6 +66,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
 * Examples:
   - Added new Ajax example using the DOJO toolkit.
+  - Upgraded Sarissa.js to version 0.9.7.8.
+  - Changed Sarissa.js license to Apache 2.0.
 
 * Tests:
   - Splitted the CallingCallingTests class in several classes according to
@@ -84,6 +86,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 2:
   - Added new clean-release target.
   - Upgraded installer to Inno Setup version 5.1.12.
   - Added xmlenc license to the release.
+  - Added Sarissa license to the release.
+  - Added myproject.smd to the release.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 1:
