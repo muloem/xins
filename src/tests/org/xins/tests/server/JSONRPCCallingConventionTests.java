@@ -186,11 +186,11 @@ public class JSONRPCCallingConventionTests extends TestCase {
       if (success) {
          String outputText = result.getString("outputText");
          assertEquals("Incorrect result received: " + outputText, randomFive + " added.", outputText);
-         assertNull(error);
+         assertEquals(JSONObject.NULL, error);
       } else {
          assertNotNull(error);
          assertEquals("Incorrect error code received: " + error, "AlreadySet", error);
-         assertNull(result);
+         assertEquals(JSONObject.NULL, result);
       }
    }
 
