@@ -238,7 +238,7 @@ public final class ErrorCodeSpec {
 
       MandatoryArgumentChecker.check("reader", reader, "reference", reference);
       ElementParser parser = new ElementParser();
-      Element errorCode = null;
+      Element errorCode;
       try {
          errorCode = parser.parse(reader);
       } catch (ParseException pe) {

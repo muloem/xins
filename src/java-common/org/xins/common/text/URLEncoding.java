@@ -259,7 +259,7 @@ public final class URLEncoding {
     *    'A' or 'F'.
     */
    private static int digit(int charAsInt, String s, int index) throws FormatException {
-      int decodedValue = 0;
+      int decodedValue;
       if (charAsInt >= CHAR_ZERO && charAsInt <= CHAR_NINE) {
          decodedValue = charAsInt - CHAR_ZERO;
       } else if (charAsInt >= CHAR_LOWER_A && charAsInt <= CHAR_LOWER_F) {

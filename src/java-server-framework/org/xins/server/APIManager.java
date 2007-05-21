@@ -359,7 +359,7 @@ public final class APIManager implements APIManagerMBean {
     *    if the MBeanServer cannot be found or created or one of the registered MBean fails.
     */
    static void registerMBean(API api) throws Throwable {
-      javax.management.MBeanServer mBeanServer = null;
+      javax.management.MBeanServer mBeanServer;
       try {
          mBeanServer = (javax.management.MBeanServer) Class.forName("java.lang.management.ManagementFactory").getMethod("getPlatformMBeanServer", null).invoke(null, null);
       } catch (ClassNotFoundException cnfe) {

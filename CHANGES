@@ -9,13 +9,21 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 * XINS/Java Common Library:
   - Removed unused code detected by PMD.
   - Fixed Javadoc and other small problems detected by Checkstyle.
+  - Fixed incorrect class cast in BeanUtils.
+  - Fixed NPE in XinsCapiFactoryBean.
+  - Several small changes pointed by FindBugs tool.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
   - Fixed Javadoc and other small problems detected by Checkstyle.
+  - Use notifyAll() to wake up the runtime property file watcher.
+  - If the conditional redirection in XINS FF fails try the standard
+    redirection mapping.
+  - Several small changes pointed by FindBugs tool.
 
 * XINS/Java Client Framework:
   - Removed unused code detected by PMD.
+  - Several small changes pointed by FindBugs tool.
 
 * Tools:
   - Added 2007 as allowed year in the java.header checkstyle file.

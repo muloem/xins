@@ -270,7 +270,7 @@ public class XSLTCallingConvention extends StandardCallingConvention {
       try {
 
          // Load the template or get it from the cache.
-         Templates templates = null;
+         Templates templates;
          if (_cacheTemplates && _templateCache.containsKey(xsltLocation)) {
             templates = (Templates) _templateCache.get(xsltLocation);
          } else {

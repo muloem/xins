@@ -508,7 +508,7 @@ public class Element implements Cloneable {
    public Element getUniqueChildElement(String elementName)
    throws ParseException {
 
-      List childList = null;
+      List childList;
       if (elementName == null) {
          childList = getChildElements();
       } else {

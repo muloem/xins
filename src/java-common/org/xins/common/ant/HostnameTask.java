@@ -138,10 +138,10 @@ public class HostnameTask extends Task {
          InputStream in = process.getInputStream();
 
          // Configure max expected hostname length
-         final int MAX = 500;
+         int maxHostNameLength = 500;
 
          // Read the whole output
-         byte[] bytes = new byte[MAX];
+         byte[] bytes = new byte[maxHostNameLength];
          int read = in.read(bytes);
          if (read < 0) {
             return null;

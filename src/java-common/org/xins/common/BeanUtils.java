@@ -269,8 +269,7 @@ public class BeanUtils {
             return origValue;
          }
       } catch (Exception ex) {
-         Class valueClass = origValue == null ? null : origValue.getClass();
-         Log.log_1600(String.valueOf(origValue), valueClass.getName(), destClass.getName(), ex.getClass().getName(), ex.getMessage());
+         Log.log_1600(String.valueOf(origValue), origValue.getClass().getName(), destClass.getName(), ex.getClass().getName(), ex.getMessage());
       }
       return null;
    }
@@ -459,7 +458,7 @@ public class BeanUtils {
          hungarianName = TextUtils.firstCharUpper((String) elementMapping.get(elementName));
       }
       //String newElementClassName = result.getClass().getName() + "." + elementName;
-      Object newElement = null;
+      Object newElement;
       try {
          newElement = getElementClass(hungarianName, result).newInstance();
       } catch (Exception ex) {
@@ -612,7 +611,7 @@ public class BeanUtils {
          if (paramValue instanceof Date.Value) {
             paramValue = ((Date.Value) paramValue).toDate();
          } else if (paramValue instanceof Timestamp.Value) {
-            paramValue = ((Date.Value) paramValue).toDate();
+            paramValue = ((Timestamp.Value) paramValue).toDate();
          } else if (paramValue instanceof PropertyReader) {
             paramValue = PropertyReaderConverter.toProperties((PropertyReader) paramValue);
          } else if (paramValue instanceof ItemList) {

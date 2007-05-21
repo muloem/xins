@@ -26,7 +26,7 @@ public class XinsCapiFactoryBean extends XinsClientInterceptor implements Factor
    }
 
    public Class getObjectType() {
-      if (capi != null) {
+      if (capi == null) {
          return AbstractCAPI.class;
       } else {
          return capi.getClass();

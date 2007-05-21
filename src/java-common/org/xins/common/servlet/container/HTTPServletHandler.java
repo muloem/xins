@@ -537,15 +537,16 @@ public class HTTPServletHandler {
             XINSServletResponse response = servlet.query(method, url, body, inHeaders);
 
             // Create the HTTP answer
-            httpResult = "HTTP/1.1 " + response.getStatus() + " " +
-                  HttpStatus.getStatusText(response.getStatus()) + CRLF;
+            StringBuffer sbHttpResult = new StringBuffer();
+            sbHttpResult.append("HTTP/1.1 " + response.getStatus() + " " +
+                  HttpStatus.getStatusText(response.getStatus()) + CRLF);
             PropertyReader outHeaders = response.getHeaders();
             Iterator itHeaderNames = outHeaders.getNames();
             while (itHeaderNames.hasNext()) {
                String nextHeader = (String) itHeaderNames.next();
                String headerValue = outHeaders.get(nextHeader);
                if (headerValue != null) {
-                  httpResult += nextHeader + ": " + headerValue + "\r\n";
+                  sbHttpResult.append(nextHeader + ": " + headerValue + "\r\n");
                }
             }
 
@@ -556,11 +557,12 @@ public class HTTPServletHandler {
                if (length < 0) {
                   length = result.getBytes(responseEncoding).length;
                }
-               httpResult += "Content-Length: " + length + "\r\n";
-               httpResult += "Connection: close\r\n";
-               httpResult += "\r\n";
-               httpResult += result;
+               sbHttpResult.append("Content-Length: " + length + "\r\n");
+               sbHttpResult.append("Connection: close\r\n");
+               sbHttpResult.append("\r\n");
+               sbHttpResult.append(result);
             }
+            httpResult = sbHttpResult.toString();
          }
       }
 
@@ -728,7 +730,7 @@ public class HTTPServletHandler {
     *    if an error occcurs when reading the URL.
     */
    private String readWebPage(String url) throws IOException {
-      String httpResult = null;
+      String httpResult;
       if (getClass().getResource(url) != null) {
          InputStream urlInputStream = getClass().getResourceAsStream(url);
          ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();

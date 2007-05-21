@@ -813,7 +813,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
 
       // Use the factory to create a template containing the xsl file
       // Load the template or get it from the cache.
-      Templates template = null;
+      Templates template;
       if (_cacheTemplates && _templateCache.containsKey(xsltUrl)) {
          template = (Templates) _templateCache.get(xsltUrl);
       } else {
@@ -898,7 +898,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
          _templateCache.clear();
       } else if ("RefreshCommandTemplateCache".equals(action)) {
          _templateCache.clear();
-         String xsltLocation = null;
+         String xsltLocation;
          Iterator itRealFunctions = _api.getFunctionList().iterator();
          while (itRealFunctions.hasNext()) {
             Function nextFunction = (Function) itRealFunctions.next();
@@ -962,9 +962,11 @@ public class FrontendCallingConvention extends CustomCallingConvention {
             redirection = translate(xmlResult, conditionTemplate);
          } catch (Exception ex) {
 
-            // throw ex;
+            // continue;
          }
-      } else if (redirection == null && xinsResult.getErrorCode() == null) {
+      }
+
+      if (redirection == null && xinsResult.getErrorCode() == null) {
          redirection = (String) _redirectionMap.get(functionName);
       }
 

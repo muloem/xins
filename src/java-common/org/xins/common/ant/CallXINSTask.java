@@ -157,7 +157,7 @@ public class CallXINSTask extends Task {
     */
    private void elementToProperties(Element element, String prefix) {
       String localName = element.getLocalName();
-      String elementPrefix = null;
+      String elementPrefix;
       if (prefix != null && prefix.length() > 0) {
          elementPrefix = prefix + "." + localName;
       } else {

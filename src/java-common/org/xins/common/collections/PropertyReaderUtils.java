@@ -480,7 +480,7 @@ public final class PropertyReaderUtils {
          // Append the key and the value, separated by an equals sign
          buffer.append(URLEncoding.encode(name));
          buffer.append('=');
-         String encodedValue = null;
+         String encodedValue;
          if (maxValueLength == -1 || value.length() <= maxValueLength) {
             encodedValue = URLEncoding.encode(value);
          } else {

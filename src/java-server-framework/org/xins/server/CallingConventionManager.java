@@ -287,7 +287,7 @@ class CallingConventionManager extends Manageable {
    private CallingConvention create(PropertyReader properties, String name) {
 
       // Determine the name of the CallingConvention class
-      String className = null;
+      String className;
       if (name.charAt(0) == '_') {
          className = classNameForRegular(name);
       } else {

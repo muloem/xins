@@ -213,7 +213,7 @@ public final class APISpec {
 
       MandatoryArgumentChecker.check("reader", reader, "reference", reference, "baseURL", baseURL);
       ElementParser parser = new ElementParser();
-      Element api = null;
+      Element api;
       try {
          api = parser.parse(reader);
       } catch (ParseException pe) {

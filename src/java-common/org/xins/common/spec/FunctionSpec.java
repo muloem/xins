@@ -386,7 +386,7 @@ public final class FunctionSpec {
       MandatoryArgumentChecker.check("reader", reader, "reference", reference, "baseURL", baseURL);
 
       ElementParser parser = new ElementParser();
-      Element function = null;
+      Element function;
       try {
          function = parser.parse(reader);
       } catch (ParseException pe) {

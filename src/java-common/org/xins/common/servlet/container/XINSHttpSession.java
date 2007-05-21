@@ -25,6 +25,11 @@ import javax.servlet.http.HttpSessionContext;
 public class XINSHttpSession implements HttpSession {
 
    /**
+    * The random generator
+    */
+   private final static Random RANDOM = new Random();
+
+   /**
     * The session attributes.
     */
    private Hashtable _attributes = new Hashtable();
@@ -37,7 +42,7 @@ public class XINSHttpSession implements HttpSession {
    /**
     * The ID of the session.
     */
-   private int _sessionID = new Random().nextInt();
+   private int _sessionID = RANDOM.nextInt();
 
    /**
     * Creates a new instance of XINSHttpSession.

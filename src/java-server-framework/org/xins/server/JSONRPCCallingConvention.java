@@ -221,8 +221,8 @@ public class JSONRPCCallingConvention extends CallingConvention {
     */
    private FunctionRequest parseGetRequest(HttpServletRequest httpRequest)
    throws InvalidRequestException, FunctionNotSpecifiedException {
-      String functionName = null;
-      PropertyReader functionParams = null;
+      String functionName;
+      PropertyReader functionParams;
       Element dataElement = null;
 
       String pathInfo = httpRequest.getPathInfo();
@@ -276,16 +276,17 @@ public class JSONRPCCallingConvention extends CallingConvention {
     */
    private FunctionRequest parsePostRequest(HttpServletRequest httpRequest)
    throws InvalidRequestException, FunctionNotSpecifiedException {
-      String functionName = null;
+      String functionName;
       BasicPropertyReader functionParams = new BasicPropertyReader();
       Element dataElement = null;
 
       // Read the message
+      // TODO replace with IOReader.readFully()
       StringBuffer requestBuffer = new StringBuffer(2048);
       try {
          Reader reader = httpRequest.getReader();
          char[] buffer = new char[2048];
-         int length = 0;
+         int length;
          while ((length = reader.read(buffer)) != -1) {
             requestBuffer.append(buffer, 0, length);
          }

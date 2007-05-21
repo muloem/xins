@@ -930,7 +930,7 @@ final class Engine {
    throws IOException {
 
       // Create the string with the supported HTTP methods
-      String[] methods = null;
+      String[] methods;
       if (cc != null) {
          methods = cc.getSupportedMethods(request);
       } else {

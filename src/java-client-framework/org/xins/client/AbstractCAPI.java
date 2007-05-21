@@ -287,7 +287,7 @@ public abstract class AbstractCAPI {
 
       // Lazily initialize _apiSpecification
       if (_apiSpecification == null) {
-         URL specsURL = null;
+         URL specsURL;
          CodeSource source = getClass().getProtectionDomain().getCodeSource();
          if (source != null) {
             URL sourceURL = source.getLocation();

@@ -221,7 +221,7 @@ class FileServiceCaller extends ServiceCaller {
          }
       }
 
-      XINSServletResponse response = null;
+      XINSServletResponse response;
       try {
          response = servletHandler.query(query.toString());
       } catch (IOException exception) {
@@ -232,7 +232,7 @@ class FileServiceCaller extends ServiceCaller {
       }
 
       // Retrieve the data returned from the call
-      HTTPCallResultData data = null;
+      HTTPCallResultData data;
       try {
          String result = response.getResult();
          byte[] resultData = null;

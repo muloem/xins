@@ -211,7 +211,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
                xmlRequest.getLocalName() + "\".");
       }
 
-      Element methodNameElem = null;
+      Element methodNameElem;
       try {
          methodNameElem = xmlRequest.getUniqueChildElement("methodName");
       } catch (ParseException pex) {
@@ -234,8 +234,8 @@ public class XMLRPCCallingConvention extends CallingConvention {
       Iterator itParam = paramsElem.getChildElements("param").iterator();
       while (itParam.hasNext()) {
          Element nextParam = (Element) itParam.next();
-         Element structElem = null;
-         Element valueElem = null;
+         Element structElem;
+         Element valueElem;
          try {
             valueElem = nextParam.getUniqueChildElement("value");
             structElem = valueElem.getUniqueChildElement(null);
@@ -275,7 +275,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
          } else if (structElem.getLocalName().equals("array")) {
 
             // Parse the input data section
-            Element dataElem = null;
+            Element dataElem;
             try {
                Element arrayElem = valueElem.getUniqueChildElement("array");
                dataElem = arrayElem.getUniqueChildElement("data");
@@ -477,9 +477,9 @@ public class XMLRPCCallingConvention extends CallingConvention {
     */
    private Element parseElement(Element valueElem, Map dataSection) throws ParseException {
       Element structElem = valueElem.getUniqueChildElement("struct");
-      DataSectionElementSpec elementSpec = null;
+      DataSectionElementSpec elementSpec;
       Iterator itMemberElems = structElem.getChildElements("member").iterator();
-      ElementBuilder builder = null;
+      ElementBuilder builder;
       if (itMemberElems.hasNext()) {
          Element memberElem = (Element) itMemberElems.next();
          Element memberNameElem = memberElem.getUniqueChildElement("name");

@@ -168,7 +168,7 @@ public class SOAPCallingConvention extends CallingConvention {
                envelopeElem.getLocalName() + "\".");
       }
 
-      Element functionElem = null;
+      Element functionElem;
       try {
          Element bodyElem = envelopeElem.getUniqueChildElement("Body");
          functionElem = bodyElem.getUniqueChildElement(null);
@@ -184,7 +184,7 @@ public class SOAPCallingConvention extends CallingConvention {
       httpRequest.setAttribute(FUNCTION_NAME, functionName);
       httpRequest.setAttribute(REQUEST_NAMESPACE, functionElem.getNamespaceURI());
 
-      Element parametersElem = null;
+      Element parametersElem;
       List parametersList = functionElem.getChildElements("parameters");
       if (parametersList.size() == 0) {
          parametersElem = functionElem;
@@ -310,11 +310,10 @@ public class SOAPCallingConvention extends CallingConvention {
     *    if the SOAP request is invalid.
     */
    protected Element readDataSection(Element parametersElem, String functionName) throws InvalidRequestException {
-      Element dataSection = null;
       Element transformedDataSection = null;
       List dataSectionList = parametersElem.getChildElements("data");
       if (dataSectionList.size() == 1) {
-         dataSection = (Element) dataSectionList.get(0);
+         Element dataSection = (Element) dataSectionList.get(0);
 
          try {
             FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
@@ -440,7 +439,7 @@ public class SOAPCallingConvention extends CallingConvention {
       Element dataElement = xinsResult.getDataElement();
       if (dataElement != null) {
 
-         Element transformedDataElement = null;
+         Element transformedDataElement;
          try {
             FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
             Map dataSectionSpec = functionSpec.getOutputDataSectionElements();

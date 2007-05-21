@@ -166,7 +166,7 @@ public abstract class List extends Type {
          }
 
          Object nextItem = value.getItem(i);
-         String stringItem = null;
+         String stringItem;
          try {
             stringItem = _itemType.toString(nextItem);
          } catch (Exception ex) {

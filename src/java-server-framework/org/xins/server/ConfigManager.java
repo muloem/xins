@@ -410,7 +410,7 @@ final class ConfigManager {
          _configFileListener.reinit();
       } else {
          synchronized (_configFileWatcher) {
-            _configFileWatcher.notify();
+            _configFileWatcher.notifyAll();
          }
       }
    }
@@ -481,7 +481,7 @@ final class ConfigManager {
       // Get the runtime property
       String prop = CONFIG_RELOAD_INTERVAL_PROPERTY;
       String s = _runtimeProperties.get(prop);
-      int interval = -1;
+      int interval;
 
       // If the property is set, parse it
       if (s != null && s.length() >= 1) {
@@ -609,7 +609,7 @@ final class ConfigManager {
             Log.log_3407("WEB-INF/xins.properties");
          }
 
-         boolean reinitialized = false;
+         boolean reinitialized;
 
          synchronized (RUNTIME_PROPERTIES_LOCK) {
 

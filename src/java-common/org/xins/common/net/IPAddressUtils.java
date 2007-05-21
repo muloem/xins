@@ -54,7 +54,7 @@ public final class IPAddressUtils {
    throws IllegalArgumentException, ParseException {
       MandatoryArgumentChecker.check("ip", ip);
 
-      int value = 0;
+      int value;
 
       // Tokenize the string
       StringTokenizer tokenizer = new StringTokenizer(ip, ".", false);
