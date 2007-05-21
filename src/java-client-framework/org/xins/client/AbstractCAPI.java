@@ -213,14 +213,14 @@ public abstract class AbstractCAPI {
     */
    private final String determineAPIName() {
 
-      String s = getAPINameImpl();
-      if (! TextUtils.isEmpty(s)) {
-         return s;
+      String apiName = getAPINameImpl();
+      if (! TextUtils.isEmpty(apiName)) {
+         return apiName;
       }
 
       // Subclass did not return anything, determine based on package name
       String className = getClass().getName();
-      int    index     = className.lastIndexOf(".capi.");
+      int index = className.lastIndexOf(".capi.");
       if (index > 0) {
          String s = className.substring(0, index);
          index = s.lastIndexOf('.');

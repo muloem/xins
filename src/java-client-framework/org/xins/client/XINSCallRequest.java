@@ -164,9 +164,6 @@ public final class XINSCallRequest extends CallRequest {
                           Element        dataSection)
    throws IllegalArgumentException {
 
-      // Determine instance number first
-      _instanceNumber = ++INSTANCE_COUNT;
-
       // Check preconditions
       MandatoryArgumentChecker.check("functionName", functionName);
 

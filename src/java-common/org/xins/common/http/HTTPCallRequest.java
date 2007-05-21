@@ -67,9 +67,6 @@ public final class HTTPCallRequest extends CallRequest {
    public HTTPCallRequest(PropertyReader         parameters,
                           HTTPStatusCodeVerifier statusCodeVerifier) {
 
-      // Determine instance number first
-      _instanceNumber = ++INSTANCE_COUNT;
-
       // Store information
       _parameters         = (parameters != null)
                           ? parameters
