@@ -297,7 +297,7 @@ public final class Utils {
 
          for (int i = 1; i < trace.length && sourceClass == null; i++) {
             StackTraceElement stackTraceElement = trace[i];
-            if (stackTraceElement.getClassName().equals(detectingClass) && 
+            if (stackTraceElement.getClassName().equals(detectingClass) &&
                   stackTraceElement.getMethodName().equals(detectingMethod)) {
 
                // Go one level up the stack trace to know which method threw the exception
@@ -434,7 +434,7 @@ public final class Utils {
 
          for (int i = 1; i < trace.length && sourceClass == null; i++) {
             StackTraceElement stackTraceElement = trace[i];
-            if (stackTraceElement.getClassName().equals(detectingClass) && 
+            if (stackTraceElement.getClassName().equals(detectingClass) &&
                   stackTraceElement.getMethodName().equals(detectingMethod)) {
 
                // Go one level up the stack trace to know which method threw the exception

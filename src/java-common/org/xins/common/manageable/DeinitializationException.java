@@ -6,6 +6,7 @@
  */
 package org.xins.common.manageable;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
@@ -43,9 +44,13 @@ public final class DeinitializationException extends Exception {
     *
     * @return
     *    the message, never <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>cause == null</code>.
     */
    private static String createMessage(Throwable cause)
    throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("cause", cause);
 
       String exceptionMessage = cause.getMessage();
 

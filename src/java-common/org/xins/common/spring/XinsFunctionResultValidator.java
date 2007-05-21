@@ -24,7 +24,7 @@ import org.xins.server.InvalidResponseResult;
 public class XinsFunctionResultValidator implements Validator {
 
    /**
-    * Creates a new instance of XinsFunctionResultValidator
+    * Creates a new instance of XinsFunctionResultValidator.
     */
    public XinsFunctionResultValidator() {
    }

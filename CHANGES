@@ -8,9 +8,11 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 
 * XINS/Java Common Library:
   - Removed unused code detected by PMD.
+  - Fixed Javadoc and other small problems detected by Checkstyle.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
+  - Fixed Javadoc and other small problems detected by Checkstyle.
 
 * XINS/Java Client Framework:
   - Removed unused code detected by PMD.

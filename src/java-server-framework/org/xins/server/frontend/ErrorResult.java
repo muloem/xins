@@ -54,7 +54,7 @@ class ErrorResult extends FunctionResult {
             int col = locator.getColumnNumber();
             String publicId = locator.getPublicId();
             String systemId = locator.getSystemId();
-            String detail = "line: " + line + "; col: " + col + 
+            String detail = "line: " + line + "; col: " + col +
                   "; public ID: " + publicId + "; system ID: " + systemId;
             param("error.location", detail);
          }
@@ -91,7 +91,7 @@ class ErrorResult extends FunctionResult {
           "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n" +
             "<body>\n" +
               "<h2>\n" +
-              "A technical error occured\n" + 
+              "A technical error occured\n" +
               "</h2>\n" +
               "<h3>Command</h3>\n" +
               "<xsl:value-of select=\"parameter[@name='error.command']/text()\" />\n" +

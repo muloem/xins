@@ -553,15 +553,15 @@ final class ConfigManager {
 
    /**
     * Indicates whether the runtime property file was read successfully.
-    * 
+    *
     * @return
-    *    <code>true</code> if the runtime properties are loaded correctly, 
+    *    <code>true</code> if the runtime properties are loaded correctly,
     *    <code>false</code> otherwise.
     */
    boolean propertiesRead() {
       return _propertiesRead;
    }
-   
+
    /**
     * Stops the config file watcher thread.
     */

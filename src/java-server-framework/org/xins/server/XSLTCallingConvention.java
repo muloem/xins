@@ -194,6 +194,10 @@ public class XSLTCallingConvention extends StandardCallingConvention {
     *
     * @param propertySuffix
     *    the suffix of the runtime property we're looking for, cannot be <code>null</code>.
+    *
+    * @return
+    *    the path location where to find the XSLT style sheet files or <code>null</code>
+    *    if no location is specified.
     */
    private String getXSLTLocation(PropertyReader runtimeProperties, String propertySuffix) {
 

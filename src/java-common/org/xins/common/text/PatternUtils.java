@@ -52,7 +52,7 @@ public final class PatternUtils {
     *
     * @since XINS 2.0.
     */
-   public static Pattern createPattern(String regexp) throws ProgrammingException {
+   public static Pattern createPattern(String regexp) throws IllegalArgumentException, ProgrammingException {
       MandatoryArgumentChecker.check("regexp", regexp);
       try {
          Pattern pattern = PATTERN_COMPILER.compile(regexp,

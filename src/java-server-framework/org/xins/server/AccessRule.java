@@ -193,9 +193,6 @@ public final class AccessRule implements AccessRuleContainer {
     * @return
     *    the next token, never <code>null</code>.
     *
-    * @throws NullPointerException
-    *    if <code>tokenizer == null</code>
-    *
     * @throws ParseException
     *    if <code>tokenizer.{@link StringTokenizer#hasMoreTokens()
     *    hasMoreTokens}() == false</code>.

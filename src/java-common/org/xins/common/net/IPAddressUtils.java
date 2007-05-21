@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.text.ParseException;
 
@@ -51,6 +52,7 @@ public final class IPAddressUtils {
     */
    public static int ipToInt(String ip)
    throws IllegalArgumentException, ParseException {
+      MandatoryArgumentChecker.check("ip", ip);
 
       int value = 0;
 

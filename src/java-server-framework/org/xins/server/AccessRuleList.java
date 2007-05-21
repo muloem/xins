@@ -224,7 +224,7 @@ public final class AccessRuleList implements AccessRuleContainer {
     *    if the specified IP address is malformed.
     */
    public Boolean isAllowed(String ip, String functionName)
-   throws IllegalArgumentException, ParseException {
+   throws IllegalStateException, IllegalArgumentException, ParseException {
 
       // Check state
       if (_disposed) {

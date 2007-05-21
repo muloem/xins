@@ -116,7 +116,7 @@ public final class List extends org.xins.common.types.List {
        * @throws IllegalArgumentException
        *    if <code>value == null</code>.
        */
-      public void add(String value) {
+      public void add(String value) throws IllegalArgumentException {
          MandatoryArgumentChecker.check("value", value);
          addItem(value);
       }

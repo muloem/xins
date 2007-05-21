@@ -194,7 +194,7 @@ public class XINSServletRequest implements HttpServletRequest {
       // Parse the URL
       int doubleSlashPos = url.lastIndexOf("://");
       int startPathPos = url.indexOf("/", doubleSlashPos + 1) + 1;
-      
+
       int questionMarkPos = url.lastIndexOf('?');
       if (questionMarkPos == url.length() - 1) {
          _queryString = "";

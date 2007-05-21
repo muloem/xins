@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderConverter;
@@ -68,7 +69,7 @@ public class BeanUtils {
     * @throws IllegalArgumentException
     *    if <code>source == null || destination == null</code>.
     */
-   public static Object populate(Object source, Object destination) {
+   public static Object populate(Object source, Object destination) throws IllegalArgumentException {
       return populate(source, destination, null);
    }
 
@@ -95,7 +96,8 @@ public class BeanUtils {
     * @throws IllegalArgumentException
     *    if <code>source == null || destination == null</code>.
     */
-   public static Object populate(Object source, Object destination, Properties propertiesMapping) {
+   public static Object populate(Object source, Object destination, Properties propertiesMapping)
+   throws IllegalArgumentException {
 
       MandatoryArgumentChecker.check("source", source, "destination", destination);
       // Go through all get methods of the source object
@@ -440,6 +442,12 @@ public class BeanUtils {
     *    the XML element object, cannot be <code>null</code>.
     * @param result
     *    the object to put the values in, cannot be <code>null</code>.
+    * @param elementMapping
+    *    a Map&lt;String, String&gt; that maps the name of the source element
+    *    to the name of the destination object, can be <code>null</code>.
+    * @param attributeMapping
+    *    a Map&lt;String, String&gt; that maps the attributes of the elements,
+    *    can be <code>null</code>.
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
@@ -663,18 +671,21 @@ public class BeanUtils {
       }
       return destination;
   }
-  
+
    /**
     * Invokes the given method with the given argument.
-    * 
+    *
     * @param destination
     *    the object upon which the method should be invoked, cannnot be <code>null</code>.
-    * 
+    *
     * @param methodName
     *    the name of the method to invoke, cannot be <code>null</code>.
-    * 
+    *
     * @param argument
     *    the argument for the method, can be <code>null</code>.
+    *
+    * @throws Exception
+    *    if the call to the method failed for any reason.
     */
    private static void invokeMethod(Object destination, String methodName, Object argument) throws Exception {
       Class argumentClass = argument.getClass();

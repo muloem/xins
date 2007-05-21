@@ -17,19 +17,24 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.NDC;
+
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.InvalidPropertyValueException;
@@ -41,6 +46,7 @@ import org.xins.common.spec.APISpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.InvalidSpecificationException;
 import org.xins.common.text.TextUtils;
+
 import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
 
@@ -170,7 +176,7 @@ final class Engine {
       }
       boolean bootstrapped = bootstrapAPI();
       if (!bootstrapped) {
-         throw new ServletException(); // XXX
+         throw new ServletException();
       }
 
       // Done bootstrapping the framework
@@ -1045,6 +1051,9 @@ final class Engine {
     *
     * @param response
     *    the response to fill, never <code>null</code>.
+    *
+    * @throws IOException
+    *    if the WSDL cannot be found in the WAR file.
     */
    private void handleWsdlRequest(HttpServletResponse response) throws IOException {
       String wsdlLocation = getFileLocation("/WEB-INF/" + _apiName + ".wsdl");
@@ -1067,6 +1076,9 @@ final class Engine {
     *
     * @param response
     *    the response to fill, never <code>null</code>.
+    *
+    * @throws IOException
+    *    if the SMD cannot be created or sent to the output stream.
     */
    private void handleSmdRequest(HttpServletResponse response) throws IOException {
       if (_smd == null) {

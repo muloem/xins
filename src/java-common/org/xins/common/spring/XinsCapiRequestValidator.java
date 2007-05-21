@@ -24,7 +24,7 @@ import org.xins.client.UnacceptableRequestException;
 public class XinsCapiRequestValidator implements Validator {
 
    /**
-    * Creates a new instance of XinsCapiRequestValidator
+    * Creates a new instance of XinsCapiRequestValidator.
     */
    public XinsCapiRequestValidator() {
    }

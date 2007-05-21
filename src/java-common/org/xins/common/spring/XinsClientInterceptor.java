@@ -1,4 +1,10 @@
 /*
+ * $Id$
+ *
+ * Copyright 2003-2007 Orange Nederland Breedband B.V.
+ * See the COPYRIGHT file for redistribution and use restrictions.
+ */
+/*
  * Copyright 2002-2006 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +18,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-/*
- * $Id$
- *
- * Copyright 2003-2007 Orange Nederland Breedband B.V.
- * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.spring;
 
@@ -121,7 +121,7 @@ public class XinsClientInterceptor extends UrlBasedRemoteAccessor implements Met
 
    /**
     * Sets the name of the API to call.
-    * The name is used to detect the capi.<api name> in the service properties set.
+    * The name is used to detect the capi.&lt;api name&gt; in the service properties set.
     *
     * @param serviceName
     *    the name of the API to call.
@@ -144,7 +144,10 @@ public class XinsClientInterceptor extends UrlBasedRemoteAccessor implements Met
     * Creates the {@link Descriptor} containing the location of the API.
     *
     * @return
-    *    the specified descriptor.
+    *    the specified descriptor or <code>null</code> no descriptorProperties or serviceURL is set.
+    *
+    * @throws Exception
+    *    if the descriptorProperties or serviceURL is incorrect.
     */
    public Descriptor createDescriptor() throws Exception {
       if (descriptorProperties != null) {
@@ -165,6 +168,9 @@ public class XinsClientInterceptor extends UrlBasedRemoteAccessor implements Met
     *
     * @return
     *    the created CAPI.
+    *
+    * @throws Exception
+    *    if the CAPI class is not found or the descriptor cannot be created.
     */
    public AbstractCAPI createCapi() throws Exception {
       Descriptor descriptor = createDescriptor();
@@ -179,6 +185,9 @@ public class XinsClientInterceptor extends UrlBasedRemoteAccessor implements Met
     *
     * @return
     *    the service caller to call the API.
+    *
+    * @throws Exception
+    *    if the descriptor cannot be created or is incorrect.
     */
    public XINSServiceCaller createXinsServiceCaller() throws Exception {
       XINSServiceCaller caller = new XINSServiceCaller(createDescriptor());

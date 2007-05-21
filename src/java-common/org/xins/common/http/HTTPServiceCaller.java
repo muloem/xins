@@ -283,8 +283,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private static HttpMethodBase createMethod(String          url,
                                               HTTPCallRequest request,
-                                              HTTPCallConfig  callConfig)
-   throws IllegalArgumentException {
+                                              HTTPCallConfig  callConfig) {
 
       // Get the HTTP method (like GET and POST) and parameters
       HTTPMethod     method     = callConfig.getMethod();
@@ -821,6 +820,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *        {@link StatusCodeHTTPCallException#getStatusCode() getStatusCode()} is not in the
     *        range 200-299.
     * </ul>
+
     *
     * @param request
     *    the request for the call, as passed to {@link #doCall(CallRequest,CallConfig)},
@@ -892,8 +892,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
       private CallExecutor(HTTPCallRequest  request,
                            HTTPCallConfig   callConfig,
                            TargetDescriptor target,
-                           String           context)
-      throws IllegalArgumentException {
+                           String           context) {
 
          // Store data for later use in the run() method
          _request    = request;
@@ -1202,12 +1201,14 @@ public final class HTTPServiceCaller extends ServiceCaller {
     * @since XINS 1.4.0
     */
    private static class UnicodePostMethod extends PostMethod {
+
       public UnicodePostMethod(String url) {
          super(url);
 
          // Disable retries
          getParams().setParameter(HttpMethodParams.RETRY_HANDLER, NO_RETRIES);
       }
+
       protected RequestEntity generateRequestEntity() {
          NameValuePair[] params = getParameters();
          int paramsCount = params.length;

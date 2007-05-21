@@ -634,6 +634,9 @@ public class HTTPServletHandler {
     *
     * @param status
     *    the HTTP error code status.
+    *
+    * @throws IOException
+    *    if the error cannot be sent.
     */
    private void sendError(OutputStream out, String status)
    throws IOException {
@@ -648,6 +651,9 @@ public class HTTPServletHandler {
     *
     * @param out
     *    the output stream to contact the client.
+    *
+    * @throws IOException
+    *    if the error cannot be sent.
     */
    private void sendBadRequest(OutputStream out)
    throws IOException {
@@ -662,6 +668,9 @@ public class HTTPServletHandler {
     *
     * @param header
     *    the line of the header to be parsed.
+    *
+    * @throws ParseException
+    *    if the header is incorrect
     */
    private static void parseHeader(HashMap headers, String header)
    throws ParseException{
@@ -697,6 +706,10 @@ public class HTTPServletHandler {
     *
     * @param key
     *    the name of the header.
+    *
+    * @return
+    *    the header value for the specified key or <code>null</code> if the
+    *    key is not in the haeders.
     */
    String getHeader(HashMap headers, String key) {
       return (String) headers.get(key.toUpperCase());

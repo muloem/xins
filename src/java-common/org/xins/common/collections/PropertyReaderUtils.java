@@ -320,7 +320,7 @@ public final class PropertyReaderUtils {
    }
 
    /**
-    * REturns the String representation of the specified <code>PropertyReader</code>.
+    * Returns the String representation of the specified <code>PropertyReader</code>.
     * For each entry, both the key and the value are encoded using the URL
     * encoding (see {@link URLEncoding}).
     * The key and value are separated by a literal equals sign
@@ -333,6 +333,9 @@ public final class PropertyReaderUtils {
     *
     * @param properties
     *    the {@link PropertyReader} to serialize, cannot be <code>null</code>.
+    *
+    * @return
+    *    the String representation of the specified <code>PropertyReader</code>.
     */
    public static String toString(PropertyReader properties) {
       return toString(properties, null, null, null, -1);

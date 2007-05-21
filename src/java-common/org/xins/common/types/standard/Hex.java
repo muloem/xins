@@ -81,7 +81,7 @@ public class Hex extends Type {
     * @throws TypeValueException
     *    if the specified string does not represent a valid value for this
     *    type.If the string does not have a hexadecimal value or have a character
-    *	   that is not hexadecimal digit.
+    *    that is not hexadecimal digit.
     */
    public static byte[] fromStringForRequired(String string)
    throws IllegalArgumentException, TypeValueException {
@@ -89,10 +89,12 @@ public class Hex extends Type {
       if (string == null) {
          throw new IllegalArgumentException("string == null");
       } else {
-         try {// this method converts the string to byte and also checks if the string has hex digits
+         try {
+
+            // this method converts the string to byte and also checks if the string has hex digits
             return HexConverter.parseHexBytes(string,index,string.length());
 
-         } catch (Exception e){
+         } catch (Exception ex){
             throw new TypeValueException(SINGLETON, string);
          }
       }

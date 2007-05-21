@@ -38,10 +38,6 @@ public interface AccessRuleContainer {
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
     *    access or <code>null</code> if there is no match.
     *
-    * @throws IllegalStateException
-    *    if {@link #dispose()} has been called previously
-    *    (<em>since XINS 1.3.0</em>).
-    *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
     *
@@ -57,10 +53,6 @@ public interface AccessRuleContainer {
     *
     * <p>Once disposed, the {@link #isAllowed} method should no longer be
     * called.
-    *
-    * @throws IllegalStateException
-    *    if {@link #dispose()} has been called previously
-    *    (<em>since XINS 1.3.0</em>).
     */
    void dispose();
 }
