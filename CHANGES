@@ -6,6 +6,15 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 
+* XINS/Java Common Library:
+  - Removed unused code detected by PMD.
+
+* XINS/Java Server Framework:
+  - Removed unused code detected by PMD.
+
+* XINS/Java Client Framework:
+  - Removed unused code detected by PMD.
+
 * Build- and release-process:
   - If force=true, the cvs diff is not checked.
 

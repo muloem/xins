@@ -6,8 +6,6 @@
  */
 package org.xins.common.collections;
 
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Exception thrown to indicate the property of a value is invalid.
  *

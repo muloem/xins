@@ -8,15 +8,13 @@ package org.xins.client;
 
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
-import java.util.List;
-import org.xins.common.text.TextUtils;
-import org.xins.common.xml.Element;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
+import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 
 /**

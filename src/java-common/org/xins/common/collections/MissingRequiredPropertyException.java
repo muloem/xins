@@ -6,7 +6,6 @@
  */
 package org.xins.common.collections;
 
-import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.text.TextUtils;
 
 /**

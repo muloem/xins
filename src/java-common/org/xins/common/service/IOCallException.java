@@ -8,8 +8,6 @@ package org.xins.common.service;
 
 import java.io.IOException;
 
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * Exception that indicates that an I/O error interrupted a service call.
  *

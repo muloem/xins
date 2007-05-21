@@ -43,8 +43,6 @@ import org.xins.common.text.ParseException;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
 
-import org.xins.client.FileServiceCaller;
-
 /**
  * XINS service caller. This class can be used to perform a call to a XINS
  * service, over HTTP, and fail-over to other XINS services if the first one

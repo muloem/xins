@@ -10,13 +10,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 import java.util.zip.CRC32;
+
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.text.HexConverter;
 import org.xins.common.text.PatternUtils;
-import org.xins.common.text.TextUtils;
 
 /**
  * Descriptor for a single target service. A target descriptor defines a URL

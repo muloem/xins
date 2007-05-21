@@ -9,8 +9,6 @@ package org.xins.common.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xins.common.MandatoryArgumentChecker;
-
 /**
  * List of call exceptions. See class {@link CallException}.
  *

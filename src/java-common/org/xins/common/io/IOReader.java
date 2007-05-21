@@ -7,11 +7,11 @@
 package org.xins.common.io;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+
 import org.xins.common.MandatoryArgumentChecker;
 
 /**
@@ -33,7 +33,7 @@ public final class IOReader {
     *
     * @return
     *    the content of the input stream using the default encoding, never <code>null</code>.
-    * 
+    *
     * @throws IllegalArgumentException
     *    if <code>inputStream == null</code>.
     *

@@ -21,7 +21,6 @@ import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallRequest;
 import org.xins.common.http.HTTPMethod;
 import org.xins.common.service.CallRequest;
-import org.xins.common.text.TextUtils;
 
 /**
  * Abstraction of a XINS request.
@@ -67,13 +66,6 @@ public final class XINSCallRequest extends CallRequest {
     * Secret key used to set the HTTP parameters.
     */
    private static final Object SECRET_KEY = new Object();
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
 
    /**
     * Description of this XINS call request. This field cannot be

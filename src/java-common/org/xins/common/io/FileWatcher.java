@@ -381,8 +381,6 @@ public final class FileWatcher extends Thread {
     */
    public synchronized void check() {
 
-      String thisMethod = "check()";
-
       // Variable to store the file modification timestamp in. The value -1
       // indicates the file does not exist.
       long lastModified;

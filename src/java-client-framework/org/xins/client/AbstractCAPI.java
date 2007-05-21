@@ -214,15 +214,9 @@ public abstract class AbstractCAPI {
     */
    private final String determineAPIName() {
 
-      // Try to call getAPINameImpl()
-      try {
-         String s = getAPINameImpl();
-         if (! TextUtils.isEmpty(s)) {
-            return s;
-         }
-      } catch (Throwable exception) {
-         Utils.logProgrammingError(exception);
-         // fall through
+      String s = getAPINameImpl();
+      if (! TextUtils.isEmpty(s)) {
+         return s;
       }
 
       // Subclass did not return anything, determine based on package name

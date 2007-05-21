@@ -6,8 +6,6 @@
  */
 package org.xins.common.servlet.container;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +34,6 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.io.IOReader;
 import org.xins.common.text.ParseException;
 
 /**

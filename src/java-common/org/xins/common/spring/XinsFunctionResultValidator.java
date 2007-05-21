@@ -9,8 +9,6 @@ package org.xins.common.spring;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import org.xins.client.AbstractCAPICallRequest;
-import org.xins.client.UnacceptableRequestException;
 import org.xins.server.FunctionResult;
 import org.xins.server.InvalidResponseResult;
 

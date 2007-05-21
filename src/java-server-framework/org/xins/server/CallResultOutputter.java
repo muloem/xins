@@ -9,13 +9,14 @@ package org.xins.server;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.io.Writer;
 import java.util.Iterator;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementSerializer;
 import org.xins.logdoc.ExceptionUtils;
+
 import org.znerd.xmlenc.XMLEncoder;
 import org.znerd.xmlenc.XMLOutputter;
 

@@ -8,10 +8,7 @@ package org.xins.common.http;
 
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
-
 import org.xins.common.service.CallRequest;
-
-import org.xins.common.text.TextUtils;
 
 /**
  * A request towards an HTTP service.
@@ -33,13 +30,6 @@ public final class HTTPCallRequest extends CallRequest {
     * The number of instances of this class. Initially zero.
     */
    private static int INSTANCE_COUNT;
-
-   /**
-    * The 1-based sequence number of this instance. Since this number is
-    * 1-based, the first instance of this class will have instance number 1
-    * assigned to it.
-    */
-   private final int _instanceNumber;
 
    /**
     * Description of this HTTP call request. This field cannot be
