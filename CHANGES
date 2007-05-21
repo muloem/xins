@@ -15,6 +15,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 * XINS/Java Client Framework:
   - Removed unused code detected by PMD.
 
+* Tools:
+  - Added 2007 as allowed year in the java.header checkstyle file.
+
 * Build- and release-process:
   - If force=true, the cvs diff is not checked.
 
