@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import java.text.ParseException;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -20,19 +19,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xins.common.collections.PropertyReader;
-import org.xins.common.http.HTTPMethod;
-import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 
-import org.xins.client.XINSCallRequest;
-import org.xins.client.XINSCallResult;
-import org.xins.client.XINSServiceCaller;
 import org.xins.client.UnsuccessfulXINSCallException;
 import org.xins.common.xml.Element;
-import org.xins.common.xml.ElementBuilder;
 
 import org.xins.common.servlet.container.HTTPServletHandler;
 
