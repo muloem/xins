@@ -63,7 +63,7 @@ public class StandardCallingConvention extends CallingConvention {
 
    /**
     * Converts an HTTP request to a XINS request (implementation method). This
-    * method should only be called from class {@link CallingConvention}. Only
+    * method should only be called from class CallingConvention. Only
     * then it is guaranteed that the <code>httpRequest</code> argument is not
     * <code>null</code>.
     *

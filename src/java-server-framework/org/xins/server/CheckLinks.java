@@ -378,8 +378,8 @@ class CheckLinks {
     * iterates over the list of all {@link URLChecker} threads and gets the
     * information like the total time each thread took to execute and the
     * result of the execution. The information is added in an
-    * {@link ElementBuilder} object using which {@link Element} is created
-    * which then is added to the passed {@link FunctionResult}.
+    * {@link ElementBuilder} object using which {@link org.xins.common.xml.Element}
+    * is created which then is added to the passed {@link FunctionResult}.
     *
     * @param builder
     *    the {@link FunctionResult} where the result is added, cannot be
