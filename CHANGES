@@ -33,6 +33,11 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 * Tools:
   - Added 2007 as allowed year in the java.header checkstyle file.
 
+* Libraries:
+  - Updated commons-loggin.jar to version 1.1.
+  - Updated commons-net to version 1.4.1.
+  - Updated jsch.jar to version 0.1.33.
+
 * Build- and release-process:
   - If force=true, the cvs diff is not checked.
 
