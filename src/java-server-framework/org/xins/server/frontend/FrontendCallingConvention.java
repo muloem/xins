@@ -285,9 +285,10 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       }
    }
 
-   protected boolean matches(HttpServletRequest httpRequest) {
+   protected boolean matches(HttpServletRequest httpRequest) throws Exception {
 
-      return httpRequest.getParameterMap().size() == 0 || !TextUtils.isEmpty(httpRequest.getParameter("command"));
+      return (httpRequest.getMethod().equalsIgnoreCase("GET") && httpRequest.getParameterMap().size() == 0) || 
+            !TextUtils.isEmpty(httpRequest.getParameter("command"));
    }
 
    /**

@@ -248,10 +248,13 @@ public final class TextUtils {
       if (text == null) {
          return null;
       }
+      if (text.indexOf(charToRemove) == -1) {
+         return text;
+      }
       char[] inputText = text.toCharArray();
       StringBuffer result = new StringBuffer(inputText.length);
       for (int i = 0; i < inputText.length; i++) {
-         if (inputText[i] != '_') {
+         if (inputText[i] != charToRemove) {
             result.append(inputText[i]);
          }
       }
