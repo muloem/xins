@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Fixed incorrect class cast in BeanUtils.
   - Fixed NPE in XinsCapiFactoryBean.
   - Several small changes pointed by FindBugs tool.
+  - Added @since XINS 2.0 for new classes and new public methods.
+  - Fixed bug in TextUtils.removeCharacter() method.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
@@ -20,10 +22,13 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - If the conditional redirection in XINS FF fails try the standard
     redirection mapping.
   - Several small changes pointed by FindBugs tool.
+  - Added @since XINS 2.0 for new classes and new public methods.
+  - Improve detection of the XINS FF CC.
 
 * XINS/Java Client Framework:
   - Removed unused code detected by PMD.
   - Several small changes pointed by FindBugs tool.
+  - Added @since XINS 2.0 for new classes and new public methods.
 
 * Tools:
   - Added 2007 as allowed year in the java.header checkstyle file.
@@ -1466,6 +1471,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 BETA 3:
     AsynchronousCall class.
   - The name of the function has been removed as parameter of the
     CallCAPIThread class.
+
   - Fixed: the CallCAPIThread class was not using the correct request class.
 
 * XINS/Java Server Framework:

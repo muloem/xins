@@ -336,6 +336,8 @@ public final class PropertyReaderUtils {
     *
     * @return
     *    the String representation of the specified <code>PropertyReader</code>.
+    *
+    * @since XINS 2.0.
     */
    public static String toString(PropertyReader properties) {
       return toString(properties, null, null, null, -1);

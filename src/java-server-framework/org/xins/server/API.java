@@ -354,6 +354,8 @@ public abstract class API extends Manageable {
     *
     * @throws IllegalArgumentException
     *    if <code>path == null</code> or if the path doesn't start with /.
+    *
+    * @since XINS 2.0.
     */
    public final InputStream getResourceAsStream(String path) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("path", path);

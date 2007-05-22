@@ -20,7 +20,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
- * @since XINS 2.0
+ * @since XINS 2.0.
  */
 public final class IOReader {
 

@@ -95,6 +95,8 @@ public class FunctionResult {
     * @return
     *    an {@link InvalidResponseResult} instance if at least one output
     *    parameter is missing or invalid, or <code>null</code> otherwise.
+    *
+    * @since XINS 2.0.
     */
    public InvalidResponseResult checkOutputParameters() {
       return null;

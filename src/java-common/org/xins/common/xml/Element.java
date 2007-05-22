@@ -85,6 +85,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public Element(String localName)
    throws IllegalArgumentException {
@@ -103,6 +105,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public Element(String namespaceURI, String localName)
    throws IllegalArgumentException {
@@ -149,6 +153,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void setLocalName(String localName) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("localName", localName);
@@ -167,6 +173,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void setAttribute(String localName, String value)
    throws IllegalArgumentException {
@@ -189,6 +197,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
@@ -219,6 +229,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void removeAttribute(String localName)
    throws IllegalArgumentException {
@@ -238,6 +250,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void removeAttribute(String namespaceURI, String localName)
    throws IllegalArgumentException {
@@ -351,6 +365,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>child == null || child == <em>this</em></code>.
+    *
+    * @since XINS 2.0.
     */
    public void addChild(Element child) throws IllegalArgumentException {
 
@@ -381,6 +397,8 @@ public class Element implements Cloneable {
     *
     * @throws IllegalArgumentException
     *    if <code>child == null || child == <em>this</em></code>.
+    *
+    * @since XINS 2.0.
     */
    public void removeChild(Element child) throws IllegalArgumentException {
 
@@ -474,6 +492,8 @@ public class Element implements Cloneable {
     *
     * @param text
     *    the character content for this element, or <code>null</code>.
+    *
+    * @since XINS 2.0.
     */
    public void setText(String text) {
       _text = text;

@@ -64,6 +64,8 @@ public class ItemList {
     *
     * @throws IllegalArgumentException
     *    if <code>items == null</code>.
+    *
+    * @since XINS 2.0.
     */
    public final void add(Collection items) throws IllegalArgumentException {
 
@@ -88,6 +90,8 @@ public class ItemList {
     * @return
     *    a List or a Set containing the items, never <code>null</code>.
     *    the collection returned cannot be modified.
+    *
+    * @since XINS 2.0.
     */
    public final Collection get() {
 

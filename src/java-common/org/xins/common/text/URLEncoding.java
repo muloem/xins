@@ -209,8 +209,7 @@ public final class URLEncoding {
                    throw new FormatException(s, "Character at position " + index + " has invalid value " + charAsInt + '.');
                }
                charAsInt = (int) string[++index];
-               int decodedValue = 0;
-               decodedValue += digit(charAsInt, s, index);
+               int decodedValue = digit(charAsInt, s, index);
                decodedValue *= 16;
                charAsInt = (int) string[++index];
                decodedValue += digit(charAsInt, s, index);

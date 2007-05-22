@@ -417,6 +417,8 @@ public final class Utils {
     * @return
     *    an appropriate {@link ProgrammingException} that can be thrown by the
     *    calling method, never <code>null</code>.
+    *
+    * @since XINS 2.0.
     */
    public static ProgrammingException logProgrammingError(String detail, Throwable cause) {
 

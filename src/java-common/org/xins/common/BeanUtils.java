@@ -334,6 +334,8 @@ public class BeanUtils {
     *
     * @return
     *    the result object filled with the values of the element object, never <code>null</code>.
+    *
+    * @since XINS 2.0.
     */
    public static Object xmlToObject(Element element, Object result,
          Map elementMapping, Map attributeMapping) {
