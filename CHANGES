@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Several small changes pointed by FindBugs tool.
   - Added @since XINS 2.0 for new classes and new public methods.
   - Fixed bug in TextUtils.removeCharacter() method.
+  - Improved performance of the internal Servlet container by checking for
+    index.html only for HTTP GET.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
@@ -1679,9 +1681,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - Improved the Servlet container to handle HTTP headers. This is needed to
     support cookies.
   - Handle redirection in the Servlet container.
-  - Unicode encoding and decoding of parameters is done according to
-
-    RFC 2718.
+  - Unicode encoding and decoding of parameters is done according to RFC 2718.
   - Added WarnDoubleProperties which logs a warning message in the log system
     if a property value is overwritten.
   - Implemented SF.net RFE #1088277 and #1088278: Keep HTTP connections open.

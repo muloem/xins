@@ -464,7 +464,7 @@ public class HTTPServletHandler {
       }
 
       // Normalize the query string
-      if (url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
+      if ("GET".equals(method) && url.endsWith("/") && getClass().getResource(url + "index.html") != null) {
          url += "index.html";
       }
 
