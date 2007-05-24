@@ -878,8 +878,35 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target name="profile" depends="java">
 		<property name="profile.dir" value="../xins-examples/xins-project"/>
-		<ant antfile="apis/petstore/nbbuild.xml" target="profile" dir="${profile.dir}">
-		</ant>
+		<ant antfile="apis/petstore/nbbuild.xml" target="profile" dir="${profile.dir}" />
+	</target>
+
+	<target name="profile-perftests">
+		<path id="api.classpath">
+			<fileset includes="logdoc.jar xins-common.jar xins-client.jar xins-server.jar" dir="build"/>
+			<fileset includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar junit.jar" dir="lib"/>
+			<fileset includes="allinone-capi.jar" dir="src/tests/build/capis"/>
+			<path location="src/tests/build/classes-api/allinone"/>
+			<path location="src/tests/build/classes-types/allinone"/>
+			<path location="build/classes/tests"/>
+		</path>		
+		<fail unless="profiler.info.jvm">This target should be executed using the Profile -> Profile Main Project menu item.</fail>
+		<property name="xins.properties" value="src/tests/xins.properties" />
+		<available property="xins.properties.available" file="${xins.properties}" type="file" />
+		<fail message="Please, set the xins.properties variable correctly" unless="xins.properties.available" />
+		<nbprofiledirect>
+			<classpath refid="api.classpath" />
+		</nbprofiledirect>
+		<antcall target="classes-tests" />
+		<java fork="true" classname="junit.textui.TestRunner" jvm="${profiler.info.jvm}">
+			<sysproperty key="user.dir" value="${basedir}"/>
+			<jvmarg value="-Dorg.xins.server.config=${xins.properties}" />
+			<jvmarg value="${profiler.info.jvmargs.agent}" />
+			<jvmarg line="${profiler.info.jvmargs}" />
+			<arg value="-noloading"/>
+			<arg value="${perftestclass}"/>
+			<classpath refid="api.classpath" />
+		</java>
 	</target>
 
 	<!-- Package XINS to be put in the Maven repository -->
