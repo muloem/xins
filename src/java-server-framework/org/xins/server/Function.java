@@ -6,6 +6,7 @@
  */
 package org.xins.server;
 
+import org.xins.common.FormattedParameters;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.manageable.Manageable;
 
@@ -226,7 +227,7 @@ public abstract class Function extends Manageable {
 
       // Skipped the function call if asked to
       if (functionRequest.shouldSkipFunctionCall()) {
-         String inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
+         Object inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
          Log.log_3516(functionRequest.getFunctionName(), inParams);
          performedCall(functionRequest, ip, start, API.SUCCESSFUL_RESULT);
          return API.SUCCESSFUL_RESULT;
@@ -323,8 +324,8 @@ public abstract class Function extends Manageable {
 
       // Serialize the date, input parameters and output parameters
       String serStart  = API.DATE_CONVERTER.format(start);
-      String inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
-      String outParams = new FormattedParameters(result.getParameters(), result.getDataElement()).toString();
+      Object inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+      Object outParams = new FormattedParameters(result.getParameters(), result.getDataElement());
 
       // Perform transaction logging, with and without parameters
       Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);

@@ -569,7 +569,7 @@
 		<entry id="3516" level="INFO">
 			<description>Skipped call to the function.</description>
 			<param name="functionName" />
-			<param name="inParams" type="text"         />
+			<param name="inParams" type="object" />
 		</entry>
 		<entry id="3517" level="WARNING">
 			<description>Unable to find the specified path in the WAR file.</description>
@@ -614,8 +614,8 @@
 			<param name="functionName" type="text"         nullable="false" />
 			<param name="duration"     type="int64"        nullable="false" />
 			<param name="errorCode"    type="text"         nullable="false" />
-			<param name="inParams"     type="text"         nullable="false" />
-			<param name="outParams"    type="text"         nullable="false" />
+			<param name="inParams"     type="object"       nullable="false" />
+			<param name="outParams"    type="object"       nullable="false" />
 		</entry>
 		<entry id="3541" level="INFO">
 			<description>Function called. This entry differs from 3540 in that it does not log all input and output parameters, while 3540 does.</description>

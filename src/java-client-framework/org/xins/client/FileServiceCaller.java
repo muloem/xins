@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.servlet.ServletException;
+import org.xins.common.FormattedParameters;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -190,7 +191,7 @@ class FileServiceCaller extends ServiceCaller {
       PropertyReader parameters = ((HTTPCallRequest) request).getParameters();
 
       // Get the parameters for logging
-      String params = PropertyReaderUtils.toString(parameters, "", "?", null, 160);
+      FormattedParameters params = new FormattedParameters(parameters, null, "", "?", 160);
 
       // Get URL value
       String url = target.getURL();

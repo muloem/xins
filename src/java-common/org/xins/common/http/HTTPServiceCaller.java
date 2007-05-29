@@ -32,6 +32,7 @@ import org.apache.commons.httpclient.util.TimeoutController;
 import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 
 import org.apache.log4j.NDC;
+import org.xins.common.FormattedParameters;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
@@ -604,7 +605,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
 
       // Get the parameters for logging
       PropertyReader p = request.getParameters();
-      String params = PropertyReaderUtils.toString(p, "", "?", null, 160);
+      FormattedParameters params = new FormattedParameters(p, null, "", "?", 160);
 
       // Prepare a thread for execution of the call
       // NOTE: Preconditions are checked by the CallExecutor constructor

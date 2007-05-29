@@ -4,7 +4,7 @@
  * Copyright 2003-2007 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
-package org.xins.server;
+package org.xins.common;
 
 import java.util.Iterator;
 
@@ -17,10 +17,11 @@ import org.xins.common.xml.Element;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
- * @since XINS 1.0.0
+ * @since XINS 2.0
  */
-class FormattedParameters {
+public class FormattedParameters {
 
    /**
     * The parameters to serialize. This field can be <code>null</code>.
@@ -31,6 +32,26 @@ class FormattedParameters {
     * The data section.
     */
    private final Element _dataSection;
+
+   /**
+    * The value if there is no parameters and data section.
+    */
+   private final String _valueIfEmpty;
+
+   /**
+    * The prefix if there is at least a parameter or a data section.
+    */
+   private final String _prefixIfNotEmpty;
+
+   /**
+    * The maximum limit of serialized value characters.
+    */
+   private final int _maxValueLength;
+
+   /**
+    * The String representation of the parameters.
+    */
+   private String _asString;
 
    /**
     * Constructs a new <code>FormattedParameters</code> object.
@@ -52,26 +73,63 @@ class FormattedParameters {
     *    the data section, can be <code>null</code>.
     */
    public FormattedParameters(PropertyReader parameters, Element dataSection) {
+      this(parameters, dataSection, "-", null, -1);
+   }
+
+   /**
+    * Constructs a new <code>FormattedParameters</code> object.
+    *
+    * @param parameters
+    *    the parameters, can be <code>null</code>.
+    *
+    * @param dataSection
+    *    the data section, can be <code>null</code>.
+    *
+    * @param valueIfEmpty
+    *    the value to return if there is no parameter and no data section, can be <code>null</code>.
+    *
+    * @param prefixIfNotEmpty
+    *    the prefix to add if there is a parameter or a data section, can be <code>null</code>.
+    *
+    * @param maxValueLength
+    *    the maximum of characters to set for the value, if the value is longer
+    *    than this limit '...' will be added after the limit.
+    *    If the value is -1, no limit will be set.
+    */
+   public FormattedParameters(PropertyReader parameters, Element dataSection, String valueIfEmpty,
+         String prefixIfNotEmpty, int maxValueLength) {
       _parameters = parameters;
       _dataSection = dataSection;
+      _valueIfEmpty = valueIfEmpty;
+      _prefixIfNotEmpty = prefixIfNotEmpty;
+      _maxValueLength = maxValueLength;
    }
 
    /**
     * String representation of the parameters including the data section.
     *
     * @return
-    *    the String representation of the request or "-" if the request is empty.
+    *    the String representation of the request.
     */
    public String toString() {
+
+      // The String representation has already been created.
+      if (_asString != null) {
+         return _asString;
+      }
 
       Iterator names = (_parameters == null) ? null : _parameters.getNames();
 
       // If there are no parameters, then just return a hyphen
       if ((names == null || ! names.hasNext()) && _dataSection == null) {
-         return "-";
+         _asString = _valueIfEmpty;
+         return _asString;
       }
 
       StringBuffer buffer = new StringBuffer(80 + _parameters.size() * 40);
+      if (_prefixIfNotEmpty != null) {
+         buffer.append(_prefixIfNotEmpty);
+      }
 
       boolean first = true;
       while (names != null && names.hasNext()) {
@@ -95,7 +153,13 @@ class FormattedParameters {
          // Append the key and the value, separated by an equals sign
          buffer.append(URLEncoding.encode(name));
          buffer.append('=');
-         buffer.append(URLEncoding.encode(value));
+         String encodedValue;
+         if (_maxValueLength == -1 || value.length() <= _maxValueLength) {
+            encodedValue = URLEncoding.encode(value);
+         } else {
+            encodedValue = URLEncoding.encode(value.substring(0, _maxValueLength)) + "...";
+         }
+         buffer.append(encodedValue);
       }
 
       if (_dataSection != null) {
@@ -106,6 +170,7 @@ class FormattedParameters {
          buffer.append(URLEncoding.encode(_dataSection.toString()));
       }
 
-      return buffer.toString();
+      _asString = buffer.toString();
+      return _asString;
    }
 }

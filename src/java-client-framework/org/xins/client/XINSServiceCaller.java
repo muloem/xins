@@ -8,6 +8,8 @@ package org.xins.client;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import org.xins.common.FormattedParameters;
+import org.xins.common.FormattedParameters;
 
 import org.xins.logdoc.ExceptionUtils;
 
@@ -386,12 +388,9 @@ public final class XINSServiceCaller extends ServiceCaller {
             long duration = System.currentTimeMillis() - start;
 
             // Serialize all parameters, including the data section, for logging
-            PropertyReader p           = request.getParameters();
-            Element        dataSection = request.getDataSection();
-            String         s           = dataSection != null
-                                       ? ("_data=" + dataSection.toString())
-                                       : null;
-            String params = PropertyReaderUtils.toString(p, "(null)", "&", s, 160);
+            PropertyReader parameters = request.getParameters();
+            Element dataSection = request.getDataSection();
+            FormattedParameters params = new FormattedParameters(parameters, dataSection, "(null)", "&", 160);
 
             // Serialize the exception chain
             String chain = exception.getMessage();
@@ -518,11 +517,9 @@ public final class XINSServiceCaller extends ServiceCaller {
       String             url       = target.getURL();
       String             function  = xinsRequest.getFunctionName();
       PropertyReader     p         = xinsRequest.getParameters();
-      String dataSection = null;
-      if (xinsRequest.getDataSection() != null) {
-         dataSection = "_data=" + xinsRequest.getDataSection().toString();
-      }
-      String params = PropertyReaderUtils.toString(p, "", "&", dataSection, 160);
+      Element dataSection = xinsRequest.getDataSection();
+
+      FormattedParameters params = new FormattedParameters(p, dataSection, "", "&", 160);
 
       // Get the time-out values (for logging)
       int totalTimeOut      = target.getTotalTimeOut();

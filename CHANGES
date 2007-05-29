@@ -16,6 +16,7 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Fixed bug in TextUtils.removeCharacter() method.
   - Improved performance of the internal Servlet container by checking for
     index.html only for HTTP GET.
+  - Parameters are only serialized when logged for the first time.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
@@ -33,6 +34,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Added @since XINS 2.0 for new classes and new public methods.
   - Detection of functional error code is done using CAPI.isFunctionalError()
     method. This improves the performance of the CAPI.
+  - Parameters and data section are only serialized when logged for the first
+    time.
 
 * Generation of client-side Java code:
   - Added implementation of CAPI.isFunctionalError().

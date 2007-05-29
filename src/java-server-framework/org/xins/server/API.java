@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
+
+import org.xins.common.FormattedParameters;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.BasicPropertyReader;
@@ -1067,10 +1069,10 @@ public abstract class API extends Manageable {
 
          // Prepare for transaction logging
          String serStart = DATE_CONVERTER.format(start);
-         String inParams =
-            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
-         String outParams =
-            new FormattedParameters(result.getParameters(), result.getDataElement()).toString();
+         Object inParams =
+            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
+         Object outParams =
+            new FormattedParameters(result.getParameters(), result.getDataElement());
 
          // Log transaction before returning the result
          Log.log_3540(serStart, ip, functionName, duration, code, inParams, outParams);
@@ -1083,7 +1085,7 @@ public abstract class API extends Manageable {
             throw new NoSuchFunctionException(functionName);
          }
          if (function == null) {
-            String inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement()).toString();
+            Object inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
             Log.log_3516(functionRequest.getFunctionName(), inParams);
             result = SUCCESSFUL_RESULT;
          } else {
