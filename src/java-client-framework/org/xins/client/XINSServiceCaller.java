@@ -642,14 +642,8 @@ public final class XINSServiceCaller extends ServiceCaller {
 
          boolean functionalError = false;
          ErrorCodeSpec.Type type = null;
-         try {
-            if (_capi != null) {
-               type = _capi.getAPISpecification().getFunction(function).
-                     getErrorCode(errorCode).getType();
-               functionalError = (type == ErrorCodeSpec.FUNCTIONAL);
-            }
-         } catch (Exception ex) {
-            // Ignore, the default is the technical error code
+         if (_capi != null) {
+            functionalError = _capi.isFunctionalError(errorCode);
          }
 
          // Log this

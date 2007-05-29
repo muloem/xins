@@ -1535,6 +1535,7 @@ APIs in this project are:
 			style="{$xins_home}/src/xslt/java-capi/api_to_java.xslt">
 				<xmlcatalog refid="all-dtds" />
 				<param name="project_file" expression="{$project_file}"  />
+				<param name="project_home" expression="{$project_home}" />
 				<param name="specsdir"     expression="{$api_specsdir}"  />
 				<param name="package"      expression="{$clientPackage}" />
 				<param name="api"          expression="{$api}"           />

@@ -12,6 +12,7 @@
 
 	<!-- Define parameters -->
 	<xsl:param name="project_file" />
+	<xsl:param name="project_home" />
 	<xsl:param name="specsdir"     />
 	<xsl:param name="package"      />
 	<xsl:param name="api"          />
@@ -156,6 +157,39 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
       return "]]></xsl:text>
 		<xsl:value-of select="$api" />
       <xsl:text><![CDATA[";
+   }
+
+   protected boolean isFunctionalError(String errorCode) {
+      return ]]></xsl:text>
+		<xsl:variable name="functionalCode">
+			<xsl:for-each select="resultcode">
+				<xsl:variable name="resultcodeFile">
+					<xsl:choose>
+						<xsl:when test="contains(@name, '/')">
+							<xsl:value-of select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($specsdir, '/', @name, '.rcd')" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="resultcodeNode" select="document($resultcodeFile)/resultcode" />
+				<xsl:if test="$resultcodeNode/@type = 'functional'">
+					<xsl:text>"</xsl:text>
+					<xsl:value-of select="$resultcodeNode/@name" />
+					<xsl:text>".equals(errorCode) || </xsl:text>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="string-length($functionalCode) &gt; 3">
+				<xsl:value-of select="substring($functionalCode, 0, string-length($functionalCode) - 3)" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>false</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+      <xsl:text><![CDATA[;
    }
 
    /**

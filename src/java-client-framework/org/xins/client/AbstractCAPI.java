@@ -252,6 +252,21 @@ public abstract class AbstractCAPI {
    }
 
    /**
+    * Returns <code>true</code> of the error code is a functional error code.
+    * If unknown, false is returned.
+    *
+    * @param errorCode
+    *    the error code to check, cannot be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the error code is functional, <code>false</code>
+    *    if the error code is technical.
+    */
+   protected boolean isFunctionalError(String errorCode) {
+      return false;
+   }
+
+   /**
     * Retrieves the name of the API (implementation method).
     *
     * <p>The implementation of this method in class <code>AbstractCAPI</code>

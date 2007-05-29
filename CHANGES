@@ -31,6 +31,11 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Removed unused code detected by PMD.
   - Several small changes pointed by FindBugs tool.
   - Added @since XINS 2.0 for new classes and new public methods.
+  - Detection of functional error code is done using CAPI.isFunctionalError()
+    method. This improves the performance of the CAPI.
+
+* Generation of client-side Java code:
+  - Added implementation of CAPI.isFunctionalError().
 
 * Tools:
   - Added 2007 as allowed year in the java.header checkstyle file.
