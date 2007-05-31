@@ -18,7 +18,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
     index.html only for HTTP GET.
   - Parameters are only serialized when logged for the first time.
   - Removed caching of the HttpClient object in the HTTPServiceCaller as it
-    seems to slow down the performances.
+    seems to slow down the system.
+  - Removed the MultiThreadedConnectionManager as it seems to slow down the
+    system.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.

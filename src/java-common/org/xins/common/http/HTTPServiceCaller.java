@@ -37,7 +37,6 @@ import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.service.CallConfig;
 import org.xins.common.service.CallException;
 import org.xins.common.service.CallExceptionList;
@@ -222,10 +221,7 @@ public final class HTTPServiceCaller extends ServiceCaller {
     */
    private static HttpClient getHttpClient(TargetDescriptor target) {
 
-      MultiThreadedHttpConnectionManager connectionManager =
-         new MultiThreadedHttpConnectionManager();
-
-      HttpClient httpClient= new HttpClient(connectionManager);
+      HttpClient httpClient= new HttpClient();
 
       // Add support for proxies
       int proxyPort = 80;
