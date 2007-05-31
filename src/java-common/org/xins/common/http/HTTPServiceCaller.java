@@ -14,7 +14,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
@@ -161,11 +160,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
    private static final Object CALL_EXECUTOR_COUNT_LOCK = new Object();
 
    /**
-    * The Map with HttpClient objects.
-    */
-   private static HashMap HTTP_CLIENTS = new HashMap();
-
-   /**
     * HTTP retry handler that does not allow any retries.
     */
    private static DefaultHttpMethodRetryHandler NO_RETRIES = new DefaultHttpMethodRetryHandler(0, false);
@@ -227,9 +221,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
     *    the HttpClient shared instance.
     */
    private static HttpClient getHttpClient(TargetDescriptor target) {
-      if (HTTP_CLIENTS.containsKey(target)) {
-         return (HttpClient) HTTP_CLIENTS.get(target);
-      }
 
       MultiThreadedHttpConnectionManager connectionManager =
          new MultiThreadedHttpConnectionManager();
@@ -259,8 +250,6 @@ public final class HTTPServiceCaller extends ServiceCaller {
       // For compatibility with HTTPClient 2.0, the deprecated methods are still used.
       httpClient.setHttpConnectionFactoryTimeout(connectionTimeOut);
       httpClient.setTimeout(socketTimeOut);
-
-      HTTP_CLIENTS.put(target, httpClient);
 
       return httpClient;
    }
