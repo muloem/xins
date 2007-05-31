@@ -882,6 +882,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	</target>
 
 	<target name="profile-perftests">
+		<antcall target="classes-tests" />
 		<path id="api.classpath">
 			<fileset includes="logdoc.jar xins-common.jar xins-client.jar xins-server.jar" dir="build"/>
 			<fileset includes="commons-codec.jar commons-httpclient.jar commons-logging.jar commons-net.jar jakarta-oro.jar log4j.jar servlet.jar xmlenc.jar junit.jar" dir="lib"/>
@@ -897,7 +898,6 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<nbprofiledirect>
 			<classpath refid="api.classpath" />
 		</nbprofiledirect>
-		<antcall target="classes-tests" />
 		<java fork="true" classname="junit.textui.TestRunner" jvm="${profiler.info.jvm}">
 			<sysproperty key="user.dir" value="${basedir}"/>
 			<jvmarg value="-Dorg.xins.server.config=${xins.properties}" />
