@@ -890,7 +890,7 @@ final class Engine {
 
       // Shortcut for the _SMD meta function
       if (xinsRequest.getFunctionName().equals("_SMD")) {
-         handleSmdRequest(response);
+         handleSmdRequest(request, response);
          return;
       }
 
@@ -1074,16 +1074,19 @@ final class Engine {
    /**
     * Handles the request for the _SMD meta function.
     *
+    * @param request
+    *    the request asking for the SMD, never <code>null</code>.
+    *
     * @param response
     *    the response to fill, never <code>null</code>.
     *
     * @throws IOException
     *    if the SMD cannot be created or sent to the output stream.
     */
-   private void handleSmdRequest(HttpServletResponse response) throws IOException {
+   private void handleSmdRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
       if (_smd == null) {
          try {
-            _smd = createSMD();
+            _smd = createSMD(request);
          } catch (Exception ex) {
             throw new IOException(ex.getMessage());
          }
@@ -1102,6 +1105,9 @@ final class Engine {
     * More info at http://dojo.jot.com/SMD and
     * http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book9.
     *
+    * @param request
+    *    the request asking for the SMD, never <code>null</code>.
+    *
     * @return
     *    the String representation of the SMD JSON Object, never <code>null</code>.
     *
@@ -1114,14 +1120,18 @@ final class Engine {
     * @throws JSONException
     *    if the JSON object cannot be created correctly.
     */
-   private String createSMD()
+   private String createSMD(HttpServletRequest request)
    throws InvalidSpecificationException, EntityNotFoundException, JSONException {
       APISpec apiSpec = _api.getAPISpecification();
       JSONObject smdObject = new JSONObject();
       smdObject.put("SMDVersion", ".1");
       smdObject.put("objectName", _api.getName());
       smdObject.put("serviceType", "JSON-RPC");
-      smdObject.put("serviceURL", "?_convention=_xins-jsonrpc");
+      String requestURL = request.getRequestURI();
+      if (requestURL.indexOf('?') != -1) {
+         requestURL = requestURL.substring(0, requestURL.indexOf('?'));
+      }
+      smdObject.put("serviceURL", requestURL + "?_convention=_xins-jsonrpc");
       JSONArray methods = new JSONArray();
       Iterator itFunctions = _api.getFunctionList().iterator();
       while (itFunctions.hasNext()) {
