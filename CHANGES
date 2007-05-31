@@ -43,6 +43,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 
 * Tools:
   - Added 2007 as allowed year in the java.header checkstyle file.
+  - Default directory for installing FindBugs and JMeter is XINS_HOME/.. .
+  - Updated to download FindBugs 1.2.0.
 
 * Libraries:
   - Updated commons-loggin.jar to version 1.1.

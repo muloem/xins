@@ -96,13 +96,14 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 			     dest="${{ant.home}}/lib/jdepend.jar"
 			     usetimestamp="true" ignoreerrors="true" />
 			<input addproperty="extra-tools.dir"
-						 message="Where do you want to install FindBugs and JMeter?" />
-			<get src="http://heanet.dl.sourceforge.net/sourceforge/findbugs/findbugs-1.1.2.tar.gz"
-			     dest="${{extra-tools.dir}}/findbugs-1.1.2.tar.gz"
+						 message="Where do you want to install FindBugs and JMeter?"
+						 defaultvalue="{$xins_home}/.." />
+			<get src="http://heanet.dl.sourceforge.net/sourceforge/findbugs/findbugs-1.2.0.tar.gz"
+			     dest="${{extra-tools.dir}}/findbugs-1.2.0.tar.gz"
 			     usetimestamp="true" ignoreerrors="true" />
-			<gunzip src="${{extra-tools.dir}}/findbugs-1.1.2.tar.gz" />
-			<untar src="${{extra-tools.dir}}/findbugs-1.1.2.tar" dest="${{extra-tools.dir}}" />
-			<delete file="${{extra-tools.dir}}/findbugs-1.1.2.tar" />
+			<gunzip src="${{extra-tools.dir}}/findbugs-1.2.0.tar.gz" />
+			<untar src="${{extra-tools.dir}}/findbugs-1.2.0.tar" dest="${{extra-tools.dir}}" />
+			<delete file="${{extra-tools.dir}}/findbugs-1.2.0.tar" />
 			<get src="http://www.eu.apache.org/dist/jakarta/jmeter/binaries/jakarta-jmeter-2.2.tgz"
 			     dest="${{extra-tools.dir}}/jakarta-jmeter-2.2.tgz"
 			     usetimestamp="true" ignoreerrors="true" />
