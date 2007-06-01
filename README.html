@@ -18,8 +18,10 @@
 			<li>XINS is based on a simple way to send requests (using URLs) and handle result (Simple XML format).</li>
 			<li>XINS generates a set of HTML pages from the specification and some forms to test the application.</li>
 			<li>XINS generates Java code to invoke the web application and to develop it.</li>
+			<li>XINS generates WSDL, OpenDocument format, unit tests and stubs.</li>
 			<li>XINS also detects if the parameters are conform to the specification.</li>
 			<li>XINS includes concepts like load balancing, fail over, logging, security, properties and statistics.</li>
+			<li>XINS accepts a lot of protocols: REST, SOAP, XML-RPC, JSON, JSON-RPC, Front-end Framework, ....</li>
 		</ul>
 
 		<p>
@@ -31,14 +33,14 @@
 			<li>Logdoc for the <a href="docs/logdoc/client/index.html">client</a>,
 			    <a href="docs/logdoc/common/index.html">common</a> and
 			    <a href="docs/logdoc/server/index.html">server</a>.</li>
-			<li><a href="CHANGES">Last changes</a>, <a href="http://xins.sourceforge.net/notes-1.5.0.html">Release notes</a>, <a href="COPYRIGHT">Copyright</a>.</li>
+			<li><a href="CHANGES">Last changes</a>, <a href="http://xins.sourceforge.net/notes-2.0.html">Release notes</a>, <a href="COPYRIGHT">Copyright</a>.</li>
 		</ul>
 
 		<p>
 		<font color="#5555aa" size="4">Quick start:</font><p>
 		<i>If you have chosen "Compile and run demo" with the Windows installer, you can directly go to the <a href="demo/xins-project/build/specdocs/myproject/index.html">specdocs</a>.</i>
 		<ul>
-			<li>Check that <a href="http://java.sun.com/j2se/1.4.2/download.html">Java</a> and <a href="http://ant.apache.org/">ANT</a> are properly installed.<br>
+			<li>Check that <a href="http://java.sun.com/javase/downloads/index.jsp">Java</a> and <a href="http://ant.apache.org/">ANT</a> are properly installed.<br>
 			<li>Set the <i>XINS_HOME</i> environment variable to the installed xins directory.</li>
 			<li>Add %XINS_HOME%\bin to your PATH environment variable.</li>
 			<li>In the <i>demo\xins-projects</i> directory execute <i>xins specdocs-myproject</i> to generated the HTML pages containing the specification and the test forms.</li>
@@ -52,27 +54,29 @@
 		<font color="#5555aa" size="4">links:</font>
 		<ul>
 			<li><a href="http://www.xins.org">Web site</a>.</li>
-			<li><a href="http://xins.sf.net/demo.html">On line demo</a>.</li>
+			<li><a href="http://xins.sourceforge.net/demo.html">On line demo</a>.</li>
 			<li><a href="http://sourceforge.net/project/showfiles.php?group_id=71598">Download page</a>.</li>
 		</ul>
 
 		<P>
 		<font color="#5555aa" size="4">Incompatibilities:</font><p/>
-		XINS 2.0 now longer support the features that were deprecated before XINS 1.0.<br/>
+		XINS 2.0 now longer support the features that were deprecated before XINS 1.0 
+		(alpha DTDs, _xins_old calling convention, old directory structure).<br/>
 		XINS 2.0 introduces some incompatibilities with the XINS 1.x versions.<p/>
-		In order to help you here is the list of the incompatibilities you may find in your code:
+		In order to help you, here is the list of the incompatibilities you may find in your code:
 		<ul>
 			<li><i>org.xins.client.DataElement</i> has been replaced by <i>org.xins.common.xml.Element</i>.<br/>
 			As both classes have the same methods, just replace <i>DataElement</i> with <i>Element</i> in
 			your code and remove any use of the <i>.toXMLElement()</i> method.</li>
-			<li>On the server side, the <i>ParameterNotInitialized</i> exception is no longer thrown,
+			<li>On the server side, the <i>ParameterNotInitialized</i> exception is no longer thrown 
+			for the generated request.get...() methods for optional parameters and attributes,
 			<i>null</i> is returned if the parameter is not set.</li>
-			<li>On the server side, the request.get...() method for optional input parameter
+			<li>On the server side, the request.get...() methods for optional input parameters
 			of primary types (boolean, int, ...) will return an object (e.g. Integer instead of int, ...).</li>
-      <li>The logdoc type <i>serializable</i> is no longer supported, pass a String instead.</li>
-      <li>The templates.callingconvention.source runtime property has been renamed to
+      <li>The logdoc type <i>serializable</i> is no longer supported, pass a String or an Object instead.</li>
+      <li>The <i>templates.callingconvention.source</i> runtime property has been renamed to
 			<i>templates.&lt;api name&gt;.xins-xslt.source</i> runtime property.</li>
-      <li>The _template parameter used in the _xins-xslt calling convention requires a
+      <li>The <i>_template</i> parameter used in the _xins-xslt calling convention requires a
 			<i>templates.&lt;api name&gt;.xins-xslt.parameter.prefix</i> runtime property.</li>
       <li>The <i>FastStringBuffer</i> and <i>FastStringWriter</i> classes have been deprecated.
 			Use <i>java.lang.StringBuffer</i> and <i>java.io.StringWriter</i> instead.</li>

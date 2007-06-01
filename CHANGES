@@ -59,6 +59,9 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - If force=true, the cvs diff is not checked.
   - Added new profile-perftests target.
 
+* Documentation:
+  - Updated README.html with XINS 2.0 information.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 2:
 
