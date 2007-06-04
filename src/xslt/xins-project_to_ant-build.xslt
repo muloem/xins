@@ -80,6 +80,7 @@ This build file was generated with XINS </xsl:text>
 - wars                Generates all WAR files.
 - capis               Generates all CAPI JAR files.
 - javadoc-capis       Generates all CAPI Javadoc.
+- tests               Runs the unit tests of the APIs.
 - tools               Display the help for the tools commands.
 
 The following commands assist in authoring specifications:
