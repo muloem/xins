@@ -117,6 +117,7 @@ ${sf.file}</fail>
 	<target name="classes-tests" depends="java" description="Compiles the test cases">
 		<!-- Compiles the example used for the tests -->
 		<!--delete dir="src/tests/build" /-->
+		<!-- property name="build.java.version" value="1.3" /-->
 
 		<taskdef resource="org/xins/common/ant/antlib.xml" classpath="build/xins-common.jar" />
 		<xins api="allinone" target="opendoc" projectdir="src/tests" />
