@@ -416,7 +416,7 @@ public class MetaFunctionsTests extends TestCase {
       assertEquals(".1", smdObject.getString("SMDVersion"));
       assertEquals("allinone", smdObject.getString("objectName"));
       assertEquals("JSON-RPC", smdObject.getString("serviceType"));
-      assertEquals("?_convention=_xins-jsonrpc", smdObject.getString("serviceURL"));
+      assertTrue(smdObject.getString("serviceURL").endsWith("/allinone/?_convention=_xins-jsonrpc"));
       JSONArray methods = smdObject.getJSONArray("methods");
       assertEquals(16, methods.length());
    }
