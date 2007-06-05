@@ -223,18 +223,14 @@ public class PortalAPITests extends TestCase {
    }
 
    public void testXSLTError() throws Exception {
-      BasicPropertyReader params = createLoginParams();
-      params.set("username", "superhuman");
-      callCommand(params);
+      Properties headers = new Properties();
+      headers.setProperty("Cookie", "SessionId=1234567");
+      HTTPCallerResult resultLogin = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=Login&action=Okay&username=superhuman&password=passW1", headers);
       
-      BasicPropertyReader params2 = new BasicPropertyReader();
-      params2.set("command", "MainPage");
-      HTTPServiceCaller callControl = new HTTPServiceCaller(_target);
-      HTTPCallRequest callRequest = new HTTPCallRequest(params2);
-      HTTPCallResult callResult = callControl.call(callRequest);
-      assertTrue("Incorrect status code returned: " + callResult.getStatusCode(),
-            callResult.getStatusCode() == 500);
-      String htmlResult = callResult.getString();
+      HTTPCallerResult resultMainPage = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=MainPage", headers);
+      assertTrue("Incorrect status code returned: " + resultMainPage.getStatus(),
+            resultMainPage.getStatus().trim().startsWith("500"));
+      String htmlResult = resultMainPage.getBody();
       assertTrue(htmlResult.indexOf("<html ") != -1);
       assertTrue(htmlResult.indexOf("A technical error occured") != -1);
    }
