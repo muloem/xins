@@ -210,7 +210,8 @@ public class SessionManager extends Manageable {
       }
 
       // Check if the user is logged in
-      return !getBoolProperty(getSessionId());
+      boolean shouldLogIn = !getBoolProperty(getSessionId());
+      return shouldLogIn;
    }
 
    /**
@@ -224,7 +225,8 @@ public class SessionManager extends Manageable {
       if (session == null) {
          return null;
       }
-      return session.getId();
+      String sessionId = session.getId();
+      return sessionId;
    }
 
    /**
@@ -318,7 +320,8 @@ public class SessionManager extends Manageable {
       if (session == null) {
          return null;
       }
-      return session.getAttribute(name);
+      Object propertyValue = session.getAttribute(name);
+      return propertyValue;
    }
 
    /**
@@ -341,7 +344,8 @@ public class SessionManager extends Manageable {
          return false;
       }
       Object value = session.getAttribute(name);
-      return "true".equals(value) || Boolean.TRUE.equals(value);
+      boolean isTrue = "true".equals(value) || Boolean.TRUE.equals(value);
+      return isTrue;
    }
 
    /**
