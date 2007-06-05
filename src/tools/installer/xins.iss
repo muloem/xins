@@ -64,11 +64,11 @@ end;
 function GetNewPath(XPath: String): String;
 begin
   CurrentPath := ExpandConstant('{reg:HKCU\Environment,PATH}');
-  UsersPath := ExpandConstant('{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,PATH}');
+  { UsersPath := ExpandConstant('{reg:HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment,PATH}'); }
   if (Length(CurrentPath) = 0) then begin
     Result := XPath;
-  end else if ((Pos(XPath, CurrentPath) = 0) and (Pos(XPath, UsersPath) = 0)) then begin
-    Result := XPath + ';' + CurrentPath;
+  { end else if ((Pos(XPath, CurrentPath) = 0) and (Pos(XPath, UsersPath) = 0)) then begin
+    Result := XPath + ';' + CurrentPath; }
   end else begin
     Result := CurrentPath;
   end;
