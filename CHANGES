@@ -58,6 +58,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 * Build- and release-process:
   - If force=true, the cvs diff is not checked.
   - Added new profile-perftests target.
+  - Rollback installer to InnoSetup 5.1.8 as higher versions ask for
+    administrator right for Windows 2000 install.
 
 * Documentation:
   - Updated README.html with XINS 2.0 information.
