@@ -54,7 +54,7 @@
 			<param name="url"	        type="text"         nullable="false" />
 			<param name="parameters"  type="object"       nullable="true"  />
 		</entry>
-		<entry id="1101" level="INFO">
+		<entry id="1101" level="DEBUG">
 			<description>HTTP service called.</description>
 			<param name="url"	 type="text"         nullable="false" />
 			<param name="parameters" type="object"       nullable="true"  />

@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
     seems to slow down the system.
   - Removed the MultiThreadedConnectionManager as it seems to slow down the
     system.
+  - Downgraded log message 1101 to DEBUG level as it contains the same
+    information as log 1107 or other logs printed in case of failure.
 
 * XINS/Java Server Framework:
   - Removed unused code detected by PMD.
