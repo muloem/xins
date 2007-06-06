@@ -32,6 +32,8 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Added @since XINS 2.0 for new classes and new public methods.
   - Improve detection of the XINS FF CC.
   - The full URL is returned in the _SMD meta function.
+  - In XINS FF, first check that the identical input parameter does not
+    exist before doing a mapping of parameters.
 
 * XINS/Java Client Framework:
   - Removed unused code detected by PMD.

@@ -434,15 +434,20 @@ public class SessionManager extends Manageable {
     *    no mapping should be needed and the forms should send directly the correct parameters.
     */
    private String getRealParameter(String receivedParameter, String functionName) {
+      String flatParameter = receivedParameter;
       if (receivedParameter.indexOf("_") != -1) {
-         receivedParameter = TextUtils.removeCharacter('_', receivedParameter);
+         flatParameter = TextUtils.removeCharacter('_', receivedParameter);
       }
       try {
          FunctionSpec function = _api.getAPISpecification().getFunction(functionName);
-         Iterator itParameters = function.getInputParameters().keySet().iterator();
+         Set parametersSet = function.getInputParameters().keySet();
+         if (parametersSet.contains(receivedParameter)) {
+            return receivedParameter;
+         }
+         Iterator itParameters = parametersSet.iterator();
          while (itParameters.hasNext()) {
             String nextParameterName = (String) itParameters.next();
-            if (nextParameterName.equalsIgnoreCase(receivedParameter)) {
+            if (nextParameterName.equalsIgnoreCase(flatParameter)) {
                return nextParameterName;
             }
          }
