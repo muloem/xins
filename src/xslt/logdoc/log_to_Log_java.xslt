@@ -234,7 +234,7 @@
 			</xsl:when>
 			<xsl:when test="$exception">
 				<xsl:text>org.xins.logdoc.LogCentral.isStackTraceAtMessageLevel() ? org.xins.logdoc.ExceptionUtils.getRootCause(_exception) : null);
-         if (!org.xins.logdoc.LogCentral.isStackTraceAtMessageLevel() &amp;&amp; LOGGER_</xsl:text>
+         if (_exception != null &amp;&amp; !org.xins.logdoc.LogCentral.isStackTraceAtMessageLevel() &amp;&amp; LOGGER_</xsl:text>
 				<xsl:value-of select="@id" />
 				<xsl:text>.isEnabledFor(DEBUG)) {
             LOGGER_</xsl:text>

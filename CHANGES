@@ -49,6 +49,10 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Parameters and data section are only serialized when logged for the first
     time.
 
+* Generation of logdoc code:
+  - Do not log the message with the exception at debug level if the exception
+    is null.
+
 * Generation of client-side Java code:
   - Added implementation of CAPI.isFunctionalError().
 
