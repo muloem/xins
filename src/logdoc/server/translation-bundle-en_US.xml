@@ -117,6 +117,7 @@
 	<translation entry="3441">XSLT template cache in the XSLT calling convention is disabled.</translation>
 	<translation entry="3442">The location of the XSLT for the XSLT calling convention &quot;templates.<value-of-param name="xsltLocation" />.xins-xslt.<value-of-param name="propertySuffix" />&quot; is <value-of-param name="xsltLocation" format="quoted" />.</translation>
 	<translation entry="3443">Loading and compiling template located at <value-of-param name="xsltLocation" />.</translation>
+	<translation entry="3444">The XINS/Java Server Framework failed to start.</translation>
 
 	<translation entry="3500">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Caught exception.</translation>
 	<translation entry="3501">Call <value-of-param name="function" format="quoted" /> #<value-of-param name="callID" />: Invalid response produced by function. Details: <value-of-param name="details" />.</translation>
