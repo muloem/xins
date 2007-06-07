@@ -83,21 +83,17 @@ public final class ExceptionUtils {
     * Determines the root cause for the specified exception.
     *
     * @param exception
-    *    the exception to determine the root cause for, cannot be
+    *    the exception to determine the root cause for, can be
     *    <code>null</code>.
     *
     * @return
-    *    the root cause exception, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>exception == null</code>.
+    *    the root cause exception, can be <code>null</code>.
     */
-   public static Throwable getRootCause(Throwable exception)
-   throws IllegalArgumentException {
+   public static Throwable getRootCause(Throwable exception) {
 
       // Check preconditions
       if (exception == null) {
-         throw new IllegalArgumentException("exception  == null");
+         return null;
       }
 
       // Get the root cause of the exception
@@ -118,7 +114,7 @@ public final class ExceptionUtils {
     *    <code>null</code>.
     *
     * @return
-    *    the cause exception, never <code>null</code>.
+    *    the cause exception, can be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>exception == null</code>.

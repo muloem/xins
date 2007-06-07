@@ -47,16 +47,12 @@ public class ExceptionUtilsTests extends TestCase {
    public void testGetRootCause() throws Throwable {
 
       // Test with null argument
-      try {
-         ExceptionUtils.getRootCause(null);
-         fail("Expected ExceptionUtils.getRootCause(null) to throw an IllegalArgumentException.");
-      } catch (IllegalArgumentException iae) {
-         // as expected
-      }
+      Throwable cause = ExceptionUtils.getRootCause(null);
+      assertNull(cause);
 
       // Test with IOException with no defined cause
       Exception ex = new Exception();
-      Throwable cause = ExceptionUtils.getRootCause(ex);
+      cause = ExceptionUtils.getRootCause(ex);
       assertEquals(ex, cause);
 
       // Test 2 levels
