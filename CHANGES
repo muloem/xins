@@ -73,6 +73,10 @@ CHANGES INTRODUCED IN XINS 2.0 BETA 3:
   - Rollback installer to InnoSetup 5.1.8 as higher versions ask for
     administrator right for Windows 2000 install.
 
+* Tests:
+  - Tested with Tomcat 5.5 (unpack, no unpack), Jetty 5.1, Jetty 6.1,
+    Glassfish v1 and Glassfish v2 beta2.
+
 * Documentation:
   - Updated README.html with XINS 2.0 information.
   - Updated the user guide with XINS 2.0 features.
@@ -709,6 +713,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 1:
   - Removed the NonASCIIException class. It was deprecated since XINS 1.4.0.
   - Removed the ExpiryFolder constructor that was marked as deprecated since
     XINS 1.0.1.
+
   - Revisited the constructors in class HTTPCallRequest that were marked as
     deprecated. Unmarked them as deprecated. These have the following
     arguments:
@@ -3618,6 +3623,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 BETA 2:
 
 * Logdoc:
   - Translated some English logs to French.
+
 
 * Tests:
   - Added performance tests. Execute the "perftests" ant target to execute the
