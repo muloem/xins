@@ -158,15 +158,25 @@ public class ]]></xsl:text>
 		</xsl:if>
 		<xsl:choose>
 			<xsl:when test="@resultcode">
+				<xsl:variable name="errorcode">
+					<xsl:choose>
+						<xsl:when test="contains(@resultcode, '/')">
+							<xsl:value-of select="substring-after(@resultcode, '/')" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@resultcode" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:text>
         try {
             XINSCallResult result = caller.call(request);
             fail("An error code \"</xsl:text>
-				<xsl:value-of select="@resultcode" />
+				<xsl:value-of select="$errorcode" />
 				<xsl:text>\" was expected but did not occur.");
         } catch(UnsuccessfulXINSCallException uxcex) {
-            assertEquals("Incorrect error code received.", "</xsl:text>
-				<xsl:value-of select="@resultcode" />
+            assertEquals("Incorrect error code received: " + uxcex.getErrorCode(), "</xsl:text>
+				<xsl:value-of select="$errorcode" />
 				<xsl:text>", uxcex.getErrorCode());</xsl:text>
 				<xsl:apply-templates select="output-example">
 					<xsl:with-param name="resultVariable" select="'uxcex'" />

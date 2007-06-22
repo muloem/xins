@@ -90,6 +90,12 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<xsl:choose>
 			<xsl:when test="@type = '_descriptor'">
@@ -138,7 +144,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
       }</xsl:text>
 				</xsl:if>
 
-				<xsl:if test="@required = 'false'">
+				<xsl:if test="not($requiredOrDefault)">
 					<xsl:text>
       if (</xsl:text>
 					<xsl:value-of select="$variableName" />
@@ -178,7 +184,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 					<xsl:call-template name="javatype_from_string_for_type">
 						<xsl:with-param name="project_node" select="$project_node" />
 						<xsl:with-param name="api"      select="$api"      />
-						<xsl:with-param name="required" select="@required" />
+						<xsl:with-param name="required" select="$requiredOrDefault" />
 						<xsl:with-param name="specsdir" select="$specsdir" />
 						<xsl:with-param name="type"     select="@type"     />
 						<xsl:with-param name="variable" select="$variableName" />
@@ -191,7 +197,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 					<xsl:value-of select="$variableName" />
 					<xsl:text>);
       }</xsl:text>
-				<xsl:if test="@required = 'false'">
+				<xsl:if test="not($requiredOrDefault)">
 					<xsl:text>
       }</xsl:text>
 				</xsl:if>
@@ -202,12 +208,18 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 	<!-- Generates the fields. -->
 	<xsl:template match="impl/runtime-properties/property" mode="field">
 		<!-- TODO translate the variable -->
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="required"     select="$requiredOrDefault" />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -241,13 +253,20 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
+		<!-- Get whether the method will always return a avlue or not -->
+		<xsl:variable name="requiredOrDefault">
+			<xsl:choose>
+				<xsl:when test="@required = 'true' or @default">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<!-- Get the return type of the variable. -->
 		<xsl:variable name="javatype">
 			<xsl:call-template name="javatype_for_type">
 				<xsl:with-param name="project_node" select="$project_node" />
 				<xsl:with-param name="api"          select="$api"          />
 				<xsl:with-param name="specsdir"     select="$specsdir"     />
-				<xsl:with-param name="required"     select="@required"     />
+				<xsl:with-param name="required"     select="$requiredOrDefault" />
 				<xsl:with-param name="type"         select="@type"         />
 			</xsl:call-template>
 		</xsl:variable>
@@ -277,7 +296,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 		<xsl:value-of select="@name" />
 		<xsl:text><![CDATA[</em> property]]></xsl:text>
 		<xsl:choose>
-			<xsl:when test="@required = 'true'">
+			<xsl:when test="$requiredOrDefault = 'true'">
 				<xsl:text><![CDATA[, never <code>null</code>.]]></xsl:text>
 			</xsl:when>
 			<xsl:otherwise>

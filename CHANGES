@@ -4,6 +4,44 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.0:
+
+* XINS/Java Common Library:
+  - Fixed ElementSerializer as xmlenc attribute method does not accept null
+    values.
+
+* XINS/Java Server Framework:
+  - Improved error messages in the _xins-xslt cc in case it doesn't find the
+    XSLT files.
+
+* Generation of client-side Java code:
+  - If a runtime property has a default value, the method generated should
+    return the same object if the property was requited.
+
+* Generation of the API from the WSDL:
+  - Added more comments.
+  - Generation of other files than api.xml now works with Java 5 and Java 6.
+
+* Generated build file:
+  - Fixed the help target with the new tools and help-tools target.
+  - Fixed the resultcodes.xml should be also generated in case all error
+    codes are shared error codes.
+  - Improved handling of file regeneration when function specification change.
+  - Updated the create-impl-<api name> target to point to the 2.0 DTD.
+  - Updated the create-impl-<api name> target by adding a comment with the
+    possible elements in impl.xml.
+
+* Generation of specification documentation:
+  - Selection -- blank -- should not reset the environment field.
+
+* Documentation:
+  - Added links to the user guide from the features page.
+  - Changed the documentation page from a bullet list to tables.
+
+* Other:
+  - Fixed, shared error code should also be used in the examples.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0 BETA 3:
 
 * XINS/Java Common Library:

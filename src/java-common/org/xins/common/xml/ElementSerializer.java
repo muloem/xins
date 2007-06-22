@@ -204,7 +204,9 @@ public final class ElementSerializer {
             }
 
             // Write the attribute with prefix
-            out.attribute(prefix + ':' + attrLocalName, attrValue);
+            if (attrValue != null) {
+               out.attribute(prefix + ':' + attrLocalName, attrValue);
+            }
 
             // Associate the namespace with the prefix in the result XML
             if (newNamespace) {
@@ -212,7 +214,7 @@ public final class ElementSerializer {
             }
 
          // Write an attribute without namespace
-         } else {
+         } else if (attrValue != null) {
             out.attribute(attrLocalName, attrValue);
          }
       }

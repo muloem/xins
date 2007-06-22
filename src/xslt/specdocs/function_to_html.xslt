@@ -560,7 +560,12 @@
 								<xsl:text>=</xsl:text>
 								<span class="value">
 									<xsl:text>"</xsl:text>
-									<xsl:value-of select="$resultcode" />
+									<xsl:if test="not(contains($resultcode, '/'))">
+										<xsl:value-of select="$resultcode" />
+									</xsl:if>
+									<xsl:if test="contains($resultcode, '/')">
+										<xsl:value-of select="substring-after($resultcode, '/')" />
+									</xsl:if>
 									<xsl:text>"</xsl:text>
 								</span>
 							</span>

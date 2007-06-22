@@ -85,7 +85,11 @@
 
 				<xsl:variable name="resultclass">
 					<xsl:choose>
-						<xsl:when test="@resultcode">
+						<xsl:when test="@resultcode and contains(@resultcode, '/')">
+							<xsl:value-of select="substring-after(@resultcode, '/')" />
+							<xsl:text>Result</xsl:text>
+						</xsl:when>
+						<xsl:when test="@resultcode and not(contains(@resultcode, '/'))">
 							<xsl:value-of select="@resultcode" />
 							<xsl:text>Result</xsl:text>
 						</xsl:when>
@@ -115,8 +119,12 @@
 					</xsl:variable>
 					<xsl:variable name="type">
 						<xsl:choose>
-							<xsl:when test="../@resultcode">
+							<xsl:when test="../@resultcode and not(contains(../@resultcode, '/'))">
 								<xsl:variable name="rcd_file" select="concat($specsdir, '/', ../@resultcode, '.rcd')" />
+								<xsl:value-of select="document($rcd_file)/resultcode/output/param[@name=$parametername]/@type" />
+							</xsl:when>
+							<xsl:when test="../@resultcode and contains(../@resultcode, '/')">
+								<xsl:variable name="rcd_file" select="concat($specsdir, '/../../', substring-before(../@resultcode, '/'), '/spec/', substring-after(../@resultcode, '/'), '.rcd')" />
 								<xsl:value-of select="document($rcd_file)/resultcode/output/param[@name=$parametername]/@type" />
 							</xsl:when>
 							<xsl:otherwise>
@@ -198,8 +206,12 @@
 			</xsl:variable>
 			<xsl:variable name="type">
 				<xsl:choose>
-					<xsl:when test="$errorcode">
+					<xsl:when test="$errorcode and not(contains($errorcode, '/'))">
 						<xsl:variable name="rcd_file" select="concat($specsdir, '/', $errorcode, '.rcd')" />
+						<xsl:value-of select="document($rcd_file)/resultcode/output/data/element[@name=$elementName]/attribute[@name=$attributeName]/@type" />
+					</xsl:when>
+					<xsl:when test="$errorcode and contains($errorcode, '/')">
+						<xsl:variable name="rcd_file" select="concat($specsdir, '/../../', substring-before($errorcode, '/'), '/spec/', substring-after($errorcode, '/'), '.rcd')" />
 						<xsl:value-of select="document($rcd_file)/resultcode/output/data/element[@name=$elementName]/attribute[@name=$attributeName]/@type" />
 					</xsl:when>
 					<xsl:otherwise>

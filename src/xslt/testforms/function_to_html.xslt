@@ -159,7 +159,9 @@
 				<xsl:text>
 function fillExample(selectedExample) {
   if (selectedExample == '') {
-    document.forms[0].reset();</xsl:text>
+    var currentEnv = document.forms[0]._environment.value;
+    document.forms[0].reset();
+    document.forms[0]._environment.value = currentEnv;</xsl:text>
 				<xsl:for-each select="example">
 					<xsl:text>
   } else if (selectedExample == </xsl:text>

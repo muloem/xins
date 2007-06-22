@@ -254,16 +254,20 @@ public class XSLTCallingConvention extends StandardCallingConvention {
 
       // Get the location of the XSLT file.
       String xsltLocation = null;
-      if (_templatesPrefix != null) {
-         String templatesSuffix = httpRequest.getParameter(TEMPLATE_PARAMETER);
-         if (templatesSuffix != null && templatesSuffix.indexOf("..") != -1) {
-            throw new IOException("Incorrect _template parameter: " + templatesSuffix);
+      String templatesSuffix = httpRequest.getParameter(TEMPLATE_PARAMETER);
+      if (_templatesPrefix != null && templatesSuffix != null) {
+         if (templatesSuffix.indexOf("..") != -1) {
+            throw new IOException("Incorrect " + TEMPLATE_PARAMETER + " parameter: " + templatesSuffix);
          }
-         if (templatesSuffix != null ) {
-            xsltLocation = _templatesPrefix + templatesSuffix;
-         }
+         xsltLocation = _templatesPrefix + templatesSuffix;
+      }
+      if (_templatesPrefix == null && templatesSuffix != null) {
+         throw new IOException(TEMPLATE_PARAMETER + " parameter not allowed.");
       }
       if (xsltLocation == null) {
+         if (_location == null) {
+            throw new IOException("No location specified for the XSLT stylesheets.");
+         }
          xsltLocation = _location + httpRequest.getParameter("_function") + ".xslt";
       }
 

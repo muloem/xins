@@ -82,7 +82,7 @@ ${sf.file}</fail>
 		<echo message="Uploading ${title} ${version} Logdoc HTML to ${www.host}" />
 
 		<!-- Create TAR GZ file for Logdoc HTML -->
-		<echo level="verbose" message="Creating TAR GZ file for Logdoc HTML" />
+		<echo message="Creating TAR GZ file for Logdoc HTML" />
 		<tar tarfile="build/logdoc.tar" longfile="gnu">
 			<tarfileset dir="build/logdoc/common/html" mode="664" prefix="${version}/common" />
 			<tarfileset dir="build/logdoc/client/html" mode="664" prefix="${version}/client" />
@@ -92,7 +92,7 @@ ${sf.file}</fail>
 		<delete file="build/logdoc.tar" />
 
 		<!-- Copy to remote host -->
-		<echo level="verbose" message="Copying TAR GZ file for Logdoc HTML" />
+		<echo message="Copying TAR GZ file for Logdoc HTML to ${www.target}/logdoc" />
 		<scp
 		todir="${www.target}/logdoc"
 		password="${sf.password}"
@@ -100,7 +100,7 @@ ${sf.file}</fail>
 		file="build/logdoc.tgz" />
 
 		<!-- Remotely: Unpack and create symbolic link -->
-		<echo level="verbose" message="Unpacking TAR GZ file for Logdoc HTML remotely" />
+		<echo message="Unpacking TAR GZ file for Logdoc HTML remotely" />
 		<sshexec
 		host="${www.host}"
 		username="${sf.user}"
@@ -110,7 +110,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-logdoc"
-	depends="logdoc-html,do-upload-logdoc"
+	depends="-init-release,logdoc-html,do-upload-logdoc"
 	description="Generates Logdoc HTML and then uploads it for the web site"
 	unless="no-upload" />
 
@@ -327,7 +327,7 @@ ${sf.file}</fail>
 		<echo message="Uploading ${title} ${version} Javadoc to ${www.host}" />
 
 		<!-- Create TAR GZ file for Javadoc -->
-		<echo level="verbose" message="Creating TAR GZ file for Javadoc HTML" />
+		<echo message="Creating TAR GZ file for Javadoc HTML" />
 		<tar tarfile="build/javadoc.tar" longfile="gnu">
 			<tarfileset dir="docs/javadoc"         mode="664" dirmode="775" prefix="javadoc/${version}" />
 		</tar>
@@ -335,7 +335,7 @@ ${sf.file}</fail>
 		<delete file="build/javadoc.tar" />
 
 		<!-- Copy to remote host -->
-		<echo level="verbose" message="Copying TAR GZ file for Javadoc" />
+		<echo message="Copying TAR GZ file for Javadoc to ${www.target}/" />
 		<scp
 		todir="${www.target}/"
 		password="${sf.password}"
@@ -343,7 +343,7 @@ ${sf.file}</fail>
 		file="build/javadoc.tgz" />
 
 		<!-- Remotely: unpack and create symbolic links -->
-		<echo level="verbose" message="Unpacking TAR GZ file for Javadoc remotely" />
+		<echo message="Unpacking TAR GZ file for Javadoc remotely" />
 		<sshexec
 		host="${www.host}"
 		username="${sf.user}"
@@ -354,7 +354,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-javadoc"
-	depends="javadoc,javadoc-private,do-upload-javadoc"
+	depends="-init-release,javadoc,javadoc-private,do-upload-javadoc"
 	description="Generates and then uploads the Javadoc API documentation to the web site"
 	unless="no-upload" />
 
@@ -643,7 +643,7 @@ ${sf.file}</fail>
 	depends="-init-release"
 	description="Uploads the package to the web site"
 	unless="no-upload">
-		<echo message="Uploading ${title} ${version} package to ${www.host}" />
+		<echo message="Uploading ${title} ${version} package to ${www.target}/" />
 		<scp
 		file="build/${package-basename}.tgz"
 		todir="${www.target}/"
@@ -670,7 +670,7 @@ ${sf.file}</fail>
 
 	<target
 	name="upload-package"
-	depends="package,do-upload-package"
+	depends="-init-release,package,do-upload-package"
 	description="Creates and uploads package to the web server" />
 
 	<target name="installer" depends="-init-release">

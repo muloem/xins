@@ -517,10 +517,16 @@
 						<text:line-break/>
 						<xsl:text>&lt;</xsl:text>
 						<text:span text:style-name="Elem">result</text:span>
-						<xsl:if test="string-length(@resultcode) &gt; 0">
+						<xsl:if test="string-length(@resultcode) &gt; 0 and not(contains(@resultcode, '/'))">
 							<xsl:call-template name="print-attr">
 								<xsl:with-param name="name" select="'errorcode'" />
 								<xsl:with-param name="value" select="@resultcode" />
+							</xsl:call-template>
+						</xsl:if>
+						<xsl:if test="string-length(@resultcode) &gt; 0 and contains(@resultcode, '/')">
+							<xsl:call-template name="print-attr">
+								<xsl:with-param name="name" select="'errorcode'" />
+								<xsl:with-param name="value" select="substring-after(@resultcode, '/')" />
 							</xsl:call-template>
 						</xsl:if>
 						<xsl:choose>

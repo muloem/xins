@@ -15,8 +15,9 @@
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:xt="http://www.jclarck.com/xt"
                 xmlns:xalan="http://org.apache.xalan.xslt.extensions.Redirect"
-								extension-element-prefixes="saxon xalan xt"
-                exclude-result-prefixes="xs saxon xt xalan"
+								xmlns:xsltc="http://xml.apache.org/xalan/xsltc"
+								extension-element-prefixes="saxon xalan xt xsltc"
+                exclude-result-prefixes="xs saxon xt xalan xsltc"
                 version="2.0">
 
 	<xsl:key name="simpletypenames" match="xs:simpleType | xsd:simpleType" use="@name" />
@@ -58,15 +59,7 @@
 		<xsl:param name="elementName" />
 		<xsl:param name="typeName" />
 
-		<xsl:variable name="typeFile" select="concat($typeName, '.typ')" />
-		<!-- The XSLT processor will choose which tag it can interpret -->
-		<!-- xsl:result-document href="{$typeFile}" format="typ_doctype">
-			<xsl:call-template name="xml_type">
-				<xsl:with-param name="typeName" select="$typeName" />
-				<xsl:with-param name="elementName" select="$elementName" />
-			</xsl:call-template>
-			<xsl:fallback />
-		</xsl:result-document-->
+		<xsl:variable name="typeFile" select="concat($specsdir, '/', $typeName, '.typ')" />
 		<xalan:write file="{$typeFile}">
 			<xsl:call-template name="xml_type">
 				<xsl:with-param name="typeName" select="$typeName" />
@@ -74,6 +67,13 @@
 			</xsl:call-template>
 			<xsl:fallback />
 		</xalan:write>
+		<xsltc:output file="{$typeFile}">
+			<xsl:call-template name="xml_type">
+				<xsl:with-param name="typeName" select="$typeName" />
+				<xsl:with-param name="elementName" select="$elementName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xsltc:output>
 		<saxon:output file="{$typeFile}">
 			<xsl:call-template name="xml_type">
 				<xsl:with-param name="typeName" select="$typeName" />
@@ -88,12 +88,25 @@
 			</xsl:call-template>
 			<xsl:fallback />
 		</xt:document>
+		<xsl:call-template name="create-file">
+			<xsl:with-param name="fileName" select="$typeFile" />
+			<xsl:with-param name="content">
+				<xsl:call-template name="xml_type">
+					<xsl:with-param name="typeName" select="$typeName" />
+					<xsl:with-param name="elementName" select="$elementName" />
+				</xsl:call-template>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="xml_type">
 		<xsl:param name="typeName" />
 		<xsl:param name="elementName" />
 
+		<xsl:if test="not(element-available('xalan:write'))">
+			<xsl:text>
+</xsl:text>
+		</xsl:if>
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE type PUBLIC "-//XINS//DTD Type 2.0//EN" "http://www.xins.org/dtd/type_2_0.dtd">]]>
 
 </xsl:text>

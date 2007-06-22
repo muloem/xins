@@ -15,8 +15,10 @@
                 xmlns:saxon="http://icl.com/saxon"
                 xmlns:xt="http://www.jclarck.com/xt"
                 xmlns:xalan="http://org.apache.xalan.xslt.extensions.Redirect"
-								extension-element-prefixes="saxon xt xalan"
-                exclude-result-prefixes="xs xsd saxon xt xalan"
+								xmlns:redirect="http://xml.apache.org/xalan/redirect"
+								xmlns:xsltc="http://xml.apache.org/xalan/xsltc"
+								extension-element-prefixes="saxon xt xalan redirect xsltc"
+                exclude-result-prefixes="xs xsd saxon xt xalan redirect xsltc"
                 version="2.0">
 
 	<xsl:include href="../types.xslt" />
@@ -40,13 +42,21 @@
 
 	<!-- Creates the different files -->
 	<xsl:template match="definitions">
+
+		<!-- The api.xml file -->
 		<xsl:call-template name="apifile">
 			<xsl:with-param name="api_name" select="$api_name" />
 		</xsl:call-template>
+
+		<!-- The function files -->
 		<xsl:apply-templates select="portType/operation[generate-id() = generate-id(key('operationnames', @name))]" />
+
+		<!-- The types -->
 		<xsl:apply-templates select="types/xsd:schema//xsd:simpleType/xsd:restriction" mode="restriction" />
 		<xsl:apply-templates select="types/xsd:schema//xsd:simpleType/xsd:list" mode="restriction" />
 		<xsl:apply-templates select="types/xsd:schema//xsd:element[@maxOccurs='unbounded' and not(@type='xsd:string')]" mode="list" />
+
+		<!-- The errors -->
 		<xsl:apply-templates select="portType/operation/fault[generate-id() = generate-id(key('faultnames', @name))]">
 			<xsl:sort select="@name" />
 		</xsl:apply-templates>
@@ -56,6 +66,10 @@
 	<xsl:template name="apifile">
 		<xsl:param name="api_name" />
 
+		<xsl:if test="not(element-available('xalan:write'))">
+			<xsl:text>
+</xsl:text>
+		</xsl:if>
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE api PUBLIC "-//XINS//DTD API 2.0//EN" "http://www.xins.org/dtd/api_2_0.dtd">]]>
 
 </xsl:text>
@@ -155,26 +169,48 @@
 	</xsl:template>
 
 	<!-- Creates the function files (.fnc) -->
-	<xsl:template match="operation">
+	<xsl:template match="portType/operation">
 		<xsl:variable name="functionName">
 			<xsl:call-template name="hungarianUpper">
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="functionFile" select="concat($functionName, '.fnc')" />
+		<xsl:variable name="functionFile" select="concat($specsdir, '/', $functionName, '.fnc')" />
 
+		<xsltc:output file="{$functionFile}">
+			<xsl:call-template name="functionfile">
+				<xsl:with-param name="functionName" select="$functionName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xsltc:output>
 		<xalan:write file="{$functionFile}">
 			<xsl:call-template name="functionfile">
 				<xsl:with-param name="functionName" select="$functionName" />
 			</xsl:call-template>
 			<xsl:fallback />
 		</xalan:write>
+		<saxon:output file="{$functionFile}">
+			<xsl:call-template name="functionfile">
+				<xsl:with-param name="functionName" select="$functionName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</saxon:output>
+		<xt:document href="{$functionFile}">
+			<xsl:call-template name="functionfile">
+				<xsl:with-param name="functionName" select="$functionName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xt:document>
 	</xsl:template>
 
 	<!-- The content for the function files (.fnc) -->
 	<xsl:template name="functionfile">
 		<xsl:param name="functionName" />
 
+		<xsl:if test="not(element-available('xalan:write'))">
+			<xsl:text>
+</xsl:text>
+		</xsl:if>
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE function PUBLIC "-//XINS//DTD Function 2.0//EN" "http://www.xins.org/dtd/function_2_0.dtd">]]>
 
 </xsl:text>
@@ -231,19 +267,41 @@
 				<xsl:with-param name="text" select="@name" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="errorcodeFile" select="concat($errorcodeName, '.rcd')" />
+		<xsl:variable name="errorcodeFile" select="concat($specsdir, '/', $errorcodeName, '.rcd')" />
 
+		<xsltc:output file="{$functionFile}">
+			<xsl:call-template name="errorcodefile">
+				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xsltc:output>
 		<xalan:write file="{$errorcodeFile}">
 			<xsl:call-template name="errorcodefile">
 				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
 			</xsl:call-template>
 			<xsl:fallback />
 		</xalan:write>
+		<saxon:output file="{$functionFile}">
+			<xsl:call-template name="errorcodefile">
+				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</saxon:output>
+		<xt:document href="{$functionFile}">
+			<xsl:call-template name="errorcodefile">
+				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
+			</xsl:call-template>
+			<xsl:fallback />
+		</xt:document>
 	</xsl:template>
 
 	<!-- The content for the error code file (.rcd) -->
 	<xsl:template name="errorcodefile">
 		<xsl:param name="errorcodeName" />
+		<xsl:if test="not(element-available('xalan:write'))">
+			<xsl:text>
+</xsl:text>
+		</xsl:if>
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!DOCTYPE resultcode PUBLIC "-//XINS//DTD Result Code 2.0//EN" "http://www.xins.org/dtd/resultcode_2_0.dtd">]]>
 
 </xsl:text>

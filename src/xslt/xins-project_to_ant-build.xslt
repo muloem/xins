@@ -93,8 +93,9 @@ The following commands assist in authoring specifications:
 
 The following commands can be used to run a tool on an API:
 java2html, pmd, checkstyle, coverage, findbugs, lint4j, jdepend,
-cvschangelog, jmeter, run-jmeter, maven, eclipse.
-More information is available using the 'tools' command.
+cvschangelog, jmeter, run-jmeter, maven, eclipse, smd,
+xsd-to-types, wsdl-to-api.
+More information is available using the 'help-tools' target.
 
 The following targets are specific for a single API,
 replace <api> with the name of an existing API:
@@ -1022,6 +1023,9 @@ APIs in this project are:
 						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
+					<xsl:if test="$api_node/resultcode">
+						<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml" />
+					</xsl:if>
 				</dependset>
 				<xmlvalidate file="{$impl_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
@@ -1085,16 +1089,7 @@ APIs in this project are:
 
 				<!-- Generation of the result code files. -->
 				<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<dependset>
-						<srcfilelist   dir="{$api_specsdir}" files="{$functionIncludes}" />
-						<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*Result.java" />
-						<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml" />
-					</dependset>
-					<xmlvalidate warn="false">
-						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
-						<xmlcatalog refid="all-dtds" />
-					</xmlvalidate>
+				<xsl:if test="$api_node/resultcode">
 					<!-- An intermediate file containing all the functions/result codes is created for performance reasons. -->
 					<xslt
 					in="{$api_file}"
@@ -1103,6 +1098,12 @@ APIs in this project are:
 						<xmlcatalog refid="all-dtds" />
 						<param name="specsdir"     expression="{$api_specsdir}" />
 					</xslt>
+				</xsl:if>
+				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
+					<xmlvalidate warn="false">
+						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
+						<xmlcatalog refid="all-dtds" />
+					</xmlvalidate>
 					<xslt
 					basedir="{$api_specsdir}"
 					destdir="{$javaDestDir}/{$packageAsDir}"
@@ -1348,8 +1349,8 @@ APIs in this project are:
 			<target name="create-impl-{$api}{$implName2}" unless="impl.exists">
 				<mkdir dir="{$api_specsdir}/../impl{$implName2}" />
 				<echo file="{$api_specsdir}/../impl{$implName2}/impl.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 1.4//EN" "http://xins.sourceforge.net/dtd/impl_1_4.dtd">
-
+<!DOCTYPE impl PUBLIC "-//XINS//DTD Implementation 2.0//EN" "http://www.xins.org/dtd/impl_2_0.dtd">
+<!-- The order of the elements is logdoc, bootstrap-properties, runtime-properties, content, dependency, calling-convention, instance. -->
 <impl>
 </impl>]]></echo>
 			</target>
