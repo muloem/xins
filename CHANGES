@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
+
+* Tools:
+  - Upgraded Maven pom to the new stable 2.0 release.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0:
 
 * XINS/Java Common Library:
