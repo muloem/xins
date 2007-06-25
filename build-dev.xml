@@ -912,7 +912,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<!-- Package XINS to be put in the Maven repository -->
 	<target name="maven" depends="-load-sfproperties,-init">
-		<property name="stable.version" value="1.5.2" />
+		<property name="stable.version" value="2.0" />
 		<mkdir dir="build/maven" />
 
 		<!-- Creates the JAR files -->
