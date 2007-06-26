@@ -20,13 +20,10 @@ import org.xins.client.InternalErrorException;
 import org.xins.client.InvalidRequestException;
 import org.xins.client.UnacceptableRequestException;
 import org.xins.client.UnsuccessfulXINSCallException;
-import org.xins.client.XINSCallConfig;
 import org.xins.client.XINSCallRequest;
 import org.xins.client.XINSCallResult;
 import org.xins.client.XINSServiceCaller;
-import org.xins.common.ProgrammingException;
 import org.xins.common.Utils;
-import org.xins.common.http.HTTPMethod;
 import org.xins.common.http.StatusCodeHTTPCallException;
 import org.xins.common.service.TargetDescriptor;
 import org.xins.common.text.TextUtils;
@@ -34,7 +31,6 @@ import org.xins.common.types.standard.Date;
 import org.xins.common.types.standard.Timestamp;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
-import org.xins.logdoc.ExceptionUtils;
 import org.xins.logdoc.LogCentral;
 
 import org.xins.tests.AllTests;
@@ -810,7 +806,7 @@ public class AllInOneAPITests extends TestCase {
     */
    public void testCAPIVersion() throws Exception {
       assertNotNull("No XINS version specified.", _capi.getXINSVersion());
-      assertTrue("The version does not starts with '2.0'", _capi.getXINSVersion().startsWith("2.0"));
+      assertTrue("The version does not starts with '2.1'", _capi.getXINSVersion().startsWith("2.1"));
    }
 
    /**
