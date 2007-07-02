@@ -96,9 +96,14 @@ function deleteCookie(name, path, domain) {
 
 
 function setEnvCookie(form) {
-   var selIndex = form._environment.selectedIndex;
-   var env = form._environment.options[selIndex].text;
-   setCookie("xins.env", env, "", "", "", "");
+   if (form._environment.options) {
+      var selIndex = form._environment.selectedIndex;
+      var env = form._environment.options[selIndex].text;
+      setCookie("xins.env", env, "", "", "", "");
+   } else if (form._environment.type == 'text') {
+      var env = form._environment.value;
+      setCookie("xins.env", env, "", "", "", "");
+   }
 }
 
 
@@ -112,6 +117,11 @@ function selectEnv() {
          if (env == options[i].text) {
             options.selectedIndex = i;
          }
+      }
+   } else if (document.forms[0] && document.forms[0]._environment && document.forms[0]._environment.type == 'text') {
+      var env = getCookie("xins.env");
+      if (env != null && env != 'null') {
+	document.forms[0]._environment.value = env;
       }
    }
 }

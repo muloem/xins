@@ -43,11 +43,8 @@
 				<xsl:when test="string-length($env_file) > 0">
 					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
 				</xsl:when>
-				<xsl:when test="$api_node/environment">
-					<xsl:value-of select="$api_node/environment[1]/@url" />
-				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>http://API_PATH</xsl:text>
+					<xsl:value-of select="concat('http://localhost:8080/', $api, '/')" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -130,27 +127,20 @@
 
 	<xsl:template name="environment_section">
 		<xsl:text>Execution environment: </xsl:text>
-		<select name="_environment" class="required">
-			<xsl:choose>
-				<xsl:when test="string-length($env_file) > 0">
+		<xsl:choose>
+			<xsl:when test="string-length($env_file) > 0">
+				<select name="_environment" class="required">
 					<xsl:for-each select="document($env_file)/environments/environment">
 						<option value="{@url}">
 							<xsl:value-of select="@id" />
 						</option>
 					</xsl:for-each>
-				</xsl:when>
-				<xsl:when test="$api_node/environment">
-					<xsl:for-each select="$api_node/environment">
-						<option value="{@url}">
-							<xsl:value-of select="@id" />
-						</option>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise>
-					<option value="API_PATH">No environment</option>
-				</xsl:otherwise>
-			</xsl:choose>
-		</select>
+				</select>
+			</xsl:when>
+			<xsl:otherwise>
+				<input type="text" name="_environment" class="required" value="http://localhost:8080/{$api}/" size="60" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template name="autofill_section">

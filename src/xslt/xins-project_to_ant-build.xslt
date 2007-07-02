@@ -722,23 +722,24 @@ APIs in this project are:
 				<xmlvalidate file="{$env_file}" warn="false">
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
-				<xslt
-				basedir="{$api_specsdir}"
-				destdir="{$builddir}/specdocs/{$api}"
-				style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
-				includes="{$functionIncludes}"
-				extension="-testform.html"
-				reloadstylesheet="${{reload.stylesheet}}">
-					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="api_file"     expression="{$api_file}"     />
-					<param name="env_file"     expression="{$env_file}"     />
-				</xslt>
 			</xsl:if>
+			<xsl:variable name="env_file" select="''" />
+			<xslt
+			basedir="{$api_specsdir}"
+			destdir="{$builddir}/specdocs/{$api}"
+			style="{$xins_home}/src/xslt/testforms/function_to_html.xslt"
+			includes="{$functionIncludes}"
+			extension="-testform.html"
+			reloadstylesheet="${{reload.stylesheet}}">
+				<xmlcatalog refid="all-dtds" />
+				<param name="xins_version" expression="{$xins_version}" />
+				<param name="project_home" expression="{$project_home}" />
+				<param name="project_file" expression="{$project_file}" />
+				<param name="specsdir"     expression="{$api_specsdir}" />
+				<param name="api"          expression="{$api}"          />
+				<param name="api_file"     expression="{$api_file}"     />
+				<param name="env_file"     expression="{$env_file}"     />
+			</xslt>
 			<xsl:for-each select="impl">
 				<xsl:variable name="implName" select="@name" />
 				<xsl:variable name="implName2">

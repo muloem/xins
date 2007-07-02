@@ -14,6 +14,11 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Changed Request.equals() and Request.hashCode() to use in some cases
     equals() instead of ==.
 
+* Generation of specification documentation:
+  - If no environment is specified for an API, the test form page is still
+    generated and a text field is proposed to the user to fill the location
+    of the API. The value is stored in a cookie.
+
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
 
