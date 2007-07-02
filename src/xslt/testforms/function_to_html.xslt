@@ -204,7 +204,7 @@ function fillExample(selectedExample) {
 					<xsl:apply-templates select="input/data/element" />
 					<tr>
 						<td align="right" colspan="2">
-							<input type="submit" value="Submit" />
+							<input class="submit" type="submit" value="Submit" />
 						</td>
 					</tr>
 					<tr>

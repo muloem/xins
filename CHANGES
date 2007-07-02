@@ -18,6 +18,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - If no environment is specified for an API, the test form page is still
     generated and a text field is proposed to the user to fill the location
     of the API. The value is stored in a cookie.
+  - Fixed incorrect CSS for specdocs.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
