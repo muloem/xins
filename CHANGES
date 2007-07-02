@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
 
+* Build- and release-process:
+  - Added NetBeans project files to CVS.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0:
 

@@ -13,7 +13,6 @@ depends
 docs
 jcoverage.ser
 cobertura.ser
-nbproject
 bineclipse
 .settings
 .externalToolBuilders
