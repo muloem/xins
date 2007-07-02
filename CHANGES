@@ -6,6 +6,12 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 
+* Generation of server-side Java code:
+  - Removed creation of _errorResult when the function has no input parameters
+    and no input data section.
+  - Removed creation of the parameter when the type is _text and is optional
+    in checkOutputParameters() as not used.
+
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
 

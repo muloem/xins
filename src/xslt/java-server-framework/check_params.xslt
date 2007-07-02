@@ -80,38 +80,40 @@
 					</xsl:if>
 				</xsl:variable>
 
-				<xsl:text>
-      String </xsl:text>
-				<xsl:value-of select="$localJavaVariable" />
-				<xsl:text> = </xsl:text>
-				<xsl:value-of select="$context" />
-				<xsl:choose>
-					<xsl:when test="local-name() = 'attribute'">
-						<xsl:text>getAttribute("</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>getParameter("</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:value-of select="@name" />
-				<xsl:text>");</xsl:text>
-				<xsl:if test="@default">
+				<xsl:if test="not(@type='_text' or string-length(@type) = 0) or @required='true' or not(local-name(..) = 'output' and $side = 'server')">
 					<xsl:text>
-      if (</xsl:text>
+      String </xsl:text>
 					<xsl:value-of select="$localJavaVariable" />
-					<xsl:text> == null) {
-         </xsl:text>
-					<xsl:value-of select="concat($localJavaVariable, ' = &quot;')" />
-					<xsl:call-template name="xml_to_java_string">
-						<xsl:with-param name="text" select="@default" />
-					</xsl:call-template>
-					<xsl:text>&quot;;
+					<xsl:text> = </xsl:text>
+					<xsl:value-of select="$context" />
+					<xsl:choose>
+						<xsl:when test="local-name() = 'attribute'">
+							<xsl:text>getAttribute("</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>getParameter("</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:value-of select="@name" />
+					<xsl:text>");</xsl:text>
+					<xsl:if test="@default">
+						<xsl:text>
+      if (</xsl:text>
+						<xsl:value-of select="$localJavaVariable" />
+						<xsl:text> == null) {
+					 </xsl:text>
+						<xsl:value-of select="concat($localJavaVariable, ' = &quot;')" />
+						<xsl:call-template name="xml_to_java_string">
+							<xsl:with-param name="text" select="@default" />
+						</xsl:call-template>
+						<xsl:text>&quot;;
       }</xsl:text>
+					</xsl:if>
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:if>
 
-		<xsl:if test="local-name() = 'input' or local-name() = 'output'">
+		<xsl:if test="(local-name() = 'input' and (not($side = 'server') or param or data)) or local-name() = 'output'">
 			<xsl:text>
 
       </xsl:text>
@@ -617,7 +619,7 @@
 		</xsl:apply-templates>
 
 		<xsl:choose>
-			<xsl:when test="$side = 'server' and local-name() = 'input'">
+			<xsl:when test="$side = 'server' and local-name() = 'input' and (param or data)">
 				<xsl:text>
 
       if (_errorResult != null) {
