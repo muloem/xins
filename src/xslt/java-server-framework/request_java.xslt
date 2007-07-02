@@ -702,7 +702,7 @@
 
 			<xsl:text>(</xsl:text>
 			<xsl:choose>
-				<xsl:when test="$typeIsPrimary = 'true'">
+				<xsl:when test="$typeIsPrimary = 'true' and (@required='true' or @default)">
 					<xsl:text>String.valueOf(</xsl:text>
 					<xsl:value-of select="$javaVariable" />
 					<xsl:text>)</xsl:text>
@@ -765,7 +765,7 @@
 			<xsl:value-of select="$javaMethodSuffix" />
 			<xsl:text>()</xsl:text>
 			<xsl:choose>
-				<xsl:when test="$typeIsPrimary = 'true'">
+				<xsl:when test="$typeIsPrimary = 'true' and (@required = 'true' or @default)">
 					<xsl:text> == </xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -775,7 +775,7 @@
 			<xsl:text>otherRequest.get</xsl:text>
 			<xsl:value-of select="$javaMethodSuffix" />
 			<xsl:text>()</xsl:text>
-			<xsl:if test="not($typeIsPrimary = 'true')">
+			<xsl:if test="not($typeIsPrimary = 'true' and (@required = 'true' or @default))">
 				<xsl:text>)</xsl:text>
 			</xsl:if>
 			<xsl:if test="not(@required = 'true') and not(@default)">

@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     and no input data section.
   - Removed creation of the parameter when the type is _text and is optional
     in checkOutputParameters() as not used.
+  - Changed Request.equals() and Request.hashCode() to use in some cases
+    equals() instead of ==.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
