@@ -18,9 +18,10 @@
 	<xsl:output
 	method="html"
 	indent="yes"
+	encoding="UTF-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes" />
+	omit-xml-declaration="no" />
 
 	<xsl:include href="header.xslt"       />
 	<xsl:include href="footer.xslt"       />
@@ -43,8 +44,7 @@
 				<h1>API index</h1>
 				<xsl:choose>
 					<xsl:when test="api">
-						<p />
-						<xsl:text>This project defines the following API specifications:</xsl:text>
+						<p>This project defines the following API specifications:</p>
 						<table class="apilist">
 							<tr>
 								<th>API</th>

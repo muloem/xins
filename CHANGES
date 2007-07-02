@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     generated and a text field is proposed to the user to fill the location
     of the API. The value is stored in a cookie.
   - Fixed incorrect CSS for specdocs.
+  - Fixed some invalid XHTML.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.

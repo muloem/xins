@@ -8,7 +8,7 @@
  See the COPYRIGHT file for redistribution and use restrictions.
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
 	<!-- Define parameters -->
 	<xsl:param name="xins_version" />
@@ -20,15 +20,15 @@
 	<xsl:output
 	method="html"
 	indent="yes"
-	encoding="US-ASCII"
+	encoding="UTF-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes" />
+	omit-xml-declaration="no" />
 
 	<xsl:include href="header.xslt"       />
 	<xsl:include href="footer.xslt"       />
 	<xsl:include href="../author.xslt"    />
-	<xsl:include href="../types.xslt"    />
+	<xsl:include href="../types.xslt"     />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 

@@ -30,10 +30,10 @@
 	<xsl:output
 	method="html"
 	indent="yes"
-	encoding="US-ASCII"
+	encoding="UTF-8"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes" />
+	omit-xml-declaration="no" />
 
 	<xsl:variable name="project_node" select="document($project_file)/project" />
 	<xsl:variable name="api_node" select="document($api_file)/api" />
@@ -213,8 +213,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="example-inputparams"  select="//function/input/param/example-value[@example=$examplenum]" />
-		<xsl:variable name="example-inputparams2"  select="input-example" />
+		<xsl:variable name="example-inputparams"  select="input-example" />
 		<xsl:variable name="example-inputdata">
 			<xsl:if test="input-data-example/element-example">
 				<xsl:text>&lt;data&gt;</xsl:text>
@@ -222,8 +221,6 @@
 				<xsl:text>&lt;/data&gt;</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="example-outputparams" select="//function/output/param/example-value[@example=$examplenum]" />
-		<xsl:variable name="example-outputparams2" select="output-example" />
 		<xsl:variable name="resultcode">
 			<xsl:choose>
 				<xsl:when test="@returncode">
@@ -462,26 +459,7 @@
 						<xsl:text>=</xsl:text>
 						<span class="value">_xins-std</span>
 					</span>
-					<xsl:for-each select="$example-inputparams">
-						<xsl:text>&amp;</xsl:text>
-						<span class="param">
-							<xsl:attribute name="title">
-								<xsl:value-of select="../@name" />
-								<xsl:text>: </xsl:text>
-								<xsl:value-of select="text()" />
-							</xsl:attribute>
-							<span class="name">
-								<xsl:value-of select="../@name" />
-							</span>
-							<xsl:text>=</xsl:text>
-							<span class="value">
-								<xsl:call-template name="urlencode">
-									<xsl:with-param name="text" select="text()" />
-								</xsl:call-template>
-							</span>
-						</span>
-					</xsl:for-each>
-					<xsl:for-each select="$example-inputparams2">
+					<xsl:for-each select="input-example">
 						<xsl:text>&amp;</xsl:text>
 						<span class="param">
 							<xsl:attribute name="title">
@@ -571,7 +549,7 @@
 							</span>
 						</xsl:if>
 						<xsl:choose>
-							<xsl:when test="$example-outputparams or $example-outputparams2 or output-data-example or data-example">
+							<xsl:when test="output-example or output-data-example or data-example">
 								<xsl:text>&gt;</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -580,67 +558,35 @@
 						</xsl:choose>
 					</span>
 					<xsl:choose>
-						<xsl:when test="$example-outputparams or $example-outputparams2 or output-data-example or data-example">
-							<xsl:if test="$example-outputparams">
-								<xsl:for-each select="$example-outputparams">
-									<xsl:text>
+						<xsl:when test="output-example or output-data-example or data-example">
+							<xsl:for-each select="output-example">
+								<xsl:text>
 </xsl:text>
-									<xsl:value-of disable-output-escaping="yes" select="$indentation" />
-									<span class="elem">
-										<xsl:text>&lt;</xsl:text>
-										<span class="name">param</span>
-										<xsl:text> </xsl:text>
-										<span class="attr">
-											<span class="name">name</span>
-											<xsl:text>=</xsl:text>
-											<span class="value">
-												<xsl:text>"</xsl:text>
-												<xsl:value-of select="../@name" />
-												<xsl:text>"</xsl:text>
-											</span>
+								<xsl:value-of disable-output-escaping="yes" select="$indentation" />
+								<span class="elem">
+									<xsl:text>&lt;</xsl:text>
+									<span class="name">param</span>
+									<xsl:text> </xsl:text>
+									<span class="attr">
+										<span class="name">name</span>
+										<xsl:text>=</xsl:text>
+										<span class="value">
+											<xsl:text>"</xsl:text>
+											<xsl:value-of select="@name" />
+											<xsl:text>"</xsl:text>
 										</span>
-										<xsl:text>&gt;</xsl:text>
 									</span>
-									<span class="pcdata">
-										<xsl:apply-templates select="." />
-									</span>
-									<span class="elem">
-										<xsl:text>&lt;/</xsl:text>
-										<span class="name">param</span>
-										<xsl:text>&gt;</xsl:text>
-									</span>
-								</xsl:for-each>
-							</xsl:if>
-							<xsl:if test="$example-outputparams2">
-								<xsl:for-each select="$example-outputparams2">
-									<xsl:text>
-</xsl:text>
-									<xsl:value-of disable-output-escaping="yes" select="$indentation" />
-									<span class="elem">
-										<xsl:text>&lt;</xsl:text>
-										<span class="name">param</span>
-										<xsl:text> </xsl:text>
-										<span class="attr">
-											<span class="name">name</span>
-											<xsl:text>=</xsl:text>
-											<span class="value">
-												<xsl:text>"</xsl:text>
-												<xsl:value-of select="@name" />
-												<xsl:text>"</xsl:text>
-											</span>
-										</span>
-										<xsl:text>&gt;</xsl:text>
-									</span>
-									<span class="pcdata">
-										<xsl:apply-templates select="." />
-									</span>
-									<span class="elem">
-										<xsl:text>&lt;/</xsl:text>
-										<span class="name">param</span>
-										<xsl:text>&gt;</xsl:text>
-									</span>
-								</xsl:for-each>
-							</xsl:if>
+									<xsl:text>&gt;</xsl:text>
+								</span>
+								<span class="pcdata">
+									<xsl:apply-templates select="." />
+								</span>
+								<span class="elem">
+									<xsl:text>&lt;/</xsl:text>
+									<span class="name">param</span>
+									<xsl:text>&gt;</xsl:text>
+								</span>
+							</xsl:for-each>
 							<xsl:if test="output-data-example or data-example">
 								<xsl:text>
 </xsl:text>
@@ -675,45 +621,10 @@
 				</span>
 			</td>
 		</tr>
-		<xsl:if test="count($api_node/environment) &gt; 0 or $project_node/api[@name = $api]/environments">
+		<xsl:if test="$project_node/api[@name = $api]/environments">
 			<tr>
 				<th>Test on:</th>
 				<td>
-					<xsl:for-each select="$api_node/environment">
-						<a>
-							<xsl:attribute name="href">
-								<xsl:value-of select="@url" />
-								<xsl:text>?_function=</xsl:text>
-								<xsl:value-of select="$function_name" />
-								<xsl:text>&amp;_convention=_xins-std</xsl:text>
-								<xsl:for-each select="$example-inputparams">
-									<xsl:text>&amp;</xsl:text>
-									<xsl:value-of select="../@name" />
-									<xsl:text>=</xsl:text>
-									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text" select="text()" />
-									</xsl:call-template>
-								</xsl:for-each>
-								<xsl:for-each select="$example-inputparams2">
-									<xsl:text>&amp;</xsl:text>
-									<xsl:value-of select="@name" />
-									<xsl:text>=</xsl:text>
-									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text" select="text()" />
-									</xsl:call-template>
-								</xsl:for-each>
-								<xsl:if test="$example-inputdata != ''">
-									<xsl:text>&amp;_data=</xsl:text>
-									<xsl:call-template name="urlencode">
-										<xsl:with-param name="text" select="$example-inputdata" />
-									</xsl:call-template>
-								</xsl:if>
-							</xsl:attribute>
-
-							<xsl:value-of select="@id" />
-						</a>
-						<xsl:text> </xsl:text>
-					</xsl:for-each>
 					<xsl:if test="$project_node/api[@name = $api]/environments">
 						<xsl:variable name="env_file" select="concat($project_home, '/apis/', $api, '/environments.xml')" />
 						<xsl:for-each select="document($env_file)/environments/environment">
@@ -722,17 +633,9 @@
 									<xsl:value-of select="@url" />
 									<xsl:text>?_function=</xsl:text>
 									<xsl:value-of select="$function_name" />
-									<xsl:text>&amp;_convention=_xins-std</xsl:text>
+									<xsl:text>&amp;amp;_convention=_xins-std</xsl:text>
 									<xsl:for-each select="$example-inputparams">
-										<xsl:text>&amp;</xsl:text>
-										<xsl:value-of select="../@name" />
-										<xsl:text>=</xsl:text>
-										<xsl:call-template name="urlencode">
-											<xsl:with-param name="text" select="text()" />
-										</xsl:call-template>
-									</xsl:for-each>
-									<xsl:for-each select="$example-inputparams2">
-										<xsl:text>&amp;</xsl:text>
+										<xsl:text>&amp;amp;</xsl:text>
 										<xsl:value-of select="@name" />
 										<xsl:text>=</xsl:text>
 										<xsl:call-template name="urlencode">
@@ -740,7 +643,7 @@
 										</xsl:call-template>
 									</xsl:for-each>
 									<xsl:if test="$example-inputdata != ''">
-										<xsl:text>&amp;_data=</xsl:text>
+										<xsl:text>&amp;amp;_data=</xsl:text>
 										<xsl:call-template name="urlencode">
 											<xsl:with-param name="text" select="$example-inputdata" />
 										</xsl:call-template>
