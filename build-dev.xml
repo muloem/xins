@@ -533,6 +533,7 @@ ${sf.file}</fail>
 			<include name="src/logdoc/server/*"            />
 			<include name="src/opendoc/**/*"               />
 			<include name="src/package-lists/**/*"         />
+			<include name="src/tools/dojo/**/*"           />
 			<include name="src/tools/eclipse/**/*"         />
 			<include name="src/tools/jmeter/**/*"          />
 			<include name="src/tools/maven/**/*"           />
