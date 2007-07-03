@@ -17,6 +17,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 * Generated build file:
   - The build directory is deleted if the version of XINS has changed between
     two build.
+  - Added new target javadoc-apis to generate the Javadoc for all APIs.
 
 * Generation of specification documentation:
   - If no environment is specified for an API, the test form page is still
@@ -4350,6 +4351,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 BETA 2:
 * XINS/Java Server Framework:
   - Added support for calling conventions. By default the "_xins-std" calling
     convention (which is compatible with XINS 1.0.0) is used. However it can
+
     be overridden in the impl.xml file by setting the property
     org.xins.server.calling.convention to "_xins-old". And this one can again
     be overridden by passing "_convention=_xins-std" with a call request.

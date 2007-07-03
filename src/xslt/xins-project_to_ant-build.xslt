@@ -57,7 +57,6 @@
 			</target>
 
 			<target name="check-version">
-				<echo message="old: {$xins_version}; new: ${{xins.current.version}}" />
 				<condition property="no.clean">
 					<equals arg1="${{xins.current.version}}" arg2="{$xins_version}" />
 				</condition>
@@ -85,6 +84,7 @@ This build file was generated with XINS </xsl:text>
 - all                 Generates everything.
 - clean               Removes all generated files.
 - specdocs            Generates all specification docs.
+- javadoc-apis        Generates all APIs Javadoc.
 - wars                Generates all WAR files.
 - capis               Generates all CAPI JAR files.
 - javadoc-capis       Generates all CAPI Javadoc.
@@ -430,6 +430,19 @@ APIs in this project are:
 						<xsl:if test="position() &gt; 1">,</xsl:if>
 						<xsl:text>jar-</xsl:text>
 						<xsl:value-of select="@name" />
+					</xsl:for-each>
+				</xsl:attribute>
+			</target>
+
+			<target name="javadoc-apis" description="Creates the Javadoc for all APIs">
+				<xsl:attribute name="depends">
+					<xsl:for-each select="//project/api/impl">
+						<xsl:if test="position() &gt; 1">,</xsl:if>
+						<xsl:text>javadoc-api-</xsl:text>
+						<xsl:value-of select="../@name" />
+						<xsl:if test="@name">
+							<xsl:value-of select="concat('-', @name)" />
+						</xsl:if>
 					</xsl:for-each>
 				</xsl:attribute>
 			</target>
