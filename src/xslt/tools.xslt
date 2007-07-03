@@ -38,6 +38,8 @@
 - checkstyle      Generates the checkstyle report for an API.
 - coverage        Generates the unit tests code coverage report
                   for an API.
+- emma            Generates the unit tests code coverage report
+                  using EMMA.
 - findbugs        Generates the FindBugs report for an API.
 - lint4j          Generates the Lint4J report for an API.
 - jdepend         Generates the JDepend report for an API.
@@ -88,6 +90,12 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 			     usetimestamp="true" ignoreerrors="true" />
 			<get src="http://www.ibiblio.org/maven2/asm/asm/2.2.1/asm-2.2.1.jar"
 			     dest="{$xins_home}/lib/asm.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://repo1.maven.org/maven2/emma/emma/2.0.5312/emma-2.0.5312.jar"
+			     dest="{$xins_home}/lib/emma.jar"
+			     usetimestamp="true" ignoreerrors="true" />
+			<get src="http://repo1.maven.org/maven2/emma/emma_ant/2.0.5312/emma_ant-2.0.5312.jar"
+			     dest="{$xins_home}/lib/emma_ant.jar"
 			     usetimestamp="true" ignoreerrors="true" />
 			<get src="http://www.jutils.com/maven/lint4j/jars/lint4j-0.9.1.jar"
 			     dest="{$xins_home}/lib/lint4j.jar"
@@ -203,6 +211,55 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 				<fileset dir="{$builddir}/java-fundament/${{api.name}}" includes="**/*.java" />
 			</cobertura-report>
 			<delete file="{$project_home}/cobertura.ser" />
+		</target>
+
+		<target name="emma" depends="-init-tools" description="Generates the unit tests code coverage report using EMMA.">
+			<path id="emma.lib">
+				<pathelement location="{$xins_home}/lib/emma.jar" />
+				<pathelement location="{$xins_home}/lib/emma_ant.jar" />
+			</path>
+
+			<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+			<delete dir="{$builddir}/emma/${{api.name}}" />
+			<mkdir dir="{$builddir}/emma/${{api.name}}" />
+			<antcall target="classes-api-${{api.name}}" />
+			<path id="instrumented.path">
+				<!-- not working fileset dir="{$builddir}/classes-api/${{api.name}}">
+					<include name="**/*.class" />
+					<exclude name="**/*$Request.class" />
+					<exclude name="**/*Result.class" />
+				</fileset -->
+				<path location="{$builddir}/classes-api/${{api.name}}" />
+			</path>
+			<emma enabled="true">
+				<instr instrpathref="instrumented.path"
+				destdir="{$builddir}/emma/${{api.name}}/instrumented-classes"	
+				metadatafile="{$builddir}/emma/${{api.name}}/metadata.emma" />
+			</emma>
+			<copy todir="{$builddir}/emma/${{api.name}}/instrumented-classes" overwrite="true">
+				<fileset dir="{$builddir}/classes-api/${{api.name}}">
+					<include name="**/*$Request.class" />
+					<include name="**/*Result.class" />
+				</fileset>
+			</copy>
+			<antcall target="war-${{api.name}}">
+				<param name="classes.api.dir" value="{$builddir}/emma/${{api.name}}/instrumented-classes" />
+			</antcall>
+			<!-- unless explicitly set to false, the API will be started at the same time -->
+			<property name="test.start.server" value="true" />
+			<antcall target="test-${{api.name}}">
+				<param name="test.start.server" value="${{test.start.server}}" />
+				<param name="classes.api.dir" value="{$builddir}/emma/${{api.name}}/instrumented-classes" />
+			</antcall>
+			<emma enabled="true">
+				<report sourcepath="{$project_home}/apis/${{api.name}}/impl">
+					<fileset dir="{$builddir}/emma/${{api.name}}">
+						<include name="*.emma" />
+					</fileset>
+					<txt outfile="{$builddir}/emma/${{api.name}}/${{api.name}}-emma-coverage.txt" />
+					<html outfile="{$builddir}/emma/${{api.name}}/${{api.name}}-emma-coverage.html" />
+				</report>
+			</emma>
 		</target>
 
 		<target name="findbugs" depends="-prepare-classes, -init-tools" description="Generates the FindBugs report for an API.">

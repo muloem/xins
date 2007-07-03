@@ -1458,6 +1458,7 @@ APIs in this project are:
 					<sysproperty key="org.xins.server.config" value="${{org.xins.server.config}}" />
 					<sysproperty key="servlet.port" value="${{servlet.port}}" />
 					<!--sysproperty key="net.sourceforge.cobertura.datafile"	file="{$builddir}/coverage/{$api}/cobertura.ser" /-->
+					<sysproperty key="emma.coverage.out.file"	file="{$builddir}/emma/{$api}/coverage.emma" />
           <formatter usefile="false" type="brief"/>
 					<formatter type="xml" />
 					<test name="{$packageTests}.APITests" todir="{$builddir}/testresults/xml" outfile="testresults-{$api}"/>
@@ -1780,7 +1781,6 @@ APIs in this project are:
 			<delete dir="{$builddir}/classes-types/{$api}" />
 			<delete dir="{$builddir}/classes-tests/{$api}" />
 			<delete dir="{$builddir}/java-capi/{$api}" />
-			<delete dir="{$builddir}/java-combined/{$api}" />
 			<delete dir="{$builddir}/java-fundament/{$api}" />
 			<delete dir="{$builddir}/java-types/{$api}" />
 			<delete dir="{$builddir}/javadoc-api/{$api}" />

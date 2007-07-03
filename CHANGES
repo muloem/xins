@@ -24,6 +24,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.
+  - Added new target emma to execute the unit test coverage of an API using
+    EMMA (http://emma.sourceforge.net).
 
 * Build- and release-process:
   - Added NetBeans project files to CVS.
@@ -4348,6 +4350,7 @@ CHANGES INTRODUCED IN XINS 1.0.1 BETA 2:
     org.xins.server.calling.convention to "_xins-old". And this one can again
     be overridden by passing "_convention=_xins-std" with a call request.
   - Improved logdoc:
+
     - changed entry 3210, added the reason for an invalid property value at
       bootstrap;
     - changed entry 3412, added the reason for an invalid property value at
