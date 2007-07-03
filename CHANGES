@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Changed Request.equals() and Request.hashCode() to use in some cases
     equals() instead of ==.
 
+* Generated build file:
+  - The build directory is deleted if the version of XINS has changed between
+    two build.
+
 * Generation of specification documentation:
   - If no environment is specified for an API, the test form page is still
     generated and a text field is proposed to the user to fill the location

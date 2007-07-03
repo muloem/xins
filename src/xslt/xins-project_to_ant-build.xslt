@@ -52,8 +52,16 @@
 				<xsl:value-of select="//project/@name" />
 			</xsl:attribute>
 
-			<target name="clean" description="Removes all generated files">
+			<target name="clean" unless="no.clean" description="Removes all generated files">
 				<delete dir="{$builddir}" />
+			</target>
+
+			<target name="check-version">
+				<echo message="old: {$xins_version}; new: ${{xins.current.version}}" />
+				<condition property="no.clean">
+					<equals arg1="${{xins.current.version}}" arg2="{$xins_version}" />
+				</condition>
+				<antcall target="clean" />
 			</target>
 
 			<target name="version" description="Prints current versions of Java, Ant and XINS">
@@ -92,9 +100,9 @@ The following commands assist in authoring specifications:
 - create-logdoc       Generates the basic logdoc files for an API.
 
 The following commands can be used to run a tool on an API:
-java2html, pmd, checkstyle, coverage, findbugs, lint4j, jdepend,
-cvschangelog, jmeter, run-jmeter, maven, eclipse, smd,
-xsd-to-types, wsdl-to-api.
+download-tools, java2html, pmd, checkstyle, coverage, emma,
+findbugs, lint4j, jdepend, cvschangelog, jmeter, run-jmeter,
+maven, eclipse, smd, xsd-to-types, wsdl-to-api.
 More information is available using the 'help-tools' target.
 
 The following targets are specific for a single API,

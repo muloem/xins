@@ -32,6 +32,13 @@
 		</condition>
 		<property name="dot.version.minor" value=".${version.minor}" />
 		<property name="version" value="${version.major}.${version.middle}${dot.version.minor}${version.build}${version.suffix}" />
+
+		<available file="${project_home}/build/build.xml" property="build.available" />
+		<antcall target="check-version">
+			<param name="project_home" value="${project_home}" />
+			<param name="version" value="${version}" />
+		</antcall>
+
 		<dependset>
 			<srcfileset    file="${xins_home}/.version.properties"                 />
 			<srcfileset    dir="${project_home}"    includes="apis/*/spec/api.xml" />
@@ -170,5 +177,12 @@
 			<param name="builddir"     expression="${project_home}/build" />
 			<param name="xins_version" expression="${version}"     />
 		</xslt>
+	</target>
+
+	<!-- Clean the build directory if the XINS version has changed -->
+	<target name="check-version" if="build.available">
+		<ant antfile="${project_home}/build/build.xml" target="check-version">
+			<property name="xins.current.version" value="${version}" />
+		</ant>
 	</target>
 </project>
