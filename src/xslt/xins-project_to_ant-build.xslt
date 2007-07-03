@@ -340,6 +340,7 @@ APIs in this project are:
 					<param name="specsdir"     expression="{$specsdir}"     />
 				</xslt>
 				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
+				<copy tofile="{$builddir}/specdocs/favicon.ico" file="{$xins_home}/xins.ico" />
 			</target>
 
 			<target name="-load-version">
@@ -572,6 +573,7 @@ APIs in this project are:
 			</xsl:if>
 			<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/css/specdocs/style.css" />
 			<copy todir="{$builddir}/specdocs/{$api}" file="{$xins_home}/src/xslt/testforms/testforms.js" />
+			<copy tofile="{$builddir}/specdocs/{$api}/favicon.ico" file="{$xins_home}/xins.ico" />
 			<xmlvalidate file="{$api_file}" warn="false">
 				<xmlcatalog refid="all-dtds" />
 			</xmlvalidate>

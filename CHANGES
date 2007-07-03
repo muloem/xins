@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     of the API. The value is stored in a cookie.
   - Fixed incorrect CSS for specdocs.
   - Fixed some invalid XHTML.
+  - Added a favicon.ico in the specdocs directories.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.

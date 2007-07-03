@@ -617,6 +617,7 @@ ${sf.file}</fail>
 				<include name="lib/servlet.jar"                />
 				<include name="lib/junit.jar"                  />
 				<include name="lib/json.jar"                   />
+				<include name="xins.ico"                       />
 			</tarfileset>
 			<tarfileset
 			dir="${basedir}/build/lf"
