@@ -32,6 +32,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Added new target emma to execute the unit test coverage of an API using
     EMMA (http://emma.sourceforge.net).
 
+* Examples:
+  - Fixed incorrect runtime property used to define the logdoc locale.
+
 * Build- and release-process:
   - Added NetBeans project files to CVS.
   - Added missing src/tools/dojo directory to the release.
