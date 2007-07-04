@@ -107,4 +107,29 @@ implements PropertyReader {
    protected Map getPropertiesMap() {
       return _properties;
    }
+
+   /**
+    * Compares this object with the specified argument for equality.
+    *
+    * @param obj
+    *    the object to compare with, can be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the objects <code>a</code> and <code>b</code>
+    *    are considered to be equal, <code>false</code> if they are considered
+    *    different.
+    */
+   public boolean equals(Object obj) {
+      return PropertyReaderUtils.equals(this, obj);
+   }
+
+   /**
+    * Returns a hash code value for this object.
+    *
+    * @return
+    *    a hash code value for this object.
+    */
+   public int hashCode() {
+      return PropertyReaderUtils.hashCode(this);
+   }
 }

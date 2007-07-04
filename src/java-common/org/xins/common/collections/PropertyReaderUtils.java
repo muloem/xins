@@ -498,4 +498,103 @@ public final class PropertyReaderUtils {
 
       return buffer.toString();
    }
+
+   /**
+    * Compares a <code>PropertyReader</code> instance with another object for
+    * equality.
+    *
+    * @param pr
+    *    the <code>PropertyReader</code>, can be <code>null</code>.
+    *
+    * @param toCompare
+    *    the object to compare the <code>PropertyReader</code> with,
+    *    can be <code>null</code>.
+    *
+    * @return
+    *    <code>true</code> if the objects are considered to be equal,
+    *    <code>false</code> if they are considered different.
+    *
+    * @since XINS 2.1
+    */
+   public static final boolean equals(PropertyReader pr, Object toCompare) {
+
+      // Test for identity equality
+      if (pr == toCompare) {
+         return true;
+      }
+
+      // If either one is null, then they are not equal (otherwise they would
+      // both be null in which case they are identity equal)
+      if (pr == null || toCompare == null) {
+         return false;
+      }
+
+      // The 2nd object must implement the PropertyReader interface
+      if (! (toCompare instanceof PropertyReader)) {
+         return false;
+      }
+
+      // Size must be the same
+      PropertyReader pr2 = (PropertyReader) toCompare;
+      if (pr.size() != pr2.size()) {
+         return false;
+      }
+
+      // Loop over all key/value pairs
+      Iterator keys = pr.getNames();
+      while (keys.hasNext()) {
+         String key    = (String) keys.next();
+         String value1 = pr.get(key);
+         String value2 = pr2.get(key);
+         if (value1 == null && value2 != null) {
+            return false;
+         } else if (! value1.equals(value2)) {
+            return false;
+         }
+      }
+
+      // No differences found
+      return true;
+   }
+
+   /**
+    * Computes a hash code value for the specified <code>PropertyReader</code>
+    * object.
+    *
+    * @param pr
+    *    the <code>PropertyReader</code> instance to compute a hash code value
+    *    for, cannot be <code>null</code>.
+    *
+    * @return
+    *    the hash code value.
+    *
+    * @throws NullPointerException
+    *    if <code>pr == null</code>.
+    *
+    * @since XINS 2.1
+    */
+   public static final int hashCode(PropertyReader pr)
+   throws NullPointerException {
+
+      int hash = 0;
+
+      // Loop over all key/value pairs
+      Iterator keys = pr.getNames();
+      while (keys.hasNext()) {
+         String key   = (String) keys.next();
+         String value = pr.get(key);
+
+         // XOR the hash code value with the key string hash code
+         if (key != null) {
+            hash ^= key.hashCode();
+         }
+
+         // XOR the hash code value with the key string hash code
+         if (value != null) {
+            hash ^= value.hashCode();
+         }
+      }
+
+      return hash;
+   }
 }

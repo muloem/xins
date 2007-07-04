@@ -6,6 +6,18 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 
+* XINS/Java Common Library:
+  - Implemented RFE #1654262: Implement equals(Object) on PropertyReader
+    classes. Contribution from Ernst de Haan.
+
+* XINS/Java Server Framework:
+  - Implemented RFE #1631516: Log entry 3408 should specify value of fallback
+    default.
+  - Implemented RFE #1633455: Get all properties from the RuntimeProperties
+    object.
+  - Implemented RFE #1636219: Added file name to the logs when the thread
+    stops. Contribution from Ernst de Haan.
+
 * XINS/Java Client Framework:
   - If no data section, the _data parameter is not sent.
   - If no context is available, the _context parameter is not sent.
@@ -17,12 +29,6 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     in checkOutputParameters() as not used.
   - Changed Request.equals() and Request.hashCode() to use in some cases
     equals() instead of ==.
-  - Implemented RFE #1631516: Log entry 3408 should specify value of fallback
-    default.
-  - Implemented RFE #1633455: Get all properties from the RuntimeProperties
-    object.
-  - Implemented RFE #1636219: Added file name to the logs when the thread
-    stops. Contribution of Ernst de Haan.
 
 * Generated build file:
   - The build directory is deleted if the version of XINS has changed between

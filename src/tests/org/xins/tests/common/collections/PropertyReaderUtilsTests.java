@@ -18,6 +18,7 @@ import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.collections.ProtectedPropertyReader;
 
 /**
  * Tests for class <code>PropertyReaderUtils</code>.
@@ -317,5 +318,41 @@ public class PropertyReaderUtilsTests extends TestCase {
       assertEquals("1",  r.get("d"));
       assertEquals("2",  r.get("e"));
       assertEquals("3 ", r.get("f"));
+   }
+
+   public void testPropertyReaderEquals() {
+
+      // Compare nulls
+      BasicPropertyReader b1 = null;
+      assertTrue(PropertyReaderUtils.equals(b1, null));
+
+      // Compare null with non-null
+      b1 = new BasicPropertyReader();
+      assertFalse(PropertyReaderUtils.equals(b1, null));
+      assertFalse(PropertyReaderUtils.equals(null, b1));
+
+      // Compare identity equals
+      assertTrue(PropertyReaderUtils.equals(b1, b1));
+      b1.set("greeting", "hello");
+      assertTrue(PropertyReaderUtils.equals(b1, b1));
+
+      // Compare identical classes
+      BasicPropertyReader b2 = new BasicPropertyReader();
+      b2.set("greeting", "hello");
+      assertTrue(PropertyReaderUtils.equals(b1, b2));
+      assertTrue(PropertyReaderUtils.equals(b2, b1));
+      b2.set("x", "1.0");
+      assertFalse(PropertyReaderUtils.equals(b1, b2));
+      assertFalse(PropertyReaderUtils.equals(b2, b1));
+
+      // Compare different classes
+      Object secretKey = new Object();
+      ProtectedPropertyReader p1 = new ProtectedPropertyReader(secretKey);
+      p1.copyFrom(secretKey, b2);
+      assertTrue(PropertyReaderUtils.equals(p1, b2));
+      assertTrue(PropertyReaderUtils.equals(b2, p1));
+      b2.set("y", "2.0");
+      assertFalse(PropertyReaderUtils.equals(p1, b2));
+      assertFalse(PropertyReaderUtils.equals(b2, p1));
    }
 }
