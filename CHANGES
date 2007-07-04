@@ -54,6 +54,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 * Build- and release-process:
   - Added NetBeans project files to CVS.
   - Added missing src/tools/dojo directory to the release.
+  - Implemented RFE #1741660: building xins doesn't include Spring packages.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0:

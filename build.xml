@@ -170,6 +170,8 @@ ${version.file}</fail>
 	</target>
 
 	<target name="java-tools" depends="java-common, java-client, java-server" description="Compiles the XINS/Java tools and put them in xins-common.jar">
+		<available property="spring.available" file="lib/spring.jar" />
+		<antcall target="download-spring" />
 		<javac
 		destdir="build/classes/java-common"
 		debug="${javac.debug}"
@@ -191,6 +193,11 @@ ${version.file}</fail>
 		basedir="build/classes/java-common"
 		update="true"
 		includes="org/xins/common/spring/**" />
+	</target>
+
+	<target name="download-spring" unless="spring.available">
+		<get src="http://repo1.maven.org/maven2/org/springframework/spring/2.0.6/spring-2.0.6.jar" 
+		dest="lib/spring.jar" usetimestamp="true" ignoreerrors="true" />
 	</target>
 
 	<target name="-build-framework">
