@@ -500,9 +500,7 @@ public final class XINSCallRequest extends CallRequest {
       _dataSection = dataSection;
 
       // Add the data section to the HTTP parameter list
-      if (dataSection == null) {
-         _httpParams.set(SECRET_KEY, "_data", null);
-      } else {
+      if (dataSection != null) {
          ElementSerializer serializer = new ElementSerializer();
          String xmlDataSection = serializer.serialize(dataSection);
          _httpParams.set(SECRET_KEY, "_data", xmlDataSection);
