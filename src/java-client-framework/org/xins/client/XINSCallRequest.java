@@ -342,7 +342,7 @@ public final class XINSCallRequest extends CallRequest {
 
       // Add the diagnostic context ID to the parameter list, if there is one
       String contextID = NDC.peek();
-      if (contextID != null) {
+      if (contextID != null && contextID.length() > 0) {
          _httpParams.set(SECRET_KEY, CONTEXT_ID_HTTP_PARAMETER_NAME, contextID);
       }
 

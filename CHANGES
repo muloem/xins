@@ -7,7 +7,8 @@ ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 
 * XINS/Java Client Framework:
-  - If no data section the _data parameter is not sent.
+  - If no data section, the _data parameter is not sent.
+  - If no context is available, the _context parameter is not sent.
 
 * Generation of server-side Java code:
   - Removed creation of _errorResult when the function has no input parameters
