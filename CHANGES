@@ -21,6 +21,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     default.
   - Implemented RFE #1633455: Get all properties from the RuntimeProperties
     object.
+  - Implemented RFE #1636219: Added file name to the logs when the thread
+    stops. Contribution of Ernst de Haan.
 
 * Generated build file:
   - The build directory is deleted if the version of XINS has changed between

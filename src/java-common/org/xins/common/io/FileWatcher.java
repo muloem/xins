@@ -288,7 +288,7 @@ public final class FileWatcher extends Thread {
       }
 
       // Thread stopped
-      Log.log_1203(_instanceID);
+      Log.log_1203(_instanceID, _filePath);
    }
 
    /**

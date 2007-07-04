@@ -30,7 +30,7 @@
 	<translation entry="1200">Démarrage du thread #<value-of-param name="id"/> surveillant le fichier <value-of-param name="file" format="quoted" />. Vérification pour modification toutes les <value-of-param name="interval" /> seconde(s).</translation>
 	<translation entry="1201">Thread de surveillance #<value-of-param name="id"/>: Changement de l'intervalle de surveillance pour le fichier <value-of-param name="file" format="quoted" /> de <value-of-param name="oldInterval" /> à <value-of-param name="newInterval" /> seconde(s).</translation>
 	<translation entry="1202">Thread de surveillance #<value-of-param name="id"/>: Arret du thread surveillant le fichier <value-of-param name="file" format="quoted" />.</translation>
-	<translation entry="1203">Thread de surveillance #<value-of-param name="id"/>: Thread arrêté.</translation>
+	<translation entry="1203">Thread de surveillance #<value-of-param name="id"/>: Thread arrêté. Il surveillait le fichier <value-of-param name="file" format="quoted" />.</translation>
 
 	<translation entry="1250">La capacité du FastStringBuffer est accrue de <value-of-param name="currentCapacity" /> à <value-of-param name="newCapacity" />.</translation>
 

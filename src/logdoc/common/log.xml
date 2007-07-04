@@ -124,25 +124,26 @@
 	<group id="io" name="General I/O">
 		<entry id="1200" level="INFO">
 			<description>Starting file watch thread.</description>
-            <param name="id"       type="int32" nullable="false" />
+			<param name="id"       type="int32" nullable="false" />
 			<param name="file"     type="text"  nullable="false" />
 			<param name="interval" type="int32" nullable="false" />
 		</entry>
 		<entry id="1201" level="INFO">
 			<description>Changing file watch interval.</description>
-            <param name="id"          type="int32" nullable="false" />
+			<param name="id"          type="int32" nullable="false" />
 			<param name="file"        type="text"  nullable="false" />
 			<param name="oldInterval" type="int32" nullable="false" />
 			<param name="newInterval" type="int32" nullable="false" />
 		</entry>
 		<entry id="1202" level="INFO">
 			<description>Stopping file watch thread.</description>
-            <param name="id"   type="int32" nullable="false" />
+			<param name="id"   type="int32" nullable="false" />
 			<param name="file" nullable="false" />
 		</entry>
 		<entry id="1203" level="INFO">
 			<description>Stopped file watch thread.</description>
-            <param name="id" type="int32" nullable="false" />
+			<param name="id" type="int32" nullable="false" />
+			<param name="file" nullable="false" />
 		</entry>
 	</group>
 
