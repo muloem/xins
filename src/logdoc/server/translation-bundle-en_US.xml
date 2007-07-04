@@ -81,7 +81,7 @@
 	<translation entry="3405">Initializing API.</translation>
 	<translation entry="3406">Initialized API.</translation>
 	<translation entry="3407">Runtime properties file (<value-of-param name="configFile" format="quoted" />) is modified. Re-initializing XINS/Java Server Framework.</translation>
-	<translation entry="3408">Runtime properties file (<value-of-param name="configFile" format="quoted" />) does not specify the watch interval, the property <value-of-param name="propertyName" format="quoted" /> is not set. Assuming fallback default.</translation>
+	<translation entry="3408">Runtime properties file (<value-of-param name="configFile" format="quoted" />) does not specify the watch interval, the property <value-of-param name="propertyName" format="quoted" /> is not set. Assuming fallback default which is <value-of-param name="fallbackDefault" /> seconds.</translation>
 	<translation entry="3409">The watch interval <value-of-param name="propertyValue" format="quoted" /> for the runtime properties file (<value-of-param name="configFile" format="quoted" />), specified in the property <value-of-param name="propertyName" format="quoted" /> is invalid.</translation>
 	<translation entry="3410">Watching the <value-of-param name="configFile" format="quoted" /> runtime property file every <value-of-param name="propertyValue" /> ms.</translation>
 	<translation entry="3411">XINS/Java Server Framework (re-)initialization failed. The initialization of the API failed. The required runtime property <value-of-param name="propertyName" format="quoted" /> is not set. Detail: <value-of-param name="detail" format="quoted" />.</translation>

@@ -337,6 +337,7 @@
 			<description>Runtime properties file watch interval not specified, using fallback default.</description>
 			<param name="configFile" />
 			<param name="propertyName" />
+			<param name="fallbackDefault" type="int32" nullable="false" />
 		</entry>
 		<entry id="3409" level="ERROR">
 			<description>Runtime properties file watch interval property value is invalid.</description>

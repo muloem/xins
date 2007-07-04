@@ -506,7 +506,7 @@ final class ConfigManager {
 
       // Property not set, use the default
       } else {
-         Log.log_3408(_configFile, prop);
+         Log.log_3408(_configFile, prop, DEFAULT_CONFIG_RELOAD_INTERVAL);
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
