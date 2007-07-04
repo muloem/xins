@@ -55,6 +55,9 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
    throws org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
 
+      // Store the properties
+      super.init(runtimeSettings);
+
       // Initializing descriptor list.
       _descriptors = new java.util.ArrayList();
 

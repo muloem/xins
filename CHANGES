@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     equals() instead of ==.
   - Implemented RFE #1631516: Log entry 3408 should specify value of fallback
     default.
+  - Implemented RFE #1633455: Get all properties from the RuntimeProperties
+    object.
 
 * Generated build file:
   - The build directory is deleted if the version of XINS has changed between
