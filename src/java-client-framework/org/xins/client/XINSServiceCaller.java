@@ -16,7 +16,6 @@ import org.xins.logdoc.ExceptionUtils;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
-import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.http.HTTPCallConfig;
 import org.xins.common.http.HTTPCallException;
 import org.xins.common.http.HTTPCallRequest;
