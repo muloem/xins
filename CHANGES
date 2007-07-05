@@ -17,6 +17,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
     object.
   - Implemented RFE #1636219: Added file name to the logs when the thread
     stops. Contribution from Ernst de Haan.
+  - Implemented RFE #1636219: Invalid XML-RPC request if namespace set.
+  - Fixed bug #1371632: XML-RPC: 400 returned instead of XML-RPC fault.
 
 * XINS/Java Client Framework:
   - If no data section, the _data parameter is not sent.
