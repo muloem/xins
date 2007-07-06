@@ -1831,6 +1831,7 @@ APIs in this project are:
 			<delete dir="{$builddir}/specdocs/{$api}" />
 			<delete dir="{$builddir}/types/{$api}" />
 			<delete dir="{$builddir}/webapps/{$api}" />
+			<delete file="{$builddir}/wsdl/{$api}.wsdl" />
 			<xsl:for-each select="impl/@name">
 				<xsl:variable name="impl" select="." />
 				<delete dir="{$builddir}/classes-api/{$api}-{$impl}" />

@@ -37,6 +37,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - The build directory is deleted if the version of XINS has changed between
     two build.
   - Added new target javadoc-apis to generate the Javadoc for all APIs.
+  - Clean target should also delete the generated WSDL file.
 
 * Generation of specification documentation:
   - If no environment is specified for an API, the test form page is still
