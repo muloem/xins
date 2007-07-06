@@ -6,10 +6,12 @@
  */
 package org.xins.common.servlet.container;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.FileNameMap;
 import java.net.ServerSocket;
@@ -416,13 +418,14 @@ public class HTTPServletHandler {
 
       // Read the input
       // XXX: Buffer size determines maximum request size
-      byte[] buffer = new byte[16384];
-      int lengthRead = in.read(buffer);
+      char[] buffer = new char[16384];
+      BufferedReader inReader = new BufferedReader(new InputStreamReader(in, REQUEST_ENCODING));
+      int lengthRead = inReader.read(buffer);
       if (lengthRead < 0) {
          sendBadRequest(out);
          return;
       }
-      String request = new String(buffer, 0, lengthRead, REQUEST_ENCODING);
+      String request = new String(buffer, 0, lengthRead);
       //byte[] requestBytes = IOReader.readFullyAsBytes(in);
       //String request = new String(requestBytes, 0, requestBytes.length, REQUEST_ENCODING);
 
