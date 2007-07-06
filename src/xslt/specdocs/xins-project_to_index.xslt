@@ -33,8 +33,10 @@
 				<title>API index</title>
 
 				<meta name="generator" content="XINS" />
+				<meta name="description" content="API list" />
 
 				<link rel="stylesheet" href="style.css" type="text/css" />
+				<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 			</head>
 			<body>
 				<xsl:call-template name="header">

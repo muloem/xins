@@ -34,8 +34,8 @@
 
 	<xsl:template match="category">
 
-		<xsl:variable name="category_name"    select="//category/@name"                               />
-		<xsl:variable name="category_file"    select="concat($specsdir, '/', $category_name, '.cat')" />
+		<xsl:variable name="category_name" select="@name" />
+		<xsl:variable name="category_file" select="concat($specsdir, '/', $category_name, '.cat')" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
@@ -44,8 +44,10 @@
 				</title>
 
 				<meta name="generator" content="XINS" />
+				<meta name="description" content="Specification of the {$category_name} category of the {$api} API." />
 
 				<link rel="stylesheet" type="text/css" href="style.css"                                  />
+				<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 				<link rel="top"                        href="../index.html" title="API index"            />
 				<link rel="up"                         href="index.html"    title="Overview of this API" />
 			</head>

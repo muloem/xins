@@ -55,7 +55,12 @@
 					<xsl:value-of select="$functionName" />
 					<xsl:text> test form</xsl:text>
 				</title>
+
+				<meta name="generator" content="XINS" />
+				<meta name="description" content="Test form for the {$functionName} function of the {$api} API." />
+
 				<link rel="stylesheet" type="text/css" href="style.css" />
+				<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 				<script type="text/javascript" src="testforms.js"><xsl:text> </xsl:text></script>
 				<link rel="top" href="../index.html" title="API index" />
 			</head>

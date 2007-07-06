@@ -48,6 +48,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Added a favicon.ico in the specdocs directories.
   - Fixed Bug #1576547: No warnings when resultcode is not referenced from
     api.xml.
+  - Added meta description for the generated HTML pages.
+  - Added link to the favicon in the generated HTML pages.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.

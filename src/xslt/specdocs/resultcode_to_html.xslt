@@ -50,8 +50,10 @@
 				</title>
 
 				<meta name="generator" content="XINS" />
+				<meta name="description" content="Specification of the {@name} error code of the {$api} API." />
 
 				<link rel="stylesheet" type="text/css" href="style.css"                               />
+				<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 				<link rel="top"                        href="../index.html" title="API index"            />
 				<link rel="up"                         href="index.html"    title="Overview of this API" />
 			</head>
