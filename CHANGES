@@ -45,6 +45,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Fixed incorrect CSS for specdocs.
   - Fixed some invalid XHTML.
   - Added a favicon.ico in the specdocs directories.
+  - Fixed Bug #1576547: No warnings when resultcode is not referenced from
+    api.xml.
 
 * Tools:
   - Upgraded Maven pom to the new stable 2.0 release.

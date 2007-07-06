@@ -874,7 +874,7 @@
 
 	<xsl:template name="resultcodes">
 		<h3>Result codes</h3>
-		<em>A result code is returned when an error occurs during the execution of the implementation.</em>
+		<em>An error code is returned when an error occurs during the execution of the implementation.</em>
 		<table class="resultcodes">
 			<tr>
 				<th>Name</th>
@@ -882,12 +882,12 @@
 			</tr>
 			<xsl:call-template name="default_resultcodes" />
 			<xsl:call-template name="referenced_resultcodes" />
-			<xsl:apply-templates select="//function/output/resultcode" />
 		</table>
 	</xsl:template>
 
 	<xsl:template name="referenced_resultcodes">
 		<xsl:for-each select="//function/output/resultcode-ref">
+			<xsl:variable name="resultcode" select="@name" />
 			<xsl:variable name="rcd_file">
 				<xsl:choose>
 					<xsl:when test="contains(@name, '/')">
@@ -898,19 +898,28 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
+			<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode" />
 
-			<xsl:for-each select="document($rcd_file)/resultcode">
-				<tr>
-					<td class="value">
-						<a href="{@name}.html">
-							<xsl:value-of select="@name" />
-						</a>
-					</td>
-					<td class="description">
-						<xsl:apply-templates select="description" />
-					</td>
-				</tr>
-			</xsl:for-each>
+			<xsl:if test="not($api_node/resultcode[@name=$resultcode])">
+				<xsl:message terminate="yes">
+					<xsl:text>The error code '</xsl:text>
+					<xsl:value-of select="$resultcode" />
+					<xsl:text>' referenced in the </xsl:text>
+					<xsl:value-of select="//function/@name" />
+					<xsl:text> is not defined in api.xml.</xsl:text>
+				</xsl:message>
+			</xsl:if>
+
+			<tr>
+				<td class="value">
+					<a href="{$rcd_node/@name}.html">
+						<xsl:value-of select="$rcd_node/@name" />
+					</a>
+				</td>
+				<td class="description">
+					<xsl:apply-templates select="$rcd_node/description" />
+				</td>
+			</tr>
 		</xsl:for-each>
 	</xsl:template>
 
