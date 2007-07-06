@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 * XINS/Java Common Library:
   - Implemented RFE #1654262: Implement equals(Object) on PropertyReader
     classes. Contribution from Ernst de Haan.
+  - Added a BufferedReader to read from the socket input stream.
 
 * XINS/Java Server Framework:
   - Implemented RFE #1631516: Log entry 3408 should specify value of fallback
@@ -57,6 +58,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Added NetBeans project files to CVS.
   - Added missing src/tools/dojo directory to the release.
   - Implemented RFE #1741660: building xins doesn't include Spring packages.
+
+* DTD:
+  - Added 2.1 DTDs.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.0:

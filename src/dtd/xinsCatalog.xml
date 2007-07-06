@@ -147,4 +147,25 @@
 			 uri="log_2_0.dtd" />
 	<public publicId="-//XINS//DTD XINS Translation Bundle 2.0//EN"
 			 uri="translation-bundle_2_0.dtd" />
+
+	<public publicId="-//XINS//DTD XINS Project 2.1//EN"
+			 uri="xins-project_2_1.dtd" />
+	<public publicId="-//XINS//DTD XINS API 2.1//EN"
+			 uri="api_2_1.dtd" />
+	<public publicId="-//XINS//DTD Function 2.1//EN"
+			 uri="function_2_1.dtd" />
+	<public publicId="-//XINS//DTD Category 2.1//EN"
+			 uri="category_2_1.dtd" />
+	<public publicId="-//XINS//DTD Type 2.1//EN"
+			 uri="type_2_1.dtd" />
+	<public publicId="-//XINS//DTD Result Code 2.1//EN"
+			 uri="resultcode_2_1.dtd" />
+	<public publicId="-//XINS//DTD Implementation 2.1//EN"
+			 uri="impl_2_1.dtd" />
+	<public publicId="-//XINS//DTD Environments 2.1//EN"
+			 uri="environments_2_1.dtd" />
+	<public publicId="-//XINS//DTD XINS Logdoc 2.1//EN"
+			 uri="log_2_1.dtd" />
+	<public publicId="-//XINS//DTD XINS Translation Bundle 2.1//EN"
+			 uri="translation-bundle_2_1.dtd" />
 </catalog>
