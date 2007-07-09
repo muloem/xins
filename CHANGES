@@ -33,6 +33,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
   - Changed Request.equals() and Request.hashCode() to use in some cases
     equals() instead of ==.
 
+* Generation of client-side Java code:
+  - Fixed bug #1703483: CAPI javadoc doesn't mention Error Result Code 
+    exceptions.
+
 * Generated build file:
   - The build directory is deleted if the version of XINS has changed between
     two build.

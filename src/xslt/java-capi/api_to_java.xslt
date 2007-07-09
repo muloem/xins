@@ -383,8 +383,7 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     *    create a <code>CAPI</code> instance but its value is considered
     *    invalid.
     */
-   public CAPI(org.xins.common.collections.PropertyReader properties,
-               String                           apiName)
+   public CAPI(org.xins.common.collections.PropertyReader properties, String apiName)
    throws IllegalArgumentException,
           org.xins.common.collections.MissingRequiredPropertyException,
           org.xins.common.collections.InvalidPropertyValueException {
@@ -481,48 +480,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
     * @throws org.xins.client.UnacceptableRequestException
     *    if the request is considered to be unacceptable; this is determined
     *    by calling
-    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#checkParameters() checkParameters()}.
-    *
-    * @throws org.xins.common.service.GenericCallException
-    *    if the first call attempt failed due to a generic reason and all the
-    *    other call attempts (if any) failed as well.
-    *
-    * @throws org.xins.common.http.HTTPCallException
-    *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts (if any) failed as well.]]></xsl:text>
-
-        <xsl:for-each select="output/resultcode-ref">
-            <xsl:text>
-    *
-    * @throws </xsl:text>
-            <xsl:value-of select="$package" />
-            <xsl:text>.</xsl:text>
-						<xsl:choose>
-							<xsl:when test="contains(@name, '/')">
-								<xsl:value-of select="substring-after(@name, '/')" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="@name" />
-							</xsl:otherwise>
-						</xsl:choose>
-            <xsl:text><![CDATA[Exception
-    *    if the first call attempt failed due to the error code
-    *    <em>]]></xsl:text>
-            <xsl:value-of select="@name" />
-            <xsl:text><![CDATA[</em> being returned by the other end; and
-    *    all the other call attempts (if any) failed as well;
-    *    note that this exception is derived from
-    *    {@link org.xins.client.XINSCallException}, so if that one is caught,
-    *    then this one is also caught.]]></xsl:text>
-        </xsl:for-each>
-
-        <xsl:text><![CDATA[
-    *
-    * @throws org.xins.client.XINSCallException
-    *    if the first call attempt failed due to a XINS-related reason and
-    *    all the other call attempts (if any) failed as well.
-    */
-   public ]]></xsl:text>
+    *    <code>request.</code>{@link org.xins.client.AbstractCAPICallRequest#checkParameters() checkParameters()}.]]></xsl:text>
+		<xsl:call-template name="javadoc-exceptions">
+			<xsl:with-param name="package" select="$package" />
+		</xsl:call-template>
+		<xsl:text>
+   public </xsl:text>
 		<xsl:value-of select="$returnType" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$methodName" />
@@ -531,26 +494,11 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>Request request)
    throws IllegalArgumentException,
           org.xins.client.UnacceptableRequestException,
-          org.xins.common.service.GenericCallException,
-          org.xins.common.http.HTTPCallException,</xsl:text>
-        <xsl:for-each select="output/resultcode-ref">
-            <xsl:text>
           </xsl:text>
-            <xsl:value-of select="$package" />
-            <xsl:text>.</xsl:text>
-						<xsl:choose>
-							<xsl:when test="contains(@name, '/')">
-								<xsl:value-of select="substring-after(@name, '/')" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="@name" />
-							</xsl:otherwise>
-						</xsl:choose>
-            <xsl:text>Exception,</xsl:text>
-        </xsl:for-each>
-        <xsl:text>
-          org.xins.client.XINSCallException {
-
+		<xsl:call-template name="throws-exceptions">
+			<xsl:with-param name="package" select="$package" />
+		</xsl:call-template>
+		<xsl:text>
       // Execute the call request
       org.xins.client.XINSCallResult result = callImpl(request);
 
@@ -601,21 +549,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text><![CDATA[
     *
     * @return
-    *    the result, not <code>null</code>.
-    *
-    * @throws org.xins.common.service.GenericCallException
-    *    if the first call attempt failed due to a generic reason and all the
-    *    other call attempts (if any) failed as well.
-    *
-    * @throws org.xins.common.http.HTTPCallException
-    *    if the first call attempt failed due to an HTTP-related reason and
-    *    all the other call attempts (if any) failed as well.
-    *
-    * @throws org.xins.client.XINSCallException
-    *    if the first call attempt failed due to a XINS-related reason and
-    *    all the other call attempts (if any) failed as well.
-    */
-   public ]]></xsl:text>
+    *    the result, not <code>null</code>.]]></xsl:text>
+		<xsl:call-template name="javadoc-exceptions">
+			<xsl:with-param name="package" select="$package" />
+		</xsl:call-template>
+		<xsl:text>
+   public </xsl:text>
 		<xsl:value-of select="$returnType" />
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$methodName" />
@@ -628,10 +567,11 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 			<xsl:text>org.xins.common.xml.Element _dataSection</xsl:text>
 		</xsl:if>
 		<xsl:text>)
-   throws org.xins.common.service.GenericCallException,
-          org.xins.common.http.HTTPCallException,
-          org.xins.client.XINSCallException {
-
+   throws </xsl:text>
+		<xsl:call-template name="throws-exceptions">
+			<xsl:with-param name="package" select="$package" />
+		</xsl:call-template>
+		<xsl:text>
       // Get the XINS service caller
       org.xins.client.XINSServiceCaller caller = getCaller();</xsl:text>
 		<xsl:if test="input/param">
@@ -800,6 +740,88 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:value-of select="$javaVariable" />
 	</xsl:template>
 
+	<!-- ***************************************************************** -->
+	<!-- Prints the Javadoc @throws section for call methods.              -->
+	<!-- ***************************************************************** -->
+
+	<xsl:template name="javadoc-exceptions">
+		<xsl:param name="package" />
+
+		<xsl:text>
+    *
+    * @throws org.xins.common.service.GenericCallException
+    *    if the first call attempt failed due to a generic reason and all the
+    *    other call attempts (if any) failed as well.
+    *
+    * @throws org.xins.common.http.HTTPCallException
+    *    if the first call attempt failed due to an HTTP-related reason and
+    *    all the other call attempts (if any) failed as well.</xsl:text>
+
+        <xsl:for-each select="output/resultcode-ref">
+					<xsl:variable name="errorcode">
+						<xsl:choose>
+							<xsl:when test="contains(@name, '/')">
+								<xsl:value-of select="substring-after(@name, '/')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+
+					<xsl:text>
+    *
+    * @throws </xsl:text>
+            <xsl:value-of select="$package" />
+            <xsl:text>.</xsl:text>
+            <xsl:value-of select="$errorcode" />
+            <xsl:text><![CDATA[Exception
+    *    if the first call attempt failed due to the error code
+    *    <em>]]></xsl:text>
+            <xsl:value-of select="$errorcode" />
+            <xsl:text><![CDATA[</em> being returned by the other end; and
+    *    all the other call attempts (if any) failed as well;
+    *    note that this exception is derived from
+    *    {@link org.xins.client.XINSCallException}, so if that one is caught,
+    *    then this one is also caught.]]></xsl:text>
+        </xsl:for-each>
+
+        <xsl:text>
+    *
+    * @throws org.xins.client.XINSCallException
+    *    if the first call attempt failed due to a XINS-related reason and
+    *    all the other call attempts (if any) failed as well.
+    */</xsl:text>
+	</xsl:template>
+
+	<!-- ***************************************************************** -->
+	<!-- Prints the Javadoc @throws section for call methods.              -->
+	<!-- ***************************************************************** -->
+
+	<xsl:template name="throws-exceptions">
+		<xsl:param name="package" />
+		
+			<xsl:text>org.xins.common.service.GenericCallException,
+          org.xins.common.http.HTTPCallException,</xsl:text>
+        <xsl:for-each select="output/resultcode-ref">
+            <xsl:text>
+          </xsl:text>
+            <xsl:value-of select="$package" />
+            <xsl:text>.</xsl:text>
+						<xsl:choose>
+							<xsl:when test="contains(@name, '/')">
+								<xsl:value-of select="substring-after(@name, '/')" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name" />
+							</xsl:otherwise>
+						</xsl:choose>
+            <xsl:text>Exception,</xsl:text>
+        </xsl:for-each>
+        <xsl:text>
+          org.xins.client.XINSCallException {
+</xsl:text>
+	</xsl:template>
 
 	<!-- ***************************************************************** -->
 	<!-- Print code that will store an input parameter in a variable       -->
