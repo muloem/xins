@@ -124,6 +124,7 @@ replace <api> with the name of an existing API:
 - wsdl-<api>          Generates the WSDL for the API.
 - stub-<api>          Generates the stub for the API.
 - test-<api>          Generates (if needed) and runs the tests.
+- javadoc-test-<api>  Generates the Javadoc of the unit tests.
 - opendoc-<api>       Generates the specification in Opendoc format
 
 APIs in this project are:
@@ -1559,6 +1560,58 @@ APIs in this project are:
 					<param name="api"          expression="{$api}"          />
 					<param name="package"      expression="{$packageTests}" />
 				</xslt>
+			</target>
+
+			<target name="javadoc-test-{$api}" description="Generates the Javadoc of the unit tests of the {$api} API.">
+				<xsl:variable name="javaTestDir" select="concat($project_home, '/apis/', $api, '/test')" />
+				<javadoc
+				destdir="{$builddir}/javadoc-test/{$api}"
+				version="yes"
+				use="yes"
+				author="yes"
+				access="package"
+				windowtitle="Unit tests of the {$api} API"
+				doctitle="Unit tests of the {$api} API">
+					<packageset dir="{$javaTestDir}" />
+					<link
+					href="http://www.xins.org/javadoc/{$xins_version}/"
+					offline="true"
+					packagelistloc="{$xins_home}/docs/javadoc/" />
+					<link
+					href="http://java.sun.com/j2se/1.4.2/docs/api"
+					offline="true"
+					packagelistloc="{$xins_home}/src/package-lists/j2se/" />
+					<link
+					href="http://junit.sourceforge.net/javadoc/"
+					offline="true"
+					packagelistloc="{$xins_home}/src/package-lists/junit/" />
+					<link
+					href="http://jakarta.apache.org/log4j/docs/api/"
+					offline="true"
+					packagelistloc="{$xins_home}/src/package-lists/log4j/" />
+					<link
+					href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
+					offline="true"
+					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
+					<classpath>
+						<path refid="xins.classpath" />
+						<pathelement path="{$builddir}/capis/{$api}-capi.jar" />
+						<pathelement path="{$builddir}/classes-tests/{$api}" />
+						<pathelement path="${{classes.api.dir}}" />
+						<xsl:if test="$apiHasTypes">
+							<pathelement path="{$builddir}/classes-types/{$api}" />
+						</xsl:if>
+						<xsl:if test="impl">
+							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+						</xsl:if>
+						<fileset dir="{$project_home}/apis/{$api}/test" includes="**/*.jar" />
+					</classpath>
+				</javadoc>
+				<copy
+				file="{$xins_home}/src/css/javadoc/style.css"
+				tofile="{$builddir}/javadoc-test/{$api}/stylesheet.css"
+				overwrite="true" />
 			</target>
 		</xsl:if>
 
