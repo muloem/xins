@@ -4,6 +4,15 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
+
+* Documentation:
+  - Changed <style /> in <xslt /> in the xins-docs/build.xml.
+
+* Build- and release-process:
+  - Fixed incorrect location of the icon for the Windows installer.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 
 * XINS/Java Common Library:
