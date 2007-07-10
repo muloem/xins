@@ -20,7 +20,7 @@ InfoBeforeFile=xins-info1.txt
 
 [Files]
 Source: "C:\projects\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdirs
-Source: "xins.ico"; DestDir: "{app}"
+Source: "..\..\..\xins.ico"; DestDir: "{app}"
 
 [Icons]
 Name: "{group}\Run demo"; Filename: "{app}\demo\rundemo.bat"; WorkingDir: "{app}\demo\"; IconFilename: "{app}\xins.ico"
