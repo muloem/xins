@@ -3,7 +3,7 @@ org.xins.client.async
 org.xins.common
 org.xins.common.ant
 org.xins.common.collections
-org.xins.common.expiry
+org.xins.common.collections.expiry
 org.xins.common.http
 org.xins.common.io
 org.xins.common.manageable
@@ -12,8 +12,8 @@ org.xins.common.service
 org.xins.common.servlet
 org.xins.common.servlet.container
 org.xins.common.spec
+org.xins.common.spring
 org.xins.common.text
-org.xins.common.threads
 org.xins.common.types
 org.xins.common.types.standard
 org.xins.common.xml
