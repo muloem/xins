@@ -63,6 +63,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
 * Examples:
   - Fixed incorrect runtime property used to define the logdoc locale.
 
+* Documentation:
+  - Added primer.html to redirect to primers/primer.html.
+
 * Build- and release-process:
   - Added NetBeans project files to CVS.
   - Added missing src/tools/dojo directory to the release.
