@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
 
 * Other:
   - Fixed the package list for XINS and log4j.
+  - Added the package-list for JUnit.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 1:
