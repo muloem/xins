@@ -38,9 +38,16 @@
 					<!-- Overview chapter -->
 					<text:h text:style-name="Heading1">Overview</text:h>
 					<text:h text:style-name="Heading2">Description</text:h>
-					<text:p text:style-name="P2">
+					<text:p text:style-name="P1">
 						<xsl:value-of select="description" />
 					</text:p>
+					<xsl:if test="category">
+						<xsl:apply-templates select="." mode="functions-table">
+							<xsl:with-param name="type-name" select="'Category'" />
+							<xsl:with-param name="type-node" select="category" />
+							<xsl:with-param name="extension" select="'cat'" />
+						</xsl:apply-templates>
+					</xsl:if>
 					<xsl:apply-templates select="." mode="functions-table">
 						<xsl:with-param name="type-name" select="'Function'" />
 						<xsl:with-param name="type-node" select="function" />
@@ -71,8 +78,18 @@
 		<xsl:param name="extension" />
 
 		<text:h text:style-name="Heading2">
-			<xsl:value-of select="$type-name" />
-			<xsl:text>s</xsl:text>
+			<xsl:choose>
+				<xsl:when test="count($type-node) &gt; 1 and $type-name = 'Category'">
+					<xsl:text>Categories</xsl:text>
+				</xsl:when>
+				<xsl:when test="count($type-node) &gt; 1 and not($type-name = 'Category')">
+					<xsl:value-of select="$type-name" />
+					<xsl:text>s</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$type-name" />
+				</xsl:otherwise>
+			</xsl:choose>
 		</text:h>
 		<xsl:choose>
 			<xsl:when test="count($type-node) = 0">
@@ -106,7 +123,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="function | type | resultcode" mode="functions-table">
+	<xsl:template match="function | type | resultcode | category" mode="functions-table">
 		<xsl:param name="type-node" />
 		<xsl:param name="type-name" />
 		<xsl:param name="extension" />
@@ -125,12 +142,12 @@
 		</xsl:if>
 
 		<table:table-row>
-			<table:table-cell office:value-type="string">
-				<text:p text:style-name="P1">
+			<table:table-cell table:style-name="FunctionsTable.A2" office:value-type="string">
+				<text:p text:style-name="FunctionName">
 					<xsl:value-of select="@name" />
 				</text:p>
 			</table:table-cell>
-			<table:table-cell office:value-type="string">
+			<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 				<text:p text:style-name="P1">
 					<xsl:apply-templates select="$function_node/description" />
 				</text:p>
@@ -158,9 +175,16 @@
 				<style:table-column-properties style:column-width="4in" style:rel-column-width="4601*"/>
 			</style:style>
 			<style:style style:name="FunctionsTable.A1" style:family="table-cell">
-				<style:table-cell-properties fo:background-color="#e6e6e6">
-					<style:background-image/>
-				</style:table-cell-properties>
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="FunctionsTable.B1" style:family="table-cell">
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="FunctionsTable.A2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="FunctionsTable.B2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
 			</style:style>
 			<style:style style:name="ParametersTable" style:family="table">
 				<style:table-properties style:width="7in" table:align="margins" style:writing-mode="lr-tb"/>
@@ -178,23 +202,49 @@
 				<style:table-column-properties style:column-width="0.7in" style:rel-column-width="601*"/>
 			</style:style>
 			<style:style style:name="ParametersTable.A1" style:family="table-cell">
-				<style:table-cell-properties fo:background-color="#e6e6e6">
-					<style:background-image/>
-				</style:table-cell-properties>
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.B1" style:family="table-cell">
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="none" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.C1" style:family="table-cell">
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="none" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.D1" style:family="table-cell">
+				<style:table-cell-properties fo:background-color="#e6e6ff" fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.A2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.B2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="none" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.C2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="none" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ParametersTable.D2" style:family="table-cell">
+				<style:table-cell-properties fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
 			</style:style>
 			<style:style style:name="ExampleTable" style:family="table">
-				<style:table-properties style:width="8in" table:align="margins" style:writing-mode="lr-tb"/>
+				<style:table-properties style:width="8in" table:align="margins" fo:margin-right="-0.5in" style:writing-mode="lr-tb"/>
 			</style:style>
 			<style:style style:name="ExampleTable.A" style:family="table-column">
-				<style:table-column-properties style:column-width="2in" style:rel-column-width="2000*"/>
+				<style:table-column-properties style:column-width="1.5in" style:rel-column-width="1500*"/>
 			</style:style>
 			<style:style style:name="ExampleTable.B" style:family="table-column">
-				<style:table-column-properties style:column-width="6in" style:rel-column-width="6000*"/>
+				<style:table-column-properties style:column-width="6.5in" style:rel-column-width="6500*"/>
 			</style:style>
 			<style:style style:name="ExampleTable.A1" style:family="table-cell">
-				<style:table-cell-properties fo:background-color="#e6e6e6">
-					<style:background-image/>
-				</style:table-cell-properties>
+				<style:table-cell-properties style:vertical-align="top" fo:background-color="#e6e6ff" fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ExampleTable.B1" style:family="table-cell">
+				<style:table-cell-properties style:vertical-align="top" fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="0.0069in solid #e6e6e6" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ExampleTable.A2" style:family="table-cell">
+				<style:table-cell-properties style:vertical-align="top" fo:background-color="#e6e6ff" fo:border-left="0.0069in solid #e6e6e6" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.0069in solid #e6e6e6"/>
+			</style:style>
+			<style:style style:name="ExampleTable.B2" style:family="table-cell">
+				<style:table-cell-properties style:vertical-align="top" fo:border-left="none" fo:border-right="0.0069in solid #e6e6e6" fo:border-top="none" fo:border-bottom="0.0069in solid #e6e6e6"/>
 			</style:style>
 		</office:automatic-styles>
 	</xsl:template>

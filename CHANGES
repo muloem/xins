@@ -6,6 +6,16 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
 
+* Generation of the opendoc:
+  - Added colors to the examples.
+  - Enlarged the example tables.
+  - Added colors to the table headers.
+  - Added the categories after the API description.
+  - Use Courier New font for element names.
+  - Added light gray borders to the tables.
+  - Reduce the use of bold fonts.
+  - Fixed missing uppercase for input and output section.
+
 * Generated build file:
   - Added javadoc-test-<api name> to get the Javadoc of the unit tests.
 
@@ -723,6 +733,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 3:
   - Added link to xins.org in the footer.
 
 * Generation of the WSDL:
+
   - Fixed the shared types had a '/' in the WSDL name.
   - Fixed error codes were skipped.
   - Added handling of output parameters and data section for defined error

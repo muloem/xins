@@ -24,7 +24,7 @@
 			<xsl:value-of select="@name" />
 		</text:h>
 		<text:h text:style-name="Heading2" text:outline-level="2">Description</text:h>
-		<text:p text:style-name="P2">
+		<text:p text:style-name="P1">
 			<xsl:value-of select="$function_node/description" />
 		</text:p>
 		<xsl:call-template name="parameter-section">
@@ -57,7 +57,7 @@
 				<table:table-cell table:style-name="FunctionsTable.A1" office:value-type="string">
 					<text:p text:style-name="P2">Error code</text:p>
 				</table:table-cell>
-				<table:table-cell table:style-name="FunctionsTable.A1" office:value-type="string">
+				<table:table-cell table:style-name="FunctionsTable.B1" office:value-type="string">
 					<text:p text:style-name="P2">Description</text:p>
 				</table:table-cell>
 			</table:table-row>
@@ -80,7 +80,8 @@
 		<xsl:param name="api" />
 
 		<text:h text:style-name="Heading2" text:outline-level="2">
-			<xsl:value-of select="$type-name" />
+			<xsl:value-of select="translate(substring($type-name, 1, 1), 'io', 'IO')" />
+			<xsl:value-of select="substring($type-name, 2)" />
 			<xsl:text> parameters</xsl:text>
 		</text:h>
 		<xsl:choose>
@@ -101,13 +102,13 @@
 						<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
 							<text:p text:style-name="P2">Parameter</text:p>
 						</table:table-cell>
-						<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<table:table-cell table:style-name="ParametersTable.B1" office:value-type="string">
 							<text:p text:style-name="P2">Type</text:p>
 						</table:table-cell>
-						<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<table:table-cell table:style-name="ParametersTable.C1" office:value-type="string">
 							<text:p text:style-name="P2">Description</text:p>
 						</table:table-cell>
-						<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+						<table:table-cell table:style-name="ParametersTable.D1" office:value-type="string">
 							<text:p text:style-name="P2">Req.</text:p>
 						</table:table-cell>
 					</table:table-row>
@@ -125,19 +126,19 @@
 		<xsl:param name="api"      />
 
 		<table:table-row>
-			<table:table-cell office:value-type="string">
-				<text:p text:style-name="Standard">
+			<table:table-cell table:style-name="ParametersTable.A2" office:value-type="string">
+				<text:p text:style-name="ElementName">
 					<xsl:value-of select="@name" />
 				</text:p>
 			</table:table-cell>
-			<table:table-cell office:value-type="string">
+			<table:table-cell table:style-name="ParametersTable.B2" office:value-type="string">
 				<xsl:call-template name="opendoc_for_type">
 					<xsl:with-param name="specsdir" select="$specsdir" />
 					<xsl:with-param name="api" select="$api" />
 					<xsl:with-param name="type" select="@type" />
 				</xsl:call-template>
 			</table:table-cell>
-			<table:table-cell office:value-type="string">
+			<table:table-cell table:style-name="ParametersTable.C2" office:value-type="string">
 				<text:p text:style-name="Standard">
 					<xsl:value-of select="description" />
 				</text:p>
@@ -151,7 +152,7 @@
 					</text:p>
 				</xsl:if>
 			</table:table-cell>
-			<table:table-cell office:value-type="string">
+			<table:table-cell table:style-name="ParametersTable.D2" office:value-type="string">
 				<text:p text:style-name="Standard">
 					<xsl:choose>
 						<xsl:when test="@required = 'true'">
@@ -173,7 +174,8 @@
 		<xsl:variable name="side" select="name(..)" />
 
 		<text:h text:style-name="Heading2" text:outline-level="2">
-			<xsl:value-of select="$side" />
+			<xsl:value-of select="translate(substring($side, 1, 1), 'io', 'IO')" />
+			<xsl:value-of select="substring($side, 2)" />
 			<xsl:text> data section</xsl:text>
 		</text:h>
 		<xsl:choose>
@@ -251,7 +253,7 @@
 				<xsl:text>/&gt;</xsl:text>
 			</text:span>
 		</text:h>
-		<text:p text:style-name="P2">
+		<text:p text:style-name="P1">
 			<xsl:value-of select="description" />
 		</text:p>
 		<xsl:choose>
@@ -278,13 +280,13 @@
 					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
 						<text:p text:style-name="P2">Attribute</text:p>
 					</table:table-cell>
-					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+					<table:table-cell table:style-name="ParametersTable.B1" office:value-type="string">
 						<text:p text:style-name="P2">Type</text:p>
 					</table:table-cell>
-					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+					<table:table-cell table:style-name="ParametersTable.C1" office:value-type="string">
 						<text:p text:style-name="P2">Description</text:p>
 					</table:table-cell>
-					<table:table-cell table:style-name="ParametersTable.A1" office:value-type="string">
+					<table:table-cell table:style-name="ParametersTable.D1" office:value-type="string">
 						<text:p text:style-name="P2">Req.</text:p>
 					</table:table-cell>
 				</table:table-row>
@@ -462,16 +464,19 @@
 				<table:table-cell table:style-name="ExampleTable.A1" office:value-type="string">
 					<text:p text:style-name="P2">Request</text:p>
 				</table:table-cell>
-				<table:table-cell office:value-type="string">
+				<table:table-cell table:style-name="ExampleTable.B1" office:value-type="string">
 					<text:p text:style-name="Standard">
-						<xsl:text>http://API_HOST/</xsl:text>
-						<text:line-break/>
-						<xsl:text>?_function=</xsl:text>
-						<xsl:value-of select="../@name" />
-						<text:line-break/>
-						<xsl:text>&amp;_convention=_xins-std</xsl:text>
+						<xsl:text>http://API_HOST/?</xsl:text>
+						<text:span text:style-name="Fcuntion">_function</text:span>
+						<xsl:text>=</xsl:text>
+						<text:span text:style-name="Function">
+							<xsl:value-of select="../@name" />
+						</text:span>
+						<xsl:text>&amp;</xsl:text>
+						<text:span text:style-name="Name">_convention</text:span>
+						<xsl:text>=</xsl:text>
+						<text:span text:style-name="Value">_xins-std</text:span>
 						<xsl:for-each select="input-example">
-							<text:line-break/>
 							<xsl:text>&amp;</xsl:text>
 							<text:span text:style-name="Name">
 								<xsl:value-of select="@name" />
@@ -506,10 +511,10 @@
 				</table:table-cell>
 			</table:table-row>
 			<table:table-row>
-				<table:table-cell table:style-name="ExampleTable.A1" office:value-type="string">
+				<table:table-cell table:style-name="ExampleTable.A2" office:value-type="string">
 					<text:p text:style-name="P2">Response</text:p>
 				</table:table-cell>
-				<table:table-cell office:value-type="string">
+				<table:table-cell table:style-name="ExampleTable.B2" office:value-type="string">
 					<text:p text:style-name="Xml">
 						<text:span text:style-name="XmlDecl">
 						 <xsl:text>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</xsl:text>
@@ -569,7 +574,9 @@
 						</xsl:if>
 						<xsl:if test="output-example or output-data-example or data-example">
 							<text:line-break/>
-							<xsl:text>&lt;/result&gt;</xsl:text>
+							<xsl:text>&lt;/</xsl:text>
+							<text:span text:style-name="Elem">result</text:span>
+							<xsl:text>&gt;</xsl:text>
 						</xsl:if>
 					</text:p>
 				</table:table-cell>
@@ -672,23 +679,21 @@
 			<xsl:value-of select="$name" />
 		</text:span>
 		<xsl:text>=</xsl:text>
-		<text:span text:style-name="Value">
-			<xsl:text>"</xsl:text>
-			<xsl:value-of select="$value" />
-			<xsl:text>"</xsl:text>
-		</text:span>
+		<xsl:text>"</xsl:text>
+		<xsl:value-of select="$value" />
+		<xsl:text>"</xsl:text>
 	</xsl:template>
 
 	<xsl:template name="standard-errorcodes">
 		<xsl:variable name="resultcodes_node" select="document('../../xml/default_resultcodes.xml')/resultcodes" />
 		<xsl:for-each select="$resultcodes_node/code">
 			<table:table-row>
-				<table:table-cell office:value-type="string">
-					<text:p text:style-name="Standard">
+				<table:table-cell table:style-name="FunctionsTable.A2" office:value-type="string">
+					<text:p text:style-name="ElementName">
 						<xsl:value-of select="@name" />
 					</text:p>
 				</table:table-cell>
-				<table:table-cell office:value-type="string">
+				<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 					<text:p text:style-name="Standard">
 						<xsl:value-of select="description/text()" />
 					</text:p>
@@ -712,12 +717,12 @@
 		</xsl:variable>
 		<xsl:variable name="rcd_node" select="document($rcd_file)/resultcode"/>
 		<table:table-row>
-			<table:table-cell office:value-type="string">
-				<text:p text:style-name="Standard">
+			<table:table-cell table:style-name="FunctionsTable.A2" office:value-type="string">
+				<text:p text:style-name="ElementName">
 					<xsl:value-of select="$rcd_node/@name" />
 				</text:p>
 			</table:table-cell>
-			<table:table-cell office:value-type="string">
+			<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 				<text:p text:style-name="Standard">
 					<xsl:value-of select="$rcd_node/description/text()" />
 				</text:p>
