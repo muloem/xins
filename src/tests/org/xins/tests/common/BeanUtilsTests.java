@@ -183,6 +183,12 @@ public class BeanUtilsTests extends TestCase {
       assertEquals(Boolean.TRUE, mapPojo.get("realBoolean"));
       assertEquals("input", mapPojo.get("inputText"));
       assertEquals(new Integer(123), mapPojo.get("simpleInt"));
+
+      SimplePojo pojo2 = createPOJO();
+      pojo2.setAlmostBoolean(null);
+      Map mapPojo2 = BeanUtils.getParameters(pojo2);
+      assertEquals(3, mapPojo2.size());
+      assertNull(mapPojo2.get("almostBoolean"));
    }
 
    public void testGetParametersAsString() throws Exception {
@@ -193,6 +199,12 @@ public class BeanUtilsTests extends TestCase {
       assertEquals("true", mapPojo.get("realBoolean"));
       assertEquals("input", mapPojo.get("inputText"));
       assertEquals("123", mapPojo.get("simpleInt"));
+
+      SimplePojo pojo2 = createPOJO();
+      pojo2.setAlmostBoolean(null);
+      Map mapPojo2 = BeanUtils.getParametersAsString(pojo2);
+      assertEquals(3, mapPojo2.size());
+      assertNull(mapPojo2.get("almostBoolean"));
    }
 
    public void testGetParametersAsObject() throws Exception {
@@ -204,6 +216,12 @@ public class BeanUtilsTests extends TestCase {
       assertEquals(Boolean.TRUE, mapPojo.get("realBoolean"));
       assertEquals("input", mapPojo.get("inputText"));
       assertEquals(new Integer(123), mapPojo.get("simpleInt"));
+
+      SimplePojo pojo2 = createPOJO();
+      pojo2.setAlmostBoolean(null);
+      Map mapPojo2 = BeanUtils.getParametersAsObject(pojo2);
+      assertEquals(3, mapPojo2.size());
+      assertNull(mapPojo2.get("almostBoolean"));
 
       DefinedTypesRequest request = new DefinedTypesRequest();
       request.setInputSalutation(Salutation.LADY);

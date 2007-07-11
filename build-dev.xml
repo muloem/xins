@@ -8,9 +8,9 @@
 	this task is not available.
 	-->
 	<target name="-junit-task">
-		<available classname="junit.framework.TestListener" property="junit.available" />
-		<fail unless="junit.available" message="JUnit not available" />
-		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
+		<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+			<classpath location="lib/junit.jar" />
+    </taskdef>
 		<property name="junit.showoutput" value="false" />
 	</target>
 
