@@ -39,7 +39,7 @@
 					<text:h text:style-name="Heading1">Overview</text:h>
 					<text:h text:style-name="Heading2">Description</text:h>
 					<text:p text:style-name="P1">
-						<xsl:value-of select="description" />
+						<xsl:apply-templates select="description" />
 					</text:p>
 					<xsl:if test="category">
 						<xsl:apply-templates select="." mode="functions-table">
@@ -149,17 +149,27 @@
 			</table:table-cell>
 			<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 				<text:p text:style-name="P1">
-					<xsl:apply-templates select="$function_node/description" />
+					<xsl:apply-templates select="$function_node/description" mode="firstline" />
 				</text:p>
 			</table:table-cell>
 		</table:table-row>
 
 	</xsl:template>
 
-	<xsl:template match="function/description | type/description | resultcode/description | category/description">
+	<xsl:template match="function/description | type/description | resultcode/description | category/description" mode="firstline">
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />
 		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="function/description | type/description | resultcode/description | category/description">
+		<xsl:apply-templates />
+	</xsl:template>
+
+	<xsl:template match="em">
+		<text:span text:style-name="Em">
+			<xsl:apply-templates />
+		</text:span>
 	</xsl:template>
 
 	<!-- The automatic styles need to be in the content.xml, if set in styles.xml it doesn't work. -->

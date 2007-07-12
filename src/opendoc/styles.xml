@@ -68,6 +68,9 @@
 		</style:style>
 		<style:style style:name="Description" style:family="text" style:parent-style-name="Standard">
 		</style:style>
+		<style:style style:name="Em" style:family="text" style:parent-style-name="Standard">
+			<style:text-properties style:font-name="Courier New" style:font-name-asian="Times New Roman" style:font-name-complex="Courier New"/>
+		</style:style>
 		<style:style style:name="FunctionsHeading" style:family="paragraph" style:parent-style-name="Standard">
 			<style:paragraph-properties style:snap-to-layout-grid="false"/>
 			<style:text-properties fo:font-weight="bold" fo:font-size="12pt"/>

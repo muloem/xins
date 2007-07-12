@@ -25,7 +25,7 @@
 		</text:h>
 		<text:h text:style-name="Heading2" text:outline-level="2">Description</text:h>
 		<text:p text:style-name="P1">
-			<xsl:value-of select="$function_node/description" />
+			<xsl:apply-templates select="$function_node/description" />
 		</text:p>
 		<xsl:call-template name="parameter-section">
 			<xsl:with-param name="type-name" select="'input'" />
@@ -140,7 +140,7 @@
 			</table:table-cell>
 			<table:table-cell table:style-name="ParametersTable.C2" office:value-type="string">
 				<text:p text:style-name="Standard">
-					<xsl:value-of select="description" />
+					<xsl:apply-templates select="description" />
 				</text:p>
 				<xsl:if test="string-length(@default) &gt; 0">
 					<text:p text:style-name="Standard">
@@ -254,7 +254,7 @@
 			</text:span>
 		</text:h>
 		<text:p text:style-name="P1">
-			<xsl:value-of select="description" />
+			<xsl:apply-templates select="description" />
 		</text:p>
 		<xsl:choose>
 			<xsl:when test="contains/contained">
@@ -455,7 +455,7 @@
 			<xsl:text>Example </xsl:text>
 			<xsl:value-of select="position()" />
 			<xsl:text>: </xsl:text>
-			<xsl:value-of select="description/text()" />
+			<xsl:apply-templates select="description" />
 		</text:p>
 		<table:table table:name="ExampleTable" table:style-name="ExampleTable">
 			<table:table-column table:style-name="ExampleTable.A"/>
@@ -695,7 +695,7 @@
 				</table:table-cell>
 				<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 					<text:p text:style-name="Standard">
-						<xsl:value-of select="description/text()" />
+						<xsl:apply-templates select="description" />
 					</text:p>
 				</table:table-cell>
 			</table:table-row>
@@ -724,7 +724,7 @@
 			</table:table-cell>
 			<table:table-cell table:style-name="FunctionsTable.B2" office:value-type="string">
 				<text:p text:style-name="Standard">
-					<xsl:value-of select="$rcd_node/description/text()" />
+					<xsl:apply-templates select="$rcd_node/description" />
 				</text:p>
 			</table:table-cell>
 		</table:table-row>
