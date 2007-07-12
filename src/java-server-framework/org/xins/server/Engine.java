@@ -1047,6 +1047,37 @@ final class Engine {
    }
 
    /**
+    * Gets the resource in the WAR file.
+    *
+    * @param path
+    *    the path for the resource, cannot be <code>null</code> and should start with /.
+    *
+    * @return
+    *    the InputStream to use to read this resource or <code>null</code> if
+    *    the resource cannot be found.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>path == null</code> or if the path doesn't start with /.
+    *
+    * @since XINS 2.1.
+    */
+   InputStream getResourceAsStream(String path) throws IllegalArgumentException {
+      MandatoryArgumentChecker.check("path", path);
+      if (!path.startsWith("/")) {
+         throw new IllegalArgumentException("The path '" + path + "' should start with /.");
+      }
+      String resource = getFileLocation(path);
+      if (resource != null) {
+         try {
+            return new URL(resource).openStream();
+         } catch (IOException ioe) {
+            // Fall through and return null
+         }
+      }
+      return null;
+   }
+
+   /**
     * Handles the request for the _WSDL meta function.
     *
     * @param response

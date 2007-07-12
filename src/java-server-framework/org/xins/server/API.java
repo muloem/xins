@@ -360,19 +360,7 @@ public abstract class API extends Manageable {
     * @since XINS 2.0.
     */
    public final InputStream getResourceAsStream(String path) throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("path", path);
-      if (!path.startsWith("/")) {
-         throw new IllegalArgumentException("The path '" + path + "' should start with /.");
-      }
-      String resource = _engine.getFileLocation(path);
-      if (resource != null) {
-         try {
-            return new URL(resource).openStream();
-         } catch (IOException ioe) {
-            // Fall through and return null
-         }
-      }
-      return null;
+      return _engine.getResourceAsStream(path);
    }
 
    /**

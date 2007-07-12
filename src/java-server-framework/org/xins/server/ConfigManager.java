@@ -216,9 +216,7 @@ final class ConfigManager {
       if (_configFile == null) {
 
          // Try to find a xins.properties file in the WEB-INF directory
-         ServletConfig  config  = _engine.getServletConfig();
-         ServletContext context = config.getServletContext();
-         in = context.getResourceAsStream("WEB-INF/xins.properties");
+         in = _engine.getResourceAsStream("/WEB-INF/xins.properties");
          if (in == null) {
 
             // Use the default settings
