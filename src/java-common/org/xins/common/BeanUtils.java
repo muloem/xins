@@ -541,7 +541,9 @@ public class BeanUtils {
             propertyName = TextUtils.firstCharLower(propertyName);
             try {
                Object propertyValue = sourceMethods[i].invoke(source, null);
-               valuesMap.put(propertyName, propertyValue);
+               if (propertyValue != null) {
+                  valuesMap.put(propertyName, propertyValue);
+               }
             } catch (Exception ex) {
                Utils.logIgnoredException(ex);
             }

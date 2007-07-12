@@ -229,7 +229,7 @@ public class BeanUtilsTests extends TestCase {
       TextList.Value list1 = TextList.fromStringForOptional("15&16&bla");
       request.setInputList(list1);
       Map mapRequest = BeanUtils.getParametersAsObject(request);
-      assertEquals(5, mapRequest.size());
+      assertEquals(3, mapRequest.size());
       assertEquals(new Byte((byte) 18), mapRequest.get("inputAge"));
       assertEquals("Miss", mapRequest.get("inputSalutation"));
       java.util.List list2 = (java.util.List) mapRequest.get("inputList");
