@@ -95,6 +95,10 @@ public class ServletClassLoader {
       if (mode == USE_XINS_LIB) {
          String classLocation = ServletClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toString();
          String commonJar = classLocation.substring(6).replace('/', File.separatorChar);
+         if (!commonJar.endsWith("xins-common.jar")) {
+            String xinsHome = System.getenv("XINS_HOME");
+            commonJar = xinsHome + File.separator + "build" + File.separator + "xins-common.jar";
+         }
          File baseDir = new File(commonJar).getParentFile();
          File[] xinsFiles = baseDir.listFiles();
          for (int i = 0; i < xinsFiles.length; i++) {

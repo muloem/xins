@@ -1271,9 +1271,20 @@ APIs in this project are:
 				</xslt>
 				<fixcrlf srcdir="{$builddir}/webapps/{$api}{$implName2}" includes="web.xml" eol="unix" />
 				<manifest file="{$builddir}/webapps/{$api}{$implName2}/MANIFEST.MF">
+					<attribute name="Main-Class" value="org.xins.common.servlet.container.HTTPServletStarter" />
 					<attribute name="XINS-Version" value="{$xins_version}" />
 					<attribute name="API-Version" value="${{api.version}}" />
 				</manifest>
+				<unjar dest="{$builddir}/webapps/{$api}{$implName2}"
+					src="{$xins_home}/build/xins-common.jar">
+					<patternset>
+						<include name="org/xins/common/servlet/container/HTTPServletStarter*.class" />
+						<include name="org/xins/common/servlet/container/ServletClassLoader*.class" />
+					</patternset>
+				</unjar>
+				<unjar dest="{$builddir}/webapps/{$api}{$implName2}"
+					src="{$xins_home}/lib/servlet.jar">
+				</unjar>
 				<property name="classes.api.dir" value="{$classesDestDir}" />
 				<war
 					webxml="{$builddir}/webapps/{$api}{$implName2}/web.xml"
@@ -1292,6 +1303,8 @@ APIs in this project are:
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
+					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class" /> 
+					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="javax/servlet/**/*" /> 
 					<zipfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes} {$categoryIncludes}" prefix="WEB-INF/specs" />
 					<xsl:for-each select="$api_node/type">

@@ -9,8 +9,9 @@ package org.xins.common.servlet.container;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-
-import javax.servlet.ServletException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * HTTP Server used to invoke the XINS Servlet.
@@ -42,7 +43,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile)
-   throws ServletException, IOException {
+   throws Exception {
       this(warFile, DEFAULT_PORT_NUMBER, true);
    }
 
@@ -66,7 +67,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port)
-   throws ServletException, IOException {
+   throws Exception {
       this(warFile, port, true);
    }
 
@@ -93,10 +94,43 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port, boolean deamon)
-   throws ServletException, IOException {
+   throws Exception {
+      this(warFile, port, deamon, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
+   }
+
+   /**
+    * Creates a new <code>HTTPServletStarter</code> for the specified servlet
+    * class, on the specified port, optionally as a daemon thread.
+    *
+    * <p>A listener is started on the port immediately.
+    *
+    * @param servletClassName
+    *    The name of the servlet to load, cannot be <code>null</code>.
+    *
+    * @param port
+    *    The port of the web server, cannot be <code>null</code>.
+    *
+    * @param deamon
+    *    <code>true</code> if the thread listening to connection should be a
+    *    deamon thread, <code>false</code> otherwise.
+    *
+    * @param loaderMode
+    *    the way the ClassLoader should locate and load the classes.
+    *    See {@link ServletClassLoader].
+    *
+    * @throws ServletException
+    *    if the servlet cannot be initialized.
+    *
+    * @throws IOException
+    *    if the servlet container cannot be started.
+    *
+    * @since XINS 2.1.
+    */
+   public HTTPServletStarter(File warFile, int port, boolean deamon, int loaderMode)
+   throws Exception {
 
       // Create the servlet
-      ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
+      ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, loaderMode);
 
       Class[] constClasses = {File.class, Integer.TYPE, Boolean.TYPE};
       Object[] constArgs = {warFile, new Integer(port), deamon ? Boolean.TRUE : Boolean.FALSE};
@@ -132,7 +166,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(String servletClassName, int port, boolean deamon)
-   throws ServletException, IOException {
+   throws Exception {
 
       // Create the servlet
       Class[] constClasses = {String.class, Integer.TYPE, Boolean.TYPE};
@@ -156,11 +190,8 @@ public class HTTPServletStarter {
     *    If no port number is specified, 8080 is used as default.
     */
    public static void main(String[] args) {
-      if (args.length < 1) {
-         System.err.println("Please, pass the location of the WAR file as argument.");
-         System.exit(-1);
-      }
       int port = DEFAULT_PORT_NUMBER;
+      boolean portAsFirstArg = false;
       if (args.length > 1) {
          try {
             port = Integer.parseInt(args[1]);
@@ -168,16 +199,55 @@ public class HTTPServletStarter {
             System.err.println("Warning: Incorrect port number \"" + args[1] +
                   "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
          }
+      } else if (args.length == 1) {
+         try {
+            port = Integer.parseInt(args[0]);
+            portAsFirstArg = true;
+         } catch (NumberFormatException nfe) {
+            // this means that the WAR file is the only argument
+         }
       }
-
-      File warFile = new File(args[0]);
+      
+      File warFile = null;
+      // Detect the location of the WAR file if needed.
+      if (args.length < 1 || (args.length == 1 && portAsFirstArg)) {
+         //System.err.println("Please, pass the location of the WAR file as argument.");
+         //System.exit(-1);
+         URL codeLocation = HTTPServletStarter.class.getProtectionDomain().getCodeSource().getLocation();
+         System.out.println("No WAR file passed as argument, using: " + codeLocation);
+         try {
+            warFile = new File(new URI(codeLocation.toString()));
+         } catch (URISyntaxException murlex) {
+            murlex.printStackTrace();
+         }
+      } else {
+         warFile = new File(args[0]);
+      }
       if (!warFile.exists()) {
          System.err.println("WAR file \"" + args[0] + "\" not found.");
          System.exit(-1);
       }
+
+      // Detect the ClassLoader mode
+      int loaderMode = ServletClassLoader.USE_WAR_LIB;
+      if (args.length == 3) {
+         try {
+            loaderMode = Integer.parseInt(args[2]);
+         } catch (NumberFormatException nfe) {
+            System.err.println("Warning: Incorrect ClassLoader \"" + args[2] +
+                  "\", using " + ServletClassLoader.USE_WAR_LIB + " as default.");
+         }
+      } else {
+         String classPath = System.getProperty("java.class.path");
+         if (classPath.indexOf("xins-common.jar") != -1 && classPath.indexOf("servlet.jar") != -1 &&
+               classPath.indexOf("xins-server.jar") != -1 && classPath.indexOf("xmlenc.jar") != -1) {
+            loaderMode = ServletClassLoader.USE_WAR_EXTERNAL_LIB;
+         }
+      }
+
       try {
          // Starts the server and wait for connections
-         new HTTPServletStarter(warFile, port, false);
+         new HTTPServletStarter(warFile, port, false, loaderMode);
       } catch (Exception ioe) {
          ioe.printStackTrace();
       }
