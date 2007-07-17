@@ -199,7 +199,7 @@ public class HTTPServletStarter {
             System.err.println("Warning: Incorrect port number \"" + args[1] +
                   "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
          }
-      } else if (args.length == 1) {
+      } else if (args.length == 1 && !args[0].endsWith(".war")) {
          try {
             port = Integer.parseInt(args[0]);
             portAsFirstArg = true;
