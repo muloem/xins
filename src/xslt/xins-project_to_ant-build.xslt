@@ -255,6 +255,13 @@
 		</xsl:variable>
 		<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
 
+		<target name="-load-properties-{$api}" depends="-load-properties">
+			<property name="api" value="@name" />
+			<property name="api_specsdir" value="${{project_home}}/apis/${{api}}/spec" />
+			<property name="typeIncludesAll" value="{$typeIncludesAll}" />
+			<property name="resultcodeIncludesAll" value="{$resultcodeIncludesAll}" />
+		</target>
+
 		<target name="specdocs-{$api}" depends="index-specdocs" description="Generates all specification docs for the '{$api}' API">
       <mkdir dir="{$builddir}/specdocs/{$api}" />
 			<dependset>
@@ -577,76 +584,23 @@
 			</target>
 		</xsl:if>
 
-		<target name="wsdl-{$api}" depends="-load-dtds" description="Generates the WSDL specification of the '{$api}' API">
-			<dependset>
-				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
-				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
-				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
-				</xsl:if>
-				<targetfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" />
-			</dependset>
-			<property file="{$builddir}.properties" />
-			<property name="wsdl.endpoint" value="" />
-			<mkdir dir="{$builddir}/wsdl" />
-			<tstamp>
-				<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
-			</tstamp>
-			<xslt
-			in="{$api_specsdir}/api.xml"
-			out="{$builddir}/wsdl/{$api}.wsdl"
-			style="{$xins_home}/src/xslt/webapp/api_to_wsdl.xslt">
-				<xmlcatalog refid="all-dtds" />
-				<param name="project_home" expression="{$project_home}" />
-				<param name="project_file" expression="{$project_file}" />
-				<param name="specsdir"     expression="{$api_specsdir}" />
-				<param name="endpoint"     expression="${{wsdl.endpoint}}" />
-				<param name="xins_version" expression="{$xins_version}" />
-				<param name="timestamp"    expression="${{timestamp}}"  />
-			</xslt>
-			<replace file="{$builddir}/wsdl/{$api}.wsdl">
-				<replacefilter token="urn:apiname" value="urn:{$api}" />
-				<replacefilter token="//?_convention=_xins-soap" value="/?_convention=_xins-soap" />
-			</replace>
+		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
+			<property name="subtarget" value="-wsdl" />
+			<antcall target="opendoc-{$api}" />
 		</target>
 
-		<target name="opendoc-{$api}" description="Generates the specification document for the '{$api}' API">
-			<mkdir dir="{$builddir}/opendoc/{$api}" />
-			<dependset>
-				<srcfilelist dir="{$api_specsdir}" files="{$functionIncludes}" />
+		<target name="opendoc-{$api}" depends="-load-properties-{$api}" description="Generates the specification document for the '{$api}' API">
+			<property name="subtarget" value="-opendoc" />
+			<path id="all.dependset">
+				<filelist dir="{$api_specsdir}" files="${{functionIncludes}}" />
 				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$typeIncludesAll}" />
+					<filelist dir="{$api_specsdir}" files="${{typeIncludesAll}}" />
 				</xsl:if>
 				<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
-					<srcfilelist dir="{$api_specsdir}" files="{$resultcodeIncludesAll}" />
+					<filelist dir="{$api_specsdir}" files="${{resultcodeIncludesAll}}" />
 				</xsl:if>
-				<targetfileset dir="{$builddir}/opendoc/{$api}" includes="content.xml" />
-			</dependset>
-			<xslt
-			in="{$api_specsdir}/api.xml"
-			out="{$builddir}/opendoc/{$api}/content.xml"
-			style="{$xins_home}/src/xslt/opendoc/api_to_content.xslt">
-				<xmlcatalog refid="all-dtds" />
-				<param name="project_home" expression="{$project_home}" />
-				<param name="project_file" expression="{$project_file}" />
-				<param name="specsdir"     expression="{$api_specsdir}" />
-				<param name="api"          expression="{$api}"          />
-			</xslt>
-			<copy file="{$xins_home}/src/opendoc/meta.xml" tofile="{$builddir}/opendoc/{$api}/meta.xml" />
-			<tstamp>
-				<format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm:ss" />
-			</tstamp>
-			<replace file="{$builddir}/opendoc/{$api}/meta.xml">
-				<replacefilter token="#version#" value="{$xins_version}" />
-				<replacefilter token="#date#" value="${{timestamp}}" />
-			</replace>
-			<zip destfile="{$builddir}/opendoc/{$api}/{$api}-specs.odt">
-				<fileset dir="{$builddir}/opendoc/{$api}" includes="content.xml meta.xml" />
-				<fileset dir="{$xins_home}/src/opendoc" includes="mimetype styles.xml" />
-				<zipfileset dir="{$xins_home}/src/opendoc" includes="manifest.xml" prefix="META-INF" />
-			</zip>
+			</path>
+			<antcall target="${{subtarget}}" inheritRefs="true" />
 		</target>
 
 		<xsl:for-each select="impl">
@@ -999,77 +953,33 @@
 			</target>
 
 			<target name="run-{$api}{$implName2}" depends="war-{$api}{$implName2}" description="Runs the '{$api}{$implName2}' API">
-				<property name="org.xins.server.config" value="" />
-				<property name="servlet.port" value="8080" />
-				<java classname="org.xins.common.servlet.container.HTTPServletStarter"
-							fork="true">
-					<jvmarg value="-Dorg.xins.server.config=${{org.xins.server.config}}" />
-					<jvmarg value="-Dcom.sun.management.jmxremote" />
-					<jvmarg value="-Dcom.sun.management.jmxremote.port=1090"/>
-					<jvmarg value="-Dcom.sun.management.jmxremote.authenticate=false"/>
-					<jvmarg value="-Dcom.sun.management.jmxremote.ssl=false"/>
-					<arg path="{$builddir}/webapps/{$api}{$implName2}/{$api}{$implName2}.war" />
-					<arg value="${{servlet.port}}" />
-					<classpath>
-						<path refid="xins.classpath" />
-						<path location="{$builddir}/classes-api/{$api}{$implName2}" />
-						<xsl:if test="$apiHasTypes">
-							<path location="{$builddir}/classes-types/{$api}" />
-						</xsl:if>
-					</classpath>
-				</java>
+				<!-- XXX probably done by war- -->
+				<property name="api" value="{$api}" />
+				<property name="implName2" value="{$implName2}" />
+				<path id="run.classpath">
+					<path location="{$builddir}/classes-api/{$api}{$implName2}" />
+					<xsl:if test="$apiHasTypes">
+						<path location="{$builddir}/classes-types/{$api}" />
+					</xsl:if>
+				</path>
+				<antcall target="-run" inheritRefs="true" />
 			</target>
 
-			<target name="javadoc-api-{$api}{$implName2}" depends="classes-api-{$api}{$implName2}" description="Generates Javadoc API docs for the '{$api}{$implName2}' API">
-				<property file="{$xins_home}/.version.properties" />
-				<condition property="dot.version.minor" value="${version.minor}">
-					<or>
-						<equals arg1="${version.minor}" arg2="-alpha" />
-						<equals arg1="${version.minor}" arg2="-beta" />
-						<equals arg1="${version.minor}" arg2="-rc" />
-						<equals arg1="${version.minor}" arg2="" />
-					</or>
-				</condition>
-				<property name="dot.version.minor" value=".${version.minor}" />
-				<mkdir dir="{$builddir}/javadoc-api/{$api}{$implName2}" />
-				<javadoc
-				destdir="{$builddir}/javadoc-api/{$api}{$implName2}"
-				version="yes"
-				use="yes"
-				author="yes"
-				access="package"
-				windowtitle="Implementation of {$api} API"
-				doctitle="Implementation of {$api} API">
-					<packageset dir="{$javaDestDir}" />
-					<packageset dir="{$javaImplDir}" />
+			<target name="javadoc-api-{$api}{$implName2}" depends="-load-properties, classes-api-{$api}{$implName2}" description="Generates Javadoc API docs for the '{$api}{$implName2}' API">
+				<!-- XXX probably done by classes- -->
+				<property name="api" value="{$api}" />
+				<path id="javadoc.api.packageset">
+					<dirset dir="{$javaDestDir}" />
+					<dirset dir="{$javaImplDir}" />
 					<xsl:if test="$apiHasTypes">
-						<packageset dir="{$builddir}/java-types/{$api}" />
+						<dirset dir="{$builddir}/java-types/{$api}" />
 					</xsl:if>
-					<link
-					href="http://www.xins.org/javadoc/${{version.major}}.${{version.middle}}${{dot.version.minor}}${{version.build}}/"
-					offline="true"
-					packagelistloc="{$xins_home}/docs/javadoc/" />
-					<link
-					href="http://java.sun.com/j2se/1.4.2/docs/api"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/j2se/" />
-					<link
-					href="http://jakarta.apache.org/log4j/docs/api/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/log4j/" />
-					<link
-					href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
-					<classpath>
-						<path refid="xins.classpath" />
-						<xsl:apply-templates select="$impl_node/dependency" />
-					</classpath>
-				</javadoc>
-				<copy
-				file="{$xins_home}/src/css/javadoc/style.css"
-				tofile="{$builddir}/javadoc-api/{$api}/stylesheet.css"
-				overwrite="true" />
+				</path>
+				<path id="javadoc.api.classpath">
+					<path refid="xins.classpath" />
+					<xsl:apply-templates select="$impl_node/dependency" />
+				</path>
+				<antcall target="-javadoc-api" inheritRefs="true" />
 			</target>
 
 			<target name="create-impl-{$api}{$implName2}" unless="impl.exists">
@@ -1243,55 +1153,18 @@
 			</target>
 
 			<target name="javadoc-test-{$api}" description="Generates the Javadoc of the unit tests of the {$api} API.">
-				<xsl:variable name="javaTestDir" select="concat($project_home, '/apis/', $api, '/test')" />
-				<javadoc
-				destdir="{$builddir}/javadoc-test/{$api}"
-				version="yes"
-				use="yes"
-				author="yes"
-				access="package"
-				windowtitle="Unit tests of the {$api} API"
-				doctitle="Unit tests of the {$api} API">
-					<packageset dir="{$javaTestDir}" />
-					<link
-					href="http://www.xins.org/javadoc/{$xins_version}/"
-					offline="true"
-					packagelistloc="{$xins_home}/docs/javadoc/" />
-					<link
-					href="http://java.sun.com/j2se/1.4.2/docs/api"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/j2se/" />
-					<link
-					href="http://junit.sourceforge.net/javadoc/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/junit/" />
-					<link
-					href="http://jakarta.apache.org/log4j/docs/api/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/log4j/" />
-					<link
-					href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
-					offline="true"
-					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
-					<classpath>
-						<path refid="xins.classpath" />
-						<pathelement path="{$builddir}/capis/{$api}-capi.jar" />
-						<pathelement path="{$builddir}/classes-tests/{$api}" />
-						<pathelement path="${{classes.api.dir}}" />
-						<xsl:if test="$apiHasTypes">
-							<pathelement path="{$builddir}/classes-types/{$api}" />
-						</xsl:if>
-						<xsl:if test="impl">
-							<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-							<xsl:apply-templates select="document($impl_file)/impl/dependency" />
-						</xsl:if>
-						<fileset dir="{$project_home}/apis/{$api}/test" includes="**/*.jar" />
-					</classpath>
-				</javadoc>
-				<copy
-				file="{$xins_home}/src/css/javadoc/style.css"
-				tofile="{$builddir}/javadoc-test/{$api}/stylesheet.css"
-				overwrite="true" />
+				<property name="api" value="{$api}" />
+				<path id="javadoc.test.classpath">
+					<pathelement path="{$builddir}/classes-tests/{$api}" />
+					<xsl:if test="$apiHasTypes">
+						<pathelement path="{$builddir}/classes-types/{$api}" />
+					</xsl:if>
+					<xsl:if test="impl">
+						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+						<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+					</xsl:if>
+				</path>
+				<antcall target="-javadoc-test" inheritRefs="true" />
 			</target>
 		</xsl:if>
 
@@ -1476,65 +1349,26 @@
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
-				<xsl:text>-prepare-classes,</xsl:text>
 				<xsl:if test="$apiHasTypes">
-					<xsl:text>-classes-types-</xsl:text>
-					<xsl:value-of select="$api" />
-					<xsl:text>,</xsl:text>
+					<xsl:value-of select="concat('-classes-types-', $api, ',')" />
 				</xsl:if>
-				<xsl:text>-stubs-capi-</xsl:text>
-				<xsl:value-of select="$api" />
+				<xsl:value-of select="concat('-stubs-capi-', $api)" />
 			</xsl:attribute>
-			<mkdir dir="{$builddir}/javadoc-capi/{$api}" />
-			<javadoc
-			sourcepath="{$builddir}/java-capi/{$api}"
-			destdir="{$builddir}/javadoc-capi/{$api}"
-			version="yes"
-			use="yes"
-			author="yes"
-			access="public"
-			windowtitle="Call interface for {$api} API"
-			doctitle="Call interface for {$api} API">
-				<packageset dir="{$builddir}/java-capi/{$api}" />
+			<property name="api" value="{$api}" />
+			<path id="javadoc.capi.packages">
+				<dirset dir="{$builddir}/java-capi/{$api}" />
 				<xsl:if test="$apiHasTypes">
-					<packageset dir="{$builddir}/java-types/{$api}" />
+					<dirset dir="{$builddir}/java-types/{$api}" />
 				</xsl:if>
-				<link
-				href="http://www.xins.org/javadoc/{$xins_version}/"
-				offline="true"
-				packagelistloc="{$xins_home}/docs/javadoc/" />
-				<link
-				href="http://java.sun.com/j2se/1.4.2/docs/api"
-				offline="true"
-				packagelistloc="{$xins_home}/src/package-lists/j2se/" />
-				<link
-				href="http://jakarta.apache.org/log4j/docs/api/"
-				offline="true"
-				packagelistloc="{$xins_home}/src/package-lists/log4j/" />
-				<link
-				href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
-				offline="true"
-				packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
-				<classpath>
-					<path refid="xins.classpath" />
-				</classpath>
-			</javadoc>
-			<copy
-			file="{$xins_home}/src/css/javadoc/style.css"
-			tofile="{$builddir}/javadoc-capi/{$api}/stylesheet.css"
-			overwrite="true" />
+			</path>
+			<antcall target="-javadoc-capi" inheritRefs="true" />
 		</target>
 
 		<target name="client-{$api}"
 						depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}, wsdl-{$api}, opendoc-{$api}"
 						description="Generates the Javadoc API docs for the client side and the client JAR file for the '{$api}' API stubs and zip the result.">
-			<zip destfile="{$builddir}/specdocs/{$api}/{$api}-client.zip">
-				<fileset dir="{$builddir}/capis" includes="{$api}-capi.jar" />
-				<zipfileset dir="{$builddir}/javadoc-capi/{$api}" prefix="javadoc" />
-				<zipfileset dir="{$builddir}/specdocs/{$api}" excludes="{$api}-client.zip" prefix="specdocs" />
-				<fileset dir="{$builddir}/opendoc/{$api}" includes="{$api}-specs.odt" />
-				<fileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" />
-			</zip>
+			<property name="api" value="{$api}" />
+			<antcall target="-client" />
 		</target>
 
 		<target name="all-{$api}"
@@ -1550,29 +1384,13 @@
 		</target>
 
 		<target name="clean-{$api}" description="Deletes everything for the '{$api}' API stubs.">
-			<delete dir="{$builddir}/capis/{$api}-capi.jar" />
-			<delete dir="{$builddir}/classes-api/{$api}" />
-			<delete dir="{$builddir}/classes-capi/{$api}" />
-			<delete dir="{$builddir}/classes-types/{$api}" />
-			<delete dir="{$builddir}/classes-tests/{$api}" />
-			<delete dir="{$builddir}/java-capi/{$api}" />
-			<delete dir="{$builddir}/java-fundament/{$api}" />
-			<delete dir="{$builddir}/java-types/{$api}" />
-			<delete dir="{$builddir}/javadoc-api/{$api}" />
-			<delete dir="{$builddir}/javadoc-capi/{$api}" />
-			<delete dir="{$builddir}/logdoc/{$api}" />
-			<delete dir="{$builddir}/specdocs/{$api}" />
-			<delete dir="{$builddir}/types/{$api}" />
-			<delete dir="{$builddir}/webapps/{$api}" />
-			<delete file="{$builddir}/wsdl/{$api}.wsdl" />
+			<property name="api" value="{$api}" />
+			<antcall target="-clean" />
 			<xsl:for-each select="impl/@name">
 				<xsl:variable name="impl" select="." />
-				<delete dir="{$builddir}/classes-api/{$api}-{$impl}" />
-				<delete dir="{$builddir}/java-fundament/{$api}-{$impl}" />
-				<delete dir="{$builddir}/javadoc-api/{$api}-{$impl}" />
-				<delete dir="{$builddir}/logdoc/{$api}-{$impl}" />
-				<delete dir="{$builddir}/webapps/{$api}-{$impl}" />
-				<delete dir="{$builddir}/logdoc/{$api}-{$impl}" />
+				<antcall target="-clean-impl">
+					<param name="impl" value="{$impl}" />
+				</antcall>
 			</xsl:for-each>
 		</target>
 

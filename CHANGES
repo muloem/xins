@@ -39,6 +39,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
     build-tools.xml as most of the code doesn't need to be dynamically
     generated.
   - Added build-macros.xml which contains static content of the old generated
+    build.xml. This result in the reduction of the size of the generated
     build.xml.
 
 * Documentation:
