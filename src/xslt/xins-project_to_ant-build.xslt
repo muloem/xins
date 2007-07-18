@@ -19,13 +19,9 @@
 	<!-- Perform includes -->
 	<xsl:include href="hungarian.xslt"       />
 	<xsl:include href="package_for_api.xslt" />
-	<xsl:include href="create_project.xslt"  />
-	<xsl:include href="tools.xslt"  />
 
 	<xsl:output indent="yes" />
 
-	<xsl:variable name="xmlenc_version"    select="'0.52'"                                      />
-	<xsl:variable name="xins_buildfile"    select="concat($xins_home,    '/build.xml')"         />
 	<xsl:variable name="project_file"      select="concat($project_home, '/xins-project.xml')"  />
 	<xsl:variable name="project_node"      select="document($project_file)/project"             />
 	<xsl:variable name="specsdir">
@@ -47,339 +43,33 @@
 	</xsl:variable>
 
 	<xsl:template match="project">
-		<project default="help" basedir="..">
-			<xsl:attribute name="name">
-				<xsl:value-of select="//project/@name" />
-			</xsl:attribute>
+		<project name="{//project/@name}" default="help" basedir="..">
 
-			<target name="clean" unless="no.clean" description="Removes all generated files">
-				<delete dir="{$builddir}" />
-			</target>
+			<import file="{$xins_home}/src/ant/build-macros.xml" optional="false" />
+			<import file="{$xins_home}/src/ant/build-create.xml" optional="true" />
+			<import file="{$xins_home}/src/ant/build-tools.xml" optional="true" />
 
-			<target name="check-version">
-				<condition property="no.clean">
-					<equals arg1="${{xins.current.version}}" arg2="{$xins_version}" />
-				</condition>
-				<antcall target="clean" />
-			</target>
-
-			<target name="version" description="Prints current versions of Java, Ant and XINS">
-				<ant
-				antfile="build.xml"
-				dir="{$xins_home}"
-				target="version"
-				inheritall="false" />
-				<echo>
-					<xsl:text>
-This build file was generated with XINS </xsl:text>
-					<xsl:value-of select="$xins_version" />
-					<xsl:text>.</xsl:text>
-				</echo>
-			</target>
-
-			<target name="help" depends="version" description="Shows the supported commands.">
-				<echo><![CDATA[Generic targets:
-- version             Prints the version of XINS.
-- help                Prints this message.
-- all                 Generates everything.
-- clean               Removes all generated files.
-- specdocs            Generates all specification docs.
-- javadoc-apis        Generates all APIs Javadoc.
-- wars                Generates all WAR files.
-- capis               Generates all CAPI JAR files.
-- javadoc-capis       Generates all CAPI Javadoc.
-- tests               Runs the unit tests of the APIs.
-- tools               Display the help for the tools commands.
-
-The following commands assist in authoring specifications:
-- create-api          Generates a new api specification file.
-- create-function     Generates a new function specification file.
-- create-rcd          Generates a new error code specification file
-- create-type         Generates a new type specification file.
-- create-example      Generates a new example for a function.
-- create-logdoc       Generates the basic logdoc files for an API.
-
-The following commands can be used to run a tool on an API:
-download-tools, java2html, pmd, checkstyle, coverage, emma,
-findbugs, lint4j, jdepend, cvschangelog, jmeter, run-jmeter,
-maven, eclipse, smd, xsd-to-types, wsdl-to-api.
-More information is available using the 'help-tools' target.
-
-The following targets are specific for a single API,
-replace <api> with the name of an existing API:
-- run-<api>           Runs the WAR file for the API.
-- war-<api>           Creates the WAR file for the API.
-- specdocs-<api>      Generates all specification docs for the API.
-- javadoc-api-<api>   Generates Javadoc for the server API
-                      implementation.
-- server-<api>        Generates the WAR file, the API Javadoc for
-                      the server side and the specdocs for the API.
-- jar-<api>           Generates and compiles the CAPI classes.
-- javadoc-capi-<api>  Generates the Javadoc for the CAPI classes.
-- client-<api>        Generates the CAPI JAR file and the
-                      corresponding Javadoc.
-- clean-<api>         Cleans everything for the API.
-- rebuild-<api>       Regenerates everything for the API.
-- all-<api>           Generates everything for the API.
-- wsdl-<api>          Generates the WSDL for the API.
-- stub-<api>          Generates the stub for the API.
-- test-<api>          Generates (if needed) and runs the tests.
-- javadoc-test-<api>  Generates the Javadoc of the unit tests.
-- opendoc-<api>       Generates the specification in Opendoc format
-
-APIs in this project are:
-]]></echo>
-				<echo>
-					<xsl:for-each select="api">
-						<xsl:variable name="api" select="@name" />
-						<xsl:text>"</xsl:text>
-							<xsl:value-of select="$api" />
-						<xsl:text>" </xsl:text>
-						<xsl:for-each select="impl/@name">
-							<xsl:variable name="impl" select="." />
-							<xsl:value-of select="concat('&quot;', $api, '-', $impl, '&quot; ')" />
-						</xsl:for-each>
-					</xsl:for-each>
-				</echo>
-			</target>
-
-			<target name="ask" description="Asks for the command and API to execute.">
-				<input addproperty="command"
-				       message="Command "
-				       validargs="run,war,specdocs,javadoc-api,jar,javadoc-capi,all,clean,client,server,wsdl,stub,test" />
-				<input addproperty="api"
-				       message="API ">
-					<xsl:attribute name="validargs">
-						<xsl:for-each select="api">
+			<target name="-load-properties-xins">
+				<property name="xins_home" value="{$xins_home}" />
+				<property name="project_home" value="{$project_home}" />
+				<property name="builddir" value="{$builddir}" />
+				<property name="cvsweb" value="{cvsweb/@href}" />
+				<xsl:if test="@domain">
+					<property name="domain" value="{@domain}" />
+				</xsl:if>
+				<property name="apis.list">
+					<xsl:attribute name="value">
+						<xsl:for-each select="//project/api/impl">
 							<xsl:if test="position() &gt; 1">,</xsl:if>
-							<xsl:variable name="api" select="@name" />
-							<xsl:value-of select="$api" />
-							<xsl:for-each select="impl/@name">
-								<xsl:variable name="impl" select="." />
-								<xsl:value-of select="concat(',', $api, '-', $impl)" />
-							</xsl:for-each>
+							<xsl:value-of select="../@name" />
+							<xsl:if test="@name">
+								<xsl:value-of select="concat('-', @name)" />
+							</xsl:if>
 						</xsl:for-each>
 					</xsl:attribute>
-				</input>
-				<antcall target="${{command}}-${{api}}" />
+				</property>
 			</target>
 
-			<xsl:call-template name="createproject" />
-
-			<xsl:call-template name="createexample">
-				<xsl:with-param name="xins_home" select="$xins_home" />
-			</xsl:call-template>
-
-			<xsl:call-template name="tools">
-				<xsl:with-param name="xins_home" select="$xins_home" />
-				<xsl:with-param name="project_home" select="$project_home" />
-				<xsl:with-param name="builddir" select="$builddir" />
-				<xsl:with-param name="cvsweb" select="cvsweb/@href" />
-			</xsl:call-template>
-
-			<target name="-prepare">
-				<property file="build.properties" />
-				<property name="reload.stylesheet" value="false" />
-			</target>
-
-			<target name="-prepare-specdocs" depends="-prepare, -load-dtds">
-				<mkdir dir="{$builddir}/specdocs" />
-			</target>
-
-			<target name="-load-dtds">
-				<xmlcatalog id="all-dtds">
-					<classpath>
-						<pathelement path="{$xins_home}/src/dtd"/>
-					</classpath>
-					<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
-					     location="xins-project_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
-					     location="api_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.0//EN"
-					     location="function_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.0//EN"
-					     location="type_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.0//EN"
-					     location="resultcode_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.0//EN"
-					     location="impl_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.0//EN"
-					     location="environments_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.0//EN"
-					     location="log_1_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.0//EN"
-					     location="translation-bundle_1_0.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 1.1//EN"
-					     location="xins-project_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.1//EN"
-					     location="api_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.1//EN"
-					     location="function_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.1//EN"
-					     location="type_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.1//EN"
-					     location="resultcode_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.1//EN"
-					     location="impl_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.1//EN"
-					     location="environments_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.1//EN"
-					     location="log_1_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.1//EN"
-					     location="translation-bundle_1_1.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 1.2//EN"
-					     location="xins-project_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.2//EN"
-					     location="api_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.2//EN"
-					     location="function_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.2//EN"
-					     location="type_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.2//EN"
-					     location="resultcode_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.2//EN"
-					     location="impl_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.2//EN"
-					     location="environments_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.2//EN"
-					     location="log_1_2.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.2//EN"
-					     location="translation-bundle_1_2.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 1.3//EN"
-					     location="xins-project_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.3//EN"
-					     location="api_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.3//EN"
-					     location="function_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Category 1.3//EN"
-					     location="category_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.3//EN"
-					     location="type_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.3//EN"
-					     location="resultcode_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.3//EN"
-					     location="impl_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.3//EN"
-					     location="environments_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.3//EN"
-					     location="log_1_3.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.3//EN"
-					     location="translation-bundle_1_3.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 1.4//EN"
-					     location="xins-project_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.4//EN"
-					     location="api_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.4//EN"
-					     location="function_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Category 1.4//EN"
-					     location="category_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.4//EN"
-					     location="type_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.4//EN"
-					     location="resultcode_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.4//EN"
-					     location="impl_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.4//EN"
-					     location="environments_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.4//EN"
-					     location="log_1_4.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.4//EN"
-					     location="translation-bundle_1_4.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 1.5//EN"
-					     location="xins-project_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 1.5//EN"
-					     location="api_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Function 1.5//EN"
-					     location="function_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Category 1.5//EN"
-					     location="category_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Type 1.5//EN"
-					     location="type_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 1.5//EN"
-					     location="resultcode_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 1.5//EN"
-					     location="impl_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 1.5//EN"
-					     location="environments_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 1.5//EN"
-					     location="log_1_5.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 1.5//EN"
-					     location="translation-bundle_1_5.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 2.0//EN"
-					     location="xins-project_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 2.0//EN"
-					     location="api_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Function 2.0//EN"
-					     location="function_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Category 2.0//EN"
-					     location="category_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Type 2.0//EN"
-					     location="type_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 2.0//EN"
-					     location="resultcode_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 2.0//EN"
-					     location="impl_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 2.0//EN"
-					     location="environments_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 2.0//EN"
-					     location="log_2_0.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 2.0//EN"
-					     location="translation-bundle_2_0.dtd" />
-
-					<dtd publicId="-//XINS//DTD XINS Project 2.1//EN"
-					     location="xins-project_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS API 2.1//EN"
-					     location="api_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Function 2.1//EN"
-					     location="function_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Category 2.1//EN"
-					     location="category_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Type 2.1//EN"
-					     location="type_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Result Code 2.1//EN"
-					     location="resultcode_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Implementation 2.1//EN"
-					     location="impl_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD Environments 2.1//EN"
-					     location="environments_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Logdoc 2.1//EN"
-					     location="log_2_1.dtd" />
-					<dtd publicId="-//XINS//DTD XINS Translation Bundle 2.1//EN"
-					     location="translation-bundle_2_1.dtd" />
-				</xmlcatalog>
-			</target>
-
-			<target name="index-specdocs" depends="-prepare-specdocs" description="Generates the API index">
-				<xmlvalidate file="{$project_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xslt
-				in="{$project_file}"
-				out="{$builddir}/specdocs/index.html"
-				style="{$xins_home}/src/xslt/specdocs/xins-project_to_index.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$specsdir}"     />
-				</xslt>
-				<copy todir="{$builddir}/specdocs" file="{$xins_home}/src/css/specdocs/style.css" />
-				<copy tofile="{$builddir}/specdocs/favicon.ico" file="{$xins_home}/xins.ico" />
-			</target>
-
-			<target name="-load-version">
-				<property prefix="api." file="{$project_home}/.version.properties" />
-				<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
-					<isset property="api.version.major" />
-				</condition>
-				<property name="api.version" value="Not specified" />
-			</target>
 			<target name="specdocs" description="Generates all specification docs">
 				<xsl:attribute name="depends">
 					<xsl:text>index-specdocs</xsl:text>
@@ -388,29 +78,6 @@ APIs in this project are:
 						<xsl:value-of select="@name" />
 					</xsl:for-each>
 				</xsl:attribute>
-			</target>
-
-			<target name="-prepare-classes" depends="-prepare,-load-dtds">
-				<!-- If not set by the user set the default properties. -->
-				<property name="build.deprecation" value="true" />
-				<property name="build.java.version" value="${{ant.java.version}}" />
-				<condition property="build.generics">
-					<and>
-						<not>
-							<equals arg1="${{build.java.version}}" arg2="1.3" />
-						</not>
-						<not>
-							<equals arg1="${{build.java.version}}" arg2="1.4" />
-						</not>
-					</and>
-				</condition>
-				<path id="xins.classpath">
-					<pathelement path="{$xins_home}/build/logdoc.jar" />
-					<pathelement path="{$xins_home}/build/xins-common.jar" />
-					<pathelement path="{$xins_home}/build/xins-server.jar" />
-					<pathelement path="{$xins_home}/build/xins-client.jar" />
-					<fileset dir="{$xins_home}/lib" includes="**/*.jar" />
-				</path>
 			</target>
 
 			<target name="classes" description="Compiles all Java classes">
@@ -1391,7 +1058,7 @@ APIs in this project are:
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 					<link
-					href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
+					href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 					<classpath>
@@ -1603,7 +1270,7 @@ APIs in this project are:
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 					<link
-					href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
+					href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
 					offline="true"
 					packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 					<classpath>
@@ -1845,7 +1512,7 @@ APIs in this project are:
 				offline="true"
 				packagelistloc="{$xins_home}/src/package-lists/log4j/" />
 				<link
-				href="http://xmlenc.sourceforge.net/javadoc/{$xmlenc_version}/"
+				href="http://xmlenc.sourceforge.net/javadoc/${{xmlenc_version}}/"
 				offline="true"
 				packagelistloc="{$xins_home}/src/package-lists/xmlenc/" />
 				<classpath>
