@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
   - Added automatic detection of the WAR file in the HTTPServletStarter when
     not passed as paramter.
   - Added possibility to pass the ClassLoader mode to the HTTPServletStarter.
+  - Added new Ant task similar to the <xslt /> task with the option to never
+    overwrite the destination files.
 
 * XINS/Java Server Framework:
   - Fixed the way the xins.properties was loaded when no org.xins.server.config
