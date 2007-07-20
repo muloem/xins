@@ -341,7 +341,7 @@
 		</target>
 
 		<xsl:if test="$apiHasTypes">
-			<target name="-classes-types-{$api}" depends="-prepare-classes">
+			<target name="-classes-types-{$api}" depends="-load-properties-{$api}">
 				<xsl:variable name="typePackage">
 					<xsl:call-template name="package_for_type_classes">
 						<xsl:with-param name="project_node" select="$project_node" />
@@ -349,59 +349,9 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="typePackageAsDir" select="translate($typePackage, '.','/')" />
-				<xsl:variable name="javaDestDir"    select="concat($builddir, '/java-types/', $api)" />
-				<xsl:variable name="copiedTypesDir" select="concat($builddir, '/types/',      $api)" />
-
-				<xsl:if test="string-length($typeIncludesAll) &gt; 0">
-					<copy todir="{$copiedTypesDir}">
-						<fileset dir="{$project_home}/apis" includes="{$typeIncludesAll}" />
-						<chainedmapper>
-							<flattenmapper />
-							<mapper classname="org.xins.common.ant.HungarianMapper" classpath="{$xins_home}/build/xins-common.jar" />
-						</chainedmapper>
-					</copy>
-				</xsl:if>
-
-				<xmlvalidate file="{$api_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xslt
-				in="{$api_file}"
-				out="{$javaDestDir}/{$typePackageAsDir}/package.html"
-				style="{$xins_home}/src/xslt/java-types/api_to_packagehtml.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="api" expression="{$api}" />
-				</xslt>
-				<xmlvalidate warn="false">
-					<fileset dir="{$copiedTypesDir}" includes="*.typ"/>
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xslt
-				basedir="{$copiedTypesDir}"
-				destdir="{$javaDestDir}/{$typePackageAsDir}/"
-				style="{$xins_home}/src/xslt/java-types/type_to_java.xslt"
-				extension=".java"
-				reloadstylesheet="${{reload.stylesheet}}">
-					<xmlcatalog refid="all-dtds" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="package"      expression="{$typePackage}"  />
-					<param name="api"          expression="{$api}"          />
-				</xslt>
-
-				<mkdir dir="{$typeClassesDir}" />
-				<javac
-				srcdir="{$javaDestDir}"
-				destdir="{$typeClassesDir}"
-				debug="true"
-				deprecation="${{build.deprecation}}"
-				source="${{build.java.version}}"
-				target="${{build.java.version}}">
-					<classpath>
-						<pathelement path="{$xins_home}/build/logdoc.jar" />
-						<pathelement path="{$xins_home}/build/xins-common.jar" />
-					</classpath>
-				</javac>
+				<property name="typePackage" value="{$typePackage}" />
+				<property name="typePackageAsDir" value="{$typePackageAsDir}" />
+				<antcall target="-classes-types" />
 			</target>
 		</xsl:if>
 
@@ -433,71 +383,16 @@
 			<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
 			<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
 
-			<target name="-impl-{$api}{$implName2}-existencechecks">
-				<xsl:for-each select="$api_node/function">
-					<xsl:variable name="function"        select="@name" />
-					<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
-					<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
-					<available
-						property="exists-{$api}{$implName2}-{$classname}"
-						file="{$javaImplFile}"
-						type="file" />
-				</xsl:for-each>
-			</target>
-
-			<xsl:for-each select="$api_node/function">
-				<xsl:variable name="function"        select="@name" />
-				<xsl:variable name="classname"       select="concat(@name, 'Impl')" />
-				<xsl:variable name="javaImplFile"    select="concat($javaImplDir, '/', $packageAsDir, '/', $classname, '.java')" />
-				<target
-					name="-skeleton-impl-{$api}{$implName2}-{$function}"
-					depends="-impl-{$api}{$implName2}-existencechecks, -prepare-classes"
-					unless="exists-{$api}{$implName2}-{$classname}">
-					<xmlvalidate file="{$api_specsdir}/{$function}.fnc" warn="false">
-						<xmlcatalog refid="all-dtds" />
-					</xmlvalidate>
-					<xslt
-					in="{$api_specsdir}/{$function}.fnc"
-					out="{$javaImplFile}"
-					style="{$xins_home}/src/xslt/java-server-framework/function_to_impl_java.xslt">
-						<xmlcatalog refid="all-dtds" />
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$api_specsdir}" />
-						<param name="api"          expression="{$api}"          />
-						<param name="api_file"     expression="{$api_file}"     />
-						<param name="package"      expression="{$package}"      />
-					</xslt>
-				</target>
-			</xsl:for-each>
-
-			<target name="-skeletons-impl-{$api}{$implName2}">
-				<xsl:attribute name="depends">
-					<xsl:for-each select="$api_node/function">
-						<xsl:variable name="function" select="@name" />
-						<xsl:if test="position() &gt; 1">,</xsl:if>
-						<xsl:text>-skeleton-impl-</xsl:text>
-						<xsl:value-of select="$api" />
-						<xsl:value-of select="$implName2" />
-						<xsl:text>-</xsl:text>
-						<xsl:value-of select="$function" />
-					</xsl:for-each>
-				</xsl:attribute>
-			</target>
-
 			<target name="classes-api-{$api}{$implName2}" description="Compiles the Java classes for the '{$api}{$implName2}' API implementation">
 				<xsl:attribute name="depends">
-					<xsl:text>-prepare-classes,</xsl:text>
-					<xsl:if test="$apiHasTypes">
-						<xsl:text>-classes-types-</xsl:text>
-						<xsl:value-of select="$api" />
-						<xsl:text>,</xsl:text>
-					</xsl:if>
-					<xsl:text>-skeletons-impl-</xsl:text>
+					<xsl:text>-load-properties-</xsl:text>
 					<xsl:value-of select="$api" />
-					<xsl:value-of select="$implName2" />
+					<xsl:if test="$apiHasTypes">
+						<xsl:text>,-classes-types-</xsl:text>
+						<xsl:value-of select="$api" />
+					</xsl:if>
 				</xsl:attribute>
+				
 				<mkdir dir="{$javaDestDir}/{$packageAsDir}" />
 				<dependset>
 					<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
@@ -509,168 +404,22 @@
 						<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml" />
 					</xsl:if>
 				</dependset>
-				<xmlvalidate file="{$impl_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xmlvalidate file="{$api_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xslt
-				in="{$api_file}"
-				out="{$javaDestDir}/{$packageAsDir}/APIImpl.java"
-				style="{$xins_home}/src/xslt/java-server-framework/api_to_java.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}" />
-					<param name="project_home" expression="{$project_home}" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="api"          expression="{$api}"          />
-					<param name="impl_file"    expression="{$impl_file}"    />
-					<param name="package"      expression="{$package}"      />
-				</xslt>
-				<xslt
-				in="{$api_file}"
-				out="{$javaDestDir}/{$packageAsDir}/package.html"
-				style="{$xins_home}/src/xslt/java-server-framework/api_to_packagehtml.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="api" expression="{$api}" />
-				</xslt>
-				<xslt
-				in="{$impl_file}"
-				out="{$javaDestDir}/{$packageAsDir}/RuntimeProperties.java"
-				style="{$xins_home}/src/xslt/java-server-framework/impl_to_java.xslt">
-					<xmlcatalog refid="all-dtds" />
-					<param name="project_file" expression="{$project_file}" />
-					<param name="specsdir"     expression="{$api_specsdir}" />
-					<param name="package"      expression="{$package}"      />
-					<param name="api"          expression="{$api}"          />
-				</xslt>
-
-				<xmlvalidate warn="false">
-					<fileset dir="{$api_specsdir}" includes="{$functionIncludes}"/>
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
-				<xslt
-				basedir="{$api_specsdir}"
-				destdir="{$javaDestDir}/{$packageAsDir}"
-				style="{$xins_home}/src/xslt/java-server-framework/function_to_java.xslt"
-				extension=".java"
-				includes="{$functionIncludes}"
-				reloadstylesheet="${{reload.stylesheet}}">
-					<xmlcatalog refid="all-dtds" />
-					<param name="xins_version" expression="{$xins_version}"     />
-					<param name="project_home" expression="{$project_home}"     />
-					<param name="project_file" expression="{$project_file}"     />
-					<param name="specsdir"     expression="{$api_specsdir}"     />
-					<param name="package"      expression="{$package}"          />
-					<param name="api"          expression="{$api}"              />
-					<param name="api_file"     expression="{$api_file}"         />
-					<param name="impl_file"    expression="{$impl_file}"        />
-					<param name="generics"     expression="${{build.generics}}" />
-				</xslt>
-
-				<!-- Generation of the result code files. -->
-				<!-- If have added a resultcode-ref in your function the java file should be regenerated. -->
-				<xsl:if test="$api_node/resultcode">
-					<!-- An intermediate file containing all the functions/result codes is created for performance reasons. -->
-					<xslt
-					in="{$api_file}"
-					out="{$javaDestDir}/resultcodes.xml"
-					style="{$xins_home}/src/xslt/java-server-framework/api_to_resultcodes.xslt">
-						<xmlcatalog refid="all-dtds" />
-						<param name="specsdir"     expression="{$api_specsdir}" />
-					</xslt>
-				</xsl:if>
-				<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-					<xmlvalidate warn="false">
-						<fileset dir="{$api_specsdir}" includes="{$resultcodeIncludes}"/>
-						<xmlcatalog refid="all-dtds" />
-					</xmlvalidate>
-					<xslt
-					basedir="{$api_specsdir}"
-					destdir="{$javaDestDir}/{$packageAsDir}"
-					style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt"
-					extension="Result.java"
-					includes="{$resultcodeIncludes}"
-					reloadstylesheet="${{reload.stylesheet}}">
-						<xmlcatalog refid="all-dtds" />
-						<param name="xins_version" expression="{$xins_version}" />
-						<param name="project_home" expression="{$project_home}" />
-						<param name="project_file" expression="{$project_file}" />
-						<param name="specsdir"     expression="{$api_specsdir}" />
-						<param name="package"      expression="{$package}"      />
-						<param name="api"          expression="{$api}{$implName2}" />
-						<param name="api_file"     expression="{$api_file}"     />
-					</xslt>
-				</xsl:if>
-				<xsl:for-each select="$api_node/resultcode">
-					<xsl:if test="contains(@name, '/')">
-						<xsl:variable name="in_resultcode_file"
-						select="concat($project_home, '/apis/', substring-before(@name, '/'), '/spec/', substring-after(@name, '/'), '.rcd')" />
-						<xsl:variable name="out_java_file"
-						select="concat($javaDestDir, '/', $packageAsDir, '/', substring-after(@name, '/'), 'Result.java')" />
-						<xslt
-						in="{$in_resultcode_file}"
-						out="{$out_java_file}"
-						style="{$xins_home}/src/xslt/java-server-framework/resultcode_to_java.xslt">
-							<xmlcatalog refid="all-dtds" />
-							<param name="xins_version" expression="{$xins_version}" />
-							<param name="project_home" expression="{$project_home}" />
-							<param name="project_file" expression="{$project_file}" />
-							<param name="specsdir"     expression="{$api_specsdir}" />
-							<param name="package"      expression="{$package}"      />
-							<param name="api"          expression="{$api}{$implName2}" />
-							<param name="api_file"     expression="{$api_file}"     />
-						</xslt>
-					</xsl:if>
-				</xsl:for-each>
-
-				<!-- Generate the logdoc java file is needed -->
-				<xmlvalidate file="{$impl_file}" warn="false">
-					<xmlcatalog refid="all-dtds" />
-				</xmlvalidate>
 				<xsl:if test="$impl_node/logdoc">
-					<echo message="Generating the logdoc for {$api}{$implName2}" />
-					<mkdir dir="{$builddir}/logdoc/{$api}{$implName2}" />
-					<xmlvalidate file="{$impl_dir}/log.xml" warn="false">
-						<xmlcatalog refid="all-dtds" />
-					</xmlvalidate>
 					<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
-					<xslt
-					in="{$impl_dir}/log.xml"
-					out="{$builddir}/logdoc/{$api}{$implName2}/build.xml"
-					style="{$xins_home}/src/xslt/logdoc/log_to_build.xslt">
-						<xmlcatalog refid="all-dtds" />
-						<param name="xins_home"       expression="{$xins_home}" />
-						<param name="logdoc_xslt_dir" expression="{$xins_home}/src/xslt/logdoc" />
-						<param name="sourcedir"       expression="{$impl_dir}" />
-						<param name="html_destdir"    expression="{$builddir}/specdocs/{$api}/logdoc{$implName2}" />
-						<param name="java_destdir"    expression="{$javaDestFileDir}" />
-						<param name="package_name"    expression="{$package}" />
-					</xslt>
-					<ant antfile="{$builddir}/logdoc/{$api}{$implName2}/build.xml" target="java">
-						<property name="accesslevel" value="{$accesslevel}" />
-					</ant>
+					<property name="accesslevel" value="{$accesslevel}" />
+					<property name="logdoc_file" value="{$impl_dir}/log.xml" />
 				</xsl:if>
-
-				<!-- Compile all classes -->
-				<mkdir dir="{$classesDestDir}" />
-				<javac
-				destdir="{$classesDestDir}"
-				debug="true"
-				deprecation="${{build.deprecation}}"
-				source="${{build.java.version}}"
-				target="${{build.java.version}}">
-					<src path="{$javaDestDir}" />
-					<src path="{$javaImplDir}" />
-					<classpath>
-						<xsl:if test="$apiHasTypes">
-							<pathelement path="{$typeClassesDir}" />
-						</xsl:if>
-						<path refid="xins.classpath" />
-						<xsl:apply-templates select="$impl_node/dependency" />
-					</classpath>
-				</javac>
+				<path id="classes.api.classpath">
+					<xsl:if test="$apiHasTypes">
+						<pathelement path="{$typeClassesDir}" />
+					</xsl:if>
+					<path refid="xins.classpath" />
+					<xsl:apply-templates select="$impl_node/dependency" />
+				</path>
+				<antcall target="-classes-api">
+					<reference refid="classes.api.classpath" />
+					<param name="implName2" value="{$implName2}" />
+				</antcall>
 
 				<!-- Try to load the API specific .version.properties -->
 				<property prefix="api." file="{$api_specsdir}/../.version.properties" />
@@ -755,12 +504,13 @@
 						<dirset dir="{$builddir}/java-types/{$api}" />
 					</xsl:if>
 				</path>
-				<path id="javadoc.api.{$api}{$implName2}.classpath">
+				<path id="javadoc.api.classpath">
 					<path refid="xins.classpath" />
 					<xsl:apply-templates select="$impl_node/dependency" />
 				</path>
 				<antcall target="-javadoc-api">
 					<reference refid="javadoc.api.packageset" />
+					<reference refid="javadoc.api.classpath" />
 				</antcall>
 			</target>
 
