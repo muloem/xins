@@ -619,7 +619,6 @@
 		<xsl:if test="boolean(element-example)">
 			<text:line-break />
 			<text:s text:c="{$indent}" />
-			<xsl:value-of disable-output-escaping="yes" select="$indent" />
 		</xsl:if>
 
 		<xsl:if test="boolean(element-example) or (boolean($text) and not($text=''))">

@@ -33,6 +33,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
   - Fixed the description of the function, parameters and error was just the
     first sentence.
   - Fixed support for <em> element in descriptions.
+  - Fixed the "4" appearing before closing an element example.
 
 * Generated build file:
   - Added javadoc-test-<api name> to get the Javadoc of the unit tests.
