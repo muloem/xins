@@ -49,7 +49,7 @@
 			<import file="{$xins_home}/src/ant/build-create.xml" optional="true" />
 			<import file="{$xins_home}/src/ant/build-tools.xml" optional="true" />
 
-			<target name="-load-properties-xins">
+			<target name="-load-xins-properties">
 				<property name="xins_home" value="{$xins_home}" />
 				<property name="project_home" value="{$project_home}" />
 				<property name="builddir" value="{$builddir}" />
@@ -262,6 +262,9 @@
 			<xsl:if test="string-length($typeIncludes) &gt; 0">
 				<property name="typeIncludes" value="{$typeIncludes}" />
 			</xsl:if>
+			<xsl:if test="string-length($typeIncludesAll) &gt; 0">
+				<property name="typeIncludesAll" value="{$typeIncludesAll}" />
+			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
 				<property name="resultcodeIncludes" value="{$resultcodeIncludes}" />
 			</xsl:if>
@@ -356,9 +359,10 @@
 		</xsl:if>
 
 		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
-			<property name="wsdl.opendoc.target" value="-wsdl" />
-			<property name="dependset.destination" value="wsdl/{$api}.wsdl" />
-			<antcall target="opendoc-{$api}" />
+			<antcall target="opendoc-{$api}">
+				<param name="wsdl.opendoc.target" value="-wsdl" />
+				<param name="dependset.destination" value="wsdl/{$api}.wsdl" />
+			</antcall>
 		</target>
 
 		<target name="opendoc-{$api}" depends="-load-properties-{$api}" description="Generates the specification document for the '{$api}' API">
@@ -392,12 +396,12 @@
 						<xsl:value-of select="$api" />
 					</xsl:if>
 				</xsl:attribute>
-				
+
 				<mkdir dir="{$javaDestDir}/{$packageAsDir}" />
 				<dependset>
 					<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
 					<srcfileset dir="{$api_specsdir}">
-						<include name="{$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" />
+						<include name="${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
 					<xsl:if test="$api_node/resultcode">
@@ -616,7 +620,7 @@
 			destfile="{$builddir}/capis/{$api}-capi.jar"
 			manifest="{$builddir}/capis/{$api}-MANIFEST.MF">
 				<fileset dir="{$builddir}/classes-capi/{$api}" includes="**/*.class" />
-				<zipfileset dir="{$api_specsdir}" includes="api.xml {$functionIncludes} {$typeIncludes} {$resultcodeIncludes}" prefix="specs" />
+				<zipfileset dir="{$api_specsdir}" includes="api.xml ${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}}" prefix="specs" />
 				<xsl:for-each select="type">
 					<xsl:if test="contains(@name, '/')">
 						<xsl:variable name="type_dir"
@@ -659,7 +663,6 @@
 		<target name="client-{$api}"
 						depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}, wsdl-{$api}, opendoc-{$api}"
 						description="Generates the Javadoc API docs for the client side and the client JAR file for the '{$api}' API stubs and zip the result.">
-			<property name="api" value="{$api}" />
 			<antcall target="-client" />
 		</target>
 
