@@ -85,8 +85,8 @@ public class XsltPlusTask extends XSLTProcess {
     *    The destination directory.
     */
    public void setDestdir(File destDir) {
-      this.destDir = destDir;
       super.setDestdir(destDir);
+      this.destDir = destDir;
    }
 
    /**
@@ -116,6 +116,9 @@ public class XsltPlusTask extends XSLTProcess {
             }
          }
          super.setIncludes(newIncludes);
+         if (newIncludes.equals("")) {
+            return;
+         }
       } else {
          super.setIncludes(implicitIncludes);
       }

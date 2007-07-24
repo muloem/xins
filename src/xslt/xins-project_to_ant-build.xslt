@@ -45,7 +45,7 @@
 	<xsl:template match="project">
 		<project name="{//project/@name}" default="help" basedir="..">
 
-			<import file="{$xins_home}/src/ant/build-macros.xml" optional="false" />
+			<import file="{$xins_home}/src/ant/build-apis.xml" optional="false" />
 			<import file="{$xins_home}/src/ant/build-create.xml" optional="true" />
 			<import file="{$xins_home}/src/ant/build-tools.xml" optional="true" />
 
@@ -302,8 +302,6 @@
 		</target>
 
 		<target name="specdocs-{$api}" depends="-load-properties-{$api}, index-specdocs" description="Generates all specification docs for the '{$api}' API">
-			<property name="dependset.destination" value="specdocs/{$api}/index.html" />
-			<antcall target="-dependset-file-{$api}" />
 			<xsl:if test="environments">
 				<xsl:variable name="env_dir" select="concat($project_home, '/apis/', $api)" />
 				<dependset>
@@ -331,13 +329,11 @@
 				<xsl:if test="$impl_node/runtime-properties">
 					<antcall target="-specdocs-impl-runtime">
 						<param name="implName2" value="{$implName2}" />
-						<param name="impl_file" value="{$impl_file}" />
 					</antcall>
 				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
 					<antcall target="-specdocs-impl-logdoc">
 						<param name="implName2" value="{$implName2}" />
-						<param name="impl_dir" value="{$impl_dir}" />
 					</antcall>
 				</xsl:if>
 			</xsl:for-each>
@@ -361,14 +357,11 @@
 		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
 			<antcall target="opendoc-{$api}">
 				<param name="wsdl.opendoc.target" value="-wsdl" />
-				<param name="dependset.destination" value="wsdl/{$api}.wsdl" />
 			</antcall>
 		</target>
 
 		<target name="opendoc-{$api}" depends="-load-properties-{$api}" description="Generates the specification document for the '{$api}' API">
 			<property name="wsdl.opendoc.target" value="-opendoc" />
-			<property name="dependset.destination" value="opendoc/{$api}/content.xml" />
-			<antcall target="-dependset-file-{$api}" />
 			<antcall target="${{wsdl.opendoc.target}}" />
 		</target>
 
@@ -387,6 +380,14 @@
 			<xsl:variable name="impl_file"    select="concat($impl_dir, '/impl.xml')" />
 			<xsl:variable name="impl_node"    select="document($impl_file)/impl" />
 
+			<xsl:if test="$impl_node/dependency">
+				<target name="-load-dependencies-{$api}{$implName2}">
+					<path id="impl.dependencies">
+						<xsl:apply-templates select="$impl_node/dependency" />
+					</path>
+				</target>
+			</xsl:if>
+
 			<target name="classes-api-{$api}{$implName2}" description="Compiles the Java classes for the '{$api}{$implName2}' API implementation">
 				<xsl:attribute name="depends">
 					<xsl:text>-load-properties-</xsl:text>
@@ -394,6 +395,9 @@
 					<xsl:if test="$apiHasTypes">
 						<xsl:text>,-classes-types-</xsl:text>
 						<xsl:value-of select="$api" />
+					</xsl:if>
+					<xsl:if test="$impl_node/dependency">
+						<xsl:value-of select="concat(',-load-dependencies-', $api, $implName2)" />
 					</xsl:if>
 				</xsl:attribute>
 
@@ -418,21 +422,17 @@
 						<pathelement path="{$typeClassesDir}" />
 					</xsl:if>
 					<path refid="xins.classpath" />
-					<xsl:apply-templates select="$impl_node/dependency" />
+					<xsl:if test="$impl_node/dependency">
+						<path refid="impl.dependencies" />
+					</xsl:if>
 				</path>
 				<antcall target="-classes-api">
 					<reference refid="classes.api.classpath" />
 					<param name="implName2" value="{$implName2}" />
 				</antcall>
-
-				<!-- Try to load the API specific .version.properties -->
-				<property prefix="api." file="{$api_specsdir}/../.version.properties" />
-				<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
-					<isset property="api.version.major" />
-				</condition>
 			</target>
 
-			<target name="war-{$api}{$implName2}" depends="-load-properties-{$api}, classes-api-{$api}{$implName2}, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API" unless="no-war-{$api}">
+			<target name="war-{$api}{$implName2}" depends="-load-properties-{$api}, classes-api-{$api}{$implName2}, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API" unless="no-war-{$api}{$implName2}">
 				<property name="implName2" value="{$implName2}" />
 				<tstamp>
 					<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
@@ -447,13 +447,12 @@
 					<lib dir="{$xins_home}/build" includes="logdoc.jar xins-common.jar xins-server.jar xins-client.jar" />
 					<lib dir="{$xins_home}/lib"   includes="commons-codec.jar commons-httpclient.jar commons-logging.jar jakarta-oro.jar log4j.jar xmlenc.jar json.jar" />
 					<xsl:apply-templates select="$impl_node/dependency" mode="lib" />
-					<fileset dir="${{classes.api.dir}}" includes="**/*.class" />
+					<classes dir="${{classes.api.dir}}" includes="**/*.class" />
 					<xsl:if test="$apiHasTypes">
-						<fileset dir="{$typeClassesDir}" includes="**/*.class" />
+						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
-					<fileset dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
+					<classes dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
 					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class" /> 
-					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="javax/servlet/**/*" /> 
 					<xsl:apply-templates select="$impl_node/content" />
 					<zipfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}} {$categoryIncludes}" prefix="WEB-INF/specs" />
@@ -475,6 +474,7 @@
 							<zipfileset dir="{$resultcode_dir}" includes="{$resultcode_filename}" prefix="WEB-INF/specs" />
 						</xsl:if>
 					</xsl:for-each>
+					<zipgroupfileset dir="{$xins_home}/lib" includes="servlet.jar" />
 				</war>
 				<checksum file="{$builddir}/webapps/{$api}{$implName2}/{$api}{$implName2}.war" property="war.md5"/>
 				<echo message="MD5: ${{war.md5}}" />
@@ -508,13 +508,9 @@
 						<dirset dir="{$builddir}/java-types/{$api}" />
 					</xsl:if>
 				</path>
-				<path id="javadoc.api.classpath">
-					<path refid="xins.classpath" />
-					<xsl:apply-templates select="$impl_node/dependency" />
-				</path>
 				<antcall target="-javadoc-api">
 					<reference refid="javadoc.api.packageset" />
-					<reference refid="javadoc.api.classpath" />
+					<reference refid="classes.api.classpath"  />
 				</antcall>
 			</target>
 
@@ -539,15 +535,21 @@
 			<xsl:variable name="packageTestsAsDir" select="translate($packageTests, '.','/')" />
 
 			<target name="test-{$api}" depends="-load-properties-{$api}" description="Generates (if needed) and run the tests for the {$api} API.">
+				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
+				<xsl:if test="$impl_node/dependency">
+					<xsl:attribute name="depends">
+						<xsl:value-of select="concat('-load-dependencies-', $api)" />
+					</xsl:attribute>
+				</xsl:if>
 				<property name="packageTests" value="{$packageTests}" />
 				<path id="test.classpath">
 					<pathelement path="{$builddir}/capis/{$api}-capi.jar" />
 					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$builddir}/classes-types/{$api}" />
 					</xsl:if>
-					<xsl:if test="impl">
-						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-						<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+					<xsl:if test="$impl_node/dependency">
+						<path refid="impl.dependencies" />
 					</xsl:if>
 				</path>
 				<antcall target="-test">
@@ -562,46 +564,38 @@
 			</target>
 
 			<target name="javadoc-test-{$api}" description="Generates the Javadoc of the unit tests of the {$api} API.">
+				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
+				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
+				<xsl:if test="$impl_node/dependency">
+					<xsl:attribute name="depends">
+						<xsl:value-of select="concat('-load-dependencies-', $api)" />
+					</xsl:attribute>
+				</xsl:if>
 				<property name="api" value="{$api}" />
 				<path id="javadoc.test.classpath">
 					<pathelement path="{$builddir}/classes-tests/{$api}" />
 					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$builddir}/classes-types/{$api}" />
 					</xsl:if>
-					<xsl:if test="impl">
-						<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
-						<xsl:apply-templates select="document($impl_file)/impl/dependency" />
+					<xsl:if test="$impl_node/dependency">
+						<path refid="impl.dependencies" />
 					</xsl:if>
 				</path>
 				<antcall target="-javadoc-test" inheritRefs="true" />
 			</target>
 		</xsl:if>
 
-		<target name="-stubs-capi-{$api}" depends="-load-properties-{$api}" >
-			<property name="dependset.destination" value="java-capi/{$api}/{$clientPackageAsDir}/CAPI.java" />
-			<antcall target="-dependset-file-{$api}" />
-			<antcall target="-stubs-capi" />
-
-			<!-- Try to load the API specific .version.properties -->
-			<property prefix="api." file="{$api_specsdir}/../.version.properties" />
-			<condition property="api.version" value="${{api.version.major}}.${{api.version.minor}}">
-				<isset property="api.version.major" />
-			</condition>
-		</target>
-
 		<target name="jar-{$api}" description="Generates and compiles the Java classes for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
 				<xsl:text>-load-properties-</xsl:text>
 				<xsl:value-of select="$api" />
-				<xsl:text>,</xsl:text>
 				<xsl:if test="$apiHasTypes">
+					<xsl:text>,</xsl:text>
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
-					<xsl:text>,</xsl:text>
 				</xsl:if>
-				<xsl:text>-stubs-capi-</xsl:text>
-				<xsl:value-of select="$api" />
 			</xsl:attribute>
+			<antcall target="-stubs-capi" />
 			<path id="jar.classpath">
 				<path refid="xins.classpath" />
 				<xsl:if test="$apiHasTypes">
@@ -645,19 +639,23 @@
 
 		<target name="javadoc-capi-{$api}" description="Generates Javadoc API docs for the client-side '{$api}' API stubs">
 			<xsl:attribute name="depends">
+				<xsl:text>-load-properties-</xsl:text>
+				<xsl:value-of select="$api" />
 				<xsl:if test="$apiHasTypes">
-					<xsl:value-of select="concat('-classes-types-', $api, ',')" />
+					<xsl:value-of select="concat(', -classes-types-', $api)" />
 				</xsl:if>
-				<xsl:value-of select="concat('-stubs-capi-', $api)" />
 			</xsl:attribute>
-			<property name="api" value="{$api}" />
-			<path id="javadoc.capi.{$api}.packages">
+			<antcall target="-stubs-capi" />
+			<path id="javadoc.capi.packages">
 				<dirset dir="{$builddir}/java-capi/{$api}" />
 				<xsl:if test="$apiHasTypes">
 					<dirset dir="{$builddir}/java-types/{$api}" />
 				</xsl:if>
 			</path>
-			<antcall target="-javadoc-capi" inheritRefs="true" />
+			<antcall target="-javadoc-capi">
+				<reference refid="javadoc.capi.packages" />
+				<reference refid="xins.classpath" />
+			</antcall>
 		</target>
 
 		<target name="client-{$api}"

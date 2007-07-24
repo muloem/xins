@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="xins-macros" basedir=".">
+<project name="xins-apis" basedir=".">
 
 	<target name="-load-properties" depends="-load-xins-properties">
 		<property file="${project_home}/build.properties" />
@@ -282,6 +282,14 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-load-version" depends="-load-properties">
+
+		<!-- Try to load the API specific .version.properties -->
+		<property prefix="api." file="${project_home}/apis/${api}/.version.properties" />
+		<condition property="api.version" value="${api.version.major}.${api.version.minor}">
+			<isset property="api.version.major" />
+		</condition>
+
+		<!-- Load from the generic .version.properties -->
 		<property prefix="api." file="${project_home}/.version.properties" />
 		<condition property="api.version" value="${api.version.major}.${api.version.minor}">
 			<isset property="api.version.major" />
@@ -352,7 +360,7 @@ ${apis.list}]]></echo>
 	<target name="-javadoc-capi" depends="-prepare-classes">
 		<mkdir dir="${builddir}/javadoc-capi/${api}" />
 		<javadoc
-		sourcepathref="javadoc.capi.${api}.packages"
+		sourcepathref="javadoc.capi.packages"
 		packagenames="*"
 		destdir="${builddir}/javadoc-capi/${api}"
 		version="yes"
@@ -453,6 +461,8 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-opendoc">
+		<property name="dependset.destination" value="opendoc/${api}/content.xml" />
+		<antcall target="-dependset-file-${api}" />
 		<mkdir dir="${builddir}/opendoc/${api}" />
 		<xslt
 		in="${api_specsdir}/api.xml"
@@ -517,7 +527,7 @@ ${apis.list}]]></echo>
 			href="http://xmlenc.sourceforge.net/javadoc/${xmlenc_version}/"
 			offline="true"
 			packagelistloc="${xins_home}/src/package-lists/xmlenc/" />
-			<classpath refid="javadoc.api.classpath" />
+			<classpath refid="classes.api.classpath" />
 		</javadoc>
 		<copy
 		file="${xins_home}/src/css/javadoc/style.css"
@@ -526,6 +536,8 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-wsdl" depends="-load-dtds">
+		<property name="dependset.destination" value="wsdl/${api}.wsdl" />
+		<antcall target="-dependset-file-${api}" />
 		<property name="wsdl.endpoint" value="" />
 		<mkdir dir="${builddir}/wsdl" />
 		<tstamp>
@@ -624,9 +636,6 @@ ${apis.list}]]></echo>
 				<include name="org/xins/common/servlet/container/HTTPServletStarter*.class" />
 				<include name="org/xins/common/servlet/container/ServletClassLoader*.class" />
 			</patternset>
-		</unjar>
-		<unjar dest="${builddir}/webapps/${api}${implName2}"
-		src="${xins_home}/lib/servlet.jar">
 		</unjar>
 	</target>
 
@@ -737,6 +746,8 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-stubs-capi">
+		<property name="dependset.destination" value="java-capi/${api}/${clientPackageAsDir}/CAPI.java" />
+		<antcall target="-dependset-file-${api}" />
 		<xmlvalidate file="${api_file}" warn="false">
 			<xmlcatalog refid="all-dtds" />
 		</xmlvalidate>
@@ -822,6 +833,8 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-specdocs">
+		<property name="dependset.destination" value="specdocs/${api}/index.html" />
+		<antcall target="-dependset-file-${api}" />
 		<dependset>
 			<srcfilelist dir="${api_specsdir}" files="api.xml" />
 			<targetfileset dir="${builddir}/specdocs/${api}" includes="*.html" />
@@ -954,6 +967,7 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-specdocs-impl-runtime">
+		<property name="impl_file" value="${project_home}/apis/${api}/impl${implName2}/impl.xml" />
 		<xmlvalidate file="${impl_file}" warn="false">
 			<xmlcatalog refid="all-dtds" />
 		</xmlvalidate>
@@ -971,6 +985,7 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-specdocs-impl-logdoc">
+		<property name="impl_dir" value="${project_home}/apis/${api}/impl${implName2}" />
 		<property name="javaDestFileDir" value="${builddir}/java-fundament/${api}${implName2}/${packageAsDir}" />
 		<echo message="Generating the logdoc for ${api}${implName2}" />
 		<mkdir dir="${builddir}/logdoc/${api}${implName2}" />
@@ -1190,7 +1205,7 @@ ${apis.list}]]></echo>
 		</xslt>
 	</target>
 
-	<target name="-classes-api-logdoc" if="lodoc_file">
+	<target name="-classes-api-logdoc" if="logdoc_file">
 		<echo message="Generating the logdoc for ${api}${implName2}" />
 		<mkdir dir="${builddir}/logdoc/${api}${implName2}" />
 		<xmlvalidate file="${impl_dir}/log.xml" warn="false">
