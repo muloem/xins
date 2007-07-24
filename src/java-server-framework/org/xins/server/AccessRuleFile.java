@@ -205,6 +205,9 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention to match, can be <code>null</code>.
+    *
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
@@ -216,7 +219,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address is malformed.
     */
-   public Boolean isAllowed(String ip, String functionName)
+   public Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalArgumentException, ParseException {
 
       // Check state
@@ -234,7 +237,7 @@ public class AccessRuleFile implements AccessRuleContainer {
       int count = _rules == null ? 0 : _rules.length;
       Boolean allowed = null;
       for (int i = 0; i < count && allowed == null; i++) {
-         allowed = _rules[i].isAllowed(ip, functionName);
+         allowed = _rules[i].isAllowed(ip, functionName, conventionName);
       }
 
       return allowed;

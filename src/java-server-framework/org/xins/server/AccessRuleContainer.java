@@ -33,6 +33,9 @@ public interface AccessRuleContainer {
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention, can be <code>null</code>.
+    *
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
@@ -44,7 +47,7 @@ public interface AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address is malformed.
     */
-   Boolean isAllowed(String ip, String functionName)
+   Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalArgumentException, ParseException;
 
    /**

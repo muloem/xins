@@ -73,6 +73,11 @@ public final class AccessRule implements AccessRuleContainer {
    private final Perl5Pattern _functionNameRegex;
 
    /**
+    * The calling convention name pattern. Cannot be <code>null</code>.
+    */
+   private final Perl5Pattern _conventionNameRegex;
+
+   /**
     * String representation of this object. Cannot be <code>null</code>.
     */
    private final String _asString;
@@ -101,26 +106,33 @@ public final class AccessRule implements AccessRuleContainer {
     *    regular expression used for matching (or not) a function name; cannot
     *    be <code>null</code>.
     *
+    * @param conventionNameRegex
+    *    regular expression used for matching (or not) a calling convention name; cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>ipFilter          == null
     *          || functionNameRegex == null
+    *          || conventionNameRegex == null
     *          || asString          == null</code>.
     */
    private AccessRule(boolean      allow,
                       IPFilter     ipFilter,
                       Perl5Pattern functionNameRegex,
+                      Perl5Pattern conventionNameRegex,
                       String       asString)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("ipFilter",          ipFilter,
                                      "functionNameRegex", functionNameRegex,
+                                     "conventionNameRegex", conventionNameRegex,
                                      "asString",          asString);
 
       // Store the data
       _allow             = allow;
       _ipFilter          = ipFilter;
       _functionNameRegex = functionNameRegex;
+      _conventionNameRegex = conventionNameRegex;
       _asString          = asString;
    }
 
@@ -167,15 +179,23 @@ public final class AccessRule implements AccessRuleContainer {
       String   sFilter = nextToken(descriptor, tokenizer);
       IPFilter filter  = IPFilter.parseIPFilter(sFilter);
 
-      // Determine the function the access is to be checked for
-      String              sPattern = nextToken(descriptor, tokenizer);
       SimplePatternParser parser   = new SimplePatternParser();
-      Perl5Pattern        pattern  = parser.parseSimplePattern(sPattern);
+      // Determine the function the access is to be checked for
+      String functionPatternString = nextToken(descriptor, tokenizer);
+      Perl5Pattern functionPattern = parser.parseSimplePattern(functionPatternString);
+
+      // Determine the function the access is to be checked for
+      String conventionPatternString = "*";
+      if (tokenizer.hasMoreTokens()) {
+         conventionPatternString = tokenizer.nextToken();
+      }
+      Perl5Pattern conventionPattern = parser.parseSimplePattern(conventionPatternString);
 
       // Construct a description
-      String asString = sAllow + ' ' + filter.toString() + ' ' + sPattern;
+      String asString = sAllow + ' ' + filter.toString() + ' ' + 
+            functionPatternString + ' ' + conventionPatternString;
 
-      return new AccessRule(allow, filter, pattern, asString);
+      return new AccessRule(allow, filter, functionPattern, conventionPattern, asString);
    }
 
    /**
@@ -248,6 +268,9 @@ public final class AccessRule implements AccessRuleContainer {
     * @param functionName
     *    the name of the function to match, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention to match, can be <code>null</code>.
+    *
     * @return
     *    <code>true</code> if this rule matches, <code>false</code> otherwise.
     *
@@ -260,7 +283,7 @@ public final class AccessRule implements AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address cannot be parsed.
     */
-   public boolean match(String ip, String functionName)
+   public boolean match(String ip, String functionName, String conventionName)
    throws IllegalStateException, IllegalArgumentException, ParseException {
 
       // Check state
@@ -271,7 +294,7 @@ public final class AccessRule implements AccessRuleContainer {
       }
 
       // Delegate to the isAllowed method
-      return isAllowed(ip, functionName) != null;
+      return isAllowed(ip, functionName, conventionName) != null;
    }
 
    /**
@@ -290,6 +313,9 @@ public final class AccessRule implements AccessRuleContainer {
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention, can be <code>null</code>.
+    *
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
@@ -304,7 +330,7 @@ public final class AccessRule implements AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address is malformed.
     */
-   public Boolean isAllowed(String ip, String functionName)
+   public Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalStateException, IllegalArgumentException, ParseException {
 
       // Check state
@@ -322,7 +348,8 @@ public final class AccessRule implements AccessRuleContainer {
       if (_ipFilter.match(ip)) {
 
          // Then check if the function name matches
-         if (patternMatcher.matches(functionName, _functionNameRegex)) {
+         if (patternMatcher.matches(functionName, _functionNameRegex) && 
+               (conventionName == null || patternMatcher.matches(conventionName, _conventionNameRegex))) {
             return _allow ? Boolean.TRUE : Boolean.FALSE;
          }
       }

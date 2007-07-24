@@ -928,6 +928,9 @@ public abstract class API extends Manageable {
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention, can be <code>null</code>.
+    *
     * @return
     *    <code>true</code> if the request is allowed, <code>false</code> if
     *    the request is denied.
@@ -935,7 +938,7 @@ public abstract class API extends Manageable {
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
     */
-   public boolean allow(String ip, String functionName)
+   public boolean allow(String ip, String functionName, String conventionName)
    throws IllegalArgumentException {
 
       // If no property is defined only localhost is allowed
@@ -950,15 +953,15 @@ public abstract class API extends Manageable {
       try {
 
          // First check with the API specific one, then use the generic one.
-         allowed = _apiAccessRuleList.isAllowed(ip, functionName);
+         allowed = _apiAccessRuleList.isAllowed(ip, functionName, conventionName);
          if (allowed == null) {
-            allowed = _accessRuleList.isAllowed(ip, functionName);
+            allowed = _accessRuleList.isAllowed(ip, functionName, conventionName);
          }
 
       // If the IP address cannot be parsed there is a programming error
       // somewhere
       } catch (ParseException exception) {
-         String detail        = "Malformed IP address: \"" + ip + "\".";
+         String detail = "Malformed IP address: \"" + ip + "\".";
          throw Utils.logProgrammingError(detail, exception);
       }
 
@@ -968,7 +971,7 @@ public abstract class API extends Manageable {
       }
 
       // No matching access rule match, do not allow
-      Log.log_3553(ip, functionName);
+      Log.log_3553(ip, functionName, conventionName);
       return false;
    }
 
@@ -1005,7 +1008,8 @@ public abstract class API extends Manageable {
     */
    final FunctionResult handleCall(long               start,
                                    FunctionRequest    functionRequest,
-                                   String             ip)
+                                   String             ip,
+                                   CallingConvention  cc)
    throws IllegalStateException,
           NullPointerException,
           NoSuchFunctionException,
@@ -1018,9 +1022,9 @@ public abstract class API extends Manageable {
       String functionName = functionRequest.getFunctionName();
 
       // Check the access rule list
-      boolean allow = allow(ip, functionName);
+      boolean allow = allow(ip, functionName, cc.getConventionName());
       if (! allow) {
-         throw new AccessDeniedException(ip, functionName);
+         throw new AccessDeniedException(ip, functionName, cc.getConventionName());
       }
 
       // Handle meta-functions

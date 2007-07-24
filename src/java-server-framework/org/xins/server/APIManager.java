@@ -233,7 +233,7 @@ public final class APIManager implements APIManagerMBean {
    public void noOp() throws IOException, NoSuchFunctionException, AccessDeniedException {
       FunctionRequest noOpRequest = new FunctionRequest("_NoOp",
             PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
-      _api.handleCall(System.currentTimeMillis(), noOpRequest, _ip);
+      _api.handleCall(System.currentTimeMillis(), noOpRequest, _ip, null);
    }
 
    /**
@@ -251,7 +251,7 @@ public final class APIManager implements APIManagerMBean {
    public void reloadProperties() throws IOException, NoSuchFunctionException, AccessDeniedException {
       FunctionRequest reloadPropertiesRequest = new FunctionRequest("_ReloadProperties",
             PropertyReaderUtils.EMPTY_PROPERTY_READER, null);
-      _api.handleCall(System.currentTimeMillis(), reloadPropertiesRequest, _ip);
+      _api.handleCall(System.currentTimeMillis(), reloadPropertiesRequest, _ip, null);
    }
 
    /**

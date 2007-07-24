@@ -29,6 +29,12 @@ public final class AccessDeniedException extends Exception {
    private final String _functionName;
 
    /**
+    * The name of the calling convention which does not grant the access.
+    * This field may be <code>null</code>.
+    */
+   private final String _conventionName;
+
+   /**
     * Constructs a new <code>AccessDeniedException</code> for the specified
     * IP address and function name.
     *
@@ -37,11 +43,15 @@ public final class AccessDeniedException extends Exception {
     *
     * @param functionName
     *    the name of the function, or <code>null</code>.
+    *
+    * @param conventionName
+    *    the name of the calling convention, can be <code>null</code>.
     */
-   AccessDeniedException(String ip, String functionName) {
-      super(createMessage(ip, functionName));
+   AccessDeniedException(String ip, String functionName, String conventionName) {
+      super(createMessage(ip, functionName, conventionName));
       _ip = ip;
       _functionName = functionName;
+      _conventionName = conventionName;
    }
 
    /**
@@ -57,24 +67,33 @@ public final class AccessDeniedException extends Exception {
     *    the error message to be used by the constructor, never
     *    <code>null</code>.
     */
-   private static String createMessage(String ip, String functionName) {
+   private static String createMessage(String ip, String functionName, 
+         String conventionName) {
+
+      String message = null;
 
       // Function name and IP address given
       if (functionName != null && ip != null) {
-         return "The function \"" + functionName + "\" cannot be accessed from IP address " + ip + ".";
+         message = "The function \"" + functionName + "\" cannot be accessed from IP address " + ip;
 
       // Only IP address given
       } else if (ip != null) {
-         return "An unspecified function cannot be accessed from IP address " + ip + ".";
+         message = "An unspecified function cannot be accessed from IP address " + ip;
 
       // Only function name given
       } else if (functionName != null) {
-         return "The function \"" + functionName + "\" cannot be accessed.";
+         message = "The function \"" + functionName + "\" cannot be accessed";
 
       // Neither function name nor IP address given
       } else {
-         return "An unspecified function cannot be accessed.";
+         message = "An unspecified function cannot be accessed";
       }
+      if (conventionName == null || conventionName.equals("*")) {
+         message += ".";
+      } else {
+         message += " using the calling convention " + conventionName + ".";
+      }
+      return message;
    }
 
    /**
@@ -96,5 +115,18 @@ public final class AccessDeniedException extends Exception {
     */
    public String getFunctionName() {
       return _functionName;
+   }
+
+   /**
+    * Gets the name of the calling convention which does not grant the access.
+    *
+    * @return
+    *    the name of the calling convention, or <code>null</code> 
+    *    if no calling convention name was provided.
+    *
+    * @since XINS 2.1
+    */
+   public String getConventionName() {
+      return _conventionName;
    }
 }

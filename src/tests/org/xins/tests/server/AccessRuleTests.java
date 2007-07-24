@@ -130,15 +130,15 @@ public class AccessRuleTests extends TestCase {
       assertNotNull(rule);
       assertEquals(allow, rule.isAllowRule());
       String function = "_GetVersion";
-      if (! rule.match(ip, function)) {
+      if (! rule.match(ip, function, null)) {
          fail("AccessRule(" + rule + ") should match(\"" + ip + "\", \"" + function + "\").");
       }
       function = "GetVersion";
-      if (rule.match(ip, function)) {
+      if (rule.match(ip, function, null)) {
          fail("AccessRule(" + rule + ") should not match(\"" + ip + "\", \"" + function + "\").");
       }
 
-      String asString = (allow ? "allow" : "deny") + ' ' + ip + '/' + mask + ' ' + pattern;
+      String asString = (allow ? "allow" : "deny") + ' ' + ip + '/' + mask + ' ' + pattern + " *";
       assertEquals(asString, rule.toString());
 
       IPFilter ipFilter = rule.getIPFilter();

@@ -209,6 +209,9 @@ public final class AccessRuleList implements AccessRuleContainer {
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention to match, can be <code>null</code>.
+    *
     * @return
     *    {@link Boolean#TRUE} if the specified IP address is allowed to access
     *    the specified function, {@link Boolean#FALSE} if it is disallowed
@@ -223,7 +226,7 @@ public final class AccessRuleList implements AccessRuleContainer {
     * @throws ParseException
     *    if the specified IP address is malformed.
     */
-   public Boolean isAllowed(String ip, String functionName)
+   public Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalStateException, IllegalArgumentException, ParseException {
 
       // Check state
@@ -242,7 +245,7 @@ public final class AccessRuleList implements AccessRuleContainer {
 
          String ruleString = rule.toString();
 
-         Boolean allowed = rule.isAllowed(ip, functionName);
+         Boolean allowed = rule.isAllowed(ip, functionName, conventionName);
          if (allowed != null) {
 
             // Choose between 'allow' and 'deny'
@@ -251,9 +254,9 @@ public final class AccessRuleList implements AccessRuleContainer {
             // Log this match
             // XXX: Should this logging really be done in this class?
             if (allow) {
-               Log.log_3550(ip, functionName, i, ruleString);
+               Log.log_3550(ip, functionName, conventionName, i, ruleString);
             } else {
-               Log.log_3551(ip, functionName, i, ruleString);
+               Log.log_3551(ip, functionName, conventionName, i, ruleString);
             }
 
             return allowed;

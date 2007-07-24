@@ -20,6 +20,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
 * XINS/Java Server Framework:
   - Fixed the way the xins.properties was loaded when no org.xins.server.config
     is set was incorrect.
+  - Implement RFE #1624142: ACLs for calling conventions.
+    /!\ The allow methods have a new argument (that can be null).
 
 * Generation of the opendoc:
   - Added colors to the examples.

@@ -310,6 +310,7 @@ class CallingConventionManager extends Manageable {
       // Constructed successfully
       if (cc != null) {
          cc.setAPI(_api);
+         cc.setConventionName(name);
       }
 
       return cc;
@@ -403,7 +404,8 @@ class CallingConventionManager extends Manageable {
          // Invoke it
          Object[] args = { _api };
          try {
-            return (CallingConvention) con.newInstance(args);
+            CallingConvention cc = (CallingConvention) con.newInstance(args);
+            return cc;
 
          // If the constructor exists but failed, then construction failed
          } catch (Throwable exception) {

@@ -846,7 +846,7 @@ final class Engine {
       // Call the function
       FunctionResult result;
       try {
-         result = _api.handleCall(start, xinsRequest, request.getRemoteAddr());
+         result = _api.handleCall(start, xinsRequest, request.getRemoteAddr(), cc);
 
       // The only expected exceptions are NoSuchFunctionException and
       // AccessDeniedException. Other exceptions are considered to indicate

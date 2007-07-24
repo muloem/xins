@@ -1063,7 +1063,7 @@ ${apis.list}]]></echo>
 		</javac>
 	</target>
 
-	<target name="-classes-api" depends="-prepare-classes">
+	<target name="-classes-api" depends="-prepare-classes, -load-dtds">
 		<property name="javaImplDir" value="${project_home}/apis/${api}/impl${implName2}" />
 		<property name="javaDestDir" value="${builddir}/java-fundament/${api}${implName2}" />
 		<property name="classesDestDir" value="${builddir}/classes-api/${api}${implName2}" />
