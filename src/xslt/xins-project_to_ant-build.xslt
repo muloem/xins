@@ -481,14 +481,22 @@
 				<echo message="Build time: ${{timestamp}}" />
 			</target>
 
-			<target name="run-{$api}{$implName2}" depends="war-{$api}{$implName2}" description="Runs the '{$api}{$implName2}' API">
-				<!-- XXX probably done by war- -->
+			<target name="run-{$api}{$implName2}" description="Runs the '{$api}{$implName2}' API">
+				<xsl:attribute name="depends">
+					<xsl:if test="$impl_node/dependency">
+						<xsl:value-of select="concat('-load-dependencies-', $api, $implName2, ',')" />
+					</xsl:if>
+					<xsl:value-of select="concat('war-', $api, $implName2)" />
+				</xsl:attribute>
 				<property name="api" value="{$api}" />
 				<property name="implName2" value="{$implName2}" />
 				<path id="run.classpath">
 					<path location="{$builddir}/classes-api/{$api}{$implName2}" />
 					<xsl:if test="$apiHasTypes">
 						<path location="{$builddir}/classes-types/{$api}" />
+					</xsl:if>
+					<xsl:if test="$impl_node/dependency">
+						<path refid="impl.dependencies" />
 					</xsl:if>
 				</path>
 				<antcall target="-run">
@@ -534,14 +542,15 @@
 			</xsl:variable>
 			<xsl:variable name="packageTestsAsDir" select="translate($packageTests, '.','/')" />
 
-			<target name="test-{$api}" depends="-load-properties-{$api}" description="Generates (if needed) and run the tests for the {$api} API.">
+			<target name="test-{$api}" description="Generates (if needed) and run the tests for the {$api} API.">
 				<xsl:variable name="impl_file" select="concat($project_home, '/apis/', $api, '/impl/impl.xml')" />
 				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
-				<xsl:if test="$impl_node/dependency">
-					<xsl:attribute name="depends">
-						<xsl:value-of select="concat('-load-dependencies-', $api)" />
-					</xsl:attribute>
-				</xsl:if>
+				<xsl:attribute name="depends">
+					<xsl:value-of select="concat('-load-properties-', $api)" />
+					<xsl:if test="$impl_node/dependency">
+						<xsl:value-of select="concat(',-load-dependencies-', $api)" />
+					</xsl:if>
+				</xsl:attribute>
 				<property name="packageTests" value="{$packageTests}" />
 				<path id="test.classpath">
 					<pathelement path="{$builddir}/capis/{$api}-capi.jar" />

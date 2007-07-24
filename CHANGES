@@ -41,9 +41,12 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
   - Replaced create-project.xslt and tools.xslt with build-create.xml and
     build-tools.xml as most of the code doesn't need to be dynamically
     generated.
-  - Added build-macros.xml which contains static content of the old generated
+  - Added build-apis.xml which contains static content of the old generated
     build.xml. This result in the reduction of the size of the generated
     build.xml.
+  - Several bug fixes and optimalization during the refactoring.
+  - The dependency libraries have been added to the classpath for the run and
+    test targets.
 
 * Documentation:
   - Changed <style /> in <xslt /> in the xins-docs/build.xml.
@@ -3625,6 +3628,7 @@ NOTE: This release is based on XINS 1.1.0-rc1.
   - Changed access level of the setUnsuccessfulXINSCallExceptionFactory and
     getUnsuccessfulXINSCallExceptionFactory methods in class XINSCallRequest
     from public to package-private.
+
   - Added methods to the AbstractCAPI class:
     . public final XINSCallConfig configuration()
     . public final void configure(XINSCallConfig)
