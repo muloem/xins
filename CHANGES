@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
     is set was incorrect.
   - Implement RFE #1624142: ACLs for calling conventions.
     /!\ The allow methods have a new argument (that can be null).
+  - Added getName and setName methods in the calling convention classes.
 
 * Generation of the opendoc:
   - Added colors to the examples.
