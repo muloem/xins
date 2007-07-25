@@ -603,8 +603,8 @@
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:if>
+				<xsl:text>,-stubs-capi</xsl:text>
 			</xsl:attribute>
-			<antcall target="-stubs-capi" />
 			<path id="jar.classpath">
 				<path refid="xins.classpath" />
 				<xsl:if test="$apiHasTypes">
@@ -653,8 +653,8 @@
 				<xsl:if test="$apiHasTypes">
 					<xsl:value-of select="concat(', -classes-types-', $api)" />
 				</xsl:if>
+				<xsl:text>,-stubs-capi</xsl:text>
 			</xsl:attribute>
-			<antcall target="-stubs-capi" />
 			<path id="javadoc.capi.packages">
 				<dirset dir="{$builddir}/java-capi/{$api}" />
 				<xsl:if test="$apiHasTypes">
