@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="xins-apis" basedir=".">
 
-	<target name="-load-properties" depends="-load-xins-properties">
+	<target name="-load-properties" depends="-load-xins-properties,-load-dtds">
 		<property file="${project_home}/build.properties" />
 		<property name="project_file"	value="${project_home}/xins-project.xml" />
 		<property name="xmlenc_version"	value="0.52" />
@@ -263,7 +263,7 @@ ${apis.list}]]></echo>
 		</xmlcatalog>
 	</target>
 
-	<target name="index-specdocs" depends="-load-properties, -load-dtds" description="Generates the API index">
+	<target name="index-specdocs" depends="-load-properties" description="Generates the API index">
 		<mkdir dir="${builddir}/specdocs" />
 		<xmlvalidate file="${project_file}" warn="false">
 			<xmlcatalog refid="all-dtds" />
@@ -640,9 +640,13 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-test" depends="-prepare-classes">
-		<antcall target="jar-${api}" />
+		<antcall target="jar-${api}">
+			<reference refid="all-dtds" />
+		</antcall>
 		<available property="test.generated" file="apis/${api}/test" type="dir" />
-		<antcall target="generatetests-${api}" />
+		<antcall target="generatetests-${api}">
+			<reference refid="all-dtds" />
+		</antcall>
 		<property name="test.environment" value="" />
 		<property name="test.start.server" value="false" />
 		<property name="org.xins.server.config" value="" />
@@ -666,7 +670,9 @@ ${apis.list}]]></echo>
 		<condition property="no-war-${api}">
 			<isfalse value="${test.start.server}" />
 		</condition>
-		<antcall target="war-${api}" />
+		<antcall target="war-${api}">
+			<reference refid="all-dtds" />
+		</antcall>
 		<mkdir dir="${builddir}/testresults/xml" />
 		<junit fork="true" showoutput="true" dir="${project_home}" printsummary="true" failureproperty="tests.failed">
 			<sysproperty key="user.dir" value="${project_home}" />
@@ -804,7 +810,9 @@ ${apis.list}]]></echo>
 			<param name="package"      expression="${clientPackage}" />
 			<param name="api"          expression="${api}"           />
 		</xslt>
-		<antcall target="-stubs-capi-resultcodes" />
+		<antcall target="-stubs-capi-resultcodes">
+			<reference refid="all-dtds" />
+		</antcall>
 	</target>
 
 	<target name="-stubs-capi-resultcodes" if="resultcodeIncludesAll">
@@ -874,9 +882,15 @@ ${apis.list}]]></echo>
 			<param name="api"          expression="${api}"          />
 			<param name="api_file"     expression="${api_file}"     />
 		</xslt>
-		<antcall target="-specdocs-type" />
-		<antcall target="-specdocs-resultcode" />
-		<antcall target="-specdocs-category" />
+		<antcall target="-specdocs-type">
+			<reference refid="all-dtds" />
+		</antcall>
+		<antcall target="-specdocs-resultcode">
+			<reference refid="all-dtds" />
+		</antcall>
+		<antcall target="-specdocs-category">
+			<reference refid="all-dtds" />
+		</antcall>
 		<xslt
 		basedir="${api_specsdir}"
 		destdir="${builddir}/specdocs/${api}"
@@ -1150,8 +1164,12 @@ ${apis.list}]]></echo>
 			<param name="generics"     expression="${build.generics}" />
 		</xslt>
 
-		<antcall target="-classes-api-resultcode" />
-		<antcall target="-classes-api-logdoc" />
+		<antcall target="-classes-api-resultcode">
+			<reference refid="all-dtds" />
+		</antcall>
+		<antcall target="-classes-api-logdoc">
+			<reference refid="all-dtds" />
+		</antcall>
 
 		<!-- Compile all classes -->
 		<mkdir dir="${classesDestDir}" />

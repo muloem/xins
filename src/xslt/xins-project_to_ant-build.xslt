@@ -315,7 +315,9 @@
 			</xsl:if>
 			<xsl:variable name="env_file" select="''" />
 			<property name="env_file" value="{$env_file}" />
-			<antcall target="-specdocs" />
+			<antcall target="-specdocs">
+				<reference refid="all-dtds" />
+			</antcall>
 			<xsl:for-each select="impl">
 				<xsl:variable name="implName" select="@name" />
 				<xsl:variable name="implName2">
@@ -329,11 +331,13 @@
 				<xsl:if test="$impl_node/runtime-properties">
 					<antcall target="-specdocs-impl-runtime">
 						<param name="implName2" value="{$implName2}" />
-					</antcall>
+						<reference refid="all-dtds" />
+				</antcall>
 				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
 					<antcall target="-specdocs-impl-logdoc">
 						<param name="implName2" value="{$implName2}" />
+						<reference refid="all-dtds" />
 					</antcall>
 				</xsl:if>
 			</xsl:for-each>
@@ -350,7 +354,9 @@
 				<xsl:variable name="typePackageAsDir" select="translate($typePackage, '.','/')" />
 				<property name="typePackage" value="{$typePackage}" />
 				<property name="typePackageAsDir" value="{$typePackageAsDir}" />
-				<antcall target="-classes-types" />
+				<antcall target="-classes-types">
+					<reference refid="all-dtds" />
+				</antcall>
 			</target>
 		</xsl:if>
 
@@ -392,6 +398,7 @@
 				<xsl:attribute name="depends">
 					<xsl:text>-load-properties-</xsl:text>
 					<xsl:value-of select="$api" />
+					<xsl:text>,-prepare-classes</xsl:text>
 					<xsl:if test="$apiHasTypes">
 						<xsl:text>,-classes-types-</xsl:text>
 						<xsl:value-of select="$api" />
@@ -428,6 +435,7 @@
 				</path>
 				<antcall target="-classes-api">
 					<reference refid="classes.api.classpath" />
+					<reference refid="all-dtds" />
 					<param name="implName2" value="{$implName2}" />
 				</antcall>
 			</target>
