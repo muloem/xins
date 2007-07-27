@@ -223,16 +223,7 @@
 				<xsl:text>&lt;/data&gt;</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="resultcode">
-			<xsl:choose>
-				<xsl:when test="@returncode">
-					<xsl:value-of select="@returncode" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="@resultcode" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
+		<xsl:variable name="resultcode" select="@resultcode" />
 		<!-- TODO: Check that the result code is not defined in 2 places? -->
 		<!-- TODO: Check that the result code exists? -->
 
@@ -386,7 +377,16 @@
 		Same applies to result code with required output parameters.
 		-->
 		<xsl:if test="string-length($resultcode) &gt; 0 and not(starts-with($resultcode, '_'))">
-			<xsl:variable name="rcd_file" select="concat($specsdir, '/', $resultcode, '.rcd')" />
+			<xsl:variable name="rcd_file">
+				<xsl:choose>
+					<xsl:when test="contains(@resultcode, '/')">
+						<xsl:value-of select="concat($specsdir, '/../../', substring-before((@resultcode, '/'), '/spec/', substring-after(@resultcode, '/'), '.rcd')" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($specsdir, '/', $resultcode, '.rcd')" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<xsl:for-each select="document($rcd_file)/output/param[@required='true']">
 				<xsl:variable name="required_attr" select="@name" />
 				<xsl:if test="not(boolean(/function/example[@num=$examplenum]/output-example[@name=$required_attr]))">

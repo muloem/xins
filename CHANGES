@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
 
+* Generation of specification documentation:
+  - Fixed error when a shared error code was defined in the examples.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
 
