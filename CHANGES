@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
+* XINS/Java Common Library:
+  - Implemented SF.net RFE #1771569: Implement equals/hashCode on
+    ServletConfigPropertyReader.
+
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
 
