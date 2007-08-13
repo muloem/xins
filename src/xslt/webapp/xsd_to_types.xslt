@@ -88,15 +88,6 @@
 			</xsl:call-template>
 			<xsl:fallback />
 		</xt:document>
-		<xsl:call-template name="create-file">
-			<xsl:with-param name="fileName" select="$typeFile" />
-			<xsl:with-param name="content">
-				<xsl:call-template name="xml_type">
-					<xsl:with-param name="typeName" select="$typeName" />
-					<xsl:with-param name="elementName" select="$elementName" />
-				</xsl:call-template>
-			</xsl:with-param>
-		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="xml_type">

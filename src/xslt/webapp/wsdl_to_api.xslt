@@ -269,7 +269,7 @@
 		</xsl:variable>
 		<xsl:variable name="errorcodeFile" select="concat($specsdir, '/', $errorcodeName, '.rcd')" />
 
-		<xsltc:output file="{$functionFile}">
+		<xsltc:output file="{$errorcodeFile}">
 			<xsl:call-template name="errorcodefile">
 				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
 			</xsl:call-template>
@@ -281,13 +281,13 @@
 			</xsl:call-template>
 			<xsl:fallback />
 		</xalan:write>
-		<saxon:output file="{$functionFile}">
+		<saxon:output file="{$errorcodeFile}">
 			<xsl:call-template name="errorcodefile">
 				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
 			</xsl:call-template>
 			<xsl:fallback />
 		</saxon:output>
-		<xt:document href="{$functionFile}">
+		<xt:document href="{$errorcodeFile}">
 			<xsl:call-template name="errorcodefile">
 				<xsl:with-param name="errorcodeName" select="$errorcodeName" />
 			</xsl:call-template>
@@ -612,7 +612,7 @@
 				</xsl:variable>
 				<xsl:variable name="elementName">
 					<xsl:call-template name="smartHungarianLower">
-						<xsl:with-param name="text" select="$localNameType" />
+						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:if test="not(key('simpletypenames', $localNameType))">
@@ -647,7 +647,7 @@
 				</xsl:variable>
 				<xsl:variable name="elementName">
 					<xsl:call-template name="smartHungarianLower">
-						<xsl:with-param name="text" select="$localNameType" />
+						<xsl:with-param name="text" select="@name" />
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
