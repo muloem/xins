@@ -676,9 +676,13 @@ public class XMLRPCCallingConvention extends CallingConvention {
       if (xmlRpcType.equals("dateTime.iso8601")) {
          Date date = XML_RPC_TIMESTAMP_FORMATTER.parse(parameterValue);
          if (parameterType instanceof org.xins.common.types.standard.Date) {
-            return XINS_DATE_FORMATTER.format(date);
+            synchronized (XINS_DATE_FORMATTER) {
+               return XINS_DATE_FORMATTER.format(date);
+            }
          } else if (parameterType instanceof org.xins.common.types.standard.Timestamp) {
-            return XINS_TIMESTAMP_FORMATTER.format(date);
+            synchronized (XINS_TIMESTAMP_FORMATTER) {
+               return XINS_TIMESTAMP_FORMATTER.format(date);
+            }
          }
       }
       return parameterValue;
@@ -709,11 +713,21 @@ public class XMLRPCCallingConvention extends CallingConvention {
             throw new java.text.ParseException("Incorrect value for boolean: " + parameterValue, 0);
          }
       } else if (parameterType instanceof org.xins.common.types.standard.Date) {
-         Date date = XINS_DATE_FORMATTER.parse(parameterValue);
-         return XML_RPC_TIMESTAMP_FORMATTER.format(date);
+         Date date = null;
+         synchronized (XINS_DATE_FORMATTER) {
+            XINS_DATE_FORMATTER.parse(parameterValue);
+         }
+         synchronized (XML_RPC_TIMESTAMP_FORMATTER) {
+            return XML_RPC_TIMESTAMP_FORMATTER.format(date);
+         }
       } else if (parameterType instanceof org.xins.common.types.standard.Timestamp) {
-         Date date = XINS_TIMESTAMP_FORMATTER.parse(parameterValue);
-         return XML_RPC_TIMESTAMP_FORMATTER.format(date);
+         Date date = null;
+         synchronized (XINS_TIMESTAMP_FORMATTER) {
+            XINS_TIMESTAMP_FORMATTER.parse(parameterValue);
+         }
+         synchronized (XML_RPC_TIMESTAMP_FORMATTER) {
+            return XML_RPC_TIMESTAMP_FORMATTER.format(date);
+         }
       }
       return parameterValue;
    }

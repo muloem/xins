@@ -245,8 +245,10 @@ public class DateConverter {
       _cachedJustSeconds = (int) (seconds % 60L);
 
       // Format the date
-      String s = _formatter.format(new Date(_cachedDate));
-      s.getChars(0, _length, _cachedDateBuffer, 0);
+      synchronized (_formatter) {
+         String s = _formatter.format(new Date(_cachedDate));
+         s.getChars(0, _length, _cachedDateBuffer, 0);
+      }
    }
 
    /**

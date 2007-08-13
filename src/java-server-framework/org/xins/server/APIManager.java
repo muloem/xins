@@ -286,7 +286,9 @@ public final class APIManager implements APIManagerMBean {
       try {
          Element minStat = statElement.getUniqueChildElement("min");
          if (!"N/A".equals(minStat.getAttribute("duration"))) {
-            statMap.put("Min Date", DATE_FORMATTER.parse(minStat.getAttribute("start")));
+            synchronized (DATE_FORMATTER) {
+               statMap.put("Min Date", DATE_FORMATTER.parse(minStat.getAttribute("start")));
+            }
             statMap.put("Min Duration", new Long(minStat.getAttribute("duration")));
          } else {
             statMap.put("Min Date", null);
@@ -298,7 +300,9 @@ public final class APIManager implements APIManagerMBean {
       try {
          Element maxStat = statElement.getUniqueChildElement("max");
          if (!"N/A".equals(maxStat.getAttribute("duration"))) {
-            statMap.put("Max Date", DATE_FORMATTER.parse(maxStat.getAttribute("start")));
+            synchronized (DATE_FORMATTER) {
+               statMap.put("Max Date", DATE_FORMATTER.parse(maxStat.getAttribute("start")));
+            }
             statMap.put("Max Duration", new Long(maxStat.getAttribute("duration")));
          } else {
             statMap.put("Max Date", null);
@@ -310,7 +314,9 @@ public final class APIManager implements APIManagerMBean {
       try {
          Element lastStat = statElement.getUniqueChildElement("last");
          if (!"N/A".equals(lastStat.getAttribute("duration"))) {
-            statMap.put("Last Date", DATE_FORMATTER.parse(lastStat.getAttribute("start")));
+            synchronized (DATE_FORMATTER) {
+               statMap.put("Last Date", DATE_FORMATTER.parse(lastStat.getAttribute("start")));
+            }
             statMap.put("Last Duration", new Long(lastStat.getAttribute("duration")));
          } else {
             statMap.put("Last Date", null);

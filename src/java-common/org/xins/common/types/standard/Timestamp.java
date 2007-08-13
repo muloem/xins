@@ -524,7 +524,9 @@ public class Timestamp extends Type {
        *    <code>null</code>.
        */
       public String toString() {
-         return FORMATTER.format(_calendar.getTime());
+         synchronized (FORMATTER) {
+            return FORMATTER.format(_calendar.getTime());
+         }
       }
    }
 }

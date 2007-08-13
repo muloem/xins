@@ -10,6 +10,12 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Implemented SF.net RFE #1771569: Implement equals/hashCode on
     ServletConfigPropertyReader.
   - Added unit test for the FunctionResult class.
+  - SimpleDateFormat is not thread-safe so any use of it should be
+    synchronized.
+
+* XINS/Java Server Framework:
+  - SimpleDateFormat is not thread-safe so any use of it should be
+    synchronized.
 
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
