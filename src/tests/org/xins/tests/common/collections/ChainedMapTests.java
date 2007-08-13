@@ -62,6 +62,7 @@ public class ChainedMapTests extends TestCase {
          arrayList.add(randomString);
          sortedMap.put(randomString, "value" + i);
       }
+      
       Iterator itSortedMap = sortedMap.values().iterator();
       int i = 0;
       while (itSortedMap.hasNext()) {
@@ -69,6 +70,19 @@ public class ChainedMapTests extends TestCase {
          assertEquals("value" + i, nextValue);
          i++;
       }
+
+      assertEquals(sortedMap.size(), arrayList.size());
+      Iterator itEntries = sortedMap.entrySet().iterator();
+      Iterator itKeysMap = sortedMap.keySet().iterator();
+      Iterator itKeys = arrayList.iterator();
+      while (itEntries.hasNext() & itKeysMap.hasNext() & itKeys.hasNext()) {
+         Map.Entry nextEntry = (Map.Entry) itEntries.next();
+         String nextKeyMap = (String) itKeysMap.next();
+         String nextKey = (String) itKeys.next();
+         assertEquals(nextEntry.getKey(), nextKey);
+         assertEquals(nextKeyMap, nextKey);
+      }
+
       assertEquals(itemsCount, sortedMap.size());
    }
 }
