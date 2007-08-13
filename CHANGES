@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 * XINS/Java Common Library:
   - Implemented SF.net RFE #1771569: Implement equals/hashCode on
     ServletConfigPropertyReader.
+  - Added unit test for the FunctionResult class.
 
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
@@ -1459,6 +1460,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 3:
     of Java is equal or higher than 1.5.
 
 ______________________________________________________________________________
+
 CHANGES INTRODUCED IN XINS 1.5.0 ALPHA 2:
 
 * XINS/Java Common Library:
