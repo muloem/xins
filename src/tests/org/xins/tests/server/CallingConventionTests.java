@@ -159,7 +159,9 @@ public class CallingConventionTests extends TestCase {
       HTTPCallerResult result = HTTPCaller.call("1.1", host, port, method, queryString, headers);
 
       // Expect 200 OK
-      assertEquals("Expected 200 OK in response to HTTP OPTIONS request.", "200 OK", result.getStatus());
+      assertEquals("Expected 200 OK in response to HTTP OPTIONS request to host \""
+            + host + "\", port " + port + ", query string \"" + queryString + "\".", 
+            "200 OK", result.getStatus());
 
       // Expect an empty body
       String body = result.getBody();

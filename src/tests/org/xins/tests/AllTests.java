@@ -182,6 +182,7 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.server.APITests.class);
       suite.addTestSuite(org.xins.tests.server.APIServletTests.class);
       suite.addTestSuite(org.xins.tests.server.CallingConventionTests.class);
+      suite.addTestSuite(org.xins.tests.server.FunctionResultTests.class);
       suite.addTestSuite(org.xins.tests.server.IPFilterTests.class);
       suite.addTestSuite(org.xins.tests.server.JSONCallingConventionTests.class);
       suite.addTestSuite(org.xins.tests.server.JSONRPCCallingConventionTests.class);
