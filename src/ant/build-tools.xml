@@ -408,7 +408,7 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 		</xslt>
 	</target>
 
-	<target name="xsd-to-types" description="Generates type files from a set of XML Schema files.">
+	<target name="xsd-to-types" depends="-load-properties" description="Generates type files from a set of XML Schema files.">
 		<input addproperty="api.name"
 		       message="Please, enter the name of the api:" />
 		<mkdir dir="apis/${api.name}/spec" />
@@ -432,7 +432,7 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 		<get src="${wsdl.location}" dest="${builddir}/wsdl/${api.name}.wsdl" />
 	</target>
 
-	<target name="wsdl-to-api" description="Generates the XINS API files from the WSDL.">
+	<target name="wsdl-to-api" depends="-load-properties" description="Generates the XINS API files from the WSDL.">
 		<input addproperty="api.name"
 		       message="Please, enter the name of the api:" />
 		<available property="api.exists" file="${project_home}/apis/${api.name}/spec/api.xml" type="file" />
