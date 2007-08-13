@@ -380,7 +380,7 @@
 			<xsl:variable name="rcd_file">
 				<xsl:choose>
 					<xsl:when test="contains(@resultcode, '/')">
-						<xsl:value-of select="concat($specsdir, '/../../', substring-before((@resultcode, '/'), '/spec/', substring-after(@resultcode, '/'), '.rcd')" />
+						<xsl:value-of select="concat($specsdir, '/../../', substring-before(@resultcode, '/'), '/spec/', substring-after(@resultcode, '/'), '.rcd')" />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="concat($specsdir, '/', $resultcode, '.rcd')" />
