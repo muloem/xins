@@ -12,6 +12,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added unit test for the FunctionResult class.
   - SimpleDateFormat is not thread-safe so any use of it should be
     synchronized.
+  - Changed ChainedMap to be cloneable and serializable.
+  - The Element object uses ChainedMap for the attribute list instead of
+    HashMap in order to have the attribute in the same order as the way they
+    were set.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
@@ -21,6 +25,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     also mapped to generated a SOAP XML tree.
   - Fixed incorrect transformation of output data element attributes in the
     SOAP calling convention.
+  - ChainedMap is used instead of HashMap for the session properties and the
+    input parameters in order to have them in the same order as the way they
+    were set.
 
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.

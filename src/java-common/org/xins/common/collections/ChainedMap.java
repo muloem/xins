@@ -6,6 +6,7 @@
  */
 package org.xins.common.collections;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Set;
  *
  * @since XINS 1.3.0
  */
-public class ChainedMap extends AbstractMap {
+public class ChainedMap extends AbstractMap implements Cloneable, Serializable {
 
    /**
     * The keys of the Map.
@@ -72,6 +73,16 @@ public class ChainedMap extends AbstractMap {
       }
    }
 
+   public Object clone() {
+      try {
+         return super.clone();
+      } catch (CloneNotSupportedException cnse) {
+         ChainedMap clone = new ChainedMap();
+         clone.putAll(this);
+         return clone;
+      }
+   }
+
    /**
     * The <code>Map.Entry</code> for this <code>ChainedMap</code>.
     *
@@ -81,8 +92,14 @@ public class ChainedMap extends AbstractMap {
    private static class EntryMap implements Map.Entry {
 
       /**
-       * The values of the set.
+       * The key. Can be <code>null</code>.
        */
+      private Object _key;
+
+      /**
+       * The value. Can be <code>null</code>.
+       */
+      private Object _value;
 
       /**
        * Creates a new <code>EntryMap</code> instance.
@@ -97,16 +114,6 @@ public class ChainedMap extends AbstractMap {
          _key = key;
          _value = value;
       }
-
-      /**
-       * The key. Can be <code>null</code>.
-       */
-      private Object _key;
-
-      /**
-       * The value. Can be <code>null</code>.
-       */
-      private Object _value;
 
        public Object getKey() {
           return _key;
@@ -147,6 +154,11 @@ public class ChainedMap extends AbstractMap {
    private static class ChainedSet extends AbstractSet {
 
       /**
+       * The values of the set.
+       */
+      private List _values = new ArrayList();
+
+      /**
        * Creates a new instance of <code>ChainedSet</code>.
        */
       public ChainedSet() {
@@ -166,7 +178,7 @@ public class ChainedMap extends AbstractMap {
             _values.add(itCollection.next());
          }
       }
-      private List _values = new ArrayList();
+
       public int size() {
          return _values.size();
       }

@@ -8,13 +8,14 @@ package org.xins.common.xml;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.ProtectedList;
 import org.xins.common.text.ParseException;
 
@@ -70,7 +71,7 @@ public class Element implements Cloneable {
     * The attributes. This field is lazily initialized and is initially
     * <code>null</code>.
     */
-   private HashMap _attributes;
+   private ChainedMap _attributes;
 
    /**
     * The character content for this element. Can be <code>null</code>.
@@ -212,7 +213,7 @@ public class Element implements Cloneable {
          }
 
          // Lazily initialize
-         _attributes = new HashMap();
+         _attributes = new ChainedMap();
       }
 
       // Set or reset the attribute
@@ -276,7 +277,7 @@ public class Element implements Cloneable {
     */
    public Map getAttributeMap() {
       if (_attributes == null) {
-         _attributes = new HashMap();
+         _attributes = new ChainedMap();
       }
       return _attributes;
    }
@@ -571,7 +572,7 @@ public class Element implements Cloneable {
 
       // Deep copy the attributes
       if (_attributes != null) {
-         clone._attributes = (HashMap) _attributes.clone();
+         clone._attributes = (ChainedMap) _attributes.clone();
       }
 
       return clone;
