@@ -430,9 +430,13 @@
 
 	<xsl:template match="param-combo | attribute-combo" mode="textlist">
 		<xsl:variable name="count" select="count(param-ref)" />
+		<xsl:variable name="type" select="@type" />
 		<xsl:for-each select="param-ref | attribute-ref">
 			<xsl:choose>
-				<xsl:when test="position() = $count">
+				<xsl:when test="position() = $count and ($type='inclusive-or' or $type='exclusive-or')">
+					<xsl:text> or </xsl:text>
+				</xsl:when>
+				<xsl:when test="position() = $count and not($type='inclusive-or' or $type='exclusive-or')">
 					<xsl:text> and </xsl:text>
 				</xsl:when>
 				<xsl:when test="position() &gt; 1">

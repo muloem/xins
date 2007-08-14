@@ -23,6 +23,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
 * Generation of specification documentation:
   - Fixed error when a shared error code was defined in the examples.
+  - inclusive-or and exclusive-or param combos should use 'or' to parameters.
+
+* Generation of the OpenDocument Format:
+  - inclusive-or and exclusive-or param combos should use 'or' to parameters.
 
 * Generation of the API from the WSDL:
   - Fixed invalid variable to create the error code file.
