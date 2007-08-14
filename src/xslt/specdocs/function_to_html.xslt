@@ -50,7 +50,6 @@
 		<xsl:variable name="api_node" select="document($api_file)/api" />
 		<xsl:variable name="resultcodes_node" select="document('../../xml/default_resultcodes.xml')/resultcodes" />
 		<xsl:variable name="function_name"    select="@name" />
-		<xsl:variable name="function_file"    select="concat($specsdir, '/', $function_name, '.fnc')" />
 
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>

@@ -393,6 +393,18 @@
 			</xsl:message>
 		</xsl:if>
 
+		<xsl:if test="$function_node/@name != @name">
+			<xsl:message terminate="yes">
+				<xsl:text>The function file '</xsl:text>
+				<xsl:value-of select="$function_file" />
+				<xsl:text>' does not define the function name '</xsl:text>
+				<xsl:value-of select="@name" />
+				<xsl:text>' as expected but '</xsl:text>
+				<xsl:value-of select="$function_node/@name" />
+				<xsl:text>'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+
 		<tr>
 			<td>
 				<a>
