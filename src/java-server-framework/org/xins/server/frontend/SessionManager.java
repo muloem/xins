@@ -8,7 +8,6 @@ package org.xins.server.frontend;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
+import org.xins.common.collections.ChainedMap;
 import org.xins.common.collections.InvalidPropertyValueException;
 import org.xins.common.collections.MissingRequiredPropertyException;
 import org.xins.common.collections.PropertyReader;
@@ -129,7 +129,7 @@ public class SessionManager extends Manageable {
       }
 
       // Fill the input parameters
-      HashMap inputParameters = new HashMap();
+      Map inputParameters = new ChainedMap();
       Enumeration params = request.getParameterNames();
       while (params.hasMoreElements()) {
          String name = (String) params.nextElement();
@@ -153,7 +153,7 @@ public class SessionManager extends Manageable {
     */
    protected void result(boolean successful) {
       if (successful) {
-         HashMap inputParameters = (HashMap) getProperty("_inputs");
+         ChainedMap inputParameters = (ChainedMap) getProperty("_inputs");
          Set propertiesSet =  (Set) getProperty("_propertiesSet");
          if (propertiesSet.contains("*")) {
             return;
@@ -169,7 +169,7 @@ public class SessionManager extends Manageable {
          }
          try {
             Map specInputParameters = _api.getAPISpecification().getFunction(functionName).getInputParameters();
-            Iterator itInputParameters = ((Map) inputParameters.clone()).entrySet().iterator();
+            Iterator itInputParameters = ((ChainedMap) inputParameters.clone()).entrySet().iterator();
             while (itInputParameters.hasNext()) {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
@@ -198,7 +198,7 @@ public class SessionManager extends Manageable {
     **/
    public boolean shouldLogIn() {
       // Check if the page requires a login
-      HashMap inputParameters = (HashMap) getProperty("_inputs");
+      Map inputParameters = (Map) getProperty("_inputs");
       String command = (String) inputParameters.get("command");
       if (command == null || command.equals("")) {
          command = _defaultCommand;
@@ -239,9 +239,9 @@ public class SessionManager extends Manageable {
    public Map getProperties() {
       HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
-         return new HashMap();
+         return new ChainedMap();
       }
-      HashMap properties = new HashMap();
+      Map properties = new ChainedMap();
       Enumeration enuAttributes = session.getAttributeNames();
       while (enuAttributes.hasMoreElements()) {
          String nextAttribute = (String) enuAttributes.nextElement();

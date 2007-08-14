@@ -866,6 +866,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       if (TextUtils.isEmpty(mimeType)) {
          String method = outputProperties.getProperty("method");
          if ("xml".equals(method)) {
+
             mimeType = "text/xml";
          } else if ("html".equals(method)) {
             mimeType = "text/html";
@@ -1197,7 +1198,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     *    no mapping should be needed and the forms should send directly the correct parameters.
     */
    private String getOriginalParameter(String parameter) {
-      HashMap inputs = (HashMap) _session.getProperty("_inputs");
+      Map inputs = (Map) _session.getProperty("_inputs");
       Iterator itParameterNames = inputs.keySet().iterator();
       while (itParameterNames.hasNext()) {
          String nextParam = (String) itParameterNames.next();
