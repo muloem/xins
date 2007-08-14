@@ -45,12 +45,12 @@
 				<xsl:when test="$project_node/api[@name=$apiname]/environments">
 					<xsl:variable name="env_file" select="concat($project_home, '/apis/', $apiname, '/environments.xml')" />
 					<xsl:value-of select="document($env_file)/environments/environment[1]/@url" />
-					<xsl:text>/?_convention=_xins-soap-map</xsl:text>
+					<xsl:text>/?_convention=_xins-soap</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>http://localhost:8080/</xsl:text>
 					<xsl:value-of select="$apiname" />
-					<xsl:text>/?_convention=_xins-soap-map</xsl:text>
+					<xsl:text>/?_convention=_xins-soap</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
