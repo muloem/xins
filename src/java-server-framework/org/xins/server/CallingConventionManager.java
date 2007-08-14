@@ -82,6 +82,13 @@ class CallingConventionManager extends Manageable {
    private static final String SOAP_CALLING_CONVENTION = "_xins-soap";
 
    /**
+    * The name of the SOAP calling convention with mapping.
+    *
+    * @since XINS 2.1
+    */
+   private static final String SOAP_MAP_CALLING_CONVENTION = "_xins-soap-map";
+
+   /**
     * The name of the XML-RPC calling convention.
     *
     * @since XINS 1.3.0
@@ -111,6 +118,7 @@ class CallingConventionManager extends Manageable {
       XML_CALLING_CONVENTION,
       XSLT_CALLING_CONVENTION,
       SOAP_CALLING_CONVENTION,
+      SOAP_MAP_CALLING_CONVENTION,
       XML_RPC_CALLING_CONVENTION,
       JSON_RPC_CALLING_CONVENTION,
       JSON_CALLING_CONVENTION
@@ -347,6 +355,10 @@ class CallingConventionManager extends Manageable {
       // SOAP
       } else if (name.equals(SOAP_CALLING_CONVENTION)) {
          return "org.xins.server.SOAPCallingConvention";
+
+      // SOAP MAP
+      } else if (name.equals(SOAP_MAP_CALLING_CONVENTION)) {
+         return "org.xins.server.SOAPMapCallingConvention";
 
       // XML-RPC
       } else if (name.equals(XML_RPC_CALLING_CONVENTION)) {

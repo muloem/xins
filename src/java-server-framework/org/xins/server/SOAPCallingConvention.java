@@ -59,12 +59,12 @@ public class SOAPCallingConvention extends CallingConvention {
    /**
     * The key used to store the name of the function in the request attributes.
     */
-   private static final String FUNCTION_NAME = "_function";
+   protected static final String FUNCTION_NAME = "_function";
 
    /**
     * The key used to store the name of the namespace in the request attributes.
     */
-   private static final String REQUEST_NAMESPACE = "_namespace";
+   protected static final String REQUEST_NAMESPACE = "_namespace";
 
    /**
     * The formatter for XINS Date type.
@@ -100,8 +100,7 @@ public class SOAPCallingConvention extends CallingConvention {
     * @throws IllegalArgumentException
     *    if <code>api == null</code>.
     */
-   public SOAPCallingConvention(API api)
-   throws IllegalArgumentException {
+   public SOAPCallingConvention(API api) throws IllegalArgumentException {
 
       // Check arguments
       MandatoryArgumentChecker.check("api", api);
@@ -445,7 +444,7 @@ public class SOAPCallingConvention extends CallingConvention {
          try {
             FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
             Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
-            transformedDataElement = soapElementTransformation(dataSectionSpec, true, dataElement, true);
+            transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, true);
          } catch (InvalidSpecificationException ise) {
 
             // keep the old value
@@ -610,7 +609,7 @@ public class SOAPCallingConvention extends CallingConvention {
                // Keep the old value
             }
 
-            builder.setAttribute(attributeName, attributeValue);
+            setDataElementAttribute(builder, attributeName, attributeValue);
          }
       }
 
@@ -618,10 +617,14 @@ public class SOAPCallingConvention extends CallingConvention {
       Iterator itChildren = elementChildren.iterator();
       while (itChildren.hasNext()) {
          Element nextChild = (Element) itChildren.next();
-         Element transformedChild = soapElementTransformation(childrenSpec , input, nextChild, false);
+         Element transformedChild = soapElementTransformation(childrenSpec, input, nextChild, false);
          builder.addChild(transformedChild);
       }
 
       return builder.createElement();
+   }
+
+   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, String attributeValue) {
+      builder.setAttribute(attributeName, attributeValue);
    }
 }

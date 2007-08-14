@@ -16,6 +16,11 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
     synchronized.
+  - Added _xins-soap-map calling convention that transform the SOAP request
+    as the wsdl-to-api command. The output parameters and data section are
+    also mapped to generated a SOAP XML tree.
+  - Fixed incorrect transformation of output data element attributes in the
+    SOAP calling convention.
 
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
