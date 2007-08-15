@@ -659,6 +659,16 @@
 
 	<group id="runtime.cc" name="Calling Convention">
 		<!-- XXX: Removed 3560 (@since XINS 1.3.0) Replaced by 3239. -->
+		<entry id="3570" level="INFO">
+			<description>No mapping found for the SOAP request element.</description>
+			<param name="elementName" nullable="false" />
+			<param name="functionName" nullable="false" />
+		</entry>
+		<entry id="3571" level="WARNING" exception="true">
+			<description>Error when mapping SOAP request element.</description>
+			<param name="elementName" nullable="false" />
+			<param name="functionName" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="runtime.context" name="Diagnostic Context Identifiers">
