@@ -305,7 +305,7 @@ public class ElementParser {
 
          // Make sure namespaceURI is either null or non-empty
          namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
-
+         
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName, "atts", atts);
 
@@ -320,16 +320,28 @@ public class ElementParser {
 
          } else {
 
+            // Find the namespace prefix
+            String prefix = null;
+            
+            if (qName != null && qName.indexOf(':') != -1) {
+               prefix = qName.substring(0, qName.indexOf(':'));
+            }
+
             // Construct a Element
-            Element element = new Element(namespaceURI, localName);
+            Element element = new Element(prefix, namespaceURI, localName);
 
             // Add all attributes
             for (int i = 0; i < atts.getLength(); i++) {
                String attrNamespaceURI = atts.getURI(i);
                String attrLocalName    = atts.getLocalName(i);
                String attrValue        = atts.getValue(i);
+               String attrQName        = atts.getQName(i);
+               String attrPrefix = null;
+               if (attrQName != null && attrQName.indexOf(':') != -1) {
+                  attrPrefix = attrQName.substring(0, attrQName.indexOf(':'));
+               }
 
-               element.setAttribute(attrNamespaceURI, attrLocalName, attrValue);
+               element.setAttribute(attrPrefix, attrNamespaceURI, attrLocalName, attrValue);
             }
 
             // Push the element on the stack

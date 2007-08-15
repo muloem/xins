@@ -51,6 +51,12 @@ public class Element implements Cloneable {
    private static final Object SECRET_KEY = new Object();
 
    /**
+    * The namespace prefix. This field can be <code>null</code>, but it can never
+    * be an empty string.
+    */
+   private final String _namespacePrefix;
+
+   /**
     * The namespace URI. This field can be <code>null</code>, but it can never
     * be an empty string.
     */
@@ -91,7 +97,7 @@ public class Element implements Cloneable {
     */
    public Element(String localName)
    throws IllegalArgumentException {
-      this(null, localName);
+      this(null, null, localName);
    }
 
    /**
@@ -111,18 +117,62 @@ public class Element implements Cloneable {
     */
    public Element(String namespaceURI, String localName)
    throws IllegalArgumentException {
+      this(null, namespaceURI, localName);
+   }
+
+   /**
+    * Creates a new <code>Element</code>.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name of the element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.1.
+    */
+   public Element(String namespacePrefix, String namespaceURI, String localName)
+   throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("localName", localName);
 
-      // An empty namespace URI is equivalent to null
-      if (namespaceURI != null && namespaceURI.length() < 1) {
-         namespaceURI = null;
+      // An empty namespace prefix is equivalent to null
+      if (namespacePrefix != null && namespacePrefix.length() < 1) {
+         _namespacePrefix = null;
+      } else {
+         _namespacePrefix = namespacePrefix;
       }
 
-      // Store namespace URI and local name
-      _namespaceURI = namespaceURI;
+      // An empty namespace URI is equivalent to null
+      if (namespaceURI != null && namespaceURI.length() < 1) {
+         _namespaceURI = null;
+      } else {
+         _namespaceURI = namespaceURI;
+      }
+
       _localName = localName;
+   }
+
+   /**
+    * Gets the namespace prefix.
+    *
+    * @return
+    *    the namespace prefix for this element, or <code>null</code> if there is
+    *    none, but never an empty string.
+    * 
+    * @since XINS 2.1.
+    */
+   public String getNamespacePrefix() {
+      return _namespacePrefix;
    }
 
    /**
@@ -179,7 +229,7 @@ public class Element implements Cloneable {
     */
    public void setAttribute(String localName, String value)
    throws IllegalArgumentException {
-      setAttribute(null, localName, value);
+      setAttribute(null, null, localName, value);
    }
 
    /**
@@ -203,9 +253,37 @@ public class Element implements Cloneable {
     */
    public void setAttribute(String namespaceURI, String localName, String value)
    throws IllegalArgumentException {
+      setAttribute(null, namespaceURI, localName, value);
+   }
+
+   /**
+    * Sets the specified attribute. If the value for the specified
+    * attribute is already set, then the previous value is replaced.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value for the attribute, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    *
+    * @since XINS 2.1.
+    */
+   public void setAttribute(String namespacePrefix, String namespaceURI, String localName, String value)
+   throws IllegalArgumentException {
 
       // Construct a QualifiedName object. This will check the preconditions.
-      QualifiedName qn = new QualifiedName(namespaceURI, localName);
+      QualifiedName qn = new QualifiedName(namespacePrefix, namespaceURI, localName);
 
       if (_attributes == null) {
          if (value == null) {
@@ -548,6 +626,49 @@ public class Element implements Cloneable {
       return (Element) childList.get(0);
    }
 
+   public int hashCode() {
+      int hashCode = _localName.hashCode();
+      if (_namespaceURI != null) {
+         hashCode += _namespaceURI.hashCode();
+      }
+      if (_attributes != null) {
+         hashCode += _attributes.hashCode();
+      }
+      if (_children != null) {
+         hashCode += _children.hashCode();
+      }
+      if (_text != null) {
+         hashCode += _text.hashCode();
+      }
+      return hashCode;
+   }
+
+   public boolean equals(Object obj) {
+      if (obj == null || !(obj instanceof Element)) {
+         return false;
+      }
+      Element other = (Element) obj;
+      if (!_localName.equals(other.getLocalName()) ||
+            (_namespaceURI != null && !_namespaceURI.equals(other._namespaceURI)) ||
+            (_namespaceURI == null && other._namespaceURI != null)) {
+         return false;
+      }
+      if ((_attributes != null && !_attributes.equals(other._attributes)) ||
+            (_attributes == null && other._attributes != null)) {
+         return false;
+      }
+      // XXX This should be changed as the order of the children should no matter
+      if ((_children != null && !_children.equals(other._children)) ||
+            (_children == null && other._children != null)) {
+         return false;
+      }
+      if ((_text != null && !_text.equals(other._text)) ||
+            (_text == null && other._text != null)) {
+         return false;
+      }
+      return true;
+   }
+
    /**
     * Clones this object. The clone will have the same namespace URI and local
     * name and equivalent attributes, children and character content.
@@ -607,6 +728,11 @@ public class Element implements Cloneable {
       private final int _hashCode;
 
       /**
+       * The namespace prefix. Can be <code>null</code>.
+       */
+      private final String _namespacePrefix;
+
+      /**
        * The namespace URI. Can be <code>null</code>.
        */
       private final String _namespaceURI;
@@ -632,18 +758,51 @@ public class Element implements Cloneable {
        */
       public QualifiedName(String namespaceURI, String localName)
       throws IllegalArgumentException {
+         this(null, namespaceURI, localName);
+      }
+
+      /**
+       * Constructs a new <code>QualifiedName</code> with the specified
+       * namespace and local name.
+       *
+       * @param namespaceURI
+       *    the namespace prefix for the element, can be <code>null</code>; an
+       *    empty string is equivalent to <code>null</code>.
+       *
+       * @param namespaceURI
+       *    the namespace URI for the element, can be <code>null</code>; an
+       *    empty string is equivalent to <code>null</code>.
+       *
+       * @param localName
+       *    the local name of the element, cannot be <code>null</code>.
+       *
+       * @throws IllegalArgumentException
+       *    if <code>localName == null</code>.
+       * 
+       * @since 2.1.
+       */
+      public QualifiedName(String namespacePrefix, String namespaceURI, String localName)
+      throws IllegalArgumentException {
 
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName);
 
+         // An empty namespace prefix is equivalent to null
+         if (namespacePrefix != null && namespacePrefix.length() < 1) {
+            _namespacePrefix = null;
+         } else {
+            _namespacePrefix = namespacePrefix;
+         }
+
          // An empty namespace URI is equivalent to null
          if (namespaceURI != null && namespaceURI.length() < 1) {
-            namespaceURI = null;
+            _namespaceURI = null;
+         } else {
+            _namespaceURI = namespaceURI;
          }
 
          // Initialize fields
          _hashCode     = localName.hashCode();
-         _namespaceURI = namespaceURI;
          _localName    = localName;
       }
 
@@ -677,6 +836,18 @@ public class Element implements Cloneable {
          return ((_namespaceURI == null && qn._namespaceURI == null) ||
                (_namespaceURI != null && _namespaceURI.equals(qn._namespaceURI)))
             &&  _localName.equals(qn._localName);
+      }
+
+      /**
+       * Gets the namespace prefix.
+       *
+       * @return
+       *    the namespace prefix, can be <code>null</code>.
+       * 
+       * @since XINS 2.1.
+       */
+      public String getNamespacePrefix() {
+         return _namespacePrefix;
       }
 
       /**
