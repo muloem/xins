@@ -715,7 +715,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
       } else if (parameterType instanceof org.xins.common.types.standard.Date) {
          Date date = null;
          synchronized (XINS_DATE_FORMATTER) {
-            XINS_DATE_FORMATTER.parse(parameterValue);
+            date = XINS_DATE_FORMATTER.parse(parameterValue);
          }
          synchronized (XML_RPC_TIMESTAMP_FORMATTER) {
             return XML_RPC_TIMESTAMP_FORMATTER.format(date);
@@ -723,7 +723,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
       } else if (parameterType instanceof org.xins.common.types.standard.Timestamp) {
          Date date = null;
          synchronized (XINS_TIMESTAMP_FORMATTER) {
-            XINS_TIMESTAMP_FORMATTER.parse(parameterValue);
+            date = XINS_TIMESTAMP_FORMATTER.parse(parameterValue);
          }
          synchronized (XML_RPC_TIMESTAMP_FORMATTER) {
             return XML_RPC_TIMESTAMP_FORMATTER.format(date);
