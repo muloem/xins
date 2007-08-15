@@ -54,8 +54,26 @@
 
 				<link rel="stylesheet" type="text/css" href="style.css" />
 				<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
-				<link rel="top"                        href="../index.html" title="API index"            />
-				<link rel="up"                         href="index.html"    title="Overview of this API" />
+				<link rel="top"  href="../index.html" title="API index"            />
+				<link rel="up"   href="index.html"    title="Overview of this API" />
+				<xsl:if test="pattern">
+					<script type="text/javascript">
+						function testPattern(pattern, input) {
+							var result = document.getElementById('result');
+							var resultMessage = '';
+							try {
+								resultMessage = 'The string <b style="color:blue">' + input + '</b> ';
+								resultMessage += input.match(pattern) ? '<b style="color:blue">matches</b>' : '<b style="color:red">does not match</b>';
+								resultMessage += ' the pattern.';
+						  } catch (ex) {
+								resultMessage = 'The pattern <b style="color:blue">' + pattern + '</b> ';
+								resultMessage += 'is <b style="color:red">invalid</b>.';
+							}
+							result.innerHTML = resultMessage;
+							return false;
+						}
+					</script>
+				</xsl:if>
 			</head>
 			<body>
 				<xsl:call-template name="header">
@@ -152,32 +170,25 @@
 		<xsl:text>This is a </xsl:text>
 		<em>pattern type</em>
 		<xsl:text>. Allowed values must match the following pattern:</xsl:text>
+		<xsl:variable name="pattern" select="text()" />
 		<blockquote>
-			<code>
-				<xsl:value-of select="text()" />
+			<code id="pattern">
+				<xsl:value-of select="$pattern" />
 			</code>
 		</blockquote>
 		<p />
-		<!-- If no pattern URL is provided, use the default one on sourceforge. -->
-		<xsl:variable name="pattern_url">
-			<xsl:choose>
-				<xsl:when test="$project_node/patterntest">
-					<xsl:value-of select="$project_node/patterntest/@href" />
-				</xsl:when>
-				<xsl:otherwise>http://www.xins.org/patterntest.php</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<a>
-			<xsl:attribute name="href">
-				<xsl:value-of select="$pattern_url" />
-				<xsl:text>?pattern=</xsl:text>
-				<xsl:call-template name="urlencode">
-					<xsl:with-param name="text" select="concat('^(', text(), ')$')" />
-				</xsl:call-template>
-			</xsl:attribute>
-			<xsl:text>Test this pattern</xsl:text>
-		</a>
-		<xsl:text>.</xsl:text>
+		<form onsubmit="return testPattern(elements['pattern'].value, elements['input'].value)">
+		  <input name="pattern" type="text" size="50" value="^{$pattern}$" />
+				<xsl:text> </xsl:text>
+		  <input type="button" value="&lt;- Original pattern" onclick="javascript:elements['pattern'].value='^' + document.getElementById('pattern').innerHTML + '$'"/>
+			<br />
+		  <input name="input" type="text" size="50" />
+				<xsl:text> </xsl:text>
+		  <input type="submit" value="Test this pattern" />
+		  <div id="result">
+				<xsl:text> </xsl:text>
+			</div>
+		</form>
 	</xsl:template>
 
 	<xsl:template match="properties">

@@ -38,6 +38,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - inclusive-or and exclusive-or param combos should use 'or' to parameters.
   - Check that the name defined in the function file is the same as the name
     of the function.
+  - The pattern type could be tested directly in the page.
 
 * Generation of the OpenDocument Format:
   - inclusive-or and exclusive-or param combos should use 'or' to parameters.
@@ -47,6 +48,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Fixed invalid call to a non-existing template.
   - The name of the element should be used for the element name and not the
     type name.
+
+* DTD:
+  - Removed the patterntest element in the xins-projects.dtd as no longer used.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
