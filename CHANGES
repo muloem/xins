@@ -29,6 +29,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     input parameters in order to have them in the same order as the way they
     were set.
 
+* XINS/Java Client Framework:
+  - Overridden hashCode and equals in AbstractCAPICallRequest so that two
+    similar request are equals.
+
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
   - -load-properties should be called before wsdl-to-api and xsd-to-api.

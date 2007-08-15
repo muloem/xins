@@ -259,4 +259,33 @@ public abstract class AbstractCAPICallRequest implements Serializable {
     */
    public abstract UnacceptableRequestException checkParameters();
 
+   public int hashCode() {
+      int hashCode = _functionName.hashCode();
+      if (_parameterValues != null) {
+         hashCode += _parameterValues.hashCode();
+      }
+      Element dataElement = getDataElement();
+      if (dataElement != null) {
+         hashCode += dataElement.hashCode();
+      }
+      return hashCode;
+   }
+
+   public boolean equals(Object obj) {
+      if (obj == null || !obj.getClass().isInstance(this)) {
+         return false;
+      }
+      AbstractCAPICallRequest otherRequest = (AbstractCAPICallRequest) obj;
+      if ((_parameterValues != null && !_parameterValues.equals(otherRequest._parameterValues)) ||
+            (_parameterValues == null && otherRequest._parameterValues != null)) {
+         return false;
+      }
+      Element dataElement = getDataElement();
+      Element otherDataElement = otherRequest.getDataElement();
+      if ((dataElement != null && !dataElement.equals(otherDataElement)) ||
+            (dataElement == null && otherDataElement != null)) {
+         return false;
+      }
+      return true;
+   }
 }
