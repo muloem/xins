@@ -357,7 +357,7 @@ ${apis.list}]]></echo>
 		</zip>
 	</target>
 
-	<target name="-javadoc-capi" depends="-prepare-classes">
+	<target name="-javadoc-capi" depends="-prepare-classes,-stubs-capi">
 		<mkdir dir="${builddir}/javadoc-capi/${api}" />
 		<javadoc
 		sourcepathref="javadoc.capi.packages"
@@ -733,7 +733,7 @@ ${apis.list}]]></echo>
 		</xslt>
 	</target>
 
-	<target name="-jar" depends="-load-version, -prepare-classes">
+	<target name="-jar" depends="-load-version, -prepare-classes, -stubs-capi">
 		<mkdir dir="${builddir}/classes-capi/${api}" />
 		<javac
 		srcdir="${builddir}/java-capi/${api}/"

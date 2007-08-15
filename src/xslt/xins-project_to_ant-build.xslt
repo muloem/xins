@@ -252,35 +252,39 @@
 				<xsl:with-param name="api" select="$api" />
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="packageAsDir" select="translate($package, '.','/')" />
+		<xsl:variable name="packageAsDir" select="translate($package, '.', '/')" />
 
 		<target name="-load-properties-{$api}" depends="-load-properties">
-			<property name="api" value="{@name}" />
-			<property name="api_specsdir" value="${{project_home}}/apis/${{api}}/spec" />
-			<property name="api_file" value="${{api_specsdir}}/api.xml" />
-			<property name="functionIncludes" value="{$functionIncludes}" />
+			<property name="{$api}.api" value="{@name}" />
+			<property name="{$api}.api_specsdir" value="${{project_home}}/apis/${{{$api}.api}}/spec" />
+			<property name="{$api}.api_file" value="${{{$api}.api_specsdir}}/api.xml" />
+			<property name="{$api}.functionIncludes" value="{$functionIncludes}" />
 			<xsl:if test="string-length($typeIncludes) &gt; 0">
-				<property name="typeIncludes" value="{$typeIncludes}" />
+				<property name="{$api}.typeIncludes" value="{$typeIncludes}" />
 			</xsl:if>
 			<xsl:if test="string-length($typeIncludesAll) &gt; 0">
-				<property name="typeIncludesAll" value="{$typeIncludesAll}" />
+				<property name="{$api}.typeIncludesAll" value="{$typeIncludesAll}" />
 			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludes) &gt; 0">
-				<property name="resultcodeIncludes" value="{$resultcodeIncludes}" />
+				<property name="{$api}.resultcodeIncludes" value="{$resultcodeIncludes}" />
 			</xsl:if>
 			<xsl:if test="string-length($resultcodeIncludesAll) &gt; 0">
-				<property name="resultcodeIncludesAll" value="{$resultcodeIncludesAll}" />
+				<property name="{$api}.resultcodeIncludesAll" value="{$resultcodeIncludesAll}" />
 			</xsl:if>
 			<xsl:if test="string-length($categoryIncludes) &gt; 0">
-				<property name="categoryIncludes" value="{$categoryIncludes}" />
+				<property name="{$api}.categoryIncludes" value="{$categoryIncludes}" />
 			</xsl:if>
-			<property name="clientPackage" value="{$clientPackage}" />
-			<property name="clientPackageAsDir" value="{$clientPackageAsDir}" />
-			<property name="package" value="{$package}" />
-			<property name="packageAsDir" value="{$packageAsDir}" />
+			<property name="{$api}.clientPackage" value="{$clientPackage}" />
+			<property name="{$api}.clientPackageAsDir" value="{$clientPackageAsDir}" />
+			<property name="{$api}.package" value="{$package}" />
+			<property name="{$api}.packageAsDir" value="{$packageAsDir}" />
 			<xsl:if test="apiHasTypes">
-				<property name="apiHasTypes" value="true" />
+				<property name="{$api}.apiHasTypes" value="true" />
 			</xsl:if>
+			<propertyset id="{$api}.properties">
+				<propertyref prefix="{$api}." />
+				<mapper type="glob" from="{$api}.*" to="*"/>
+			</propertyset>
 		</target>
 
 		<target name="-dependset-file-{$api}">
@@ -316,6 +320,7 @@
 			<xsl:variable name="env_file" select="''" />
 			<property name="env_file" value="{$env_file}" />
 			<antcall target="-specdocs">
+				<propertyset refid="{$api}.properties" />
 				<reference refid="all-dtds" />
 			</antcall>
 			<xsl:for-each select="impl">
@@ -330,12 +335,14 @@
 				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
 				<xsl:if test="$impl_node/runtime-properties">
 					<antcall target="-specdocs-impl-runtime">
+						<propertyset refid="{$api}.properties" />
 						<param name="implName2" value="{$implName2}" />
 						<reference refid="all-dtds" />
-				</antcall>
+					</antcall>
 				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
 					<antcall target="-specdocs-impl-logdoc">
+						<propertyset refid="{$api}.properties" />
 						<param name="implName2" value="{$implName2}" />
 						<reference refid="all-dtds" />
 					</antcall>
@@ -352,23 +359,25 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="typePackageAsDir" select="translate($typePackage, '.','/')" />
-				<property name="typePackage" value="{$typePackage}" />
-				<property name="typePackageAsDir" value="{$typePackageAsDir}" />
+				<property name="{$api}.typePackage" value="{$typePackage}" />
+				<property name="{$api}.typePackageAsDir" value="{$typePackageAsDir}" />
 				<antcall target="-classes-types">
+					<propertyset refid="{$api}.properties" />
 					<reference refid="all-dtds" />
 				</antcall>
 			</target>
 		</xsl:if>
 
-		<target name="wsdl-{$api}" description="Generates the WSDL specification of the '{$api}' API">
-			<antcall target="opendoc-{$api}">
-				<param name="wsdl.opendoc.target" value="-wsdl" />
+		<target name="wsdl-{$api}" depends="-load-properties-{$api}" description="Generates the WSDL specification of the '{$api}' API">
+			<antcall target="-wsdl">
+				<propertyset refid="{$api}.properties" />
 			</antcall>
 		</target>
 
 		<target name="opendoc-{$api}" depends="-load-properties-{$api}" description="Generates the specification document for the '{$api}' API">
-			<property name="wsdl.opendoc.target" value="-opendoc" />
-			<antcall target="${{wsdl.opendoc.target}}" />
+			<antcall target="-opendoc">
+				<propertyset refid="{$api}.properties" />
+			</antcall>
 		</target>
 
 		<xsl:for-each select="impl">
@@ -412,7 +421,7 @@
 				<dependset>
 					<srcfilelist dir="{$api_specsdir}/../impl{$implName2}" files="impl.xml" />
 					<srcfileset dir="{$api_specsdir}">
-						<include name="${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}}" />
+						<include name="${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}}" />
 					</srcfileset>
 					<targetfileset dir="{$javaDestDir}/{$packageAsDir}" includes="*.java" />
 					<xsl:if test="$api_node/resultcode">
@@ -436,16 +445,19 @@
 				<antcall target="-classes-api">
 					<reference refid="classes.api.classpath" />
 					<reference refid="all-dtds" />
+					<propertyset refid="{$api}.properties" />
 					<param name="implName2" value="{$implName2}" />
 				</antcall>
 			</target>
 
 			<target name="war-{$api}{$implName2}" depends="-load-properties-{$api}, classes-api-{$api}{$implName2}, wsdl-{$api}" description="Creates the WAR for the '{$api}{$implName2}' API" unless="no-war-{$api}{$implName2}">
-				<property name="implName2" value="{$implName2}" />
 				<tstamp>
 					<format property="timestamp" pattern="yyyy.MM.dd HH:mm:ss.SS" />
 				</tstamp>
-				<antcall target="-war" />
+				<antcall target="-war">
+					<propertyset refid="{$api}.properties" />
+					<param name="implName2" value="{$implName2}" />
+				</antcall>
 				<property name="classes.api.dir" value="{$classesDestDir}" />
 				<war
 				webxml="{$builddir}/webapps/{$api}{$implName2}/web.xml"
@@ -463,7 +475,7 @@
 					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class" /> 
 					<xsl:apply-templates select="$impl_node/content" />
 					<zipfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
-					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}} {$categoryIncludes}" prefix="WEB-INF/specs" />
+					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}} {$categoryIncludes}" prefix="WEB-INF/specs" />
 					<xsl:for-each select="$api_node/type">
 						<xsl:if test="contains(@name, '/')">
 							<xsl:variable name="type_dir"
@@ -496,8 +508,6 @@
 					</xsl:if>
 					<xsl:value-of select="concat('war-', $api, $implName2)" />
 				</xsl:attribute>
-				<property name="api" value="{$api}" />
-				<property name="implName2" value="{$implName2}" />
 				<path id="run.classpath">
 					<path location="{$builddir}/classes-api/{$api}{$implName2}" />
 					<xsl:if test="$apiHasTypes">
@@ -509,13 +519,12 @@
 				</path>
 				<antcall target="-run">
 					<reference refid="run.classpath" />
+					<propertyset refid="{$api}.properties" />
+					<param name="implName2" value="{$implName2}" />
 				</antcall>
 			</target>
 
 			<target name="javadoc-api-{$api}{$implName2}" depends="-load-properties, classes-api-{$api}{$implName2}" description="Generates Javadoc API docs for the '{$api}{$implName2}' API">
-				<!-- XXX probably done by classes- -->
-				<property name="api" value="{$api}" />
-				<property name="implName2" value="{$implName2}" />
 				<!--path id="javadoc.api.{$api}{$implName2}.packageset"-->
 				<path id="javadoc.api.packageset">
 					<dirset dir="{$javaDestDir}" />
@@ -527,12 +536,16 @@
 				<antcall target="-javadoc-api">
 					<reference refid="javadoc.api.packageset" />
 					<reference refid="classes.api.classpath"  />
+					<param name="api" value="{$api}" />
+					<param name="implName2" value="{$implName2}" />
 				</antcall>
 			</target>
 
 			<target name="stub-{$api}{$implName2}" depends="-load-properties-{$api}" description="Generates an Stub API using the defined examples">
-				<property name="implName2" value="{$implName2}" />
-				<antcall target="-stub" />
+				<antcall target="-stub">
+					<propertyset refid="{$api}.properties" />
+					<param name="implName2" value="{$implName2}" />
+				</antcall>
 			</target>
 
 			<target name="server-{$api}{$implName2}"
@@ -571,13 +584,16 @@
 				</path>
 				<antcall target="-test">
 					<reference refid="test.classpath" />
+					<propertyset refid="{$api}.properties" />
 				</antcall>
 			</target>
 
 			<target name="generatetests-{$api}" depends="-load-properties-{$api}" unless="test.generated">
-				<property name="packageTests" value="{$packageTests}" />
-				<property name="packageTestsAsDir" value="{$packageTestsAsDir}" />
-				<antcall target="-generatetests" />
+				<property name="{$api}.packageTests" value="{$packageTests}" />
+				<property name="{$api}.packageTestsAsDir" value="{$packageTestsAsDir}" />
+				<antcall target="-generatetests">
+					<propertyset refid="{$api}.properties" />
+				</antcall>
 			</target>
 
 			<target name="javadoc-test-{$api}" description="Generates the Javadoc of the unit tests of the {$api} API.">
@@ -588,7 +604,6 @@
 						<xsl:value-of select="concat('-load-dependencies-', $api)" />
 					</xsl:attribute>
 				</xsl:if>
-				<property name="api" value="{$api}" />
 				<path id="javadoc.test.classpath">
 					<pathelement path="{$builddir}/classes-tests/{$api}" />
 					<xsl:if test="$apiHasTypes">
@@ -598,7 +613,10 @@
 						<path refid="impl.dependencies" />
 					</xsl:if>
 				</path>
-				<antcall target="-javadoc-test" inheritRefs="true" />
+				<antcall target="-javadoc-test">
+					<reference refid="javadoc.test.classpath" />
+					<param name="api" value="{$api}" />
+				</antcall>
 			</target>
 		</xsl:if>
 
@@ -611,7 +629,6 @@
 					<xsl:text>-classes-types-</xsl:text>
 					<xsl:value-of select="$api" />
 				</xsl:if>
-				<xsl:text>,-stubs-capi</xsl:text>
 			</xsl:attribute>
 			<path id="jar.classpath">
 				<path refid="xins.classpath" />
@@ -620,6 +637,7 @@
 				</xsl:if>
 			</path>
 			<antcall target="-jar">
+				<propertyset refid="{$api}.properties" />
 				<reference refid="jar.classpath" />
 			</antcall>
 			<xsl:if test="$apiHasTypes">
@@ -631,7 +649,7 @@
 			destfile="{$builddir}/capis/{$api}-capi.jar"
 			manifest="{$builddir}/capis/{$api}-MANIFEST.MF">
 				<fileset dir="{$builddir}/classes-capi/{$api}" includes="**/*.class" />
-				<zipfileset dir="{$api_specsdir}" includes="api.xml ${{functionIncludes}} ${{typeIncludes}} ${{resultcodeIncludes}}" prefix="specs" />
+				<zipfileset dir="{$api_specsdir}" includes="api.xml ${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}}" prefix="specs" />
 				<xsl:for-each select="type">
 					<xsl:if test="contains(@name, '/')">
 						<xsl:variable name="type_dir"
@@ -661,7 +679,6 @@
 				<xsl:if test="$apiHasTypes">
 					<xsl:value-of select="concat(', -classes-types-', $api)" />
 				</xsl:if>
-				<xsl:text>,-stubs-capi</xsl:text>
 			</xsl:attribute>
 			<path id="javadoc.capi.packages">
 				<dirset dir="{$builddir}/java-capi/{$api}" />
@@ -672,6 +689,7 @@
 			<antcall target="-javadoc-capi">
 				<reference refid="javadoc.capi.packages" />
 				<reference refid="xins.classpath" />
+				<propertyset refid="{$api}.properties" />
 			</antcall>
 		</target>
 
@@ -694,11 +712,13 @@
 		</target>
 
 		<target name="clean-{$api}" description="Deletes everything for the '{$api}' API stubs.">
-			<property name="api" value="{$api}" />
-			<antcall target="-clean" />
+			<antcall target="-clean">
+				<param name="api" value="{$api}" />
+			</antcall>
 			<xsl:for-each select="impl/@name">
 				<xsl:variable name="impl" select="." />
 				<antcall target="-clean-impl">
+					<param name="api" value="{$api}" />
 					<param name="impl" value="{$impl}" />
 				</antcall>
 			</xsl:for-each>
