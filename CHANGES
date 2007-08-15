@@ -16,6 +16,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - The Element object uses ChainedMap for the attribute list instead of
     HashMap in order to have the attribute in the same order as the way they
     were set.
+  - Implement equals and hashCode for Element.
+  - Added support for the namespace prefix in Element.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
@@ -28,6 +30,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - ChainedMap is used instead of HashMap for the session properties and the
     input parameters in order to have them in the same order as the way they
     were set.
+  - Added _xins-soap-map calling convention. This convention maps SOAP request
+    to XINS request using the same mapping as done with the wsdl-to-api command.
 
 * XINS/Java Client Framework:
   - Overridden hashCode and equals in AbstractCAPICallRequest so that two
