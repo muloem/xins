@@ -22,15 +22,11 @@ import org.xins.common.Utils;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */
-public final class FileWatcher extends Thread {
-
-   /**
-    * Fully-qualified name of this class.
-    */
-   private static final String CLASSNAME = FileWatcher.class.getName();
+public class FileWatcher extends Thread {
 
    /**
     * Instance counter. Used to generate a unique ID for each instance.
@@ -60,6 +56,11 @@ public final class FileWatcher extends Thread {
    private static final int SHOULD_STOP = 3;
 
    /**
+    * Fully-qualified name of this class.
+    */
+   private final String _className;
+
+   /**
     * Unique instance identifier.
     */
    private final int _instanceID;
@@ -67,12 +68,12 @@ public final class FileWatcher extends Thread {
    /**
     * The files to watch. Not <code>null</code>.
     */
-   private final File[] _files;
+   private File[] _files;
 
    /**
     * The string representation of the files to watch. Not <code>null</code>.
     */
-   private final String _filePaths;
+   protected String _filePaths;
 
    /**
     * Delay in seconds, at least 1. When the interval is uninitialized, the
@@ -92,7 +93,7 @@ public final class FileWatcher extends Thread {
     *
     * <p>Initially this field is <code>-1L</code>.
     */
-   private long _lastModified;
+   protected long _lastModified;
 
    /**
     * Current state. Never <code>null</code>. Value is one of the following
@@ -190,6 +191,7 @@ public final class FileWatcher extends Thread {
          }
       }
 
+      _className = getClass().getName();
 
       // Determine the unique instance ID
       int instanceID;
@@ -199,13 +201,7 @@ public final class FileWatcher extends Thread {
 
       // Initialize the fields
       _instanceID    = instanceID;
-      _files         = new File[files.length];
-      String filePaths = "";
-      for (int i = 0; i < files.length; i++) {
-         _files[i] = new File(files[i]);
-         filePaths += ";" + _files[i].getPath();
-      }
-      _filePaths     = filePaths.substring(1);
+      storeFiles(files);
       _interval      = interval;
       _listener      = listener;
       _state         = NOT_RUNNING;
@@ -221,10 +217,27 @@ public final class FileWatcher extends Thread {
    }
 
    /**
+    * Stores the files in a class variable.
+    * 
+    * @param files
+    *    the String files to check, cannot be <code>null</code>.
+    */
+   protected void storeFiles(String[] files) {
+      _files = new File[files.length];
+      _files[0] = new File(files[0]);
+      File baseDir = _files[0].getParentFile();
+      _filePaths = _files[0].getPath();
+      for (int i = 1; i < files.length; i++) {
+         _files[i] = new File(baseDir, files[i]);
+         _filePaths += ";" + _files[i].getPath();
+      }
+   }
+
+   /**
     * Configures the name of this thread.
     */
    private synchronized void configureThreadName() {
-      String name = CLASSNAME + " #" + _instanceID + " [files=\"" + 
+      String name = _className + " #" + _instanceID + " [files=\"" + 
             _filePaths + "\"; interval=" + _interval + ']';
       setName(name);
    }
@@ -235,7 +248,7 @@ public final class FileWatcher extends Thread {
     * cannot be accessed due to a {@link SecurityException}, then this
     * exception is logged and ignored.
     */
-   private void firstCheck() {
+   protected void firstCheck() {
 
       for (int i = 0; i < _files.length; i++) {
          File file = _files[i];
@@ -412,14 +425,6 @@ public final class FileWatcher extends Thread {
       // Check if the file can be read from and if so, when it was last
       // modified
       try {
-         for (int i = 0; i < _files.length; i++) {
-            File file = _files[i];
-            if (file.canRead() && lastModified != -1L) {
-               lastModified = Math.max(lastModified, file.lastModified());
-            } else {
-               lastModified = -1L;
-            }
-         }
 
       // Authorisation problem; our code is not allowed to call canRead()
       // and/or lastModified() on the File object
@@ -496,6 +501,29 @@ public final class FileWatcher extends Thread {
             Utils.logIgnoredException(exception);
          }
       }
+   }
+
+   /**
+    * Gets the time at which the last file was modified.
+    * If for any reason, a file could no be read -1 is returned.
+    * 
+    * @return
+    *    the time of the last modified file or -1.
+    * 
+    * @throws SecurityException
+    *    if one of the file could not be read because of a security issue.
+    */
+   protected long getLastModified() throws SecurityException {
+      long lastModified = 0L;
+      for (int i = 0; i < _files.length; i++) {
+         File file = _files[i];
+         if (file.canRead()) {
+            lastModified = Math.max(lastModified, file.lastModified());
+         } else {
+            return -1L;
+         }
+      }
+      return lastModified;
    }
 
    /**
