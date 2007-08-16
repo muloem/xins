@@ -60,7 +60,7 @@ public class ElementSerializerTests extends TestCase {
       ElementSerializer serializer = new ElementSerializer();
 
       // Serialize it
-      String expected = "<ns0:a xmlns:ns0=\"b\" c=\"2\"/>";
+      String expected = "<a xmlns=\"b\" c=\"2\"/>";
       String actual   = serializer.serialize(element);
       assertEquals(expected, actual);
 
