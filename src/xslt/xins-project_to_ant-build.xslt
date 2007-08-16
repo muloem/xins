@@ -301,6 +301,15 @@
 				<xsl:if test="string-length($categoryIncludes) &gt; 0">
 					<srcfilelist dir="{$api_specsdir}" files="${{categoryIncludes}}" />
 				</xsl:if>
+				<xsl:for-each select="impl">
+					<xsl:variable name="implName" select="@name" />
+					<xsl:variable name="implName2">
+						<xsl:if test="@name and string-length($implName) &gt; 0">
+							<xsl:value-of select="concat('-', $implName)" />
+						</xsl:if>
+					</xsl:variable>
+					<srcfilelist dir="{$project_home}/apis/{$api}/impl{$implName2}" files="impl.xml" />
+				</xsl:for-each>
 				<targetfileset dir="{$builddir}" includes="${{dependset.destination}}" />
 			</dependset>
 		</target>
