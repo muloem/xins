@@ -13,9 +13,9 @@ import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 /**
- * File watcher thread. This thread checks if a file changed and if it has, it
- * notifies the listener. The check is performed every <em>n</em> seconds,
- * where <em>n</em> can be configured.
+ * File watcher thread. This thread checks if a file or a set of files
+ * changed and if it has, it notifies the listener. 
+ * The check is performed every <em>n</em> seconds, where <em>n</em> can be configured.
  *
  * <p>Initially this thread will be a daemon thread. This can be changed by
  * calling {@link #setDaemon(boolean)}.
@@ -65,14 +65,14 @@ public final class FileWatcher extends Thread {
    private final int _instanceID;
 
    /**
-    * The file to watch. Not <code>null</code>.
+    * The files to watch. Not <code>null</code>.
     */
-   private final File _file;
+   private final File[] _files;
 
    /**
-    * The path of the file to watch. Not <code>null</code>.
+    * The string representation of the files to watch. Not <code>null</code>.
     */
-   private final String _filePath;
+   private final String _filePaths;
 
    /**
     * Delay in seconds, at least 1. When the interval is uninitialized, the
@@ -110,56 +110,6 @@ public final class FileWatcher extends Thread {
    private int _state;
 
    /**
-    * Creates a new <code>FileWatcher</code> for the specified file, with the
-    * specified interval.
-    *
-    * @param file
-    *    the name of the file to watch, cannot be <code>null</code>.
-    *
-    * @param interval
-    *    the interval in seconds, must be greater than or equal to 1.
-    *
-    * @param listener
-    *    the object to notify on events, cannot be <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>file == null || listener == null || interval &lt; 1</code>
-    */
-   public FileWatcher(String file, int interval, Listener listener)
-   throws IllegalArgumentException {
-
-      // Check preconditions
-      MandatoryArgumentChecker.check("file", file, "listener", listener);
-      if (interval < 1) {
-         throw new IllegalArgumentException(
-            "interval (" + interval + ") < 1");
-      }
-
-      // Determine the unique instance ID
-      int instanceID;
-      synchronized (INSTANCE_COUNT_LOCK) {
-         instanceID = INSTANCE_COUNT++;
-      }
-
-      // Initialize the fields
-      _instanceID    = instanceID;
-      _file          = new File(file);
-      _filePath      = _file.getPath();
-      _interval      = interval;
-      _listener      = listener;
-      _state         = NOT_RUNNING;
-
-      // Configure thread as daemon
-      setDaemon(true);
-
-      // Set the name of this thread
-      configureThreadName();
-
-      // Immediately check if the file can be read from
-      firstCheck();
-   }
-
-   /**
     * Creates a new <code>FileWatcher</code> for the specified file.
     *
     * <p>The interval must be set before the thread can be started.
@@ -177,15 +127,86 @@ public final class FileWatcher extends Thread {
     */
    public FileWatcher(String file, Listener listener)
    throws IllegalArgumentException {
+      this(file, 0, listener);
+   }
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified file, with the
+    * specified interval.
+    *
+    * @param file
+    *    the name of the file to watch, cannot be <code>null</code>.
+    *
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 0.
+    *    if the interval is 0 the interval must be set before the thread can
+    *    be started.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file == null || listener == null || interval &lt; 0</code>
+    */
+   public FileWatcher(String file, int interval, Listener listener)
+   throws IllegalArgumentException {
+      this(new String[]{file}, interval, listener);
+   }
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified set of files, 
+    * with the specified interval.
+    *
+    * @param files
+    *    the name of the files to watch, cannot be <code>null</code>.
+    *    It should also have at least one file and none of the file should be <code>null</code>.
+    *
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 0.
+    *    if the interval is 0 the interval must be set before the thread can
+    *    be started.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>files == null || listener == null || interval &lt; 0 || files.length &lt; 1</code>
+    *    or if one of the file is <code>null</code>.
+    */
+   public FileWatcher(String[] files, int interval, Listener listener)
+   throws IllegalArgumentException {
 
       // Check preconditions
-      MandatoryArgumentChecker.check("file", file, "listener", listener);
+      MandatoryArgumentChecker.check("files", files, "listener", listener);
+      if (interval < 0) {
+         throw new IllegalArgumentException("interval (" + interval + ") < 0");
+      }
+      if (files.length < 1) {
+         throw new IllegalArgumentException("At least one file should be specified.");
+      }
+      for (int i = 0; i < files.length; i++) {
+         if (files[i] == null) {
+            throw new IllegalArgumentException("The file specified at index " + i + " is null.");
+         }
+      }
+
+
+      // Determine the unique instance ID
+      int instanceID;
+      synchronized (INSTANCE_COUNT_LOCK) {
+         instanceID = INSTANCE_COUNT++;
+      }
 
       // Initialize the fields
-      _instanceID    = INSTANCE_COUNT++;
-      _file          = new File(file);
-      _filePath      = _file.getPath();
-      _interval      = 0;
+      _instanceID    = instanceID;
+      _files         = new File[files.length];
+      String filePaths = "";
+      for (int i = 0; i < files.length; i++) {
+         _files[i] = new File(files[i]);
+         filePaths += ";" + _files[i].getPath();
+      }
+      _filePaths     = filePaths.substring(1);
+      _interval      = interval;
       _listener      = listener;
       _state         = NOT_RUNNING;
 
@@ -203,8 +224,8 @@ public final class FileWatcher extends Thread {
     * Configures the name of this thread.
     */
    private synchronized void configureThreadName() {
-      String name = CLASSNAME + " #" + _instanceID + " [file=\"" + _filePath +
-            "\"; interval=" + _interval + ']';
+      String name = CLASSNAME + " #" + _instanceID + " [files=\"" + 
+            _filePaths + "\"; interval=" + _interval + ']';
       setName(name);
    }
 
@@ -216,14 +237,17 @@ public final class FileWatcher extends Thread {
     */
    private void firstCheck() {
 
-      try {
-         if (_file.canRead()) {
-            _lastModified = _file.lastModified();
-         }
+      for (int i = 0; i < _files.length; i++) {
+         File file = _files[i];
+         try {
+            if (file.canRead()) {
+               _lastModified = Math.max(_lastModified, file.lastModified());
+            }
 
-      // Ignore a SecurityException
-      } catch (SecurityException exception) {
-         Utils.logIgnoredException(exception);
+         // Ignore a SecurityException
+         } catch (SecurityException exception) {
+            Utils.logIgnoredException(exception);
+         }
       }
    }
 
@@ -257,7 +281,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Interval has not been set yet.");
       }
 
-      Log.log_1200(_instanceID, _filePath, interval);
+      Log.log_1200(_instanceID, _filePaths, interval);
 
       // Move to the RUNNING state
       synchronized (this) {
@@ -288,7 +312,7 @@ public final class FileWatcher extends Thread {
       }
 
       // Thread stopped
-      Log.log_1203(_instanceID, _filePath);
+      Log.log_1203(_instanceID, _filePaths);
    }
 
    /**
@@ -323,7 +347,7 @@ public final class FileWatcher extends Thread {
 
       // Change the interval
       if (newInterval != _interval) {
-         Log.log_1201(_instanceID, _filePath, _interval, newInterval);
+         Log.log_1201(_instanceID, _filePaths, _interval, newInterval);
          _interval = newInterval;
       }
 
@@ -348,7 +372,7 @@ public final class FileWatcher extends Thread {
          throw new IllegalStateException("Thread already stopping.");
       }
 
-      Log.log_1202(_instanceID, _filePath);
+      Log.log_1202(_instanceID, _filePaths);
 
       // Change the state and interrupt the thread
       _state = SHOULD_STOP;
@@ -383,15 +407,18 @@ public final class FileWatcher extends Thread {
 
       // Variable to store the file modification timestamp in. The value -1
       // indicates the file does not exist.
-      long lastModified;
+      long lastModified = 0L;
 
       // Check if the file can be read from and if so, when it was last
       // modified
       try {
-         if (_file.canRead()) {
-            lastModified = _file.lastModified();
-         } else {
-            lastModified = -1L;
+         for (int i = 0; i < _files.length; i++) {
+            File file = _files[i];
+            if (file.canRead() && lastModified != -1L) {
+               lastModified = Math.max(lastModified, file.lastModified());
+            } else {
+               lastModified = -1L;
+            }
          }
 
       // Authorisation problem; our code is not allowed to call canRead()
@@ -411,7 +438,7 @@ public final class FileWatcher extends Thread {
          return;
       }
 
-      // File can not be found
+      // A least one file can not be found
       if (lastModified == -1L) {
 
          // Set _lastModified to -1, which indicates the file did not exist
@@ -427,7 +454,7 @@ public final class FileWatcher extends Thread {
             Utils.logIgnoredException(exception);
          }
 
-      // Previously the file could not be found, but now it can
+      // Previously a file could not be found, but now it can
       } else if (_lastModified == -1L) {
 
          // Update the field that stores the last known modification date
@@ -442,7 +469,7 @@ public final class FileWatcher extends Thread {
             Utils.logIgnoredException(exception);
          }
 
-      // File has been modified
+      // At least one file has been modified
       } else if (lastModified != _lastModified) {
 
          // Update the field that stores the last known modification date
@@ -457,7 +484,7 @@ public final class FileWatcher extends Thread {
             Utils.logIgnoredException(exception);
          }
 
-      // File has not been modified
+      // None of the files has not been modified
       } else {
 
          // Notify listener
