@@ -19,6 +19,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Implement equals and hashCode for Element.
   - Added support for the namespace prefix in Element.
   - Possibility to change the namespace prefix and URI for an Element.
+  - Added possibility for the FileWatcher to monitor several files at once.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
@@ -33,6 +34,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     were set.
   - Added _xins-soap-map calling convention. This convention maps SOAP request
     to XINS request using the same mapping as done with the wsdl-to-api command.
+  - Added new runtime property org.xins.server.config.include which offer the
+    possibility to include runtime properties files.
 
 * XINS/Java Client Framework:
   - Overridden hashCode and equals in AbstractCAPICallRequest so that two
@@ -2196,6 +2199,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
     element at different XML levels.
 
 * Generation of client-side Java code:
+
   - Improved the generation of the CAPI [Function]Request classes:
     . Fixed SF.net bug #1362875: Overriding Request input value with empty
       string ignored.

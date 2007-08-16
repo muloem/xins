@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -62,6 +63,14 @@ final class ConfigManager {
       "org.xins.server.config.reload";
 
    /**
+    * The name of the runtime property that specifies the list of runtime
+    * properties file to include. The paths must be relative to the
+    * current config file.
+    */
+   static final String CONFIG_INCLUDE_PROPERTY =
+      "org.xins.server.config.include";
+
+   /**
     * The default configuration file modification check interval, in seconds.
     */
    static final int DEFAULT_CONFIG_RELOAD_INTERVAL = 60;
@@ -94,6 +103,16 @@ final class ConfigManager {
     * The name of the runtime configuration file. Initially <code>null</code>.
     */
    private String _configFile;
+
+   /**
+    * The name of the all runtime configuration file included in the main config file. Can be <code>null</code>.
+    */
+   private String[] _configFiles;
+
+   /**
+    * The String representation of the config files. Initialy <code>null</code>.
+    */
+   private String _configFilesPath;
 
    /**
     * Watcher for the runtime configuration file. Initially <code>null</code>.
@@ -236,6 +255,7 @@ final class ConfigManager {
       }
 
       boolean propertiesRead = false;
+      _configFilesPath = _configFile;
 
       synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
 
@@ -246,20 +266,45 @@ final class ConfigManager {
                in = new FileInputStream(_configFile);
             }
             properties.load(in);
+
+            // Read the included files
+            if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
+                  properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
+               StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
+               File baseFile = new File(_configFile).getParentFile();
+               _configFiles = new String[stInclude.countTokens() + 1];
+               _configFiles[0] = _configFile;
+               _configFilesPath += "+ [";
+               int i = 0;
+               while (stInclude.hasMoreTokens()) {
+                  String nextInclude = stInclude.nextToken().trim().replace('/', File.separatorChar).replace('\\',  File.separatorChar);
+                  File includeFile = new File(baseFile, nextInclude);
+                  FileInputStream isInclude = new FileInputStream(includeFile);
+                  properties.load(isInclude);
+                  isInclude.close();
+                  _configFiles[i + 1] = nextInclude;
+                  _configFilesPath += nextInclude + ";";
+                  i++;
+               }
+               _configFilesPath += "]";
+            } else {
+               _configFiles = new String[1];
+               _configFiles[0] = _configFile;
+            }
             propertiesRead = true;
 
          // No such file
          } catch (FileNotFoundException exception) {
             String detail = TextUtils.trim(exception.getMessage(), null);
-            Log.log_3301(_configFile, detail);
+            Log.log_3301(_configFilesPath, detail);
 
          // Security issue
          } catch (SecurityException exception) {
-            Log.log_3302(exception, _configFile);
+            Log.log_3302(exception, _configFilesPath);
 
          // Other I/O error
          } catch (IOException exception) {
-            Log.log_3303(exception, _configFile);
+            Log.log_3303(exception, _configFilesPath);
 
          // Always close the input stream
          } finally {
@@ -273,13 +318,13 @@ final class ConfigManager {
          }
 
          // Initialize the logging subsystem
-         Log.log_3300(_configFile);
+         Log.log_3300(_configFilesPath);
 
          // Attempt to configure Log4J
          configureLogger(properties);
 
          if (!properties.isUnique()) {
-            Log.log_3311(_configFile);
+            Log.log_3311(_configFilesPath);
             propertiesRead = false;
          }
 
@@ -393,9 +438,7 @@ final class ConfigManager {
       }
 
       // Create and start a file watch thread
-      _configFileWatcher = new FileWatcher(_configFile,
-                                           interval,
-                                           _configFileListener);
+      _configFileWatcher = new FileWatcher(_configFiles, interval, _configFileListener);
       _configFileWatcher.start();
    }
 
@@ -448,7 +491,7 @@ final class ConfigManager {
       // If the properties did not include Log4J configuration settings, then
       // fallback to default settings
       if (appenders instanceof NullEnumeration) {
-         Log.log_3304(_configFile);
+         Log.log_3304(_configFilesPath);
          configureLoggerFallback();
 
       // Otherwise log that custom Log4J configuration settings were applied
@@ -488,23 +531,23 @@ final class ConfigManager {
 
             // Negative value
             if (interval < 0) {
-               Log.log_3409(_configFile, prop, s);
+               Log.log_3409(_configFilesPath, prop, s);
                throw new InvalidPropertyValueException(prop, s, "Negative value.");
 
             // Non-negative value
             } else {
-               Log.log_3410(_configFile, s);
+               Log.log_3410(_configFilesPath, s);
             }
 
          // Not a valid number string
          } catch (NumberFormatException nfe) {
-            Log.log_3409(_configFile, prop, s);
+            Log.log_3409(_configFilesPath, prop, s);
             throw new InvalidPropertyValueException(prop, s, "Not a 32-bit integer number.");
          }
 
       // Property not set, use the default
       } else {
-         Log.log_3408(_configFile, prop, DEFAULT_CONFIG_RELOAD_INTERVAL);
+         Log.log_3408(_configFilesPath, prop, DEFAULT_CONFIG_RELOAD_INTERVAL);
          interval = DEFAULT_CONFIG_RELOAD_INTERVAL;
       }
 
@@ -604,7 +647,7 @@ final class ConfigManager {
          if (_configFile != null) {
             Log.log_3407(_configFile);
          } else {
-            Log.log_3407("WEB-INF/xins.properties");
+            Log.log_3407("/WEB-INF/xins.properties");
          }
 
          boolean reinitialized;
@@ -657,13 +700,13 @@ final class ConfigManager {
                _configFileWatcher.end();
                _configFileWatcher = null;
             } else if (newInterval > 0 && _configFileWatcher == null) {
-               _configFileWatcher = new FileWatcher(_configFile,
+               _configFileWatcher = new FileWatcher(_configFiles,
                                                     newInterval,
                                                     _configFileListener);
                _configFileWatcher.start();
             } else {
                _configFileWatcher.setInterval(newInterval);
-               Log.log_3403(_configFile, oldInterval, newInterval);
+               Log.log_3403(_configFilesPath, oldInterval, newInterval);
             }
          }
       }
@@ -685,7 +728,7 @@ final class ConfigManager {
        * <p>The implementation of this method does not perform any actions.
        */
       public void fileNotFound() {
-         Log.log_3400(_configFile);
+         Log.log_3400(_configFilesPath);
       }
 
       /**
@@ -708,7 +751,7 @@ final class ConfigManager {
        *    (although this is not checked).
        */
       public void securityException(SecurityException exception) {
-         Log.log_3401(exception, _configFile);
+         Log.log_3401(exception, _configFilesPath);
       }
 
       /**
