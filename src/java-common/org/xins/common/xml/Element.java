@@ -54,13 +54,13 @@ public class Element implements Cloneable {
     * The namespace prefix. This field can be <code>null</code>, but it can never
     * be an empty string.
     */
-   private final String _namespacePrefix;
+   private String _namespacePrefix;
 
    /**
     * The namespace URI. This field can be <code>null</code>, but it can never
     * be an empty string.
     */
-   private final String _namespaceURI;
+   private String _namespaceURI;
 
    /**
     * The local name. This field is never <code>null</code>.
@@ -163,6 +163,24 @@ public class Element implements Cloneable {
    }
 
    /**
+    * Sets the namespace prefix.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix of this element, can be <code>null</code>.
+    *    If the value if <code>null</code> or an empty string, the element is
+    *    consider to have no namespace prefix.
+    *
+    * @since XINS 2.1.
+    */
+   public void setNamespacePrefix(String namespacePrefix) throws IllegalArgumentException {
+      if (namespacePrefix != null && namespacePrefix.length() == 0) {
+         _namespacePrefix = null;
+      } else {
+         _namespacePrefix = namespacePrefix;
+      }
+   }
+
+   /**
     * Gets the namespace prefix.
     *
     * @return
@@ -173,6 +191,24 @@ public class Element implements Cloneable {
     */
    public String getNamespacePrefix() {
       return _namespacePrefix;
+   }
+
+   /**
+    * Sets the namespace URI.
+    *
+    * @param namespaceURI
+    *    the namespace URI of this element, can be <code>null</code>.
+    *    If the value if <code>null</code> or an empty string, the element is
+    *    consider to have no namespace URI.
+    *
+    * @since XINS 2.1.
+    */
+   public void setNamespaceURI(String namespaceURI) throws IllegalArgumentException {
+      if (namespaceURI != null && namespaceURI.length() == 0) {
+         _namespaceURI = null;
+      } else {
+         _namespaceURI = namespaceURI;
+      }
    }
 
    /**
