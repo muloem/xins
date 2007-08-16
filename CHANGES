@@ -42,6 +42,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Passed the DTD reference to the antcall sub-targets.
   - -load-properties should be called before wsdl-to-api and xsd-to-api.
   - Fixed property conflict problem when targets of different APIs were called.
+  - Fail if the runtime-properties or bootstrap-properties are missing while
+    runtime properties or bootstrap properties are defined.
 
 * Generation of specification documentation:
   - Fixed error when a shared error code was defined in the examples.

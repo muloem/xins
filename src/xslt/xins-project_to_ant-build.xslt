@@ -333,6 +333,9 @@
 				<xsl:variable name="impl_dir" select="concat($project_home, '/apis/', $api, '/impl', $implName2)" />
 				<xsl:variable name="impl_file" select="concat($impl_dir, '/impl.xml')" />
 				<xsl:variable name="impl_node" select="document($impl_file)/impl" />
+				<xsl:if test="$impl_node/property">
+					<xsl:message terminate="yes">Missing runtime-properties element.</xsl:message>
+				</xsl:if>
 				<xsl:if test="$impl_node/runtime-properties">
 					<antcall target="-specdocs-impl-runtime">
 						<propertyset refid="{$api}.properties" />
@@ -428,6 +431,9 @@
 						<targetfileset dir="{$javaDestDir}" includes="resultcodes.xml" />
 					</xsl:if>
 				</dependset>
+				<xsl:if test="$impl_node/bootstrap-property">
+					<xsl:message terminate="yes">Missing bootstrap-properties element.</xsl:message>
+				</xsl:if>
 				<xsl:if test="$impl_node/logdoc">
 					<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
 					<property name="accesslevel" value="{$accesslevel}" />
