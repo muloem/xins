@@ -11,13 +11,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
@@ -32,6 +32,7 @@ import org.xins.common.collections.PropertyReaderUtils;
 import org.xins.common.collections.StatsPropertyReader;
 import org.xins.common.collections.UniqueProperties;
 import org.xins.common.io.FileWatcher;
+import org.xins.common.io.HTTPFileWatcher;
 import org.xins.common.text.TextUtils;
 import org.xins.logdoc.LogCentral;
 import org.xins.logdoc.UnsupportedLocaleException;
@@ -105,7 +106,8 @@ final class ConfigManager {
    private String _configFile;
 
    /**
-    * The name of the all runtime configuration file included in the main config file. Can be <code>null</code>.
+    * The name of the all runtime configuration files included in the main config file. 
+    * Can be <code>null</code> or empty.
     */
    private String[] _configFiles;
 
@@ -260,61 +262,28 @@ final class ConfigManager {
       synchronized (ConfigManager.RUNTIME_PROPERTIES_LOCK) {
 
          try {
-
-            // Open file, load properties, close file
-            if (in == null) {
-               in = new FileInputStream(_configFile);
-            }
-            properties.load(in);
-
-            // Read the included files
-            if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
-                  properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
-               StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
-               File baseFile = new File(_configFile).getParentFile();
-               _configFiles = new String[stInclude.countTokens() + 1];
-               _configFiles[0] = _configFile;
-               _configFilesPath += "+ [";
-               int i = 0;
-               while (stInclude.hasMoreTokens()) {
-                  String nextInclude = stInclude.nextToken().trim().replace('/', File.separatorChar).replace('\\',  File.separatorChar);
-                  File includeFile = new File(baseFile, nextInclude);
-                  FileInputStream isInclude = new FileInputStream(includeFile);
-                  properties.load(isInclude);
-                  isInclude.close();
-                  _configFiles[i + 1] = nextInclude;
-                  _configFilesPath += nextInclude + ";";
-                  i++;
-               }
-               _configFilesPath += "]";
+            if (in != null) {
+               properties.load(in);
+               in.close();
+            } else if (!_configFile.startsWith("http://") && !_configFile.startsWith("https://")) {
+               properties = readLocalRuntimeProperties();
             } else {
-               _configFiles = new String[1];
-               _configFiles[0] = _configFile;
+               properties = readHTTPRuntimeProperties();
             }
             propertiesRead = true;
+
+         // Security issue
+         } catch (SecurityException exception) {
+            Log.log_3302(exception, _configFilesPath);
 
          // No such file
          } catch (FileNotFoundException exception) {
             String detail = TextUtils.trim(exception.getMessage(), null);
             Log.log_3301(_configFilesPath, detail);
 
-         // Security issue
-         } catch (SecurityException exception) {
-            Log.log_3302(exception, _configFilesPath);
-
          // Other I/O error
          } catch (IOException exception) {
             Log.log_3303(exception, _configFilesPath);
-
-         // Always close the input stream
-         } finally {
-            if (in != null) {
-               try {
-                  in.close();
-               } catch (Throwable exception) {
-                  Utils.logIgnoredException(exception);
-               }
-            }
          }
 
          // Initialize the logging subsystem
@@ -336,6 +305,112 @@ final class ConfigManager {
          }
          _propertiesRead = propertiesRead;
       }
+   }
+
+   /**
+    * Read the runtime properties files when files are specified locally.
+    * 
+    * @throws IOException
+    *    if the file cannot be found or be read.
+    */
+   private UniqueProperties readLocalRuntimeProperties() throws IOException {
+      UniqueProperties properties = new UniqueProperties();
+      InputStream in = null;
+      try {
+
+         // Open file, load properties, close file
+         in = new FileInputStream(_configFile);
+         properties.load(in);
+
+         // Read the included files
+         if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
+               properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
+            StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
+            File baseFile = new File(_configFile).getParentFile();
+            _configFiles = new String[stInclude.countTokens() + 1];
+            _configFiles[0] = _configFile;
+            _configFilesPath += "+ [";
+            int i = 0;
+            while (stInclude.hasMoreTokens()) {
+               String nextInclude = stInclude.nextToken().trim().replace('/', File.separatorChar).replace('\\',  File.separatorChar);
+               File includeFile = new File(baseFile, nextInclude);
+               FileInputStream isInclude = new FileInputStream(includeFile);
+               properties.load(isInclude);
+               isInclude.close();
+               _configFiles[i + 1] = nextInclude;
+               _configFilesPath += nextInclude + ";";
+               i++;
+            }
+            _configFilesPath += "]";
+         } else {
+            _configFiles = new String[1];
+            _configFiles[0] = _configFile;
+         }
+
+      // Always close the input stream
+      } finally {
+         if (in != null) {
+            try {
+               in.close();
+            } catch (Throwable exception) {
+               Utils.logIgnoredException(exception);
+            }
+         }
+      }
+      return properties;
+   }
+
+   /**
+    * Read the runtime properties files when files are specified locally.
+    * 
+    * @throws IOException
+    *    if the URL cannot be created or if the connection to the URL failed.
+    */
+   private UniqueProperties readHTTPRuntimeProperties() throws IOException {
+      UniqueProperties properties = new UniqueProperties();
+      InputStream in = null;
+      try {
+
+         // Open file, load properties, close file
+         URL configURL = new URL(_configFile);
+         in = configURL.openStream();
+         properties.load(in);
+
+         // Read the included files
+         if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
+               properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
+            StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
+            _configFiles = new String[stInclude.countTokens() + 1];
+            _configFiles[0] = _configFile;
+            _configFilesPath += "+ [";
+            int i = 0;
+            while (stInclude.hasMoreTokens()) {
+               String nextInclude = stInclude.nextToken().trim().replace('/', File.separatorChar).replace('\\',  File.separatorChar);
+               URL includeFile = new URL(configURL, nextInclude);
+               InputStream isInclude = includeFile.openStream();
+               properties.load(isInclude);
+               isInclude.close();
+               _configFiles[i + 1] = nextInclude;
+               _configFilesPath += nextInclude + ";";
+               i++;
+            }
+            _configFilesPath += "]";
+         } else {
+            _configFiles = new String[1];
+            _configFiles[0] = _configFile;
+         }
+
+      // Always close the input stream
+      } finally {
+         if (in != null) {
+            try {
+               in.close();
+            } catch (Throwable exception) {
+               Utils.logIgnoredException(exception);
+            }
+         }
+      }
+      return properties;
    }
 
    /**
@@ -438,7 +513,11 @@ final class ConfigManager {
       }
 
       // Create and start a file watch thread
-      _configFileWatcher = new FileWatcher(_configFiles, interval, _configFileListener);
+      if (_configFile.startsWith("http://") ||_configFile.startsWith("https://")) {
+         _configFileWatcher = new HTTPFileWatcher(_configFiles, interval, _configFileListener);
+      } else {
+         _configFileWatcher = new FileWatcher(_configFiles, interval, _configFileListener);
+      }
       _configFileWatcher.start();
    }
 
@@ -700,9 +779,11 @@ final class ConfigManager {
                _configFileWatcher.end();
                _configFileWatcher = null;
             } else if (newInterval > 0 && _configFileWatcher == null) {
-               _configFileWatcher = new FileWatcher(_configFiles,
-                                                    newInterval,
-                                                    _configFileListener);
+               if (_configFile.startsWith("http://") ||_configFile.startsWith("https://")) {
+                  _configFileWatcher = new HTTPFileWatcher(_configFiles, newInterval, _configFileListener);
+               } else {
+                  _configFileWatcher = new FileWatcher(_configFiles, newInterval, _configFileListener);
+               }
                _configFileWatcher.start();
             } else {
                _configFileWatcher.setInterval(newInterval);

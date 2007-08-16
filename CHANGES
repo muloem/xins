@@ -20,6 +20,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added support for the namespace prefix in Element.
   - Possibility to change the namespace prefix and URI for an Element.
   - Added possibility for the FileWatcher to monitor several files at once.
+  - Added HTTPFileWatcher that monitors several URLs at once.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
@@ -36,6 +37,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     to XINS request using the same mapping as done with the wsdl-to-api command.
   - Added new runtime property org.xins.server.config.include which offer the
     possibility to include runtime properties files.
+  - Added possibility to specified a URL for the runtime properties file.
 
 * XINS/Java Client Framework:
   - Overridden hashCode and equals in AbstractCAPICallRequest so that two
