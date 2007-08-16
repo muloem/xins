@@ -569,13 +569,14 @@ public class SOAPCallingConvention extends CallingConvention {
     */
    protected Element soapElementTransformation(Map dataSection, boolean input, Element element, boolean top) {
       String elementName = element.getLocalName();
+      String elementNameSpacePrefix = element.getNamespacePrefix();
       String elementNameSpaceURI = element.getNamespaceURI();
       Map elementAttributes = element.getAttributeMap();
       String elementText = element.getText();
       List elementChildren = element.getChildElements();
       Map childrenSpec = dataSection;
 
-      ElementBuilder builder = new ElementBuilder(elementNameSpaceURI, elementName);
+      ElementBuilder builder = new ElementBuilder(elementNameSpacePrefix, elementNameSpaceURI, elementName);
 
       if (!top) {
          builder.setText(elementText);
@@ -609,7 +610,7 @@ public class SOAPCallingConvention extends CallingConvention {
                // Keep the old value
             }
 
-            setDataElementAttribute(builder, attributeName, attributeValue);
+            setDataElementAttribute(builder, attributeName, attributeValue, elementNameSpacePrefix);
          }
       }
 
@@ -624,7 +625,23 @@ public class SOAPCallingConvention extends CallingConvention {
       return builder.createElement();
    }
 
-   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, String attributeValue) {
+   /**
+    * Writes the attribute a output data element for the returned SOAP element.
+    * 
+    * @param builder
+    *    the builder used to create the SOAP Element, cannot be <code>null</code>.
+    * 
+    * @param attributeName
+    *    the name of the attribute, cannot be <code>null</code>.
+    * 
+    * @param attributeValue
+    *    the value of the attribute, cannot be <code>null</code>.
+    * 
+    * @param elementNameSpacePrefix
+    *    the namespace prefix of the parent element, can be <code>null</code>.
+    */
+   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, 
+         String attributeValue, String elementNameSpacePrefix) {
       builder.setAttribute(attributeName, attributeValue);
    }
 }

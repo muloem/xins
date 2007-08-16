@@ -134,6 +134,11 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       // Parse the input parameters
       FunctionRequest functionRequest = readInput(functionElem, functionName);
 
+      // If there is information in the SOAP Header that you want to store in
+      // the HTTP request or for input parameters or input data section, 
+      // parse the SOAP Header here and fill the functionRequest or httpRequest
+      // with the wanted data.
+
       return functionRequest;
    }
 
@@ -293,6 +298,9 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       Element envelope = new Element(requestEnvelope.getNamespacePrefix(), 
             requestEnvelope.getNamespaceURI(), "Envelope");
       copyAttributes(requestEnvelope, envelope);
+
+      // If you want to write the SOAP Header to the response, do it here
+
       Element requestBody = (Element) httpRequest.getAttribute(REQUEST_BODY);
       Element body = new Element(requestBody.getNamespacePrefix(),
             requestBody.getNamespaceURI(), "Body");
@@ -429,31 +437,24 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     *    the parent element to add the created element, cannot be <code>null</code>.
     */
    protected void writeOutputDataElement(Map dataSectionSpec, Element dataElement, Element parent) {
+      
+      // Set a prefix to the data element in order to be copied to the created SOAP element
+      dataElement.setNamespacePrefix(parent.getNamespacePrefix());
+      
       Element transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, false);
       parent.addChild(transformedDataElement);
    }
 
-   /**
-    * Write the output data element attribute in the SOAP response.
-    * 
-    * @param builder
-    *    the builder used to create the element, cannot be <code>null</code>.
-    * 
-    * @param attributeName
-    *    the name of the attribute, cannot be <code>null</code>.
-    * 
-    * @param attributeValue
-    *    the value of the attribute, cannot be <code>null</code>.
-    */
-   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, String attributeValue) {
+   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, 
+         String attributeValue, String elementNameSpacePrefix) {
       if (attributeName.indexOf(".") == -1) {
-         Element dataElement = new Element(attributeName);
+         Element dataElement = new Element(elementNameSpacePrefix, null, attributeName);
          dataElement.setText(attributeValue);
          builder.addChild(dataElement);
       } else {
          String elementName = attributeName.substring(0, attributeName.indexOf("."));
          String rest = attributeName.substring(attributeName.indexOf(".") + 1);
-         Element paramElem = new Element(elementName);
+         Element paramElem = new Element(elementNameSpacePrefix, null, elementName);
          writeOutputParameter(rest, attributeValue, paramElem);
          builder.addChild(paramElem);
       }
