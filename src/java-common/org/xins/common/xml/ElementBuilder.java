@@ -71,7 +71,7 @@ public class ElementBuilder {
     */
    public ElementBuilder(String localName)
    throws IllegalArgumentException {
-      this(null, localName);
+      this(null, null, localName);
    }
 
    /**
@@ -89,9 +89,31 @@ public class ElementBuilder {
     */
    public ElementBuilder(String namespaceURI, String localName)
    throws IllegalArgumentException {
+      this(null, namespaceURI, localName);
+   }
+
+   /**
+    * Creates a new <code>ElementBuilder</code>.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name of the element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public ElementBuilder(String namespacePrefix, String namespaceURI, String localName)
+   throws IllegalArgumentException {
 
       _state = INITIAL;
-      startElement(namespaceURI, localName);
+      startElement(namespacePrefix, namespaceURI, localName);
    }
 
    /**
@@ -133,6 +155,35 @@ public class ElementBuilder {
                             String localName,
                             String value)
    throws IllegalArgumentException {
+      setAttribute(null, namespaceURI, localName, value);
+   }
+
+   /**
+    * Sets the specified attribute. If the value for the specified
+    * attribute is already set, then the previous value is replaced.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the attribute, can be <code>null</code>; an
+    *    empty string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name for the attribute, cannot be <code>null</code>.
+    *
+    * @param value
+    *    the value for the attribute, can be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void setAttribute(String namespacePrefix,
+                            String namespaceURI,
+                            String localName,
+                            String value)
+   throws IllegalArgumentException {
 
       // Check state
       if (_state == INITIAL) {
@@ -140,7 +191,7 @@ public class ElementBuilder {
       }
 
       // Really set the attribute
-      _element.setAttribute(namespaceURI, localName, value);
+      _element.setAttribute(namespacePrefix, namespaceURI, localName, value);
    }
 
    /**
@@ -256,6 +307,36 @@ public class ElementBuilder {
 
       // Really start the element
       _element = new Element(namespaceURI, localName);
+      _state   = STARTED;
+   }
+
+   /**
+    * Starts to create a new <code>Element</code>.
+    *
+    * @param namespacePrefix
+    *    the namespace prefix for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param namespaceURI
+    *    the namespace URI for the element, can be <code>null</code>; an empty
+    *    string is equivalent to <code>null</code>.
+    *
+    * @param localName
+    *    the local name of the element, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>localName == null</code>.
+    */
+   public void startElement(String namespacePrefix, String namespaceURI, String localName)
+   throws IllegalArgumentException {
+
+      // Check state
+      if (_state != INITIAL) {
+         throw Utils.logProgrammingError("Unexpected state " + _state);
+      }
+
+      // Really start the element
+      _element = new Element(namespacePrefix, namespaceURI, localName);
       _state   = STARTED;
    }
 
