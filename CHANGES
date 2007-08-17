@@ -53,6 +53,8 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     runtime properties or bootstrap properties are defined.
   - If impl.xml is changed the index.html of the specdocs need to be
     regenerated.
+  - Fixed chainedmapper is not supported as direct mapper for the Ant <copy>
+    task with Ant 1.6.2.
 
 * Generation of specification documentation:
   - Fixed error when a shared error code was defined in the examples.

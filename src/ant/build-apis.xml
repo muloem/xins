@@ -1029,10 +1029,12 @@ ${apis.list}]]></echo>
 
 		<copy todir="${copiedTypesDir}">
 			<fileset dir="${project_home}/apis" includes="${typeIncludesAll}" />
-			<chainedmapper>
-				<flattenmapper />
-				<mapper classname="org.xins.common.ant.HungarianMapper" classpath="${xins_home}/build/xins-common.jar" />
-			</chainedmapper>
+			<mapper>
+				<chainedmapper>
+				  	<flattenmapper />
+				  	<mapper classname="org.xins.common.ant.HungarianMapper" classpath="${xins_home}/build/xins-common.jar" />
+			  	</chainedmapper>
+			</mapper>
 		</copy>
 
 		<xmlvalidate file="${api_file}" warn="false">
