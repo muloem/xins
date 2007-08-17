@@ -635,6 +635,7 @@ ${apis.list}]]></echo>
 			<patternset>
 				<include name="org/xins/common/servlet/container/HTTPServletStarter*.class" />
 				<include name="org/xins/common/servlet/container/ServletClassLoader*.class" />
+				<include name="org/xins/common/servlet/container/ConsoleGUI*.class" />
 			</patternset>
 		</unjar>
 	</target>

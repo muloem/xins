@@ -193,7 +193,7 @@ public class HTTPServletStarter {
 
       CommandLineArguments cmdArgs = new CommandLineArguments(args);
       if (cmdArgs.showGUI()) {
-         //ConsoleGUI.start();
+         ConsoleGUI.display();
       }
       try {
          // Starts the server and wait for connections
@@ -225,16 +225,16 @@ public class HTTPServletStarter {
          }
          for (int i = 0; i < args.length; i++) {
             String arg = args[i];
-            if (arg.startsWith("-port")) {
+            if (arg.startsWith("-port:") || arg.startsWith("-port=")) {
                try {
                   port = Integer.parseInt(arg.substring(6));
                } catch (NumberFormatException nfe) {
                   System.err.println("Warning: Incorrect port number \"" + args[1] +
                         "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
                }
-            } else if (arg.startsWith("-war")) {
+            } else if (arg.startsWith("-war:") || arg.startsWith("-war=")) {
                warFile = new File(arg.substring(5));
-            } else if (arg.startsWith("-loader")) {
+            } else if (arg.startsWith("-loader:") || arg.startsWith("-loader=")) {
                try {
                   loaderMode = Integer.parseInt(args[2]);
                } catch (NumberFormatException nfe) {
@@ -243,6 +243,15 @@ public class HTTPServletStarter {
                }
             } else if (arg.equalsIgnoreCase("-gui")) {
                showGUI = true;
+
+            // for backward compatibility
+            } else if (arg.endsWith(".war") && warFile == null) {
+               warFile = new File(arg);
+            } else if (port == DEFAULT_PORT_NUMBER) {
+               try {
+                  port = Integer.parseInt(arg);
+               } catch (NumberFormatException nfe) {
+               }
             }
          }
 

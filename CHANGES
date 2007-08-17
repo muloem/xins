@@ -24,6 +24,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added support in BeanUtils for method using 'is' or 'has' to return a
     boolean instead of 'get'.
   - Improved parsing of the arguments for java -jar <war file>.
+  - Added graphical user interface to the Servlet container.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
