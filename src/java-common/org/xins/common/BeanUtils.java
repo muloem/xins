@@ -104,10 +104,18 @@ public class BeanUtils {
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
          String getMethodName = sourceMethods[i].getName();
-         if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
+         Class getMethodReturnType = sourceMethods[i].getReturnType();
+         if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the set method
-            String destProperty = sourceMethods[i].getName().substring(3);
+            String destProperty = null;
+            if (getMethodName.startsWith("is")) {
+               destProperty = getMethodName.substring(2);
+            } else {
+               destProperty = getMethodName.substring(3);
+            }
             if (propertiesMapping != null && propertiesMapping.getProperty(destProperty) != null) {
                destProperty = propertiesMapping.getProperty(destProperty);
             }
@@ -534,10 +542,18 @@ public class BeanUtils {
       Method[] sourceMethods = source.getClass().getMethods();
       for (int i = 0; i < sourceMethods.length; i++) {
          String getMethodName = sourceMethods[i].getName();
-         if (getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) {
+         Class getMethodReturnType = sourceMethods[i].getReturnType();
+         if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the property
-            String propertyName = sourceMethods[i].getName().substring(3);
+            String propertyName = null;
+            if (getMethodName.startsWith("is")) {
+               propertyName = getMethodName.substring(2);
+            } else {
+               propertyName = getMethodName.substring(3);
+            }
             propertyName = TextUtils.firstCharLower(propertyName);
             try {
                Object propertyValue = sourceMethods[i].invoke(source, null);
