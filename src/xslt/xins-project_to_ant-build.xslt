@@ -711,7 +711,9 @@
 		<target name="client-{$api}"
 						depends="jar-{$api}, javadoc-capi-{$api}, specdocs-{$api}, wsdl-{$api}, opendoc-{$api}"
 						description="Generates the Javadoc API docs for the client side and the client JAR file for the '{$api}' API stubs and zip the result.">
-			<antcall target="-client" />
+			<antcall target="-client">
+				<param name="api" value="{$api}" />
+			</antcall>
 		</target>
 
 		<target name="all-{$api}"
