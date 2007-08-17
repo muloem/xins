@@ -23,6 +23,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added HTTPFileWatcher that monitors several URLs at once.
   - Added support in BeanUtils for method using 'is' or 'has' to return a
     boolean instead of 'get'.
+  - Improved parsing of the arguments for java -jar <war file>.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
