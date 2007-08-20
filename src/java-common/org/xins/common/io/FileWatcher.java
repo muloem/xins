@@ -425,6 +425,7 @@ public class FileWatcher extends Thread {
       // Check if the file can be read from and if so, when it was last
       // modified
       try {
+         lastModified = getLastModified();
 
       // Authorisation problem; our code is not allowed to call canRead()
       // and/or lastModified() on the File object
