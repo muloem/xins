@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import javax.swing.JFrame;
 
 /**
  * HTTP Server used to invoke the XINS Servlet.
@@ -193,7 +194,13 @@ public class HTTPServletStarter {
 
       CommandLineArguments cmdArgs = new CommandLineArguments(args);
       if (cmdArgs.showGUI()) {
-         ConsoleGUI.display();
+         JFrame apiFrame = ConsoleGUI.create();
+         String title = "XINS Servlet Console " + cmdArgs.getWARFile().getName();
+         if (cmdArgs.getPort() != DEFAULT_PORT_NUMBER) {
+            title += " [port:" + cmdArgs.getPort() + "]";
+         }
+         apiFrame.setTitle(title);
+         apiFrame.setVisible(true);
       }
       try {
          // Starts the server and wait for connections
