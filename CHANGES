@@ -25,6 +25,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
     boolean instead of 'get'.
   - Improved parsing of the arguments for java -jar <war file>.
   - Added graphical user interface to the Servlet container.
+  - Changed the default logged pattern by moving NDC to after the log level.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
@@ -42,6 +43,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added new runtime property org.xins.server.config.include which offer the
     possibility to include runtime properties files.
   - Added possibility to specified a URL for the runtime properties file.
+  - Changed the default logged pattern by moving NDC to after the log level.
 
 * XINS/Java Client Framework:
   - Overridden hashCode and equals in AbstractCAPICallRequest so that two

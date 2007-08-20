@@ -182,7 +182,7 @@ final class ConfigManager {
       // Define the pattern for the appender
       settings.setProperty(
          "log4j.appender.console.layout.ConversionPattern",
-         "%16x %6c{1} %-6p %m%n");
+         "%6c{1} %-6p %x %m%n");
 
       // Do not show the debug logs produced by XINS.
       settings.setProperty("log4j.logger.org.xins.", "INFO");
