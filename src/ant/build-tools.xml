@@ -34,6 +34,7 @@
 - xsd-to-types    Generates XINS type files from XML Schema files.
 - wsdl-to-api     Generates the XINS API files from the WSDL.
 - smd             Generates the Simple Method Description for an API.
+- webstart        Generates the Java Web Start file (JNLP) for an API.
 
 The name of the API is specified with the 'api.name' Ant property.
 
@@ -507,5 +508,17 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 		<replace file="${builddir}/smd/${api.name}.smd">
 			<replacefilter token="//?_convention=_xins-jsonrpc" value="/?_convention=_xins-jsonrpc" />
 		</replace>
+	</target>
+
+	<target name="webstart" depends="-init-tools" description="Generates the Web Start file for an API.">
+		<mkdir dir="${builddir}/webstart" />
+		<property name="smd.endpoint" value="" />
+		<xslt
+		in="apis/${api.name}/spec/api.xml"
+		out="${builddir}/webstart/${api.name}.jnlp"
+		style="${xins_home}/src/tools/webstart/api_to_jnlp.xslt">
+			<xmlcatalog refid="all-dtds" />
+			<param name="project_home" expression="${project_home}" />
+		</xslt>
 	</target>
 </project>

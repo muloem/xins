@@ -77,6 +77,10 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - The name of the element should be used for the element name and not the
     type name.
 
+* Tools:
+  - Added new tool "webstart" that generates the Web Start file (also named
+    JNLP file) for an API.
+
 * DTD:
   - Removed the patterntest element in the xins-projects.dtd as no longer used.
 
