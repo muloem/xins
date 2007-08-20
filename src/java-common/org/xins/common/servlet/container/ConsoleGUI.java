@@ -15,10 +15,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -41,18 +43,15 @@ public class ConsoleGUI {
 
    private JMenuBar consoleMenuBar;
 
-   private Style debug;
-   private Style info;
-   private Style warning;
-   private Style error;
-   private Style fatal;
-
+   private Style[] logStyles;
+   
    private int logLevel = 0;
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
     */
    public ConsoleGUI() {
+      // TODO pass the main frame as arg for the menu bar and sub dialogs
       initUI();
       initData();
    }
@@ -86,23 +85,45 @@ public class ConsoleGUI {
       
       JMenu logLevelMenu = new JMenu("Log level");
       logLevelMenu.setMnemonic('l');
+      logLevelMenu.add(new ChangeLogLevel(0, "Debug"));
+      logLevelMenu.add(new ChangeLogLevel(1, "Info"));
+      logLevelMenu.add(new ChangeLogLevel(2, "Notice"));
+      logLevelMenu.add(new ChangeLogLevel(3, "Warning"));
+      logLevelMenu.add(new ChangeLogLevel(4, "Error"));
+      logLevelMenu.add(new ChangeLogLevel(5, "Fatal"));
       JMenu helpMenu = new JMenu("Help");
       helpMenu.setMnemonic('h');
+      Action aboutAction = new AbstractAction("About") {
+         public void actionPerformed(ActionEvent ae) {
+            Object[] aboutMessage = { "XINS", "http://www.xins.org/" };
+
+            JOptionPane optionPane = new JOptionPane();
+            optionPane.setMessage(aboutMessage);
+            optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = optionPane.createDialog(null, "About");
+            dialog.setVisible(true);
+         }
+      };
+      helpMenu.add(aboutAction);
       consoleMenuBar.add(consoleMenu);
       consoleMenuBar.add(logLevelMenu);
       consoleMenuBar.add(helpMenu);
       
       // Initialize the styles
-      debug = console.addStyle("Debug", null);
+      Style debug = console.addStyle("Debug", null);
       StyleConstants.setForeground(debug, Color.GRAY);
-      info = console.addStyle("Info", null);
+      Style info = console.addStyle("Info", null);
       StyleConstants.setForeground(info, Color.BLACK);
-      warning = console.addStyle("Warning", null);
+      Style notice = console.addStyle("Notice", null);
+      StyleConstants.setForeground(notice, Color.BLUE);
+      Style warning = console.addStyle("Warning", null);
       StyleConstants.setForeground(warning, Color.ORANGE);
-      error = console.addStyle("Error", null);
+      Style error = console.addStyle("Error", null);
       StyleConstants.setForeground(error, Color.RED);
-      fatal = console.addStyle("Fatal", null);
+      Style fatal = console.addStyle("Fatal", null);
       StyleConstants.setForeground(fatal, Color.RED);
+      StyleConstants.setBackground(fatal, Color.LIGHT_GRAY);
+      logStyles = new Style[] {debug, info, notice, warning, error, fatal};
    }
 
    protected void initData() {
@@ -123,9 +144,14 @@ public class ConsoleGUI {
       }
    }
 
-   public static void display() {
+   public static JFrame create() {
       JFrame application = new JFrame();
       application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      URL iconLocation = ConsoleGUI.class.getResource("/org/xins/common/servlet/container/xins.gif");
+      if (iconLocation != null) {
+         application.setIconImage(new ImageIcon(iconLocation).getImage());
+      }
+      
       ConsoleGUI console = new ConsoleGUI();
       application.setJMenuBar(console.getMenuBar());
       application.getContentPane().add(console.getMainPanel());
@@ -135,8 +161,7 @@ public class ConsoleGUI {
       Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
       Dimension appDim = application.getSize();
       application.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
-      
-      application.setVisible(true);
+      return application;
    }
    
    public JPanel getMainPanel() {
@@ -147,23 +172,25 @@ public class ConsoleGUI {
       return consoleMenuBar;
    }
 
-   protected Style getStyle(String text) {
+   protected int getLogLevel(String text) {
       String textToSearch = text;
-      if (text.length() > 50) {
-         textToSearch = text.substring(0, 50);
+      if (text.length() > 80) {
+         textToSearch = text.substring(0, 80);
       }
       if (textToSearch.indexOf("DEBUG") != -1) {
-         return debug;
+         return 0;
       } else if (textToSearch.indexOf("INFO") != -1) {
-         return info;
+         return 1;
+      } else if (textToSearch.indexOf("NOTICE") != -1) {
+         return 2;
       } else if (textToSearch.indexOf("WARN") != -1) {
-         return warning;
+         return 3;
       } else if (textToSearch.indexOf("ERROR") != -1) {
-         return error;
+         return 4;
       } else if (textToSearch.indexOf("FATAL") != -1) {
-         return fatal;
+         return 5;
       } else {
-         return null;
+         return -1;
       }
    }
 
@@ -182,7 +209,11 @@ public class ConsoleGUI {
                   public void run() {
                      try {
                         int consoleLength = console.getDocument().getLength();
-                        Style style = getStyle(text);
+                        int messageLogLevel = getLogLevel(text);
+                        if (messageLogLevel < logLevel) {
+                           return;
+                        }
+                        Style style = logStyles[messageLogLevel];
                         console.getDocument().insertString(consoleLength, text + "\n", style);
 
                         // Make sure the last line is always visible
@@ -203,6 +234,19 @@ public class ConsoleGUI {
             }
          } catch (IOException e) {
          }
+      }
+   }
+
+   class ChangeLogLevel extends AbstractAction {
+      
+      private int _newLogLevel;
+      
+      ChangeLogLevel(int newLogLevel, String level) {
+         super(level);
+         _newLogLevel = newLogLevel;
+      }
+      public void actionPerformed(ActionEvent ae) {
+         logLevel = _newLogLevel;
       }
    }
 }
