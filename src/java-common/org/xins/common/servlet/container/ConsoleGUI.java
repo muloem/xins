@@ -15,11 +15,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.net.URI;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -49,14 +50,23 @@ public class ConsoleGUI {
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
+    * 
+    * @param mainFrame
+    *    the main frame or <code>null</code> if no frame is available.
     */
-   public ConsoleGUI() {
-      // TODO pass the main frame as arg for the menu bar and sub dialogs
-      initUI();
+   public ConsoleGUI(JFrame mainFrame, CommandLineArguments cmdArgs) {
+      initUI(mainFrame, cmdArgs);
       initData();
    }
-   
-   protected void initUI() {
+
+   /**
+    * Creates the user interface.
+    * This method also creates the actions available in the menu.
+    * 
+    * @param mainFrame
+    *    the main frame or <code>null</code> if no frame is available.
+    */
+   protected void initUI(final JFrame mainFrame, final CommandLineArguments cmdArgs) {
       consolePanel = new JPanel();
       console = new JTextPane();
       console.setPreferredSize(new Dimension(700, 400));
@@ -68,6 +78,20 @@ public class ConsoleGUI {
       // Add the actions
       JMenu consoleMenu = new JMenu("Console");
       consoleMenu.setMnemonic('c');
+      Action showSpec = new AbstractAction("Specifications") {
+         public void actionPerformed(ActionEvent ae) {
+            try {
+               ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWARFile(), cmdArgs.getLoaderMode());
+
+               Class delegate = loader.loadClass("org.xins.common.spec.SpecGUI");
+               delegate.newInstance();
+            } catch (Exception ex) {
+               ex.printStackTrace();
+            }
+         }
+      };
+      showSpec.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
+      consoleMenu.add(showSpec);
       Action clearAction = new AbstractAction("Clear") {
          public void actionPerformed(ActionEvent ae) {
             console.setText("");
@@ -85,14 +109,34 @@ public class ConsoleGUI {
       
       JMenu logLevelMenu = new JMenu("Log level");
       logLevelMenu.setMnemonic('l');
-      logLevelMenu.add(new ChangeLogLevel(0, "Debug"));
-      logLevelMenu.add(new ChangeLogLevel(1, "Info"));
-      logLevelMenu.add(new ChangeLogLevel(2, "Notice"));
-      logLevelMenu.add(new ChangeLogLevel(3, "Warning"));
-      logLevelMenu.add(new ChangeLogLevel(4, "Error"));
-      logLevelMenu.add(new ChangeLogLevel(5, "Fatal"));
+      JCheckBoxMenuItem debugMenu = new JCheckBoxMenuItem(new ChangeLogLevel(0, "Debug"));
+      debugMenu.setSelected(true);
+      JCheckBoxMenuItem infoMenu = new JCheckBoxMenuItem(new ChangeLogLevel(1, "Info"));
+      JCheckBoxMenuItem noticeMenu = new JCheckBoxMenuItem(new ChangeLogLevel(2, "Notice"));
+      JCheckBoxMenuItem warningMenu = new JCheckBoxMenuItem(new ChangeLogLevel(3, "Warning"));
+      JCheckBoxMenuItem errorMenu = new JCheckBoxMenuItem(new ChangeLogLevel(4, "Error"));
+      JCheckBoxMenuItem fatalMenu = new JCheckBoxMenuItem(new ChangeLogLevel(5, "Fatal"));
+      ButtonGroup logLevelGroup = new ButtonGroup();
+      logLevelGroup.add(debugMenu);
+      logLevelGroup.add(infoMenu);
+      logLevelGroup.add(noticeMenu);
+      logLevelGroup.add(warningMenu);
+      logLevelGroup.add(errorMenu);
+      logLevelGroup.add(fatalMenu);
+      logLevelMenu.add(debugMenu);
+      logLevelMenu.add(infoMenu);
+      logLevelMenu.add(noticeMenu);
+      logLevelMenu.add(warningMenu);
+      logLevelMenu.add(errorMenu);
+      logLevelMenu.add(fatalMenu);
       JMenu helpMenu = new JMenu("Help");
       helpMenu.setMnemonic('h');
+      String javaVersion = System.getProperty("java.version");
+      if (javaVersion.startsWith("1.6") || javaVersion.startsWith("1.7")) {
+         helpMenu.add(new BrowseAction("XINS Web site", "http://www.xins.org/"));
+         helpMenu.add(new BrowseAction("User Guide", "http://www.xins.org/docs/"));
+         helpMenu.addSeparator();
+      }
       Action aboutAction = new AbstractAction("About") {
          public void actionPerformed(ActionEvent ae) {
             Object[] aboutMessage = { "XINS", "http://www.xins.org/" };
@@ -100,7 +144,7 @@ public class ConsoleGUI {
             JOptionPane optionPane = new JOptionPane();
             optionPane.setMessage(aboutMessage);
             optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = optionPane.createDialog(null, "About");
+            JDialog dialog = optionPane.createDialog(mainFrame, "About");
             dialog.setVisible(true);
          }
       };
@@ -108,6 +152,30 @@ public class ConsoleGUI {
       consoleMenuBar.add(consoleMenu);
       consoleMenuBar.add(logLevelMenu);
       consoleMenuBar.add(helpMenu);
+
+      if (mainFrame != null) {
+         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         URL iconLocation = ConsoleGUI.class.getResource("/org/xins/common/servlet/container/xins.gif");
+         if (iconLocation != null) {
+            mainFrame.setIconImage(new ImageIcon(iconLocation).getImage());
+         }
+         String title = "XINS Servlet Console " + cmdArgs.getWARFile().getName();
+         if (cmdArgs.getPort() != HTTPServletStarter.DEFAULT_PORT_NUMBER) {
+            title += " [port:" + cmdArgs.getPort() + "]";
+         }
+         mainFrame.setTitle(title);
+         mainFrame.setJMenuBar(getMenuBar());
+         mainFrame.getContentPane().add(getMainPanel());
+         mainFrame.pack();
+
+         // Center the JFrame
+         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+         Dimension appDim = mainFrame.getSize();
+         mainFrame.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
+      }
+   }
+
+   protected void initData() {
       
       // Initialize the styles
       Style debug = console.addStyle("Debug", null);
@@ -124,9 +192,7 @@ public class ConsoleGUI {
       StyleConstants.setForeground(fatal, Color.RED);
       StyleConstants.setBackground(fatal, Color.LIGHT_GRAY);
       logStyles = new Style[] {debug, info, notice, warning, error, fatal};
-   }
 
-   protected void initData() {
       try {
          // Set up System.out
          PipedInputStream piOut = new PipedInputStream();
@@ -134,36 +200,16 @@ public class ConsoleGUI {
          System.setOut(new PrintStream(poOut, true));
 
          // Set up System.err
-         PipedInputStream piErr = new PipedInputStream();
+         /*PipedInputStream piErr = new PipedInputStream();
          PipedOutputStream poErr = new PipedOutputStream(piErr);
-         System.setErr(new PrintStream(poErr, true));
+         System.setErr(new PrintStream(poErr, true));*/
          // Create reader threads
          new ReaderThread(piOut).start();
-         new ReaderThread(piErr).start();
+         //new ReaderThread(piErr).start();
       } catch (IOException ioe) {
       }
    }
 
-   public static JFrame create() {
-      JFrame application = new JFrame();
-      application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      URL iconLocation = ConsoleGUI.class.getResource("/org/xins/common/servlet/container/xins.gif");
-      if (iconLocation != null) {
-         application.setIconImage(new ImageIcon(iconLocation).getImage());
-      }
-      
-      ConsoleGUI console = new ConsoleGUI();
-      application.setJMenuBar(console.getMenuBar());
-      application.getContentPane().add(console.getMainPanel());
-      application.pack();
-      
-      // Center the JFrame
-      Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-      Dimension appDim = application.getSize();
-      application.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
-      return application;
-   }
-   
    public JPanel getMainPanel() {
       return consolePanel;
    }
@@ -174,8 +220,8 @@ public class ConsoleGUI {
 
    protected int getLogLevel(String text) {
       String textToSearch = text;
-      if (text.length() > 80) {
-         textToSearch = text.substring(0, 80);
+      if (text.length() > 20) {
+         textToSearch = text.substring(0, 20);
       }
       if (textToSearch.indexOf("DEBUG") != -1) {
          return 0;
@@ -202,27 +248,31 @@ public class ConsoleGUI {
       }
       
       public void run() {
-         try {
-            while (true) {
+         while (true) {
+            try {
                final String text = br.readLine();
                SwingUtilities.invokeLater(new Runnable() {
                   public void run() {
                      try {
                         int consoleLength = console.getDocument().getLength();
                         int messageLogLevel = getLogLevel(text);
-                        if (messageLogLevel < logLevel) {
+                        if (messageLogLevel < logLevel && messageLogLevel != -1) {
                            return;
                         }
-                        Style style = logStyles[messageLogLevel];
-                        console.getDocument().insertString(consoleLength, text + "\n", style);
+                        if (messageLogLevel == -1) {
+                           console.getDocument().insertString(consoleLength, text + "\n", null);
+                        } else {
+                           Style style = logStyles[messageLogLevel];
+                           console.getDocument().insertString(consoleLength, text + "\n", style);
+                        }
 
                         // Make sure the last line is always visible
                         consoleLength = console.getDocument().getLength();
                         console.setCaretPosition(consoleLength);
 
                         // Keep the text area down to a certain character size
-                        int idealSize = 10000;
-                        int maxExcess = 5000;
+                        int idealSize = 100000;
+                        int maxExcess = 50000;
                         int excess = consoleLength - idealSize;
                         if (excess >= maxExcess) {
                            console.getDocument().remove(0, excess);
@@ -231,8 +281,13 @@ public class ConsoleGUI {
                      }
                   }
                });
+            } catch (IOException e) {
+               // XXX a Write end dead is throw everytime (I don't know why)
+               try {
+                  sleep(500);
+               } catch (InterruptedException ie) {
+               }
             }
-         } catch (IOException e) {
          }
       }
    }
@@ -247,6 +302,29 @@ public class ConsoleGUI {
       }
       public void actionPerformed(ActionEvent ae) {
          logLevel = _newLogLevel;
+      }
+   }
+
+   class BrowseAction extends AbstractAction {
+      
+      private String _url;
+      
+      BrowseAction(String title, String url) {
+         super(title);
+         _url = url;
+      }
+
+      public void actionPerformed(ActionEvent ae) {
+         try {
+            URI uri = new URI(_url);
+            Class destkopClass = Class.forName("java.awt.Desktop");
+            Object desktop = destkopClass.getMethod("getDesktop", null).invoke(null, null);
+            Class[] argClasses = {URI.class};
+            URI[] args = {uri};
+            destkopClass.getMethod("browse", argClasses).invoke(desktop, args);
+         } catch (Throwable ex) {
+            // Ignore
+         }
       }
    }
 }

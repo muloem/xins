@@ -194,142 +194,17 @@ public class HTTPServletStarter {
 
       CommandLineArguments cmdArgs = new CommandLineArguments(args);
       if (cmdArgs.showGUI()) {
-         JFrame apiFrame = ConsoleGUI.create();
-         String title = "XINS Servlet Console " + cmdArgs.getWARFile().getName();
-         if (cmdArgs.getPort() != DEFAULT_PORT_NUMBER) {
-            title += " [port:" + cmdArgs.getPort() + "]";
-         }
-         apiFrame.setTitle(title);
+         JFrame apiFrame = new JFrame();
+         new ConsoleGUI(apiFrame, cmdArgs);
          apiFrame.setVisible(true);
       }
-      try {
-         // Starts the server and wait for connections
-         new HTTPServletStarter(cmdArgs.getWARFile(), cmdArgs.getPort(), false, cmdArgs.getLoaderMode());
-      } catch (Exception ioe) {
-         ioe.printStackTrace();
-      }
-   }
-   
-   /**
-    * Inner class used to parse the arguments.
-    */
-   static class CommandLineArguments {
-
-      private int port;
-
-      private File warFile;
-
-      private int loaderMode = -1;
-
-      private boolean showGUI;
-
-      CommandLineArguments(String[] args) {
-         port = DEFAULT_PORT_NUMBER;
-         showGUI = false;
-         if (args.length == 1 && args[0].equals("-help")) {
-            System.out.println("Usage: java -jar <api name>.war [-port:<port number>] [-gui] [-war:<war file>] [loader:<classloader mode>]");
-            System.exit(0);
+      if (cmdArgs.getPort() != -1) {
+         try {
+            // Starts the server and wait for connections
+            new HTTPServletStarter(cmdArgs.getWARFile(), cmdArgs.getPort(), false, cmdArgs.getLoaderMode());
+         } catch (Exception ioe) {
+            ioe.printStackTrace();
          }
-         for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (arg.startsWith("-port:") || arg.startsWith("-port=")) {
-               try {
-                  port = Integer.parseInt(arg.substring(6));
-               } catch (NumberFormatException nfe) {
-                  System.err.println("Warning: Incorrect port number \"" + args[1] +
-                        "\", using " + DEFAULT_PORT_NUMBER + " as port number.");
-               }
-            } else if (arg.startsWith("-war:") || arg.startsWith("-war=")) {
-               warFile = new File(arg.substring(5));
-            } else if (arg.startsWith("-loader:") || arg.startsWith("-loader=")) {
-               try {
-                  loaderMode = Integer.parseInt(args[2]);
-               } catch (NumberFormatException nfe) {
-                  System.err.println("Warning: Incorrect ClassLoader \"" + args[2] +
-                        "\", using " + ServletClassLoader.USE_WAR_LIB + " as default.");
-               }
-            } else if (arg.equalsIgnoreCase("-gui")) {
-               showGUI = true;
-
-            // for backward compatibility
-            } else if (arg.endsWith(".war") && warFile == null) {
-               warFile = new File(arg);
-            } else if (port == DEFAULT_PORT_NUMBER) {
-               try {
-                  port = Integer.parseInt(arg);
-               } catch (NumberFormatException nfe) {
-               }
-            }
-         }
-
-         // Detect the location of the WAR file if needed.
-         if (warFile == null) {
-            URL codeLocation = HTTPServletStarter.class.getProtectionDomain().getCodeSource().getLocation();
-            System.out.println("No WAR file passed as argument, using: " + codeLocation);
-            try {
-               warFile = new File(new URI(codeLocation.toString()));
-            } catch (URISyntaxException murlex) {
-               murlex.printStackTrace();
-            }
-         }
-
-         if (warFile == null || !warFile.exists()) {
-            System.err.println("WAR file \"" + warFile + "\" not found.");
-            System.exit(-1);
-         }
-
-         // Detect the ClassLoader mode
-         if (loaderMode == -1) {
-            String classPath = System.getProperty("java.class.path");
-            if (classPath.indexOf("xins-common.jar") != -1 && classPath.indexOf("servlet.jar") != -1 &&
-                  classPath.indexOf("xins-server.jar") != -1 && classPath.indexOf("xmlenc.jar") != -1) {
-               loaderMode = ServletClassLoader.USE_WAR_EXTERNAL_LIB;
-            } else {
-               loaderMode = ServletClassLoader.USE_WAR_LIB;
-            }
-         }
-      }
-
-      /**
-       * Gets the port number specified. If no default port number is specified
-       * return the default port number.
-       * 
-       * @return
-       *    the port number.
-       */
-      int getPort() {
-         return port;
-      }
-      
-      /**
-       * Gets the location of the WAR file to execute.
-       * 
-       * @return
-       *    the WAR file or <code>null</code> if not found.
-       */
-      File getWARFile() {
-         return warFile;
-      }
-      
-      /**
-       * Gets the class loader mode.
-       * 
-       * @return
-       *    the class loader mode to use to load the WAR classes.
-       */
-      int getLoaderMode() {
-         return loaderMode;
-      }
-      
-      /**
-       * Indicates whether to run it in console mode or with the Swing user interface.
-       * 
-       * @return
-       *    <code>true</code> for the graphical user interface mode, 
-       *    <code>false</code> for the console mode.
-       */
-      boolean showGUI() {
-         return showGUI;
       }
    }
 }

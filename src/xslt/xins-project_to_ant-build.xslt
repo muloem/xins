@@ -487,7 +487,7 @@
 						<classes dir="{$typeClassesDir}" includes="**/*.class" />
 					</xsl:if>
 					<classes dir="{$javaImplDir}" excludes="**/*.java,**/*.class,impl.xml" />
-					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class" /> 
+					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class org/xins/common/servlet/container/xins.gif" /> 
 					<xsl:apply-templates select="$impl_node/content" />
 					<zipfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
 					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}} {$categoryIncludes}" prefix="WEB-INF/specs" />
