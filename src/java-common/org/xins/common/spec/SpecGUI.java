@@ -8,22 +8,22 @@ package org.xins.common.spec;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import org.xins.common.io.IOReader;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
+import org.xins.common.xml.Viewer;
 
 /**
  * Graphical user interface that allows to browse the specification of an API
@@ -44,7 +44,9 @@ public class SpecGUI {
 
    private JTextField jtfQuery;
 
-   private JTextPane xmlViewer;
+   private Viewer xmlViewer;
+
+   private APISpec specs;
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
@@ -77,22 +79,79 @@ public class SpecGUI {
     */
    protected void initUI(JFrame mainFrame) {
       specPanel = new JPanel();
-      xmlViewer = new JTextPane();
+      xmlViewer = new Viewer();
       xmlViewer.setPreferredSize(new Dimension(500, 400));
       specPanel.setLayout(new BorderLayout(5,5));
-      
-      JPanel queryPanel = new JPanel();
-      jtfEnvironment = new JTextField("http://localhost:8080/?_function=_xins-std");
-      jtfQuery = new JTextField();
-      queryPanel.setLayout(new GridLayout(2,1));
-      queryPanel.add(jtfEnvironment);
-      queryPanel.add(jtfQuery);
+
+      JPanel queryPanel = createQueryPanel();
       specPanel.add(queryPanel, BorderLayout.NORTH);
       specPanel.add(new JScrollPane(xmlViewer), BorderLayout.CENTER);
       
-      specMenuBar = new JMenuBar();
-
       // Add the actions
+      createMenuBar();
+
+      if (mainFrame != null) {
+         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         URL iconLocation = SpecGUI.class.getResource("/org/xins/common/servlet/container/xins.gif");
+         if (iconLocation != null) {
+            mainFrame.setIconImage(new ImageIcon(iconLocation).getImage());
+         }
+         mainFrame.setTitle("XINS Specification Viewer");
+         mainFrame.setJMenuBar(getMenuBar());
+         mainFrame.getContentPane().add(getMainPanel());
+         mainFrame.pack();
+
+         // Center the JFrame
+         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+         Dimension appDim = mainFrame.getSize();
+         mainFrame.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
+      }
+   }
+
+   protected void initData() {
+      try {
+         ElementParser parser = new ElementParser();
+         Element webapp = parser.parse(getClass().getResourceAsStream("/WEB-INF/web.xml"));
+         String apiClassName = null;
+         Iterator itParams = webapp.getUniqueChildElement("servlet").getChildElements("init-param").iterator();
+         while (itParams.hasNext()) {
+            Element initParam = (Element) itParams.next();
+            String paramName = initParam.getUniqueChildElement("param-name").getText();
+            if (paramName.equals("org.xins.api.class")) {
+               apiClassName = initParam.getUniqueChildElement("param-value").getText();
+            }
+         }
+         Class apiClass = Class.forName(apiClassName);
+         specs = new APISpec(apiClass, getClass().getResource("/WEB-INF/specs/").toString());
+
+      } catch (Exception ex) {
+         ex.printStackTrace();
+      }
+   }
+
+   protected JPanel createQueryPanel() {
+      JPanel queryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+      jtfEnvironment = new JTextField("http://localhost:8080/?_convention=_xins-std");
+      jtfQuery = new JTextField();
+      jtfQuery.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent ae) {
+            query(jtfQuery.getText());
+         }
+      });
+      JPanel queryLabelPanel = new JPanel();
+      queryLabelPanel.setLayout(new GridLayout(2,1,5,5));
+      queryLabelPanel.add(new JLabel("Environment: "));
+      queryLabelPanel.add(new JLabel("Query: "));
+      JPanel queryTFPanel = new JPanel();
+      queryTFPanel.setLayout(new GridLayout(2,1,5,5));
+      queryTFPanel.add(jtfEnvironment);
+      queryTFPanel.add(jtfQuery);
+      queryPanel.add(queryLabelPanel);
+      queryPanel.add(queryTFPanel);
+      return queryPanel;
+   }
+
+   protected void createMenuBar() {
       JMenu consoleMenu = new JMenu("File");
       consoleMenu.setMnemonic('f');
       Action clearAction = new AbstractAction("Clear") {
@@ -126,28 +185,46 @@ public class SpecGUI {
       metaFunctionsMenu.add(new QueryMetaFunction("EnableAPI"));
       JMenu specMenu = new JMenu("Specifications");
       specMenu.setMnemonic('s');
+      
+      JMenu testFormMenu = new JMenu("Test Form");
+      specMenu.setMnemonic('t');
       try {
-         ElementParser parser = new ElementParser();
-         Element webapp = parser.parse(getClass().getResourceAsStream("/WEB-INF/web.xml"));
-         String apiClassName = null;
-         Iterator itParams = webapp.getUniqueChildElement("servlet").getChildElements("init-param").iterator();
-         while (itParams.hasNext()) {
-            Element initParam = (Element) itParams.next();
-            String paramName = initParam.getUniqueChildElement("param-name").getText();
-            if (paramName.equals("org.xins.api.class")) {
-               apiClassName = initParam.getUniqueChildElement("param-value").getText();
-            }
-         }
-         Class apiClass = Class.forName(apiClassName);
-         APISpec specs = new APISpec(apiClass, getClass().getResource("/WEB-INF/specs/").toString());
-         jtfEnvironment.setText("http://localhost:8080/" + specs.getName() + "/?_function=_xins-std");
-         Map functions = specs.getFunctions();
-         Iterator itFunctions = functions.keySet().iterator();
+         Element api = new ElementParser().parse(getClass().getResourceAsStream("/WEB-INF/specs/api.xml"));
+         String apiName = api.getAttribute("name");
+         jtfEnvironment.setText("http://localhost:8080/" + apiName + "/?_convention=_xins-std");
+         Iterator itFunctions = api.getChildElements("function").iterator();
          while (itFunctions.hasNext()) {
-            String nextFunction = (String) itFunctions.next();
-            specMenu.add(new ViewSpecAction(nextFunction + ".fnc"));
+            Element nextFunction = (Element) itFunctions.next();
+            String functionName = nextFunction.getAttribute("name");
+            specMenu.add(new ViewSpecAction(functionName + ".fnc"));
+            testFormMenu.add(new TestFormAction(functionName));
          }
-
+         List types = api.getChildElements("type");
+         if (types.size() > 0) {
+            specMenu.addSeparator();
+         }
+         Iterator itTypes = types.iterator();
+         while (itTypes.hasNext()) {
+            Element nextType = (Element) itTypes.next();
+            String typeName = nextType.getAttribute("name");
+            if (typeName.indexOf('/') != -1) {
+               typeName = typeName.substring(typeName.indexOf('/') + 1);
+            }
+            specMenu.add(new ViewSpecAction(typeName + ".typ"));
+         }
+         List resultCodes = api.getChildElements("resultcode");
+         if (resultCodes.size() > 0) {
+            specMenu.addSeparator();
+         }
+         Iterator itResultCodes = resultCodes.iterator();
+         while (itResultCodes.hasNext()) {
+            Element nextResultCode = (Element) itResultCodes.next();
+            String rcdName = nextResultCode.getAttribute("name");
+            if (rcdName.indexOf('/') != -1) {
+               rcdName = rcdName.substring(rcdName.indexOf('/') + 1);
+            }
+            specMenu.add(new ViewSpecAction(rcdName + ".rcd"));
+         }
       } catch (Exception ex) {
          ex.printStackTrace();
       }
@@ -166,29 +243,11 @@ public class SpecGUI {
          }
       };
       helpMenu.add(aboutAction);
+      specMenuBar = new JMenuBar();
       specMenuBar.add(consoleMenu);
       specMenuBar.add(metaFunctionsMenu);
       specMenuBar.add(specMenu);
       specMenuBar.add(helpMenu);
-
-      if (mainFrame != null) {
-         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         URL iconLocation = SpecGUI.class.getResource("/org/xins/common/servlet/container/xins.gif");
-         if (iconLocation != null) {
-            mainFrame.setIconImage(new ImageIcon(iconLocation).getImage());
-         }
-         mainFrame.setJMenuBar(getMenuBar());
-         mainFrame.getContentPane().add(getMainPanel());
-         mainFrame.pack();
-
-         // Center the JFrame
-         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-         Dimension appDim = mainFrame.getSize();
-         mainFrame.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
-      }
-   }
-
-   protected void initData() {
    }
 
    public JPanel getMainPanel() {
@@ -197,6 +256,24 @@ public class SpecGUI {
    
    public JMenuBar getMenuBar() {
       return specMenuBar;
+   }
+
+   private void query(String url) {
+      try {
+         URL urlQuery = new URL(url);
+         xmlViewer.setIndentation(true);
+         xmlViewer.parse(urlQuery.openStream());
+         /*BufferedReader in = new BufferedReader(new InputStreamReader(urlQuery.openStream()));
+
+         String inputLine;
+
+         while ((inputLine = in.readLine()) != null) {
+            xmlViewer.getDocument().insertString(xmlViewer.getDocument().getLength(), inputLine + "\n", null);
+         }
+         in.close();*/
+      } catch (IOException ioe) {
+         ioe.printStackTrace();
+      }
    }
 
    class QueryMetaFunction extends AbstractAction {
@@ -208,21 +285,7 @@ public class SpecGUI {
       public void actionPerformed(ActionEvent ae) {
          String query = jtfEnvironment.getText() + "&_function=_" + getValue(Action.NAME);
          jtfQuery.setText(query);
-         xmlViewer.setText("");
-         try {
-            URL urlQuery = new URL(query);
-            BufferedReader in = new BufferedReader(new InputStreamReader(urlQuery.openStream()));
-
-            String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
-               xmlViewer.getDocument().insertString(xmlViewer.getDocument().getLength(), inputLine + "\n", null);
-            }
-            in.close();
-         } catch (BadLocationException ble) {
-         } catch (IOException ioe) {
-            ioe.printStackTrace();
-         }
+         query(query);
       }
    }
 
@@ -234,11 +297,22 @@ public class SpecGUI {
 
       public void actionPerformed(ActionEvent ae) {
          try {
-            String specContent = IOReader.readFully(getClass().getResourceAsStream("/WEB-INF/specs/" + getValue(Action.NAME)));
-            xmlViewer.setText(specContent);
+            xmlViewer.setIndentation(false);
+            xmlViewer.parse(getClass().getResourceAsStream("/WEB-INF/specs/" + getValue(Action.NAME)));
          } catch (IOException ioe) {
             ioe.printStackTrace();
          }
+      }
+   }
+   
+   class TestFormAction extends AbstractAction {
+      
+      TestFormAction(String functionName) {
+         super(functionName);
+      }
+      
+      public void actionPerformed(ActionEvent ae) {
+         // TODO
       }
    }
 }
