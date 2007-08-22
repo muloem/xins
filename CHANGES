@@ -27,6 +27,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - Added graphical user interface to the Servlet container.
   - Changed the default logged pattern by moving NDC to after the log level.
   - Added graphical user interface for the specifications.
+  - Added an XML syntax highlighting Swing component.
 
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
