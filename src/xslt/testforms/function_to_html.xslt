@@ -203,10 +203,10 @@ function fillExample(selectedExample) {
 
 		<h2>Test form</h2>
 		<xsl:choose>
-			<xsl:when test="input/param or input/data/element">
+			<xsl:when test="input/param or input/data">
 				<table>
 					<xsl:apply-templates select="input/param" />
-					<xsl:apply-templates select="input/data/element" />
+					<xsl:apply-templates select="input/data" />
 					<tr>
 						<td align="right" colspan="2">
 							<input class="submit" type="submit" value="Submit" />
@@ -335,17 +335,19 @@ function fillExample(selectedExample) {
 	<!--
 		Writes the row for the data section.
 	-->
-	<xsl:template match="element">
-		<tr>
-			<td class="name">
-				<span title="data section of the request">
-					Data section
-				</span>
-			</td>
-			<td class="value">
-				<textarea name="_data" rows="6" cols="40" class="optional" />
-			</td>
-		</tr>
+	<xsl:template match="data">
+		<xsl:if test="element">
+			<tr>
+				<td class="name">
+					<span title="data section of the request">
+						Data section
+					</span>
+				</td>
+				<td class="value">
+					<textarea name="_data" rows="6" cols="40" class="optional" />
+				</td>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 
 	<!--

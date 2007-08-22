@@ -134,6 +134,9 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
   - The dependency libraries have been added to the classpath for the run and
     test targets.
 
+* Generation of specification documentation:
+  - Fixed multiple textarea when there are multiple inupt data element.
+
 * Documentation:
   - Changed <style /> in <xslt /> in the xins-docs/build.xml.
 
