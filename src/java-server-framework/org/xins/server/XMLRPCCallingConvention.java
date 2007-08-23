@@ -583,6 +583,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
     */
    private void writeElement(Element dataElement, XMLOutputter xmlout, Map dataSectionSpec) throws IOException {
       xmlout.startTag("value");
+      xmlout.startTag("struct");
       xmlout.startTag("member");
       xmlout.startTag("name");
       xmlout.pcdata(dataElement.getLocalName());
@@ -642,6 +643,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
          xmlout.endTag(); // value
          xmlout.endTag(); // member
       }
+      xmlout.endTag(); // struct
       xmlout.endTag(); // value
    }
 
