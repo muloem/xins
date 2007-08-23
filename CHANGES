@@ -32,16 +32,14 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 * XINS/Java Server Framework:
   - SimpleDateFormat is not thread-safe so any use of it should be
     synchronized.
-  - Added _xins-soap-map calling convention that transform the SOAP request
-    as the wsdl-to-api command. The output parameters and data section are
+  - Added _xins-soap-map calling convention that transforms the SOAP request
+    as the wsdl-to-api command does. The output parameters and data section are
     also mapped to generated a SOAP XML tree.
   - Fixed incorrect transformation of output data element attributes in the
     SOAP calling convention.
   - ChainedMap is used instead of HashMap for the session properties and the
     input parameters in order to have them in the same order as the way they
     were set.
-  - Added _xins-soap-map calling convention. This convention maps SOAP request
-    to XINS request using the same mapping as done with the wsdl-to-api command.
   - Added new runtime property org.xins.server.config.include which offer the
     possibility to include runtime properties files.
   - Added possibility to specified a URL for the runtime properties file.
@@ -51,7 +49,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
 * XINS/Java Client Framework:
   - Overridden hashCode and equals in AbstractCAPICallRequest so that two
-    similar request are equals.
+    similar requests are equals.
 
 * Generated build file:
   - Passed the DTD reference to the antcall sub-targets.
@@ -70,7 +68,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
   - inclusive-or and exclusive-or param combos should use 'or' to parameters.
   - Check that the name defined in the function file is the same as the name
     of the function.
-  - The pattern type could be tested directly in the page.
+  - The pattern type could be tested directly in the page using Javascript.
 
 * Generation of the OpenDocument Format:
   - inclusive-or and exclusive-or param combos should use 'or' to parameters.
