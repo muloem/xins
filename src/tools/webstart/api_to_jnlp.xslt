@@ -91,7 +91,9 @@
 				<xsl:text>
 		</xsl:text>
 				<property name="apple.laf.useScreenMenuBar" value="true"/>
-				<!--property name="org.xins.server.config" value="TODO"/-->
+				<xsl:comment>
+					<xsl:text>property name="org.xins.server.config" value="TODO"/</xsl:text>
+				</xsl:comment>
 				<xsl:text>
 	</xsl:text>
 			</resources>
