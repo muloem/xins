@@ -193,12 +193,19 @@ public class HTTPServletStarter {
    public static void main(String[] args) {
 
       CommandLineArguments cmdArgs = new CommandLineArguments(args);
-      if (cmdArgs.showGUI()) {
-         JFrame apiFrame = new JFrame();
-         new ConsoleGUI(apiFrame, cmdArgs);
-         apiFrame.setVisible(true);
-      }
-      if (cmdArgs.getPort() != -1) {
+      if (cmdArgs.getPort() == -1) {
+         try {
+            ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWARFile(), cmdArgs.getLoaderMode());
+            loader.loadClass("org.xins.common.spec.SpecGUI").newInstance();
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+      } else {
+         if (cmdArgs.showGUI()) {
+            JFrame apiFrame = new JFrame();
+            new ConsoleGUI(apiFrame, cmdArgs);
+            apiFrame.setVisible(true);
+         }
          try {
             // Starts the server and wait for connections
             new HTTPServletStarter(cmdArgs.getWARFile(), cmdArgs.getPort(), false, cmdArgs.getLoaderMode());
