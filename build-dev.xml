@@ -119,7 +119,7 @@ ${sf.file}</fail>
 		<!--delete dir="src/tests/build" /-->
 		<!-- property name="build.java.version" value="1.3" /-->
 
-		<taskdef resource="org/xins/common/ant/antlib.xml" classpath="build/xins-common.jar" />
+		<taskdef resource="org/xins/common/ant/antlib.xml" classpath="build/classes/java-common" />
 		<xins api="allinone" target="opendoc" projectdir="src/tests" />
 		<xins api="portal" target="war" projectdir="src/tests" />
 		<xins api="portal" target="jar" projectdir="src/tests" />
@@ -774,7 +774,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	<target
 	name="-prepare-release"
 	depends="-pre-release-checks">
-		<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" classpath="build/xins-common.jar" />
+		<taskdef name="uppercase" classname="org.xins.common.ant.UppercaseTask" classpath="build/classes/java-common" />
 		<uppercase property="dot.version.minor.uppercase" text="${dot.version.minor}" />
 		<property name="tagname" value="RELEASE_${version.major}_${version.middle}${dot.version.minor.uppercase}${version.build}" />
 		<echo message="Tagging ${tagname}" />
