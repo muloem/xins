@@ -213,11 +213,18 @@ public class Viewer extends JTextPane {
       private int _level;
 
       /**
+       * Flag indicating whether the current element sub-elements (<code>true</code>)
+       * or not (<code>false</code>).
+       */
+      private boolean _hasSubElement;
+
+      /**
        * Constructs a new <code>Handler</code> instance.
        */
       private Handler() {
 
          _level = -1;
+         _hasSubElement = false;
          
          // Define the style needed
          elementStyle = addStyle("Element", null);
@@ -266,6 +273,7 @@ public class Viewer extends JTextPane {
 
          // Increase the element depth level
          _level++;
+         _hasSubElement = false;
 
          indent();
          appendText("<", null);
@@ -322,12 +330,15 @@ public class Viewer extends JTextPane {
                              String qName)
       throws IllegalArgumentException {
 
-         indent();
+         if (_hasSubElement) {
+            indent();
+         }
          appendText("</", null);
          appendText(qName, elementStyle);
          appendText(">", null);
 
          _level--;
+         _hasSubElement = true;
       }
 
       /**
