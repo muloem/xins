@@ -83,8 +83,7 @@ public class ConsoleGUI {
             try {
                ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWARFile(), cmdArgs.getLoaderMode());
 
-               Class delegate = loader.loadClass("org.xins.common.spec.SpecGUI");
-               delegate.newInstance();
+               loader.loadClass("org.xins.common.spec.SpecGUI").newInstance();
             } catch (Exception ex) {
                ex.printStackTrace();
             }
