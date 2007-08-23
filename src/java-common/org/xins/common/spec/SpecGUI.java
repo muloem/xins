@@ -36,6 +36,8 @@ import org.xins.common.xml.Viewer;
  */
 public class SpecGUI {
 
+   private JFrame specFrame;
+
    private JPanel specPanel;
 
    private JMenuBar specMenuBar;
@@ -47,6 +49,8 @@ public class SpecGUI {
    private Viewer xmlViewer;
 
    private APISpec specs;
+
+   private Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
@@ -102,9 +106,9 @@ public class SpecGUI {
          mainFrame.pack();
 
          // Center the JFrame
-         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
          Dimension appDim = mainFrame.getSize();
          mainFrame.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
+         specFrame = mainFrame;
       }
    }
 
@@ -130,7 +134,8 @@ public class SpecGUI {
    }
 
    protected JPanel createQueryPanel() {
-      JPanel queryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+      //JPanel queryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+      JPanel queryPanel = new JPanel(new BorderLayout());
       jtfEnvironment = new JTextField("http://localhost:8080/?_convention=_xins-std");
       jtfQuery = new JTextField();
       jtfQuery.addActionListener(new ActionListener() {
@@ -146,8 +151,8 @@ public class SpecGUI {
       queryTFPanel.setLayout(new GridLayout(2,1,5,5));
       queryTFPanel.add(jtfEnvironment);
       queryTFPanel.add(jtfQuery);
-      queryPanel.add(queryLabelPanel);
-      queryPanel.add(queryTFPanel);
+      queryPanel.add(queryLabelPanel, BorderLayout.WEST);
+      queryPanel.add(queryTFPanel, BorderLayout.CENTER);
       return queryPanel;
    }
 
@@ -171,23 +176,23 @@ public class SpecGUI {
 
       JMenu metaFunctionsMenu = new JMenu("Meta functions");
       metaFunctionsMenu.setMnemonic('m');
-      metaFunctionsMenu.add(new QueryMetaFunction("GetVersion"));
-      metaFunctionsMenu.add(new QueryMetaFunction("GetSettings"));
-      metaFunctionsMenu.add(new QueryMetaFunction("GetStatistics"));
-      metaFunctionsMenu.add(new QueryMetaFunction("NoOp"));
-      metaFunctionsMenu.add(new QueryMetaFunction("ReloadProperties"));
-      metaFunctionsMenu.add(new QueryMetaFunction("CheckSettings"));
-      metaFunctionsMenu.add(new QueryMetaFunction("ResetStatistics"));
-      metaFunctionsMenu.add(new QueryMetaFunction("WSDL"));
-      metaFunctionsMenu.add(new QueryMetaFunction("SMD"));
-      metaFunctionsMenu.add(new QueryMetaFunction("GetFunctionList"));
-      metaFunctionsMenu.add(new QueryMetaFunction("DisableAPI"));
-      metaFunctionsMenu.add(new QueryMetaFunction("EnableAPI"));
+      metaFunctionsMenu.add(new QueryFunction("_GetVersion"));
+      metaFunctionsMenu.add(new QueryFunction("_GetSettings"));
+      metaFunctionsMenu.add(new QueryFunction("_GetStatistics"));
+      metaFunctionsMenu.add(new QueryFunction("_NoOp"));
+      metaFunctionsMenu.add(new QueryFunction("_ReloadProperties"));
+      metaFunctionsMenu.add(new QueryFunction("_CheckSettings"));
+      metaFunctionsMenu.add(new QueryFunction("_ResetStatistics"));
+      metaFunctionsMenu.add(new QueryFunction("_WSDL"));
+      metaFunctionsMenu.add(new QueryFunction("_SMD"));
+      metaFunctionsMenu.add(new QueryFunction("_GetFunctionList"));
+      metaFunctionsMenu.add(new QueryFunction("_DisableAPI"));
+      metaFunctionsMenu.add(new QueryFunction("_EnableAPI"));
       JMenu specMenu = new JMenu("Specifications");
       specMenu.setMnemonic('s');
       
       JMenu testFormMenu = new JMenu("Test Form");
-      specMenu.setMnemonic('t');
+      testFormMenu.setMnemonic('t');
       try {
          Element api = new ElementParser().parse(getClass().getResourceAsStream("/WEB-INF/specs/api.xml"));
          String apiName = api.getAttribute("name");
@@ -247,6 +252,7 @@ public class SpecGUI {
       specMenuBar.add(consoleMenu);
       specMenuBar.add(metaFunctionsMenu);
       specMenuBar.add(specMenu);
+      specMenuBar.add(testFormMenu);
       specMenuBar.add(helpMenu);
    }
 
@@ -289,6 +295,28 @@ public class SpecGUI {
       }
    }
 
+   class QueryFunction extends AbstractAction {
+
+      private TestFormPanel testForm;
+      
+      QueryFunction(String functionName) {
+         super(functionName);
+      }
+
+      public void actionPerformed(ActionEvent ae) {
+         String query = jtfEnvironment.getText() + "&_function=" + getValue(Action.NAME);
+         if (testForm != null) {
+            query += testForm.getParameters();
+         }
+         jtfQuery.setText(query);
+         query(query);
+      }
+      
+      void setTestForm(TestFormPanel testForm) {
+         this.testForm = testForm;
+      }
+   }
+
    class ViewSpecAction extends AbstractAction {
 
       ViewSpecAction(String specFile) {
@@ -312,7 +340,16 @@ public class SpecGUI {
       }
       
       public void actionPerformed(ActionEvent ae) {
-         // TODO
+         JDialog testFormDialog = new JDialog(specFrame, specs.getName() +" API", false);
+         String functionName = (String) getValue(Action.NAME);
+         QueryFunction queryAction = new QueryFunction(functionName);
+         TestFormPanel testFormPanel = new TestFormPanel(specs, functionName, queryAction);
+         queryAction.setTestForm(testFormPanel);
+         testFormDialog.getContentPane().add(testFormPanel);
+         testFormDialog.pack();
+         Dimension appDim = testFormDialog.getSize();
+         testFormDialog.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
+         testFormDialog.setVisible(true);
       }
    }
 }
