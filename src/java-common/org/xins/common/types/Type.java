@@ -70,6 +70,16 @@ public abstract class Type {
    }
 
    /**
+    * Retrieves the description of this type.
+    *
+    * @return
+    *    the description of this type, never <code>null</code>.
+    */
+   public String getDescription() {
+      return _name + " type.";
+   }
+
+   /**
     * Retrieves the value class. All values for this type are instances of
     * this class.
     *
