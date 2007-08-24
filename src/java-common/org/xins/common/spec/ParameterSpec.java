@@ -46,6 +46,11 @@ public final class ParameterSpec {
    private final String _description;
 
    /**
+    * Default value of the parameter, can be <code>null</code>.
+    */
+   private final String _default;
+
+   /**
     * Creates a new instance of <code>ParameterSpec</code>.
     *
     * @param reference
@@ -63,13 +68,16 @@ public final class ParameterSpec {
     * @param description
     *    the description of the parameter, cannot be <code>null</code>.
     *
+    * @param defaultValue
+    *    the default value of the parameter, can be <code>null</code>.
+    *
     * @throws IllegalArgumentException
     *    if <code>reference == null || name == null || type == null || description == null</code>.
     *
     * @throws InvalidSpecificationException
     *    if the type is not recognized.
     */
-   ParameterSpec(Class reference, String name, String type, boolean required, String description)
+   ParameterSpec(Class reference, String name, String type, boolean required, String description, String defaultValue)
    throws IllegalArgumentException, InvalidSpecificationException {
       MandatoryArgumentChecker.check("reference", reference, "name", name, "description", description);
       _reference     = reference;
@@ -77,6 +85,7 @@ public final class ParameterSpec {
       _parameterType = getType(type);
       _required      = required;
       _description   = description;
+      _default       = defaultValue;
    }
 
    /**
@@ -99,6 +108,17 @@ public final class ParameterSpec {
    public String getDescription() {
 
       return _description;
+   }
+
+   /**
+    * Gets the default value of the parameter if any.
+    *
+    * @return
+    *    the String representation of the default value of the parameter, can be <code>null</code>.
+    */
+   public String getDefault() {
+
+      return _default;
    }
 
    /**

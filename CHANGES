@@ -8,6 +8,8 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
 * XINS/Java Common Library:
   - Improved specification GUI and test form.
+  - Added getDefault() method to ParameterSpec to get the specified default
+    value of the parameter or attribute if any.
 
 * Generated build file:
   - Fixed error when generating WAR file for an API with categories.

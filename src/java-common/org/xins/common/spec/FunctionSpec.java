@@ -594,12 +594,13 @@ public final class FunctionSpec {
       String parameterTypeName = paramElement.getAttribute("type");
       boolean requiredParameter = "true".equals(paramElement.getAttribute("required"));
       List descriptionElementList = paramElement.getChildElements("description");
+      String parameterDefaultValue = paramElement.getAttribute("default");
       if (descriptionElementList.isEmpty()) {
          throw new InvalidSpecificationException("No definition specified for a parameter.");
       }
       String parameterDescription = ((Element) descriptionElementList.get(0)).getText();
       ParameterSpec parameter = new ParameterSpec(reference ,parameterName,
-            parameterTypeName, requiredParameter, parameterDescription);
+            parameterTypeName, requiredParameter, parameterDescription, parameterDefaultValue);
       return parameter;
    }
 
