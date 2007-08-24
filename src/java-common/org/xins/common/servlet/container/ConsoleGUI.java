@@ -22,6 +22,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URL;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
@@ -47,6 +48,10 @@ public class ConsoleGUI {
    private Style[] logStyles;
    
    private int logLevel = 0;
+
+   private Pattern patternFilter = null;
+
+   private String logFilter = null;
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
@@ -128,6 +133,22 @@ public class ConsoleGUI {
       logLevelMenu.add(warningMenu);
       logLevelMenu.add(errorMenu);
       logLevelMenu.add(fatalMenu);
+      Action regexpFilterAction = new AbstractAction("Filter") {
+         public void actionPerformed(ActionEvent ae) {
+            String pattern = (String) JOptionPane.showInputDialog(mainFrame, 
+                  "Please regular expression to match", "Log Filter", 
+                  JOptionPane.QUESTION_MESSAGE, null, null, logFilter);
+            if ("".equals(pattern)) {
+               logFilter = null;
+               patternFilter = null;
+            } else if (pattern != null) {
+               logFilter = pattern;
+               patternFilter = Pattern.compile(logFilter);
+            }
+         }
+      };
+      logLevelMenu.add(regexpFilterAction);
+
       JMenu helpMenu = new JMenu("Help");
       helpMenu.setMnemonic('h');
       String javaVersion = System.getProperty("java.version");
@@ -178,15 +199,15 @@ public class ConsoleGUI {
       
       // Initialize the styles
       Style debug = console.addStyle("Debug", null);
-      StyleConstants.setForeground(debug, Color.GRAY);
+      StyleConstants.setForeground(debug, Color.DARK_GRAY);
       Style info = console.addStyle("Info", null);
       StyleConstants.setForeground(info, Color.BLACK);
       Style notice = console.addStyle("Notice", null);
-      StyleConstants.setForeground(notice, Color.BLUE);
+      StyleConstants.setForeground(notice, Color.BLUE.darker());
       Style warning = console.addStyle("Warning", null);
-      StyleConstants.setForeground(warning, Color.ORANGE);
+      StyleConstants.setForeground(warning, Color.ORANGE.darker());
       Style error = console.addStyle("Error", null);
-      StyleConstants.setForeground(error, Color.RED);
+      StyleConstants.setForeground(error, Color.RED.darker());
       Style fatal = console.addStyle("Fatal", null);
       StyleConstants.setForeground(fatal, Color.RED);
       StyleConstants.setBackground(fatal, Color.LIGHT_GRAY);
@@ -219,8 +240,8 @@ public class ConsoleGUI {
 
    protected int getLogLevel(String text) {
       String textToSearch = text;
-      if (text.length() > 20) {
-         textToSearch = text.substring(0, 20);
+      if (text.length() > 50) {
+         textToSearch = text.substring(0, 50);
       }
       if (textToSearch.indexOf("DEBUG") != -1) {
          return 0;
@@ -257,6 +278,12 @@ public class ConsoleGUI {
                         int messageLogLevel = getLogLevel(text);
                         if (messageLogLevel < logLevel && messageLogLevel != -1) {
                            return;
+                        }
+                        if (logFilter != null) {
+                           boolean match = patternFilter.matcher(text).find();
+                           if (!match) {
+                              return;
+                           }
                         }
                         if (messageLogLevel == -1) {
                            console.getDocument().insertString(consoleLength, text + "\n", null);
