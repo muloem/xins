@@ -490,7 +490,7 @@
 					<zipfileset dir="{$builddir}/webapps/{$api}{$implName2}" includes="org/xins/common/servlet/container/*.class org/xins/common/servlet/container/xins.gif" /> 
 					<xsl:apply-templates select="$impl_node/content" />
 					<zipfileset dir="{$builddir}/wsdl" includes="{$api}.wsdl" prefix="WEB-INF" />
-					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}} {$categoryIncludes}" prefix="WEB-INF/specs" />
+					<zipfileset dir="{$api_specsdir}" includes="api.xml ${{{$api}.functionIncludes}} ${{{$api}.typeIncludes}} ${{{$api}.resultcodeIncludes}} ${{{$api}.categoryIncludes}}" prefix="WEB-INF/specs" />
 					<xsl:for-each select="$api_node/type">
 						<xsl:if test="contains(@name, '/')">
 							<xsl:variable name="type_dir"

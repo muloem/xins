@@ -6,6 +6,12 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
+* XINS/Java Common Library:
+  - Improved specification GUI and test form.
+
+* Generated build file:
+  - Fixed error when generating WAR file for an API with categories.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
@@ -711,6 +717,7 @@ CHANGES INTRODUCED IN XINS 2.0 ALPHA 5:
   - The create-logdoc now informs where are the files created.
   - Always use the builddir variable to locate the location of the build
     directory.
+
 
 * Build- and release-process:
   - The new version will be 2.0-alpha5 instead of 2.0.0-alpha5.
