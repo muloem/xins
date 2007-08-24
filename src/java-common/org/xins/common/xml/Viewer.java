@@ -72,8 +72,20 @@ public class Viewer extends JTextPane {
       setText("");
 
       // Write the headers
-      if (text.substring(0, 2).equals("<?")) {
-         appendText(text.substring(0, text.indexOf(">")+1) + "\n", null);
+      int nextDecl = 0;
+      int endDecl = 0;
+      String decl = text.substring(nextDecl, nextDecl + 2);
+      while (decl.equals("<?") || decl.equals("<!")) {
+         endDecl = text.indexOf('>', endDecl);
+         int middleDecl = text.indexOf('<', endDecl);
+         if (middleDecl < endDecl) {
+             endDecl = text.indexOf('>', middleDecl) + 1;
+             continue;
+         }
+         appendText(text.substring(nextDecl, endDecl + 1) + "\n", null);
+         nextDecl = text.indexOf('<', endDecl);
+         endDecl = nextDecl;
+         decl = text.substring(nextDecl, nextDecl + 2);
       }
 
       try {
