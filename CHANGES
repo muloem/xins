@@ -13,6 +13,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
   - Added a regular expression log filter to the Console GUI.
   - Added new method getDescription() to Type.
   - Improved XML Viewer to print doctype declaration.
+  - Specification GUI: no indentation if the meta function called is _WSDL.
+  - Specification GUI: Name of the API displayed as header.
+  - Specification GUI: Fixed meta function _CheckLinks instead of
+    _CheckSettings.
 
 * Generated build file:
   - Fixed error when generating WAR file for an API with categories.

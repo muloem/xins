@@ -7,9 +7,14 @@
 package org.xins.common.spec;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,8 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.Viewer;
@@ -41,6 +46,8 @@ public class SpecGUI {
    private JPanel specPanel;
 
    private JMenuBar specMenuBar;
+
+   private JLabel jlAPIName;
 
    private JTextField jtfEnvironment;
 
@@ -89,7 +96,9 @@ public class SpecGUI {
 
       JPanel queryPanel = createQueryPanel();
       specPanel.add(queryPanel, BorderLayout.NORTH);
-      specPanel.add(new JScrollPane(xmlViewer), BorderLayout.CENTER);
+      JScrollPane scrollXMLViewer = new JScrollPane(xmlViewer);
+      scrollXMLViewer.setBorder(new EmptyBorder(5,5,5,5));
+      specPanel.add(scrollXMLViewer, BorderLayout.CENTER);
       
       // Add the actions
       createMenuBar();
@@ -127,6 +136,7 @@ public class SpecGUI {
          }
          Class apiClass = Class.forName(apiClassName);
          specs = new APISpec(apiClass, getClass().getResource("/WEB-INF/specs/").toString());
+         jlAPIName.setToolTipText(specs.getDescription());
 
       } catch (Exception ex) {
          ex.printStackTrace();
@@ -145,12 +155,33 @@ public class SpecGUI {
       });
       JPanel queryLabelPanel = new JPanel();
       queryLabelPanel.setLayout(new GridLayout(2,1,5,5));
+      
+      jlAPIName = new JLabel("API") {
+         public void paint(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            Color background = getBackground();
+            
+            Paint oldPaint = g2.getPaint();
+            GradientPaint gradient = new GradientPaint(0.0f, 0.0f, background.brighter(), 
+                  specPanel.getWidth() + 0.1f, getHeight() + 0.1f, background.darker());
+            g2.setPaint(gradient);
+            g2.fill(new Rectangle(specPanel.getWidth(), getHeight()));
+            g2.setPaint(oldPaint);
+            super.paint(g);
+         }
+      };
+      jlAPIName.setOpaque(false);
+      jlAPIName.setFont(jlAPIName.getFont().deriveFont(20.0f));
+      queryPanel.add(jlAPIName, BorderLayout.NORTH);
+
       queryLabelPanel.add(new JLabel("Environment: "));
       queryLabelPanel.add(new JLabel("Query: "));
+      queryLabelPanel.setBorder(new EmptyBorder(5,5,0,0));
       JPanel queryTFPanel = new JPanel();
       queryTFPanel.setLayout(new GridLayout(2,1,5,5));
       queryTFPanel.add(jtfEnvironment);
       queryTFPanel.add(jtfQuery);
+      queryTFPanel.setBorder(new EmptyBorder(5,0,0,5));
       queryPanel.add(queryLabelPanel, BorderLayout.WEST);
       queryPanel.add(queryTFPanel, BorderLayout.CENTER);
       return queryPanel;
@@ -181,7 +212,7 @@ public class SpecGUI {
       metaFunctionsMenu.add(new QueryFunction("_GetStatistics"));
       metaFunctionsMenu.add(new QueryFunction("_NoOp"));
       metaFunctionsMenu.add(new QueryFunction("_ReloadProperties"));
-      metaFunctionsMenu.add(new QueryFunction("_CheckSettings"));
+      metaFunctionsMenu.add(new QueryFunction("_CheckLinks"));
       metaFunctionsMenu.add(new QueryFunction("_ResetStatistics"));
       metaFunctionsMenu.add(new QueryFunction("_WSDL"));
       metaFunctionsMenu.add(new QueryFunction("_SMD"));
@@ -196,6 +227,7 @@ public class SpecGUI {
       try {
          Element api = new ElementParser().parse(getClass().getResourceAsStream("/WEB-INF/specs/api.xml"));
          String apiName = api.getAttribute("name");
+         jlAPIName.setText(apiName + " API");
          jtfEnvironment.setText("http://localhost:8080/" + apiName + "/?_convention=_xins-std");
          Iterator itFunctions = api.getChildElements("function").iterator();
          while (itFunctions.hasNext()) {
@@ -267,7 +299,7 @@ public class SpecGUI {
    private void query(String url) {
       try {
          URL urlQuery = new URL(url);
-         xmlViewer.setIndentation(true);
+         xmlViewer.setIndentation(!url.endsWith("_function=_WSDL"));
          xmlViewer.parse(urlQuery.openStream());
          /*BufferedReader in = new BufferedReader(new InputStreamReader(urlQuery.openStream()));
 
