@@ -806,6 +806,17 @@ public final class ]]></xsl:text>
 		</xsl:if>
 
 		<xsl:text>
+
+   public String getDescription() {
+      return "</xsl:text>
+		<xsl:call-template name="pcdata_to_java_string">
+			<xsl:with-param name="text" select="description/text()" />
+		</xsl:call-template>
+		<xsl:text>";
+   }
+</xsl:text>
+
+		<xsl:text>
 }
 </xsl:text>
 	</xsl:template>
