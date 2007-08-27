@@ -26,6 +26,14 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementParser;
 import org.xins.common.xml.Viewer;
@@ -40,6 +48,11 @@ import org.xins.common.xml.Viewer;
  * @since XINS 2.1
  */
 public class SpecGUI {
+
+   /**
+    * Perl 5 pattern compiler.
+    */
+   private static final Perl5Compiler PATTERN_COMPILER = new Perl5Compiler();
 
    private JFrame specFrame;
 
@@ -188,22 +201,23 @@ public class SpecGUI {
    }
 
    protected void createMenuBar() {
-      JMenu consoleMenu = new JMenu("File");
-      consoleMenu.setMnemonic('f');
+      JMenu fileMenu = new JMenu("File");
+      fileMenu.setMnemonic('f');
       Action clearAction = new AbstractAction("Clear") {
          public void actionPerformed(ActionEvent ae) {
             xmlViewer.setText("");
          }
       };
-      consoleMenu.add(clearAction);
-      consoleMenu.addSeparator();
+      fileMenu.add(clearAction);
+      fileMenu.add(new TestPatternAction());
+      fileMenu.addSeparator();
       Action exitAction = new AbstractAction("Exit") {
          public void actionPerformed(ActionEvent ae) {
             System.exit(0);
          }
       };
       exitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
-      consoleMenu.add(exitAction);
+      fileMenu.add(exitAction);
 
       JMenu metaFunctionsMenu = new JMenu("Meta functions");
       metaFunctionsMenu.setMnemonic('m');
@@ -281,7 +295,7 @@ public class SpecGUI {
       };
       helpMenu.add(aboutAction);
       specMenuBar = new JMenuBar();
-      specMenuBar.add(consoleMenu);
+      specMenuBar.add(fileMenu);
       specMenuBar.add(metaFunctionsMenu);
       specMenuBar.add(specMenu);
       specMenuBar.add(testFormMenu);
@@ -312,6 +326,15 @@ public class SpecGUI {
       } catch (IOException ioe) {
          ioe.printStackTrace();
       }
+   }
+
+   private void showDialog(JPanel panel, String title) {
+      JDialog testFormDialog = new JDialog(specFrame, title, false);
+      testFormDialog.getContentPane().add(panel);
+      testFormDialog.pack();
+      Dimension appDim = testFormDialog.getSize();
+      testFormDialog.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
+      testFormDialog.setVisible(true);
    }
 
    class QueryMetaFunction extends AbstractAction {
@@ -364,7 +387,7 @@ public class SpecGUI {
          }
       }
    }
-   
+
    class TestFormAction extends AbstractAction {
       
       TestFormAction(String functionName) {
@@ -372,16 +395,97 @@ public class SpecGUI {
       }
       
       public void actionPerformed(ActionEvent ae) {
-         JDialog testFormDialog = new JDialog(specFrame, specs.getName() +" API", false);
          String functionName = (String) getValue(Action.NAME);
          QueryFunction queryAction = new QueryFunction(functionName);
          TestFormPanel testFormPanel = new TestFormPanel(specs, functionName, queryAction);
          queryAction.setTestForm(testFormPanel);
-         testFormDialog.getContentPane().add(testFormPanel);
-         testFormDialog.pack();
-         Dimension appDim = testFormDialog.getSize();
-         testFormDialog.setLocation((screenDim.width - appDim.width) / 2,(screenDim.height - appDim.height) / 2);
-         testFormDialog.setVisible(true);
+         showDialog(testFormPanel, specs.getName() +" API");
+      }
+   }
+
+   class TestPatternAction extends AbstractAction {
+
+      private Color tfBackground;
+      private Color tfInvalidColor;
+      private Color tfValidColor;
+      Perl5Matcher patternMatcher = new Perl5Matcher();
+
+      TestPatternAction() {
+         super("Test regular expression");
+         tfBackground = UIManager.getColor("TextField.background");
+         tfInvalidColor = new Color(
+               Math.min(tfBackground.getRed() + 30, 255), 
+               Math.max(tfBackground.getGreen() - 15, 0), 
+               Math.max(tfBackground.getBlue() - 20, 0));
+         tfValidColor = new Color(
+               Math.max(tfBackground.getRed() -15, 0), 
+               Math.min(tfBackground.getGreen() + 30, 255), 
+               Math.max(tfBackground.getBlue() - 20, 0));
+      }
+      
+      public void actionPerformed(ActionEvent ae) {
+         Object[] components = new Object[4];
+         components[0] = "Pattern:";
+         final JTextField jtfPattern = new JTextField();
+         jtfPattern.setBackground(tfValidColor);
+         components[1] = jtfPattern;
+         components[2] = "Text to test:";
+         final JTextField jtfTextToTest = new JTextField();
+         jtfTextToTest.setBackground(tfInvalidColor);
+         components[3] = jtfTextToTest;
+         
+         jtfPattern.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent de) {
+               try {
+                  String patternText = de.getDocument().getText(0, de.getDocument().getLength());
+                  try {
+                     Pattern pattern = PATTERN_COMPILER.compile(patternText);
+                     jtfPattern.setBackground(tfValidColor);
+                     if (patternMatcher.matches(jtfTextToTest.getText(), pattern)) {
+                        jtfTextToTest.setBackground(tfValidColor);
+                     } else {
+                        jtfTextToTest.setBackground(tfInvalidColor);
+                     }
+                  } catch (MalformedPatternException mpex) {
+                     jtfPattern.setBackground(tfInvalidColor);
+                  }
+               } catch (BadLocationException ble) {
+                  ble.printStackTrace();
+               } catch (Exception ex) {
+                  ex.printStackTrace();
+               }
+            }
+            public void insertUpdate(DocumentEvent de) {
+               changedUpdate(de);
+            }
+            public void removeUpdate(DocumentEvent de) {
+               changedUpdate(de);
+            }
+         });
+         jtfTextToTest.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent de) {
+               try {
+                  String patternText = jtfPattern.getText();
+                  Pattern pattern = PATTERN_COMPILER.compile(patternText);
+                  if (patternMatcher.matches(jtfTextToTest.getText(), pattern)) {
+                     jtfTextToTest.setBackground(tfValidColor);
+                  } else {
+                     jtfTextToTest.setBackground(tfInvalidColor);
+                  }
+               } catch (MalformedPatternException mpex) {
+               }
+            }
+            public void insertUpdate(DocumentEvent de) {
+               changedUpdate(de);
+            }
+            public void removeUpdate(DocumentEvent de) {
+               changedUpdate(de);
+            }
+         });
+
+         JOptionPane.showOptionDialog(specFrame, components, "Test regular expression",
+               JOptionPane.CLOSED_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
       }
    }
 }

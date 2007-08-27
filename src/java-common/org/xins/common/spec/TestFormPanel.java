@@ -39,6 +39,10 @@ public class TestFormPanel extends JPanel {
 
    private ActionListener submitListener;
 
+   private Color tfBackground;
+   
+   private Color tfInvalidColor;
+
    /**
     * Constructs a new <code>SpecGUI</code>.
     * 
@@ -143,6 +147,11 @@ public class TestFormPanel extends JPanel {
    }
 
    protected void initData() {
+      tfBackground = UIManager.getColor("TextField.background");
+      tfInvalidColor = new Color(
+            Math.min(tfBackground.getRed() + 30, 255), 
+            Math.max(tfBackground.getGreen() - 15, 0), 
+            Math.max(tfBackground.getBlue() - 20, 0));
    }
 
    protected JComponent createInputComponent(final ParameterSpec inputSpec) {
@@ -169,13 +178,8 @@ public class TestFormPanel extends JPanel {
          }
       } else {
          inputField = new JTextField(20);
-         final Color tfBackgroud = UIManager.getColor("TextField.background");
-         final Color invalidColor = new Color(
-               Math.min(tfBackgroud.getRed() + 30, 255), 
-               Math.max(tfBackgroud.getGreen() - 15, 0), 
-               Math.max(tfBackgroud.getBlue() - 20, 0));
          if (inputSpec.isRequired() && inputSpec.getDefault() == null) {
-            inputField.setBackground(invalidColor);
+            inputField.setBackground(tfInvalidColor);
          }
          inputField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent ke) {
@@ -184,9 +188,9 @@ public class TestFormPanel extends JPanel {
                   text += ke.getKeyChar();
                }
                if (inputType.isValidValue(text) || (text.equals("") && !inputSpec.isRequired())) {
-                  inputField.setBackground(tfBackgroud);
+                  inputField.setBackground(tfBackground);
                } else {
-                  inputField.setBackground(invalidColor);
+                  inputField.setBackground(tfInvalidColor);
                }
             }
          });
@@ -194,7 +198,7 @@ public class TestFormPanel extends JPanel {
             ((JTextField) inputField).setText(inputSpec.getDefault());
          }
       }
-      inputField.setToolTipText(inputType.getName());
+      inputField.setToolTipText(inputType.getName() + ": " + inputType.getDescription());
       inputField.putClientProperty("PARAM_NAME", inputSpec.getName());
       return inputField;
    }
