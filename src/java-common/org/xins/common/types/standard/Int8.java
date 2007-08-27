@@ -176,4 +176,8 @@ public class Int8 extends Type {
       Byte b = (Byte) value;
       return b.toString();
    }
+
+   public String getDescription() {
+      return "An 8 bits precision integer number.";
+   }
 }

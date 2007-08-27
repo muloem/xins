@@ -253,4 +253,8 @@ public class Hex extends Type {
          throw new TypeValueException(SINGLETON, new String(b), e.getMessage());
       }
    }
+
+   public String getDescription() {
+      return "Binary data where each byte is represented by its hexadecimal value.";
+   }
 }

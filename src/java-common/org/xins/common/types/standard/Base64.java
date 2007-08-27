@@ -252,4 +252,8 @@ public class Base64 extends Type {
          throw new TypeValueException(SINGLETON, new String(b), message);
       }
    }
+
+   public String getDescription() {
+      return "Binary format coded using base64 enconding.";
+   }
 }

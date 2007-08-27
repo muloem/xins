@@ -102,6 +102,10 @@ public final class List extends org.xins.common.types.List {
       return SINGLETON.toString((ItemList) value);
    }
 
+   public String getDescription() {
+      return "An ampersand separated list of text.";
+   }
+
    /**
     * Inner class that represents a list of String.
     */

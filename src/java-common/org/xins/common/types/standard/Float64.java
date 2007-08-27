@@ -175,4 +175,8 @@ public class Float64 extends Type {
       Double d = (Double) value;
       return d.toString();
    }
+
+   public String getDescription() {
+      return "A 64 bits precision float number.";
+   }
 }

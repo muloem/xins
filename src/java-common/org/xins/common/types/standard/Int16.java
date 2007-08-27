@@ -175,4 +175,8 @@ public class Int16 extends Type {
       Short s = (Short) value;
       return s.toString();
    }
+
+   public String getDescription() {
+      return "A 16 bits precision integer number.";
+   }
 }

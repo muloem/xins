@@ -242,6 +242,10 @@ public class Date extends Type {
       return toString((Value) value);
    }
 
+   public String getDescription() {
+      return "A date. The format is YYYYMMDD.";
+   }
+
    /**
     * Value for the type <em>_date</em>. Represents a specific moment in
     * time, with day-precision.

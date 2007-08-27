@@ -284,6 +284,10 @@ public class Timestamp extends Type {
       return toString((Value) value);
    }
 
+   public String getDescription() {
+      return "A timestamp. The format is YYYYMMDDhhmmss.";
+   }
+
    /**
     * Value for the type <em>_timestamp</em>. Represents a specific moment in
     * time, with second-precision.

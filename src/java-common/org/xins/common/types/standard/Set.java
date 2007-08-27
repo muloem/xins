@@ -102,6 +102,10 @@ public final class Set extends org.xins.common.types.List {
       return SINGLETON.toString((ItemList) value);
    }
 
+   public String getDescription() {
+      return "An ampersand separated set of text.";
+   }
+
    /**
     * Inner class that represents a set of String.
     */

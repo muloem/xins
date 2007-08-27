@@ -175,4 +175,8 @@ public class Int64 extends Type {
       Long l = (Long) value;
       return l.toString();
    }
+
+   public String getDescription() {
+      return "A 64 bits precision integer number.";
+   }
 }

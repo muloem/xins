@@ -192,4 +192,8 @@ public final class Boolean extends Type {
       java.lang.Boolean b = (java.lang.Boolean) value;
       return b.toString();
    }
+   
+   public String getDescription() {
+      return "A boolean, either 'true' or 'false'.";
+   }
 }

@@ -271,4 +271,8 @@ public class Properties extends Type {
       // The argument must be a PropertyReader
       return toString((PropertyReader) value);
    }
+
+   public String getDescription() {
+      return "An ampersand separated list of key value pair in the format key=value.";
+   }
 }

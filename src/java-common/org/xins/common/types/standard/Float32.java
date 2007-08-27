@@ -175,4 +175,8 @@ public class Float32 extends Type {
       Float f = (Float) value;
       return f.toString();
    }
+
+   public String getDescription() {
+      return "A 32 bits precision float number.";
+   }
 }

@@ -184,4 +184,8 @@ public class Descriptor extends Type {
       // The argument must be a PropertyReader
       return toString((org.xins.common.service.Descriptor) value);
    }
+
+   public String getDescription() {
+      return "A XINS descriptor. It can be a single service descriptor or a group descriptor.";
+   }
 }

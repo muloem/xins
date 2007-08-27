@@ -107,4 +107,8 @@ public final class URL extends Type {
       MandatoryArgumentChecker.check("value", value);
       return (String) value;
    }
+
+   public String getDescription() {
+      return "A URL.";
+   }
 }

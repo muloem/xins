@@ -175,4 +175,8 @@ public class Int32 extends Type {
       Integer i = (Integer) value;
       return i.toString();
    }
+
+   public String getDescription() {
+      return "A 32 bits precision integer number.";
+   }
 }

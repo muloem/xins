@@ -88,4 +88,8 @@ public final class Text extends Type {
    throws IllegalArgumentException, TypeValueException, ClassCastException {
       return fromStringForRequired((String) value);
    }
+
+   public String getDescription() {
+      return "Any text.";
+   }
 }

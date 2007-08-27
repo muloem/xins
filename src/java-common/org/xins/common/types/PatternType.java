@@ -118,6 +118,10 @@ public abstract class PatternType extends Type {
       return s;
    }
 
+   public String getDescription() {
+      return "A text that matched the regular expression " + getPattern() + ".";
+   }
+
    /**
     * Returns the pattern.
     *
