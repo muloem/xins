@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
+* XINS/Java Server Framework:
+  - Replaced the name of the cookie set in the front-end CC from SessionId
+    to SessionID.
+
 * XINS/Java Common Library:
   - Improved specification GUI and test form.
   - Added getDefault() method to ParameterSpec to get the specified default

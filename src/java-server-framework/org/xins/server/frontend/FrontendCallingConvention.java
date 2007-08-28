@@ -511,7 +511,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
     *    the HTTP response, cannot be <code>null</code>.
     */
    private void addSessionCookie(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-      Cookie cookie = new Cookie("SessionId", _session.getSessionId());
+      Cookie cookie = new Cookie("SessionID", _session.getSessionId());
 
       // Determine domain for the session cookie
       String host = httpRequest.getHeader("host");
@@ -866,6 +866,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       if (TextUtils.isEmpty(mimeType)) {
          String method = outputProperties.getProperty("method");
          if ("xml".equals(method)) {
+
 
             mimeType = "text/xml";
          } else if ("html".equals(method)) {

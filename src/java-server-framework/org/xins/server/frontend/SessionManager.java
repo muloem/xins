@@ -113,7 +113,7 @@ public class SessionManager extends Manageable {
       for (int i = 0; i < cookieCount && sessionId == null; i++) {
          Cookie cookie = cookies[i];
          String name = cookie.getName();
-         if ("SessionId".equals(name)) {
+         if ("SessionID".equals(name)) {
             sessionId = cookie.getValue();
          }
       }
