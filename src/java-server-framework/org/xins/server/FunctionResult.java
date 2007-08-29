@@ -6,6 +6,7 @@
  */
 package org.xins.server;
 
+import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.collections.BasicPropertyReader;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.collections.PropertyReaderUtils;
@@ -13,12 +14,16 @@ import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
 
 /**
- * Result from a function call.
+ * Result from a function call. Defines an error code, parameters and output
+ * data section. All are optional.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
+ *
+ * @see FunctionRequest
  */
 public class FunctionResult {
 
@@ -26,28 +31,29 @@ public class FunctionResult {
     * The result code. This field is <code>null</code> if no code was
     * returned.
     */
-   private String _code;
+   private final String _code;
 
    /**
     * The parameters and their values. This field is never <code>null</code>.
     */
-   private BasicPropertyReader _parameters;
+   private final BasicPropertyReader _parameters;
 
    /**
-    * The data element builder. This field is <code>null</code> if there is no
-    * data element.
+    * The data element builder. This field is lazily initialized, it is
+    * <code>null</code> if there is no data element.
     */
    private ElementBuilder _dataElementBuilder;
 
    /**
-    * Creates a new successful <code>FunctionResult</code> instance.
+    * Creates a new successful <code>FunctionResult</code> instance with no
+    * parameters.
     */
    public FunctionResult() {
       this(null, null);
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> instance.
+    * Creates a new <code>FunctionResult</code> instance with no parameters.
     *
     * @param code
     *    the error code, can be <code>null</code> if the result is successful.
@@ -57,12 +63,15 @@ public class FunctionResult {
    }
 
    /**
-    * Creates a new <code>FunctionResult</code> instance.
+    * Creates a new <code>FunctionResult</code> instance with a specified set
+    * of parameters.
     *
     * @param code
     *    the error code, can be <code>null</code> if the result is successful.
+    *
     * @param parameters
-    *    the parameters for the result.
+    *    the parameters for the result, can be <code>null</code> if there are
+    *    no parameters.
     */
    public FunctionResult(String code, BasicPropertyReader parameters) {
       _code = code;
@@ -113,8 +122,20 @@ public class FunctionResult {
     * @param value
     *    the value of the output parameter, not <code>null</code> and not an
     *    empty string.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name  == null || "".equals(name)
+    *          || value == null || "".equals(value)</code>.
     */
-   protected void param(String name, String value) {
+   protected void param(String name, String value) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name, "value", value);
+      if (name.length() < 1) {
+         throw new IllegalArgumentException("\"\".equals(name)");
+      } else if (value.length() < 1) {
+         throw new IllegalArgumentException("\"\".equals(value)");
+      }
 
       // This will erase any value set before with the same name.
       _parameters.set(name, value);
@@ -124,10 +145,10 @@ public class FunctionResult {
     * Gets all parameters.
     *
     * @return
-    *    a {@link PropertyReader} containing all parameters, or
-    *    <code>null</code> if no parameters are set; the keys will be the
-    *    names of the parameters ({@link String} objects, cannot be
-    *    <code>null</code>), the values will be the parameter values
+    *    a {@link PropertyReader} containing all parameters, never <code>null</code>;
+    *    the keys will be the names of the parameters
+    *    ({@link String} objects, cannot be <code>null</code>),
+    *    the values will be the parameter values
     *    ({@link String} objects as well, cannot be <code>null</code>).
     */
    public PropertyReader getParameters() {
@@ -138,13 +159,20 @@ public class FunctionResult {
     * Gets the value of the specified parameter.
     *
     * @param name
-    *    the parameter element name, not <code>null</code>.
+    *    the parameter element name, cannot be <code>null</code>.
     *
     * @return
     *    string containing the value of the parameter element,
     *    or <code>null</code> if the value is not set.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>name == null</code>.
     */
-   public String getParameter(String name) {
+   public String getParameter(String name) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("name", name);
+
       return _parameters.get(name);
    }
 
@@ -154,9 +182,17 @@ public class FunctionResult {
     * @param element
     *    the new element to add to the result, cannot be <code>null</code>.
     *
+    * @throws IllegalArgumentException
+    *    if <code>element == null</code>.
+    *
     * @since XINS 1.1.0
     */
-   protected void add(Element element) {
+   protected void add(Element element) throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("element", element);
+
+      // Lazily initialize _dataElementBuilder
       if (_dataElementBuilder == null) {
          _dataElementBuilder = new ElementBuilder("data");
       }
