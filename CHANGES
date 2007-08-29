@@ -28,6 +28,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 * Generation of the Java types:
   - Implemented getDescription() method for all defined types.
 
+* Generation of web.xml:
+  - Added a comment on where to apply Servlet filters. Servlet filters can be
+    used for example for compression, authentication, encryption or auditing.
+
 * Generated unit tests:
   - Added default Log4J configuration.
 

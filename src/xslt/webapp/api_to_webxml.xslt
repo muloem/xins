@@ -42,6 +42,12 @@
 
 	<xsl:template match="impl">
 		<web-app>
+
+			<!-- 
+			If you want to apply Servlet filters or filter-mapping, do it here.
+			Servlet filters could be used for compression, encryption, authentication, etc...
+			-->
+
 			<servlet>
 				<servlet-name>
 					<xsl:value-of select="$api" />
