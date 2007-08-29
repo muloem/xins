@@ -34,6 +34,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xins.common.FormattedParameters;
 
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
@@ -45,6 +46,7 @@ import org.xins.common.manageable.InitializationException;
 import org.xins.common.spec.APISpec;
 import org.xins.common.spec.EntityNotFoundException;
 import org.xins.common.spec.InvalidSpecificationException;
+import org.xins.common.text.DateConverter;
 import org.xins.common.text.TextUtils;
 
 import org.xins.logdoc.ExceptionUtils;
@@ -60,6 +62,11 @@ import org.xins.logdoc.LogCentral;
  * @author <a href="mailto:mees.witteman@orange-ftgroup.com">Mees Witteman</a>
  */
 final class Engine {
+
+   /**
+    * Class used to convert dates to String.
+    */
+   private static final DateConverter DATE_CONVERTER = new DateConverter(true);
 
    /**
     * Perl 5 pattern compiler.
@@ -1075,6 +1082,53 @@ final class Engine {
          }
       }
       return null;
+   }
+
+   /**
+    * Logs the specified transaction.
+    *
+    * @param request
+    *    the {@link FunctionRequest}, should not be <code>null</code>.
+    *
+    * @param result
+    *    the {@link FunctionResult}, should not be <code>null</code>.
+    *
+    * @param ip
+    *    the client IP address, should not be <code>null</code>.
+    *
+    * @param start
+    *    the start of the call, a timestamp as milliseconds since the Epoch.
+    *
+    * @param duration
+    *    the duration of the call, in milliseconds.
+    *
+    * @throws NullPointerException
+    *    if <code>request == null || result  == null</code>.
+    */
+   static void logTransaction(FunctionRequest request,
+                              FunctionResult  result,
+                              String          ip,
+                              long            start,
+                              long            duration)
+   throws NullPointerException {
+
+      // Determine the name of the function that was requested to be invoked
+      String functionName = request.getFunctionName();
+
+      // Determine error code, fallback is a zero character
+      String code = result.getErrorCode();
+      if (code == null || code.length() < 1) {
+         code = "0";
+      }
+
+      // Prepare for transaction logging
+      String serStart = DATE_CONVERTER.format(start);
+      Object inParams  = new FormattedParameters(request.getParameters(), request.getDataElement());
+      Object outParams = new FormattedParameters(result.getParameters(), result.getDataElement());
+
+      // Log transaction before returning the result
+      Log.log_3540(serStart, ip, functionName, duration, code, inParams, outParams);
+      Log.log_3541(serStart, ip, functionName, duration, code);
    }
 
    /**

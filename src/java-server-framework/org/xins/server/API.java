@@ -89,11 +89,6 @@ public abstract class API extends Manageable {
       "org.xins.api.build.version";
 
    /**
-    * Class used to convert dates to String.
-    */
-   static final DateConverter DATE_CONVERTER = new DateConverter(true);
-
-   /**
     * The engine that owns this <code>API</code> object.
     */
    private Engine _engine;
@@ -1046,29 +1041,12 @@ public abstract class API extends Manageable {
          try {
             result = callMetaFunction(functionName, functionRequest);
          } catch (Throwable exception) {
-            result = handleFunctionException(start, functionRequest, ip,
-                                             callID, exception);
+            result = handleFunctionException(start, functionRequest, ip, callID, exception);
          }
 
-         // Determine duration
+         // Log this transaction
          long duration = System.currentTimeMillis() - start;
-
-         // Determine error code, fallback is a zero character
-         String code = result.getErrorCode();
-         if (code == null || code.length() < 1) {
-            code = "0";
-         }
-
-         // Prepare for transaction logging
-         String serStart = DATE_CONVERTER.format(start);
-         Object inParams =
-            new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
-         Object outParams =
-            new FormattedParameters(result.getParameters(), result.getDataElement());
-
-         // Log transaction before returning the result
-         Log.log_3540(serStart, ip, functionName, duration, code, inParams, outParams);
-         Log.log_3541(serStart, ip, functionName, duration, code);
+         Engine.logTransaction(functionRequest, result, ip, start, duration);
 
       // Handle normal functions
       } else {

@@ -316,19 +316,6 @@ public abstract class Function extends Manageable {
       // Update statistics and determine the duration of the call
       boolean isSuccess = code == null;
       long duration = _statistics.recordCall(start, isSuccess, code);
-
-      // Fallback is a zero character
-      if (code == null) {
-         code = "0";
-      }
-
-      // Serialize the date, input parameters and output parameters
-      String serStart  = API.DATE_CONVERTER.format(start);
-      Object inParams  = new FormattedParameters(functionRequest.getParameters(), functionRequest.getDataElement());
-      Object outParams = new FormattedParameters(result.getParameters(), result.getDataElement());
-
-      // Perform transaction logging, with and without parameters
-      Log.log_3540(serStart, ip, _name, duration, code, inParams, outParams);
-      Log.log_3541(serStart, ip, _name, duration, code);
+      Engine.logTransaction(functionRequest, result, ip, start, duration);
    }
 }

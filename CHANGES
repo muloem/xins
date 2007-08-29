@@ -9,8 +9,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 * XINS/Java Server Framework:
   - Replaced the name of the cookie set in the front-end CC from SessionId
     to SessionID.
-  - Apply patch of RFE #1634856: Make public methods in FunctionResult throw
+  - Applied patch of RFE #1634856: Make public methods in FunctionResult throw
     IllegalArgException.
+  - Applied patch of RFE #1634899: Refactor server so transactions are logged
+    in one place.
 
 * XINS/Java Common Library:
   - Improved specification GUI and test form.
