@@ -182,7 +182,6 @@ public class HTTPServletHandler {
       addServlet(servletClassName, "/");
    }
 
-   // TODO: This class should be cleaned up further
    /**
     * Initializes the logging subsystem with fallback default settings.
     */

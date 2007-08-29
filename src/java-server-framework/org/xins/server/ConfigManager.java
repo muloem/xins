@@ -165,24 +165,16 @@ final class ConfigManager {
       Properties settings = new Properties();
 
       // Send all log messages to the logger named 'console'
-      settings.setProperty(
-         "log4j.rootLogger",
-         "ALL, console");
+      settings.setProperty("log4j.rootLogger", "ALL, console");
 
       // Define an appender for the console
-      settings.setProperty(
-         "log4j.appender.console",
-         "org.apache.log4j.ConsoleAppender");
+      settings.setProperty("log4j.appender.console", "org.apache.log4j.ConsoleAppender");
 
       // Use a pattern-layout for the appender
-      settings.setProperty(
-         "log4j.appender.console.layout",
-         "org.apache.log4j.PatternLayout");
+      settings.setProperty("log4j.appender.console.layout", "org.apache.log4j.PatternLayout");
 
       // Define the pattern for the appender
-      settings.setProperty(
-         "log4j.appender.console.layout.ConversionPattern",
-         "%6c{1} %-6p %x %m%n");
+      settings.setProperty("log4j.appender.console.layout.ConversionPattern", "%6c{1} %-6p %x %m%n");
 
       // Do not show the debug logs produced by XINS.
       settings.setProperty("log4j.logger.org.xins.", "INFO");
