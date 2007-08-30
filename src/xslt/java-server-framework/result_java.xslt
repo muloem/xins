@@ -484,7 +484,7 @@ implements Result {
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="output/data/element/contains/contained">
+	<xsl:template match="output/data/element/contains/contained | input/data/element/contains/contained">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="javaVariable">
 			<xsl:call-template name="hungarianLower">

@@ -32,6 +32,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
   - Added tool to test regular expression with the SpecGUI.
   - Do not output namespace for attributes in XML Element if already done.
 
+* Generation of client-side Java code:
+  - Fixed if the input data element contained another data element the 'add'
+    method was not generated.
+
 * Generation of the Java types:
   - Implemented getDescription() method for all defined types.
 
