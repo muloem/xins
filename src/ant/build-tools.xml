@@ -512,13 +512,13 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 
 	<target name="webstart" depends="-init-tools" description="Generates the Web Start file for an API.">
 		<mkdir dir="${builddir}/webstart" />
-		<property name="smd.endpoint" value="" />
 		<xslt
 		in="apis/${api.name}/spec/api.xml"
 		out="${builddir}/webstart/${api.name}.jnlp"
 		style="${xins_home}/src/tools/webstart/api_to_jnlp.xslt">
 			<xmlcatalog refid="all-dtds" />
 			<param name="project_home" expression="${project_home}" />
+			<param name="xins_version" expression="${xins_version}" />
 		</xslt>
 	</target>
 </project>

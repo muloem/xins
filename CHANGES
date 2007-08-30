@@ -42,6 +42,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 * Generated unit tests:
   - Added default Log4J configuration.
 
+* Generated WebStart file:
+  - Added more comments.
+
 * Generated build file:
   - Fixed error when generating WAR file for an API with categories.
 
