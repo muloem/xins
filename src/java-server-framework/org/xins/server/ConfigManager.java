@@ -240,12 +240,6 @@ final class ConfigManager {
          } else {
             Log.log_3248();
          }
-
-      } else {
-
-         // Unify the file separator character
-         _configFile = _configFile.replace('/',  File.separatorChar);
-         _configFile = _configFile.replace('\\', File.separatorChar);
       }
 
       boolean propertiesRead = false;
@@ -258,6 +252,11 @@ final class ConfigManager {
                properties.load(in);
                in.close();
             } else if (!_configFile.startsWith("http://") && !_configFile.startsWith("https://")) {
+
+               // Unify the file separator character
+               _configFile = _configFile.replace('/',  File.separatorChar);
+               _configFile = _configFile.replace('\\', File.separatorChar);
+
                properties = readLocalRuntimeProperties();
             } else {
                properties = readHTTPRuntimeProperties();
