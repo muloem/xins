@@ -28,6 +28,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
   - TestFormPanel: Improved layout, default value displayed, background color
     if the value is invalid, and much more.
   - Added tool to test regular expression with the SpecGUI.
+  - Do not output namespace for attributes in XML Element if already done.
 
 * Generation of the Java types:
   - Implemented getDescription() method for all defined types.
@@ -2205,6 +2206,7 @@ NOTE: This release is based on XINS 1.3.0-rc2.
       whether the content type should be checked). The content type will
       always be cheched. This method is added for convenience and to avoid
       confusion by potential CustomCallingConvention implementors. The
+
       CustomCallingConvention class documentation has been updated.
     . Added the package-private method 'matchesRequest(HttpServletRequest)'
       and a delegate for it, the protected method

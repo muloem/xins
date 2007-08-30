@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -137,6 +138,7 @@ public final class ElementSerializer {
       String namespacePrefix = element.getNamespacePrefix();
       String namespaceURI = element.getNamespaceURI();
       String localName    = element.getLocalName();
+      Map namespaces      = new HashMap();
 
       // Write an element with namespace
       if (namespacePrefix != null) {
@@ -152,8 +154,10 @@ public final class ElementSerializer {
          // Associate the namespace with the prefix in the result XML
          if (namespacePrefix == null) {
             out.attribute("xmlns", namespaceURI);
+            namespaces.put("", namespaceURI);
          } else {
             out.attribute("xmlns:" + namespacePrefix, namespaceURI);
+            namespaces.put(namespacePrefix, namespaceURI);
          }
       }
 
@@ -172,7 +176,9 @@ public final class ElementSerializer {
          String attrNamespacePrefix = qn.getNamespacePrefix();
          String attrValue         = (String) entry.getValue();
 
-         if (attrValue != null) {
+         // Do not write the attribute if no value or it is the namespace URI.
+         if (attrValue != null && 
+               (!"xmlns".equals(attrNamespacePrefix) || !attrLocalName.equals(namespacePrefix))) {
             
             // Write the attribute with prefix
             if (attrNamespacePrefix != null) {
@@ -182,16 +188,18 @@ public final class ElementSerializer {
             } else {
                out.attribute(attrLocalName, attrValue);
             }
-         }
 
-         // Write the attribute namespace
-         if (attrNamespaceURI != null) {
+            // Write the attribute namespace
+            if (attrNamespaceURI != null) {
 
-            // Associate the namespace with the prefix in the result XML
-            if (namespacePrefix == null) {
-               out.attribute("xmlns", attrNamespaceURI);
-            } else {
-               out.attribute("xmlns:" + namespacePrefix, attrNamespaceURI);
+               // Associate the namespace with the prefix in the result XML
+               if (attrNamespacePrefix == null && !namespaces.containsKey("")) {
+                  out.attribute("xmlns", attrNamespaceURI);
+                  namespaces.put("", namespaceURI);
+               } else if (!namespaces.containsKey(attrNamespacePrefix)) {
+                  out.attribute("xmlns:" + attrNamespacePrefix, attrNamespaceURI);
+                  namespaces.put(attrNamespacePrefix, namespaceURI);
+               }
             }
          }
       }
