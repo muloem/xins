@@ -44,6 +44,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 * Generated build file:
   - Fixed error when generating WAR file for an API with categories.
 
+* Tests:
+  - Added test for the include of other runtime properties files.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
