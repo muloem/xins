@@ -84,7 +84,7 @@ public class AllTests extends TestSuite {
       //
       // Add all tests
       //
-      /*suite.addTestSuite(org.xins.tests.common.BeanUtilsTests.class);
+      suite.addTestSuite(org.xins.tests.common.BeanUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
       suite.addTestSuite(org.xins.tests.common.UtilsTests.class);
@@ -199,10 +199,10 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.FirstlineXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.JavaXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
-      suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);*/
+      suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
 
       // XXX: Perform just a single test
-      suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
+      // suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
       // suite.addTest(new org.xins.tests.client.AllInOneAPITests("testInclusiveOrParamComboWithValue"));
 
       // Stop the server
