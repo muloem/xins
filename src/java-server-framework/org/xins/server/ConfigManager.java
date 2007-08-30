@@ -316,7 +316,7 @@ final class ConfigManager {
 
          // Read the included files
          if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
-               properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
+               !properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
             StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
             File baseFile = new File(_configFile).getParentFile();
             _configFiles = new String[stInclude.countTokens() + 1];
@@ -370,7 +370,7 @@ final class ConfigManager {
 
          // Read the included files
          if (properties.getProperty(CONFIG_INCLUDE_PROPERTY) != null &&
-               properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
+               !properties.getProperty(CONFIG_INCLUDE_PROPERTY).trim().equals("")) {
             StringTokenizer stInclude = new StringTokenizer(properties.getProperty(CONFIG_INCLUDE_PROPERTY), ",");
             _configFiles = new String[stInclude.countTokens() + 1];
             _configFiles[0] = _configFile;

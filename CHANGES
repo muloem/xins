@@ -13,6 +13,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
     IllegalArgException.
   - Applied patch of RFE #1634899: Refactor server so transactions are logged
     in one place.
+  - Fixed include of other runtime properties files.
 
 * XINS/Java Common Library:
   - Improved specification GUI and test form.
