@@ -146,6 +146,26 @@ public class CallingConventionTests extends TestCase {
       doTestOptions("/?_convention=_xins-soap", yes, no);
    }
 
+   /**
+    * Tests that calling DataSection with _xins-xmlrpc get access denied from the ACL.
+    */
+   public void testDeniedConvention() throws Exception {
+      String destination = AllTests.url() + "allinone/?_convention=_xins-xmlrpc";
+
+      // Send a correct request
+      String data = "<?xml version=\"1.0\"?>" +
+              "<methodCall>" +
+              "  <methodName>DataSection</methodName>" +
+              "  <params>" +
+              "    <param><value><struct><member>" +
+              "    <name>inputText</name>" +
+              "    <value><string>hello</string></value>" +
+              "    </member></struct></value></param>" +
+              "  </params>" +
+              "</methodCall>";
+      postXML(destination, data, 403);
+   }
+
    private void doTestOptions(String queryString, String[] yes, String[] no)
    throws Exception {
 
@@ -235,7 +255,7 @@ public class CallingConventionTests extends TestCase {
     *    the HTTP status code that is expected.
     *
     * @return
-    *    the returned XML already parsed.
+    *    the returned XML already parsed or <code>null</code> if the HTTP code is 403.
     *
     * @throw Exception
     *    if anything goes wrong.
@@ -244,9 +264,13 @@ public class CallingConventionTests extends TestCase {
    throws Exception {
 
       String content = postData(destination, data, "text/xml; charset=UTF-8", expectedStatus);
-      ElementParser parser = new ElementParser();
-      Element result = parser.parse(new StringReader(content));
-      return result;
+      if (expectedStatus != 403) {
+         ElementParser parser = new ElementParser();
+         Element result = parser.parse(new StringReader(content));
+         return result;
+      } else {
+         return null;
+      }
    }
 
    /**
@@ -286,7 +310,7 @@ public class CallingConventionTests extends TestCase {
       try {
          int code = client.executeMethod(post);
          assertEquals(expectedStatus, code);
-         if (contentType != null) {
+         if (contentType != null && code != 403) {
             String returnedContentType = post.getResponseHeader("Content-Type").getValue();
             assertEquals("Content type received '" + returnedContentType  + 
                   "' does not match the content type '" + contentType + "' sent.", 
