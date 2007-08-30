@@ -49,6 +49,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
   - Added test for the _xins-soap-map calling convention.
   - Added test for the ACL based on calling convention.
 
+* Documentation:
+  - New front-end page fot the web site.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
 
