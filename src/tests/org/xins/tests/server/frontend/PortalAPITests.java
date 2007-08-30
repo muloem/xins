@@ -224,7 +224,7 @@ public class PortalAPITests extends TestCase {
 
    public void testXSLTError() throws Exception {
       Properties headers = new Properties();
-      headers.setProperty("Cookie", "SessionId=1234567");
+      headers.setProperty("Cookie", "SessionID=1234567");
       HTTPCallerResult resultLogin = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=Login&action=Okay&username=superhuman&password=passW1", headers);
       
       HTTPCallerResult resultMainPage = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=MainPage", headers);
