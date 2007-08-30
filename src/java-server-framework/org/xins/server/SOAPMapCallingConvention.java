@@ -302,8 +302,7 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       // If you want to write the SOAP Header to the response, do it here
 
       Element requestBody = (Element) httpRequest.getAttribute(REQUEST_BODY);
-      Element body = new Element(requestBody.getNamespacePrefix(),
-            requestBody.getNamespaceURI(), "Body");
+      Element body = new Element(requestBody.getNamespacePrefix(), null, "Body");
       copyAttributes(requestBody, body);
       envelope.addChild(body);
 
@@ -371,19 +370,20 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     *    the parent element to put the created element in, cannot be <code>null</code>.
     */
    protected void writeOutputParameter(String parameterName, String parameterValue, Element parent) {
-      if (parameterName.indexOf(".") == -1) {
-         Element paramElem = new Element(parent.getNamespacePrefix(), null, parameterName);
+      String paramPrefix = parent.getNamespaceURI() == null ? parent.getNamespacePrefix() : null;
+      if (parameterName.indexOf('.') == -1) {
+         Element paramElem = new Element(paramPrefix, null, parameterName);
          paramElem.setText(parameterValue);
          parent.addChild(paramElem);
       } else {
-         String elementName = parameterName.substring(0, parameterName.indexOf("."));
-         String rest = parameterName.substring(parameterName.indexOf(".") + 1);
+         String elementName = parameterName.substring(0, parameterName.indexOf('.'));
+         String rest = parameterName.substring(parameterName.indexOf('.') + 1);
          Element paramElem = null;
          if (parent.getChildElements(elementName).size() > 0) {
             paramElem = (Element) parent.getChildElements(elementName).get(0);
             writeOutputParameter(rest, parameterValue, paramElem);
          } else {
-            paramElem = new Element(parent.getNamespacePrefix(), null, elementName);
+            paramElem = new Element(paramPrefix, null, elementName);
             writeOutputParameter(rest, parameterValue, paramElem);
             parent.addChild(paramElem);
          }
@@ -439,7 +439,9 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
    protected void writeOutputDataElement(Map dataSectionSpec, Element dataElement, Element parent) {
       
       // Set a prefix to the data element in order to be copied to the created SOAP element
-      dataElement.setNamespacePrefix(parent.getNamespacePrefix());
+      if (parent.getNamespaceURI() == null) {
+         dataElement.setNamespacePrefix(parent.getNamespacePrefix());
+      }
       
       Element transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, false);
       parent.addChild(transformedDataElement);
@@ -473,20 +475,14 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       Element result = new Element(element.getNamespacePrefix(), 
             element.getNamespaceURI(),
             element.getLocalName());
-      Iterator itAttributes = element.getAttributeMap().entrySet().iterator();
-      while (itAttributes.hasNext()) {
-         Map.Entry nextAttribute = (Map.Entry) itAttributes.next();
-         Element.QualifiedName attrQName = (Element.QualifiedName) nextAttribute.getKey();
-         String attrValue = (String) nextAttribute.getValue();
-         result.setAttribute(attrQName.getNamespacePrefix(), attrQName.getNamespaceURI(), 
-               attrQName.getLocalName(), attrValue);
-      }
+      copyAttributes(element, result);
       result.setText(element.getText());
       return result;
    }
 
    /**
     * Utility method that copies the attributes of an element to another element.
+    * Note that the name space URI is not copied.
     * 
     * @param source
     *   the source element to get the attributes from, cannot be <code>null</code>.
@@ -500,8 +496,11 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
          Map.Entry nextAttribute = (Map.Entry) itAttributes.next();
          Element.QualifiedName attrQName = (Element.QualifiedName) nextAttribute.getKey();
          String attrValue = (String) nextAttribute.getValue();
-         target.setAttribute(attrQName.getNamespacePrefix(), attrQName.getNamespaceURI(), 
-               attrQName.getLocalName(), attrValue);
+         if (!"xmlns".equals(attrQName.getNamespacePrefix()) ||
+               !attrQName.getLocalName().equals(source.getNamespacePrefix())) {
+            target.setAttribute(attrQName.getNamespacePrefix(), attrQName.getNamespaceURI(), 
+                  attrQName.getLocalName(), attrValue);
+         }
       }
    }
 }

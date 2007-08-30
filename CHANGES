@@ -46,6 +46,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
 * Tests:
   - Added test for the include of other runtime properties files.
+  - Added test for the _xins-soap-map calling convention.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 ALPHA 3:
