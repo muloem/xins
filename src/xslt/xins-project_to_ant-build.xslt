@@ -443,11 +443,6 @@
 				<xsl:if test="$impl_node/bootstrap-property">
 					<xsl:message terminate="yes">Missing bootstrap-properties element.</xsl:message>
 				</xsl:if>
-				<xsl:if test="$impl_node/logdoc">
-					<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
-					<property name="accesslevel" value="{$accesslevel}" />
-					<property name="logdoc_file" value="{$impl_dir}/log.xml" />
-				</xsl:if>
 				<path id="classes.api.classpath">
 					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$typeClassesDir}" />
@@ -462,6 +457,11 @@
 					<reference refid="all-dtds" />
 					<propertyset refid="{$api}.properties" />
 					<param name="implName2" value="{$implName2}" />
+					<xsl:if test="$impl_node/logdoc">
+						<xsl:variable name="accesslevel" select="$impl_node/logdoc/@accesslevel" />
+						<param name="accesslevel" value="{$accesslevel}" />
+						<param name="logdoc_file" value="{$impl_dir}/log.xml" />
+					</xsl:if>
 				</antcall>
 			</target>
 
