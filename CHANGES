@@ -59,6 +59,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 * Librairies:
   - Upgraded Commons HttpClient from 3.0.1 to 3.1.
 
+* Examples:
+  - Fixed the rest API did not compile.
+
 * Documentation:
   - New front-end page fot the web site.
 
