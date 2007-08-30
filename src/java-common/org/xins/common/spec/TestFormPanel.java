@@ -7,7 +7,6 @@
 package org.xins.common.spec;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,6 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
+
 import org.xins.common.types.EnumItem;
 import org.xins.common.types.EnumType;
 import org.xins.common.types.Type;
@@ -94,6 +94,11 @@ public class TestFormPanel extends JPanel {
       parameterComponents = new ArrayList();
       //JPanel paramNamesPanel = new JPanel();
       //JPanel paramValuesPanel = new JPanel();
+      tfBackground = UIManager.getColor("TextField.background");
+      tfInvalidColor = new Color(
+            Math.min(tfBackground.getRed() + 30, 255), 
+            Math.max(tfBackground.getGreen() - 15, 0), 
+            Math.max(tfBackground.getBlue() - 20, 0));
       JPanel paramsPanel = new JPanel();
       GridBagLayout gridbag = new GridBagLayout();
       GridBagConstraints c = new GridBagConstraints();
@@ -147,11 +152,6 @@ public class TestFormPanel extends JPanel {
    }
 
    protected void initData() {
-      tfBackground = UIManager.getColor("TextField.background");
-      tfInvalidColor = new Color(
-            Math.min(tfBackground.getRed() + 30, 255), 
-            Math.max(tfBackground.getGreen() - 15, 0), 
-            Math.max(tfBackground.getBlue() - 20, 0));
    }
 
    protected JComponent createInputComponent(final ParameterSpec inputSpec) {
