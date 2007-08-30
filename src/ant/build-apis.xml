@@ -415,7 +415,7 @@ ${apis.list}]]></echo>
 	</target>
 
 	<target name="-javadoc-test" depends="-load-properties, -prepare-classes">
-		<property name="javaTestDir" value="${xins_home}/apis/${api}/test" />
+		<property name="javaTestDir" value="${project_home}/apis/${api}/test" />
 		<javadoc
 		destdir="${builddir}/javadoc-test/${api}"
 		version="yes"
