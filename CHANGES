@@ -55,6 +55,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 1:
   - Fixed incorrect directory specified for the javadoc-test-<api name> target.
   - Fixed the logdoc properties should be passed as parameters to <antcall>.
 
+* Tools:
+  - Added new tool "glean" that generates the Glean report for an API.
+    More information about Glean at http://jbrugge.com/glean/index.html.
+
 * Tests:
   - Added test for the include of other runtime properties files.
   - Added test for the _xins-soap-map calling convention.

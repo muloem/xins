@@ -53,7 +53,7 @@ The following commands assist in authoring specifications:
 The following commands can be used to run a tool on an API:
 download-tools, java2html, pmd, checkstyle, coverage, emma,
 findbugs, lint4j, jdepend, cvschangelog, jmeter, run-jmeter,
-maven, eclipse, smd, xsd-to-types, wsdl-to-api.
+maven, eclipse, smd, xsd-to-types, wsdl-to-api, webstart, glean.
 More information is available using the 'help-tools' target.
 
 The following targets are specific for a single API,

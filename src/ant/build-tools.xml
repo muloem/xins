@@ -35,6 +35,7 @@
 - wsdl-to-api     Generates the XINS API files from the WSDL.
 - smd             Generates the Simple Method Description for an API.
 - webstart        Generates the Java Web Start file (JNLP) for an API.
+- glean           Generates Glean report for an API.
 
 The name of the API is specified with the 'api.name' Ant property.
 
@@ -46,6 +47,7 @@ jmeter.test       [optional, run-jmeter, test to execute]
 xsd.dir           [required, xsd-to-types, directory of xsd files]
 wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 smd.endpoint      [optional, smd, the enpoint of the API]
+glean.home        [required, glean, directory of Glean]
 ]]>
 </echo>
 	</target>
@@ -520,5 +522,35 @@ smd.endpoint      [optional, smd, the enpoint of the API]
 			<param name="project_home" expression="${project_home}" />
 			<param name="xins_version" expression="${xins_version}" />
 		</xslt>
+	</target>
+
+	<target name="glean" depends="-init-tools" description="Generates the Glean report for an API.">
+		<mkdir dir="${builddir}/glean" />
+		<available property="glean.props.available" file="apis/${api.name}/glean.properties" />
+		<antcall target="create-glean-props" />
+		<property name="project.feedback.properties" file="${project_home}/apis/${api.name}/glean.properties" />
+		<ant antfile="${glean.home}/build.xml" dir="${glean.home}" inheritall="false">
+			<property name="feedback.properties" value="${project.feedback.properties}"/>
+		</ant>
+	</target>
+
+	<target name="create-glean-props" depends="-init-tools" description="Generates the Glean properties file for an API." unless="glean.props.available">
+		<echo file="apis/${api.name}/glean.properties">
+# Glean properties for the ${api.name} API
+
+# Define which tools you want feedback from
+tool.pattern = javadoc,javancss,jdepend,pmd
+
+# Define the base of the project as an absolute path, not relative
+project.root = ${project_home}/apis/${api.name}
+
+src.dir = ${project.root}/impl
+bin.dir = ${project_home}/build/classes-api/${api.name}
+lib.dir = ${xins_home}/lib
+
+src.project.name = ${api.name} API
+
+gen.report.root = ${project_home}/build/glean
+</echo>
 	</target>
 </project>
