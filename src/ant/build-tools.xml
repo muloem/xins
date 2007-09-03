@@ -104,6 +104,12 @@ glean.home        [required, glean, directory of Glean]
 		<gunzip src="${extra-tools.dir}/jakarta-jmeter-2.2.tgz" />
 		<untar src="${extra-tools.dir}/jakarta-jmeter-2.2.tar" dest="${extra-tools.dir}" />
 		<delete file="${extra-tools.dir}/jakarta-jmeter-2.2.tgz" />
+		<get src="http://jbrugge.com/glean/glean-1.2.tar.gz"
+		     dest="${extra-tools.dir}/glean-1.2.tar.gz"
+		     usetimestamp="true" ignoreerrors="true" />
+		<gunzip src="${extra-tools.dir}/glean-1.2.tar.gz" />
+		<untar src="${extra-tools.dir}/glean-1.2.tar" dest="${extra-tools.dir}" />
+		<delete file="${extra-tools.dir}/glean-1.2.tar" />
 	</target>
 
 	<target name="java2html" depends="-init-tools" description="Generates HTML pages which contains the API code.">

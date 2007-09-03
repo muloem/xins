@@ -18,6 +18,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
   - The clean-<api name> also removes the main build.xml and regenerates a
     fresh one.
 
+* Tools:
+  - Added Glean in the download-tools target.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
