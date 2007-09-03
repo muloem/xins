@@ -9,6 +9,8 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 * XINS/Java Server Framework:
   - The input parameters are cloned using another method than calling the
     clone method as the Map could be something else than ChainedMap.
+  - If the CallingConvention#convertRequest throws an InvalidRequestException,
+    the stack trace of the cause is printed.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:

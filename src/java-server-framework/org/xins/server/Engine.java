@@ -607,17 +607,22 @@ final class Engine {
     * @param reason
     *    explanation, can be <code>null</code>.
     *
+    * @param throwable
+    *    the exception thrown, can be <code>null</code>.
+    *
     * @throws IOException
     *    in case of an I/O error.
     */
    private void handleUnprocessableRequest(HttpServletRequest  request,
                                            HttpServletResponse response,
                                            int                 statusCode,
-                                           String              reason)
+                                           String              reason,
+                                           Throwable           exception)
    throws IOException {
 
       // Log
-      Log.log_3523(request.getRemoteAddr(),
+      Log.log_3523(exception,
+                   request.getRemoteAddr(),
                    request.getMethod(),
                    request.getRequestURI(),
                    request.getQueryString(),
@@ -656,7 +661,7 @@ final class Engine {
       String reason  = "XINS/Java Server Framework engine state \""
                      + state
                      + "\" does not allow incoming requests.";
-      handleUnprocessableRequest(request, response, statusCode, reason);
+      handleUnprocessableRequest(request, response, statusCode, reason, null);
    }
 
    /**
@@ -766,12 +771,10 @@ final class Engine {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             reason     = "Internal error while trying to determine "
                        + "appropriate calling convention.";
-
-            Utils.logProgrammingError(exception);
          }
 
          // Log and respond
-         handleUnprocessableRequest(request, response, statusCode, reason);
+         handleUnprocessableRequest(request, response, statusCode, reason, exception);
       }
 
       return cc;
@@ -834,12 +837,10 @@ final class Engine {
          } else {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             reason     = "Internal error.";
-
-            Utils.logProgrammingError(exception);
          }
 
          // Log and respond
-         handleUnprocessableRequest(request, response, statusCode, reason);
+         handleUnprocessableRequest(request, response, statusCode, reason, exception);
 
          return;
       }
@@ -879,12 +880,10 @@ final class Engine {
          } else {
             statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             reason     = "Internal error while processing function call.";
-
-            Utils.logProgrammingError(exception);
          }
 
          // Log and respond
-         handleUnprocessableRequest(request, response, statusCode, reason);
+         handleUnprocessableRequest(request, response, statusCode, reason, exception);
 
          return;
       }

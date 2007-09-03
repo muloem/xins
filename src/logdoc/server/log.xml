@@ -599,7 +599,7 @@
 			<!-- TODO: Log parameters ? -->
 		</entry>
 		<!-- XXX: Removed 3522 here (@since XINS 1.5.0) -->
-		<entry id="3523" level="INFO">
+		<entry id="3523" level="INFO" exception="true">
 			<description>HTTP request cannot be processed. Returning HTTP status code indicating an error.</description>
 			<param name="ip"          type="text"  nullable="false" />
 			<param name="method"      type="text"  nullable="false" />
