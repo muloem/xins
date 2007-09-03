@@ -12,6 +12,12 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
   - If the CallingConvention#convertRequest throws an InvalidRequestException,
     the stack trace of the cause is printed.
 
+* Generated build file:
+  - The clean target regenerates a fresh build.xml. This allows to append
+    command such as 'xins clean war-myapi'.
+  - The clean-<api name> also removes the main build.xml and regenerates a
+    fresh one.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 

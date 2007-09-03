@@ -10,6 +10,10 @@
 
 	<target name="clean" depends="-load-xins-properties" unless="no.clean" description="Removes all generated files">
 		<delete dir="${builddir}" />
+		<ant antfile="${xins_home}/src/ant/make-build.xml">
+			<property name="xins_home" value="${xins_home}" />
+			<property name="user.dir" value="${project_home}" />
+		</ant>
 	</target>
 
 	<target name="check-version" depends="-load-properties">
@@ -336,6 +340,11 @@ ${apis.list}]]></echo>
 		<delete dir="${builddir}/types/${api}" />
 		<delete dir="${builddir}/webapps/${api}" />
 		<delete file="${builddir}/wsdl/${api}.wsdl" />
+		<delete file="${builddir}/build.xml" />
+		<ant antfile="${xins_home}/src/ant/make-build.xml">
+			<property name="xins_home" value="${xins_home}" />
+			<property name="user.dir" value="${project_home}" />
+		</ant>
 	</target>
 
 	<target name="-clean-impl" depends="-load-properties">
