@@ -21,6 +21,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 * Tools:
   - Added Glean in the download-tools target.
 
+* Libraries:
+  - Upgraded Log4J to 1.2.15.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
