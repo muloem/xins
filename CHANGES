@@ -4,6 +4,13 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.1 BETA 2:
+
+* XINS/Java Server Framework:
+  - The input parameters are cloned using another method than calling the
+    clone method as the Map could be something else than ChainedMap.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 
 * XINS/Java Server Framework:

@@ -153,7 +153,7 @@ public class SessionManager extends Manageable {
     */
    protected void result(boolean successful) {
       if (successful) {
-         ChainedMap inputParameters = (ChainedMap) getProperty("_inputs");
+         Map inputParameters = (Map) getProperty("_inputs");
          Set propertiesSet =  (Set) getProperty("_propertiesSet");
          if (propertiesSet.contains("*")) {
             return;
@@ -169,7 +169,9 @@ public class SessionManager extends Manageable {
          }
          try {
             Map specInputParameters = _api.getAPISpecification().getFunction(functionName).getInputParameters();
-            Iterator itInputParameters = ((ChainedMap) inputParameters.clone()).entrySet().iterator();
+            Map clonedInputParameters = new ChainedMap();
+            clonedInputParameters.putAll(inputParameters);
+            Iterator itInputParameters = clonedInputParameters.entrySet().iterator();
             while (itInputParameters.hasNext()) {
                Map.Entry nextInput = (Map.Entry) itInputParameters.next();
                String parameterName = (String) nextInput.getKey();
