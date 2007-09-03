@@ -23,6 +23,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 
 * Libraries:
   - Upgraded Log4J to 1.2.15.
+  - Upgraded docbook XSLT to 1.73.2.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
