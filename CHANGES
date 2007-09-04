@@ -14,7 +14,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 
 * Generated build file:
   - The clean target regenerates a fresh build.xml. This allows to append
-    command such as 'xins clean war-myapi'.
+    commands such as 'xins clean war-myapi'.
   - The clean-<api name> also removes the main build.xml and regenerates a
     fresh one.
 
@@ -231,7 +231,7 @@ CHANGES INTRODUCED IN XINS 2.1 ALPHA 2:
     test targets.
 
 * Generation of specification documentation:
-  - Fixed multiple textarea when there are multiple inupt data element.
+  - Fixed multiple textarea when there are multiple input data elements.
 
 * Documentation:
   - Changed <style /> in <xslt /> in the xins-docs/build.xml.
