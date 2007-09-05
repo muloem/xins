@@ -21,6 +21,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 * Tools:
   - Added Glean in the download-tools target.
 
+* Build- and release-process:
+  - Download JMX is needed to rebuild xins binaries.
+
 * Libraries:
   - Upgraded Log4J to 1.2.15.
   - Upgraded docbook XSLT to 1.73.2.

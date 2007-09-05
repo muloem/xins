@@ -164,6 +164,12 @@ ${version.file}</fail>
 		<path id="path.common">
 			<pathelement path="build/classes/java-common" />
 		</path>
+		<available property="jmx.available" classname="javax.management.openmbean.OpenType">
+			<classpath>
+				<fileset dir="lib" includes="*.jar" />
+			</classpath>
+		</available>
+		<antcall target="download-jmx" />
 		<antcall target="-build-framework" inheritRefs="true">
 			<param name="src.side" value="server-framework" />
 			<param name="side"     value="server"           />
@@ -200,6 +206,13 @@ ${version.file}</fail>
 	<target name="download-spring" unless="spring.available">
 		<get src="http://repo1.maven.org/maven2/org/springframework/spring/2.0.6/spring-2.0.6.jar" 
 		dest="lib/spring.jar" usetimestamp="true" ignoreerrors="true" />
+	</target>
+
+	<target name="download-jmx" unless="jmx.available">
+		<get src="http://xins.cvs.sourceforge.net/*checkout*/xins/xins/lib/jmxri.LICENSE.html" 
+		dest="lib/jmxri.LICENSE.html" usetimestamp="true" ignoreerrors="true" />
+		<get src="http://xins.cvs.sourceforge.net/*checkout*/xins/xins/lib/jmxri.jar" 
+		dest="lib/jmxri.jar" usetimestamp="true" ignoreerrors="true" />
 	</target>
 
 	<target name="-build-framework">
