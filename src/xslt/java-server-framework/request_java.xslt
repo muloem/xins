@@ -602,13 +602,13 @@
 			</xsl:if>
 
 			<xsl:apply-templates select="attribute" mode="method" />
-			<xsl:apply-templates select="contains/contained" />
+			<xsl:apply-templates select="contains/contained" mode="listMethod" />
 			<xsl:text>
    }
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="input/data/element/contains/contained | output/data/element/contains/contained">
+	<xsl:template match="input/data/element/contains/contained | output/data/element/contains/contained" mode="listMethod">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="methodName">
 			<xsl:call-template name="hungarianUpper">

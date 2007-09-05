@@ -478,13 +478,13 @@ implements Result {
 			<xsl:apply-templates select="attribute">
 				<xsl:with-param name="methodImpl" select="'_elementBuilder.setAttribute'" />
 			</xsl:apply-templates>
-			<xsl:apply-templates select="contains/contained" />
+			<xsl:apply-templates select="contains/contained" mode="addMethod" />
 			<xsl:text>
    }
 </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="output/data/element/contains/contained | input/data/element/contains/contained">
+	<xsl:template match="output/data/element/contains/contained | input/data/element/contains/contained" mode="addMethod">
 		<!-- Define the variables used in the set methods -->
 		<xsl:variable name="javaVariable">
 			<xsl:call-template name="hungarianLower">
