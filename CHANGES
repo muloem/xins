@@ -12,6 +12,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
   - If the CallingConvention#convertRequest throws an InvalidRequestException,
     the stack trace of the cause is printed.
 
+* XINS/Java Common Library:
+  - Added more help text for the command java -jar <api name>.war -help.
+
 * Generation of server-side Java code:
   - Fixed add methods was generated for input data section element instead of
     list methods.

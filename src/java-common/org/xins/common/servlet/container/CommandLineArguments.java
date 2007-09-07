@@ -52,7 +52,8 @@ class CommandLineArguments {
       port = HTTPServletStarter.DEFAULT_PORT_NUMBER;
       showGUI = false;
       if (args.length == 1 && args[0].equals("-help")) {
-         System.out.println("Usage: java -jar <api name>.war [-port:<port number>] [-gui] [-war:<war file>] [loader:<classloader mode>]");
+         System.out.println("Usage: java [-Dorg.xins.server.config=<xins properties>] -jar <api name>.war [-port:<port number>] [-gui] [-war:<war file>] [-loader:<classloader mode>]");
+         System.out.println("  if port number = -1, the Servlet is not started.");
          System.exit(0);
       }
       for (int i = 0; i < args.length; i++) {
