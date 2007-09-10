@@ -46,6 +46,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
   - Added XINS 2.1 features to the user guide.
   - Added chapter about integration with other frameworks to the user guide.
 
+* DTD:
+  - Added possibility to have a description in the xins-project.xml.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 1:
 

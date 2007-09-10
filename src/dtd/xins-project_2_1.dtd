@@ -3,7 +3,7 @@
  by adding the following lines at the top of the file :
 <!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 2.1//EN" "http://www.xins.org/dtd/xins-project_2_1.dtd">
 -->
-<!ELEMENT project (specdocs?, cvsweb?, api*)>
+<!ELEMENT project (description?, specdocs?, cvsweb?, api*)>
 <!ATTLIST project
           name       NMTOKEN #REQUIRED
           rcsversion CDATA #IMPLIED
