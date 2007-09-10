@@ -44,6 +44,7 @@
 				</xsl:call-template>
 
 				<h1>API index</h1>
+				<xsl:apply-templates select="description" />
 				<xsl:choose>
 					<xsl:when test="api">
 						<p>This project defines the following API specifications:</p>
@@ -118,6 +119,12 @@
 		</tr>
 	</xsl:template>
 
+	<xsl:template match="project/description">
+		<p>
+			<xsl:apply-templates />
+		</p>
+	</xsl:template>
+  
 	<xsl:template match="api/description">
 		<xsl:call-template name="firstline">
 			<xsl:with-param name="text" select="text()" />

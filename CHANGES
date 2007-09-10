@@ -21,6 +21,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
   - Fixed add methods was generated for input data section element instead of
     list methods.
 
+* Generation of specdocs:
+  - Added xins-project description to the main specdocs index.html.
+
 * Generated build file:
   - The clean target regenerates a fresh build.xml. This allows to append
     commands such as 'xins clean war-myapi'.
