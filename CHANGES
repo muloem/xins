@@ -14,6 +14,8 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 
 * XINS/Java Common Library:
   - Added more help text for the command java -jar <api name>.war -help.
+  - Temporary files created by the internal Servlet container should be deleted
+    when stopped.
 
 * Generation of server-side Java code:
   - Fixed add methods was generated for input data section element instead of

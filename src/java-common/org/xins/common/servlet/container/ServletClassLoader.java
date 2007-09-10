@@ -165,6 +165,7 @@ public class ServletClassLoader {
    private static File unpack(JarInputStream jarStream, String entryName) throws IOException {
       String libName = entryName.substring(entryName.lastIndexOf('/') + 1, entryName.length() - 4);
       File tempJarFile = File.createTempFile("tmp_" + libName, ".jar");
+      tempJarFile.deleteOnExit();
       FileOutputStream out = new FileOutputStream(tempJarFile);
 
       // Transfer bytes from the JAR file to the output file
