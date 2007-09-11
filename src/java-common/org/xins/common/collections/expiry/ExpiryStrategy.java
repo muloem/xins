@@ -346,6 +346,7 @@ public final class ExpiryStrategy {
     * @since XINS 1.0.0
     */
    private final class TimerThread extends Thread {
+
       /**
        * Constructs a new <code>TimerThread</code>.
        */
