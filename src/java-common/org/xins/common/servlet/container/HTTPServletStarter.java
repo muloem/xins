@@ -39,8 +39,9 @@ public class HTTPServletStarter {
     * @throws IOException
     *    if the servlet container cannot be started.
     */
+   // Exception is thrown as ServletException is not in the classpath
    public HTTPServletStarter(File warFile)
-   throws ServletException, IOException {
+   throws Exception {
       this(warFile, DEFAULT_PORT_NUMBER, true);
    }
 
@@ -64,7 +65,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port)
-   throws ServletException, IOException {
+   throws Exception {
       this(warFile, port, true);
    }
 
@@ -91,7 +92,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port, boolean deamon)
-   throws ServletException, IOException {
+   throws Exception {
       this(warFile, port, deamon, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
    }
 
@@ -124,7 +125,7 @@ public class HTTPServletStarter {
     * @since XINS 2.1.
     */
    public HTTPServletStarter(File warFile, int port, boolean deamon, int loaderMode)
-   throws ServletException, IOException {
+   throws Exception {
 
       // Create the servlet
       ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, loaderMode);
@@ -163,7 +164,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(String servletClassName, int port, boolean deamon)
-   throws ServletException, IOException {
+   throws Exception {
 
       // Create the servlet
       Class[] constClasses = {String.class, Integer.TYPE, Boolean.TYPE};
