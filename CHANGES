@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 
 * XINS/Java Common Library:
   - Cleaned code with PMD such as removed unused imports.
+  - Fixed possible NullPointerException in PropertyReaderUtils.
 
 * XINS/Java Server Framework:
   - Cleaned code with PMD such as removed unused imports.

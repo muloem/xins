@@ -548,7 +548,7 @@ public final class PropertyReaderUtils {
          String value2 = pr2.get(key);
          if (value1 == null && value2 != null) {
             return false;
-         } else if (! value1.equals(value2)) {
+         } else if (value1 != null && !value1.equals(value2)) {
             return false;
          }
       }
