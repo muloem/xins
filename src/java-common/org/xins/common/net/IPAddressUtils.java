@@ -234,8 +234,7 @@ public final class IPAddressUtils {
     * @return
     *    the {@link ParseException} to throw.
     */
-   private static ParseException newParseException(String ip)
-   throws IllegalArgumentException {
+   private static ParseException newParseException(String ip) {
 
       // Construct the message for the exception
       String detail = "The string \"" + ip + "\" is not a valid IP address.";

@@ -174,7 +174,7 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
    }
 
    /**
-    * parse the SOAP request element according to the rules specified in this
+    * Parses the SOAP request element according to the rules specified in this
     * <a href="_top">class description</a>.
     *
     * @param inputElem
@@ -189,8 +189,15 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     * @param parentElement
     *    the input data element that is being created, can be <code>null</code>.
     *
-    * @param inputParameters
+    * @param inputParams
     *    the PropertyReader where the input parameters should be stored, cannot be <code>null</code>.
+    * 
+    * @return
+    *    the input data element for the FunctionRequest or <code>null</code> if the SOAP
+    *    request does not need to create a input data element.
+    * 
+    * @throws Exception
+    *    if anything goes wrong such specifications not available or incorrect SOAP request.
     */
    protected Element readInputElem(Element inputElem, String functionName, String parent,
          Element parentElement, BasicPropertyReader inputParams) throws Exception {
@@ -400,9 +407,6 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     *
     * @param response
     *    the SOAP response element, cannot be <code>null</code>.
-    *
-    * @throws IOException
-    *    if the data cannot be written to the XML outputter for any reason.
     */
    protected void writeOutputDataSection(String functionName, FunctionResult xinsResult, Element response) {
       Map dataSectionSpec = null;

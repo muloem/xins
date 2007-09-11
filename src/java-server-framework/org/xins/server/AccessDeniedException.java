@@ -63,6 +63,9 @@ public final class AccessDeniedException extends Exception {
     * @param functionName
     *    the name of the function, or <code>null</code>.
     *
+    * @param conventionName
+    *    the name of the calling convention, can be <code>null</code>.
+    *
     * @return
     *    the error message to be used by the constructor, never
     *    <code>null</code>.

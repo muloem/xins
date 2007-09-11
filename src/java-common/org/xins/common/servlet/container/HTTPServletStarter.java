@@ -40,7 +40,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile)
-   throws Exception {
+   throws ServletException, IOException {
       this(warFile, DEFAULT_PORT_NUMBER, true);
    }
 
@@ -64,7 +64,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port)
-   throws Exception {
+   throws ServletException, IOException {
       this(warFile, port, true);
    }
 
@@ -91,7 +91,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(File warFile, int port, boolean deamon)
-   throws Exception {
+   throws ServletException, IOException {
       this(warFile, port, deamon, ServletClassLoader.USE_WAR_EXTERNAL_LIB);
    }
 
@@ -124,7 +124,7 @@ public class HTTPServletStarter {
     * @since XINS 2.1.
     */
    public HTTPServletStarter(File warFile, int port, boolean deamon, int loaderMode)
-   throws Exception {
+   throws ServletException, IOException {
 
       // Create the servlet
       ClassLoader loader = ServletClassLoader.getServletClassLoader(warFile, loaderMode);
@@ -163,7 +163,7 @@ public class HTTPServletStarter {
     *    if the servlet container cannot be started.
     */
    public HTTPServletStarter(String servletClassName, int port, boolean deamon)
-   throws Exception {
+   throws ServletException, IOException {
 
       // Create the servlet
       Class[] constClasses = {String.class, Integer.TYPE, Boolean.TYPE};
@@ -204,7 +204,7 @@ public class HTTPServletStarter {
          }
          try {
             // Starts the server and wait for connections
-            new HTTPServletStarter(cmdArgs.getWARFile(), cmdArgs.getPort(), false, cmdArgs.getLoaderMode());
+            new HTTPServletStarter(cmdArgs.getWarFile(), cmdArgs.getPort(), false, cmdArgs.getLoaderMode());
          } catch (Exception ioe) {
             ioe.printStackTrace();
          }

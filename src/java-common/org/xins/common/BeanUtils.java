@@ -106,8 +106,10 @@ public class BeanUtils {
          String getMethodName = sourceMethods[i].getName();
          Class getMethodReturnType = sourceMethods[i].getReturnType();
          if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
-               (getMethodName.startsWith("is") && getMethodName.length() > 2 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
-               (getMethodName.startsWith("has") && getMethodName.length() > 3 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 && 
+                  (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 && 
+                  (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the set method
             String destProperty = null;
@@ -277,7 +279,8 @@ public class BeanUtils {
             return origValue;
          }
       } catch (Exception ex) {
-         Log.log_1600(String.valueOf(origValue), origValue.getClass().getName(), destClass.getName(), ex.getClass().getName(), ex.getMessage());
+         Log.log_1600(String.valueOf(origValue), origValue.getClass().getName(), 
+               destClass.getName(), ex.getClass().getName(), ex.getMessage());
       }
       return null;
    }
@@ -544,8 +547,10 @@ public class BeanUtils {
          String getMethodName = sourceMethods[i].getName();
          Class getMethodReturnType = sourceMethods[i].getReturnType();
          if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
-               (getMethodName.startsWith("is") && getMethodName.length() > 2 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
-               (getMethodName.startsWith("has") && getMethodName.length() > 3 && (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 && 
+                  (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 && 
+                  (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the property
             String propertyName = null;
@@ -649,7 +654,7 @@ public class BeanUtils {
    }
 
    /**
-    * Puts the values of the <code>Map</source> in the destination object (POJO).
+    * Puts the values of the <code>Map</code> in the destination object (POJO).
     * If needed the property value is converted to the type needed for the set method.
     * The property names can start with an uppercase or a lowercase.
     *

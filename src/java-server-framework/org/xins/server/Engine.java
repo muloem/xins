@@ -607,7 +607,7 @@ final class Engine {
     * @param reason
     *    explanation, can be <code>null</code>.
     *
-    * @param throwable
+    * @param exception
     *    the exception thrown, can be <code>null</code>.
     *
     * @throws IOException

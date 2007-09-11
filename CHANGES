@@ -10,9 +10,11 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
   - Cleaned code with PMD such as removed unused imports.
   - Fixed possible NullPointerException in PropertyReaderUtils.
   - Renamed getWARFile() method to getWarFile().
+  - Cleaned code with CheckStyle such as fixed Javadoc.
 
 * XINS/Java Server Framework:
   - Cleaned code with PMD such as removed unused imports.
+  - Cleaned code with CheckStyle such as fixed Javadoc.
 
 * XINS/Java Client Framework:
   - Cleaned code with PMD such as removed unused imports.

@@ -71,13 +71,16 @@ class HTTPQueryHandler extends Thread {
     * @param client
     *    the connection with the client, cannot be <code>null</code>.
     *
+    * @param servlets
+    *    the mapping between the path and the servlets, cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>client == null</code>.
+    *    if <code>client == null || servlets == null</code>.
     */
    public HTTPQueryHandler(Socket client, Map servlets) throws IllegalArgumentException {
 
       // Check argument
-      MandatoryArgumentChecker.check("client", client);
+      MandatoryArgumentChecker.check("client", client, "servlets", servlets);
 
       _client = client;
       _servlets = servlets;

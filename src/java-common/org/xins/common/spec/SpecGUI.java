@@ -409,7 +409,7 @@ public class SpecGUI {
       private Color tfBackground;
       private Color tfInvalidColor;
       private Color tfValidColor;
-      Perl5Matcher patternMatcher = new Perl5Matcher();
+      private Perl5Matcher patternMatcher = new Perl5Matcher();
 
       TestPatternAction() {
          super("Test regular expression");

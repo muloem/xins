@@ -983,6 +983,9 @@ public abstract class API extends Manageable {
     * @param ip
     *    the remote IP address, never <code>null</code>.
     *
+    * @param cc
+    *    the calling convention to use to handle the call, never <code>null</code>.
+    *
     * @return
     *    the result of the call, never <code>null</code>.
     *

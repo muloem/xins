@@ -128,9 +128,6 @@ public class Viewer extends JTextPane {
     *    the character stream that is supposed to contain XML to be parsed,
     *    not <code>null</code>.
     *
-    * @return
-    *    the parsed result, not <code>null</code>.
-    *
     * @throws IllegalArgumentException
     *    if <code>in == null</code>.
     *
@@ -173,10 +170,10 @@ public class Viewer extends JTextPane {
    }
 
    /**
-    * Indicate whether to indent the XML or leave it as received.
+    * Indicates whether to indent the XML or leave it as received.
     *
     * @param indentXML
-    *    <code>true<code> if the XML should be indented, <code>false</code> otherwise.
+    *    <code>true</code> if the XML should be indented, <code>false</code> otherwise.
     */
    public void setIndentation(boolean indentXML) {
       this.indentXML = indentXML;

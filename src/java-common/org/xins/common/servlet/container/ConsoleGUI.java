@@ -57,6 +57,9 @@ public class ConsoleGUI {
     *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
+    *
+    * @param cmdArgs
+    *    the command line arguments, cannot be <code>null</code>.
     */
    public ConsoleGUI(JFrame mainFrame, CommandLineArguments cmdArgs) {
       initUI(mainFrame, cmdArgs);
@@ -69,6 +72,9 @@ public class ConsoleGUI {
     *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
+    *
+    * @param cmdArgs
+    *    the command line arguments, cannot be <code>null</code>.
     */
    protected void initUI(final JFrame mainFrame, final CommandLineArguments cmdArgs) {
       consolePanel = new JPanel();

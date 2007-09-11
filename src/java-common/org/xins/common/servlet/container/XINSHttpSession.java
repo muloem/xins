@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSessionContext;
 public class XINSHttpSession implements HttpSession {
 
    /**
-    * The random generator
+    * The random generator.
     */
    private final static Random RANDOM = new Random();
 

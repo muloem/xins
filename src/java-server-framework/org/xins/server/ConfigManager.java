@@ -300,6 +300,9 @@ final class ConfigManager {
 
    /**
     * Read the runtime properties files when files are specified locally.
+    *
+    * @return
+    *    The runtime properties read from the files, never <code>null</code>.
     * 
     * @throws IOException
     *    if the file cannot be found or be read.
@@ -353,6 +356,9 @@ final class ConfigManager {
 
    /**
     * Read the runtime properties files when files are specified locally.
+    *
+    * @return
+    *    The runtime properties read from the URLs, never <code>null</code>.
     * 
     * @throws IOException
     *    if the URL cannot be created or if the connection to the URL failed.
