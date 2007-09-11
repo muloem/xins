@@ -191,7 +191,7 @@ public class HTTPServletStarter {
       CommandLineArguments cmdArgs = new CommandLineArguments(args);
       if (cmdArgs.getPort() == -1) {
          try {
-            ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWARFile(), cmdArgs.getLoaderMode());
+            ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWarFile(), cmdArgs.getLoaderMode());
             loader.loadClass("org.xins.common.spec.SpecGUI").newInstance();
          } catch (Exception ex) {
             ex.printStackTrace();

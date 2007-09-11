@@ -85,7 +85,7 @@ public class ConsoleGUI {
       Action showSpec = new AbstractAction("Specifications") {
          public void actionPerformed(ActionEvent ae) {
             try {
-               ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWARFile(), cmdArgs.getLoaderMode());
+               ClassLoader loader = ServletClassLoader.getServletClassLoader(cmdArgs.getWarFile(), cmdArgs.getLoaderMode());
 
                loader.loadClass("org.xins.common.spec.SpecGUI").newInstance();
             } catch (Exception ex) {
@@ -178,7 +178,7 @@ public class ConsoleGUI {
          if (iconLocation != null) {
             mainFrame.setIconImage(new ImageIcon(iconLocation).getImage());
          }
-         String title = "XINS Servlet Console " + cmdArgs.getWARFile().getName();
+         String title = "XINS Servlet Console " + cmdArgs.getWarFile().getName();
          if (cmdArgs.getPort() != HTTPServletStarter.DEFAULT_PORT_NUMBER) {
             title += " [port:" + cmdArgs.getPort() + "]";
          }

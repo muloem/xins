@@ -133,7 +133,7 @@ class CommandLineArguments {
     * @return
     *    the WAR file or <code>null</code> if not found.
     */
-   File getWARFile() {
+   File getWarFile() {
       return warFile;
    }
 
