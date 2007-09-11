@@ -58,11 +58,6 @@ public final class XINSCallRequest extends CallRequest {
    private static final String CONTEXT_ID_HTTP_PARAMETER_NAME = "_context";
 
    /**
-    * The number of instances of this class. Initially zero.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
     * Secret key used to set the HTTP parameters.
     */
    private static final Object SECRET_KEY = new Object();

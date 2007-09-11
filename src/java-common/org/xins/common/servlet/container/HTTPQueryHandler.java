@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
 
-import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
@@ -87,7 +86,7 @@ class HTTPQueryHandler extends Thread {
       }
       setName("XINS Query handler #" + _instanceNumber);
    }
-   
+
    public void run() {
       try {
          serviceClient(_client);

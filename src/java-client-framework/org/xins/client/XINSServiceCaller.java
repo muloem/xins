@@ -9,7 +9,6 @@ package org.xins.client;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.xins.common.FormattedParameters;
-import org.xins.common.FormattedParameters;
 
 import org.xins.logdoc.ExceptionUtils;
 

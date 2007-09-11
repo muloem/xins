@@ -9,11 +9,9 @@ package org.xins.common.ant;
 import java.io.File;
 import java.util.StringTokenizer;
 import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
 import org.apache.tools.ant.types.Mapper;
 import org.apache.tools.ant.util.FileNameMapper;
-import org.apache.tools.ant.util.GlobPatternMapper;
 
 /**
  * Apache Ant task similar to the &lt;xslt&gt; task with the option that allow to never
@@ -96,10 +94,12 @@ public class XsltPlusTask extends XSLTProcess {
     *    if something goes wrong with the build.
     */
    public void execute() throws BuildException {
-      
+
       if (neverOverwrite) {
          //if (mapper == null) mapper = new GlobPatternMapper(
-         if (mapper == null) throw new BuildException("Please specify a mapper");
+         if (mapper == null) {
+            throw new BuildException("Please specify a mapper");
+         }
          FileNameMapper mapperImpl = mapper.getImplementation();
          String newIncludes = "";
          StringTokenizer stIncludes = new StringTokenizer(implicitIncludes, " ,");

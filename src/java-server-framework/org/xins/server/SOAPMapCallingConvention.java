@@ -24,11 +24,10 @@ import org.xins.common.text.ParseException;
 import org.xins.common.types.Type;
 import org.xins.common.xml.Element;
 import org.xins.common.xml.ElementBuilder;
-import org.xins.common.xml.ElementBuilder;
 
 
 /**
- * The SOAP calling convention that tries to map the SOAP request to the 
+ * The SOAP calling convention that tries to map the SOAP request to the
  * parameters of the function. The rules applied for the mapping are the same
  * as for the command wsdl-to-api.
  * <p/>
@@ -54,10 +53,10 @@ import org.xins.common.xml.ElementBuilder;
  * Here is the mapping for the output:
  * <ul>
  * <li>Response name = function name + "Response"</li>
- * <li>Output parameters with dots are transformed to XML. 
+ * <li>Output parameters with dots are transformed to XML.
  * e.g. element1.element2 -&gt; &lt;element1&gt;&lt;element2&gt;value&lt;/element2&gt;&lt;/element1&gt;</li>
  * <li>The data section is not put in the returned XML, only the elements it contains.</li>
- * <li>Data section element attributes are changed to sub-elements with the 
+ * <li>Data section element attributes are changed to sub-elements with the
  * same rule as for output parameters.</li>
  * </ul>
  *
@@ -135,7 +134,7 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       FunctionRequest functionRequest = readInput(functionElem, functionName);
 
       // If there is information in the SOAP Header that you want to store in
-      // the HTTP request or for input parameters or input data section, 
+      // the HTTP request or for input parameters or input data section,
       // parse the SOAP Header here and fill the functionRequest or httpRequest
       // with the wanted data.
 
@@ -146,12 +145,12 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     * Generates the function request based the the SOAP request.
     * This function will get the XML element in the SOAP request and associate
     * the values with the input parameter or data section element of the function.
-    * 
+    *
     * @param functionElem
     *    the SOAP element of the function request, cannot be <code>null</code>.
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
-    * 
+    *
     * @return
     *    the function request that will be passed to the XINS function, cannot be <code>null</code>.
     */
@@ -177,23 +176,23 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
    /**
     * parse the SOAP request element according to the rules specified in this
     * <a href="_top">class description</a>.
-    * 
+    *
     * @param inputElem
     *    the SOAP request element, cannot be <code>null</code>.
-    * 
+    *
     * @param functionName
     *    the name of the function, cannot be <code>null</code>.
-    * 
+    *
     * @param parent
     *    the name of the super element, can be <code>null</code>.
-    * 
+    *
     * @param parentElement
     *    the input data element that is being created, can be <code>null</code>.
     *
     * @param inputParameters
     *    the PropertyReader where the input parameters should be stored, cannot be <code>null</code>.
     */
-   protected Element readInputElem(Element inputElem, String functionName, String parent, 
+   protected Element readInputElem(Element inputElem, String functionName, String parent,
          Element parentElement, BasicPropertyReader inputParams) throws Exception {
       FunctionSpec functionSpec = getAPI().getAPISpecification().getFunction(functionName);
       Map inputParamsSpec = functionSpec.getInputParameters();
@@ -291,11 +290,11 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       out.close();
    }
 
-   protected Element writeResponse(HttpServletRequest httpRequest, FunctionResult xinsResult) 
+   protected Element writeResponse(HttpServletRequest httpRequest, FunctionResult xinsResult)
    throws IOException {
 
       Element requestEnvelope = (Element) httpRequest.getAttribute(REQUEST_ENVELOPE);
-      Element envelope = new Element(requestEnvelope.getNamespacePrefix(), 
+      Element envelope = new Element(requestEnvelope.getNamespacePrefix(),
             requestEnvelope.getNamespaceURI(), "Envelope");
       copyAttributes(requestEnvelope, envelope);
 
@@ -359,13 +358,13 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
 
    /**
     * Write an output parameter to the SOAP response.
-    * 
+    *
     * @param parameterName
     *    the name of the output parameter, cannot be <code>null</code>.
-    * 
+    *
     * @param parameterValue
     *    the value of the output parameter, cannot be <code>null</code>.
-    * 
+    *
     * @param parent
     *    the parent element to put the created element in, cannot be <code>null</code>.
     */
@@ -426,28 +425,28 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
 
    /**
     * Write the given output data element in the SOAP response.
-    * 
+    *
     * @param dataSectionSpec
     *    the specification of the output data elements for the function, cannot be <code>null</code>.
-    * 
+    *
     * @param dataElement
     *    the data element to tranform as SOAP element, cannot be <code>null</code>.
-    * 
+    *
     * @param parent
     *    the parent element to add the created element, cannot be <code>null</code>.
     */
    protected void writeOutputDataElement(Map dataSectionSpec, Element dataElement, Element parent) {
-      
+
       // Set a prefix to the data element in order to be copied to the created SOAP element
       if (parent.getNamespaceURI() == null) {
          dataElement.setNamespacePrefix(parent.getNamespacePrefix());
       }
-      
+
       Element transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, false);
       parent.addChild(transformedDataElement);
    }
 
-   protected void setDataElementAttribute(ElementBuilder builder, String attributeName, 
+   protected void setDataElementAttribute(ElementBuilder builder, String attributeName,
          String attributeValue, String elementNameSpacePrefix) {
       if (attributeName.indexOf(".") == -1) {
          Element dataElement = new Element(elementNameSpacePrefix, null, attributeName);
@@ -464,15 +463,15 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
 
    /**
     * Utility method that clones an Element without the children.
-    * 
+    *
     * @param element
     *   the element to be cloned, cannot be <code>null</code>.
-    * 
+    *
     * @return
     *   an element which is identical to the given element but with no sub-elements, never <code>null</code>.
     */
    private Element cloneElement(Element element) {
-      Element result = new Element(element.getNamespacePrefix(), 
+      Element result = new Element(element.getNamespacePrefix(),
             element.getNamespaceURI(),
             element.getLocalName());
       copyAttributes(element, result);
@@ -483,10 +482,10 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
    /**
     * Utility method that copies the attributes of an element to another element.
     * Note that the name space URI is not copied.
-    * 
+    *
     * @param source
     *   the source element to get the attributes from, cannot be <code>null</code>.
-    * 
+    *
     * @param target
     *   the target element to copy the attributes to, cannot be <code>null</code>.
     */
@@ -498,7 +497,7 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
          String attrValue = (String) nextAttribute.getValue();
          if (!"xmlns".equals(attrQName.getNamespacePrefix()) ||
                !attrQName.getLocalName().equals(source.getNamespacePrefix())) {
-            target.setAttribute(attrQName.getNamespacePrefix(), attrQName.getNamespaceURI(), 
+            target.setAttribute(attrQName.getNamespacePrefix(), attrQName.getNamespaceURI(),
                   attrQName.getLocalName(), attrValue);
          }
       }

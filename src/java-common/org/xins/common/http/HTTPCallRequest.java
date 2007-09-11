@@ -27,11 +27,6 @@ import org.xins.common.service.CallRequest;
 public final class HTTPCallRequest extends CallRequest {
 
    /**
-    * The number of instances of this class. Initially zero.
-    */
-   private static int INSTANCE_COUNT;
-
-   /**
     * Description of this HTTP call request. This field cannot be
     * <code>null</code>, it is initialized during construction.
     */

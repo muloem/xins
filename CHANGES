@@ -4,6 +4,18 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.1 BETA 3:
+
+* XINS/Java Common Library:
+  - Cleaned code with PMD such as removed unused imports.
+
+* XINS/Java Server Framework:
+  - Cleaned code with PMD such as removed unused imports.
+
+* XINS/Java Client Framework:
+  - Cleaned code with PMD such as removed unused imports.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 
 * XINS/Java Server Framework:

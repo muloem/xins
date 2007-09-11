@@ -7,11 +7,7 @@
 package org.xins.common.servlet.container;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import javax.swing.JFrame;
 
 /**

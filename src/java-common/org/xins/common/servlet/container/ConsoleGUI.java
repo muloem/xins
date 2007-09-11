@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URL;
 import java.util.regex.Pattern;
@@ -46,7 +45,7 @@ public class ConsoleGUI {
    private JMenuBar consoleMenuBar;
 
    private Style[] logStyles;
-   
+
    private int logLevel = 0;
 
    private Pattern patternFilter = null;
@@ -55,7 +54,7 @@ public class ConsoleGUI {
 
    /**
     * Constructs a new <code>ConsoleGUI</code>.
-    * 
+    *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
     */
@@ -67,7 +66,7 @@ public class ConsoleGUI {
    /**
     * Creates the user interface.
     * This method also creates the actions available in the menu.
-    * 
+    *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
     */
@@ -77,9 +76,9 @@ public class ConsoleGUI {
       console.setPreferredSize(new Dimension(700, 400));
       consolePanel.setLayout(new BorderLayout(5,5));
       consolePanel.add(new JScrollPane(console), BorderLayout.CENTER);
-      
+
       consoleMenuBar = new JMenuBar();
-      
+
       // Add the actions
       JMenu consoleMenu = new JMenu("Console");
       consoleMenu.setMnemonic('c');
@@ -110,7 +109,7 @@ public class ConsoleGUI {
       };
       exitAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
       consoleMenu.add(exitAction);
-      
+
       JMenu logLevelMenu = new JMenu("Log level");
       logLevelMenu.setMnemonic('l');
       JCheckBoxMenuItem debugMenu = new JCheckBoxMenuItem(new ChangeLogLevel(0, "Debug"));
@@ -135,8 +134,8 @@ public class ConsoleGUI {
       logLevelMenu.add(fatalMenu);
       Action regexpFilterAction = new AbstractAction("Filter") {
          public void actionPerformed(ActionEvent ae) {
-            String pattern = (String) JOptionPane.showInputDialog(mainFrame, 
-                  "Please regular expression to match", "Log Filter", 
+            String pattern = (String) JOptionPane.showInputDialog(mainFrame,
+                  "Please regular expression to match", "Log Filter",
                   JOptionPane.QUESTION_MESSAGE, null, null, logFilter);
             if ("".equals(pattern)) {
                logFilter = null;
@@ -196,7 +195,7 @@ public class ConsoleGUI {
    }
 
    protected void initData() {
-      
+
       // Initialize the styles
       Style debug = console.addStyle("Debug", null);
       StyleConstants.setForeground(debug, Color.DARK_GRAY);
@@ -233,7 +232,7 @@ public class ConsoleGUI {
    public JPanel getMainPanel() {
       return consolePanel;
    }
-   
+
    public JMenuBar getMenuBar() {
       return consoleMenuBar;
    }
@@ -262,11 +261,11 @@ public class ConsoleGUI {
 
    class ReaderThread extends Thread {
       BufferedReader br;
-      
+
       ReaderThread(PipedInputStream pi) {
          br = new BufferedReader(new InputStreamReader(pi));
       }
-      
+
       public void run() {
          while (true) {
             try {
@@ -319,9 +318,9 @@ public class ConsoleGUI {
    }
 
    class ChangeLogLevel extends AbstractAction {
-      
+
       private int _newLogLevel;
-      
+
       ChangeLogLevel(int newLogLevel, String level) {
          super(level);
          _newLogLevel = newLogLevel;
@@ -332,9 +331,9 @@ public class ConsoleGUI {
    }
 
    class BrowseAction extends AbstractAction {
-      
+
       private String _url;
-      
+
       BrowseAction(String title, String url) {
          super(title);
          _url = url;

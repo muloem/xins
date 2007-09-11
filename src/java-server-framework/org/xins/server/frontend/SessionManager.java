@@ -283,7 +283,7 @@ public class SessionManager extends Manageable {
          }
       }
       if (!name.startsWith("_")) {
-         registerProperty(session, name);
+         registerProperty(name);
       }
    }
 
@@ -370,7 +370,7 @@ public class SessionManager extends Manageable {
          if (inputParameters != null) {
             inputParameters.remove(name);
          }
-         registerProperty(session, name);
+         registerProperty(name);
       }
    }
 
@@ -395,7 +395,7 @@ public class SessionManager extends Manageable {
             String nextAttribute = (String) itAttributes.next();
             session.removeAttribute(nextAttribute);
          }
-         registerProperty(session, "*");
+         registerProperty("*");
       }
    }
 
@@ -403,13 +403,10 @@ public class SessionManager extends Manageable {
     * Registers a property as manually set by the user. The property will then
     * not be overwritten by the input parameter.
     *
-    * @param session
-    *    the session which contain the session propeties, cannot be <code>null</code>.
-    *
     * @param name
     *    the name of the property set or remove in the function implementation, cannot be <code>null</code>.
     */
-   private void registerProperty(HttpSession session, String name) {
+   private void registerProperty(String name) {
       Set propertiesSet = (Set) getProperty("_propertiesSet");
       if (propertiesSet != null) {
          propertiesSet.add(name);

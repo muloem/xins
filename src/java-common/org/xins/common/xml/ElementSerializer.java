@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.znerd.xmlenc.XMLOutputter;
@@ -177,9 +177,9 @@ public final class ElementSerializer {
          String attrValue         = (String) entry.getValue();
 
          // Do not write the attribute if no value or it is the namespace URI.
-         if (attrValue != null && 
+         if (attrValue != null &&
                (!"xmlns".equals(attrNamespacePrefix) || !attrLocalName.equals(namespacePrefix))) {
-            
+
             // Write the attribute with prefix
             if (attrNamespacePrefix != null) {
                out.attribute(attrNamespacePrefix + ':' + attrLocalName, attrValue);

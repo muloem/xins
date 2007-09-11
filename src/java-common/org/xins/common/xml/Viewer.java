@@ -24,7 +24,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import org.xins.common.MandatoryArgumentChecker;
-import org.xins.common.Utils;
 import org.xins.common.text.ParseException;
 
 /**
@@ -175,17 +174,17 @@ public class Viewer extends JTextPane {
 
    /**
     * Indicate whether to indent the XML or leave it as received.
-    * 
+    *
     * @param indentXML
     *    <code>true<code> if the XML should be indented, <code>false</code> otherwise.
     */
    public void setIndentation(boolean indentXML) {
       this.indentXML = indentXML;
    }
-      
+
    /**
     * Append text at the end of the document.
-    * 
+    *
     * @param text
     *    the text to append, cannot be <code>null</code>.
     *
@@ -237,7 +236,7 @@ public class Viewer extends JTextPane {
 
          _level = -1;
          _hasSubElement = false;
-         
+
          // Define the style needed
          elementStyle = addStyle("Element", null);
          StyleConstants.setForeground(elementStyle, Color.BLUE.darker());
@@ -381,7 +380,7 @@ public class Viewer extends JTextPane {
       public InputSource resolveEntity(String publicId, String systemId) {
          return new InputSource(new ByteArrayInputStream(new byte[0]));
       }
-      
+
       /**
        * Indent if needed.
        */
