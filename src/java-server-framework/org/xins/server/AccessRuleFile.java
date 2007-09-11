@@ -218,6 +218,8 @@ public class AccessRuleFile implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
+    * 
+    * @since XINS 2.1.
     */
    public Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalArgumentException, ParseException {

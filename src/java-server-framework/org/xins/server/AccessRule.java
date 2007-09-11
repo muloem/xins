@@ -282,6 +282,8 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address cannot be parsed.
+    * 
+    * @since XINS 2.1.
     */
    public boolean match(String ip, String functionName, String conventionName)
    throws IllegalStateException, IllegalArgumentException, ParseException {
@@ -329,6 +331,8 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
+    * 
+    * @since XINS 2.1.
     */
    public Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalStateException, IllegalArgumentException, ParseException {

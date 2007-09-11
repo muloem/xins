@@ -46,6 +46,8 @@ public interface AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
+    * 
+    * @since XINS 2.1.
     */
    Boolean isAllowed(String ip, String functionName, String conventionName)
    throws IllegalArgumentException, ParseException;

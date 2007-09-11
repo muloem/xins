@@ -58,11 +58,15 @@ public class SOAPCallingConvention extends CallingConvention {
 
    /**
     * The key used to store the name of the function in the request attributes.
+    * 
+    * @since XINS 2.1.
     */
    protected static final String FUNCTION_NAME = "_function";
 
    /**
     * The key used to store the name of the namespace in the request attributes.
+    * 
+    * @since XINS 2.1.
     */
    protected static final String REQUEST_NAMESPACE = "_namespace";
 
@@ -639,6 +643,8 @@ public class SOAPCallingConvention extends CallingConvention {
     * 
     * @param elementNameSpacePrefix
     *    the namespace prefix of the parent element, can be <code>null</code>.
+    * 
+    * @since XINS 2.1.
     */
    protected void setDataElementAttribute(ElementBuilder builder, String attributeName, 
          String attributeValue, String elementNameSpacePrefix) {

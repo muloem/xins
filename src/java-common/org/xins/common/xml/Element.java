@@ -821,7 +821,7 @@ public class Element implements Cloneable {
        * @throws IllegalArgumentException
        *    if <code>localName == null</code>.
        * 
-       * @since 2.1.
+       * @since XINS 2.1.
        */
       public QualifiedName(String namespacePrefix, String namespaceURI, String localName)
       throws IllegalArgumentException {

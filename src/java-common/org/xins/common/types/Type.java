@@ -74,6 +74,8 @@ public abstract class Type {
     *
     * @return
     *    the description of this type, never <code>null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public String getDescription() {
       return _name + " type.";

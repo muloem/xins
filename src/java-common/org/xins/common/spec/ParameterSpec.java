@@ -115,6 +115,8 @@ public final class ParameterSpec {
     *
     * @return
     *    the String representation of the default value of the parameter, can be <code>null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public String getDefault() {
 

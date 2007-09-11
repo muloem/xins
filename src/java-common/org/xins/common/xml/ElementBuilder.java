@@ -108,6 +108,8 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public ElementBuilder(String namespacePrefix, String namespaceURI, String localName)
    throws IllegalArgumentException {
@@ -178,6 +180,8 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public void setAttribute(String namespacePrefix,
                             String namespaceURI,
@@ -326,6 +330,8 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public void startElement(String namespacePrefix, String namespaceURI, String localName)
    throws IllegalArgumentException {

@@ -930,6 +930,8 @@ public abstract class API extends Manageable {
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
+    * 
+    * @since XINS 2.1.
     */
    public boolean allow(String ip, String functionName, String conventionName)
    throws IllegalArgumentException {
