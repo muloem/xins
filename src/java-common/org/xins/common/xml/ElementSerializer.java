@@ -74,7 +74,6 @@ public final class ElementSerializer {
 
          // Make sure this serializer is not yet in use
          if (_inUse) {
-            // TODO: Use _instanceNumber in message
             String detail = "ElementSerializer instance already in use.";
             throw Utils.logProgrammingError(detail);
          }

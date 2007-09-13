@@ -158,7 +158,6 @@ public class Viewer extends JTextPane {
 
       } catch (SAXException exception) {
 
-         // TODO: Log: Parsing failed
          String exMessage = exception.getMessage();
 
          // Construct complete message

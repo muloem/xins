@@ -163,7 +163,6 @@ public class SessionManager extends Manageable {
          String command = (String) inputParameters.get("command");
          String action = (String) inputParameters.get("action");
          String functionName = command;
-         // TODO put this in TextUtils
          if (action != null && !action.equals("") && !action.equalsIgnoreCase("show")) {
             functionName += TextUtils.firstCharUpper(action);
          }
