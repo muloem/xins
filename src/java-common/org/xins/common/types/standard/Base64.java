@@ -43,7 +43,7 @@ public class Base64 extends Type {
    private final int _maximum;
 
    /**
-    * Constructs a new <code>Float32</code>.
+    * Constructs a new <code>Base64</code>.
     * This constructor is private, the field {@link #SINGLETON} should be
     * used.
     */
@@ -52,17 +52,17 @@ public class Base64 extends Type {
    }
 
    /**
-    * Constructs a new <code>Float32</code> object (constructor for
+    * Constructs a new <code>Base64</code> object (constructor for
     * subclasses).
     *
     * @param name
     *    the name of this type, cannot be <code>null</code>.
     *
     * @param minimum
-    *    the minimum for the value.
+    *    the minimum length that the byte[] should be.
     *
     * @param maximum
-    *    the maximum for the value.
+    *    the maximum length that the byte[] should be.
     */
    protected Base64(String name, int minimum, int maximum) {
       super(name, byte[].class);
@@ -72,7 +72,7 @@ public class Base64 extends Type {
    }
 
    /**
-    * Converts the specified non-<code>null</code> string value to an
+    * Converts the specified non-<code>null</code> string base64 value to a
     * <code>byte[]</code>.
     *
     * @param string
@@ -98,7 +98,7 @@ public class Base64 extends Type {
    }
 
    /**
-    * Converts the specified string value to an <code>byte[]</code> value.
+    * Converts the specified base64 string value to a <code>byte[]</code> value.
     *
     * @param string
     *    the string to convert, can be <code>null</code>.
@@ -130,13 +130,13 @@ public class Base64 extends Type {
    }
 
    /**
-    * Converts the specified <code>byte[]</code> to a string.
+    * Converts the specified <code>byte[]</code> to a base64 string.
     *
     * @param value
     *    the value to convert, can be <code>null</code>.
     *
     * @return
-    *    the textual representation of the value, or <code>null</code> if and
+    *    the base64 representation of the value, or <code>null</code> if and
     *    only if <code>value == null</code>.
     */
    public static String toString(byte[] value) {
