@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.xins.common.Log;
 import org.xins.common.Utils;
 
 /**
@@ -111,7 +112,7 @@ public class HTTPFileWatcher extends FileWatcher {
             _filePaths += ";" + _urls[i].getPath();
          }
       } catch (MalformedURLException murlex) {
-         // TODO log
+         Log.log_1204(murlex);
       }
    }
 
@@ -128,7 +129,7 @@ public class HTTPFileWatcher extends FileWatcher {
 
          // Ignore a IOException
          } catch (IOException exception) {
-            Utils.logIgnoredException(exception);
+            Log.log_1204(exception);
 
          // Ignore a SecurityException
          } catch (SecurityException exception) {
@@ -152,7 +153,7 @@ public class HTTPFileWatcher extends FileWatcher {
                return -1L;
             }
          } catch (IOException ioe) {
-            // TODO log
+            Log.log_1204(ioe);
          }
       }
       if (lastModified == 0L) {

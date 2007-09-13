@@ -145,6 +145,9 @@
 			<param name="id" type="int32" nullable="false" />
 			<param name="file" nullable="false" />
 		</entry>
+		<entry id="1204" level="WARNING" exception="true">
+			<description>I/O Error for the HTTPFileWatcher.</description>
+		</entry>
 	</group>
 
 	<group id="text" name="Text">

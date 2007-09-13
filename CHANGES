@@ -15,6 +15,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
   - Implemented RFE#1787031: New constructor for BootstrapException.
   - Added new method PropertyReaderUtils#getWithDefault to get a property
     value or the specified default value.
+  - Added logs to the HTTPFileWatcher in case of I/O error.
 
 * XINS/Java Server Framework:
   - Cleaned code with PMD such as removed unused imports.
