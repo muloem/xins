@@ -12,6 +12,7 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
   - Renamed getWARFile() method to getWarFile().
   - Cleaned code with CheckStyle such as fixed Javadoc.
   - Added @since XINS 2.1 for new methods and new classes.
+  - Implemented RFE#1787031: New constructor for BootstrapException.
 
 * XINS/Java Server Framework:
   - Cleaned code with PMD such as removed unused imports.

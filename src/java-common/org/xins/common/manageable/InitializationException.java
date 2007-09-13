@@ -63,7 +63,7 @@ public final class InitializationException extends Exception {
    }
 
    /**
-    * Creates a message based on the specified constructor argument.
+    * Creates a message based on the specified constructor arguments.
     *
     * @param detail
     *    the detail message passed to the constructor, or <code>null</code>.

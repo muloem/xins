@@ -6,7 +6,7 @@
  */
 package org.xins.common.manageable;
 
-import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.text.TextUtils;
 import org.xins.logdoc.ExceptionUtils;
 
 /**
@@ -30,7 +30,7 @@ public final class BootstrapException extends Exception {
     *    the detail message, or <code>null</code>.
     */
    public BootstrapException(String message) {
-      super(message);
+      this(message, null);
    }
 
    /**
@@ -45,34 +45,56 @@ public final class BootstrapException extends Exception {
     */
    public BootstrapException(Throwable cause)
    throws IllegalArgumentException {
-      super(createMessage(cause));
-      ExceptionUtils.setCause(this, cause);
+      this(null, cause);
+   }
+ 
+   /**
+    * Constructs a new <code>BootstrapException</code> with the specified
+    * detail message and cause exception.
+    *
+    * @param detail
+    *    the detail message, or <code>null</code>.
+    *
+    * @param cause
+    *    the cause exception, or <code>null</code>.
+    *
+    * @since XINS 2.1
+    */
+   public BootstrapException(String detail, Throwable cause) {
+      super(createMessage(detail, cause));
+      if (cause != null) {
+         ExceptionUtils.setCause(this, cause);
+      }
    }
 
    /**
-    * Creates a message based on the specified constructor argument.
+    * Creates a message based on the specified constructor arguments.
+    *
+    * @param detail
+    *    the detail message passed to the constructor, or <code>null</code>.
     *
     * @param cause
-    *    the cause exception, cannot be <code>null</code>.
-    *
+    *    the cause exception, or <code>null</code>.
+    * 
     * @return
     *    the message, never <code>null</code>.
-    *
-    * @throws IllegalArgumentException
-    *    if <code>cause == null</code>.
     */
-   private static String createMessage(Throwable cause)
-   throws IllegalArgumentException {
-      MandatoryArgumentChecker.check("cause", cause);
+   private static String createMessage(String detail, Throwable cause) {
+      String message = "Bootstrap failed";
 
-      String exceptionMessage = cause.getMessage();
-
-      String message = "Caught " + cause.getClass().getName();
-      if (exceptionMessage != null && exceptionMessage.length() > 0) {
-         message += ". Message: \"" + exceptionMessage + "\".";
-      } else {
-         message += '.';
+      if (detail != null) {
+         message += ": \"" + detail + '"';
       }
+
+      if (cause != null) {
+         message += ". Caught "  +cause.getClass().getName();
+ 
+         String causeMessage = TextUtils.trim(cause.getMessage(), null);
+         if (causeMessage != null) {
+            message += " with message \"" + causeMessage + '"';
+         }
+      }
+      message += '.';
 
       return message;
    }
