@@ -25,6 +25,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 * XINS/Java Client Framework:
   - Cleaned code with PMD such as removed unused imports.
 
+* Generation of the unit tests:
+  - Fixed missing import for the Log4J properties.
+
 * Documentation:
   - Adapted README.html for this 2.1 release.
 
