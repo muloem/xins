@@ -45,7 +45,7 @@ public class SessionManager extends Manageable {
    private API _api;
 
    /**
-    * The session ID of the current running Thread, never <code>null</code>.
+    * The HTTP session of the current running Thread, never <code>null</code>.
     */
    private ThreadLocal _currentSession = new ThreadLocal();
 
