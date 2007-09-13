@@ -13,6 +13,8 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
   - Cleaned code with CheckStyle such as fixed Javadoc.
   - Added @since XINS 2.1 for new methods and new classes.
   - Implemented RFE#1787031: New constructor for BootstrapException.
+  - Added new method PropertyReaderUtils#getWithDefault to get a property
+    value or the specified default value.
 
 * XINS/Java Server Framework:
   - Cleaned code with PMD such as removed unused imports.

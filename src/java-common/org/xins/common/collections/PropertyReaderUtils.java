@@ -198,6 +198,51 @@ public final class PropertyReaderUtils {
 
       return value;
    }
+ 
+   /**
+    * Retrieves a property with the specified name, falling back to a default 
+    * value if the property is not set.
+    *
+    * @param properties
+    *    the set of properties to retrieve a property from,
+    *    cannot be <code>null</code>.
+    *
+    * @param key
+    *    the property key, 
+    *    cannot be <code>null</code>.
+    *
+    * @param fallbackValue
+    *    the fallback default value, returned in case the property is not set 
+    *    in <code>properties</code>, cannot be <code>null</code>.
+    *
+    * @return
+    *    the value of the property or the fallback value.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>properties == null || key == null || fallbackValue == null</code>.
+    * 
+    * @since XINS 2.1
+    */
+   public String getWithDefault(PropertyReader properties,
+                                String         key,
+                                String         fallbackValue)
+   throws IllegalArgumentException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("properties",    properties,
+                                     "key",           key,
+                                     "fallbackValue", fallbackValue);
+
+      // Get value
+      String value = properties.get(key);
+      if (value != null) {
+         return value;
+
+      // Fallback if necessary
+      } else {
+         return fallbackValue;
+      }
+   }
 
    /**
     * Constructs a <code>PropertyReader</code> from the specified input
