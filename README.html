@@ -33,7 +33,7 @@
 			<li>Logdoc for the <a href="docs/logdoc/client/index.html">client</a>,
 			    <a href="docs/logdoc/common/index.html">common</a> and
 			    <a href="docs/logdoc/server/index.html">server</a>.</li>
-			<li><a href="CHANGES">Last changes</a>, <a href="http://xins.sourceforge.net/notes-2.0.html">Release notes</a>, <a href="COPYRIGHT">Copyright</a>.</li>
+			<li><a href="CHANGES">Last changes</a>, <a href="COPYRIGHT">Copyright</a>.</li>
 		</ul>
 
 		<p>
@@ -59,35 +59,13 @@
 		</ul>
 
 		<P>
-		<font color="#5555aa" size="4">Incompatibilities:</font><p/>
-		XINS 2.0 now longer support the features that were deprecated before XINS 1.0 
-		(alpha DTDs, _xins_old calling convention, old directory structure).<br/>
-		XINS 2.0 introduces some incompatibilities with the XINS 1.x versions.<p/>
-		In order to help you, here is the list of the incompatibilities you may find in your code:
+		<font color="#5555aa" size="4">Possible incompatibilities:</font><p/>
+		XINS 2.1 is mostly compatible with XINS 2.0.<p/>
+		In order to help you, here is the list of the possible incompatibilities you may find:
 		<ul>
-			<li><i>org.xins.client.DataElement</i> has been replaced by <i>org.xins.common.xml.Element</i>.<br/>
-			As both classes have the same methods, just replace <i>DataElement</i> with <i>Element</i> in
-			your code and remove any use of the <i>.toXMLElement()</i> method.</li>
-			<li>On the server side, the <i>ParameterNotInitialized</i> exception is no longer thrown 
-			for the generated request.get...() methods for optional parameters and attributes,
-			<i>null</i> is returned if the parameter is not set.</li>
-			<li>On the server side, the request.get...() methods for optional input parameters
-			of primary types (boolean, int, ...) will return an object (e.g. Integer instead of int, ...).</li>
-      <li>The logdoc type <i>serializable</i> is no longer supported, pass a String or an Object instead.</li>
-      <li>The <i>templates.callingconvention.source</i> runtime property has been renamed to
-			<i>templates.&lt;api name&gt;.xins-xslt.source</i> runtime property.</li>
-      <li>The <i>_template</i> parameter used in the _xins-xslt calling convention requires a
-			<i>templates.&lt;api name&gt;.xins-xslt.parameter.prefix</i> runtime property.</li>
-      <li>The <i>FastStringBuffer</i> and <i>FastStringWriter</i> classes have been deprecated.
-			Use <i>java.lang.StringBuffer</i> and <i>java.io.StringWriter</i> instead.</li>
-      <li>The following classes have been removed as no longer used: <i>org.xins.client.DataElement</i>,
-			<i>org.xins.common.ExceptionUtils</i>, <i>org.xins.common.ant.CallTargetTasks</i>,
-			<i>org.xins.common.text.WhislEncoding</i>, <i>org.xins.common.text.NonASCIIException</i>,
-			<i>org.xins.common.threads.QueueTimeOutException</i>, <i>org.xins.logdoc.LogdocExceptionUtils</i>,
-			<i>org.xins.logdoc.LogdocHexConverter</i>, <i>org.xins.logdoc.LogdocSerializable</i>,
-			<i>org.xins.logdoc.LogdocStringBuffer</i>, <i>org.xins.logdoc.MandatoryArgumentChecker</i>,
-			<i>org.xins.logdoc.AbstractLogdocSerializable</i>, <i>org.xins.logdoc.UnsupportedLocaleError</i>,
-			<i>org.xins.server.Element</i>.</li>
+			<li><i>check-version target not found</i>. You need to delete the generated <i>build\build.xml</i> file.</li>
+			<li>The cookie <i>SessionId</i> set by the front-end framework has been renamed to <i>SessionID</i>.</li>
 		</ul>
+
 	</body>
 </html>

@@ -22,6 +22,9 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 * XINS/Java Client Framework:
   - Cleaned code with PMD such as removed unused imports.
 
+* Documentation:
+  - Adapted README.html for this 2.1 release.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 2:
 
