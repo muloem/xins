@@ -28,6 +28,10 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 * Generation of the unit tests:
   - Fixed missing import for the Log4J properties.
 
+* Build- and release-process:
+  - Automatic update of the xins-docs/build.xml with the new version number
+    when creating the release.
+
 * Documentation:
   - Adapted README.html for this 2.1 release.
   - Removed the lists.html as the forms on this page did work. This page has
