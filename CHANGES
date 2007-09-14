@@ -30,6 +30,8 @@ CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 
 * Documentation:
   - Adapted README.html for this 2.1 release.
+  - Removed the lists.html as the forms on this page did work. This page has
+    been replaced with the mailman page.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 2:
