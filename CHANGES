@@ -6,6 +6,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 RC 1:
 
+* XINS/Java Common Library:
+  - Fixed the parameters were not propagated in the test form GUI if a check
+    box or a combo box was used.
+
 * Generation of the unit tests:
   - Fixed the environment file was not detected for the test forms.
 

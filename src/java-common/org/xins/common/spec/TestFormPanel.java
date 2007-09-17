@@ -157,6 +157,8 @@ public class TestFormPanel extends JPanel {
    protected JComponent createInputComponent(final ParameterSpec inputSpec) {
       final JComponent inputField;
       final Type inputType = inputSpec.getType();
+      String defaultValue = inputSpec.getDefault();
+
       if (inputType instanceof EnumType) {
          inputField = new JComboBox();
          Iterator itItems = ((EnumType) inputType).getEnumItems().iterator();
@@ -165,20 +167,26 @@ public class TestFormPanel extends JPanel {
          }
          while (itItems.hasNext()) {
             EnumItem item = (EnumItem) itItems.next();
-            ((JComboBox) inputField).addItem(item.getName());
+            ((JComboBox) inputField).addItem(item.getValue());
          }
       } else if (inputType instanceof org.xins.common.types.standard.Boolean) {
          if (inputSpec.isRequired()) {
             inputField = new JCheckBox();
+            if ("true".equals(defaultValue)) {
+               ((JCheckBox) inputField).setSelected(true);
+            }
          } else {
             inputField = new JComboBox();
             ((JComboBox) inputField).addItem("");
             ((JComboBox) inputField).addItem("true");
             ((JComboBox) inputField).addItem("false");
+            if (defaultValue != null) {
+               ((JComboBox) inputField).setSelectedItem(defaultValue);
+            }
          }
       } else {
          inputField = new JTextField(20);
-         if (inputSpec.isRequired() && inputSpec.getDefault() == null) {
+         if (inputSpec.isRequired() && defaultValue == null) {
             inputField.setBackground(tfInvalidColor);
          }
          inputField.addKeyListener(new KeyAdapter() {
@@ -194,8 +202,8 @@ public class TestFormPanel extends JPanel {
                }
             }
          });
-         if (inputSpec.getDefault() != null) {
-            ((JTextField) inputField).setText(inputSpec.getDefault());
+         if (defaultValue != null) {
+            ((JTextField) inputField).setText(defaultValue);
          }
       }
       inputField.setToolTipText(inputType.getName() + ": " + inputType.getDescription());
@@ -219,6 +227,10 @@ public class TestFormPanel extends JPanel {
          String paramValue = "";
          if (inputComponent instanceof JTextComponent) {
             paramValue = ((JTextComponent) inputComponent).getText();
+         } else if (inputComponent instanceof JComboBox) {
+            paramValue = ((JComboBox) inputComponent).getSelectedItem().toString();
+         } else if (inputComponent instanceof JCheckBox) {
+            paramValue = ((JCheckBox) inputComponent).isSelected() ? "true" : "false";
          }
          if (!"".equals(paramValue)) {
             result += "&" + paramName + "=" + paramValue;
