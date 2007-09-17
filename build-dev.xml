@@ -834,15 +834,6 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		match="property name=&quot;version&quot;        value=&quot;.*&quot;"
 		replace="property name=&quot;version&quot;        value=&quot;${version}&quot;"
 		byline="true" />
-		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins-docs"
-		     failonerror="true">
-			<commandline>
-				<argument value="commit" />
-				<argument value="-m" />
-				<argument value="Increased version number." />
-				<argument path="${docs.dir}/build.xml" />
-			</commandline>
-		</cvs>
 	</target>	
 
 	<target name="-post-commit-version" depends="-init-release" unless="major.release">
