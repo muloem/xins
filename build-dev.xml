@@ -701,26 +701,34 @@ ${sf.file}</fail>
                 <replaceregexp file="src/tools/installer/${name}.iss"
 		               match="VersionInfoVersion=([.\d]+)([^\s]*)"
 		               replace="VersionInfoVersion=\1" />
-		<!-- <exec executable="C:\Program Files\Inno Setup 5\Compil32.exe"> -->
-    <exec executable="/usr/bin/wine ~/.wine/drive_c/Program\ Files/Inno\ Setup\ 5/Compil32.exe">
+		<exec executable="C:\Program Files\Inno Setup 5\Compil32.exe"
+		      os="Windows 2000, Windows XP, Windows Vista">
+			<arg value="/cc" />
+			<arg path="src/tools/installer/${name}.iss" />
+		</exec>
+		<exec executable="/usr/bin/wine"
+		      os="Linux,Unix,FreeBSD">
+			<arg value="~/.wine/drive_c/Program Files/Inno Setup 5/Compil32.exe" />
 			<arg value="/cc" />
 			<arg path="src/tools/installer/${name}.iss" />
 		</exec>
 		<delete file="src/tools/installer/${name}.iss" />
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     command="update"
-				 dest="src/tools/installer" />
-		<!--echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
-		<ftp server="upload.sf.net" remotedir="incoming"
-		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
-			<fileset dir=".." includes="${name}-${exe.version}.exe" />
-		</ftp-->
+		     dest="src/tools/installer" />
 	</target>
 	<target name="-download-release" unless="release.file.exists">
 		<mkdir dir="build" />
 		<get src="http://xins.sf.net/${name}-${exe.version}.tgz"
 		dest="build/${name}-${exe.version}.tgz"
 		usetimestamp="true" />
+	</target>
+	<target name="-ftp-upload-installer" unless="no-ftp">
+		<echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
+		<ftp server="upload.sf.net" remotedir="incoming"
+		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
+			<fileset dir=".." includes="${name}-${exe.version}.exe" />
+		</ftp>
 	</target>
 
 	<target name="-check-release-version" depends="-init" unless="force">
