@@ -7,7 +7,7 @@ AppName=XINS
 AppVerName=XINS version %%VERSION%%
 DefaultDirName={pf}\xins
 VersionInfoVersion=%%VERSION%%
-OutputDir=C:\projects
+OutputDir=%%PROJECT_HOME%%\xins\build
 OutputBaseFilename=xins-%%VERSION%%
 SetupIconFile=..\..\..\xins.ico
 WizardImageFile=bigxinslogo.bmp
@@ -15,11 +15,11 @@ WizardSmallImageFile=smallxinslogo.bmp
 UninstallDisplayIcon={app}\xins.ico
 DefaultGroupName=XINS
 DisableProgramGroupPage=yes
-LicenseFile=C:\projects\xins-%%VERSION%%\COPYRIGHT
+LicenseFile=%%PROJECT_HOME%%\xins-%%VERSION%%\COPYRIGHT
 InfoBeforeFile=xins-info1.txt
 
 [Files]
-Source: "C:\projects\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdirs
+Source: "%%PROJECT_HOME%%\xins-%%VERSION%%\*"; DestDir: "{app}"; Flags: recursesubdirs
 Source: "..\..\..\xins.ico"; DestDir: "{app}"
 
 [Icons]
