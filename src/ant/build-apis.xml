@@ -917,7 +917,6 @@ ${apis.list}]]></echo>
 			<param name="specsdir"     expression="${api_specsdir}" />
 			<param name="api"          expression="${api}"          />
 			<param name="api_file"     expression="${api_file}"     />
-			<param name="env_file"     expression="${env_file}"     />
 		</xslt>
 	</target>
 

@@ -18,7 +18,6 @@
 	<xsl:param name="specsdir"     />
 	<xsl:param name="api"          />
 	<xsl:param name="api_file"     />
-	<xsl:param name="env_file"     />
 
 	<xsl:include href="../specdocs/footer.xslt" />
 	<xsl:include href="../specdocs/header.xslt" />
@@ -38,6 +37,11 @@
 	<xsl:template match="function">
 
 		<xsl:variable name="functionName" select="@name" />
+		<xsl:variable name="env_file">
+			<xsl:if test="$project_node/api[@name=$api]/environments">
+				<xsl:value-of select="concat($project_home, '/apis/', $api, '/environments.xml')" />
+			</xsl:if>
+		</xsl:variable>
 		<xsl:variable name="init_environment">
 			<xsl:choose>
 				<xsl:when test="string-length($env_file) > 0">
@@ -87,7 +91,9 @@
 							</xsl:attribute>
 						</input>
 						<input name="_convention" value="_xins-std" type="hidden" />
-						<xsl:call-template name="environment_section" />
+						<xsl:call-template name="environment_section">
+							<xsl:with-param name="env_file" select="$env_file" />
+						</xsl:call-template>
 					</p>
 					<xsl:call-template name="autofill_section" />
 
@@ -131,6 +137,7 @@
 	</xsl:template>
 
 	<xsl:template name="environment_section">
+		<xsl:param name="env_file" />
 		<xsl:text>Execution environment: </xsl:text>
 		<xsl:choose>
 			<xsl:when test="string-length($env_file) > 0">

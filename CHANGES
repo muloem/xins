@@ -4,6 +4,12 @@ versions of XINS.
 $Id$
 
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.1 RC 1:
+
+* Generation of the unit tests:
+  - Fixed the environment file was not detected for the test forms.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 
 * XINS/Java Common Library:

@@ -326,8 +326,6 @@
 					<xmlcatalog refid="all-dtds" />
 				</xmlvalidate>
 			</xsl:if>
-			<xsl:variable name="env_file" select="''" />
-			<property name="env_file" value="{$env_file}" />
 			<antcall target="-specdocs">
 				<propertyset refid="{$api}.properties" />
 				<reference refid="all-dtds" />
