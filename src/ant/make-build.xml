@@ -32,6 +32,7 @@
 		</condition>
 		<property name="dot.version.minor" value=".${version.minor}" />
 		<property name="version" value="${version.major}.${version.middle}${dot.version.minor}${version.build}${version.suffix}" />
+		<echo message="build: ${build.available}" />
 
 		<available file="${project_home}/build/build.xml" property="build.available" />
 		<antcall target="check-version">

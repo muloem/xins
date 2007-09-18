@@ -10,7 +10,7 @@
 
 	<target name="clean" depends="-load-xins-properties" unless="no.clean" description="Removes all generated files">
 		<delete dir="${builddir}" />
-		<ant antfile="${xins_home}/src/ant/make-build.xml">
+		<ant antfile="${xins_home}/src/ant/make-build.xml" inheritAll="false">
 			<property name="xins_home" value="${xins_home}" />
 			<property name="user.dir" value="${project_home}" />
 		</ant>
@@ -341,7 +341,7 @@ ${apis.list}]]></echo>
 		<delete dir="${builddir}/webapps/${api}" />
 		<delete file="${builddir}/wsdl/${api}.wsdl" />
 		<delete file="${builddir}/build.xml" />
-		<ant antfile="${xins_home}/src/ant/make-build.xml">
+		<ant antfile="${xins_home}/src/ant/make-build.xml" inheritAll="false">
 			<property name="xins_home" value="${xins_home}" />
 			<property name="user.dir" value="${project_home}" />
 		</ant>
