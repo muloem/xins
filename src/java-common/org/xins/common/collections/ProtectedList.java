@@ -29,7 +29,7 @@ import org.xins.common.MandatoryArgumentChecker;
  * key, and not an {@link IndexOutOfBoundsException}, for the negative index.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0

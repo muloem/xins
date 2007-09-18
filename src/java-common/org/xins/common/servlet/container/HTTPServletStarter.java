@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * HTTP Server used to invoke the XINS Servlet.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class HTTPServletStarter {
 

@@ -34,7 +34,7 @@ import org.xins.common.xml.ElementParser;
  * <p>Calling convention implementations must be thread-safe.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @see CallingConventionManager

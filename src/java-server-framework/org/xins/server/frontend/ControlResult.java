@@ -23,7 +23,7 @@ import org.xins.server.Log;
  * Result for the Control command.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 class ControlResult extends FunctionResult {
 

@@ -28,7 +28,7 @@ import org.znerd.xmlenc.XMLOutputter;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */

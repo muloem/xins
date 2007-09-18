@@ -44,7 +44,7 @@ import org.xins.logdoc.UnsupportedLocaleException;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:mees.witteman@orange-ftgroup.com">Mees Witteman</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 final class ConfigManager {
@@ -106,7 +106,7 @@ final class ConfigManager {
    private String _configFile;
 
    /**
-    * The name of the all runtime configuration files included in the main config file. 
+    * The name of the all runtime configuration files included in the main config file.
     * Can be <code>null</code> or empty.
     */
    private String[] _configFiles;
@@ -303,7 +303,7 @@ final class ConfigManager {
     *
     * @return
     *    The runtime properties read from the files, never <code>null</code>.
-    * 
+    *
     * @throws IOException
     *    if the file cannot be found or be read.
     */
@@ -359,7 +359,7 @@ final class ConfigManager {
     *
     * @return
     *    The runtime properties read from the URLs, never <code>null</code>.
-    * 
+    *
     * @throws IOException
     *    if the URL cannot be created or if the connection to the URL failed.
     */

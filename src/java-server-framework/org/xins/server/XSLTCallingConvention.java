@@ -47,7 +47,7 @@ import org.xins.logdoc.ExceptionUtils;
  * <a href="http://www.xins.org/docs/index.html">user guide</a>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class XSLTCallingConvention extends StandardCallingConvention {

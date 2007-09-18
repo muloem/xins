@@ -14,7 +14,7 @@ import org.xins.common.Log;
  * It also logs which property has been overwritten.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.0.
  */

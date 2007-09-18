@@ -26,7 +26,7 @@ import org.xins.common.xml.ElementParser;
  * is <em>_xins-std</em>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class StandardCallingConvention extends CallingConvention {

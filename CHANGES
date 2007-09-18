@@ -9,6 +9,16 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
 * XINS/Java Common Library:
   - Fixed the parameters were not propagated in the test form GUI if a check
     box or a combo box was used.
+  - Changed e-mail from anthony.goubard@orange-ftgroup.com to
+    anthony.goubard@japplis.com.
+
+* XINS/Java Server Framework:
+  - Changed e-mail from anthony.goubard@orange-ftgroup.com to
+    anthony.goubard@japplis.com.
+
+* XINS/Java Client Framework:
+  - Changed e-mail from anthony.goubard@orange-ftgroup.com to
+    anthony.goubard@japplis.com.
 
 * Generation of the unit tests:
   - Fixed the environment file was not detected for the test forms.

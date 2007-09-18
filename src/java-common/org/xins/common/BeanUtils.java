@@ -37,7 +37,7 @@ import org.xins.common.xml.Element;
  * from another object.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0.
  */
@@ -106,9 +106,9 @@ public class BeanUtils {
          String getMethodName = sourceMethods[i].getName();
          Class getMethodReturnType = sourceMethods[i].getReturnType();
          if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
-               (getMethodName.startsWith("is") && getMethodName.length() > 2 && 
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 &&
                   (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
-               (getMethodName.startsWith("has") && getMethodName.length() > 3 && 
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 &&
                   (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the set method
@@ -279,7 +279,7 @@ public class BeanUtils {
             return origValue;
          }
       } catch (Exception ex) {
-         Log.log_1600(String.valueOf(origValue), origValue.getClass().getName(), 
+         Log.log_1600(String.valueOf(origValue), origValue.getClass().getName(),
                destClass.getName(), ex.getClass().getName(), ex.getMessage());
       }
       return null;
@@ -547,9 +547,9 @@ public class BeanUtils {
          String getMethodName = sourceMethods[i].getName();
          Class getMethodReturnType = sourceMethods[i].getReturnType();
          if ((getMethodName.startsWith("get") && getMethodName.length() > 3 && !getMethodName.equals("getClass")) ||
-               (getMethodName.startsWith("is") && getMethodName.length() > 2 && 
+               (getMethodName.startsWith("is") && getMethodName.length() > 2 &&
                   (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE)) ||
-               (getMethodName.startsWith("has") && getMethodName.length() > 3 && 
+               (getMethodName.startsWith("has") && getMethodName.length() > 3 &&
                   (getMethodReturnType == Boolean.class || getMethodReturnType == Boolean.TYPE))) {
 
             // Determine the name of the property

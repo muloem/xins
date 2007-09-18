@@ -21,7 +21,7 @@ import org.xins.common.collections.PropertyReader;
  * invoked locally.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class XINSServletResponse implements HttpServletResponse {
 

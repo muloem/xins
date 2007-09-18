@@ -42,7 +42,7 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -218,7 +218,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
-    * 
+    *
     * @since XINS 2.1.
     */
    public Boolean isAllowed(String ip, String functionName, String conventionName)
@@ -459,7 +459,7 @@ public class AccessRuleFile implements AccessRuleContainer {
     * Listener that reloads the ACL file if it changes.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     *
     * @since XINS 1.1.0
     */

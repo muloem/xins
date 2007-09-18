@@ -33,7 +33,7 @@ import org.xins.server.Log;
  * Manager for the sessions and session properties for the XINS front-end framework.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0.
  */

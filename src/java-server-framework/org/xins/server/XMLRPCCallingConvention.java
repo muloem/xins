@@ -39,7 +39,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * The XML-RPC calling convention.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class XMLRPCCallingConvention extends CallingConvention {
 
@@ -328,7 +328,7 @@ public class XMLRPCCallingConvention extends CallingConvention {
                   Element childElem = parseElement(childValueElem, dataSectionSpec);
                   builder.addChild(childElem);
                } catch (ParseException pex) {
-                  httpRequest.setAttribute(FAULT_KEY, 
+                  httpRequest.setAttribute(FAULT_KEY,
                         "Incorrect format for data element in XML-RPC request: " + pex.getMessage());
                   return new FunctionRequest("InvalidRequest", new BasicPropertyReader(), null, true);
                }

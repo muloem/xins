@@ -50,7 +50,7 @@ import org.xins.common.text.SimplePatternParser;
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  * @author <a href="mailto:chris.gilbride@orange-ftgroup.com">Chris Gilbride</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */
@@ -192,7 +192,7 @@ public final class AccessRule implements AccessRuleContainer {
       Perl5Pattern conventionPattern = parser.parseSimplePattern(conventionPatternString);
 
       // Construct a description
-      String asString = sAllow + ' ' + filter.toString() + ' ' + 
+      String asString = sAllow + ' ' + filter.toString() + ' ' +
             functionPatternString + ' ' + conventionPatternString;
 
       return new AccessRule(allow, filter, functionPattern, conventionPattern, asString);
@@ -282,7 +282,7 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address cannot be parsed.
-    * 
+    *
     * @since XINS 2.1.
     */
    public boolean match(String ip, String functionName, String conventionName)
@@ -331,7 +331,7 @@ public final class AccessRule implements AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
-    * 
+    *
     * @since XINS 2.1.
     */
    public Boolean isAllowed(String ip, String functionName, String conventionName)
@@ -352,7 +352,7 @@ public final class AccessRule implements AccessRuleContainer {
       if (_ipFilter.match(ip)) {
 
          // Then check if the function name matches
-         if (patternMatcher.matches(functionName, _functionNameRegex) && 
+         if (patternMatcher.matches(functionName, _functionNameRegex) &&
                (conventionName == null || patternMatcher.matches(conventionName, _conventionNameRegex))) {
             return _allow ? Boolean.TRUE : Boolean.FALSE;
          }

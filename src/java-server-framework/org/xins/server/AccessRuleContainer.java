@@ -12,7 +12,7 @@ import org.xins.common.text.ParseException;
  * Collection of one or more access rules.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -46,7 +46,7 @@ public interface AccessRuleContainer {
     *
     * @throws ParseException
     *    if the specified IP address is malformed.
-    * 
+    *
     * @since XINS 2.1.
     */
    Boolean isAllowed(String ip, String functionName, String conventionName)

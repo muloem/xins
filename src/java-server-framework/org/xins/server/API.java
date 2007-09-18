@@ -42,7 +42,7 @@ import org.xins.common.xml.ElementBuilder;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  *
  * @since XINS 1.0.0
@@ -930,7 +930,7 @@ public abstract class API extends Manageable {
     *
     * @throws IllegalArgumentException
     *    if <code>ip == null || functionName == null</code>.
-    * 
+    *
     * @since XINS 2.1.
     */
    public boolean allow(String ip, String functionName, String conventionName)

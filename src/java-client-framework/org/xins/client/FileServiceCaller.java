@@ -46,7 +46,7 @@ import org.xins.common.text.URLEncoding;
  * doesn't send data over the network but directly invoke the Servlet method.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0
  */
@@ -354,7 +354,7 @@ class FileServiceCaller extends ServiceCaller {
     * Container of the data part of an HTTP call result.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     *
     * @since XINS 1.5.0
     */

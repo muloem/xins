@@ -12,16 +12,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * Class used to parse and get the command line arguments when the internal 
+ * Class used to parse and get the command line arguments when the internal
  * Servlet container is started.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 class CommandLineArguments {
 
    /**
-    * The port number to use for the Servlet container or -1 if the Servlet 
+    * The port number to use for the Servlet container or -1 if the Servlet
     * container should not be started.
     */
    private int port;
@@ -44,7 +44,7 @@ class CommandLineArguments {
 
    /**
     * Parses the command line arguments.
-    * 
+    *
     * @param args
     *    the command line arguments as passed to the <code>main()</code> method.
     */
@@ -119,7 +119,7 @@ class CommandLineArguments {
    /**
     * Gets the port number specified. If no default port number is specified
     * return the default port number.
-    * 
+    *
     * @return
     *    the port number.
     */
@@ -129,7 +129,7 @@ class CommandLineArguments {
 
    /**
     * Gets the location of the WAR file to execute.
-    * 
+    *
     * @return
     *    the WAR file or <code>null</code> if not found.
     */
@@ -139,7 +139,7 @@ class CommandLineArguments {
 
    /**
     * Gets the class loader mode.
-    * 
+    *
     * @return
     *    the class loader mode to use to load the WAR classes.
     */
@@ -149,9 +149,9 @@ class CommandLineArguments {
 
    /**
     * Indicates whether to run it in console mode or with the Swing user interface.
-    * 
+    *
     * @return
-    *    <code>true</code> for the graphical user interface mode, 
+    *    <code>true</code> for the graphical user interface mode,
     *    <code>false</code> for the console mode.
     */
    boolean showGUI() {

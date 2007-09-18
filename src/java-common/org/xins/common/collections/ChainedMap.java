@@ -23,7 +23,7 @@ import java.util.Set;
  * position as the old one.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.3.0
  */
@@ -87,7 +87,7 @@ public class ChainedMap extends AbstractMap implements Cloneable, Serializable {
     * The <code>Map.Entry</code> for this <code>ChainedMap</code>.
     *
     * @version $Revision$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
    private static class EntryMap implements Map.Entry {
 
@@ -149,7 +149,7 @@ public class ChainedMap extends AbstractMap implements Cloneable, Serializable {
     * this <code>ChainedMap</code>.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
    private static class ChainedSet extends AbstractSet {
 

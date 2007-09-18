@@ -50,7 +50,7 @@ import org.xins.logdoc.ExceptionUtils;
  *
  * @since XINS 2.0.
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class JSONRPCCallingConvention extends CallingConvention {
 

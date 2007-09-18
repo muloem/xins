@@ -61,8 +61,8 @@ import org.xins.common.xml.ElementBuilder;
  * </ul>
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
- * 
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
+ *
  * @since XINS 2.1.
  */
 public class SOAPMapCallingConvention extends SOAPCallingConvention {
@@ -193,11 +193,11 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
     *
     * @param inputParams
     *    the PropertyReader where the input parameters should be stored, cannot be <code>null</code>.
-    * 
+    *
     * @return
     *    the input data element for the FunctionRequest or <code>null</code> if the SOAP
     *    request does not need to create a input data element.
-    * 
+    *
     * @throws Exception
     *    if anything goes wrong such specifications not available or incorrect SOAP request.
     */

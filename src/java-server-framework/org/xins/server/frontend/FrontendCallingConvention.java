@@ -72,7 +72,7 @@ import org.znerd.xmlenc.XMLOutputter;
  * XINS Front-end Framework calling convention.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.5.0.
  */
@@ -288,7 +288,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
 
    protected boolean matches(HttpServletRequest httpRequest) throws Exception {
 
-      return (httpRequest.getMethod().equalsIgnoreCase("GET") && httpRequest.getParameterMap().size() == 0) || 
+      return (httpRequest.getMethod().equalsIgnoreCase("GET") && httpRequest.getParameterMap().size() == 0) ||
             !TextUtils.isEmpty(httpRequest.getParameter("command"));
    }
 
@@ -866,6 +866,7 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       if (TextUtils.isEmpty(mimeType)) {
          String method = outputProperties.getProperty("method");
          if ("xml".equals(method)) {
+
 
 
             mimeType = "text/xml";

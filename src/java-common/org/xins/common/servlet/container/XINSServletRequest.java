@@ -37,7 +37,7 @@ import org.xins.common.text.URLEncoding;
  * called localy.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class XINSServletRequest implements HttpServletRequest {
 
@@ -531,7 +531,7 @@ public class XINSServletRequest implements HttpServletRequest {
     *
     * @version $Revision$ $Date$
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
    private static class InputStream extends ServletInputStream {
       /**

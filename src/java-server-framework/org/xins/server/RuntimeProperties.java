@@ -17,7 +17,7 @@ import org.xins.common.collections.PropertyReader;
  * Base class to get the runtime properties.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:tauseef.rehman@orange-ftgroup.com">Tauseef Rehman</a>
  *
  * @since XINS 1.2.0

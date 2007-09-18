@@ -30,7 +30,7 @@ import org.xins.common.text.ParseException;
  * HTTP query received to be handled by the servlet.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 class HTTPQueryHandler extends Thread {
