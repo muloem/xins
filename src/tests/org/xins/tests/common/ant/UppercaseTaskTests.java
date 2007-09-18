@@ -24,7 +24,7 @@ import org.xins.tests.AllTests;
  * Tests for class <code>HostnameTask</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class UppercaseTaskTests extends TestCase {
 

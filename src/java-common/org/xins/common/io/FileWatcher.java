@@ -14,7 +14,7 @@ import org.xins.common.Utils;
 
 /**
  * File watcher thread. This thread checks if a file or a set of files
- * changed and if it has, it notifies the listener. 
+ * changed and if it has, it notifies the listener.
  * The check is performed every <em>n</em> seconds, where <em>n</em> can be configured.
  *
  * <p>Initially this thread will be a daemon thread. This can be changed by
@@ -22,7 +22,7 @@ import org.xins.common.Utils;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */
@@ -155,7 +155,7 @@ public class FileWatcher extends Thread {
    }
 
    /**
-    * Creates a new <code>FileWatcher</code> for the specified set of files, 
+    * Creates a new <code>FileWatcher</code> for the specified set of files,
     * with the specified interval.
     *
     * @param files
@@ -218,7 +218,7 @@ public class FileWatcher extends Thread {
 
    /**
     * Stores the files in a class variable.
-    * 
+    *
     * @param files
     *    the String files to check, cannot be <code>null</code>.
     */
@@ -237,7 +237,7 @@ public class FileWatcher extends Thread {
     * Configures the name of this thread.
     */
    private synchronized void configureThreadName() {
-      String name = _className + " #" + _instanceID + " [files=\"" + 
+      String name = _className + " #" + _instanceID + " [files=\"" +
             _filePaths + "\"; interval=" + _interval + ']';
       setName(name);
    }
@@ -507,10 +507,10 @@ public class FileWatcher extends Thread {
    /**
     * Gets the time at which the last file was modified.
     * If for any reason, a file could no be read -1 is returned.
-    * 
+    *
     * @return
     *    the time of the last modified file or -1.
-    * 
+    *
     * @throws SecurityException
     *    if one of the file could not be read because of a security issue.
     */

@@ -39,7 +39,7 @@ import org.xins.tests.server.HTTPCallerResult;
  * classes.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class PortalAPITests extends TestCase {
@@ -183,10 +183,10 @@ public class PortalAPITests extends TestCase {
       Element result = parser.parse(new StringReader(xmlResult));
       assertEquals("commandresult", result.getLocalName());
       assertTrue("No FieldError found", xmlResult.indexOf("error.type\">FieldError") != -1);
-      assertTrue("No mantatory field found", 
+      assertTrue("No mantatory field found",
             xmlResult.indexOf("type=\"mand\" field=\"password\"") != -1 ||
             xmlResult.indexOf("field=\"password\" type=\"mand\"") != -1);
-      assertTrue("Invalid field found", 
+      assertTrue("Invalid field found",
             xmlResult.indexOf("type=\"format\" field=\"username\"") != -1 ||
             xmlResult.indexOf("field=\"username\" type=\"format\"") != -1);
    }
@@ -208,7 +208,7 @@ public class PortalAPITests extends TestCase {
    public void testSimpleRedirection() throws Exception {
       BasicPropertyReader paramsLogin = createLoginParams();
       String xmlResult = callCommand(paramsLogin);
-      
+
       BasicPropertyReader params = new BasicPropertyReader();
       String redirection = callRedirection(params);
       assertTrue("Incorrect returned redirection: " + redirection, redirection.endsWith("?command=MainPage"));
@@ -226,7 +226,7 @@ public class PortalAPITests extends TestCase {
       Properties headers = new Properties();
       headers.setProperty("Cookie", "SessionID=1234567");
       HTTPCallerResult resultLogin = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=Login&action=Okay&username=superhuman&password=passW1", headers);
-      
+
       HTTPCallerResult resultMainPage = HTTPCaller.call("1.1", AllTests.host(), AllTests.port() + 1, "GET", "/portal/?command=MainPage", headers);
       assertTrue("Incorrect status code returned: " + resultMainPage.getStatus(),
             resultMainPage.getStatus().trim().startsWith("500"));

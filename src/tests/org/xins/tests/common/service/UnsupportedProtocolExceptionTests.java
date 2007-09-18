@@ -17,7 +17,7 @@ import org.xins.common.service.UnsupportedProtocolException;
  * Tests for class <code>UnsupportedProtocolException</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class UnsupportedProtocolExceptionTests extends TestCase {
 

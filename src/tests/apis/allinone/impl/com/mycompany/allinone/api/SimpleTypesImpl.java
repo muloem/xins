@@ -9,7 +9,7 @@ import org.xins.common.types.standard.Date;
  * Implementation of the <code>SimpleTypes</code> function.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class SimpleTypesImpl extends SimpleTypes  {
 

@@ -14,7 +14,7 @@ import org.xins.common.types.Type;
  * Specification of a parameter.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.3.0
  */
@@ -115,7 +115,7 @@ public final class ParameterSpec {
     *
     * @return
     *    the String representation of the default value of the parameter, can be <code>null</code>.
-    * 
+    *
     * @since XINS 2.1.
     */
    public String getDefault() {

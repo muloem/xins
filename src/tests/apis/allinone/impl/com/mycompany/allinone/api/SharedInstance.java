@@ -16,7 +16,7 @@ import org.xins.common.manageable.Manageable;
  * Common object used by the API to shared properties.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class SharedInstance extends Manageable {
 

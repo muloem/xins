@@ -36,7 +36,7 @@ import org.xins.common.text.ParseException;
  *
  * @version $Revision$ $Date$
  *
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.1
  */
@@ -198,7 +198,7 @@ public class Viewer extends JTextPane {
     * SAX event handler that will parse XML.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private class Handler extends DefaultHandler {

@@ -21,7 +21,7 @@ import org.xins.common.collections.ChainedMap;
  * Tests for the <code>ChainedMap</code> class.
  *
  * @version $Revision$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class ChainedMapTests extends TestCase {
 
@@ -62,7 +62,7 @@ public class ChainedMapTests extends TestCase {
          arrayList.add(randomString);
          sortedMap.put(randomString, "value" + i);
       }
-      
+
       Iterator itSortedMap = sortedMap.values().iterator();
       int i = 0;
       while (itSortedMap.hasNext()) {

@@ -25,14 +25,14 @@ import org.xins.common.types.Type;
  * and execute the functions of this API.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.1
  */
 public class TestFormPanel extends JPanel {
 
    private APISpec apiSpec;
-   
+
    private String functionName;
 
    private java.util.List parameterComponents;
@@ -40,15 +40,15 @@ public class TestFormPanel extends JPanel {
    private ActionListener submitListener;
 
    private Color tfBackground;
-   
+
    private Color tfInvalidColor;
 
    /**
     * Constructs a new <code>SpecGUI</code>.
-    * 
+    *
     * @param apiSpec
     *    the specification of the API.
-    * 
+    *
     * @param functionName
     *    the specification of the API.
     */
@@ -74,9 +74,9 @@ public class TestFormPanel extends JPanel {
          public void paint(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
             Color background = getBackground();
-            
+
             Paint oldPaint = g2.getPaint();
-            GradientPaint gradient = new GradientPaint(0.0f, 0.0f, background.brighter(), 
+            GradientPaint gradient = new GradientPaint(0.0f, 0.0f, background.brighter(),
                   TestFormPanel.this.getWidth() + 0.1f, getHeight() + 0.1f, background.darker());
             g2.setPaint(gradient);
             g2.fill(new Rectangle(TestFormPanel.this.getWidth(), getHeight()));
@@ -88,7 +88,7 @@ public class TestFormPanel extends JPanel {
       jlFunctionName.setFont(jlFunctionName.getFont().deriveFont(20.0f));
       jlFunctionName.setToolTipText(functionSpec.getDescription());
       add(jlFunctionName, BorderLayout.NORTH);
-      
+
       Map inputParameters = functionSpec.getInputParameters();
       boolean hasInputDataSection = functionSpec.getInputDataSectionElements().size() > 0;
       parameterComponents = new ArrayList();
@@ -96,8 +96,8 @@ public class TestFormPanel extends JPanel {
       //JPanel paramValuesPanel = new JPanel();
       tfBackground = UIManager.getColor("TextField.background");
       tfInvalidColor = new Color(
-            Math.min(tfBackground.getRed() + 30, 255), 
-            Math.max(tfBackground.getGreen() - 15, 0), 
+            Math.min(tfBackground.getRed() + 30, 255),
+            Math.max(tfBackground.getGreen() - 15, 0),
             Math.max(tfBackground.getBlue() - 20, 0));
       JPanel paramsPanel = new JPanel();
       GridBagLayout gridbag = new GridBagLayout();
@@ -143,7 +143,7 @@ public class TestFormPanel extends JPanel {
          parameterComponents.add(inputField);
       }
       add(paramsPanel, BorderLayout.CENTER);
-      
+
       JPanel submitPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 5));
       JButton jbSubmit = new JButton("Submit");
       jbSubmit.addActionListener(submitListener);
@@ -213,9 +213,9 @@ public class TestFormPanel extends JPanel {
 
    /**
     * Gets the list of parameters in a URL form.
-    * 
+    *
     * @return
-    *    the list of the parameters as it should be send to the URL 
+    *    the list of the parameters as it should be send to the URL
     *    (starting with an '&') or an empty String if no parameter is set.
     */
    public String getParameters() {

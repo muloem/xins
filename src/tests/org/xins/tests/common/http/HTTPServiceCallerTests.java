@@ -32,7 +32,7 @@ import org.xins.common.service.UnsupportedProtocolException;
  * Tests for class <code>HTTPServiceCallerTests</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class HTTPServiceCallerTests extends TestCase {

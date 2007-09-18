@@ -18,7 +18,7 @@ import org.xins.common.collections.UniqueProperties;
  * Tests for the <code>UniqueProperties</code> class.
  *
  * @version $Revision$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class UniquePropertiesTests extends TestCase {
 
@@ -49,7 +49,7 @@ public class UniquePropertiesTests extends TestCase {
       props.put("hi", "world");
       assertTrue(props.isUnique());
       assertEquals("world", props.get("hello"));
-      
+
       props.put("hello", "world2");
       assertFalse(props.isUnique());
       assertEquals("world2", props.get("hello"));

@@ -30,7 +30,7 @@ import org.xins.tests.AllTests;
  * Tests for calling conventions.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class CallingConventionTests extends TestCase {
@@ -180,7 +180,7 @@ public class CallingConventionTests extends TestCase {
 
       // Expect 200 OK
       assertEquals("Expected 200 OK in response to HTTP OPTIONS request to host \""
-            + host + "\", port " + port + ", query string \"" + queryString + "\".", 
+            + host + "\", port " + port + ", query string \"" + queryString + "\".",
             "200 OK", result.getStatus());
 
       // Expect an empty body
@@ -312,8 +312,8 @@ public class CallingConventionTests extends TestCase {
          assertEquals(expectedStatus, code);
          if (contentType != null && code != 403) {
             String returnedContentType = post.getResponseHeader("Content-Type").getValue();
-            assertEquals("Content type received '" + returnedContentType  + 
-                  "' does not match the content type '" + contentType + "' sent.", 
+            assertEquals("Content type received '" + returnedContentType  +
+                  "' does not match the content type '" + contentType + "' sent.",
                   contentType, returnedContentType);
          }
          String result = post.getResponseBodyAsString();

@@ -37,7 +37,7 @@ import org.xins.tests.server.HTTPCallerResult;
  * Tests for calling conventions.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  */
 public class HTTPServletHandlerTests extends TestCase {
@@ -50,8 +50,8 @@ public class HTTPServletHandlerTests extends TestCase {
    /**
      * Constructs a new <code>HTTPServletHandlerTests</code> test suite with
      * the specified name. The name will be passed to the superconstructor.
-     * 
-     * 
+     *
+     *
      * @param name
      *    the name for this test suite.
      */

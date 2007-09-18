@@ -12,7 +12,7 @@ import org.xins.common.types.standard.Base64;
  * Tests for class <code>Base64</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class Base64Tests extends TestCase {
 

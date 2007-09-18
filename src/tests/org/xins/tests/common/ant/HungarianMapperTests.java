@@ -25,7 +25,7 @@ import org.xins.tests.AllTests;
  * Tests for class <code>HostnameTask</code>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class HungarianMapperTests extends TestCase {
 
@@ -55,11 +55,11 @@ public class HungarianMapperTests extends TestCase {
       String[] mapping1 = mapper.mapFileName("helloWorld.txt");
       assertEquals(1, mapping1.length);
       assertEquals("HelloWorld.txt", mapping1[0]);
-      
+
       String[] mapping2 = mapper.mapFileName("test" + File.separator + "helloWorld2.txt");
       assertEquals(1, mapping2.length);
       assertEquals("test" + File.separator + "HelloWorld2.txt", mapping2[0]);
-      
+
       String[] mapping3 = mapper.mapFileName("test" + File.separator + "HelloWorld3.txt");
       assertEquals(1, mapping3.length);
       assertEquals("test" + File.separator + "HelloWorld3.txt", mapping3[0]);

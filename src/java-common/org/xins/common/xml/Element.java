@@ -33,7 +33,7 @@ import org.xins.common.text.ParseException;
  * {@link ElementParser} to parse an XML string.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
@@ -189,7 +189,7 @@ public class Element implements Cloneable {
     * @return
     *    the namespace prefix for this element, or <code>null</code> if there is
     *    none, but never an empty string.
-    * 
+    *
     * @since XINS 2.1.
     */
    public String getNamespacePrefix() {
@@ -820,7 +820,7 @@ public class Element implements Cloneable {
        *
        * @throws IllegalArgumentException
        *    if <code>localName == null</code>.
-       * 
+       *
        * @since XINS 2.1.
        */
       public QualifiedName(String namespacePrefix, String namespaceURI, String localName)
@@ -885,7 +885,7 @@ public class Element implements Cloneable {
        *
        * @return
        *    the namespace prefix, can be <code>null</code>.
-       * 
+       *
        * @since XINS 2.1.
        */
       public String getNamespacePrefix() {

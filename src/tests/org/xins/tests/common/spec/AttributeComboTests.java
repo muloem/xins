@@ -26,7 +26,7 @@ import com.mycompany.allinone.capi.CAPI;
  * to test the API specification.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class AttributeComboTests extends TestCase {
 

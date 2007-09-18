@@ -31,7 +31,7 @@ import org.xins.common.text.TextUtils;
  *
  * @version $Revision$ $Date$
  *
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.1.0
@@ -222,7 +222,7 @@ public class ElementParser {
     * SAX event handler that will parse XML.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     */
    private static class Handler extends DefaultHandler {
@@ -305,7 +305,7 @@ public class ElementParser {
 
          // Make sure namespaceURI is either null or non-empty
          namespaceURI = "".equals(namespaceURI) ? null : namespaceURI;
-         
+
          // Check preconditions
          MandatoryArgumentChecker.check("localName", localName, "atts", atts);
 
@@ -322,7 +322,7 @@ public class ElementParser {
 
             // Find the namespace prefix
             String prefix = null;
-            
+
             if (qName != null && qName.indexOf(':') != -1) {
                prefix = qName.substring(0, qName.indexOf(':'));
             }

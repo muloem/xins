@@ -38,7 +38,7 @@ import com.mycompany.allinone.types.TextList;
  * Tests the allinone functions using the generated CAPI.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class AllInOneTests extends TestCase {
 

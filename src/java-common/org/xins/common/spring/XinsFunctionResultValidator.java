@@ -17,7 +17,7 @@ import org.xins.server.InvalidResponseResult;
  * This class requires the Spring library.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.0
  */

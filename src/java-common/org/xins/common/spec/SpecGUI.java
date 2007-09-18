@@ -44,7 +44,7 @@ import org.xins.common.xml.Viewer;
  * and execute the functions of this API.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.1
  */
@@ -86,7 +86,7 @@ public class SpecGUI {
 
    /**
     * Constructs a new <code>SpecGUI</code>.
-    * 
+    *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
     */
@@ -98,7 +98,7 @@ public class SpecGUI {
    /**
     * Creates the user interface.
     * This method also creates the actions available in the menu.
-    * 
+    *
     * @param mainFrame
     *    the main frame or <code>null</code> if no frame is available.
     */
@@ -113,7 +113,7 @@ public class SpecGUI {
       JScrollPane scrollXMLViewer = new JScrollPane(xmlViewer);
       scrollXMLViewer.setBorder(new EmptyBorder(5,5,5,5));
       specPanel.add(scrollXMLViewer, BorderLayout.CENTER);
-      
+
       // Add the actions
       createMenuBar();
 
@@ -169,14 +169,14 @@ public class SpecGUI {
       });
       JPanel queryLabelPanel = new JPanel();
       queryLabelPanel.setLayout(new GridLayout(2,1,5,5));
-      
+
       jlAPIName = new JLabel("API") {
          public void paint(Graphics g) {
             Graphics2D g2 = (Graphics2D) g;
             Color background = getBackground();
-            
+
             Paint oldPaint = g2.getPaint();
-            GradientPaint gradient = new GradientPaint(0.0f, 0.0f, background.brighter(), 
+            GradientPaint gradient = new GradientPaint(0.0f, 0.0f, background.brighter(),
                   specPanel.getWidth() + 0.1f, getHeight() + 0.1f, background.darker());
             g2.setPaint(gradient);
             g2.fill(new Rectangle(specPanel.getWidth(), getHeight()));
@@ -236,7 +236,7 @@ public class SpecGUI {
       metaFunctionsMenu.add(new QueryFunction("_EnableAPI"));
       JMenu specMenu = new JMenu("Specifications");
       specMenu.setMnemonic('s');
-      
+
       JMenu testFormMenu = new JMenu("Test Form");
       testFormMenu.setMnemonic('t');
       try {
@@ -306,7 +306,7 @@ public class SpecGUI {
    public JPanel getMainPanel() {
       return specPanel;
    }
-   
+
    public JMenuBar getMenuBar() {
       return specMenuBar;
    }
@@ -354,7 +354,7 @@ public class SpecGUI {
    class QueryFunction extends AbstractAction {
 
       private TestFormPanel testForm;
-      
+
       QueryFunction(String functionName) {
          super(functionName);
       }
@@ -367,7 +367,7 @@ public class SpecGUI {
          jtfQuery.setText(query);
          query(query);
       }
-      
+
       void setTestForm(TestFormPanel testForm) {
          this.testForm = testForm;
       }
@@ -390,11 +390,11 @@ public class SpecGUI {
    }
 
    class TestFormAction extends AbstractAction {
-      
+
       TestFormAction(String functionName) {
          super(functionName);
       }
-      
+
       public void actionPerformed(ActionEvent ae) {
          String functionName = (String) getValue(Action.NAME);
          QueryFunction queryAction = new QueryFunction(functionName);
@@ -415,15 +415,15 @@ public class SpecGUI {
          super("Test regular expression");
          tfBackground = UIManager.getColor("TextField.background");
          tfInvalidColor = new Color(
-               Math.min(tfBackground.getRed() + 30, 255), 
-               Math.max(tfBackground.getGreen() - 15, 0), 
+               Math.min(tfBackground.getRed() + 30, 255),
+               Math.max(tfBackground.getGreen() - 15, 0),
                Math.max(tfBackground.getBlue() - 20, 0));
          tfValidColor = new Color(
-               Math.max(tfBackground.getRed() -15, 0), 
-               Math.min(tfBackground.getGreen() + 30, 255), 
+               Math.max(tfBackground.getRed() -15, 0),
+               Math.min(tfBackground.getGreen() + 30, 255),
                Math.max(tfBackground.getBlue() - 20, 0));
       }
-      
+
       public void actionPerformed(ActionEvent ae) {
          Object[] components = new Object[4];
          components[0] = "Pattern:";
@@ -434,7 +434,7 @@ public class SpecGUI {
          final JTextField jtfTextToTest = new JTextField();
          jtfTextToTest.setBackground(tfInvalidColor);
          components[3] = jtfTextToTest;
-         
+
          jtfPattern.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent de) {
                try {

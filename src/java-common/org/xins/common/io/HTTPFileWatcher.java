@@ -16,14 +16,14 @@ import org.xins.common.Utils;
 
 /**
  * File watcher thread. This thread checks if a URL or a set of URLs
- * changed and if it has, it notifies the listener. 
+ * changed and if it has, it notifies the listener.
  * The check is performed every <em>n</em> seconds, where <em>n</em> can be configured.
  *
  * <p>Initially this thread will be a daemon thread. This can be changed by
  * calling {@link #setDaemon(boolean)}.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 2.1
  */
@@ -77,7 +77,7 @@ public class HTTPFileWatcher extends FileWatcher {
    }
 
    /**
-    * Creates a new <code>HTTPFileWatcher</code> for the specified set of URLs, 
+    * Creates a new <code>HTTPFileWatcher</code> for the specified set of URLs,
     * with the specified interval.
     *
     * @param urls

@@ -16,7 +16,7 @@ import org.xins.common.text.TextUtils;
  * to upper, if it is a lowercase letter.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.0.0
  */

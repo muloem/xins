@@ -23,7 +23,7 @@ import com.mycompany.allinone.types.TextList;
  * This class tests the generated CAPI Request object.
  *
  * @version $Revision$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  */
 public class CAPIRequestTests extends TestCase {
 

@@ -19,7 +19,7 @@ import org.xins.common.text.ParseException;
  * threads at the same time.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -108,7 +108,7 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    * 
+    *
     * @since XINS 2.1.
     */
    public ElementBuilder(String namespacePrefix, String namespaceURI, String localName)
@@ -180,7 +180,7 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    * 
+    *
     * @since XINS 2.1.
     */
    public void setAttribute(String namespacePrefix,
@@ -330,7 +330,7 @@ public class ElementBuilder {
     *
     * @throws IllegalArgumentException
     *    if <code>localName == null</code>.
-    * 
+    *
     * @since XINS 2.1.
     */
    public void startElement(String namespacePrefix, String namespaceURI, String localName)
@@ -369,7 +369,7 @@ public class ElementBuilder {
     * State of the builder.
     *
     * @version $Revision$ $Date$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
    private static final class State {
 

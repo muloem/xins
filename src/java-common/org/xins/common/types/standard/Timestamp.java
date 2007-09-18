@@ -50,7 +50,7 @@ import org.xins.common.types.TypeValueException;
  * <a href="http://en.wikipedia.org/wiki/Unix_Epoch">UNIX Epoch</a>.
  *
  * @version $Revision$ $Date$
- * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *
  * @since XINS 1.0.0
@@ -293,7 +293,7 @@ public class Timestamp extends Type {
     * time, with second-precision.
     *
     * @version $Revision$
-    * @author <a href="mailto:anthony.goubard@orange-ftgroup.com">Anthony Goubard</a>
+    * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
     *
     * @since XINS 1.0.0
