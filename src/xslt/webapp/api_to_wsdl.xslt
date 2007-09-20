@@ -237,7 +237,7 @@
 
 						<xsl:value-of select="concat($return, $tab4, $tab, $tab)" />
 						<xsd:element name="{$paramname}" type="{$elementtype}" minOccurs="{$minoccurs}">
-							<xsl:if test="@default">
+							<xsl:if test="@default and @type != '_date' and @type != '_timestamp'">
 								<xsl:attribute name="default">
 									<xsl:value-of select="@default" />
 								</xsl:attribute>
@@ -347,9 +347,20 @@
 
 					<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab)" />
 					<xsd:attribute name="{$attributename}" type="{$elementtype}" use="{$use}">
-						<xsl:if test="@default">
+						<xsl:if test="@default and @type != '_date' and @type != '_timestamp'">
 							<xsl:attribute name="default">
-								<xsl:value-of select="@default" />
+								<xsl:choose>
+									<xsl:when test="@type != '_date'">
+										<xsl:value-of select="concat(substring(@default,0,4), '-', substring(@default,4,2), '-', substring(@default,6,2))" />
+									</xsl:when>
+									<xsl:when test="@type != '_timestamp'">
+										<xsl:value-of select="concat(substring(@default,0,4), '-', substring(@default,4,2), '-', substring(@default,6,2))" />
+										<xsl:value-of select="concat('T', substring(@default,8,2), ':', substring(@default,10,2), ':', substring(@default,12,2))" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="@default" />
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:attribute>
 						</xsl:if>
 						<xsl:value-of select="concat($return, $tab4, $tab4, $tab4, $tab, $tab)" />

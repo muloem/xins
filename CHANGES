@@ -20,6 +20,10 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
   - Changed e-mail from anthony.goubard@orange-ftgroup.com to
     anthony.goubard@japplis.com.
 
+* Generation of the WSDL:
+  - The default value for a date or a timestamp has a different format in
+    XML Schema.
+
 * Generation of the unit tests:
   - Fixed the environment file was not detected for the test forms.
 
@@ -34,6 +38,7 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
   - Moved articles to the articles directory.
   - Added new article about the performance of XINS compare to other Web
     Services frameworks.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 
