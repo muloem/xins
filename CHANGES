@@ -30,6 +30,9 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
   - Changed the script installer to make it more independant of the proejct 
     location and the OS.
 
+* Documentation:
+  - Moved articles to the articles directory.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 BETA 3:
 
