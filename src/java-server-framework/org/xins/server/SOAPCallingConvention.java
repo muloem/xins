@@ -406,16 +406,18 @@ public class SOAPCallingConvention extends CallingConvention {
       while (outputParameterNames.hasNext()) {
          String parameterName = (String) outputParameterNames.next();
          String parameterValue = xinsResult.getParameter(parameterName);
-         try {
-            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-            Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
-            parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
-         } catch (InvalidSpecificationException ise) {
+         if (xinsResult.getErrorCode() == null) {
+            try {
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Type parameterType = functionSpec.getOutputParameter(parameterName).getType();
+               parameterValue = soapOutputValueTransformation(parameterType, parameterValue);
+            } catch (InvalidSpecificationException ise) {
 
-            // keep the old value
-         } catch (EntityNotFoundException enfe) {
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
 
-            // keep the old value
+               // keep the old value
+            }
          }
          xmlout.startTag(parameterName);
          xmlout.pcdata(parameterValue);
@@ -444,23 +446,27 @@ public class SOAPCallingConvention extends CallingConvention {
       Element dataElement = xinsResult.getDataElement();
       if (dataElement != null) {
 
-         Element transformedDataElement;
-         try {
-            FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
-            Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
-            transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, true);
-         } catch (InvalidSpecificationException ise) {
+         Element transformedDataElement = null;
+         if (xinsResult.getErrorCode() == null) {
+            try {
+               FunctionSpec functionSpec = _api.getAPISpecification().getFunction(functionName);
+               Map dataSectionSpec = functionSpec.getOutputDataSectionElements();
+               transformedDataElement = soapElementTransformation(dataSectionSpec, false, dataElement, true);
+            } catch (InvalidSpecificationException ise) {
 
-            // keep the old value
-            transformedDataElement = dataElement;
-         } catch (EntityNotFoundException enfe) {
+               // keep the old value
+            } catch (EntityNotFoundException enfe) {
 
-            // keep the old value
-            transformedDataElement = dataElement;
+               // keep the old value
+            }
          }
 
          ElementSerializer serializer = new ElementSerializer();
-         serializer.output(xmlout, transformedDataElement);
+         if (transformedDataElement == null) {
+            serializer.output(xmlout, dataElement);
+         } else {
+            serializer.output(xmlout, transformedDataElement);
+         }
       }
    }
 
