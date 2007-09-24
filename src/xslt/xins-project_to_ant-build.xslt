@@ -45,7 +45,7 @@
 	<xsl:template match="project">
 		<project name="{//project/@name}" default="help" basedir="..">
 
-			<import file="{$xins_home}/src/ant/build-apis.xml" optional="false" />
+			<import file="{$xins_home}/src/ant/build-apis.xml" optional="true" />
 			<import file="{$xins_home}/src/ant/build-create.xml" optional="true" />
 			<import file="{$xins_home}/src/ant/build-tools.xml" optional="true" />
 
