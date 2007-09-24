@@ -35,6 +35,9 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
 * Generated build file:
   - Fixed: changing XINS version didn't regenerate a new build.xml.
 
+* Tools:
+  - Updated the download of Glean to version 1.2.1.
+
 * Installer:
   - Changed the script installer to make it more independant of the project 
     location and the OS.
