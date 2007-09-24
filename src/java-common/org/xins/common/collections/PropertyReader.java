@@ -14,6 +14,11 @@ import java.util.Iterator;
  * access to a set of property entries. Each entry consists of a name and a
  * value. Both are {@link String} objects.
  *
+ * <p>Some implementations of this interface also support changing the
+ * underlying set of property entries. In this case, setting a property value
+ * to <code>null</code> has the same effect as removing the property
+ * altogether.
+ *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
  *

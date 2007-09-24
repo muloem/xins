@@ -11,6 +11,8 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
     box or a combo box was used.
   - Changed e-mail from anthony.goubard@orange-ftgroup.com to
     anthony.goubard@japplis.com.
+  - Null values are not allowed in PropertyReader. Setting a value to null
+    should be consider the same as removing a value.
 
 * XINS/Java Server Framework:
   - Changed e-mail from anthony.goubard@orange-ftgroup.com to

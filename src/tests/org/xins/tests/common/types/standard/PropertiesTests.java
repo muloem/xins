@@ -78,7 +78,7 @@ public class PropertiesTests extends TestCase {
          m.put(name, pr.get(name));
          count++;
       }
-      assertEquals(3, count);
+      assertEquals(2, count);
 
       assertEquals(m.get(name1), value1);
       assertEquals(m.get(name2), null);

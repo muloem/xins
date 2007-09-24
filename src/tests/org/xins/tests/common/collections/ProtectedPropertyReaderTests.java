@@ -91,6 +91,41 @@ public class ProtectedPropertyReaderTests extends TestCase {
       assertEquals("one",  p.get("1"));
    }
 
+   public void testSize() {
+
+      // Create an empty object and check the size is 0
+      Object secretKey = new Object();
+      ProtectedPropertyReader reader = new ProtectedPropertyReader(secretKey);
+      assertEquals(0, reader.size());
+
+      // Set a couple of properties and check the size
+      reader.set(secretKey, "a", "1");
+      reader.set(secretKey, "b", "2");
+      reader.set(secretKey, "c", "3");
+      reader.set(secretKey, "d", "4");
+      assertEquals(4, reader.size());
+
+      // Remove a property and confirm the size changed
+      reader.remove(secretKey, "d");
+      assertEquals(3, reader.size());
+
+      // Set a property value to null and confirm the size changed as well
+      reader.set(secretKey, "c", null);
+      assertEquals(2, reader.size());
+
+      // Add them back in and check the size again
+      reader.set(secretKey, "d", "4");
+      reader.set(secretKey, "c", "3");
+      assertEquals(4, reader.size());
+
+      // Remove them all and check the size becomes 0
+      reader.set(secretKey, "d", null);
+      reader.set(secretKey, "c", null);
+      reader.set(secretKey, "a", null);
+      reader.remove(secretKey, "b");
+      assertEquals(0, reader.size());
+   }
+
    public void testProtectedPropertyReader() throws Exception {
 
       // Test constructor

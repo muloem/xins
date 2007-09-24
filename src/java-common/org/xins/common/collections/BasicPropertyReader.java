@@ -30,6 +30,8 @@ extends AbstractPropertyReader {
    /**
     * Sets the specified property.
     *
+    * <p>If <code>value == null</code>, then the property is removed.
+    *
     * @param name
     *    the name of the property to set or reset, cannot be
     *    <code>null</code>.
@@ -46,16 +48,22 @@ extends AbstractPropertyReader {
       // Check preconditions
       MandatoryArgumentChecker.check("name", name);
 
-      // Store the value
-      getPropertiesMap().put(name, value);
+      // Remove the current value
+      if (value == null) {
+         getPropertiesMap().remove(name);
+
+      // Store a new value
+      } else {
+         getPropertiesMap().put(name, value);
+      }
    }
 
    /**
-    * Removes the specified property.
+    * Removes the specified property. If the property is not found, then
+    * nothing happens.
     *
     * @param name
-    *    the name of the property to set or reset, cannot be
-    *    <code>null</code>.
+    *    the name of the property to remove, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
     *    if <code>name == null</code>.

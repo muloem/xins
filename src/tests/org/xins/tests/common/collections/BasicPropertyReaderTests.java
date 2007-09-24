@@ -68,6 +68,40 @@ public class BasicPropertyReaderTests extends TestCase {
       assertEquals(testVal, reader.get(testName));
    }
 
+   public void testSize() {
+
+      // Create an empty object and check the size is 0
+      BasicPropertyReader reader = new BasicPropertyReader();
+      assertEquals(0, reader.size());
+
+      // Set a couple of properties and check the size
+      reader.set("a", "1");
+      reader.set("b", "2");
+      reader.set("c", "3");
+      reader.set("d", "4");
+      assertEquals(4, reader.size());
+
+      // Remove a property and confirm the size changed
+      reader.remove("d");
+      assertEquals(3, reader.size());
+
+      // Set a property value to null and confirm the size changed as well
+      reader.set("c", null);
+      assertEquals(2, reader.size());
+
+      // Add them back in and check the size again
+      reader.set("d", "4");
+      reader.set("c", "3");
+      assertEquals(4, reader.size());
+
+      // Remove them all and check the size becomes 0
+      reader.set("d", null);
+      reader.set("c", null);
+      reader.set("a", null);
+      reader.remove("b");
+      assertEquals(0, reader.size());
+   }
+
    public void testRemove() {
       BasicPropertyReader reader = new BasicPropertyReader();
       try {

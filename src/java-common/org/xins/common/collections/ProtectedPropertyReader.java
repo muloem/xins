@@ -91,6 +91,9 @@ extends AbstractPropertyReader {
     * the {@link Object#equals(Object)} method is not used, but the
     * <code>==</code> operator is.
     *
+    * <p>If <code>value == null</code>, then the property is removed (assuming
+    * that the secret key is correct).
+    *
     * @param secretKey
     *    the secret key, must be identity-equal to the secret key passed to
     *    the constructor, cannot be <code>null</code>.
@@ -116,12 +119,19 @@ extends AbstractPropertyReader {
       checkSecretKey(secretKey);
       MandatoryArgumentChecker.check("name", name);
 
-      // Store the value
-      getPropertiesMap().put(name, value);
+      // Remove the current value
+      if (value == null) {
+         getPropertiesMap().remove(name);
+
+      // Store a new value
+      } else {
+         getPropertiesMap().put(name, value);
+      }
    }
 
    /**
-    * Removes the specified property.
+    * Removes the specified property. If the property is not found, then
+    * nothing happens.
     *
     * <p>The correct secret key must be passed. If it is incorrect, then an
     * {@link IncorrectSecretKeyException} is thrown. Note that an identity
