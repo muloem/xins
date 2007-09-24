@@ -222,6 +222,9 @@ final class Engine {
       // Proceed to next stage
       _stateMachine.setState(EngineState.BOOTSTRAPPING_API);
 
+      // Make the API have a link to this Engine
+      _api.setEngine(this);
+
       PropertyReader bootProps;
       try {
 
@@ -264,9 +267,6 @@ final class Engine {
          Log.log_3211(exception);
          return false;
       }
-
-      // Make the API have a link to this Engine
-      _api.setEngine(this);
 
       // Construct a generator for diagnostic context IDs
       _contextIDGenerator = new ContextIDGenerator(_api.getName());
@@ -945,6 +945,7 @@ final class Engine {
       }
       String methodsList = "OPTIONS";
       for (int i = 0; i < methods.length; i++) {
+
          methodsList += ", " + methods[i];
       }
 
