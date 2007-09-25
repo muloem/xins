@@ -100,27 +100,27 @@
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-common</artifactId>
-					<version>2.0</version>
+					<version>2.1</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-server</artifactId>
-					<version>2.0</version>
+					<version>2.1</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>logdoc</artifactId>
-					<version>2.0</version>
+					<version>2.1</version>
 				</dependency>
 				<dependency>
 					<groupId>org.xins</groupId>
 					<artifactId>xins-client</artifactId>
-					<version>2.0</version>
+					<version>2.1</version>
 				</dependency>
 				<dependency>
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
-					<version>1.2.13</version>
+					<version>1.2.15</version>
 				</dependency>
 				<dependency>
 					<groupId>commons-codec</groupId>
@@ -130,7 +130,7 @@
 				<dependency>
 					<groupId>commons-httpclient</groupId>
 					<artifactId>commons-httpclient</artifactId>
-					<version>3.0.1</version>
+					<version>3.1</version>
 				</dependency>
 				<dependency>
 					<groupId>oro</groupId>

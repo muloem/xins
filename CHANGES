@@ -40,6 +40,7 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
 
 * Tools:
   - Updated the download of Glean to version 1.2.1.
+  - Updated maven tools to point to xins 2.1.
 
 * Installer:
   - Changed the script installer to make it more independant of the project 
@@ -2230,6 +2231,7 @@ CHANGES INTRODUCED IN XINS 1.4.0 ALPHA 3:
   - The value of the bootstrap property is defined as pcdata.
 
 * Generated build file:
+
   - Restricted the validation and generation of Java files to the functions,
     types and result codes declared in the api.xml file. This fixes the
     SF.net bug #1371700.
