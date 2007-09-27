@@ -60,25 +60,10 @@ abstract class CallingConvention extends Manageable {
       new String[] { "HEAD", "GET", "POST" };
 
    /**
-    * Cached <code>HttpServletRequest</code>, local per thread. When
-    * any of the <code>parseXMLRequest</code> methods is called, the request
-    * is stored in this field, to be able to confirm later that
-    * {@link #_cachedRequestXML} should be returned.
-    *
-    * <p>The value inside this {@link ThreadLocal} is always either
-    * <code>null</code> or otherwise an {@link HttpServletRequest} instance.
+    * The key used in the HttpRequest attribute used to cache the parsed
+    * XML Element when the request is an XML request.
     */
-   private final ThreadLocal _cachedRequest;
-
-   /**
-    * Cached XML <code>Element</code>, local per thread. When
-    * any of the <code>parseXMLRequest</code> methods is called, the result is
-    * stored in this field before returning it.
-    *
-    * <p>The value inside this {@link ThreadLocal} is always either
-    * <code>null</code> or otherwise an {@link Element} instance.
-    */
-   private final ThreadLocal _cachedRequestXML;
+   private static final String CACHED_XML_ELEMENT_KEY = "CACHED_XML_ELEMENT_KEY";
 
    /**
     * The current API. The value is set after the construction of the calling
@@ -97,8 +82,6 @@ abstract class CallingConvention extends Manageable {
     * XINS/Java Server Framework.
     */
    protected CallingConvention() {
-      _cachedRequest    = new ThreadLocal();
-      _cachedRequestXML = new ThreadLocal();
    }
 
    /**
@@ -549,10 +532,7 @@ abstract class CallingConvention extends Manageable {
 
       // Determine if the request matches the cached request and the parsed
       // XML is already cached
-      Object cached = null;
-      if (_cachedRequest.get() == httpRequest) {
-         cached = _cachedRequestXML.get();
-      }
+      Object cached = httpRequest.getAttribute(CACHED_XML_ELEMENT_KEY);
 
       // Cache miss
       if (cached == null) {
@@ -612,9 +592,7 @@ abstract class CallingConvention extends Manageable {
 
       // Only store in the cache if the content type was OK
       if (errorMessage == null) {
-         _cachedRequestXML.set(null);
-         _cachedRequest.set(httpRequest);
-         _cachedRequestXML.set(element);
+         httpRequest.setAttribute(CACHED_XML_ELEMENT_KEY, element);
          Log.log_3514();
       }
 
