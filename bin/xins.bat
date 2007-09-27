@@ -37,7 +37,8 @@ CALL ant -f "%XINS_HOME%\src\ant\make-build.xml" "-Dxins_home=%XINS_HOME%"
 IF ERRORLEVEL 1 GOTO end
 
 :: Execute the Ant build file
-CALL ant -logger org.apache.tools.ant.NoBannerLogger -f build\build.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
+echo test
+CALL ant -logger org.apache.tools.ant.NoBannerLogger "-Dxins_home=%XINS_HOME%" -f build\build.xml %1 %2 %3 %4 %5 %6 %7 %8 %9
 GOTO end
 
 :: Displays the error message

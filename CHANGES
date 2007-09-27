@@ -34,6 +34,7 @@ CHANGES INTRODUCED IN XINS 2.1 RC 1:
 
 * Generated build file:
   - Fixed: changing XINS version didn't regenerate a new build.xml.
+  - xins_home property should be passed to the call to build.xml.
 
 * Build- and release-process:
   - Updated xins maven version to 2.1.
