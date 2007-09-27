@@ -3,7 +3,7 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
-CHANGES INTRODUCED IN XINS 2.1 RC 1:
+CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 
 * XINS/Java Server Framework:
   - Changed the way the XML requests are cached as it caused errors with
