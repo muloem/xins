@@ -156,4 +156,73 @@ public class SOAPCallingConventionTests extends TestCase {
       Element bodyElem = (Element) result.getChildElements("Body").get(0);
       assertEquals("Incorrect number of response elements.", 1, bodyElem.getChildElements("DataSection3Response").size());
    }
+   
+   /**
+    * Test concurent calls to the _xins-soap calling convention
+    */
+   public void testSOAPConcurentCalls() throws Throwable {
+      for (int i = 0; i < 5; i++) {
+         EchoThread t1 = new EchoThread("test1");
+         EchoThread t2 = new EchoThread("test2");
+         EchoThread t3 = new EchoThread("test3");
+         EchoThread t4 = new EchoThread("test4");
+         EchoThread t5 = new EchoThread("test5");
+         t1.start();
+         t2.start();
+         t3.start();
+         t4.start();
+         t5.start();
+         t1.join();
+         t2.join();
+         t3.join();
+         t4.join();
+         t5.join();
+         assertTrue("Incorrect result '" + t1.getResult() + "' while 'test1' was sent.", t1.hasSucceeded());
+         assertTrue("Incorrect result '" + t2.getResult() + "' while 'test1' was sent.", t2.hasSucceeded());
+         assertTrue("Incorrect result '" + t3.getResult() + "' while 'test1' was sent.", t3.hasSucceeded());
+         assertTrue("Incorrect result '" + t4.getResult() + "' while 'test1' was sent.", t4.hasSucceeded());
+         assertTrue("Incorrect result '" + t5.getResult() + "' while 'test1' was sent.", t5.hasSucceeded());
+      }
+   }
+   
+   class EchoThread extends Thread {
+     
+      private String echoMessage;
+      private String echoResult;
+      private boolean succeeded = false;
+      
+      EchoThread(String message) {
+         echoMessage = message;
+      }
+      
+      public void run() {
+         String destination = AllTests.url() + "allinone/?_convention=_xins-soap";
+         String data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns0=\"urn:allinone\">" +
+                 "  <soap:Body>" +
+                 "    <ns0:EchoRequest>" +
+                 "      <in>" + echoMessage + "</in>" +
+                 "    </ns0:EchoRequest>" +
+                 "  </soap:Body>" +
+                 "</soap:Envelope>";
+         try {
+            Element result = CallingConventionTests.postXML(destination, data);
+            Element body = result.getUniqueChildElement("Body");
+            Element response = body.getUniqueChildElement("EchoResponse");
+            Element out = response.getUniqueChildElement("out");
+            echoResult = out.getText();
+            succeeded = echoMessage.equals(echoResult);
+         } catch (Exception ex) {
+
+         }
+      }
+      
+      String getResult() {
+         return echoResult;
+      }
+      
+      boolean hasSucceeded() {
+         return succeeded;
+      }
+   }
 }
