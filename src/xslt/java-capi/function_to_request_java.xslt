@@ -73,8 +73,7 @@ extends org.xins.client.AbstractCAPICallRequest {
 		<xsl:text>() {
       super(&quot;</xsl:text>
 		<xsl:value-of select="$functionName" />
-		<xsl:text>&quot;);
-		</xsl:text>
+		<xsl:text>&quot;);</xsl:text>
 		<xsl:for-each select="input/param[@default]">
 			<xsl:text>
       parameterValue(&quot;</xsl:text>
