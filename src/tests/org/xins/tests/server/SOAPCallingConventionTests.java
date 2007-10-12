@@ -11,8 +11,13 @@ import java.util.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.xins.common.text.HexConverter;
 import org.xins.common.xml.Element;
+import org.xins.common.xml.ElementParser;
 
 import org.xins.tests.AllTests;
 
@@ -185,6 +190,8 @@ public class SOAPCallingConventionTests extends TestCase {
       }
    }
    
+   HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+   
    class EchoThread extends Thread {
      
       private String echoMessage;
@@ -206,14 +213,15 @@ public class SOAPCallingConventionTests extends TestCase {
                  "  </soap:Body>" +
                  "</soap:Envelope>";
          try {
-            Element result = CallingConventionTests.postXML(destination, data);
+            //Element result = CallingConventionTests.postXML(destination, data);
+            Element result = postHTTPClient(destination, data);
             Element body = result.getUniqueChildElement("Body");
             Element response = body.getUniqueChildElement("EchoResponse");
             Element out = response.getUniqueChildElement("out");
             echoResult = out.getText();
             succeeded = echoMessage.equals(echoResult);
          } catch (Exception ex) {
-
+            ex.printStackTrace();
          }
       }
       
@@ -224,5 +232,19 @@ public class SOAPCallingConventionTests extends TestCase {
       boolean hasSucceeded() {
          return succeeded;
       }
+   }
+   
+   private Element postHTTPClient(String destination, String data) throws Exception {
+      PostMethod post = new PostMethod(destination);
+      StringRequestEntity request = new StringRequestEntity(data, "text/xml", "UTF-8");
+      post.setRequestEntity(request);
+      int code = client.executeMethod(post);
+      if (code != 200) {
+         System.err.println("Code: " + code);
+         System.err.println("response " + post.getResponseBodyAsString());
+      }
+      String response = post.getResponseBodyAsString();
+      ElementParser parser = new ElementParser();
+      return parser.parse(response);
    }
 }
