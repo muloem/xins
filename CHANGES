@@ -10,6 +10,8 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
     class using Class.forName().
   - Added new method in Utils to try to get the context ClassLoader as
     Class.getContextClassLoader() is Java SE 5 dependent.
+  - Implemented RFE #1809379: ElementParser.parse(File).
+  - Implemented RFE #1812214: Element.getUniqueChildElement().
 
 * XINS/Java Server Framework:
   - Changed the way the XML requests are cached as it caused errors with
@@ -21,7 +23,7 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
   - Applied patch #1820583: Try to use the context ClassLoader to load a
     class using Class.forName().
 
-* Generation of specification documentation:
+* Generation of web.xml:
   - The APIServletSingleThreaded is used if one of the calling conventions
     declared in impl.xml is the Front-end CC.
   - Changed '/*' instead of '/' for the URL pattern in the generated web.xml
