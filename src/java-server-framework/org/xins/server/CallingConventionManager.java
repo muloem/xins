@@ -396,7 +396,7 @@ class CallingConventionManager extends Manageable {
       // Try to load the class
       Class clazz;
       try {
-         clazz = Class.forName(className);
+         clazz = Class.forName(className, true, Utils.getContextClassLoader());
       } catch (Throwable exception) {
          Log.log_3239(exception, name, className);
          return null;

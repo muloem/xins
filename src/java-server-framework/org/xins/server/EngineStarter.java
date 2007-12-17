@@ -289,7 +289,7 @@ final class EngineStarter {
       // Load the API class
       Class apiClass;
       try {
-         apiClass = Class.forName(apiClassName);
+         apiClass = Class.forName(apiClassName, true, Utils.getContextClassLoader());
       } catch (Throwable exception) {
          Log.log_3207(exception, API_CLASS_PROPERTY, apiClassName);
          throw servletExceptionFor(exception);

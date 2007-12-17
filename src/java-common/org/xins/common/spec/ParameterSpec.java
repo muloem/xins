@@ -7,6 +7,7 @@
 package org.xins.common.spec;
 
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.Utils;
 import org.xins.common.text.TextUtils;
 import org.xins.common.types.Type;
 
@@ -205,7 +206,7 @@ public final class ParameterSpec {
             }
             typeName = TextUtils.firstCharUpper(typeName);
             String typeClassName = className.substring(0, truncatePos) + ".types." + typeName;
-            Class typeClass = Class.forName(typeClassName);
+            Class typeClass = Class.forName(typeClassName, true, Utils.getContextClassLoader());
             Type type = (Type) typeClass.getField("SINGLETON").get(null);
             return type;
          } catch (Exception ex) {
