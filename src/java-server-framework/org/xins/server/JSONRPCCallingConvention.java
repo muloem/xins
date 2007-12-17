@@ -226,7 +226,7 @@ public class JSONRPCCallingConvention extends CallingConvention {
       Element dataElement = null;
 
       String pathInfo = httpRequest.getPathInfo();
-      if (pathInfo.lastIndexOf("/") == pathInfo.length() - 1) {
+      if (pathInfo == null || pathInfo.lastIndexOf("/") == pathInfo.length() - 1) {
          throw new FunctionNotSpecifiedException();
       } else {
          functionName = pathInfo.substring(pathInfo.lastIndexOf("/") + 1);
