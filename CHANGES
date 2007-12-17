@@ -40,6 +40,10 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 
 * DTD:
   - Added 2.2 DTD files.
+
+* Liraries:
+  - Upgraded j2h.jar to version 1.5.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 RC 1:
 
