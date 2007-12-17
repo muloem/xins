@@ -5,10 +5,31 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 
+* XINS/Java Common Library:
+  - Applied patch #1820583: Try to use the context ClassLoader to load a
+    class using Class.forName().
+  - Added new method in Utils to try to get the context ClassLoader as
+    Class.getContextClassLoader() is Java SE 5 dependent.
+
 * XINS/Java Server Framework:
   - Changed the way the XML requests are cached as it caused errors with
     Tomcat 5.5.
   - Fixed incorrect unit logged for file watching interval.
+  - Added APIServletSingleThreaded class that can be used in case you want
+    the API to handle one request per thread at a time.
+  - Fixed bug #1836531: Incorrect mapping for the SOAPMapCallingConvention.
+  - Applied patch #1820583: Try to use the context ClassLoader to load a
+    class using Class.forName().
+
+* Generation of specification documentation:
+  - The APIServletSingleThreaded is used if one of the calling conventions
+    declared in impl.xml is the Front-end CC.
+  - Changed '/*' instead of '/' for the URL pattern in the generated web.xml
+    as Tomcat 5 and 6 will return null for the getPathInfo otherwise.
+
+* Documentation:
+  - Added option for NetBeans 6 in case of unrecognized Request and Result
+    objects.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 RC 1:
