@@ -6,6 +6,7 @@
  */
 package org.xins.common;
 
+import java.lang.reflect.Method;
 import org.xins.common.text.TextUtils;
 
 /**
@@ -622,5 +623,26 @@ public final class Utils {
       MandatoryArgumentChecker.check("object", object);
 
       return getNameOfClass(object.getClass());
+   }
+   
+   /**
+    * Determines the context class loader of the current thread if available.
+    * If not available the ClassLoader used to load this class is returned.
+    *
+    * @return
+    *    the context ClassLoader of the current thread, never <code>null</code>.
+    *
+    * @since XINS 2.2
+    */
+   public static ClassLoader getContextClassLoader() {
+      ClassLoader loader  = null;
+      Thread thread = Thread.currentThread();
+      try {
+         Method loaderMethod = thread.getClass().getMethod("getContextClassLoader", null);
+         loader  = (ClassLoader) loaderMethod.invoke(thread, null);
+      } catch (Throwable ex) {
+         loader = Utils.class.getClassLoader();
+      }
+      return loader;
    }
 }
