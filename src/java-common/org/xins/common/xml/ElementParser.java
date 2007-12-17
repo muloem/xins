@@ -7,6 +7,8 @@
 package org.xins.common.xml;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -78,7 +80,7 @@ public class ElementParser {
     * @throws ParseException
     *    if the content of the character stream is not considered to be valid XML.
     *
-    * @since XINS 2.0.
+    * @since XINS 2.0
     */
    public Element parse(String text)
    throws IllegalArgumentException,
@@ -115,7 +117,7 @@ public class ElementParser {
     *    if the content of the character stream is not considered to be valid
     *    XML.
     *
-    * @since XINS 2.0.
+    * @since XINS 2.0
     */
    public Element parse(InputStream in)
    throws IllegalArgumentException,
@@ -166,6 +168,50 @@ public class ElementParser {
       return parse(source);
    }
 
+   /**
+    * Parses content of a file to create an XML <code>Element</code> object.
+    *
+    * @param file
+    *    the file that is supposed to contain XML to be parsed,
+    *    not <code>null</code>.
+    *
+    * @return
+    *    the parsed result, not <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file == null</code>.
+    *
+    * @throws IOException
+    *    if there is an I/O error, e.g. the file does not exist or is actually
+    *    a directory.
+    *
+    * @throws ParseException
+    *    if the content of the file is not considered to be valid XML.
+    *
+    * @since XINS 2.2
+    */
+   public Element parse(File file)
+   throws IllegalArgumentException,
+          IOException,
+          ParseException {
+
+      // Check preconditions
+      MandatoryArgumentChecker.check("file", file);
+
+      FileInputStream fis = null;
+      try {              
+         fis = new FileInputStream(file);
+         return parse(fis);
+      } finally {
+         try {
+            if (fis != null) {
+               fis.close();
+            }
+         } catch (IOException ex) {
+            // Never mind
+         }
+      }
+   }
 
    /**
     * Parses content of a character stream to create an XML

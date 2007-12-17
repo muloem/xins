@@ -632,17 +632,18 @@ public class Element implements Cloneable {
    }
 
    /**
-    * Gets the unique child of this element.
+    * Gets the unique child of this element with the specified name.
     *
     * @param elementName
     *    the name of the child element to get, or <code>null</code> if the
-    *    parent have a unique child.
+    *    element name is irrelevant.
     *
     * @return
     *    the sub-element of this element, never <code>null</code>.
     *
     * @throws ParseException
-    *    if no child was found or more than one child was found.
+    *    if no child with the specified name was found,
+    *    or if more than one child with the specified name was found.
     *
     * @since XINS 1.4.0
     */
@@ -666,6 +667,21 @@ public class Element implements Cloneable {
                "\" element.");
       }
       return (Element) childList.get(0);
+   }
+
+   /**
+    * Gets the unique child of this element.
+    *
+    * @return
+    *    the sub-element of this element, never <code>null</code>.
+    *
+    * @throws ParseException
+    *    if no child was found or more than one child was found.
+    *
+    * @since XINS 2.2
+    */
+   public Element getUniqueChildElement() throws ParseException {
+      return getUniqueChildElement(null);
    }
 
    public int hashCode() {
