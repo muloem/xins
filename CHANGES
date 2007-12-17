@@ -12,6 +12,8 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
     Class.getContextClassLoader() is Java SE 5 dependent.
   - Implemented RFE #1809379: ElementParser.parse(File).
   - Implemented RFE #1812214: Element.getUniqueChildElement().
+  - HTTPServiceCaller is no longer final to allow alternative implementation
+    like mocking.
 
 * XINS/Java Server Framework:
   - Changed the way the XML requests are cached as it caused errors with

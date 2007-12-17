@@ -133,7 +133,7 @@ params.{@link org.xins.common.collections.BasicPropertyReader#set(String,String)
  *
  * @since XINS 1.0.0
  */
-public final class HTTPServiceCaller extends ServiceCaller {
+public class HTTPServiceCaller extends ServiceCaller {
 
    /**
     * Fully-qualified name of this class.
