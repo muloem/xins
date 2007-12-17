@@ -208,23 +208,29 @@ public class SOAPMapCallingConvention extends SOAPCallingConvention {
       Map inputDataSectionSpec = functionSpec.getInputDataSectionElements();
       String parameterName = inputElem.getLocalName();
       String fullName = parent == null ? parameterName : parent + "." + parameterName;
-
+      
       // Fill the attribute of the input data section with the SOAP sub-elements
       if (parentElement != null) {
-         DataSectionElementSpec elementSpec = (DataSectionElementSpec) inputDataSectionSpec.get(parentElement.getLocalName());
-         if (elementSpec != null && elementSpec.getAttributes().containsKey(fullName) && inputElem.getChildElements().size() == 0) {
+         DataSectionElementSpec elementSpec = 
+               (DataSectionElementSpec) inputDataSectionSpec.get(parentElement.getLocalName());
+         if (elementSpec != null && elementSpec.getAttributes().containsKey(parameterName) &&
+               inputElem.getChildElements().size() == 0) {
             String parameterValue = inputElem.getText();
-            Type parameterType = elementSpec.getAttribute(fullName).getType();
+            Type parameterType = elementSpec.getAttribute(parameterName).getType();
             parameterValue = soapInputValueTransformation(parameterType, parameterValue);
-            parentElement.setAttribute(fullName, parameterValue);
+            parentElement.setAttribute(parameterName, parameterValue);
          } else if (elementSpec != null && inputElem.getChildElements().size() > 0) {
             Iterator itParameters = inputElem.getChildElements().iterator();
+            //Add a sub-element
+            Element middleElement = new Element(inputElem.getLocalName());
+            parentElement.addChild(middleElement);
             while (itParameters.hasNext()) {
                Element parameterElem = (Element) itParameters.next();
-               readInputElem(parameterElem, functionName, fullName, parentElement, inputParams);
+               // read sub-sub-elements
+               readInputElem(parameterElem, functionName, parameterName,
+                     middleElement, inputParams);
             }
          }
-
       // Simple input parameter that maps
       } else if (inputParamsSpec.containsKey(fullName) && inputElem.getChildElements().size() == 0) {
          String parameterValue = inputElem.getText();
