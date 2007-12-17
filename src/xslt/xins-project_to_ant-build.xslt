@@ -774,7 +774,7 @@
 		</fileset>
 	</xsl:template>
 
-	<xsl:template match="dependency" mode="lib">
+	<xsl:template match="dependency[not(@deploy = 'false')]" mode="lib">
 		<lib dir="{$dependenciesDir}/{@dir}">
 			<xsl:attribute name="includes">
 				<xsl:choose>

@@ -35,6 +35,7 @@
 <!ATTLIST dependency
           dir        CDATA #REQUIRED
           includes   CDATA #IMPLIED
+          deploy     (true|false) #IMPLIED
 >
 <!ELEMENT calling-convention EMPTY>
 <!ATTLIST calling-convention

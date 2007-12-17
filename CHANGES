@@ -23,6 +23,11 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
   - Applied patch #1820583: Try to use the context ClassLoader to load a
     class using Class.forName().
 
+* Generated build file:
+  - Added a new attribute in impl.xml to dependency named 'deploy' to indicate
+    whether the dependency should be deployed or not. By default the
+    dependency is deployed.
+
 * Generation of web.xml:
   - The APIServletSingleThreaded is used if one of the calling conventions
     declared in impl.xml is the Front-end CC.
