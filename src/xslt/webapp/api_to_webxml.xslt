@@ -60,7 +60,16 @@
 					<xsl:value-of select="$api" />
 					<xsl:text>' API.</xsl:text>
 				</description>
-				<servlet-class>org.xins.server.APIServlet</servlet-class>
+				<servlet-class>
+					<xsl:choose>
+						<xsl:when test="calling-convention[@class='org.xins.server.frontend.FrontendCallingConvention']">
+							<xsl:text>org.xins.server.APIServletSingleThreaded</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>org.xins.server.APIServlet</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</servlet-class>
 				<init-param>
 					<param-name>org.xins.api.name</param-name>
 					<param-value>
@@ -206,7 +215,7 @@ not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 						<xsl:when test="@web-path">
 							<xsl:text>/</xsl:text>
 							<xsl:value-of select="@web-path" />
-							<xsl:text>/</xsl:text>
+							<xsl:text>/*</xsl:text>
 						</xsl:when>
 						<!-- It's authorized to put files in the WEB-INF directory sush as the xins.properties or (Spring) applicationContext.xml -->
 						<xsl:when test="not(@web-path) and content[web-path != 'WEB-INF']">
@@ -215,7 +224,7 @@ not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 							</xsl:message>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:text>/</xsl:text>
+							<xsl:text>/*</xsl:text>
 						</xsl:otherwise>
 					</xsl:choose>
 				</url-pattern>
