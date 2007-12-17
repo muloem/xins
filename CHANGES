@@ -33,6 +33,8 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
   - Added option for NetBeans 6 in case of unrecognized Request and Result
     objects.
 
+* DTD:
+  - Added 2.2 DTD files.
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.1 RC 1:
 
