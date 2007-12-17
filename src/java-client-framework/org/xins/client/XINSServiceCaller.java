@@ -123,7 +123,7 @@ boolean         failOver = true;
  *
  * @since XINS 1.0.0
  */
-public final class XINSServiceCaller extends ServiceCaller {
+public class XINSServiceCaller extends ServiceCaller {
 
    /**
     * The result parser. This field cannot be <code>null</code>.
