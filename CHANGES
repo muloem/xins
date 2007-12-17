@@ -22,11 +22,13 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
   - Fixed bug #1836531: Incorrect mapping for the SOAPMapCallingConvention.
   - Applied patch #1820583: Try to use the context ClassLoader to load a
     class using Class.forName().
+  - Statistics also return the percentage of memory used.
 
 * Generated build file:
   - Added a new attribute in impl.xml to dependency named 'deploy' to indicate
     whether the dependency should be deployed or not. By default the
     dependency is deployed.
+  - PMD 3.9 is downloaded per default instead of PMD 3.7.
 
 * Generation of web.xml:
   - The APIServletSingleThreaded is used if one of the calling conventions

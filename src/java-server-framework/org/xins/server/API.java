@@ -1311,6 +1311,8 @@ public abstract class API extends Manageable {
       } catch (NoSuchMethodError error) {
          // NOTE: Runtime.maxMemory() is not available in Java 1.3
       }
+      double percentageUsed = total - free / (double) total;
+      heap.setAttribute("percentageUsed", String.valueOf((int) (percentageUsed * 100)));
       builder.add(heap.createElement());
 
       // Function-specific statistics
