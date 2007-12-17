@@ -84,8 +84,7 @@ import org.xins.common.MandatoryArgumentChecker;
  *
  * @since XINS 1.0.0
  */
-public final class APIServlet
-extends HttpServlet {
+public class APIServlet extends HttpServlet {
 
    /**
     * XINS server engine. Initially <code>null</code> but set to a
