@@ -41,6 +41,8 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
     declared in impl.xml is the Front-end CC.
   - Changed '/*' instead of '/' for the URL pattern in the generated web.xml
     as Tomcat 5 and 6 will return null for the getPathInfo otherwise.
+  - Added new element web-app in impl.xml which allow to specify extra 
+    XML elements that you want to add in the generated web.xml file.
 
 * Documentation:
   - Added option for NetBeans 6 in case of unrecognized Request and Result
@@ -1476,6 +1478,7 @@ CHANGES INTRODUCED IN XINS 1.5.0 BETA 3:
   - Fixed support for special characters in the default attribute.
   - Default should be used when calling using the several argument call method.
   - Output parameters with default will always return a value.
+
 
 * Generation of the opendoc:
   - Fixed the names of the elements of the data section were not displayed
@@ -4401,6 +4404,7 @@ CHANGES INTRODUCED IN XINS 1.1.0 ALPHA 5:
     properties.
   - Fixed bug #1076638: The generated context ID was not conform to the
     architect group recommendation.
+
   - The server classes now use the org.xins.common.xml.Element class instead
     of the deprecated org.xins.server.Element class.
   - Added calling convention which allows to specify in which format the data

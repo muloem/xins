@@ -47,6 +47,7 @@
 			If you want to apply Servlet filters or filter-mapping, do it here.
 			Servlet filters could be used for compression, encryption, authentication, etc...
 			-->
+      <xsl:apply-templates select="web-app" />
 
 			<servlet>
 				<servlet-name>
@@ -233,5 +234,16 @@ not allowed to start with &quot;org.xins.&quot;.</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="calling-convention">
+	</xsl:template>
+
+	<xsl:template match="web-app">
+		<xsl:element name="{@element}">
+			<xsl:if test="@id">
+				<xsl:attribute name="id">
+					<xsl:value-of select="@id" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="text()" disable-output-escaping="yes" />
+		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>
