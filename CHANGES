@@ -47,6 +47,9 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 * Documentation:
   - Added option for NetBeans 6 in case of unrecognized Request and Result
     objects.
+  - Added partial documentation of the features added in XINS 2.2-alpha1.
+  - Downgraded Docbook XSL to version 1.72.0 in order to have the table of
+    content in the HTML generated pages.
 
 * DTD:
   - Added 2.2 DTD files.
