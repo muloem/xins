@@ -343,11 +343,13 @@ public final class APIManager implements APIManagerMBean {
        try {
           String[] keys = (String[]) properties.keySet().toArray(new String[properties.size()]);
           OpenType[] itemTypes = new OpenType[keys.length];
+          Object[] values = new Object[keys.length];
           for (int i = 0; i < itemTypes.length; i++) {
              itemTypes[i] = SimpleType.STRING;
+             values[i] = properties.getProperty(keys[i]);
           }
           CompositeType propsType = new CompositeType("Properties type", "properties", keys, keys, itemTypes);
-          CompositeDataSupport propsData = new CompositeDataSupport(propsType, properties);
+          CompositeDataSupport propsData = new CompositeDataSupport(propsType, keys, values);
           return propsData;
        } catch (OpenDataException odex) {
           Utils.logProgrammingError(odex);
