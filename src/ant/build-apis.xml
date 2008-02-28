@@ -44,7 +44,7 @@
 - capis               Generates all CAPI JAR files.
 - javadoc-capis       Generates all CAPI Javadoc.
 - tests               Runs the unit tests of the APIs.
-- tools               Display the help for the tools commands.
+- help-tools          Display the help for the tools commands.
 
 The following commands assist in authoring specifications:
 - create-api          Generates a new api specification file.

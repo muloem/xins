@@ -9,6 +9,9 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
   - Changed the way CompositeDataSupport is created for Properties in order
     to still compile with Java 6.
 
+* Generated build file:
+  - Fixed incorrect comment in help target, tools target -> help-tools target.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 
@@ -3676,6 +3679,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 1:
   - Implemented SF.net RFE #1054504: One constant or class per error code.
   - The parameters set in the generated Request object are now checked the
     same way as they are in the generated code on the server side.
+
   - Improved Javadoc here and there.
 
 
