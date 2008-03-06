@@ -5,9 +5,16 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
 
+* XINS/Java Common Library:
+  - The fromString should throw the same TypeValueException as fromStringImpl.
+
 * XINS/Java Server Framework:
   - Changed the way CompositeDataSupport is created for Properties in order
     to still compile with Java 6.
+
+* Generation of server-side Java code:
+  - Forward the details of the TypeValueException in the generated 
+    RuntimeProperties.
 
 * Generated build file:
   - Fixed incorrect comment in help target, tools target -> help-tools target.
