@@ -198,7 +198,7 @@ public class RuntimeProperties extends org.xins.server.RuntimeProperties {]]></x
 					<xsl:value-of select="@name" />
 					<xsl:text>", </xsl:text>
 					<xsl:value-of select="$variableName" />
-					<xsl:text>);
+					<xsl:text>, exception.getDetail());
       }</xsl:text>
 				<xsl:if test="not($requiredOrDefault)">
 					<xsl:text>
