@@ -194,11 +194,6 @@ public abstract class Type {
          return null;
       }
 
-      // TODO: Catch exceptions thrown by isValidValueImpl(String)
-      if (! isValidValueImpl(string)) {
-         throw new TypeValueException(this, string);
-      }
-
       Object value = fromStringImpl(string);
 
       // TODO: Create a unit test to check that a null returned from
