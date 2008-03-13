@@ -1307,12 +1307,13 @@ public abstract class API extends Manageable {
       heap.setAttribute("free",  String.valueOf(free));
       heap.setAttribute("total", String.valueOf(total));
       try {
-         heap.setAttribute("max", String.valueOf(rt.maxMemory()));
+         long max = rt.maxMemory();
+         heap.setAttribute("max", String.valueOf(max));
+         double percentageUsed = (total - free) / (double) max;
+         heap.setAttribute("percentageUsed", String.valueOf((int) (percentageUsed * 100)));
       } catch (NoSuchMethodError error) {
          // NOTE: Runtime.maxMemory() is not available in Java 1.3
       }
-      double percentageUsed = total - free / (double) total;
-      heap.setAttribute("percentageUsed", String.valueOf((int) (percentageUsed * 100)));
       builder.add(heap.createElement());
 
       // Function-specific statistics
