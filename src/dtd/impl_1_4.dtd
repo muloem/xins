@@ -24,6 +24,7 @@
           type       NMTOKEN #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT content EMPTY>
 <!ATTLIST content
           dir        CDATA #IMPLIED

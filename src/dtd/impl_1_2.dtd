@@ -16,6 +16,7 @@
           type       NMTOKEN #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT dependency EMPTY>
 <!ATTLIST dependency
           dir        CDATA #REQUIRED

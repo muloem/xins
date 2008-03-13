@@ -19,6 +19,9 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
 * Generated build file:
   - Fixed incorrect comment in help target, tools target -> help-tools target.
 
+* DTD:
+  - Added missing em in impl.dtd.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 1:
 

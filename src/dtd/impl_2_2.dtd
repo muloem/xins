@@ -25,6 +25,7 @@
           type       CDATA #IMPLIED
 >
 <!ELEMENT description (#PCDATA|em)*>
+<!ELEMENT em (#PCDATA)>
 <!ELEMENT web-app (#PCDATA)>
 <!ATTLIST web-app
           element NMTOKEN #REQUIRED
