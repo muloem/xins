@@ -435,9 +435,9 @@
 				<xsl:value-of select="$function_node/description" />
 			</documentation>
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
-			<input message="tns:{$functionname}Input" />
+			<input name="{$functionname}Input" message="tns:{$functionname}Input" />
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
-			<output message="tns:{$functionname}Output" />
+			<output name="{$functionname}Output" message="tns:{$functionname}Output" />
 			<xsl:for-each select="$function_node/output/resultcode-ref">
 				<xsl:variable name="rcd_file">
 					<xsl:choose>
@@ -480,13 +480,14 @@
 			</documentation>
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<!--soapbind:operation soapAction="{$location}/{$functionname}" /-->
-			<input>
+			<soapbind:operation soapAction="" />
+			<input name="{$functionname}Input">
 				<xsl:value-of select="concat($return, $tab4)" />
 				<soapbind:body use="literal" />
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			</input>
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
-			<output>
+			<output name="{$functionname}Output">
 				<xsl:value-of select="concat($return, $tab4)" />
 				<soapbind:body use="literal" />
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />

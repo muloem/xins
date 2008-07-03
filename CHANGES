@@ -17,6 +17,12 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
   - Forward the details of the TypeValueException in the generated 
     RuntimeProperties.
 
+* Generation of the WSDL:
+  - Added name attribute to input and output elements for better .Net 
+    interoperability.
+  - Added <soapbind:operation soapAction="" /> for better .Net 
+    interoperability.
+
 * Generated build file:
   - Fixed incorrect comment in help target, tools target -> help-tools target.
 
