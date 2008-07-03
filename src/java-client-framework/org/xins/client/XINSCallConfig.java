@@ -20,6 +20,7 @@ import org.xins.common.text.TextUtils;
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+ * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
  * @since XINS 1.1.0
  */
@@ -84,6 +85,30 @@ public final class XINSCallConfig extends CallConfig {
 
       // Store the setting in the HTTP call configuration
       _httpCallConfig.setMethod(method);
+   }
+
+   /**
+    * Returns the action performed when a redirect is returned from the server.
+    *
+    * @return
+    *    <code>true</code> if it should call the redirected link, 
+    *    <code>false</code> if it should fail.
+    */
+   public boolean getFollowRedirect() {
+      return _httpCallConfig.getFollowRedirect();
+   }
+
+   /**
+    * Sets the action to perform if a redirect is returned from the server.
+    *
+    * @param follow
+    *    <code>true</code> if it should call the redirected link, 
+    *    <code>false</code> if it should fail.
+    */
+   public void setFollowRedirect(boolean follow) {
+
+      // Store the setting in the HTTP call configuration
+      _httpCallConfig.setFollowRedirect(floow);
    }
 
    /**

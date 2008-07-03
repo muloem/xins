@@ -35,6 +35,11 @@ public final class HTTPCallConfig extends CallConfig {
    private String _userAgent;
 
    /**
+    * How to handle HTTP redirect returned by the server. Default to <code>false</code>.
+    */
+   private boolean _followRedirect;
+
+   /**
     * Constructs a new <code>HTTPCallConfig</code> object.
     */
    public HTTPCallConfig() {
@@ -71,6 +76,29 @@ public final class HTTPCallConfig extends CallConfig {
 
       // Store the new HTTP method
       _method = method;
+   }
+
+   /**
+    * Returns the action performed when a redirect is returned from the server.
+    *
+    * @return
+    *    <code>true</code> if it should call the redirected link, 
+    *    <code>false</code> if it should fail.
+    */
+   public boolean getFollowRedirect() {
+      return _followRedirect;
+   }
+
+   /**
+    * Sets the action to perform if a redirect is returned from the server.
+    *
+    * @param follow
+    *    <code>true</code> if it should call the redirected link, 
+    *    <code>false</code> if it should fail.
+    */
+   public void setFollowRedirect(boolean follow) {
+
+       _followRedirect = follow;
    }
 
    /**

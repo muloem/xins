@@ -298,6 +298,7 @@ public class HTTPServiceCaller extends ServiceCaller {
                }
             }
          }
+         postMethod.setFollowRedirects(callConfig.getFollowRedirect());
 
          return postMethod;
 
@@ -334,6 +335,7 @@ public class HTTPServiceCaller extends ServiceCaller {
          if (query.length() > 0) {
             getMethod.setQueryString(query.toString());
          }
+         getMethod.setFollowRedirects(callConfig.getFollowRedirect());
 
          return getMethod;
 
