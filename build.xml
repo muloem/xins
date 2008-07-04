@@ -56,7 +56,7 @@ ${version.file}</fail>
 		<property name="name"                value="${ant.project.name}" />
 		<property name="xins_version"        value="${version.major}.${version.middle}${dot.version.minor}${version.build}${version.suffix}" />
 		<property name="package-basename"    value="${name}-${xins_version}" />
-		<property name="xins_vendor"         value="Orange Nederland Breedband B.V." />
+		<property name="xins_vendor"         value="Online Breedband B.V." />
 		<property name="cvs.module"          value="${name}" />
 
 		<!-- SourceForge-related properties -->

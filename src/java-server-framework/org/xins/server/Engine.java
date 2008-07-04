@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- * Copyright 2003-2007 Orange Nederland Breedband B.V.
+ * Copyright 2003-2008 Online Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.server;
@@ -945,6 +945,7 @@ final class Engine {
       }
       String methodsList = "OPTIONS";
       for (int i = 0; i < methods.length; i++) {
+
 
          methodsList += ", " + methods[i];
       }
