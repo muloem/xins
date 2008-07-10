@@ -34,6 +34,10 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
 * Generated build file:
   - Fixed incorrect comment in help target, tools target -> help-tools target.
 
+* Logdoc:
+  - Added to logs that are at FATAL level the class name and the message of the 
+    exception thrown if any.
+
 * DTD:
   - Added missing em in impl.dtd.
 
