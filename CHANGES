@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
   - Changed the way CompositeDataSupport is created for Properties in order
     to still compile with Java 6.
   - Fixed the way the percentage used statistics is computed.
+  - RFE 2009573: Improve log message 3583.
+  - RFE 2013460: Generate diagnostic context identifier if an invalid one is
+    sent.
 
 * XINS/Java Client Framework:
   - Added possibility for the XINSServiceCaller to follow redirections.

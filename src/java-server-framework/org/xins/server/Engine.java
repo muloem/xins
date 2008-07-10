@@ -458,9 +458,8 @@ final class Engine {
          request.setCharacterEncoding("UTF-8");
       }
 
-      // Associate the current diagnostic context identifier with this thread
-      String contextID = determineContextID(request);
-      NDC.push(contextID);
+      // Set the diagnostic context identifier
+      applyContextID(request);
 
       // Handle the request
       try {
@@ -479,9 +478,9 @@ final class Engine {
    }
 
    /**
-    * Returns an applicable diagnostic context identifier. If the request
-    * already specifies a diagnostic context identifier, then that will be
-    * used. Otherwise a new one will be generated.
+    * Applies an applicable diagnostic context identifier. 
+    * If no diagnostic context identifier is specified or if the value is
+    * invalid, a new one is created and applied.
     *
     * @param request
     *    the HTTP servlet request, should not be <code>null</code>.
@@ -490,13 +489,16 @@ final class Engine {
     *    the diagnostic context identifier, never <code>null</code> and never
     *    an empty string.
     */
-   private String determineContextID(HttpServletRequest request) {
+   private String applyContextID(HttpServletRequest request) {
 
       // See if the request already specifies a diagnostic context identifier
       // XXX: Store "_context" in a constant
+
+      // Associate the current diagnostic context identifier with this thread
       String contextID = request.getParameter("_context");
       if (TextUtils.isEmpty(contextID)) {
          contextID = _contextIDGenerator.generate();
+         NDC.push(contextID);
          Log.log_3583(contextID);
 
       // Indeed there is a context ID in the request, make sure it's valid
@@ -504,12 +506,15 @@ final class Engine {
 
          // Valid context ID
          if (isValidContextID(contextID)) {
+            NDC.push(contextID);
             Log.log_3581(contextID);
 
          // Invalid context ID
          } else {
             Log.log_3582(contextID);
-            contextID = null;
+            contextID = _contextIDGenerator.generate();
+            NDC.push(contextID);
+            Log.log_3583(contextID);
          }
       }
 
