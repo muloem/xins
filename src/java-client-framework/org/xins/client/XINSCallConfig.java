@@ -108,7 +108,7 @@ public final class XINSCallConfig extends CallConfig {
    public void setFollowRedirect(boolean follow) {
 
       // Store the setting in the HTTP call configuration
-      _httpCallConfig.setFollowRedirect(floow);
+      _httpCallConfig.setFollowRedirect(follow);
    }
 
    /**
