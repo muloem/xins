@@ -61,26 +61,32 @@ import org.xins.common.text.URLEncoding;
  * HTTP service caller. This class can be used to perform a call to an HTTP
  * server and fail-over to other HTTP servers if the first one fails.
  *
+ * 
  * <h2>Supported protocols</h2>
  *
- * <p>This service caller currently only supports the HTTP protocol. If a
- * {@link TargetDescriptor} is passed to the constructor with a different
- * protocol, then an {@link UnsupportedProtocolException} is thrown. In the
- * future, HTTPS is expected to be supported as well.
+ * <p>This service caller supports both HTTP and HTTPS (which is HTTP
+ * tunneled over a secure SSL connection). If a {@link TargetDescriptor} is
+ * passed to the constructor with a protocol other than <code>"http"</code>
+ * or <code>"https"</code>, then an {@link UnsupportedProtocolException} is
+ * thrown.
  *
  * <h2>Load-balancing and fail-over</h2>
  *
  * <p>To perform an HTTP call using a
  * <code>HTTPServiceCaller</code> use {@link #call(HTTPCallRequest)}.
  *
- * <p>How load-balancing is done (in the second form) depends on the
- * {@link Descriptor} passed to the
- * {@link #HTTPServiceCaller(Descriptor)} constructor. If it is a
- * {@link TargetDescriptor}, then only this single target service is called
- * and no load-balancing is performed. If it is a
- * {@link org.xins.common.service.GroupDescriptor}, then the configuration of
- * the <code>GroupDescriptor</code> determines how the load-balancing is done.
- * A <code>GroupDescriptor</code> is a recursive data structure, which allows
+ * <p>How load-balancing is done depends on the {@link Descriptor} passed to
+ * the {@link #HTTPServiceCaller(Descriptor)} constructor:
+ *
+ * <ul>
+ *    <li>if it is a {@link TargetDescriptor}, then only this single target
+ *        service is called and no load-balancing is performed;
+ *    <li>if it is a {@link org.xins.common.service.GroupDescriptor}, then the
+ *        configuration of the <code>GroupDescriptor</code> determines how the
+ *        load-balancing is done.
+ * </ul>
+ *
+ * <p>A <code>GroupDescriptor</code> is a recursive data structure, which allows
  * for fairly advanced load-balancing algorithms.
  *
  * <p>If a call attempt fails and there are more available target services,
@@ -99,6 +105,11 @@ import org.xins.common.text.URLEncoding;
  *
  * <p>If none of these conditions holds, then fail-over is not considered
  * acceptable and will not be performed.
+ *
+ * <h2>Thread-safety</h2>
+ *
+ * <p>Instances of this class can safely be used from multiple threads at the 
+ * same time.
  *
  *
  * <h2>Example code</h2>
@@ -353,8 +364,10 @@ public class HTTPServiceCaller extends ServiceCaller {
     * <p>This method should only ever be called from the
     * {@link #isProtocolSupported(String)} method.
     *
-    * <p>The implementation of this method in class <code>ServiceCaller</code>
-    * throws an {@link UnsupportedOperationException}.
+    * <p>The implementation of this method in class
+    * <code>HTTPServiceCaller</code> throws an
+    * {@link UnsupportedOperationException} unless the protocol equals either
+    * <code>"http"</code> or <code>"https</code> (ignoring case)..
     *
     * @param protocol
     *    the protocol, guaranteed not to be <code>null</code>.

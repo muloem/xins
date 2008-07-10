@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
   - Improved documentation of FileWatcher.
   - Added possibility to specify when the first check should be performed
     for the FileWatcher.
+  - Improved documentation of HTTPServiceCaller.
 
 * XINS/Java Server Framework:
   - Changed the way CompositeDataSupport is created for Properties in order
