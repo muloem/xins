@@ -98,7 +98,10 @@ public final class URL extends Type {
       }
    }
 
-   protected Object fromStringImpl(String string) {
+   protected Object fromStringImpl(String string) throws TypeValueException {
+      if (!isValidValue(string)) {
+          throw new TypeValueException(this, string);
+      }
       return string;
    }
 

@@ -205,6 +205,9 @@ public class Base64 extends Type {
     *    type.
     */
    protected Object fromStringImpl(String string) throws TypeValueException {
+      if (!isValidValue(string)) {
+          throw new TypeValueException(this, string);
+      }
       try {
          byte[] encoded = string.getBytes(STRING_ENCODING);
          return org.apache.commons.codec.binary.Base64.decodeBase64(encoded);

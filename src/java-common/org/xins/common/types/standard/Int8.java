@@ -166,7 +166,10 @@ public class Int8 extends Type {
       }
    }
 
-   protected Object fromStringImpl(String string) {
+   protected Object fromStringImpl(String string) throws TypeValueException {
+      if (!isValidValue(string)) {
+          throw new TypeValueException(this, string);
+      }
       return Byte.valueOf(string);
    }
 

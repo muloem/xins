@@ -158,8 +158,15 @@ public final class Boolean extends Type {
     *
     * @return
     *    an instance of the value class, cannot be <code>null</code>.
+    *
+    * @throws TypeValueException
+    *    if <code>string</code> is considered to be an invalid value for this
+    *    type.
     */
-   protected Object fromStringImpl(String string) {
+   protected Object fromStringImpl(String string) throws TypeValueException {
+      if (!isValidValue(string)) {
+          throw new TypeValueException(this, string);
+      }
       return "true".equals(string) ? java.lang.Boolean.TRUE
                                    : java.lang.Boolean.FALSE;
    }
