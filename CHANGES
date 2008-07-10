@@ -11,6 +11,7 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
   - Added possibility for the HTTPServiceCaller to follow redirections.
   - Improved documentation of HTTPServiceCaller.
   - Added _xml simple type.
+  - RFE 1863102: Make HTTPServiceCaller use controlTimeOut.
 
 * XINS/Java Server Framework:
   - Changed the way CompositeDataSupport is created for Properties in order

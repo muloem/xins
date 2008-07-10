@@ -26,14 +26,13 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.httpclient.util.TimeoutController;
-import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 
 import org.apache.log4j.NDC;
 import org.xins.common.FormattedParameters;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
+import org.xins.common.TimeOutException;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReader;
 import org.xins.common.service.CallConfig;
@@ -623,10 +622,11 @@ public class HTTPServiceCaller extends ServiceCaller {
       long start = System.currentTimeMillis();
       long duration;
       try {
-         TimeoutController.execute(executor, totalTimeOut);
+         controlTimeOut(executor, target);
+         // 2.1 code: TimeoutController.execute(executor, totalTimeOut);
 
       // Total time-out exceeded
-      } catch (TimeoutException exception) {
+      } catch (TimeOutException exception) {
          duration = System.currentTimeMillis() - start;
          Log.log_1106(url, params, duration, totalTimeOut);
          executor.dispose();
