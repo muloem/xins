@@ -1,21 +1,27 @@
 /*
  * $Id$
  *
- * Copyright 2003-2008 Online Breedband B.V.
+ * Copyright 2003-2007 Orange Nederland Breedband B.V.
  * See the COPYRIGHT file for redistribution and use restrictions.
  */
 package org.xins.common.io;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.xins.common.Log;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 
 /**
- * File watcher thread. This thread checks if a file or a set of files
- * changed and if it has, it notifies the listener.
- * The check is performed every <em>n</em> seconds, where <em>n</em> can be configured.
+ * File watcher thread.
+ *
+ * <p>This thread monitors one or more files, checking them at preset
+ * intervals. A listener is notified of the findings.
+ *
+ * <p>The check is performed every <em>n</em> seconds,
+ * where the interval <em>n</em> can be configured
+ * (see {@link #setInterval(int)} and {@link #getInterval()}).
  *
  * <p>Initially this thread will be a daemon thread. This can be changed by
  * calling {@link #setDaemon(boolean)}.
@@ -29,14 +35,12 @@ import org.xins.common.Utils;
 public class FileWatcher extends Thread {
 
    /**
-    * Instance counter. Used to generate a unique ID for each instance.
+    * Instance counter, by class name. The keys in this map are
+    * <code>String</code> objects, while the values are <code>Integer</code>
+    * objects.
+    * Used to generate a unique ID for each instance.
     */
-   private static int INSTANCE_COUNT;
-
-   /**
-    * Lock object for <code>INSTANCE_COUNT</code>. Never <code>null</code>.
-    */
-   private static final Object INSTANCE_COUNT_LOCK = new Object();
+   private static HashMap INSTANCE_COUNTERS = new HashMap();
 
    /**
     * State in which this file watcher thread is not running.
@@ -66,6 +70,18 @@ public class FileWatcher extends Thread {
    private final int _instanceID;
 
    /**
+    * The number of checks completely executed, including the listener call.
+    * Initially 0 and becomes 1 after the listener is called for the first 
+    * time.
+    */
+   private int _checkCount;
+
+   /**
+    * Lock object for <code>_checkCount</code>.
+    */
+   private Object _checkCountLock;
+
+   /**
     * The files to watch. Not <code>null</code>.
     */
    private File[] _files;
@@ -93,7 +109,7 @@ public class FileWatcher extends Thread {
     *
     * <p>Initially this field is <code>-1L</code>.
     */
-   protected long _lastModified;
+   protected long _lastModified = -1L;
 
    /**
     * Current state. Never <code>null</code>. Value is one of the following
@@ -105,15 +121,28 @@ public class FileWatcher extends Thread {
     *    <li>{@link #SHOULD_STOP}
     * </ul>
     *
-    * Once the thread is stopped, the state will be changed to
+    * <p>Once the thread is stopped, the state will be changed to
     * {@link #NOT_RUNNING} again.
     */
    private int _state;
 
    /**
+    * Indication of when the first check should be performed.
+    * Either at construction ({@link InitialCheckPolicy#AT_CONSTRUCTION}) 
+    * or when the thread is started
+    * ({@link InitialCheckPolicy#AT_THREAD_START}).
+    * Never <code>null</code>.
+    */
+   private final InitialCheckPolicy _initialCheckPolicy;
+
+   /**
     * Creates a new <code>FileWatcher</code> for the specified file.
     *
     * <p>The interval must be set before the thread can be started.
+    *
+    * <p>The initial check will be performed at construction
+    * (see {@link InitialCheckPolicy#AT_CONSTRUCTION}), which is compatible 
+    * with XINS 2.1 and before.
     *
     * @param file
     *    the name of the file to watch, cannot be <code>null</code>.
@@ -128,12 +157,49 @@ public class FileWatcher extends Thread {
     */
    public FileWatcher(String file, Listener listener)
    throws IllegalArgumentException {
-      this(file, 0, listener);
+      this(file, listener, InitialCheckPolicy.AT_CONSTRUCTION);
+   }
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified file, with the 
+    * specified initial check policy.
+    *
+    * <p>The interval must be set before the thread can be started.
+    *
+    * @param file
+    *    the name of the file to watch, cannot be <code>null</code>.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @param initialCheckPolicy
+    *    indication of when the first check should be performed,
+    *    either at construction ({@link InitialCheckPolicy#AT_CONSTRUCTION}) 
+    *    or when the thread is started
+    *    ({@link InitialCheckPolicy#AT_THREAD_START}).
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file               == null
+    *          || listener           == null
+    *          || initialCheckPolicy == null</code>
+    *
+    * @since XINS 2.2
+    */
+   public FileWatcher(String             file,
+                      Listener           listener,
+                      InitialCheckPolicy initialCheckPolicy)
+   throws IllegalArgumentException {
+      this(file, 0, listener, initialCheckPolicy);
    }
 
    /**
     * Creates a new <code>FileWatcher</code> for the specified file, with the
     * specified interval.
+    *
+    * <p>The initial check will be performed at construction
+    * (see {@link InitialCheckPolicy#AT_CONSTRUCTION}), which is compatible 
+    * with XINS 2.1 and before.
     *
     * @param file
     *    the name of the file to watch, cannot be <code>null</code>.
@@ -147,11 +213,86 @@ public class FileWatcher extends Thread {
     *    the object to notify on events, cannot be <code>null</code>.
     *
     * @throws IllegalArgumentException
-    *    if <code>file == null || listener == null || interval &lt; 0</code>
+    *    if <code>file     == null
+    *          || interval &lt; 0
+    *          || listener == null</code>.
     */
    public FileWatcher(String file, int interval, Listener listener)
    throws IllegalArgumentException {
       this(new String[]{file}, interval, listener);
+   }
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified file, with the
+    * specified interval and initial check policy.
+    *
+    * @param file
+    *    the name of the file to watch, cannot be <code>null</code>.
+    *
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 0.
+    *    if the interval is 0 the interval must be set before the thread can
+    *    be started.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @param initialCheckPolicy
+    *    indication of when the first check should be performed,
+    *    either at construction ({@link InitialCheckPolicy#AT_CONSTRUCTION}) 
+    *    or when the thread is started
+    *    ({@link InitialCheckPolicy#AT_THREAD_START}).
+    *    cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>file               == null
+    *          || interval           &lt; 0
+    *          || listener           == null
+    *          || initialCheckPolicy == null</code>
+    *
+    * @since XINS 2.2
+    */
+   public FileWatcher(String             file,
+                      int                interval,
+                      Listener           listener,
+                      InitialCheckPolicy initialCheckPolicy)
+   throws IllegalArgumentException {
+      this(new String[]{file}, interval, listener, initialCheckPolicy);
+   }
+
+   /**
+    * Creates a new <code>FileWatcher</code> for the specified set of files,
+    * with the specified interval.
+    *
+    * <p>The initial check will be performed at construction
+    * (see {@link InitialCheckPolicy#AT_CONSTRUCTION}), which is compatible 
+    * with XINS 2.1 and before.
+    *
+    * @param files
+    *    the name of the files to watch, cannot be <code>null</code>.
+    *    It should also have at least one file and none of the file should be <code>null</code>.
+    *
+    * @param interval
+    *    the interval in seconds, must be greater than or equal to 0.
+    *    if the interval is 0 the interval must be set before the thread can
+    *    be started.
+    *
+    * @param listener
+    *    the object to notify on events, cannot be <code>null</code>.
+    *
+    * @throws IllegalArgumentException
+    *    if <code>files             == null
+    *          || files.length      &lt; 1
+    *          || files[<em>n</em>] == null
+    *          || interval          &lt; 0
+    *          || listener          == null</code>
+    *    (where <code>0 &lt;= <em>n</em> &lt; files.length</code>).
+    *
+    * @since XINS 2.1
+    */
+   public FileWatcher(String[] files, int interval, Listener listener)
+   throws IllegalArgumentException {
+      this(files, interval, listener, InitialCheckPolicy.AT_CONSTRUCTION);
    }
 
    /**
@@ -170,19 +311,35 @@ public class FileWatcher extends Thread {
     * @param listener
     *    the object to notify on events, cannot be <code>null</code>.
     *
+    * @param initialCheckPolicy
+    *    indication of when the first check should be performed,
+    *    either at construction ({@link InitialCheckPolicy#AT_CONSTRUCTION}) 
+    *    or when the thread is started
+    *    ({@link InitialCheckPolicy#AT_THREAD_START}).
+    *    cannot be <code>null</code>.
+    *
     * @throws IllegalArgumentException
-    *    if <code>files == null || listener == null || interval &lt; 0 || files.length &lt; 1</code>
-    *    or if one of the file is <code>null</code>.
+    *    if <code>files              == null
+    *          || files.length       &lt; 1
+    *          || files[<em>n</em>]  == null
+    *          || interval           &lt; 0
+    *          || listener           == null
+    *          || initialCheckPolicy == null</code>
+    *    (where <code>0 &lt;= <em>n</em> &lt; files.length</code>).
+    *
+    * @since XINS 2.2
     */
-   public FileWatcher(String[] files, int interval, Listener listener)
+   public FileWatcher(String[]           files,
+                      int                interval,
+                      Listener           listener,
+                      InitialCheckPolicy initialCheckPolicy)
    throws IllegalArgumentException {
 
       // Check preconditions
       MandatoryArgumentChecker.check("files", files, "listener", listener);
       if (interval < 0) {
          throw new IllegalArgumentException("interval (" + interval + ") < 0");
-      }
-      if (files.length < 1) {
+      } else if (files.length < 1) {
          throw new IllegalArgumentException("At least one file should be specified.");
       }
       for (int i = 0; i < files.length; i++) {
@@ -195,16 +352,20 @@ public class FileWatcher extends Thread {
 
       // Determine the unique instance ID
       int instanceID;
-      synchronized (INSTANCE_COUNT_LOCK) {
-         instanceID = INSTANCE_COUNT++;
+      synchronized (INSTANCE_COUNTERS) {
+         Integer instanceCounter = (Integer) INSTANCE_COUNTERS.get(_className);
+         instanceID = (instanceCounter == null) ? 0 : instanceCounter.intValue() + 1;
+         INSTANCE_COUNTERS.put(_className, new Integer(instanceID));
       }
 
       // Initialize the fields
-      _instanceID    = instanceID;
+      _instanceID         = instanceID;
+      _checkCountLock     = new Object();
       storeFiles(files);
-      _interval      = interval;
-      _listener      = listener;
-      _state         = NOT_RUNNING;
+      _interval           = interval;
+      _listener           = listener;
+      _state              = NOT_RUNNING;
+      _initialCheckPolicy = initialCheckPolicy;
 
       // Configure thread as daemon
       setDaemon(true);
@@ -212,23 +373,40 @@ public class FileWatcher extends Thread {
       // Set the name of this thread
       configureThreadName();
 
-      // Immediately check if the file can be read from
-      firstCheck();
+      // Immediately check if the file can be read from,
+      // if that is the correct policy
+      if (initialCheckPolicy == InitialCheckPolicy.AT_CONSTRUCTION) {
+         firstCheck();
+      }
    }
 
    /**
-    * Stores the files in a class variable.
+    * Stores the files in an instance field.
     *
-    * @param files
-    *    the String files to check, cannot be <code>null</code>.
+    * @param fileNames
+    *    the files to check, as {@link String}s,
+    *    cannot be <code>null</code>.
+    *
+    * @since XINS 2.1
     */
-   protected void storeFiles(String[] files) {
-      _files = new File[files.length];
-      _files[0] = new File(files[0]);
+   protected void storeFiles(String[] fileNames) {
+
+      // Initialize the field that will store all File objects
+      _files = new File[fileNames.length];
+
+      // Set the first element in that field
+      _files[0] = new File(fileNames[0]);
+
+      // Determine the base dir for the first file
       File baseDir = _files[0].getParentFile();
+
+      // Prepare the text string with the conatenated file paths
       _filePaths = _files[0].getPath();
-      for (int i = 1; i < files.length; i++) {
-         _files[i] = new File(baseDir, files[i]);
+
+      // Process all successive file names, using the base directory of the
+      // first one
+      for (int i = 1; i < fileNames.length; i++) {
+         _files[i] = new File(baseDir, fileNames[i]);
          _filePaths += ";" + _files[i].getPath();
       }
    }
@@ -237,16 +415,16 @@ public class FileWatcher extends Thread {
     * Configures the name of this thread.
     */
    private synchronized void configureThreadName() {
-      String name = _className + " #" + _instanceID + " [files=\"" +
-            _filePaths + "\"; interval=" + _interval + ']';
+      String name = _className
+                  + " #" + _instanceID
+                  + " [file(s)=\"" + _filePaths
+                  + "\"; interval=" + _interval + " second(s)]";
       setName(name);
    }
 
    /**
     * Performs the first check on the file to determine the date the file was
-    * last modified. This method is called from the constructors. If the file
-    * cannot be accessed due to a {@link SecurityException}, then this
-    * exception is logged and ignored.
+    * last modified. This method is called from the constructors.
     */
    protected void firstCheck() {
 
@@ -255,12 +433,20 @@ public class FileWatcher extends Thread {
          try {
             if (file.canRead()) {
                _lastModified = Math.max(_lastModified, file.lastModified());
+               _listener.fileFound();
+            } else {
+               _listener.fileNotFound();
             }
 
          // Ignore a SecurityException
          } catch (SecurityException exception) {
-            Utils.logIgnoredException(exception);
+            _listener.securityException(exception);
          }
+      }
+
+      // Update the check counter (becomes 1)
+      synchronized (_checkCountLock) {
+         _checkCount = 1;
       }
    }
 
@@ -301,9 +487,16 @@ public class FileWatcher extends Thread {
          _state = RUNNING;
       }
 
+      // Check if the file can be read from,
+      // if that was not done during construction
+      if (_initialCheckPolicy == InitialCheckPolicy.AT_THREAD_START) {
+         firstCheck();
+      }
+
       // Loop while we should keep running
       boolean shouldStop = false;
       while (! shouldStop) {
+
          synchronized (this) {
             try {
 
@@ -321,6 +514,11 @@ public class FileWatcher extends Thread {
          // If we do not have to stop yet, check if the file changed
          if (! shouldStop) {
             check();
+
+            // Update the check counter
+            synchronized (_checkCountLock) {
+               _checkCount++;
+            }
          }
       }
 
@@ -506,13 +704,15 @@ public class FileWatcher extends Thread {
 
    /**
     * Gets the time at which the last file was modified.
-    * If for any reason, a file could no be read -1 is returned.
+    * If, for any reason, at least one of the files could not be read then
+    * <code>-1L</code> is returned.
     *
     * @return
-    *    the time of the last modified file or -1.
+    *    the time of the last modified file, or <code>-1L</code>.
     *
     * @throws SecurityException
-    *    if one of the file could not be read because of a security issue.
+    *    if one of the files could not be read because of a security
+    *    restriction.
     */
    protected long getLastModified() throws SecurityException {
       long lastModified = 0L;
@@ -525,6 +725,22 @@ public class FileWatcher extends Thread {
          }
       }
       return lastModified;
+   }
+
+   /**
+    * Determines how often the file was checked. Initially the file is checked
+    * 0 times, which becomes 1 <em>after</em> the listener has been notified
+    * for the very first time.
+    *
+    * @return
+    *    the number of times the file(s) has/have been checked, initially 0.
+    *
+    * @since XINS 2.2
+    */
+   public int getCheckCount() {
+      synchronized (_checkCountLock) {
+         return _checkCount;
+      }
    }
 
    /**
@@ -576,5 +792,98 @@ public class FileWatcher extends Thread {
        * modified.
        */
       void fileNotModified();
+   }
+
+   /**
+    * The policy for executing the initial check, either immediately or when 
+    * the thread is started.
+    *
+    * <p>When the XINS framework starts supporting Java 5+ features, then this 
+    * class will be replaced by an enum in a manner that only a recompilation 
+    * is needed.
+    *
+    * @version $Revision$ $Date$
+    * @author <a href="mailto:ernst@ernstdehaan.com">Ernst de Haan</a>
+    *
+    * @since XINS 2.2
+    */
+   public static class InitialCheckPolicy {
+
+      /**
+       * The constant that indicates that the first check should be performed 
+       * immediately, when the <code>FileWatcher</code> is constructed.
+       */
+      public static final InitialCheckPolicy AT_CONSTRUCTION = new InitialCheckPolicy("AT_CONSTRUCTION");
+
+      /**
+       * The constant that indicates that the first check should be performed 
+       * when the <code>FileWatcher</code> thread is started.
+       */
+      public static final InitialCheckPolicy AT_THREAD_START = new InitialCheckPolicy("AT_THREAD_START");
+
+      /**
+       * The name of this constant. Never <code>null</code>.
+       */
+      private final String _name;
+
+      /**
+       * Constructs a new <code>InitialCheckPolicy</code> with the specified 
+       * name.
+       *
+       * @param name
+       *    the name of the constant, cannot be <code>null</code>.
+       */
+      private InitialCheckPolicy(String name)
+      throws IllegalArgumentException {
+         MandatoryArgumentChecker.check("name", name);
+         _name = name;
+      }
+
+      /**
+       * Returns the name of this constant.
+       *
+       * @return
+       *    the name of the constant, never <code>null</code>.
+       */
+      public String name() {
+         return _name;
+      }
+
+      /**
+       * Returns the name of this constant.
+       *
+       * @return
+       *    the name of the constant, never <code>null</code>.
+       */
+      public String toString() {
+         return _name;
+      }
+
+      /**
+       * Returns a hash code for this constant.
+       *
+       * @return
+       *    the hash code.
+       */
+      public int hashCode() {
+         return _name.hashCode();
+      }
+
+      /**
+       * Returns true if the specified object is equal to this constant.
+       *
+       * @return
+       *    <code>true</code> if this object and the specified object are 
+       *    considered equal, <code>false</code> if they are considered 
+       *    different.
+       */
+      public boolean equals(Object o) {
+         if (o == null || (! (o instanceof InitialCheckPolicy))) {
+            return false;
+         }
+
+         InitialCheckPolicy that = (InitialCheckPolicy) o;
+         return _name.equals(that._name);
+      }
    }
 }
