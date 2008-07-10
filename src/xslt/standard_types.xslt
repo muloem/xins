@@ -33,6 +33,7 @@
 			<xsl:when test="$type = '_descriptor'">Descriptor.</xsl:when>
 			<xsl:when test="$type = '_set'">Set of any text.</xsl:when>
 			<xsl:when test="$type = '_list'">List of any text.</xsl:when>
+			<xsl:when test="$type = '_xml'">XML text.</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>The type '</xsl:text>
@@ -66,6 +67,7 @@
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:when test="$type = '_list'">org.xins.common.types.standard.List.Value</xsl:when>
 					<xsl:when test="$type = '_set'">org.xins.common.types.standard.Set.Value</xsl:when>
+					<xsl:when test="$type = '_xml'">org.xins.common.xml.Element</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>
@@ -93,6 +95,7 @@
 					<xsl:when test="$type = '_descriptor'">org.xins.common.service.Descriptor</xsl:when>
 					<xsl:when test="$type = '_list'">org.xins.common.types.standard.List.Value</xsl:when>
 					<xsl:when test="$type = '_set'">org.xins.common.types.standard.Set.Value</xsl:when>
+					<xsl:when test="$type = '_xml'">org.xins.common.xml.Element</xsl:when>
 					<xsl:otherwise>
 						<xsl:message terminate="yes">
 							<xsl:text>The type '</xsl:text>

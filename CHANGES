@@ -7,11 +7,13 @@ CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
 
 * XINS/Java Common Library:
   - The fromString should throw the same TypeValueException as fromStringImpl.
+  - The check of the value is done in fromStringImpl.
   - Added possibility for the HTTPServiceCaller to follow redirections.
   - Improved documentation of FileWatcher.
   - Added possibility to specify when the first check should be performed
     for the FileWatcher.
   - Improved documentation of HTTPServiceCaller.
+  - Added _xml simple type.
 
 * XINS/Java Server Framework:
   - Changed the way CompositeDataSupport is created for Properties in order

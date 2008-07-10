@@ -296,7 +296,7 @@
 	* @return
 	*    the base type for the specified type, always starting with an
 	*    underscore; either _boolean, _int8, _int16, _int32, _int64, _float32,
-	*    _float64, _base64 _hex or _text.
+	*    _float64, _base64, _hex or _text.
 	-->
 	<xsl:template name="basetype_for_type">
 		<xsl:param name="specsdir" />
@@ -710,6 +710,7 @@
 			<xsl:when test="$paramtype = '_descriptor'">string</xsl:when>
 			<xsl:when test="$paramtype = '_list'">string</xsl:when>
 			<xsl:when test="$paramtype = '_set'">string</xsl:when>
+			<xsl:when test="$paramtype = '_xml'">string</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">
 					<xsl:text>Unrecognized type datatype '</xsl:text>
