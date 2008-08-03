@@ -3,6 +3,14 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.2 ALPHA 3:
+
+* Build- and release-process:
+  - Upload of the release is done using sftp instead of the deprecated ftp 
+    system. Overwrite the upload.dir in $HOME/.sourceforge.properties to
+	define you server directory.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:
 
 * XINS/Java Common Library:
