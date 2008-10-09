@@ -5,6 +5,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 3:
 
+* XINS/Java Common Library:
+  - Fixed BeanUtils#populate to also populate from the data elements.
+
 * Build- and release-process:
   - Upload of the release is done using sftp instead of the deprecated ftp 
     system. Overwrite the upload.dir in $HOME/.sourceforge.properties to

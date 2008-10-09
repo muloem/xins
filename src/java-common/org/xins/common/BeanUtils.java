@@ -148,6 +148,9 @@ public class BeanUtils {
             Method toXMLElementMethod = dataElement.getClass().getMethod("toXMLElement", null);
             Element element = (Element) toXMLElementMethod.invoke(dataElement, null);
             xmlToObject(element, destination);
+         } else if ("org.xins.common.xml.Element".equals(dataElement.getClass().getName())) {
+            Element element = (Element) dataElement;
+            xmlToObject(element, destination);
          }
       } catch (Exception e) {
          // Probably no method found
