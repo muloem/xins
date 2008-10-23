@@ -8,6 +8,12 @@ CHANGES INTRODUCED IN XINS 2.2 BETA 1:
 * XINS/Java Common Library:
   - Fixed BeanUtils#populate to also populate from the data elements.
 
+* Unit tests:
+  - Disabled test with http://xins.sourceforge.net/patterntest.php as the
+    PHP no longer work.
+  - Changed W3C URLs to Apache URLs as W3C doesn't accept HTTPClient 
+    requests anymore.
+
 * Build- and release-process:
   - Upload of the release is done using sftp instead of the deprecated ftp 
     system.

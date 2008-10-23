@@ -127,20 +127,20 @@ public class HTTPServiceCallerTests extends TestCase {
       // TODO: Add tests for 2-argument constructor
    }
 
-   public void testW3URL() throws Exception {
+   public void testAntURL() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET);
-      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/Consortium/Legal/2002/copyright-documents-20021231", TOTAL_TO, CONN_TO, SOCKET_TO);
+      Descriptor descriptor = new TargetDescriptor("http://ant.apache.org/manual/index.html", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
       HTTPCallResult result = caller.call(request);
       assertEquals("Received incorrect status code.", 200, result.getStatusCode());
       assertEquals("Incorrect succeeded descriptor.", descriptor, result.getSucceededTarget());
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
       String text = result.getString();
-      boolean correctStart = text.startsWith("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n      \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <title>W3C Document License</title>");
-      assertTrue("Unexpected HTML received.", correctStart);
-      assertEquals(456039016L, checksum(text));
+      boolean correctContent = text.indexOf("Licensed to the Apache Software Foundation (ASF)") != -1;
+      assertTrue("Unexpected HTML received.", correctContent);
    }
 
+   /* Disabled as patterntest.php doesn't work anymore
    public void testPostParameters() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
@@ -158,7 +158,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
    }
 
-   public void testGetParameters() throws Exception {
+    public void testGetParameters() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("pattern", "^([A-Za-z]([A-Za-z\\- ]{0,26}[A-Za-z])?)$");
       parameters.set("string", "Janwillem");
@@ -172,13 +172,13 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
       String text = result.getString();
       assertTrue("Incorect content.", text.indexOf("\"Janwillem\" <span style='color:blue'>matches</span>") != -1);
-   }
+   }*/
 
    public void testWrongURL() throws Exception {
       BasicPropertyReader parameters = new BasicPropertyReader();
       parameters.set("hello", "world");
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, parameters);
-      Descriptor descriptor = new TargetDescriptor("http://www.w3.org/nOnExIsTeNt.html", TOTAL_TO, CONN_TO, SOCKET_TO);
+      Descriptor descriptor = new TargetDescriptor("http://ant.apache.org/manual/nOnExIsTeNt.html", TOTAL_TO, CONN_TO, SOCKET_TO);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
 
       HTTPCallResult result = caller.call(request);
@@ -189,7 +189,7 @@ public class HTTPServiceCallerTests extends TestCase {
    public void testFailOverGet() throws Exception {
       HTTPCallRequest request = new HTTPCallRequest(HTTPMethod.GET, null, false, null);
       TargetDescriptor failedTarget = new TargetDescriptor("http://anthony.xins.org", TOTAL_TO, CONN_TO, SOCKET_TO);
-      TargetDescriptor succeededTarget = new TargetDescriptor("http://www.w3.org/StyleSheets/TR/W3C-REC.css", TOTAL_TO, CONN_TO, SOCKET_TO);
+      TargetDescriptor succeededTarget = new TargetDescriptor("http://ant.apache.org/manual/index.html", TOTAL_TO, CONN_TO, SOCKET_TO);
       TargetDescriptor[] descriptors = {failedTarget, succeededTarget};
       GroupDescriptor descriptor = new GroupDescriptor(GroupDescriptor.ORDERED_TYPE, descriptors);
       HTTPServiceCaller caller = new HTTPServiceCaller(descriptor);
@@ -199,7 +199,7 @@ public class HTTPServiceCallerTests extends TestCase {
       assertTrue("Incorrect duration.", result.getDuration() >= 0);
       assertEquals("Incorrect succeeded target.", succeededTarget, result.getSucceededTarget());
       String text = result.getString();
-      assertTrue("Incorrect content.", text.indexOf("Copyright 1997-") > 0);
+      assertTrue("Incorrect content.", text.indexOf("Apache Ant User Manual") > 0);
 
       // Check that the request does not have side effect on the HTTPServiceCaller object
       assertEquals("Incorrect HTTP method.", HTTPMethod.POST, caller.getHTTPCallConfig().getMethod());
