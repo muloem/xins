@@ -10,8 +10,10 @@ CHANGES INTRODUCED IN XINS 2.2 BETA 1:
 
 * Build- and release-process:
   - Upload of the release is done using sftp instead of the deprecated ftp 
-    system. Overwrite the upload.dir in $HOME/.sourceforge.properties to
-	define you server directory.
+    system.
+  - Upload to the web site is done on a new server.
+  - Added new required property sf.upload.dir for 
+    $HOME/.sourceforge.properties.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 ALPHA 2:

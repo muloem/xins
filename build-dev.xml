@@ -47,6 +47,7 @@
 			<and>
 				<isset property="sf.user" />
 				<isset property="sf.password" />
+				<isset property="sf.upload.dir" />
 			</and>
 		</condition>
 		<fail unless="sf.isset">

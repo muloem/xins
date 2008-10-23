@@ -64,16 +64,15 @@ ${version.file}</fail>
 		<property name="sf.package"          value="71219" />
 
 		<!-- Website-related properties -->
-		<property name="www.user"            value="${sf.user}" />
-		<property name="www.host"            value="${name}.sourceforge.net" />
+		<property name="www.user"            value="${sf.user},${name}" />
+		<property name="www.host"            value="web.sourceforge.net" />
 		<property name="www.dir"             value="/home/groups/x/xi/xins/htdocs" />
 		<property name="www.target"          value="${www.user}@${www.host}:${www.dir}" />
 		<property name="www.url"             value="http://www.xins.org/" />
 
 		<!-- Upload properties -->
 		<property name="upload.host"         value="frs.sourceforge.net" />
-		<!-- Overwrite this property in $HOME/.sourceforge.properties -->
-		<property name="upload.dir"          value="/incoming/a/ag/agoubard/uploads" />
+		<property name="upload.dir"          value="${sf.upload.dir}" />
 		<property name="upload.target"       value="${sf.user}@${upload.host}:${upload.dir}" />
 
 		<!-- Java compiler-related properties -->
