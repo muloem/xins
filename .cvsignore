@@ -1,8 +1,8 @@
 demo
-.externalToolBuilders
-.DS_Store
-*~
 docs
+*~
+.DS_Store
+.externalToolBuilders
 .project
 jcoverage.ser
 .*.swp
@@ -10,8 +10,9 @@ jcoverage.ser
 build
 .settings
 .directory
-cobertura.ser
+.build-dev.xml.marks
 .nbintdb
+cobertura.ser
 bineclipse
 .classpath
 .svn
