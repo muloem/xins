@@ -5,6 +5,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 BETA 2:
 
+* XINS/Java Common Library:
+  - Fixed bug #1861811: Added possibility to specify an authority in a URL.
+
 * Generation of client-side Java code:
   - Fixed bug #2320665: "result" can not be used as input parameter name with
     capis.
