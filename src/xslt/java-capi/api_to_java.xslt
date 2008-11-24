@@ -500,12 +500,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		</xsl:call-template>
 		<xsl:text>
       // Execute the call request
-      org.xins.client.XINSCallResult result = callImpl(request);
+      org.xins.client.XINSCallResult _result = callImpl(request);
 
       return new </xsl:text>
 
 		<xsl:value-of select="$returnType" />
-		<xsl:text>(result);</xsl:text>
+		<xsl:text>(_result);</xsl:text>
 		<xsl:text>
    }</xsl:text>
 
@@ -603,12 +603,12 @@ public final class CAPI extends org.xins.client.AbstractCAPI {
 		<xsl:text>);
 
       // Execute the call request
-      org.xins.client.XINSCallResult result = caller.call(request);
+      org.xins.client.XINSCallResult _result = caller.call(request);
 
       return new </xsl:text>
 
 		<xsl:value-of select="$returnType" />
-		<xsl:text>(result);</xsl:text>
+		<xsl:text>(_result);</xsl:text>
 		<xsl:text>
    }</xsl:text>
 	</xsl:template>
