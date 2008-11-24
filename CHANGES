@@ -3,6 +3,12 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.2 BETA 2:
+
+* Documentation:
+  - Fixed incorrect documentation of the callxins task.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 BETA 1:
 
 * XINS/Java Common Library:
