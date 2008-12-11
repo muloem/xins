@@ -56,7 +56,12 @@ public final class TargetDescriptor extends Descriptor {
    /**
     * The pattern for a URL, as a character string.
     */
-   private static final String PATTERN_STRING = "[a-z][a-z\\d]*(:[a-z\\d]+)?:\\/\\/([\\w%~-]+:[\\w%~-]+@)?[a-z\\d-]*(\\.[a-z\\d-]*)*(:[1-9][\\d]*)?(\\/([a-z\\d%_~.-]*))*";
+   private static final String PATTERN_STRING = "[a-z][a-z\\d]*(:[a-z\\d]+)?:\\/\\/" +
+           "([\\w%~\\.\\-]+(:[\\w%~\\.\\-]+)?@)?" +
+           "[a-z\\d-]*(\\.[a-z\\d-]*)*(:[1-9][\\d]*)?" +
+           "(\\/([a-zA-Z\\d%_~\\.\\-]*))*" +
+           "(\\?([\\w%~\\.\\-]+=[\\w%~\\.\\-]*&?)*)?" +
+           "(#[\\w%~\\.\\-]*)?";
 
    /**
     * The pattern for a URL.

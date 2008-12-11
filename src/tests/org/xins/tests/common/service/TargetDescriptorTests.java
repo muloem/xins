@@ -55,11 +55,12 @@ public class TargetDescriptorTests extends TestCase {
 
       // Test some invalid URLs
       String[] invalidURLs = new String[] {
-         "", " ", "\n", "http:8", "http:/8", "blablabla",
-         "http://example%20com/", "http%3A%2F%2Fwww.example.com",
+         "", " ", "\n", "http:", "http:8", "http:/8", "blablabla",
+         "http%3A%2F%2Fwww.example.com",
          "/usr/local/something", "C:\\xins\\src",
-         "file://C:\\xins\\src", "http://http://www.example.com",
-         "http://www.example.com /index.html"
+         "file://C:\\xins\\src",
+         "http://www.example.com /index.html",
+         "jdbc:odbc:DubyBrothers",
       };
       for (int i = 0; i < invalidURLs.length; i++) {
          String url = invalidURLs[i];
@@ -87,12 +88,25 @@ public class TargetDescriptorTests extends TestCase {
          "http://www.example.com/some%20file",
          "http://www.example.com:8080/",
          "http://www.example.com/somedir/../index.html",
-         "http:///index.html"
+         "file:///index.html",
+         "http://admin@www.admins.com/suffix/",
+         "http://admin:MyPaSS@www.admins.com/suffix",
+         "http://admin:MyPaSS1@www.admins.com/suffix",
+         "http://admin%40admins.com:My.aSS1@www.admins.com/suffix",
+         "http://admin%40admins.com:MyPaS%401@www.admins.com/suffix",
+         "http://admin%40admins.com:MyPaS%401@www.admins.com:80/suffix",
+         "http://www.test.com/suffix/?a=b",
+         "http://www.test.com/suffix/?a=b#15",
+         "http://www.test.com/suffix/?a=b&b=c#15",
+         "http://www.test.com/suffix/?a=b&b=c#15"
       };
       for (int i = 0; i < validURLs.length; i++) {
          String url = validURLs[i];
          new TargetDescriptor(url);
       }
+   }
+
+   public void testProtocols() throws Exception {
 
       // Test protocols
       doTestProtocol("file",      "home/ernst/something.xml");
