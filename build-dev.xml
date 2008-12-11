@@ -72,7 +72,7 @@ ${sf.file}</fail>
 
 	<target name="-init-release" depends="-init-release-properties,-load-sfproperties,-init" />
 
-	<target name="clean-release" depends="clean">
+	<target name="clean-release" depends="clean" unless="force">
 		<delete dir="docs" />
 		<delete dir="demo" />
 	</target>
@@ -519,7 +519,7 @@ ${sf.file}</fail>
 		</copy>
 	</target>
 
-	<target name="package" depends="-init-release-properties,clean-release,java,javadoc,logdoc-html,copy-demo,copy-docs" description="Builds a complete distribution archive">
+	<target name="package" depends="-init-release-properties,java,javadoc,logdoc-html,copy-demo,copy-docs" description="Builds a complete distribution archive">
 		<!-- convert all text files to Unix LF -->
 		<patternset id="release.text.files">
 			<include name="src/ant/**/*"                   />
@@ -793,7 +793,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target
 	name="-pre-release-checks"
-	depends="-init-release,-check-release-version,-check-directories,-nodiffs-check,tests,-pre-commit-version">
+	depends="-init-release,-check-release-version,clean-release,-check-directories,-nodiffs-check,tests,-pre-commit-version">
 	</target>
 
 	<target
@@ -864,7 +864,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<target
 	name="release"
-	depends="-junit-task,-checkstyle-task,-j2h-task,-init-release,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc,-post-commit-version, upload-homepage"
+	depends="-junit-task,-checkstyle-task,-j2h-task,-prepare-release,upload-changes,upload-package,upload-javadoc,upload-checkstyle,upload-j2h,upload-logdoc,-post-commit-version, upload-homepage"
 	description="Performs a release" />
 
 	<target name="test-netbeans-debug" depends="-junit-task,classes-tests" if="netbeans.home" description="Debug in NetBeans IDE">
