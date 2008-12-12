@@ -666,10 +666,6 @@ ${sf.file}</fail>
 		password="${sf.password}"
 		trust="true"
 		file="build/${package-basename}.tgz" />
-		<!--ftp server="upload.sf.net" remotedir="incoming"
-		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
-			<fileset dir="build" includes="${package-basename}.tgz" />
-		</ftp-->
 	</target>
 
 	<target
@@ -722,6 +718,7 @@ ${sf.file}</fail>
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     command="update"
 		     dest="src/tools/installer" />
+		<antcall target="-ftp-upload-installer" />
 	</target>
 	<target name="-download-release" unless="release.file.exists">
 		<mkdir dir="build" />
@@ -730,16 +727,12 @@ ${sf.file}</fail>
 		usetimestamp="true" />
 	</target>
 	<target name="-ftp-upload-installer" unless="no-ftp">
-		<echo message="Uploading ${title} ${exe.version} installer to SourceForge FTP server" />
+		<echo message="Uploading ${title} ${exe.version} installer to SourceForge server" />
 		<scp
 		todir="${upload.target}"
 		password="${sf.password}"
 		trust="true"
 		file="build/${name}-${exe.version}.exe" />
-		<!--ftp server="upload.sf.net" remotedir="incoming"
-		     userid="anonymous" password="${sf.user}@users.sourceforge.net">
-			<fileset dir=".." includes="${name}-${exe.version}.exe" />
-		</ftp-->
 	</target>
 
 	<target name="-check-release-version" depends="-init" unless="force">
