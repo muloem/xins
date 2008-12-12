@@ -3,6 +3,15 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.2 RC 1:
+
+* Build- and release-process:
+  - Clean done once before the tests when creating a release.
+  - Improved documentation on creating a release.
+  - Installer target also uploads the file.
+  - Fixed upload-homepage target.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 BETA 2:
 
 * XINS/Java Common Library:
