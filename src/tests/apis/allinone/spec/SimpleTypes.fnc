@@ -46,6 +46,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<param name="inputBinary" required="false" type="_base64">
 			<description>An example of input for a byte array.</description>
 		</param>
+		<param name="inputXML" required="false" type="_xml">
+			<description>An example of input for an XML element.</description>
+		</param>
 		<param-combo type="all-or-none">
 			<param-ref name="inputDate"      />
 			<param-ref name="inputTimestamp" />
@@ -91,6 +94,9 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		</param>
 		<param name="outputBinary" required="false" type="_base64">
 			<description>An example of output for a byte array.</description>
+		</param>
+		<param name="outputXML" required="false" type="_xml">
+			<description>An example of output for an XML element.</description>
 		</param>
 	</output>
 
@@ -141,6 +147,7 @@ rcsversion="$Revision$" rcsdate="$Date$">
 		<output-example name="outputDouble">3.1415</output-example>
 		<output-example name="outputDate">20040621</output-example>
 		<output-example name="outputText">hello</output-example>
+		<output-example name="outputText">&lt;test&gt;Hello&lt;/test&gt;</output-example>
 	</example>
 
 </function>

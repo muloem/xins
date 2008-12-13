@@ -134,12 +134,12 @@ public class AllInOneTests extends TestCase {
       TargetDescriptor descriptor = new TargetDescriptor("http://127.0.0.1:8080/allinone/");
       CAPI allInOne = new CAPI(descriptor);
       SimpleTypesResult result1 = allInOne.callSimpleTypes(null, (byte)8, null, 65, 88l, 32.5f, new Double(37.2),
-         "perftests", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66});
+         "perftests", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153255"), new byte[]{25,88,66}, null);
       assertEquals("hello", result1.getOutputText());
 
       try {
          allInOne.callSimpleTypes(null, (byte)8, null, 65, 88l, 72.5f, new Double(37.2),
-            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
+            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null, null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());

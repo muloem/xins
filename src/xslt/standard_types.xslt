@@ -134,6 +134,9 @@
 			<xsl:when test="$type = '_url'">
 				<xsl:text>URL</xsl:text>
 			</xsl:when>
+			<xsl:when test="$type = '_xml'">
+				<xsl:text>XML</xsl:text>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="hungarianUpper">
 					<xsl:with-param name="text">

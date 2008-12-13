@@ -5,11 +5,23 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 RC 1:
 
+* XINS/Java Common Library:
+  - Declared _xml in the spec package.
+
+* Generation of server-side Java code:
+  - _xml should translate to the XML class and not Xml.
+
+* Unit tests:
+  - Added unit tests for the XML element.
+
 * Build- and release-process:
   - Clean done once before the tests when creating a release.
   - Improved documentation on creating a release.
   - Installer target also uploads the file.
   - Fixed upload-homepage target.
+
+* Documentation:
+  - Added new features in the XINS user guide.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 BETA 2:

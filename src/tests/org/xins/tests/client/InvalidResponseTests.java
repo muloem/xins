@@ -66,7 +66,7 @@ public class InvalidResponseTests extends TestCase {
    public void testMissingParameter() throws Exception {
       try {
          SimpleTypesResult result = _capi.callSimpleTypes(null, (byte)8, null, 65, 88L, 72.5f, new Double(37.2),
-            "test", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
+            "test", null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null, null);
          fail("Expected UnacceptableResultXINSCallException.");
       } catch (UnacceptableResultXINSCallException exception) {
          // as expected

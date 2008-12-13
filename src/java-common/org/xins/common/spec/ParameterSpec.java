@@ -194,6 +194,8 @@ public final class ParameterSpec {
          return org.xins.common.types.standard.List.SINGLETON;
       } else if (typeName.equals("_set")) {
          return org.xins.common.types.standard.Set.SINGLETON;
+      } else if (typeName.equals("_xml")) {
+         return org.xins.common.types.standard.XML.SINGLETON;
       } else if (typeName.charAt(0) != '_') {
          String className = _reference.getName();
          int truncatePos = className.lastIndexOf(".capi.CAPI");

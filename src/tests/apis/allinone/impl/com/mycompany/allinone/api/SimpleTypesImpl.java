@@ -4,6 +4,7 @@
 package com.mycompany.allinone.api;
 
 import org.xins.common.types.standard.Date;
+import org.xins.common.xml.Element;
 
 /**
  * Implementation of the <code>SimpleTypes</code> function.
@@ -56,6 +57,7 @@ public class SimpleTypesImpl extends SimpleTypes  {
          byte[] inputBinary = request.getInputBinary();
          result.setOutputBinary(inputBinary);
       }
+      result.setOutputXML(new Element("Tested"));
 
       return result;
    }

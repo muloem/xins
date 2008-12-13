@@ -101,7 +101,8 @@ public class AllInOneAPITests extends TestCase {
                                null,
                                Date.fromStringForRequired("20041213"),
                                Timestamp.fromStringForOptional("20041225153255"),
-                               new byte[] {25,88,66}  // _base64
+                               new byte[] {25,88,66},  // _base64
+                               new Element("Test")
          );
       assertNull(result.getOutputByte());
       assertEquals((short) -1, result.getOutputShort());
@@ -116,6 +117,7 @@ public class AllInOneAPITests extends TestCase {
       assertEquals((byte) 25, result.getOutputBinary()[0]);
       assertEquals((byte) 88, result.getOutputBinary()[1]);
       assertEquals((byte) 66, result.getOutputBinary()[2]);
+      assertEquals(new Element("Tested"), result.getOutputXML());
    }
 
    /**
@@ -183,7 +185,7 @@ public class AllInOneAPITests extends TestCase {
    public void testMissingParam() throws Exception {
       try {
          SimpleTypesResult result = _capi.callSimpleTypes(Boolean.TRUE, (byte)8, null, 65, 88L, 72.5f, new Double(37.2),
-            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null);
+            null, null, null, Date.fromStringForRequired("20041213"), Timestamp.fromStringForOptional("20041225153222"), null, null);
          fail("The request is invalid, the function should throw an exception");
       } catch (UnsuccessfulXINSCallException exception) {
          assertEquals("_InvalidRequest", exception.getErrorCode());
