@@ -3,6 +3,13 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.2:
+
+* Build- and release-process:
+  - Added clean target for the documentation.
+  - Improved release-process.txt document.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2 RC 1:
 
 * XINS/Java Common Library:
