@@ -938,7 +938,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 
 	<!-- Package XINS to be put in the Maven repository -->
 	<target name="maven" depends="-load-sfproperties,-init">
-		<property name="stable.version" value="2.1" />
+		<property name="stable.version" value="2.2" />
 		<mkdir dir="build/maven" />
 
 		<!-- Creates the JAR files -->
@@ -974,17 +974,17 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		<echo>
 Go to http://jira.codehaus.org/secure/CreateIssue.jspa?pid=10367&amp;issuetype=3
 Description: New version of XINS for Maven2 repository
-URL: http://${www.host}/
+URL: ${www.url}
 Name ref: http://sourceforge.net/users/agoubard/
 
 Hi,
 
 Here are new JAR file that I'd like to have uploaded in Maven:
 
-http://${www.host}/maven/xins-server-${stable.version}.jar
-http://${www.host}/maven/xins-common-${stable.version}.jar
-http://${www.host}/maven/xins-client-${stable.version}.jar
-http://${www.host}/maven/logdoc-${stable.version}.jar
+${www.url}maven/xins-server-${stable.version}.jar
+${www.url}maven/xins-common-${stable.version}.jar
+${www.url}maven/xins-client-${stable.version}.jar
+${www.url}maven/logdoc-${stable.version}.jar
 
 Kind regards,
 Anthony

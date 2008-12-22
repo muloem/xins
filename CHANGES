@@ -3,6 +3,13 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
+
+* Build- and release-process:
+  - Stable version is 2.2 for maven.
+  - Used ${www.url} property for xins URL for Maven mail.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2:
 
 * Build- and release-process:
