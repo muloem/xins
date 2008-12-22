@@ -84,6 +84,8 @@ public final class HTTPCallConfig extends CallConfig {
     * @return
     *    <code>true</code> if it should call the redirected link, 
     *    <code>false</code> if it should fail.
+    *
+    * @since XINS 2.2
     */
    public boolean getFollowRedirect() {
       return _followRedirect;
@@ -95,6 +97,8 @@ public final class HTTPCallConfig extends CallConfig {
     * @param follow
     *    <code>true</code> if it should call the redirected link, 
     *    <code>false</code> if it should fail.
+    *
+    * @since XINS 2.2
     */
    public void setFollowRedirect(boolean follow) {
 
