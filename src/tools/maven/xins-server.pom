@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.xins</groupId>
 	<artifactId>xins-server</artifactId>
-	<version>2.1</version>
+	<version>2.2</version>
 	<packaging>jar</packaging>
 	<name>XINS server Framework</name>
 	<url>http://www.xins.org</url>
@@ -42,12 +42,12 @@
 		<dependency>
 			<groupId>org.xins</groupId>
 			<artifactId>xins-common</artifactId>
-			<version>2.1</version>
+			<version>2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xins</groupId>
 			<artifactId>logdoc</artifactId>
-			<version>2.1</version>
+			<version>2.2</version>
 		</dependency>
 	</dependencies>
 </project>
