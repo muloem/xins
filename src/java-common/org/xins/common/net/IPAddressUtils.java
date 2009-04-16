@@ -159,6 +159,10 @@ public final class IPAddressUtils {
          return InetAddress.getLocalHost().getHostAddress();
       } catch (UnknownHostException exception) {
          return "127.0.0.1";
+
+      // Google App Engine
+      } catch (NoClassDefFoundError error) {
+         return "127.0.0.1";
       }
    }
 
@@ -192,6 +196,10 @@ public final class IPAddressUtils {
          return InetAddress.getLocalHost().getHostName();
       } catch (UnknownHostException exception) {
          return "localhost";
+
+      // Google App Engine
+      } catch (NoClassDefFoundError error) {
+         return "localhost";
       }
    }
 
@@ -219,6 +227,8 @@ public final class IPAddressUtils {
          }
       } catch (SecurityException securityException) {
          // fall through
+      } catch (NoClassDefFoundError error) {
+         // Google App Engine, fall through
       }
 
       return hostname;

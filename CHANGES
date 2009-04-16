@@ -5,6 +5,10 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
 
+* XINS/Java Common Library:
+  - Catch possible missing InetAddress class in IPAddressUtils to make API's
+    compatible with Google App Engine.
+
 * XINS/Java Server Framework:
   - Use IPAddressUtils to get the IP address for the APIManager.
 
