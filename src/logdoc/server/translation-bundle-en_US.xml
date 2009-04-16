@@ -57,7 +57,7 @@
 	<translation entry="3247">Custom calling convention is specified in property <value-of-param name="property" format="quoted" />. Name is <value-of-param name="name" format="quoted" />. Class is <value-of-param name="className" format="quoted" />.</translation>
 	<translation entry="3248">The runtime properties file has not been defined, the system will use the xins.properties file found in the WEB-INF directory of the WAR file.</translation>
 	<translation entry="3249">Unable to register the management bean. Reason: <value-of-param name="details" /></translation>
-	<translation entry="3250">Unknown host, using 127.0.0.1 as default host.</translation>
+	<!-- XXX: Removed 3250 here (@since XINS 2.3) -->
 	<translation entry="3251">The value of the runtime property &quot;org.xins.server.jmx.enable&quot; is set to <value-of-param name="propertyValue" format="quoted" /> which is incorrect.</translation>
 
 	<translation entry="3300">Initializing logging subsystem with the settings set in the <value-of-param name="configFile" format="quoted" /> file.</translation>

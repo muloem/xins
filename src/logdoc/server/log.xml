@@ -236,9 +236,7 @@
 			<description>Unable to register the management bean.</description>
 			<param name="details" />
 		</entry>
-		<entry id="3250" level="WARNING" exception="true">
-			<description>Unknown host, using localhost as default.</description>
-		</entry>
+		<!-- XXX: Removed 3250 here (@since XINS 2.3) -->
 		<entry id="3251" level="FATAL">
 			<description>Incorrect value for the enabling JMX runtime property.</description>
 			<param name="propertyValue" />

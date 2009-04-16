@@ -30,6 +30,7 @@ import org.apache.log4j.jmx.HierarchyDynamicMBean;
 import org.xins.common.Utils;
 import org.xins.common.collections.PropertyReaderConverter;
 import org.xins.common.collections.PropertyReaderUtils;
+import org.xins.common.net.IPAddressUtils;
 import org.xins.common.text.DateConverter;
 import org.xins.common.text.TextUtils;
 import org.xins.common.xml.Element;
@@ -63,16 +64,11 @@ public final class APIManager implements APIManagerMBean {
     * Ctreates a new API manager MBean.
     *
     * @param api
-    *    the APi that is managed by this MBean.
+    *    the API that is managed by this MBean.
     */
    APIManager(API api) {
       _api = api;
-      try {
-         _ip = InetAddress.getLocalHost().getHostAddress();
-      } catch (UnknownHostException uhex) {
-         Log.log_3250(uhex);
-         _ip = "127.0.0.1";
-      }
+      _ip = IPAddressUtils.getLocalHostIPAddress();
    }
 
    /**
