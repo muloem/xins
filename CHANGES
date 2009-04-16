@@ -9,6 +9,11 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
   - Stable version is 2.2 for maven.
   - Used ${www.url} property for xins URL for Maven mail.
 
+* Documentation:
+  - Changed install primer to with "or later" after version numbers.
+  - Added small precisions to the user guide.
+  - Point Souceforge.net logo to project page as requested by Sourceforge.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2:
 
@@ -3695,6 +3700,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 BETA 3:
 
 * Documentation:
   - Improved README.html file.
+
 
 * Tools:
 
