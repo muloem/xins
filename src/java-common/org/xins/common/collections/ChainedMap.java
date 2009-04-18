@@ -89,7 +89,7 @@ public class ChainedMap extends AbstractMap implements Cloneable, Serializable {
     * @version $Revision$
     * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
-   private static class EntryMap implements Map.Entry {
+   private static class EntryMap implements Map.Entry, Serializable {
 
       /**
        * The key. Can be <code>null</code>.
@@ -151,7 +151,7 @@ public class ChainedMap extends AbstractMap implements Cloneable, Serializable {
     * @version $Revision$ $Date$
     * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
     */
-   private static class ChainedSet extends AbstractSet {
+   private static class ChainedSet extends AbstractSet implements Serializable {
 
       /**
        * The values of the set.
