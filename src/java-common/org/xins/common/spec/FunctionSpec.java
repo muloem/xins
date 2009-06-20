@@ -399,6 +399,10 @@ public final class FunctionSpec {
       }
       Element descriptionElement = (Element) descriptionElementList.get(0);
       _description = descriptionElement.getText();
+      if (_description == null) {
+         _description = "";
+      }
+
       List input = function.getChildElements("input");
       if (input.size() > 0) {
 
@@ -536,6 +540,9 @@ public final class FunctionSpec {
          if (name.equals(nextName)) {
 
             String description = ((Element) nextElement.getChildElements("description").get(0)).getText();
+            if (description == null) {
+               description = "";
+            }
 
             Map subElements = parseDataSectionElements(reference, nextElement, dataSection);
 
@@ -599,6 +606,9 @@ public final class FunctionSpec {
          throw new InvalidSpecificationException("No definition specified for a parameter.");
       }
       String parameterDescription = ((Element) descriptionElementList.get(0)).getText();
+      if (parameterDescription == null) {
+         parameterDescription = "";
+      }
       ParameterSpec parameter = new ParameterSpec(reference ,parameterName,
             parameterTypeName, requiredParameter, parameterDescription, parameterDefaultValue);
       return parameter;

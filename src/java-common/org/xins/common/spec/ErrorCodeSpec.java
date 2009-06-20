@@ -264,6 +264,9 @@ public final class ErrorCodeSpec {
       }
       Element descriptionElement = (Element) errorCode.getChildElements("description").get(0);
       _description = descriptionElement.getText();
+      if (_description == null) {
+         _description = "";
+      }
 
       List output = errorCode.getChildElements("output");
       if (output.size() > 0) {

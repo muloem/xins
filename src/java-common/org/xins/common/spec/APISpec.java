@@ -232,6 +232,9 @@ public final class APISpec {
       }
       Element descriptionElement = (Element) descriptionElementList.get(0);
       _description = descriptionElement.getText();
+      if (_description == null) {
+         _description = "";
+      }
 
       // Get the specification of the functions.
       Iterator functions = api.getChildElements("function").iterator();
