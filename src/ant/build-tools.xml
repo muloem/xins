@@ -36,6 +36,7 @@
 - smd             Generates the Simple Method Description for an API.
 - webstart        Generates the Java Web Start file (JNLP) for an API.
 - glean           Generates Glean report for an API.
+- appengine       Deploy the WAR to Google App Engine.
 
 The name of the API is specified with the 'api.name' Ant property.
 
@@ -48,6 +49,7 @@ xsd.dir           [required, xsd-to-types, directory of xsd files]
 wsdl.location     [optional, wsdl-to-api, location of the WSDL]
 smd.endpoint      [optional, smd, the enpoint of the API]
 glean.home        [required, glean, directory of Glean]
+appengine.sdk.dir [optional, appengine, directory of the SDK]
 ]]>
 </echo>
 	</target>
@@ -558,5 +560,43 @@ src.project.name = ${api.name} API
 
 gen.report.root = ${project_home}/build/glean
 </echo>
+	</target>
+
+	<target name="appengine" depends="-init-tools, -load-version" description="Deploy the API to the Google App Engine.">
+		<property name="war.dir" value="build/webapps/${api.name}/war" />
+		<property name="war.file" value="build/webapps/${api.name}/${api.name}.war" />
+		<available property="no-war-${api.name}" file="${war.file}" />
+		<antcall target="war-${api.name}" />
+		<unwar src="${war.file}" dest="${war.dir}" />
+		<delete dir="${war.dir}/javax" />
+		<delete dir="${war.dir}/META-INF" />
+		<delete dir="${war.dir}/org" />
+		<delete dir="${war.dir}/javax" />
+		<property name="appengine.file" value="${war.dir}/WEB-INF/appengine-web.xml" />
+		<available property="no-appengine-create" file="${appengine.file}" />
+		<antcall target="-appengine-file" />
+		<replace file="${appengine.file}" token="@api.name@" value="${api.name}" />
+		<replace file="${appengine.file}" token="@api.version@" value="${api.version}" />
+		<antcall target="-appengine-deploy" />
+	</target>
+	<target name="-appengine-file" depends="-init-tools" unless="no-appengine-create">
+		<echo file="${war.dir}/WEB-INF/appengine-web.xml" encoding="utf-8">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;appengine-web-app xmlns="http://appengine.google.com/ns/1.0"&gt;
+  &lt;application&gt;@api.name@&lt;/application&gt;
+  &lt;version&gt;@api.version@&lt;/version&gt;
+&lt;/appengine-web-app&gt;
+</echo>
+	</target>
+	<target name="-appengine-deploy" depends="-init-tools" if="appengine.sdk.dir">
+		<input addproperty="email"
+		       message="Please, enter the e-mail for upload:" />
+		<java classname="com.google.appengine.tools.admin.AppCfg"
+		      classpath="${appengine.sdk.dir}/lib/appengine-tools-api.jar"
+		      fork="true">
+			<arg value="--email=${email}"/>
+			<arg value="--passin"/>
+			<arg value="update"/>
+			<arg value="${war.dir}"/>
+		</java>
 	</target>
 </project>

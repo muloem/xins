@@ -14,6 +14,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
 * XINS/Java Server Framework:
   - Use IPAddressUtils to get the IP address for the APIManager.
 
+* Tools:
+  - Added appengine target to deploy in Google App Engine.
+
 * Build- and release-process:
   - Stable version is 2.2 for maven.
   - Used ${www.url} property for xins URL for Maven mail.
