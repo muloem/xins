@@ -22,6 +22,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
   - Changed install primer to with "or later" after version numbers.
   - Added small precisions to the user guide.
   - Point Souceforge.net logo to project page as requested by Sourceforge.
+  - Added section about output section possible in error codes.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2:
