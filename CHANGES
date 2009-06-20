@@ -24,6 +24,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
   - Point Souceforge.net logo to project page as requested by Sourceforge.
   - Added section about output section possible in error codes.
 
+* Other:
+  - Added XINS indentation preferences for NetBeans in nbproject/project.xml.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.2:
 
