@@ -14,6 +14,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
 * XINS/Java Server Framework:
   - Use IPAddressUtils to get the IP address for the APIManager.
 
+* Generation of specdocs:
+  - Fixed bug #1847893: Regex pattern get padded with superflous characters.
+
 * Tools:
   - Added appengine target to deploy in Google App Engine.
 

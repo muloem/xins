@@ -170,7 +170,22 @@
 		<xsl:text>This is a </xsl:text>
 		<em>pattern type</em>
 		<xsl:text>. Allowed values must match the following pattern:</xsl:text>
-		<xsl:variable name="pattern" select="text()" />
+		<xsl:variable name="pattern">
+			<xsl:choose>
+				<xsl:when test="starts-with(., '^') and substring(., string-length(.)) = '$'">
+					<xsl:value-of select="substring(., 2, string-length(.)-2)" />
+				</xsl:when>
+				<xsl:when test="starts-with(., '^') and substring(., string-length(.)) != '$'">
+					<xsl:value-of select="substring(., 2)" />
+				</xsl:when>
+				<xsl:when test="not(starts-with(., '^')) and substring(., string-length(.)) = '$'">
+					<xsl:value-of select="substring(., 1, string-length(.)-2)" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="text()" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<blockquote>
 			<code id="pattern">
 				<xsl:value-of select="$pattern" />
