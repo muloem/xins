@@ -572,11 +572,18 @@ gen.report.root = ${project_home}/build/glean
 		<delete dir="${war.dir}/META-INF" />
 		<delete dir="${war.dir}/org" />
 		<delete dir="${war.dir}/javax" />
+		<fail message="The org.xins.server.config need to be defined" unless="org.xins.server.config" />
+		<copy file="${org.xins.server.config}" tofile="${war.dir}/WEB-INF/xins.properties" />
 		<property name="appengine.file" value="${war.dir}/WEB-INF/appengine-web.xml" />
 		<available property="no-appengine-create" file="${appengine.file}" />
 		<antcall target="-appengine-file" />
-		<replace file="${appengine.file}" token="@api.name@" value="${api.name}" />
-		<replace file="${appengine.file}" token="@api.version@" value="${api.version}" />
+		<property name="appengine.api.name" value="${api.name}" />
+		<replace file="${appengine.file}" token="@api.name@" value="${appengine.api.name}" />
+		<!-- Default values for the API version -->
+		<property name="api.version.major" value="1" />
+		<property name="api.version.minor" value="0" />
+		<property name="appengine.api.version" value="${api.version.major}-${api.version.minor}" />
+		<replace file="${appengine.file}" token="@api.version@" value="${appengine.api.version}" />
 		<antcall target="-appengine-deploy" />
 	</target>
 	<target name="-appengine-file" depends="-init-tools" unless="no-appengine-create">
@@ -588,12 +595,12 @@ gen.report.root = ${project_home}/build/glean
 </echo>
 	</target>
 	<target name="-appengine-deploy" depends="-init-tools" if="appengine.sdk.dir">
-		<input addproperty="email"
-		       message="Please, enter the e-mail for upload:" />
+		<input addproperty="appengine.email"
+		       message="Please, enter the e-mail and password for upload:" />
 		<java classname="com.google.appengine.tools.admin.AppCfg"
 		      classpath="${appengine.sdk.dir}/lib/appengine-tools-api.jar"
 		      fork="true">
-			<arg value="--email=${email}"/>
+			<arg value="--email=${appengine.email}"/>
 			<arg value="--passin"/>
 			<arg value="update"/>
 			<arg value="${war.dir}"/>
