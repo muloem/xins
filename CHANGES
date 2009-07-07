@@ -19,6 +19,8 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
 
 * Generation of the WSDL:
   - Fixed incorrect binding for resultcodes.
+  - Fixed Incorrect indentation for input bindings.
+  - Fixed Bug #2797857: Incorrect location of the SOAP binding operation.
 
 * Tools:
   - Added appengine target to deploy in Google App Engine.

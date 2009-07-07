@@ -119,13 +119,13 @@
 				<documentation>
 					<xsl:value-of select="description" />
 				</documentation>
+				<xsl:value-of select="concat($return, $tab, $tab)" />
+				<soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 				<xsl:apply-templates select="function" mode="bindings">
 					<xsl:with-param name="location" select="$location" />
 					<xsl:with-param name="apiname" select="$apiname" />
 				</xsl:apply-templates>
-				<xsl:value-of select="concat($return, $tab, $tab)" />
-				<soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
-			<xsl:value-of select="concat($return, $tab)" />
+				<xsl:value-of select="concat($return, $tab)" />
 			</binding>
 
 			<!-- Write the services -->
@@ -481,6 +481,7 @@
 			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<!--soapbind:operation soapAction="{$location}/{$functionname}" /-->
 			<soapbind:operation soapAction="" />
+			<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 			<input name="{$functionname}Input">
 				<xsl:value-of select="concat($return, $tab4)" />
 				<soapbind:body use="literal" />
