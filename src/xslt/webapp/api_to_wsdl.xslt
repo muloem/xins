@@ -511,7 +511,7 @@
 						<xsl:value-of select="$rcd_node/description" />
 					</documentation>
 					<xsl:value-of select="concat($return, $tab4)" />
-					<soapbind:body use="literal"/>
+					<soapbind:fault name="{$rcd_node/@name}" use="literal"/>
 				<xsl:value-of select="concat($return, $tab, $tab, $tab)" />
 				</fault>
 			</xsl:for-each>

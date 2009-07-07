@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 1:
 * Generation of specdocs:
   - Fixed bug #1847893: Regex pattern get padded with superflous characters.
 
+* Generation of the WSDL:
+  - Fixed incorrect binding for resultcodes.
+
 * Tools:
   - Added appengine target to deploy in Google App Engine.
 
