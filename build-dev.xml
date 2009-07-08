@@ -646,7 +646,7 @@ ${sf.file}</fail>
 	name="do-upload-package-www"
 	depends="-init-release"
 	description="Uploads the package to the web site"
-	unless="no-upload">
+	unless="no-ftp">
 		<echo message="Uploading ${title} ${version} package to ${www.target}/" />
 		<scp
 		file="build/${package-basename}.tgz"
@@ -808,7 +808,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 	name="upload-changes"
 	depends="-init-release"
 	description="Uploads the change history file to the web site"
-	unless="no-upload">
+	unless="no-ftp">
 		<echo message="Uploading ${title} ${version} change log to ${www.target}" />
 		<copy file="CHANGES" tofile="build/changes-${version}.txt" />
 		<scp
@@ -818,7 +818,7 @@ http://sourceforge.net/project/showfiles.php?group_id=21935&amp;package_id=16608
 		trust="true" />
 	</target>
 
-	<target name="upload-homepage" depends="-init-release" unless="no-upload">
+	<target name="upload-homepage" depends="-init-release" unless="no-ftp">
 		<property name="docs.dir" value="../${name}-docs/" />
 		<available property="docs.avail" file="${docs.dir}/build.xml" type="file" />
 		<fail unless="docs.avail" message="Unable to find build.xml in ${docs.dir}. Unable to upload homepage." />
