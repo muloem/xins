@@ -5,6 +5,11 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 ALPHA 2:
 
+* Librairies:
+  - Upgraded Commons Codec from 1.3 to 1.4.
+  - Upgraded Commons Logging from 1.1 to 1.1.1.
+  - Upgraded Commons Net from 1.4.1 to 1.2.
+
 * Build- and release-process:
   - Used the unless="no-ftp" instead of no-upload for targets without sshexec.
 
