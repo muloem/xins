@@ -1055,6 +1055,7 @@ public class HTTPServiceCaller extends ServiceCaller {
          // Release the HTTP connection immediately
          } finally {
             try {
+               client.getHttpConnectionManager().closeIdleConnections(0);
                method.releaseConnection();
             } catch (Throwable exception) {
                String thisMethod = "run()";
