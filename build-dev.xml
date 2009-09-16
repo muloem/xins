@@ -47,7 +47,6 @@
 			<and>
 				<isset property="sf.user" />
 				<isset property="sf.password" />
-				<isset property="sf.upload.dir" />
 			</and>
 		</condition>
 		<fail unless="sf.isset">
@@ -656,26 +655,8 @@ ${sf.file}</fail>
 	</target>
 
 	<target
-	name="do-upload-package-ftp"
-	depends="-init-release"
-	description="Uploads the package to the SourceForge server"
-	unless="no-ftp">
-		<echo message="Uploading ${title} ${version} package to SourceForge server" />
-		<scp
-		todir="${upload.target}"
-		password="${sf.password}"
-		trust="true"
-		file="build/${package-basename}.tgz" />
-	</target>
-
-	<target
-	name="do-upload-package"
-	depends="do-upload-package-www,do-upload-package-ftp"
-	description="Uploads the package to both the web site and to the SourceForge FTP server" />
-
-	<target
 	name="upload-package"
-	depends="-init-release,package,do-upload-package"
+	depends="-init-release,package,do-upload-package-www"
 	description="Creates and uploads package to the web server" />
 
 	<target name="installer" depends="-init-release">
@@ -718,21 +699,12 @@ ${sf.file}</fail>
 		<cvs cvsRoot=":ext:${sf.user}@${name}.cvs.sourceforge.net:/cvsroot/xins"
 		     command="update"
 		     dest="src/tools/installer" />
-		<antcall target="-ftp-upload-installer" />
 	</target>
 	<target name="-download-release" unless="release.file.exists">
 		<mkdir dir="build" />
 		<get src="http://xins.sf.net/${name}-${exe.version}.tgz"
 		dest="build/${name}-${exe.version}.tgz"
 		usetimestamp="true" />
-	</target>
-	<target name="-ftp-upload-installer" unless="no-ftp">
-		<echo message="Uploading ${title} ${exe.version} installer to SourceForge server" />
-		<scp
-		todir="${upload.target}"
-		password="${sf.password}"
-		trust="true"
-		file="build/${name}-${exe.version}.exe" />
 	</target>
 
 	<target name="-check-release-version" depends="-init" unless="force">

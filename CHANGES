@@ -3,6 +3,12 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
+
+* Build- and release-process:
+  - The releases now need to be uploaded via the browser.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 ALPHA 2:
 
 * XINS/Java Common Library:
