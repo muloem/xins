@@ -521,17 +521,20 @@ public class FrontendCallingConvention extends CustomCallingConvention {
 
       String domain = host;
 
-      //strip subdomain from the host
-      if (host.indexOf(".") != -1) {
+      // Strip subdomain from the host
+      if (host.indexOf(".") != -1 && host.indexOf(".") < host.length() - 6) {
          domain = host.substring(host.indexOf("."));
       }
 
-      //strip port if any
+      // Strip port if any
       if (domain.indexOf(":") != -1) {
          domain = domain.substring(0, domain.indexOf(":"));
       }
 
-      cookie.setDomain(domain);
+      // Only domains starting with . and containing another . are accepted (RFC 2109)
+      if (domain.startsWith(".") && domain.indexOf(".", 1) != -1) {
+         cookie.setDomain(domain);
+      }
       cookie.setPath("/");
 
       httpResponse.addCookie(cookie);
