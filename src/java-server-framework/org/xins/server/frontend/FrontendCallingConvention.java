@@ -522,8 +522,10 @@ public class FrontendCallingConvention extends CustomCallingConvention {
       String domain = host;
 
       // Strip subdomain from the host
-      if (host.indexOf(".") != -1 && host.indexOf(".") < host.length() - 6) {
-         domain = host.substring(host.indexOf("."));
+      int firstDot = host.indexOf(".");
+      if (firstDot != -1 && (firstDot < host.length() - 6 ||
+              (firstDot < host.length() - 5 && !host.endsWith(".uk")))) {
+         domain = host.substring(firstDot);
       }
 
       // Strip port if any
