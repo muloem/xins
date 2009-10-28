@@ -149,11 +149,11 @@ public class APIServlet extends HttpServlet {
       }
 
       // Compare the expected with the implemented Java Servlet API version;
-      // versions 2.2, 2.3, 2.4 and 2.5 are supported
+      // versions 2.2 or higher are supported
       int major = context.getMajorVersion();
       int minor = context.getMinorVersion();
-      if (major != 2 || minor < 2 || minor > 5) {
-         String expected = "2.2/2.3/2.4/2.5";
+      if (major < 2 || (major == 2 && minor < 2))  {
+         String expected = "2.2 or higher";
          String actual   = major + "." + minor;
          Log.log_3203(actual, expected);
       }
