@@ -8,6 +8,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.
 
+* Documentation:
+  - Fixed some broken links in the calling convention primer.
+
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 ALPHA 2:
 
