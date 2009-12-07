@@ -382,4 +382,58 @@ public class PortalAPITests extends TestCase {
          assertEquals(403, schcex.getStatusCode());
       }
    }
+
+   boolean threadSucceeded = true;
+
+   /**
+    * Test concurent calls to the _xins-soap calling convention
+    */
+   /*public void testFrontendConcurentCalls() throws Throwable {
+      for (int i = 0; i < 5; i++) {
+         LoginSessionThread t1 = new LoginSessionThread("test1");
+         LoginSessionThread t2 = new LoginSessionThread("test2");
+         LoginSessionThread t3 = new LoginSessionThread("test3");
+         LoginSessionThread t4 = new LoginSessionThread("test4");
+         LoginSessionThread t5 = new LoginSessionThread("test5");
+         t1.start();
+         t2.start();
+         t3.start();
+         t4.start();
+         t5.start();
+         t1.join();
+         t2.join();
+         t3.join();
+         t4.join();
+         t5.join();
+         assertTrue("Incorrect result while 'test1' was sent.", t1.hasSucceeded());
+         assertTrue("Incorrect result while 'test2' was sent.", t2.hasSucceeded());
+         assertTrue("Incorrect result while 'test3' was sent.", t3.hasSucceeded());
+         assertTrue("Incorrect result while 'test4' was sent.", t4.hasSucceeded());
+         assertTrue("Incorrect result while 'test5' was sent.", t5.hasSucceeded());
+      }
+      assertTrue("An error occured in one of the threads.", threadSucceeded);
+   }*/
+
+   class LoginSessionThread extends Thread {
+
+      private String userName;
+      private boolean succeeded = false;
+
+      LoginSessionThread(String userName) {
+         this.userName = userName;
+      }
+
+      public void run() {
+         try {
+            testRemoveSessionPropertiesControlCommand2();
+            succeeded = true;
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         }
+      }
+
+      boolean hasSucceeded() {
+         return succeeded;
+      }
+   }
 }
