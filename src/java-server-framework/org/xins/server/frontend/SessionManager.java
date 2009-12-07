@@ -193,6 +193,7 @@ public class SessionManager extends Manageable {
             Utils.logIgnoredException(ex);
          }
       }
+      _currentSessions.remove(NDC.get());
    }
 
    /**
