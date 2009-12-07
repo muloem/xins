@@ -62,14 +62,7 @@
 					<xsl:text>' API.</xsl:text>
 				</description>
 				<servlet-class>
-					<xsl:choose>
-						<xsl:when test="calling-convention[@class='org.xins.server.frontend.FrontendCallingConvention']">
-							<xsl:text>org.xins.server.APIServletSingleThreaded</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>org.xins.server.APIServlet</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:text>org.xins.server.APIServlet</xsl:text>
 				</servlet-class>
 				<init-param>
 					<param-name>org.xins.api.name</param-name>
