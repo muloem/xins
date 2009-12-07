@@ -6,8 +6,6 @@
  */
 package org.xins.tests.server;
 
-import java.util.*;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -183,10 +181,10 @@ public class SOAPCallingConventionTests extends TestCase {
          t4.join();
          t5.join();
          assertTrue("Incorrect result '" + t1.getResult() + "' while 'test1' was sent.", t1.hasSucceeded());
-         assertTrue("Incorrect result '" + t2.getResult() + "' while 'test1' was sent.", t2.hasSucceeded());
-         assertTrue("Incorrect result '" + t3.getResult() + "' while 'test1' was sent.", t3.hasSucceeded());
-         assertTrue("Incorrect result '" + t4.getResult() + "' while 'test1' was sent.", t4.hasSucceeded());
-         assertTrue("Incorrect result '" + t5.getResult() + "' while 'test1' was sent.", t5.hasSucceeded());
+         assertTrue("Incorrect result '" + t2.getResult() + "' while 'test2' was sent.", t2.hasSucceeded());
+         assertTrue("Incorrect result '" + t3.getResult() + "' while 'test3' was sent.", t3.hasSucceeded());
+         assertTrue("Incorrect result '" + t4.getResult() + "' while 'test4' was sent.", t4.hasSucceeded());
+         assertTrue("Incorrect result '" + t5.getResult() + "' while 'test5' was sent.", t5.hasSucceeded());
       }
    }
    
