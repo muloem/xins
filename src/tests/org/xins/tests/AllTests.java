@@ -81,9 +81,27 @@ public class AllTests extends TestSuite {
          suite.addTestSuite(StartServer.class);
       }
 
-      //
-      // Add all tests
-      //
+      addAllTests(suite);
+
+      // XXX: Perform just a single test
+      // suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
+      // suite.addTest(new org.xins.tests.client.AllInOneAPITests("testInclusiveOrParamComboWithValue"));
+
+      // Stop the server
+      if (RUN_SERVER) {
+         suite.addTestSuite(StopServer.class);
+      }
+
+      return suite;
+   }
+
+   /**
+    * Add all tests.
+    *
+    * @param suite
+    *    the suite to add the test to, cannot be <code>null</code>.
+    */
+   protected static void addAllTests(TestSuite suite) {
       suite.addTestSuite(org.xins.tests.common.BeanUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.ExceptionUtilsTests.class);
       suite.addTestSuite(org.xins.tests.common.MandatoryArgumentCheckerTests.class);
@@ -200,16 +218,5 @@ public class AllTests extends TestSuite {
       suite.addTestSuite(org.xins.tests.xslt.JavaXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.RcsXSLTTestCase.class);
       suite.addTestSuite(org.xins.tests.xslt.WarningXSLTTestCase.class);
-
-      // XXX: Perform just a single test
-      // suite.addTestSuite(org.xins.tests.server.frontend.PortalAPITests.class);
-      // suite.addTest(new org.xins.tests.client.AllInOneAPITests("testInclusiveOrParamComboWithValue"));
-
-      // Stop the server
-      if (RUN_SERVER) {
-         suite.addTestSuite(StopServer.class);
-      }
-
-      return suite;
    }
 }
