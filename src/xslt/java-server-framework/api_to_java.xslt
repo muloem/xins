@@ -55,44 +55,7 @@ import org.xins.server.API;
  */
 public class APIImpl extends API {
 
-   /**
-    * The only instance of this class. This field is never <code>null</code>.
-    */
-   public static final APIImpl SINGLETON = new APIImpl();]]></xsl:text>
-
-		<xsl:for-each select="$api_node/function">
-			<xsl:variable name="name"    select="@name" />
-			<xsl:variable name="file"    select="concat($specsdir, '/', $name, '.fnc')" />
-			<xsl:variable name="fieldname">
-				<xsl:call-template name="toupper">
-					<xsl:with-param name="text">
-						<xsl:call-template name="hungarianWordSplit">
-							<xsl:with-param name="text" select="$name" />
-							<xsl:with-param name="separator" select="'_'" />
-						</xsl:call-template>
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:variable>
-
-			<xsl:text><![CDATA[
-
-   /**
-    * The <em>]]></xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text><![CDATA[</em> function.
-    */
-   public static final ]]></xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="$fieldname" />
-			<xsl:text> = new </xsl:text>
-			<xsl:value-of select="$name" />
-			<xsl:text>Impl(SINGLETON);</xsl:text>
-		</xsl:for-each>
-
-		<xsl:text>
-
-   private final RuntimeProperties _runtimeProperties;</xsl:text>
+   private final RuntimeProperties _runtimeProperties;]]></xsl:text>
 
 		<xsl:for-each select="instance">
 			<xsl:text>
@@ -109,27 +72,34 @@ public class APIImpl extends API {
    /**
     * Constructs a new <code>APIImpl</code> instance.
     */
-   private APIImpl() {
+   public APIImpl() {
       super("]]></xsl:text>
 		<xsl:value-of select="$api" />
 		<xsl:text>");
       _runtimeProperties = new RuntimeProperties();</xsl:text>
-		<xsl:choose>
-			<xsl:when test="instance">
-				<xsl:for-each select="instance">
-					<xsl:text>
+		<xsl:if test="instance">
+			<xsl:text>
+
+      // Creation of the shared instances</xsl:text>
+		</xsl:if>
+		<xsl:for-each select="instance">
+			<xsl:text>
       </xsl:text>
-					<xsl:value-of select="@name" />
-					<xsl:text> = new </xsl:text>
-					<xsl:value-of select="@class" />
-					<xsl:text>(this);</xsl:text>
-				</xsl:for-each>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>
-      // empty</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+			<xsl:value-of select="@name" />
+			<xsl:text> = new </xsl:text>
+			<xsl:value-of select="@class" />
+			<xsl:text>(this);</xsl:text>
+		</xsl:for-each>
+		<xsl:text>
+
+      // Creation of the functions</xsl:text>
+		<xsl:for-each select="$api_node/function">
+
+					<xsl:text>
+      new </xsl:text>
+			<xsl:value-of select="@name" />
+			<xsl:text>Impl(this);</xsl:text>
+		</xsl:for-each>
 		<xsl:text>
    }</xsl:text>
 

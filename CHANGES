@@ -8,6 +8,11 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 * XINS/Java Server Framework:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.
   - Reversed use of Log4J NDC in xins FF.
+  - Creation of the API using the constructor of APIImpl.
+
+* Generation of server-side Java code:
+  - Removed static SINGLETON field in APIImpl.
+  - Functions are now created in the constructor of the API.
 
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.

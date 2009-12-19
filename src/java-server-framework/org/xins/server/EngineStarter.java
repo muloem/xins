@@ -177,18 +177,15 @@ final class EngineStarter {
 
       String apiClassName = determineAPIClassName();
       Class  apiClass     = loadAPIClass(apiClassName);
-      API    api          = getAPIFromSingletonField(apiClassName, apiClass);
+      API    api          = createAPI(apiClass);
 
-      checkAPIConstruction(apiClassName, apiClass, api);
+      checkAPIConstruction(apiClass, api);
 
       return api;
    }
 
    /**
     * Checks the construction of the API.
-    *
-    * @param apiClassName
-    *    the name of the API class, cannot be <code>null</code>.
     *
     * @param apiClass
     *    The API class, cannot be <code>null</code>.
@@ -200,35 +197,30 @@ final class EngineStarter {
     *    if the API is <code>null</code> or if the API class is not equal to
     *    <code>apiClass</code>.
     */
-   private void checkAPIConstruction(String apiClassName,
-                                     Class  apiClass,
-                                     API    api)
+   private void checkAPIConstruction(Class apiClass, API api)
    throws ServletException {
 
       // Make sure that the value of the field is not null
       if (api == null) {
-         String detail = "Value of static field SINGLETON in class "
-            + apiClassName
-            + " is null.";
-         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         String detail = "Creation of the API "
+            + apiClass.getName()
+            + " failed.";
+         Log.log_3208(API_CLASS_PROPERTY, apiClass.getName(), detail);
          throw new ServletException();
       }
 
       // Make sure that the value of the field is an instance of that class
       if (api.getClass() != apiClass) {
-         String detail = "Value of static field SINGLETON in class "
-            + apiClassName
-            + " is not an instance of that class.";
-         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         String detail = "Incorrect instance of the API created. "
+            + api.getClass()
+            + " is not an instance of class " + apiClass.getName() + ".";
+         Log.log_3208(API_CLASS_PROPERTY, apiClass.getName(), detail);
          throw new ServletException();
       }
    }
 
    /**
     * Gets the API from the singleton field that is available on all API's.
-    *
-    * @param apiClassName
-    *   the api class name, cannot be <code>null</code>.
     *
     * @param apiClass
     *   the api class, cannot be <code>null</code>.
@@ -240,24 +232,20 @@ final class EngineStarter {
     *    if the apiClass doesn't have a singleton field or
     *    if the value of the field can not be cast to the API class.
     */
-   private API getAPIFromSingletonField(String apiClassName,
-                                        Class apiClass)
+   private API createAPI(Class apiClass)
    throws ServletException {
 
-      // Get the SINGLETON field and the value of it
-      Field singletonField;
       API api;
       try {
-         singletonField = apiClass.getDeclaredField("SINGLETON");
-         api = (API) singletonField.get(null);
+         api = (API) apiClass.newInstance();
       } catch (Throwable exception) {
          String detail = "Caught unexpected "
             + exception.getClass().getName()
-            + " while retrieving the value of the static field SINGLETON in class "
-            + apiClassName
+            + " while creating class "
+            + apiClass.getName()
             + '.';
          Utils.logProgrammingError(detail, exception);
-         Log.log_3208(API_CLASS_PROPERTY, apiClassName, detail);
+         Log.log_3208(API_CLASS_PROPERTY, apiClass.getName(), detail);
          throw servletExceptionFor(exception);
       }
       return api;
