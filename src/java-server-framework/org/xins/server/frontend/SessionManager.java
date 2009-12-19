@@ -9,7 +9,6 @@ package org.xins.server.frontend;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +16,6 @@ import java.util.StringTokenizer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.NDC;
 import org.xins.common.MandatoryArgumentChecker;
 import org.xins.common.Utils;
 import org.xins.common.collections.ChainedMap;
@@ -33,7 +31,6 @@ import org.xins.server.Log;
 
 /**
  * Manager for the sessions and session properties for the XINS front-end framework.
- * This class assumes that the Log4J NDC is unique per request.
  *
  * @version $Revision$ $Date$
  * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
@@ -48,9 +45,9 @@ public class SessionManager extends Manageable {
    private API _api;
 
    /**
-    * The current HTTP sessions, never <code>null</code>.
+    * The HTTP session of the current running Thread, never <code>null</code>.
     */
-   private Hashtable _currentSessions = new Hashtable();
+   private ThreadLocal _currentSession = new ThreadLocal();
 
    /**
     * The list of pages that doesn't need to be logged in, cannot be <code>null</code>.
@@ -122,8 +119,7 @@ public class SessionManager extends Manageable {
       }
 
       HttpSession session = request.getSession(true);
-      String ndc = NDC.get();
-      _currentSessions.put(ndc, session);
+      _currentSession.set(session);
 
       // If the session ID is not found in the cookies, create a new one
       if (sessionId == null || sessionId.equals("") || sessionId.equals("null")) {
@@ -193,7 +189,6 @@ public class SessionManager extends Manageable {
             Utils.logIgnoredException(ex);
          }
       }
-      _currentSessions.remove(NDC.get());
    }
 
    /**
@@ -227,7 +222,7 @@ public class SessionManager extends Manageable {
     *    the session ID, can be <code>null</code>.
     */
    public String getSessionId() {
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return null;
       }
@@ -243,7 +238,7 @@ public class SessionManager extends Manageable {
     *    property value.
     */
    public Map getProperties() {
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return new ChainedMap();
       }
@@ -272,7 +267,7 @@ public class SessionManager extends Manageable {
     */
    public void setProperty(String name, Object value) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          if (value == null) {
             removeProperty(name);
@@ -322,7 +317,7 @@ public class SessionManager extends Manageable {
     */
    public Object getProperty(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return null;
       }
@@ -345,7 +340,7 @@ public class SessionManager extends Manageable {
     */
    public boolean getBoolProperty(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session == null) {
          return false;
       }
@@ -365,7 +360,7 @@ public class SessionManager extends Manageable {
     */
    public void removeProperty(String name) throws IllegalArgumentException {
       MandatoryArgumentChecker.check("name", name);
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
          session.removeAttribute(name);
 
@@ -382,7 +377,7 @@ public class SessionManager extends Manageable {
     * Removes all session properties for the customer.
     */
    public void removeProperties() {
-      HttpSession session = (HttpSession) _currentSessions.get(NDC.get());
+      HttpSession session = (HttpSession) _currentSession.get();
       if (session != null) {
 
          // Removing the attributes directly throws a ConcurentModificationException in Tomcat

@@ -7,6 +7,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 
 * XINS/Java Server Framework:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.
+  - Reversed use of Log4J NDC in xins FF.
 
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.
