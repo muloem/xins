@@ -3,10 +3,8 @@ package org.xins.tests.common.types.standard;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.apache.tools.ant.filters.HeadFilter;
 
 import org.xins.common.types.TypeValueException;
-import org.xins.common.types.standard.Base64;
 import org.xins.common.types.standard.Hex;
 
 
