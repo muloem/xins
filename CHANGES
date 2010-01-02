@@ -10,12 +10,17 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
   - Reversed use of Log4J NDC in xins FF.
   - Creation of the API using the constructor of APIImpl.
 
+* Unit tests:
+  - Fixed empty lines in XSLT tests.
+
 * Generation of server-side Java code:
   - Removed static SINGLETON field in APIImpl.
   - Functions are now created in the constructor of the API.
 
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.
+  - Fixed unresolved classes for Netbeans.
+  - Added Netbeans 6.7 project files.
 
 * Documentation:
   - Fixed some broken links in the calling convention primer.
