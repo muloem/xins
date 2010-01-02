@@ -22,6 +22,9 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
   - Fixed unresolved classes for Netbeans.
   - Added Netbeans 6.7 project files.
 
+* Librairies:
+  - Removed JSP and DTD files from servlet.jar as not needed.
+
 * Documentation:
   - Fixed some broken links in the calling convention primer.
 
