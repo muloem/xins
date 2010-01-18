@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="US-ASCII" ?>
 <project name="xins-create" basedir=".">
 
+	<target name="create-project">
+		<!-- The xins-project.xml is created in the make-build.xml -->
+		<antcall target="create-api" />
+	</target>
+
 	<target name="create-api" description="Generates a new api specification file.">
 		<input addproperty="api.name"
 		       message="Please, enter the name of the api (in lowercase):" />

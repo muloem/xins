@@ -6,9 +6,29 @@
  XINS project.
 -->
 
-<project name="xins-bootstrap-ant" default="make-build" basedir=".">
+<project name="xins-bootstrap-ant" default="choose-target" basedir=".">
 
-	<target name="make-build">
+	<target name="choose-target">
+		<echo message="target ${first_target}" />
+		<condition property="version-target">
+			<or>
+				<equals arg1="${first_target}" arg2="version" />
+				<equals arg1="${first_target}" arg2="-version" />
+			</or>
+		</condition>
+		<condition property="create-project-target">
+			<equals arg1="${first_target}" arg2="create-project" />
+		</condition>
+		<antcall target="version" />
+		<antcall target="create-project" />
+		<antcall target="make-build" />
+	</target>
+
+	<target name="version" if="version-target">
+		<ant antfile="${xins_home}/build.xml" target="version" dir="${xins_home}" />
+	</target>
+
+	<target name="make-build" unless="version-target">
 		<property name="project_home" location="${user.dir}" />
 
 		<available file="${xins_home}/src/xslt/xins-project_to_ant-build.xslt"
@@ -218,5 +238,22 @@
 		<ant antfile="${project_home}/build/build.xml" target="check-version">
 			<property name="xins.current.version" value="${version}" />
 		</ant>
+	</target>
+
+	<!-- Creates a new xins-project.xml file -->
+	<target name="create-project" description="Generates a new project file."  if="create-project-target">
+		<property name="xml.file" value="${user.dir}/xins-project.xml" />
+		<available property="xml.exists" file="${xml.file}" />
+		<fail message="The file ${xml.file} already exists!" if="xml.exists" />
+		<input addproperty="project.name"
+		       message="Please, enter the name of the project (in lowercase):" />
+		<input addproperty="project.domain"
+		       message="Please, enter the domain of the project (e.g. com.mycompany):" />
+		<echo file="${xml.file}"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project PUBLIC "-//XINS//DTD XINS Project 2.2//EN" "http://xins.sourceforge.net/dtd/xins-project_2_2.dtd">
+<project name="]]>${project.name}<![CDATA["
+rcsversion="$]]><![CDATA[Revision$" rcsdate="$]]><![CDATA[Date$"
+domain="]]>${project.domain}<![CDATA[">
+</project>]]></echo>
 	</target>
 </project>

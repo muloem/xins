@@ -17,6 +17,10 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
   - Removed static SINGLETON field in APIImpl.
   - Functions are now created in the constructor of the API.
 
+* Generated build file:
+  - Added create-project.
+  - Call of xins version is done in the make-build.xml.
+
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.
   - Fixed unresolved classes for Netbeans.
