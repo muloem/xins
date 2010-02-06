@@ -191,6 +191,10 @@
 			<description>Unsupported protocol.</description>
 			<param name="url" type="text" nullable="false" />
 		</entry>
+		<entry id="1309" level="DEBUG">
+			<description>Calling target.</description>
+			<param name="url" type="text" nullable="false" />
+		</entry>
 	</group>
 
 	<group id="collections" name="Generic collection classes">

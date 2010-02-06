@@ -44,6 +44,7 @@
 	<translation entry="1306">Des cibles sont encore disponibles mais le fail-over n'est pas authorisé.</translation>
 	<translation entry="1307">Des cibles sont encore disponibles et le fail-over est authorisé.</translation>
 	<translation entry="1308">Le protocol pour l'URL <value-of-param name="url" format="quoted" /> n'est pas supporté.</translation>
+	<translation entry="1309">Appel le service à l'URL <value-of-param name="url" />.</translation>
 
 	<translation entry="1350">La valeur de la propriété <value-of-param name="key" format="quoted" /> a été remplacée de <value-of-param name="oldValue" format="quoted" /> par <value-of-param name="newValue" format="quoted" />.</translation>
 	<translation entry="1351">La valeur de la propriété <value-of-param name="key" format="quoted" /> a été remplacée de <value-of-param name="oldValue" format="quoted" /> par <value-of-param name="newValue" format="quoted" />.</translation>

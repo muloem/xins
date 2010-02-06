@@ -7,6 +7,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 
 * XINS/Java Common Library:
   - Fixed bug #2816605: IllegalArgumentException declared but not thrown.
+  - Fixed bug #1861794: Log message 1301 is logged at wrong time.
 
 * XINS/Java Server Framework:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.

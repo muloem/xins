@@ -548,7 +548,7 @@ public abstract class ServiceCaller {
          TargetDescriptor target = (TargetDescriptor) iterator.next();
 
          // Call using this target
-         Log.log_1301(target.getURL());
+         Log.log_1309(target.getURL());
          Object result = null;
          boolean succeeded = false;
          long start = System.currentTimeMillis();
@@ -557,6 +557,7 @@ public abstract class ServiceCaller {
             // Attempt the call
             result = doCallImpl(request, callConfig, target);
             succeeded = true;
+            Log.log_1301(target.getURL());
 
          // If the call to the target fails, store the exception and try the next
          } catch (Throwable exception) {
