@@ -170,12 +170,9 @@ public class Element implements Cloneable {
     *    If the value if <code>null</code> or an empty string, the element is
     *    consider to have no namespace prefix.
     *
-    * @throws IllegalArgumentException
-    *    if <code>namespacePrefix == null</code>.
-    *
     * @since XINS 2.1.
     */
-   public void setNamespacePrefix(String namespacePrefix) throws IllegalArgumentException {
+   public void setNamespacePrefix(String namespacePrefix) {
       if (namespacePrefix != null && namespacePrefix.length() == 0) {
          _namespacePrefix = null;
       } else {
@@ -204,12 +201,9 @@ public class Element implements Cloneable {
     *    If the value if <code>null</code> or an empty string, the element is
     *    consider to have no namespace URI.
     *
-    * @throws IllegalArgumentException
-    *    if <code>namespaceURI == null</code>.
-    *
     * @since XINS 2.1.
     */
-   public void setNamespaceURI(String namespaceURI) throws IllegalArgumentException {
+   public void setNamespaceURI(String namespaceURI) {
       if (namespaceURI != null && namespaceURI.length() == 0) {
          _namespaceURI = null;
       } else {
