@@ -285,6 +285,27 @@ ${apis.list}]]></echo>
 			     location="log_2_2.dtd" />
 			<dtd publicId="-//XINS//DTD XINS Translation Bundle 2.2//EN"
 			     location="translation-bundle_2_2.dtd" />
+
+			<dtd publicId="-//XINS//DTD XINS Project 2.3//EN"
+			     location="xins-project_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD XINS API 2.3//EN"
+			     location="api_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Function 2.3//EN"
+			     location="function_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Category 2.3//EN"
+			     location="category_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Type 2.3//EN"
+			     location="type_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Result Code 2.3//EN"
+			     location="resultcode_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Implementation 2.3//EN"
+			     location="impl_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD Environments 2.3//EN"
+			     location="environments_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD XINS Logdoc 2.3//EN"
+			     location="log_2_3.dtd" />
+			<dtd publicId="-//XINS//DTD XINS Translation Bundle 2.3//EN"
+			     location="translation-bundle_2_3.dtd" />
 		</xmlcatalog>
 	</target>
 

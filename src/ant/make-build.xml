@@ -70,9 +70,6 @@
 		       out="${project_home}/build/build.xml"
 		       style="${xins_home}/src/xslt/xins-project_to_ant-build.xslt">
 			<xmlcatalog>
-				<classpath>
-					<pathelement path="${xins_home}/src/dtd"/>
-				</classpath>
 				<dtd publicId="-//XINS//DTD XINS Project 1.0//EN"
 				     location="${xins_home}/src/dtd/xins-project_1_0.dtd" />
 				<dtd publicId="-//XINS//DTD XINS API 1.0//EN"
@@ -225,6 +222,23 @@
 				     location="${xins_home}/src/dtd/environments_2_2.dtd" />
 				<dtd publicId="-//XINS//DTD XINS Logdoc 2.2//EN"
 				     location="${xins_home}/src/dtd/log_2_2.dtd" />
+
+				<dtd publicId="-//XINS//DTD XINS Project 2.3//EN"
+				     location="${xins_home}/src/dtd/xins-project_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD XINS API 2.3//EN"
+				     location="${xins_home}/src/dtd/api_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD Function 2.3//EN"
+				     location="${xins_home}/src/dtd/function_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD Type 2.3//EN"
+				     location="${xins_home}/src/dtd/type_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD Result Code 2.3//EN"
+				     location="${xins_home}/src/dtd/resultcode_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD Implementation 2.3//EN"
+				     location="${xins_home}/src/dtd/impl_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD Environments 2.3//EN"
+				     location="${xins_home}/src/dtd/environments_2_3.dtd" />
+				<dtd publicId="-//XINS//DTD XINS Logdoc 2.3//EN"
+				     location="${xins_home}/src/dtd/log_2_3.dtd" />
 			</xmlcatalog>
 			<param name="xins_home"    expression="${xins_home}"    />
 			<param name="project_home" expression="${project_home}" />
