@@ -23,13 +23,13 @@ import org.xins.common.xml.Element;
 public class ElementTests extends TestCase {
 
    /**
-     * Constructs a new <code>ElementTests</code> test suite with
-     * the specified name. The name will be passed to the superconstructor.
-     *
-     *
-     * @param name
-     *    the name for this test suite.
-     */
+    * Constructs a new <code>ElementTests</code> test suite with
+    * the specified name. The name will be passed to the superconstructor.
+    *
+    *
+    * @param name
+    *    the name for this test suite.
+    */
    public ElementTests(String name) {
       super(name);
    }
@@ -169,7 +169,7 @@ public class ElementTests extends TestCase {
       }
 
       qn1 = new Element.QualifiedName(null, localName);
-      assertEquals(null,      qn1.getNamespaceURI());
+      assertEquals(null, qn1.getNamespaceURI());
       assertEquals(localName, qn1.getLocalName());
 
       qn2 = new Element.QualifiedName(null, localName);
@@ -179,7 +179,7 @@ public class ElementTests extends TestCase {
       assertEquals(qn2, qn2);
 
       qn3 = new Element.QualifiedName("", localName);
-      assertEquals(null,      qn1.getNamespaceURI());
+      assertEquals(null, qn1.getNamespaceURI());
       assertEquals(localName, qn1.getLocalName());
       assertEquals(qn1, qn2);
       assertEquals(qn1, qn3);
@@ -189,11 +189,58 @@ public class ElementTests extends TestCase {
       assertEquals(qn3, qn2);
 
       qn1 = new Element.QualifiedName(uri, localName);
-      assertEquals(uri,       qn1.getNamespaceURI());
+      assertEquals(uri, qn1.getNamespaceURI());
       assertEquals(localName, qn1.getLocalName());
 
       qn2 = new Element.QualifiedName(uri, localName);
       assertEquals(qn1, qn2);
       assertEquals(qn2, qn1);
+   }
+
+   /**
+    * Test equality between two similar XML Element.
+    *
+    * @throws Exception
+    *    if an unexpected exception is thrown.
+    */
+   public void testElementEquals() throws Exception {
+      assertFalse(new Element("Test").equals(new Object()));
+      assertFalse(new Element("Test").equals(""));
+      assertFalse(new Element("Test").equals(null));
+
+      assertEquals(new Element("Test"), new Element("Test"));
+
+      Element elem1 = new Element("Test");
+      elem1.setAttribute("a", "0");
+      elem1.setAttribute("b", "1");
+      elem1.setAttribute("c", "2");
+
+      Element elem2 = new Element("Test");
+      elem2.setAttribute("c", "2");
+      elem2.setAttribute("b", "1");
+      elem2.setAttribute("a", "0");
+
+      assertTrue(elem1.equals(elem1));
+      assertTrue(elem1.equals(elem2));
+      assertTrue(elem2.equals(elem1));
+      assertTrue(elem2.equals(elem2));
+
+      elem1.addChild(new Element("Test2"));
+      assertFalse(elem1.equals(elem2));
+      assertFalse(elem2.equals(elem1));
+      elem2.addChild(new Element("Test2"));
+      assertTrue(elem1.equals(elem2));
+      assertTrue(elem2.equals(elem1));
+
+      elem1.addChild(new Element("Test3"));
+      assertFalse(elem1.equals(elem2));
+      assertFalse(elem2.equals(elem1));
+      elem2.addChild(new Element("Test3"));
+      assertTrue(elem1.equals(elem2));
+      assertTrue(elem2.equals(elem1));
+
+      elem2.setAttribute("a899", null);
+      assertTrue(elem1.equals(elem2));
+      assertTrue(elem2.equals(elem1));
    }
 }

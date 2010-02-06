@@ -8,6 +8,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 * XINS/Java Common Library:
   - Fixed bug #2816605: IllegalArgumentException declared but not thrown.
   - Fixed bug #1861794: Log message 1301 is logged at wrong time.
+  - Fixed bug #2815318: A null Element attribute is counted as an attribute.
 
 * XINS/Java Server Framework:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.
@@ -16,6 +17,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 
 * Unit tests:
   - Fixed empty lines in XSLT tests.
+  - Added tests for equals with XML Elements.
 
 * Generation of server-side Java code:
   - Removed static SINGLETON field in APIImpl.

@@ -331,7 +331,11 @@ public class Element implements Cloneable {
       }
 
       // Set or reset the attribute
-      _attributes.put(qn, value);
+      if (value == null) {
+         _attributes.remove(qn);
+      } else {
+         _attributes.put(qn, value);
+      }
    }
 
 
