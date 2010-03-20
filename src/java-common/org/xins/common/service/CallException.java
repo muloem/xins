@@ -243,4 +243,17 @@ public abstract class CallException extends Exception {
    public String getDetail() {
       return _detail;
    }
+
+   /**
+    * Indicates whether this call exception allow for the ServiceCaller to
+    * fail over another TargetDescriptor if available.
+    * Note that when an exception doesn't know if the call (or part of the call)
+    * has been executed, <code>false</code> should be returned.
+    *
+    * @return
+    *    <code>true</code> if the service can fail over, <code>false</code> otherwise.
+    */
+   public boolean isFailOverAllowed() {
+      return false;
+   }
 }

@@ -820,7 +820,7 @@ public abstract class ServiceCaller {
 
       // Determine if fail-over is applicable
       boolean should = callConfig.isFailOverAllowed()
-          || (exceptions.last() instanceof ConnectionCallException);
+          || exceptions.last().isFailOverAllowed();
 
       return should;
    }

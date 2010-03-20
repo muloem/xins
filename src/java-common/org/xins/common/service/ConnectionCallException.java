@@ -66,4 +66,8 @@ extends GenericCallException {
       super(shortReason,
             request, target, duration, detail, cause);
    }
+
+   public boolean isFailOverAllowed() {
+      return true;
+   }
 }

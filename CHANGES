@@ -9,6 +9,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
   - Fixed bug #2816605: IllegalArgumentException declared but not thrown.
   - Fixed bug #1861794: Log message 1301 is logged at wrong time.
   - Fixed bug #2815318: A null Element attribute is counted as an attribute.
+  - RFE #1864466: Let CallException indicate whether fail-over is allowed.
 
 * XINS/Java Server Framework:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.
