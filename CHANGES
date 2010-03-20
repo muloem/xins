@@ -14,6 +14,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
   - Use Log4J NDC instead of ThreadLocal to store session in xins FF.
   - Reversed use of Log4J NDC in xins FF.
   - Creation of the API using the constructor of APIImpl.
+  - RFE #2949336: _GetStatistics for just one function.
 
 * Unit tests:
   - Fixed empty lines in XSLT tests.

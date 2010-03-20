@@ -1105,8 +1105,11 @@ public abstract class API extends Manageable {
          String detailedArg = functionRequest.getParameters().get("detailed");
          boolean detailed = !"false".equals(detailedArg);
 
+         // Determine the name of the specific function, if any
+         String targetFunction = functionRequest.getParameters().get("targetFunction");
+
          // Get the statistics
-         result = doGetStatistics(detailed);
+         result = doGetStatistics(detailed, targetFunction);
 
          // Determine value of 'reset' argument
          String resetArg = functionRequest.getParameters().get("reset");
@@ -1278,10 +1281,14 @@ public abstract class API extends Manageable {
     *    per error code. Otherwise the unsuccessful result won't be displayed
     *    by error code.
     *
+    * @param functionName
+    *    the name of the specific function to return the statistics for,
+    *    if <code>null</code>, then the stats for all functions are returned.
+    *
     * @return
     *    the call result, never <code>null</code>.
     */
-   private final FunctionResult doGetStatistics(boolean detailed) {
+   private final FunctionResult doGetStatistics(boolean detailed, String functionName) {
 
       // Initialize a builder
       FunctionResult builder = new FunctionResult();
@@ -1320,6 +1327,12 @@ public abstract class API extends Manageable {
       int count = _functionList.size();
       for (int i = 0; i < count; i++) {
          Function function = (Function) _functionList.get(i);
+
+         // Possibly only results for a specific function are to be returned
+         if (functionName != null && ! functionName.equals(function.getName())) {
+            continue;
+         }
+
          FunctionStatistics stats = function.getStatistics();
 
          ElementBuilder functionElem = new ElementBuilder("function");
