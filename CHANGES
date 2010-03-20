@@ -26,6 +26,7 @@ CHANGES INTRODUCED IN XINS 2.3 ALPHA 3:
 * Generated build file:
   - Added create-project.
   - Call of xins version is done in the make-build.xml.
+  - RFE 2947915: Allow JMX port to be specified.
 
 * Build- and release-process:
   - The releases now need to be uploaded via the browser.
