@@ -29,7 +29,7 @@
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 			<modelVersion>4.0.0</modelVersion>
 			<groupId>
-				<xsl:value-of select="concat(@domain, '.', $api, '.api')" />
+				<xsl:value-of select="concat(@domain, '.api')" />
 			</groupId>
 			<artifactId>
 				<xsl:value-of select="$api" />
