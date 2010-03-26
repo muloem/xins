@@ -17,6 +17,9 @@ CHANGES INTRODUCED IN XINS 2.3 BETA 1:
   - Creation of the API using the constructor of APIImpl.
   - RFE #2949336: _GetStatistics for just one function.
 
+* XINS/Java Client Framework:
+  - RFE #2932709: Added transaction logging on the client side.
+
 * Unit tests:
   - Fixed empty lines in XSLT tests.
   - Added tests for equals with XML Elements.

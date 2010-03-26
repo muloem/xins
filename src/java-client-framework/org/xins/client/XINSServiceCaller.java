@@ -195,8 +195,11 @@ public class XINSServiceCaller extends ServiceCaller {
    }
 
    /**
-    * Constructs a new <code>XINSServiceCaller</code> with the specified
-    * descriptor and the default HTTP method.
+    * Constructs a new <code>XINSServiceCaller</code> with no
+    * descriptor (yet) and the default HTTP method.
+    *
+    * <p>Before actual calls can be made, {@link #setDescriptor(Descriptor)}
+    * should be used to set the descriptor.
     *
     * @since XINS 1.2.0
     */
@@ -566,6 +569,7 @@ public class XINSServiceCaller extends ServiceCaller {
                   + exception.getClass().getName() + '.';
             Utils.logProgrammingError(detail);
          }
+         logTransaction(exception, start, url, function, duration, null, params, null);
          throw exception;
 
       // Call failed due to an HTTP-related error
@@ -579,6 +583,7 @@ public class XINSServiceCaller extends ServiceCaller {
                   + exception.getClass().getName() + '.';
             Utils.logProgrammingError(detail);
          }
+         logTransaction(exception, start, url, function, duration, null, params, null);
          throw exception;
 
       // Unknown kind of exception. This should never happen. Log and re-throw
@@ -591,6 +596,7 @@ public class XINSServiceCaller extends ServiceCaller {
                + ". Message: " + TextUtils.quote(exception.getMessage()) + '.';
 
          Log.log_2111(exception, url, function, params, duration);
+         logTransaction(exception, start, url, function, duration, null, params, null);
          throw new UnexpectedExceptionCallException(request, target, duration, message, exception);
       }
 
@@ -603,6 +609,7 @@ public class XINSServiceCaller extends ServiceCaller {
 
          // Log: No data was received
          Log.log_2110(url, function, params, duration, "No data received.");
+         logTransaction(null, start, url, function, duration, "=NoHTTPData", params, null);
 
          // Throw an appropriate exception
          throw InvalidResultXINSCallException.noDataReceived(
@@ -615,21 +622,24 @@ public class XINSServiceCaller extends ServiceCaller {
          resultData = _parser.parse(httpData);
 
       // If parsing failed, then abort
-      } catch (ParseException e) {
+      } catch (ParseException exception) {
 
          // Create a message for the new exception
-         String detail = e.getDetail();
+         String detail = exception.getDetail();
          String message = detail != null && detail.trim().length() > 0
                         ? "Failed to parse result: " + detail.trim()
                         : "Failed to parse result.";
 
          // Log: Parsing failed
          Log.log_2110(url, function, params, duration, message);
+         logTransaction(exception, start, url, function, duration, "=ParseError", params, null);
 
          // Throw an appropriate exception
-         throw InvalidResultXINSCallException.parseError(
-            httpData, xinsRequest, target, duration, e);
+         throw InvalidResultXINSCallException.parseError(httpData, xinsRequest, target, duration, exception);
       }
+
+      // Convert the output parameters to a FormattedParameters object
+      FormattedParameters outParams = new FormattedParameters(resultData.getParameters(), resultData.getDataElement(), "(null)", "&", 160);
 
       // If the result is unsuccessful, then throw an exception
       String errorCode = resultData.getErrorCode();
@@ -647,36 +657,27 @@ public class XINSServiceCaller extends ServiceCaller {
          } else {
             Log.log_2112(url, function, params, duration, errorCode);
          }
+         logTransaction(null, start, url, function, duration, errorCode, params, outParams);
 
          // Standard error codes (start with an underscore)
          if (errorCode.charAt(0) == '_') {
             if (errorCode.equals("_DisabledFunction")) {
-               throw new DisabledFunctionException(xinsRequest,
-                                                   target,
-                                                   duration,
-                                                   resultData);
-            } else if (errorCode.equals("_InternalError")
-                    || errorCode.equals("_InvalidResponse")) {
-               throw new InternalErrorException(
-                  xinsRequest, target, duration, resultData);
+               throw new DisabledFunctionException(xinsRequest, target, duration, resultData);
+            } else if (errorCode.equals("_InternalError") || errorCode.equals("_InvalidResponse")) {
+               throw new InternalErrorException(xinsRequest, target, duration, resultData);
             } else if (errorCode.equals("_InvalidRequest")) {
-               throw new InvalidRequestException(
-                  xinsRequest, target, duration, resultData);
+               throw new InvalidRequestException(xinsRequest, target, duration, resultData);
             } else {
-               throw new UnacceptableErrorCodeXINSCallException(
-                  xinsRequest, target, duration, resultData);
+               throw new UnacceptableErrorCodeXINSCallException(xinsRequest, target, duration, resultData);
             }
 
          // Non-standard error codes, CAPI not used
          } else if (_capi == null) {
-            throw new UnsuccessfulXINSCallException(
-               xinsRequest, target, duration, resultData, null);
+            throw new UnsuccessfulXINSCallException(xinsRequest, target, duration, resultData, null);
 
          // Non-standard error codes, CAPI used
          } else {
-            AbstractCAPIErrorCodeException ex =
-               _capi.createErrorCodeException(
-                  xinsRequest, target, duration, resultData);
+            AbstractCAPIErrorCodeException ex = _capi.createErrorCodeException(xinsRequest, target, duration, resultData);
 
             if (ex != null) {
                ex.setType(type);
@@ -705,6 +706,7 @@ public class XINSServiceCaller extends ServiceCaller {
 
       // Call completely succeeded
       Log.log_2101(url, function, params, duration);
+      logTransaction(null, start, url, function, duration, errorCode, params, outParams);
 
       return resultData;
    }
@@ -821,5 +823,52 @@ public class XINSServiceCaller extends ServiceCaller {
       }
 
       return should;
+   }
+
+   /**
+    * Performs (client-side) transaction logging.
+    *
+    * @param exception
+    *    the exception, if any, can be <code>null</code>.
+    *
+    * @param start
+    *    the start as the number of milliseconds since the UNIX Epoch.
+    *
+    * @param url
+    *    the URL that is being called, should not be <code>null</code>.
+    *
+    * @param functionName
+    *    the name of the function that is being invoked, should not be <code>null</code>.
+    *
+    * @param duration
+    *    the duration of the call in milliseconds.
+    *
+    * @param errorCode
+    *    the error code, should not be <code>null</code>.
+    *
+    * @param inParams
+    *    the input parameters, should not be <code>null</code>.
+    *
+    * @param outParams
+    *    the output parameters, should not be <code>null</code>.
+    */
+   private static final void logTransaction(Throwable exception, long start, String url, String functionName, long duration, String errorCode, FormattedParameters inParams, FormattedParameters outParams) {
+
+      final Object hyphen = "-";
+
+      if (errorCode == null && exception != null) {
+         String exceptionName = exception.getClass().getName();
+         exceptionName = exceptionName.substring(exceptionName.lastIndexOf('.') + 1);
+         if (exceptionName.endsWith("CallException")) {
+            exceptionName = exceptionName.substring(0, exceptionName.length() - 13);
+         }
+         errorCode = "=" + exceptionName;
+      }
+      errorCode              = (errorCode == null) ? "0"    : errorCode;
+      Object inParamsObject  = (inParams  == null) ? hyphen : inParams;
+      Object outParamsObject = (outParams == null) ? hyphen : outParams;
+
+      Log.log_2300(exception, start, url, functionName, duration, errorCode, inParamsObject, outParamsObject);
+      Log.log_2301(exception, start, url, functionName, duration, errorCode);
    }
 }
