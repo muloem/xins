@@ -381,12 +381,14 @@
 		<target name="wsdl-{$api}" depends="-load-properties-{$api}" description="Generates the WSDL specification of the '{$api}' API">
 			<antcall target="-wsdl">
 				<propertyset refid="{$api}.properties" />
+				<reference refid="all-dtds" />
 			</antcall>
 		</target>
 
 		<target name="opendoc-{$api}" depends="-load-properties-{$api}" description="Generates the specification document for the '{$api}' API">
 			<antcall target="-opendoc">
 				<propertyset refid="{$api}.properties" />
+				<reference refid="all-dtds" />
 			</antcall>
 		</target>
 
@@ -445,7 +447,6 @@
 					<xsl:if test="$apiHasTypes">
 						<pathelement path="{$typeClassesDir}" />
 					</xsl:if>
-					<path refid="xins.classpath" />
 					<xsl:if test="$impl_node/dependency">
 						<path refid="impl.dependencies" />
 					</xsl:if>
@@ -549,6 +550,7 @@
 				<antcall target="-javadoc-api">
 					<reference refid="javadoc.api.packageset" />
 					<reference refid="classes.api.classpath"  />
+					<reference refid="xins.classpath"  />
 					<param name="api" value="{$api}" />
 					<param name="implName2" value="{$implName2}" />
 				</antcall>
@@ -557,6 +559,7 @@
 			<target name="stub-{$api}{$implName2}" depends="-load-properties-{$api}" description="Generates an Stub API using the defined examples">
 				<antcall target="-stub">
 					<propertyset refid="{$api}.properties" />
+					<reference refid="all-dtds" />
 					<param name="implName2" value="{$implName2}" />
 				</antcall>
 			</target>
@@ -606,6 +609,7 @@
 				<property name="{$api}.packageTestsAsDir" value="{$packageTestsAsDir}" />
 				<antcall target="-generatetests">
 					<propertyset refid="{$api}.properties" />
+					<reference refid="all-dtds" />
 				</antcall>
 			</target>
 
@@ -644,7 +648,6 @@
 				</xsl:if>
 			</xsl:attribute>
 			<path id="jar.classpath">
-				<path refid="xins.classpath" />
 				<xsl:if test="$apiHasTypes">
 					<pathelement path="{$typeClassesDir}"  />
 				</xsl:if>
@@ -701,7 +704,6 @@
 			</path>
 			<antcall target="-javadoc-capi">
 				<reference refid="javadoc.capi.packages" />
-				<reference refid="xins.classpath" />
 				<propertyset refid="{$api}.properties" />
 			</antcall>
 		</target>
