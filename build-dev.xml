@@ -158,6 +158,7 @@ ${sf.file}</fail>
 		includes="org/xins/**/*.java"
 		debug="true"
 		deprecation="${tests.deprecation}"
+		includeantruntime="${javac.includeantruntime}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">
 			<src path="src/tests" />

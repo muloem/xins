@@ -346,6 +346,7 @@ ${apis.list}]]></echo>
 	<target name="-prepare-classes" depends="-load-properties">
 		<!-- If not set by the user set the default properties. -->
 		<property name="build.deprecation" value="true" />
+		<property name="build.includeantruntime" value="true" />
 		<property name="build.java.version" value="${ant.java.version}" />
 		<condition property="build.generics">
 			<and>
@@ -715,6 +716,7 @@ ${apis.list}]]></echo>
 		destdir="${builddir}/classes-tests/${api}"
 		debug="true"
 		deprecation="${build.deprecation}"
+		includeantruntime="${build.includeantruntime}"
 		source="${build.java.version}"
 		target="${build.java.version}">
 			<src path="apis/${api}/test" />
@@ -798,6 +800,7 @@ ${apis.list}]]></echo>
 		destdir="${builddir}/classes-capi/${api}"
 		debug="true"
 		deprecation="${build.deprecation}"
+		includeantruntime="${build.includeantruntime}"
 		source="${build.java.version}"
 		target="${build.java.version}">
 			<classpath>
@@ -1130,6 +1133,7 @@ ${apis.list}]]></echo>
 		destdir="${typeClassesDir}"
 		debug="true"
 		deprecation="${build.deprecation}"
+		includeantruntime="${build.includeantruntime}"
 		source="${build.java.version}"
 		target="${build.java.version}">
 			<classpath>
@@ -1239,6 +1243,7 @@ ${apis.list}]]></echo>
 		destdir="${classesDestDir}"
 		debug="true"
 		deprecation="${build.deprecation}"
+		includeantruntime="${build.includeantruntime}"
 		source="${build.java.version}"
 		target="${build.java.version}">
 			<src path="${javaDestDir}" />

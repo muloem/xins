@@ -74,6 +74,7 @@ ${version.file}</fail>
 		<property name="javac.targetvm"      value="1.3"        />
 		<property name="javac.debug"         value="true"       />
 		<property name="javac.deprecation"   value="true"       />
+		<property name="javac.includeantruntime" value="true"   />
 		<property name="javac.optimize"      value="false"      />
 		<property name="tests.deprecation"   value="false"      />
 
@@ -109,6 +110,7 @@ ${version.file}</fail>
 		destdir="build/classes/logdoc"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
+		includeantruntime="${javac.includeantruntime}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">
@@ -184,6 +186,7 @@ ${version.file}</fail>
 		destdir="build/classes/java-common"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
+		includeantruntime="${javac.includeantruntime}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">
@@ -225,6 +228,7 @@ ${version.file}</fail>
 		destdir="build/classes/java-${side}"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
+		includeantruntime="${javac.includeantruntime}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">
@@ -240,6 +244,7 @@ ${version.file}</fail>
 		destdir="build/classes/java-${side}"
 		debug="${javac.debug}"
 		deprecation="${javac.deprecation}"
+		includeantruntime="${javac.includeantruntime}"
 		optimize="${javac.optimize}"
 		source="${javac.targetvm}"
 		target="${javac.targetvm}">

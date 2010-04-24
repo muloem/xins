@@ -7,6 +7,7 @@ CHANGES INTRODUCED IN XINS 2.3 BETA 2:
 
 * Generated build file:
   - Fixed bug #2991117: Generated build doesn't work with ANT 1.8.0.
+  - Added includeantruntime attribute to javac to avoid warning.
 
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 BETA 1:
