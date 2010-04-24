@@ -139,21 +139,23 @@ ${version.file}</fail>
 		todir="build/classes/java-common/org/xins/common/ant" />
 		<copy file="src/java-common/org/xins/common/servlet/container/xins.gif"
 		todir="build/classes/java-common/org/xins/common/servlet/container" />
+		<path id="path.common">
+			<pathelement path="build/classes/java-common" />
+		</path>
 		<antcall target="-build-framework">
 			<param name="src.side" value="common" />
 			<param name="side"     value="common" />
 			<param name="type"     value="Common" />
+			<reference refid="path.common" />
 		</antcall>
 	</target>
 
 	<target name="java-client" depends="java-common, logdoc-java-client" description="Compiles the XINS/Java client framework">
-		<path id="path.common">
-			<pathelement path="build/classes/java-common" />
-		</path>
 		<antcall target="-build-framework" inheritRefs="true">
 			<param name="src.side" value="client-framework" />
 			<param name="side"     value="client"           />
 			<param name="type"     value="Client Framework" />
+			<reference refid="path.common" />
 		</antcall>
 	</target>
 
@@ -176,6 +178,7 @@ ${version.file}</fail>
 			<param name="src.side" value="server-framework" />
 			<param name="side"     value="server"           />
 			<param name="type"     value="Server Framework" />
+			<reference refid="path.common" />
 		</antcall>
 	</target>
 
