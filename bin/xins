@@ -49,7 +49,7 @@ fi
 
 # Creates the buid file if needed
 first_target=$1
-if [ "$1" = "" ] then
+if [ "$1" = "" ]; then
    first_target=help
 fi
 ant -Dxins_home=${XINS_HOME} -Dfirst_target=${first_target} -q -f ${XINS_HOME}/src/ant/make-build.xml
