@@ -9,7 +9,6 @@
 <project name="xins-bootstrap-ant" default="choose-target" basedir=".">
 
 	<target name="choose-target">
-		<echo message="target ${first_target}" />
 		<condition property="version-target">
 			<or>
 				<equals arg1="${first_target}" arg2="version" />
