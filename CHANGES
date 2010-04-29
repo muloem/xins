@@ -5,6 +5,9 @@ $Id$
 ______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 BETA 2:
 
+* XINS/Java Server Framework:
+  - Fixed bug #2991113: IPv6 not supported.
+
 * Generated build file:
   - Fixed bug #2991117: Generated build doesn't work with ANT 1.8.0.
   - Added includeantruntime attribute to javac to avoid warning.

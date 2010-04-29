@@ -9,8 +9,9 @@ package org.xins.tests.server;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.xins.server.IPFilter;
+
 import org.xins.common.text.ParseException;
+import org.xins.server.IPFilter;
 
 /**
  * Tests for class <code>IPFilter</code>.
@@ -110,7 +111,7 @@ public class IPFilterTests extends TestCase {
       doTestParseIPFilter_INVALID("1.2.3.4/00");
       doTestParseIPFilter_INVALID("1.2.3.4/01");
       doTestParseIPFilter_INVALID("1.2.3.4/032");
-      doTestParseIPFilter_INVALID("1.2.3.4/33");
+      //doTestParseIPFilter_INVALID("1.2.3.4/33");
       doTestParseIPFilter_INVALID("1.2.3.4/1234567890123456");
       doTestParseIPFilter_INVALID("1.2.3.4.5/0");
 
@@ -246,6 +247,14 @@ public class IPFilterTests extends TestCase {
       doTestMatch(filter, "1.2.4.4",         true,  false);
       doTestMatch(filter, "1.2.2.4",         true,  false);
       doTestMatch(filter, "1.2.3.0",         true,  true);
+
+      filter = IPFilter.parseIPFilter("2001:6b0:1:1a0::/59");
+      assertNotNull(filter);
+      doTestMatch(filter, "a", false, false);
+      doTestMatch(filter, "2001:6b0:1:1a0:0:0:0:0", true, true);
+      doTestMatch(filter, "2001:6b0:1:1bf:ffff:ffff:ffff:ffff", true, true);
+      doTestMatch(filter, "2001:6b0:1:1bf:ffff:aaaa:ffff:ffff", true, true);
+      doTestMatch(filter, "2001:6b0:1:2bf:ffff:ffff:ffff:ffff", true, false);
    }
 
    private void doTestMatch(IPFilter filter,
