@@ -939,7 +939,8 @@ public abstract class API extends Manageable {
       // If no property is defined only localhost is allowed
       if (_apiAccessRuleList == AccessRuleList.EMPTY &&
           _accessRuleList == AccessRuleList.EMPTY &&
-          (ip.equals("127.0.0.1") || ip.equals("::1") || ip.equals(_localIPAddress))) {
+          (ip.equals("127.0.0.1") || ip.equals("::1") ||
+           ip.startsWith("0:0:0:0:0:0:0:1%") || ip.equals(_localIPAddress))) {
          return true;
       }
 

@@ -50,7 +50,7 @@ import org.xins.common.text.ParseException;
  * @author Peter Troon
  * @author <a href="mailto:anthony.goubard@japplis.com">Anthony Goubard</a>
  *
- * @since XINS 2.3.0
+ * @since XINS 1.0.0
  */
 public final class IPFilter {
 
@@ -109,6 +109,10 @@ public final class IPFilter {
     *
     * @param ipString
     *    the base IP address, as a character string, should not be
+    *    <code>null</code>.
+    *
+    * @param baseIP
+    *    the base IP address, as a series of bits, should not be
     *    <code>null</code>.
     *
     * @param mask
