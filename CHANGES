@@ -14,6 +14,10 @@ CHANGES INTRODUCED IN XINS 2.3 BETA 2:
   - Added includeantruntime attribute to javac to avoid warning.
   - Fixed bug #2991753: Shell script does not work.
 
+* Unit tests:
+  - Fixed do not inherit Ant properties when running the test (api.version).
+  - Use java.net for https tests.
+
 * Build- and release-process:
   - Fixed unknown reference to path.common with ANT 1.8.0.
 

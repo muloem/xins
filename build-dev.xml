@@ -125,11 +125,11 @@ ${sf.file}</fail>
 		<xins api="portal" target="jar" projectdir="src/tests" />
 
 		<!-- TODO: Can these be combined? -->
-		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" />
-		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone"      />
-		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone"      />
-		<ant antfile="build/build.xml" dir="src/tests" target="wsdl-allinone"     />
-		<ant antfile="build/build.xml" dir="src/tests" target="smd">
+		<ant antfile="build/build.xml" dir="src/tests" target="specdocs-allinone" inheritAll="false" />
+		<ant antfile="build/build.xml" dir="src/tests" target="jar-allinone" inheritAll="false" />
+		<ant antfile="build/build.xml" dir="src/tests" target="war-allinone" inheritAll="false" />
+		<ant antfile="build/build.xml" dir="src/tests" target="wsdl-allinone" inheritAll="false" />
+		<ant antfile="build/build.xml" dir="src/tests" target="smd" inheritAll="false">
 			<property name="api.name" value="allinone" />
 		</ant>
 
