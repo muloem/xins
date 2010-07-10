@@ -3,6 +3,13 @@ versions of XINS.
 
 $Id$
 ______________________________________________________________________________
+CHANGES INTRODUCED IN XINS 2.3:
+
+* XINS/Java Common Library:
+  - Fixed bug #3021346: BeanUtils.getParametersAsString() cannot handle
+    _list types.
+
+______________________________________________________________________________
 CHANGES INTRODUCED IN XINS 2.3 BETA 2:
 
 * XINS/Java Server Framework:
@@ -3702,6 +3709,7 @@ CHANGES INTRODUCED IN XINS 1.2.0 RELEASE CANDIDATE 1:
 * XINS/Java Client Framework:
   - Cleaned up some code in the InvalidRequestException class. Removed unused
     private inner classes.
+
 
 * Generation of server-side Java code:
   - Fixed bug #1198829: Defined Types in Runtime properties behave

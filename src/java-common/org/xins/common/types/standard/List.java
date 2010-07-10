@@ -137,5 +137,15 @@ public final class List extends org.xins.common.types.List {
       public String get(int index) {
          return (String) getItem(index);
       }
+
+      /**
+       * Converts this <code>List.Value</code> to a string.
+       *
+       * @return
+       *    the textual representation of the value.
+       */
+      public String toString() {
+         return SINGLETON.toString((ItemList) this);
+      }
    }
 }
