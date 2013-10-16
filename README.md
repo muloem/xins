@@ -14,4 +14,4 @@ This is a fork of the regular XINS distribution:
 
    http://xins.sourceforge.net/
 
-This branch focuses on extending the framework functionality from the release 2.3 branch.  It diverges from the original XINS framework development.
+This fork focuses on extending the framework functionality from the release 2.3 branch.  It diverges from the original XINS framework development.
